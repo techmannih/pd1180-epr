@@ -1,0 +1,19 @@
+{
+  "motor": "QSH8618-96-55-700",
+  "document": "https://www.analog.com/media/en/technical-documentation/data-sheets/qsh8618_datasheet_rev1.08.pdf",
+  "phase_current_a": 5.5,
+  "holding_torque_nm": 7.0,
+  "rotor_inertia_g_cm2": 2700,
+  "rotor_inertia_kg_m2": 0.00027,
+  "step_angle_degrees": 1.8,
+  "external_load_inertia_kg_m2": null,
+  "operating_rpm_limit": null,
+  "note": "Illustrative RPM values are calculations, not a guaranteed torque/speed operating envelope. Rotor-only energy excludes the attached load and magnetic energy.",
+  "rotor_energy_examples": [
+    { "rpm": 100, "rotor_energy_j": 0.0148 },
+    { "rpm": 500, "rotor_energy_j": 0.3701 },
+    { "rpm": 1000, "rotor_energy_j": 1.4804 },
+    { "rpm": 2000, "rotor_energy_j": 5.9218 }
+  ],
+  "bulk_energy_48_to_53_v_j": 0.23735
+}

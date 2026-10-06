@@ -1,0 +1,29 @@
+{
+  "revision": "0.2.0",
+  "status": "engineering-validation",
+  "fabrication_released": false,
+  "requirements": {
+    "input": "USB-C PD 3.1 EPR 48 V / 5 A contract",
+    "motor_bus_current_limit_nominal_a": 4.477612,
+    "motor_phase_current_target_rms_a": 5.5,
+    "board_size_mm": [85.9, 85.9],
+    "assembly_side": "top-only"
+  },
+  "completed_checks": {
+    "copper_routing_complete": true,
+    "kicad_drc_zero_violations": true,
+    "kicad_drc_zero_unconnected_items": true,
+    "manufacturing_package_generated": true,
+    "all_populated_parts_top_side": true,
+    "live_lcsc_stock_check": true,
+    "alternative_parts_review": true
+  },
+  "release_gates": {
+    "high_current_copper_and_thermal_review": false,
+    "pd_configuration_image_generated_and_verified": false,
+    "motor_firmware_tested": false,
+    "external_brake_resistor_sized_and_procured": false,
+    "motor_mount_and_magnet_geometry_verified": false,
+    "bench_and_emc_validation": false
+  }
+}

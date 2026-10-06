@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.claude/
+.agents/
+
+
+# Generated review/manufacturing outputs are versioned for reproducible handoff.
+build/
+dist/autorouter-debug/
+dist/route-krt/
+dist/index/3d.step
+dist/assembly-review/DRAFT-*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# tscircuit cache
+.tscircuit/
+checks/
+
+# Local routing experiments and scratch output
+.cache/
+route-*.circuit.tsx
+docs/checks/*.log

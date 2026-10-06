@@ -1,0 +1,7717 @@
+{
+  "board": {
+    "width_mm": 85.9,
+    "height_mm": 85.9,
+    "layers": 4,
+    "status": "engineering-validation"
+  },
+  "parts": [
+    {
+      "tag": "USB4105_GF_A",
+      "name": "J1",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "GND",
+        "pin3": "GND",
+        "pin4": "GND",
+        "pin5": "GND",
+        "pin6": "GND",
+        "pin19": "GND",
+        "pin20": "GND",
+        "pin7": "USB_VBUS",
+        "pin8": "USB_VBUS",
+        "pin17": "USB_VBUS",
+        "pin18": "USB_VBUS",
+        "pin9": "CC2_CONN",
+        "pin15": "CC1_CONN",
+        "pin11": "USB_DP_CONN",
+        "pin13": "USB_DP_CONN",
+        "pin12": "USB_DM_CONN",
+        "pin14": "USB_DM_CONN"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -36.4249991,
+        33
+      ],
+      "owner": null,
+      "rotation": 270,
+      "lcsc": "C3020560",
+      "mpn": "USB4105-GF-A",
+      "size": [
+        11.275,
+        10.64
+      ],
+      "noConnect": [
+        "pin10",
+        "pin16"
+      ],
+      "section": "usb-pd_J1",
+      "sch": [
+        0,
+        0
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "TPD4S480RUKR",
+      "name": "U1",
+      "connections": {
+        "pin1": "USB_DP_CONN",
+        "pin2": "USB_DM_CONN",
+        "pin3": "CC_VBIAS",
+        "pin4": "CC1_CONN",
+        "pin5": "CC2_CONN",
+        "pin6": "CC2_CONN",
+        "pin7": "CC1_CONN",
+        "pin8": "GND",
+        "pin9": "CC_FAULT_N",
+        "pin10": "PD_3V3",
+        "pin11": "CC2_PD",
+        "pin12": "CC1_PD",
+        "pin13": "GND",
+        "pin14": "USB_DM_PROTECTED",
+        "pin15": "USB_DP_PROTECTED",
+        "pin16": "EPR_EN",
+        "pin17": "EPR_BLK_GATE",
+        "pin18": "GND",
+        "pin19": "VBUS_LV",
+        "pin20": "USB_VBUS",
+        "pin21": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -34,
+        22
+      ],
+      "owner": null,
+      "lcsc": "C43131250",
+      "mpn": "TPD4S480RUKR",
+      "size": [
+        4.7,
+        4.7
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U1",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "TPS26750SRSMR",
+      "name": "U2",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "PD_3V3",
+        "pin3": "GND",
+        "pin4": "PD_1V5",
+        "pin5": "CC_FAULT_N",
+        "pin6": "GND",
+        "pin7": "EPR_EN",
+        "pin8": "PD_SDA",
+        "pin9": "PD_SCL",
+        "pin10": "PD_IRQ_N",
+        "pin11": "GND",
+        "pin12": "GND",
+        "pin13": "GND",
+        "pin14": "GND",
+        "pin15": "EEP_SDA",
+        "pin16": "EEP_SCL",
+        "pin17": "EEP_IRQ_N",
+        "pin18": "GND",
+        "pin19": "GND",
+        "pin20": "PD_PATH_HV",
+        "pin22": "GND",
+        "pin23": "GND",
+        "pin24": "CC1_PD",
+        "pin25": "CC2_PD",
+        "pin26": "VBUS_LV",
+        "pin27": "VBUS_LV",
+        "pin30": "GND",
+        "pin31": "GND",
+        "pin32": "V3V3",
+        "pin33": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -24,
+        24
+      ],
+      "owner": null,
+      "lcsc": "C42166327",
+      "mpn": "TPS26750SRSMR",
+      "size": [
+        5.7,
+        5.7
+      ],
+      "noConnect": [
+        "pin21",
+        "pin28",
+        "pin29"
+      ],
+      "section": "usb-pd_U2",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BSS123LT1G",
+      "name": "Q1",
+      "connections": {
+        "pin1": "EPR_BLK_GATE",
+        "pin2": "VBUS_LV",
+        "pin3": "USB_VBUS"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -39,
+        22
+      ],
+      "owner": "U1",
+      "lcsc": "C78755",
+      "mpn": "BSS123LT1G",
+      "size": [
+        4.2,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U1",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C1",
+      "connections": {
+        "pin1": "CC_VBIAS",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -34,
+        18.5
+      ],
+      "owner": "U1",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U1",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C2",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -29.75,
+        22.75
+      ],
+      "owner": "U1",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 0,
+      "decoupling_straight_line_mm": 1.9256449644132223,
+      "section": "usb-pd_U1",
+      "sch": [
+        28,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C3",
+      "connections": {
+        "pin1": "CC1_PD",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -24,
+        28
+      ],
+      "owner": "U2",
+      "value": "220pF",
+      "lcsc": "C106210",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C4",
+      "connections": {
+        "pin1": "CC2_PD",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -21.5,
+        20
+      ],
+      "owner": "U2",
+      "value": "220pF",
+      "lcsc": "C106210",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        8,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C5",
+      "connections": {
+        "pin1": "VBUS_LV",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -18.5,
+        25.5
+      ],
+      "owner": "U2",
+      "value": "4.7uF",
+      "lcsc": "C51205",
+      "footprint": "1206",
+      "voltage": 50,
+      "size": [
+        4.4,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        11,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C6",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -28,
+        20.25
+      ],
+      "owner": "U2",
+      "value": "10uF",
+      "lcsc": "C96446",
+      "footprint": "0603",
+      "voltage": 10,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.475448646904235,
+      "section": "usb-pd_U2",
+      "sch": [
+        5,
+        -9.8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C7",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -26,
+        19.25
+      ],
+      "owner": "U2",
+      "value": "10uF",
+      "lcsc": "C96446",
+      "footprint": "0603",
+      "voltage": 10,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 1.9686137009225564,
+      "section": "usb-pd_U2",
+      "sch": [
+        8,
+        -9.8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C8",
+      "connections": {
+        "pin1": "PD_1V5",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -24,
+        19.25
+      ],
+      "owner": "U2",
+      "value": "10uF",
+      "lcsc": "C96446",
+      "footprint": "0603",
+      "voltage": 10,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 1.8856188173276172,
+      "section": "usb-pd_U2",
+      "sch": [
+        11,
+        -9.8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R1",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "CC_FAULT_N"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -34,
+        25.5
+      ],
+      "owner": "U1",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U1",
+      "sch": [
+        22,
+        2.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R2",
+      "connections": {
+        "pin1": "EPR_EN",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -37.5,
+        18.5
+      ],
+      "owner": "U1",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U1",
+      "sch": [
+        25,
+        2.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "M24512_RMN6TP",
+      "name": "U3",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "GND",
+        "pin3": "GND",
+        "pin4": "GND",
+        "pin5": "EEP_SDA",
+        "pin6": "EEP_SCL",
+        "pin7": "GND",
+        "pin8": "PD_3V3"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -19,
+        34
+      ],
+      "owner": null,
+      "lcsc": "C79991",
+      "mpn": "M24512-RMN6TP",
+      "size": [
+        5.8,
+        7.9
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U3",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C9",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -23.75,
+        36.5
+      ],
+      "owner": "U3",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 2.022470964720136,
+      "section": "usb-pd_U3",
+      "sch": [
+        22,
+        -8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R3",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "EEP_SDA"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -24,
+        34
+      ],
+      "owner": "U3",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U3",
+      "sch": [
+        25,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R4",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "EEP_SCL"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -14,
+        34
+      ],
+      "owner": "U3",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U3",
+      "sch": [
+        28,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R5",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "EEP_IRQ_N"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -24,
+        32
+      ],
+      "owner": "U3",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U3",
+      "sch": [
+        22,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R6",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "PD_SDA"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -29,
+        25
+      ],
+      "owner": "U2",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        5,
+        -11.6
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R7",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "PD_SCL"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -27.5,
+        28
+      ],
+      "owner": "U2",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        8,
+        -11.6
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R8",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "PD_IRQ_N"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -20.5,
+        28
+      ],
+      "owner": "U2",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        11,
+        -11.6
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R9",
+      "connections": {
+        "pin1": "PD_PATH_HV",
+        "pin2": "PD_LEVEL_BASE"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -24,
+        30
+      ],
+      "owner": "U2",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        5,
+        -13.4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R10",
+      "connections": {
+        "pin1": "PD_LEVEL_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -21.5,
+        18
+      ],
+      "owner": "U2",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        8,
+        -13.4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q2",
+      "connections": {
+        "pin1": "PD_LEVEL_BASE",
+        "pin2": "GND",
+        "pin3": "PD_PATH_N"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -17.5,
+        20
+      ],
+      "owner": "U2",
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        11,
+        -13.4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R11",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "PD_PATH_N"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -27.5,
+        30
+      ],
+      "owner": "U2",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        5,
+        -15.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R12",
+      "connections": {
+        "pin1": "PD_PATH_N",
+        "pin2": "PD_INV_BASE"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -25,
+        16.5
+      ],
+      "owner": "U2",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        8,
+        -15.2
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q3",
+      "connections": {
+        "pin1": "PD_INV_BASE",
+        "pin2": "GND",
+        "pin3": "PD_PATH_OK"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -29.5,
+        16.5
+      ],
+      "owner": "U2",
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        11,
+        -15.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R13",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "PD_PATH_OK"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -17,
+        28
+      ],
+      "owner": "U2",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U2",
+      "sch": [
+        5,
+        -17
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SN74LVC1G08DBVR",
+      "name": "U4",
+      "connections": {
+        "pin1": "PD_PATH_OK",
+        "pin2": "POWER_PERMIT",
+        "pin3": "GND",
+        "pin4": "EFUSE_EN",
+        "pin5": "V3V3"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -12,
+        24
+      ],
+      "owner": null,
+      "lcsc": "C7666",
+      "mpn": "SN74LVC1G08DBVR",
+      "size": [
+        4.6,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U4",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R14",
+      "connections": {
+        "pin1": "POWER_PERMIT",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -12,
+        21
+      ],
+      "owner": "U4",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U4",
+      "sch": [
+        5,
+        -20
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R15",
+      "connections": {
+        "pin1": "EFUSE_EN",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -12,
+        27
+      ],
+      "owner": "U4",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_U4",
+      "sch": [
+        8,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C10",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -16,
+        23
+      ],
+      "owner": "U4",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 1.8755686501434718,
+      "section": "usb-pd_U4",
+      "sch": [
+        11,
+        -20
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "LMR36510ADDAR",
+      "name": "U5",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "USB_VBUS",
+        "pin3": "USB_VBUS",
+        "pin4": "LOGIC_PG",
+        "pin5": "BUCK_FB",
+        "pin6": "BUCK_VCC",
+        "pin7": "BUCK_BOOT",
+        "pin8": "BUCK_SW",
+        "pin9": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -35,
+        7
+      ],
+      "owner": null,
+      "lcsc": "C1858393",
+      "mpn": "LMR36510ADDAR",
+      "size": [
+        5.9,
+        8.292
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SWPA6045S220MT",
+      "name": "L1",
+      "connections": {
+        "pin1": "BUCK_SW",
+        "pin2": "V3V3_USB"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -25,
+        7
+      ],
+      "owner": null,
+      "lcsc": "C83454",
+      "mpn": "SWPA6045S220MT",
+      "size": [
+        8.58,
+        6.9
+      ],
+      "noConnect": [],
+      "section": "logic-power_L1",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C11",
+      "connections": {
+        "pin1": "USB_VBUS",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -35,
+        13
+      ],
+      "owner": "U5",
+      "value": "2.2uF",
+      "lcsc": "C170101",
+      "footprint": "1206",
+      "voltage": 100,
+      "size": [
+        4.4,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C12",
+      "connections": {
+        "pin1": "USB_VBUS",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -35.75,
+        1
+      ],
+      "owner": "U5",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.33176755807692,
+      "section": "logic-power_U5",
+      "sch": [
+        8,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C13",
+      "connections": {
+        "pin1": "BUCK_VCC",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -40,
+        7
+      ],
+      "owner": "U5",
+      "value": "1uF",
+      "lcsc": "C15849",
+      "footprint": "0603",
+      "voltage": 25,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        11,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C14",
+      "connections": {
+        "pin1": "BUCK_BOOT",
+        "pin2": "BUCK_SW"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -40,
+        5
+      ],
+      "owner": "U5",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        5,
+        2.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C15",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -25,
+        12
+      ],
+      "owner": "L1",
+      "value": "22uF",
+      "lcsc": "C45783",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "logic-power_L1",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C16",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -29,
+        12
+      ],
+      "owner": "L1",
+      "value": "22uF",
+      "lcsc": "C45783",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "logic-power_L1",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C17",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -21,
+        12
+      ],
+      "owner": "L1",
+      "value": "22uF",
+      "lcsc": "C45783",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "logic-power_L1",
+      "sch": [
+        28,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R16",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "BUCK_FB"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -40,
+        9
+      ],
+      "owner": "U5",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        8,
+        2.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R17",
+      "connections": {
+        "pin1": "BUCK_FB",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -33,
+        1.5
+      ],
+      "owner": "U5",
+      "value": "43.2k",
+      "lcsc": "C137720",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        11,
+        2.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R18",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "LOGIC_PG"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -40,
+        3
+      ],
+      "owner": "U5",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U5",
+      "sch": [
+        5,
+        0.3999999999999999
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "LMR36510ADDAR",
+      "name": "U22",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "VMOTOR",
+        "pin3": "VMOTOR",
+        "pin4": "MOTOR_LOGIC_PG",
+        "pin5": "MOTOR_BUCK_FB",
+        "pin6": "MOTOR_BUCK_VCC",
+        "pin7": "MOTOR_BUCK_BOOT",
+        "pin8": "MOTOR_BUCK_SW",
+        "pin9": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -15,
+        10
+      ],
+      "owner": null,
+      "lcsc": "C1858393",
+      "mpn": "LMR36510ADDAR",
+      "size": [
+        5.9,
+        8.292
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SWPA6045S220MT",
+      "name": "L2",
+      "connections": {
+        "pin1": "MOTOR_BUCK_SW",
+        "pin2": "V3V3_MOTOR"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -6,
+        15
+      ],
+      "owner": null,
+      "lcsc": "C83454",
+      "mpn": "SWPA6045S220MT",
+      "size": [
+        8.58,
+        6.9
+      ],
+      "noConnect": [],
+      "section": "logic-power_L2",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C62",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -15,
+        16
+      ],
+      "owner": "U22",
+      "value": "2.2uF",
+      "lcsc": "C170101",
+      "footprint": "1206",
+      "voltage": 100,
+      "size": [
+        4.4,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C63",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -15.75,
+        4
+      ],
+      "owner": "U22",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.33176755807692,
+      "section": "logic-power_U22",
+      "sch": [
+        8,
+        -8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C64",
+      "connections": {
+        "pin1": "MOTOR_BUCK_VCC",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -18.5,
+        4.5
+      ],
+      "owner": "U22",
+      "value": "1uF",
+      "lcsc": "C15849",
+      "footprint": "0603",
+      "voltage": 25,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        11,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C65",
+      "connections": {
+        "pin1": "MOTOR_BUCK_BOOT",
+        "pin2": "MOTOR_BUCK_SW"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -20,
+        14.5
+      ],
+      "owner": "U22",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        5,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C66",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -6,
+        10
+      ],
+      "owner": "L2",
+      "value": "22uF",
+      "lcsc": "C45783",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "logic-power_L2",
+      "sch": [
+        22,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C67",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -6,
+        20
+      ],
+      "owner": "L2",
+      "value": "22uF",
+      "lcsc": "C45783",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "logic-power_L2",
+      "sch": [
+        25,
+        -8
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C68",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -2,
+        20
+      ],
+      "owner": "L2",
+      "value": "22uF",
+      "lcsc": "C45783",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "logic-power_L2",
+      "sch": [
+        28,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R102",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "MOTOR_BUCK_FB"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -18.5,
+        2.5
+      ],
+      "owner": "U22",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        8,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R103",
+      "connections": {
+        "pin1": "MOTOR_BUCK_FB",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -13.5,
+        18.5
+      ],
+      "owner": "U22",
+      "value": "43.2k",
+      "lcsc": "C137720",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        11,
+        -9.8
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R104",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "MOTOR_LOGIC_PG"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -6.5,
+        7.5
+      ],
+      "owner": "U22",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U22",
+      "sch": [
+        5,
+        -11.6
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "LM66100DCKR",
+      "name": "U23",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "GND",
+        "pin3": "V3V3",
+        "pin5": "GND",
+        "pin6": "V3V3"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -27,
+        1.0000000000000002
+      ],
+      "owner": null,
+      "lcsc": "C2869734",
+      "mpn": "LM66100DCKR",
+      "size": [
+        2.9,
+        3.95
+      ],
+      "noConnect": [
+        "pin4"
+      ],
+      "section": "logic-power_U23",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "LM66100DCKR",
+      "name": "U24",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "GND",
+        "pin3": "V3V3",
+        "pin5": "GND",
+        "pin6": "V3V3"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -10,
+        7.999999999999999
+      ],
+      "owner": null,
+      "lcsc": "C2869734",
+      "mpn": "LM66100DCKR",
+      "size": [
+        2.9,
+        3.95
+      ],
+      "noConnect": [
+        "pin4"
+      ],
+      "section": "logic-power_U24",
+      "sch": [
+        17,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C69",
+      "connections": {
+        "pin1": "V3V3_USB",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -27.75,
+        -2.75
+      ],
+      "owner": "U23",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 1.827664549547318,
+      "section": "logic-power_U23",
+      "sch": [
+        5,
+        -20
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C70",
+      "connections": {
+        "pin1": "V3V3_MOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -10.75,
+        4.25
+      ],
+      "owner": "U24",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 1.827664549547319,
+      "section": "logic-power_U24",
+      "sch": [
+        22,
+        -20
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C71",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "logic-power",
+      "xy": [
+        -38.5,
+        1
+      ],
+      "owner": "U23",
+      "value": "10uF",
+      "lcsc": "C96446",
+      "footprint": "0603",
+      "voltage": 10,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "logic-power_U23",
+      "sch": [
+        8,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q4",
+      "connections": {
+        "pin1": "USB_VBUS",
+        "pin2": "USB_VBUS",
+        "pin3": "USB_VBUS",
+        "pin4": "BLOCK_GATE",
+        "pin5": "EFUSE_IN",
+        "pin6": "EFUSE_IN",
+        "pin7": "EFUSE_IN",
+        "pin8": "EFUSE_IN",
+        "pin9": "EFUSE_IN"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -8,
+        33
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "motor-power_Q4",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BSS123LT1G",
+      "name": "Q5",
+      "connections": {
+        "pin1": "BLOCK_FAST_GATE",
+        "pin2": "USB_VBUS",
+        "pin3": "BLOCK_GATE"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -8,
+        39.5
+      ],
+      "owner": "Q4",
+      "lcsc": "C78755",
+      "mpn": "BSS123LT1G",
+      "size": [
+        4.2,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "motor-power_Q4",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "TPS26631RGER",
+      "name": "U6",
+      "connections": {
+        "pin1": "EFUSE_IN",
+        "pin2": "EFUSE_IN",
+        "pin3": "BLOCK_GATE",
+        "pin4": "BLOCK_FAST_GATE",
+        "pin5": "USB_VBUS",
+        "pin6": "UVLO_DIV",
+        "pin7": "OVP_DIV",
+        "pin8": "GND",
+        "pin9": "SLEW_CAP",
+        "pin10": "ILIM_SET",
+        "pin12": "EFUSE_EN",
+        "pin13": "IIN_MON",
+        "pin14": "EFUSE_FAULT_N",
+        "pin15": "PG_DIV",
+        "pin16": "MOTOR_PG",
+        "pin17": "VMOTOR",
+        "pin18": "VMOTOR",
+        "pin25": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        0.9999999999999998,
+        25
+      ],
+      "owner": null,
+      "lcsc": "C1850273",
+      "mpn": "TPS26631RGER",
+      "size": [
+        5.496,
+        5.484
+      ],
+      "noConnect": [
+        "pin11",
+        "pin19",
+        "pin20",
+        "pin21",
+        "pin22",
+        "pin23",
+        "pin24"
+      ],
+      "section": "motor-power_U6",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R19",
+      "connections": {
+        "pin1": "USB_VBUS",
+        "pin2": "UVLO_MID"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        1.5,
+        21
+      ],
+      "owner": "U6",
+      "value": "180k",
+      "lcsc": "C22827",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R20",
+      "connections": {
+        "pin1": "UVLO_MID",
+        "pin2": "UVLO_DIV"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        3,
+        29
+      ],
+      "owner": "U6",
+      "value": "180k",
+      "lcsc": "C22827",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R21",
+      "connections": {
+        "pin1": "UVLO_DIV",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -3.5,
+        25
+      ],
+      "owner": "U6",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        28,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R22",
+      "connections": {
+        "pin1": "USB_VBUS",
+        "pin2": "OVP_TOP"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        5.5,
+        25
+      ],
+      "owner": "U6",
+      "value": "220",
+      "lcsc": "C22962",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        2.1999999999999993
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R23",
+      "connections": {
+        "pin1": "OVP_TOP",
+        "pin2": "OVP_DIV"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -3.5,
+        23
+      ],
+      "owner": "U6",
+      "value": "430k",
+      "lcsc": "C25969",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        2.1999999999999993
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R24",
+      "connections": {
+        "pin1": "OVP_DIV",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -3.5,
+        27
+      ],
+      "owner": "U6",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        28,
+        2.1999999999999993
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R25",
+      "connections": {
+        "pin1": "ILIM_SET",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        5.5,
+        23
+      ],
+      "owner": "U6",
+      "value": "4.02k",
+      "lcsc": "C141679",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        0.3999999999999986
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C18",
+      "connections": {
+        "pin1": "SLEW_CAP",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        5.5,
+        27
+      ],
+      "owner": "U6",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        0.3999999999999986
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R26",
+      "connections": {
+        "pin1": "IIN_MON",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        5,
+        21
+      ],
+      "owner": "U6",
+      "value": "20k",
+      "lcsc": "C4184",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        28,
+        0.3999999999999986
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C19",
+      "connections": {
+        "pin1": "IIN_MON",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        1.5,
+        19
+      ],
+      "owner": "U6",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        -1.3999999999999986
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R27",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "PG_DIV"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        5,
+        19
+      ],
+      "owner": "U6",
+      "value": "360k",
+      "lcsc": "C23146",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        -1.3999999999999986
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R28",
+      "connections": {
+        "pin1": "PG_DIV",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -7,
+        25
+      ],
+      "owner": "U6",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        28,
+        -1.3999999999999986
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R29",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "MOTOR_PG"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        1,
+        17
+      ],
+      "owner": "U6",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        -3.200000000000003
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R30",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "EFUSE_FAULT_N"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        9,
+        25
+      ],
+      "owner": "U6",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        -3.200000000000003
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C20",
+      "connections": {
+        "pin1": "EFUSE_IN",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -7,
+        23
+      ],
+      "owner": "U6",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        28,
+        -3.200000000000003
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C21",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -1.25,
+        29.5
+      ],
+      "owner": "U6",
+      "value": "2.2uF",
+      "lcsc": "C170101",
+      "footprint": "1206",
+      "voltage": 100,
+      "size": [
+        4.4,
+        2.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 2.558316945511835,
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        -5
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "EEUFR1J471",
+      "name": "C22",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        32,
+        19
+      ],
+      "owner": null,
+      "lcsc": "C407954",
+      "mpn": "EEUFR1J471",
+      "size": [
+        13.41,
+        13.15
+      ],
+      "noConnect": [],
+      "section": "motor-power_C22",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "EEUFR1J471",
+      "name": "C23",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        32,
+        6
+      ],
+      "owner": null,
+      "lcsc": "C407954",
+      "mpn": "EEUFR1J471",
+      "size": [
+        13.41,
+        13.15
+      ],
+      "noConnect": [],
+      "section": "motor-power_C23",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R31",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "VMON_MID"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        -7,
+        27
+      ],
+      "owner": "U6",
+      "value": "180k",
+      "lcsc": "C22827",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        -5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R32",
+      "connections": {
+        "pin1": "VMON_MID",
+        "pin2": "VMON_ADC"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        9,
+        23
+      ],
+      "owner": "U6",
+      "value": "180k",
+      "lcsc": "C22827",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        28,
+        -5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R33",
+      "connections": {
+        "pin1": "VMON_ADC",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        9,
+        27
+      ],
+      "owner": "U6",
+      "value": "20k",
+      "lcsc": "C4184",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        22,
+        -6.799999999999997
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C24",
+      "connections": {
+        "pin1": "VMON_ADC",
+        "pin2": "GND"
+      },
+      "sheet": "motor-power",
+      "xy": [
+        8.5,
+        21
+      ],
+      "owner": "U6",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motor-power_U6",
+      "sch": [
+        25,
+        -6.799999999999997
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "TMC5160A_TA_T",
+      "name": "U7",
+      "connections": {
+        "pin1": "GH_B1_DRV",
+        "pin2": "BOOT_B1",
+        "pin3": "TMC_12V",
+        "pin4": "VMOTOR",
+        "pin5": "TMC_5V",
+        "pin6": "GND",
+        "pin7": "GND",
+        "pin8": "SENSE_A",
+        "pin9": "SENSE_B",
+        "pin10": "GND",
+        "pin11": "GND",
+        "pin12": "GND",
+        "pin13": "TMC_CS_N",
+        "pin14": "SPI_SCK",
+        "pin15": "SPI_MOSI",
+        "pin16": "SPI_MISO",
+        "pin17": "REFL_STEP",
+        "pin18": "REFR_DIR",
+        "pin19": "GND",
+        "pin20": "V3V3",
+        "pin21": "SD_MODE",
+        "pin22": "V3V3",
+        "pin23": "ENC_B",
+        "pin24": "ENC_A",
+        "pin25": "ENC_I",
+        "pin26": "TMC_DIAG0",
+        "pin27": "TMC_DIAG1",
+        "pin28": "DRV_EN_N",
+        "pin29": "TMC_VCC",
+        "pin30": "GND",
+        "pin31": "TMC_CPO",
+        "pin32": "TMC_CPI",
+        "pin33": "VMOTOR",
+        "pin34": "TMC_VCP",
+        "pin35": "BOOT_A2",
+        "pin36": "GH_A2_DRV",
+        "pin37": "MOTOR_A2",
+        "pin38": "GL_A2_DRV",
+        "pin39": "GL_A1_DRV",
+        "pin40": "MOTOR_A1",
+        "pin41": "GH_A1_DRV",
+        "pin42": "BOOT_A1",
+        "pin43": "BOOT_B2",
+        "pin44": "GH_B2_DRV",
+        "pin45": "MOTOR_B2",
+        "pin46": "GL_B2_DRV",
+        "pin47": "GL_B1_DRV",
+        "pin48": "MOTOR_B1",
+        "pin49": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        7.999999999999943,
+        5
+      ],
+      "owner": null,
+      "lcsc": "C516354",
+      "mpn": "TMC5160A-TA-T",
+      "size": [
+        10.9,
+        10.9
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C25",
+      "connections": {
+        "pin1": "TMC_12V",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        4.5,
+        -2
+      ],
+      "owner": "U7",
+      "value": "4.7uF",
+      "lcsc": "C1779",
+      "footprint": "0805",
+      "voltage": 25,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.9602316658836045,
+      "section": "motion_U7",
+      "sch": [
+        5,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C26",
+      "connections": {
+        "pin1": "TMC_5V",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        9.3,
+        -1.85
+      ],
+      "owner": "U7",
+      "value": "4.7uF",
+      "lcsc": "C19666",
+      "footprint": "0603",
+      "voltage": 16,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.6835238988955887,
+      "section": "motion_U7",
+      "sch": [
+        8,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R34",
+      "connections": {
+        "pin1": "TMC_5V",
+        "pin2": "TMC_VCC"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4.5,
+        5
+      ],
+      "owner": "U7",
+      "value": "2.2",
+      "lcsc": "C22939",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        11,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C27",
+      "connections": {
+        "pin1": "TMC_VCC",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        9,
+        12
+      ],
+      "owner": "U7",
+      "value": "470nF",
+      "lcsc": "C13967",
+      "footprint": "0805",
+      "voltage": 50,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "rotation": 90,
+      "decoupling_straight_line_mm": 2.387610000805007,
+      "section": "motion_U7",
+      "sch": [
+        5,
+        2.2
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C28",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        14.1,
+        5.75
+      ],
+      "owner": "U7",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.225110000863853,
+      "section": "motion_U7",
+      "sch": [
+        8,
+        2.2
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C29",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        6.75,
+        11.8
+      ],
+      "owner": "U7",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 90,
+      "decoupling_straight_line_mm": 2.2391175753979704,
+      "section": "motion_U7",
+      "sch": [
+        11,
+        2.2
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C30",
+      "connections": {
+        "pin1": "TMC_CPO",
+        "pin2": "TMC_CPI"
+      },
+      "sheet": "motion",
+      "xy": [
+        4.5,
+        16
+      ],
+      "owner": "U7",
+      "value": "22nF",
+      "lcsc": "C107137",
+      "footprint": "0805",
+      "voltage": 100,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        5,
+        0.3999999999999999
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C31",
+      "connections": {
+        "pin1": "TMC_VCP",
+        "pin2": "VMOTOR"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4.5,
+        3
+      ],
+      "owner": "U7",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        8,
+        0.3999999999999999
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C61",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        7,
+        -1.05
+      ],
+      "owner": "U7",
+      "value": "100nF",
+      "lcsc": "C15725",
+      "footprint": "0603",
+      "voltage": 100,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 0,
+      "decoupling_straight_line_mm": 2.2251100009788467,
+      "section": "motion_U7",
+      "sch": [
+        11,
+        0.3999999999999999
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R35",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "TMC_CS_N"
+      },
+      "sheet": "motion",
+      "xy": [
+        3,
+        -5
+      ],
+      "owner": "U7",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        5,
+        -1.4000000000000004
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R36",
+      "connections": {
+        "pin1": "SD_MODE",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        14.9,
+        10.5
+      ],
+      "owner": "U7",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        8,
+        -1.4000000000000004
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R37",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "DRV_EN_N"
+      },
+      "sheet": "motion",
+      "xy": [
+        11.5,
+        14.5
+      ],
+      "owner": "U7",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        11,
+        -1.4000000000000004
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q6",
+      "connections": {
+        "pin1": "MOTOR_A1",
+        "pin2": "MOTOR_A1",
+        "pin3": "MOTOR_A1",
+        "pin4": "GH_A1",
+        "pin5": "VMOTOR",
+        "pin6": "VMOTOR",
+        "pin7": "VMOTOR",
+        "pin8": "VMOTOR",
+        "pin9": "VMOTOR"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        16,
+        16
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q6",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q7",
+      "connections": {
+        "pin1": "SENSE_A",
+        "pin2": "SENSE_A",
+        "pin3": "SENSE_A",
+        "pin4": "GL_A1",
+        "pin5": "MOTOR_A1",
+        "pin6": "MOTOR_A1",
+        "pin7": "MOTOR_A1",
+        "pin8": "MOTOR_A1",
+        "pin9": "MOTOR_A1"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        19.5,
+        7
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q7",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R38",
+      "connections": {
+        "pin1": "GH_A1_DRV",
+        "pin2": "GH_A1"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        11.5,
+        16
+      ],
+      "owner": "Q6",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q6",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R39",
+      "connections": {
+        "pin1": "GL_A1_DRV",
+        "pin2": "GL_A1"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        23.95,
+        7
+      ],
+      "owner": "Q7",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q7",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R40",
+      "connections": {
+        "pin1": "GH_A1",
+        "pin2": "MOTOR_A1"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        21,
+        16
+      ],
+      "owner": "Q6",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q6",
+      "sch": [
+        8,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R41",
+      "connections": {
+        "pin1": "GL_A1",
+        "pin2": "SENSE_A"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        23.95,
+        5
+      ],
+      "owner": "Q7",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q7",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C32",
+      "connections": {
+        "pin1": "BOOT_A1",
+        "pin2": "MOTOR_A1"
+      },
+      "sheet": "motion",
+      "xy": [
+        15.5,
+        1.5
+      ],
+      "owner": "U7",
+      "value": "220nF",
+      "lcsc": "C513710",
+      "footprint": "0805",
+      "voltage": 100,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        5,
+        -3.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q8",
+      "connections": {
+        "pin1": "MOTOR_A2",
+        "pin2": "MOTOR_A2",
+        "pin3": "MOTOR_A2",
+        "pin4": "GH_A2",
+        "pin5": "VMOTOR",
+        "pin6": "VMOTOR",
+        "pin7": "VMOTOR",
+        "pin8": "VMOTOR",
+        "pin9": "VMOTOR"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        24,
+        -8
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q8",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q9",
+      "connections": {
+        "pin1": "SENSE_A",
+        "pin2": "SENSE_A",
+        "pin3": "SENSE_A",
+        "pin4": "GL_A2",
+        "pin5": "MOTOR_A2",
+        "pin6": "MOTOR_A2",
+        "pin7": "MOTOR_A2",
+        "pin8": "MOTOR_A2",
+        "pin9": "MOTOR_A2"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        24,
+        -17
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q9",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R42",
+      "connections": {
+        "pin1": "GH_A2_DRV",
+        "pin2": "GH_A2"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        24,
+        -2.5
+      ],
+      "owner": "Q8",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q8",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R43",
+      "connections": {
+        "pin1": "GL_A2_DRV",
+        "pin2": "GL_A2"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        24,
+        -27.5
+      ],
+      "owner": "Q9",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q9",
+      "sch": [
+        22,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R44",
+      "connections": {
+        "pin1": "GH_A2",
+        "pin2": "MOTOR_A2"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        27.5,
+        -2.5
+      ],
+      "owner": "Q8",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q8",
+      "sch": [
+        8,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R45",
+      "connections": {
+        "pin1": "GL_A2",
+        "pin2": "SENSE_A"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        20.5,
+        -27.5
+      ],
+      "owner": "Q9",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_Q9",
+      "sch": [
+        25,
+        -8
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C33",
+      "connections": {
+        "pin1": "BOOT_A2",
+        "pin2": "MOTOR_A2"
+      },
+      "sheet": "motion",
+      "xy": [
+        8,
+        16
+      ],
+      "owner": "U7",
+      "value": "220nF",
+      "lcsc": "C513710",
+      "footprint": "0805",
+      "voltage": 100,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        8,
+        -3.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q10",
+      "connections": {
+        "pin1": "MOTOR_B1",
+        "pin2": "MOTOR_B1",
+        "pin3": "MOTOR_B1",
+        "pin4": "GH_B1",
+        "pin5": "VMOTOR",
+        "pin6": "VMOTOR",
+        "pin7": "VMOTOR",
+        "pin8": "VMOTOR",
+        "pin9": "VMOTOR"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        16,
+        -7
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q10",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q11",
+      "connections": {
+        "pin1": "SENSE_B",
+        "pin2": "SENSE_B",
+        "pin3": "SENSE_B",
+        "pin4": "GL_B1",
+        "pin5": "MOTOR_B1",
+        "pin6": "MOTOR_B1",
+        "pin7": "MOTOR_B1",
+        "pin8": "MOTOR_B1",
+        "pin9": "MOTOR_B1"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        16,
+        -16
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q11",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R46",
+      "connections": {
+        "pin1": "GH_B1_DRV",
+        "pin2": "GH_B1"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        11,
+        -7
+      ],
+      "owner": "Q10",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q10",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R47",
+      "connections": {
+        "pin1": "GL_B1_DRV",
+        "pin2": "GL_B1"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        11,
+        -16
+      ],
+      "owner": "Q11",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q11",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R48",
+      "connections": {
+        "pin1": "GH_B1",
+        "pin2": "MOTOR_B1"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        11,
+        -9
+      ],
+      "owner": "Q10",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q10",
+      "sch": [
+        8,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R49",
+      "connections": {
+        "pin1": "GL_B1",
+        "pin2": "SENSE_B"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        11,
+        -18
+      ],
+      "owner": "Q11",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q11",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C34",
+      "connections": {
+        "pin1": "BOOT_B1",
+        "pin2": "MOTOR_B1"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4,
+        -5
+      ],
+      "owner": "U7",
+      "value": "220nF",
+      "lcsc": "C513710",
+      "footprint": "0805",
+      "voltage": 100,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        11,
+        -3.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q12",
+      "connections": {
+        "pin1": "MOTOR_B2",
+        "pin2": "MOTOR_B2",
+        "pin3": "MOTOR_B2",
+        "pin4": "GH_B2",
+        "pin5": "VMOTOR",
+        "pin6": "VMOTOR",
+        "pin7": "VMOTOR",
+        "pin8": "VMOTOR",
+        "pin9": "VMOTOR"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        32,
+        -8
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q12",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q13",
+      "connections": {
+        "pin1": "SENSE_B",
+        "pin2": "SENSE_B",
+        "pin3": "SENSE_B",
+        "pin4": "GL_B2",
+        "pin5": "MOTOR_B2",
+        "pin6": "MOTOR_B2",
+        "pin7": "MOTOR_B2",
+        "pin8": "MOTOR_B2",
+        "pin9": "MOTOR_B2"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        32,
+        -17
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q13",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R50",
+      "connections": {
+        "pin1": "GH_B2_DRV",
+        "pin2": "GH_B2"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        37,
+        -8
+      ],
+      "owner": "Q12",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q12",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R51",
+      "connections": {
+        "pin1": "GL_B2_DRV",
+        "pin2": "GL_B2"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        37,
+        -17
+      ],
+      "owner": "Q13",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q13",
+      "sch": [
+        22,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R52",
+      "connections": {
+        "pin1": "GH_B2",
+        "pin2": "MOTOR_B2"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        37,
+        -10
+      ],
+      "owner": "Q12",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q12",
+      "sch": [
+        8,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R53",
+      "connections": {
+        "pin1": "GL_B2",
+        "pin2": "SENSE_B"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        37,
+        -19
+      ],
+      "owner": "Q13",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "bridge-b_Q13",
+      "sch": [
+        25,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C35",
+      "connections": {
+        "pin1": "BOOT_B2",
+        "pin2": "MOTOR_B2"
+      },
+      "sheet": "motion",
+      "xy": [
+        10,
+        -4.5
+      ],
+      "owner": "U7",
+      "value": "220nF",
+      "lcsc": "C513710",
+      "footprint": "0805",
+      "voltage": 100,
+      "size": [
+        3.4,
+        2
+      ],
+      "noConnect": [],
+      "section": "motion_U7",
+      "sch": [
+        5,
+        -5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "HoLLR2512_3W_33mR_1_",
+      "name": "RS1",
+      "connections": {
+        "pin1": "SENSE_A",
+        "pin2": "GND"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        20,
+        -24
+      ],
+      "owner": null,
+      "lcsc": "C2985721",
+      "mpn": "HoLLR2512-3W-33mR-1%",
+      "size": [
+        9.033,
+        4.2
+      ],
+      "noConnect": [],
+      "section": "bridge-a_RS1",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "HoLLR2512_3W_33mR_1_",
+      "name": "RS2",
+      "connections": {
+        "pin1": "SENSE_B",
+        "pin2": "GND"
+      },
+      "sheet": "bridge-b",
+      "xy": [
+        31,
+        -24
+      ],
+      "owner": null,
+      "lcsc": "C2985721",
+      "mpn": "HoLLR2512-3W-33mR-1%",
+      "size": [
+        9.033,
+        4.2
+      ],
+      "noConnect": [],
+      "section": "bridge-b_RS2",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "B4P_VH_LF__SN_",
+      "name": "J2",
+      "connections": {
+        "pin1": "MOTOR_A1",
+        "pin2": "MOTOR_A2",
+        "pin3": "MOTOR_B1",
+        "pin4": "MOTOR_B2"
+      },
+      "sheet": "bridge-a",
+      "xy": [
+        28,
+        35
+      ],
+      "owner": null,
+      "lcsc": "C160317",
+      "mpn": "B4P-VH(LF)(SN)",
+      "size": [
+        16.74,
+        10.5
+      ],
+      "noConnect": [],
+      "section": "bridge-a_J2",
+      "sch": [
+        17,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "A_74LVC1G157GW_125",
+      "name": "U8",
+      "connections": {
+        "pin1": "STEP_IN",
+        "pin2": "GND",
+        "pin3": "STOP_L",
+        "pin4": "REFL_STEP",
+        "pin5": "V3V3",
+        "pin6": "SD_MODE"
+      },
+      "sheet": "motion",
+      "xy": [
+        4,
+        -8
+      ],
+      "owner": null,
+      "lcsc": "C135822",
+      "mpn": "74LVC1G157GW,125",
+      "size": [
+        3.6,
+        2.9
+      ],
+      "noConnect": [],
+      "section": "motion_U8",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "A_74LVC1G157GW_125",
+      "name": "U9",
+      "connections": {
+        "pin1": "DIR_IN",
+        "pin2": "GND",
+        "pin3": "STOP_R",
+        "pin4": "REFR_DIR",
+        "pin5": "V3V3",
+        "pin6": "SD_MODE"
+      },
+      "sheet": "motion",
+      "xy": [
+        8,
+        -13
+      ],
+      "owner": null,
+      "lcsc": "C135822",
+      "mpn": "74LVC1G157GW,125",
+      "size": [
+        3.6,
+        2.9
+      ],
+      "noConnect": [],
+      "section": "motion_U9",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C36",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        0.25,
+        -8
+      ],
+      "owner": "U8",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 2.0250780000000006,
+      "section": "motion_U8",
+      "sch": [
+        22,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C37",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        4.25,
+        -13
+      ],
+      "owner": "U9",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 2.0250780000000006,
+      "section": "motion_U9",
+      "sch": [
+        5,
+        -8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "SN74LVC1G08DBVR",
+      "name": "U10",
+      "connections": {
+        "pin1": "MCU_RUN",
+        "pin2": "MOTOR_PG",
+        "pin3": "GND",
+        "pin4": "RUN_PG",
+        "pin5": "V3V3"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4,
+        -9
+      ],
+      "owner": null,
+      "lcsc": "C7666",
+      "mpn": "SN74LVC1G08DBVR",
+      "size": [
+        4.6,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "motion_U10",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SN74LVC1G08DBVR",
+      "name": "U11",
+      "connections": {
+        "pin1": "RUN_PG",
+        "pin2": "VMOTOR_OK",
+        "pin3": "GND",
+        "pin4": "RUN_SAFE",
+        "pin5": "V3V3"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4,
+        -14
+      ],
+      "owner": null,
+      "lcsc": "C7666",
+      "mpn": "SN74LVC1G08DBVR",
+      "size": [
+        4.6,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C38",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        -8,
+        -10
+      ],
+      "owner": "U10",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 1.8755686501434718,
+      "section": "motion_U10",
+      "sch": [
+        22,
+        -8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C39",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        -8,
+        -15
+      ],
+      "owner": "U11",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 1.8755686501434718,
+      "section": "motion_U11",
+      "sch": [
+        5,
+        -20
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R54",
+      "connections": {
+        "pin1": "MCU_RUN",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        0,
+        -10
+      ],
+      "owner": "U10",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U10",
+      "sch": [
+        25,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R55",
+      "connections": {
+        "pin1": "RUN_SAFE",
+        "pin2": "RUN_BASE"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4,
+        -17
+      ],
+      "owner": "U11",
+      "value": "1k",
+      "lcsc": "C21190",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        8,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R56",
+      "connections": {
+        "pin1": "RUN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        0,
+        -14
+      ],
+      "owner": "U11",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        11,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q14",
+      "connections": {
+        "pin1": "RUN_BASE",
+        "pin2": "ENABLE_CHAIN",
+        "pin3": "DRV_EN_N"
+      },
+      "sheet": "motion",
+      "xy": [
+        1,
+        -17
+      ],
+      "owner": "U11",
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        5,
+        -21.799999999999997
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q15",
+      "connections": {
+        "pin1": "HW_ENABLE_BASE",
+        "pin2": "GND",
+        "pin3": "ENABLE_CHAIN"
+      },
+      "sheet": "motion",
+      "xy": [
+        -4,
+        -20
+      ],
+      "owner": "U11",
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        8,
+        -21.799999999999997
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R57",
+      "connections": {
+        "pin1": "HW_ENABLE_24V",
+        "pin2": "HW_ENABLE_BASE"
+      },
+      "sheet": "motion",
+      "xy": [
+        -8,
+        -13
+      ],
+      "owner": "U11",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        11,
+        -21.799999999999997
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R58",
+      "connections": {
+        "pin1": "HW_ENABLE_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        0,
+        -12
+      ],
+      "owner": "U11",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        5,
+        -23.599999999999994
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D1",
+      "connections": {
+        "pin1": "HW_ENABLE_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "motion",
+      "xy": [
+        -3.9999999999999996,
+        -23.5
+      ],
+      "owner": "Q15",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "motion_U11",
+      "sch": [
+        8,
+        -23.599999999999994
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "TL431AIDBZR",
+      "name": "U12",
+      "connections": {
+        "pin1": "VREF_2V495",
+        "pin2": "VREF_2V495",
+        "pin3": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        3,
+        -24
+      ],
+      "owner": null,
+      "lcsc": "C23892",
+      "mpn": "TL431AIDBZR",
+      "size": [
+        4.44,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "brake_U12",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R59",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "VREF_2V495"
+      },
+      "sheet": "brake",
+      "xy": [
+        3,
+        -27
+      ],
+      "owner": "U12",
+      "value": "220",
+      "lcsc": "C22962",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U12",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "TLV3201AIDBVR",
+      "name": "U13",
+      "connections": {
+        "pin1": "BRAKE_ON",
+        "pin2": "GND",
+        "pin3": "BRAKE_SENSE",
+        "pin4": "VREF_2V495",
+        "pin5": "V3V3"
+      },
+      "sheet": "brake",
+      "xy": [
+        9,
+        -22
+      ],
+      "owner": null,
+      "lcsc": "C105188",
+      "mpn": "TLV3201AIDBVR",
+      "size": [
+        4.6,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "brake_U13",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R60",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "BRAKE_MID"
+      },
+      "sheet": "brake",
+      "xy": [
+        7.5,
+        -19
+      ],
+      "owner": "U13",
+      "value": "180k",
+      "lcsc": "C22827",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U13",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R61",
+      "connections": {
+        "pin1": "BRAKE_MID",
+        "pin2": "BRAKE_SENSE"
+      },
+      "sheet": "brake",
+      "xy": [
+        13,
+        -22
+      ],
+      "owner": "U13",
+      "value": "20k",
+      "lcsc": "C4184",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U13",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R62",
+      "connections": {
+        "pin1": "BRAKE_SENSE",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        12,
+        -25
+      ],
+      "owner": "U13",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U13",
+      "sch": [
+        28,
+        4
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R63",
+      "connections": {
+        "pin1": "BRAKE_ON",
+        "pin2": "BRAKE_SENSE"
+      },
+      "sheet": "brake",
+      "xy": [
+        7.5,
+        -17
+      ],
+      "owner": "U13",
+      "value": "1M",
+      "lcsc": "C22935",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U13",
+      "sch": [
+        22,
+        2.2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C40",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        5,
+        -21
+      ],
+      "owner": "U13",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 2.7051058687971916,
+      "section": "brake_U13",
+      "sch": [
+        25,
+        2.2
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "TLV3201AIDBVR",
+      "name": "U14",
+      "connections": {
+        "pin1": "VMOTOR_OK",
+        "pin2": "GND",
+        "pin3": "VREF_2V495",
+        "pin4": "MOTOR_OVP_SENSE",
+        "pin5": "V3V3"
+      },
+      "sheet": "brake",
+      "xy": [
+        3,
+        -30
+      ],
+      "owner": null,
+      "lcsc": "C105188",
+      "mpn": "TLV3201AIDBVR",
+      "size": [
+        4.6,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "brake_U14",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R64",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "MOTOR_OVP_SENSE"
+      },
+      "sheet": "brake",
+      "xy": [
+        -1,
+        -28
+      ],
+      "owner": "U14",
+      "value": "430k",
+      "lcsc": "C25969",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U14",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R65",
+      "connections": {
+        "pin1": "MOTOR_OVP_SENSE",
+        "pin2": "MOTOR_OVP_LOW"
+      },
+      "sheet": "brake",
+      "xy": [
+        6,
+        -34
+      ],
+      "owner": "U14",
+      "value": "20k",
+      "lcsc": "C4184",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U14",
+      "sch": [
+        8,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R66",
+      "connections": {
+        "pin1": "MOTOR_OVP_LOW",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        -1,
+        -34
+      ],
+      "owner": "U14",
+      "value": "1k",
+      "lcsc": "C21190",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U14",
+      "sch": [
+        11,
+        -8
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R67",
+      "connections": {
+        "pin1": "VMOTOR_OK",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        -1,
+        -26
+      ],
+      "owner": "U14",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U14",
+      "sch": [
+        5,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C41",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        2.5,
+        -33
+      ],
+      "owner": "U14",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 0,
+      "decoupling_straight_line_mm": 2.0501912255692143,
+      "section": "brake_U14",
+      "sch": [
+        8,
+        -9.8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "UCC27511DBVR",
+      "name": "U15",
+      "connections": {
+        "pin1": "TMC_12V",
+        "pin2": "BRAKE_DRIVE",
+        "pin3": "BRAKE_DRIVE",
+        "pin4": "GND",
+        "pin5": "GND",
+        "pin6": "BRAKE_ON"
+      },
+      "sheet": "brake",
+      "xy": [
+        16,
+        30
+      ],
+      "owner": null,
+      "lcsc": "C191027",
+      "mpn": "UCC27511DBVR",
+      "size": [
+        3.8,
+        4.27
+      ],
+      "noConnect": [],
+      "section": "brake_U15",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C42",
+      "connections": {
+        "pin1": "TMC_12V",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        16,
+        33.5
+      ],
+      "owner": "U15",
+      "value": "1uF",
+      "lcsc": "C15849",
+      "footprint": "0603",
+      "voltage": 25,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U15",
+      "sch": [
+        22,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C43",
+      "connections": {
+        "pin1": "TMC_12V",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        15,
+        26
+      ],
+      "owner": "U15",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.0265219018841134,
+      "section": "brake_U15",
+      "sch": [
+        25,
+        -8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R68",
+      "connections": {
+        "pin1": "BRAKE_DRIVE",
+        "pin2": "BRAKE_GATE"
+      },
+      "sheet": "brake",
+      "xy": [
+        17.5,
+        26.5
+      ],
+      "owner": "U15",
+      "value": "10",
+      "lcsc": "C22859",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U15",
+      "sch": [
+        28,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R69",
+      "connections": {
+        "pin1": "BRAKE_GATE",
+        "pin2": "GND"
+      },
+      "sheet": "brake",
+      "xy": [
+        20,
+        28.5
+      ],
+      "owner": "U15",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "brake_U15",
+      "sch": [
+        22,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "CSD19534Q5A",
+      "name": "Q16",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "GND",
+        "pin3": "GND",
+        "pin4": "BRAKE_GATE",
+        "pin5": "BRAKE_RETURN",
+        "pin6": "BRAKE_RETURN",
+        "pin7": "BRAKE_RETURN",
+        "pin8": "BRAKE_RETURN",
+        "pin9": "BRAKE_RETURN"
+      },
+      "sheet": "brake",
+      "xy": [
+        8,
+        33
+      ],
+      "owner": null,
+      "lcsc": "C114200",
+      "mpn": "CSD19534Q5A",
+      "size": [
+        6.18,
+        8.272
+      ],
+      "noConnect": [],
+      "section": "brake_Q16",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "B2P_VH_LF__SN_",
+      "name": "J3",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "BRAKE_RETURN"
+      },
+      "sheet": "brake",
+      "xy": [
+        0,
+        36.5
+      ],
+      "owner": null,
+      "lcsc": "C160315",
+      "mpn": "B2P-VH(LF)(SN)",
+      "size": [
+        8.82,
+        10.45
+      ],
+      "noConnect": [],
+      "section": "brake_J3",
+      "sch": [
+        17,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "STM32G0B1",
+      "name": "U16",
+      "connections": {
+        "pin1": "STATUS_GPIO",
+        "pin2": "DIN0",
+        "pin3": "DIN1",
+        "pin4": "V3V3",
+        "pin5": "V3V3",
+        "pin6": "V3V3",
+        "pin7": "GND",
+        "pin8": "OSC_IN",
+        "pin9": "OSC_OUT",
+        "pin10": "NRST",
+        "pin11": "VMON_ADC",
+        "pin12": "IIN_MON",
+        "pin13": "RS485_TX",
+        "pin14": "RS485_RX",
+        "pin15": "TMC_CS_N",
+        "pin16": "SPI_SCK",
+        "pin17": "SPI_MISO",
+        "pin18": "SPI_MOSI",
+        "pin20": "PD_IRQ_N",
+        "pin21": "EFUSE_FAULT_N",
+        "pin22": "RS485_DE",
+        "pin23": "ENC_CS_N",
+        "pin24": "FLASH_CS_N",
+        "pin25": "STOP_L",
+        "pin26": "STOP_R",
+        "pin27": "HOME_IN",
+        "pin28": "SD_MODE",
+        "pin29": "RS232_TX",
+        "pin30": "STEP_IN",
+        "pin31": "DIR_IN",
+        "pin32": "RS232_RX",
+        "pin33": "USB_DM",
+        "pin34": "USB_DP",
+        "pin35": "SWDIO",
+        "pin36": "SWCLK",
+        "pin37": "MCU_RUN",
+        "pin38": "CAN_RX",
+        "pin39": "CAN_TX",
+        "pin40": "OUT0_DRIVE",
+        "pin41": "OUT1_DRIVE",
+        "pin42": "TMC_DIAG0",
+        "pin43": "MOTOR_PG",
+        "pin44": "POWER_PERMIT",
+        "pin45": "PD_SCL",
+        "pin46": "PD_SDA",
+        "pin47": "TMC_DIAG1",
+        "pin48": "VMOTOR_OK"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -19.999999999999986,
+        -12
+      ],
+      "owner": null,
+      "lcsc": "C2847904",
+      "mpn": "STM32G0B1CBT6",
+      "size": [
+        10.9,
+        10.9
+      ],
+      "noConnect": [
+        "pin19"
+      ],
+      "section": "mcu_U16",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C44",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -20.75,
+        -19.25
+      ],
+      "owner": "U16",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.2318158995042605,
+      "section": "mcu_U16",
+      "sch": [
+        5,
+        5
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C45",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -18.75,
+        -19.25
+      ],
+      "owner": "U16",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.954858069185052,
+      "section": "mcu_U16",
+      "sch": [
+        6.5,
+        5
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C46",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -22.75,
+        -19.25
+      ],
+      "owner": "U16",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.642183984801207,
+      "section": "mcu_U16",
+      "sch": [
+        8,
+        5
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C47",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -28,
+        -12
+      ],
+      "owner": "U16",
+      "value": "4.7uF",
+      "lcsc": "C51205",
+      "footprint": "1206",
+      "voltage": 50,
+      "size": [
+        4.4,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "mcu_U16",
+      "sch": [
+        9.5,
+        5
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R70",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "NRST"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -12.5,
+        -12
+      ],
+      "owner": "U16",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_U16",
+      "sch": [
+        5,
+        2
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C48",
+      "connections": {
+        "pin1": "NRST",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -12.5,
+        -14
+      ],
+      "owner": "U16",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_U16",
+      "sch": [
+        7,
+        2
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R71",
+      "connections": {
+        "pin1": "USB_DP_PROTECTED",
+        "pin2": "USB_DP"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -12.5,
+        -10
+      ],
+      "owner": "U16",
+      "value": "22",
+      "lcsc": "C23345",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_U16",
+      "sch": [
+        5,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R72",
+      "connections": {
+        "pin1": "USB_DM_PROTECTED",
+        "pin2": "USB_DM"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -27.5,
+        -14.5
+      ],
+      "owner": "U16",
+      "value": "22",
+      "lcsc": "C23345",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_U16",
+      "sch": [
+        8,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "X322516MLB4SI",
+      "name": "Y1",
+      "connections": {
+        "pin1": "OSC_IN",
+        "pin2": "GND",
+        "pin3": "OSC_OUT",
+        "pin4": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -11,
+        -18
+      ],
+      "owner": null,
+      "lcsc": "C13738",
+      "mpn": "X322516MLB4SI",
+      "size": [
+        4.5,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "mcu_Y1",
+      "sch": [
+        0,
+        5.5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C49",
+      "connections": {
+        "pin1": "OSC_IN",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -15,
+        -19
+      ],
+      "owner": "Y1",
+      "value": "12pF",
+      "lcsc": "C38523",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_Y1",
+      "sch": [
+        -2,
+        6
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C50",
+      "connections": {
+        "pin1": "OSC_OUT",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -8,
+        -21
+      ],
+      "owner": "Y1",
+      "value": "12pF",
+      "lcsc": "C38523",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_Y1",
+      "sch": [
+        2,
+        6
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "TS_1088_AR02016",
+      "name": "SW1",
+      "connections": {
+        "pin1": "NRST",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -34,
+        -20
+      ],
+      "owner": null,
+      "lcsc": "C720477",
+      "mpn": "TS-1088-AR02016",
+      "size": [
+        6.5,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "mcu_SW1",
+      "sch": [
+        5,
+        -3
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "B6B_PH_K_S_LF__SN_",
+      "name": "J4",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "SWDIO",
+        "pin3": "GND",
+        "pin4": "SWCLK",
+        "pin5": "NRST",
+        "pin6": "STATUS_GPIO"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -28.999999999999996,
+        -37
+      ],
+      "owner": null,
+      "lcsc": "C131342",
+      "mpn": "B6B-PH-K-S(LF)(SN)",
+      "size": [
+        14.9,
+        6.528
+      ],
+      "noConnect": [],
+      "section": "mcu_J4",
+      "sch": [
+        -5,
+        -5.5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "W25Q32JVSSIQ",
+      "name": "U17",
+      "connections": {
+        "pin1": "FLASH_CS_N",
+        "pin2": "SPI_MISO",
+        "pin3": "V3V3",
+        "pin4": "GND",
+        "pin5": "SPI_MOSI",
+        "pin6": "SPI_SCK",
+        "pin7": "V3V3",
+        "pin8": "V3V3"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -13,
+        -26
+      ],
+      "owner": null,
+      "lcsc": "C179173",
+      "mpn": "W25Q32JVSSIQ",
+      "size": [
+        6.2,
+        10.21
+      ],
+      "noConnect": [],
+      "section": "mcu_U17",
+      "sch": [
+        13,
+        -4.5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R73",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "FLASH_CS_N"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -8,
+        -26
+      ],
+      "owner": "U17",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "mcu_U17",
+      "sch": [
+        12,
+        -1.5
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C51",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "mcu",
+      "xy": [
+        -17.25,
+        -23.25
+      ],
+      "owner": "U17",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 270,
+      "decoupling_straight_line_mm": 2.345429966650892,
+      "section": "mcu_U17",
+      "sch": [
+        14,
+        -1.5
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "AS5047P_ATSM",
+      "name": "U18",
+      "connections": {
+        "pin1": "ENC_CS_N",
+        "pin2": "SPI_SCK",
+        "pin3": "SPI_MISO",
+        "pin4": "SPI_MOSI",
+        "pin5": "GND",
+        "pin6": "ENC_B",
+        "pin7": "ENC_A",
+        "pin11": "V3V3",
+        "pin12": "V3V3",
+        "pin13": "GND",
+        "pin14": "ENC_I"
+      },
+      "sheet": "encoder",
+      "xy": [
+        0,
+        0
+      ],
+      "owner": null,
+      "layer": "top",
+      "lcsc": "C962063",
+      "mpn": "AS5047P-ATSM",
+      "size": [
+        5.9,
+        8.2
+      ],
+      "noConnect": [
+        "pin8",
+        "pin9",
+        "pin10"
+      ],
+      "section": "encoder_U18",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0
+    },
+    {
+      "tag": "resistor",
+      "name": "R74",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "ENC_CS_N"
+      },
+      "sheet": "encoder",
+      "xy": [
+        -8,
+        4.5
+      ],
+      "owner": "U18",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "layer": "top",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "encoder_U18",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0
+    },
+    {
+      "tag": "capacitor",
+      "name": "C52",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "encoder",
+      "xy": [
+        0,
+        5.4
+      ],
+      "owner": "U18",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "layer": "top",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 90,
+      "decoupling_straight_line_mm": 2.374904000000001,
+      "section": "encoder_U18",
+      "sch": [
+        8,
+        4
+      ]
+    },
+    {
+      "tag": "capacitor",
+      "name": "C53",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "encoder",
+      "xy": [
+        6,
+        -5
+      ],
+      "owner": "U18",
+      "value": "1uF",
+      "lcsc": "C15849",
+      "footprint": "0603",
+      "voltage": 25,
+      "layer": "top",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "encoder_U18",
+      "sch": [
+        11,
+        4
+      ],
+      "rotation": 0
+    },
+    {
+      "tag": "B5B_PH_K_S_LF__SN_",
+      "name": "J5",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "ENC_A",
+        "pin3": "ENC_B",
+        "pin4": "ENC_I",
+        "pin5": "GND"
+      },
+      "sheet": "encoder",
+      "xy": [
+        -13,
+        -37
+      ],
+      "owner": null,
+      "lcsc": "C157993",
+      "mpn": "B5B-PH-K-S(LF)(SN)",
+      "size": [
+        12.9,
+        6.7
+      ],
+      "noConnect": [],
+      "section": "encoder_J5",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "TCAN332DR",
+      "name": "U19",
+      "connections": {
+        "pin1": "CAN_TX",
+        "pin2": "GND",
+        "pin3": "V3V3",
+        "pin4": "CAN_RX",
+        "pin6": "CAN_L",
+        "pin7": "CAN_H"
+      },
+      "sheet": "serial",
+      "xy": [
+        -32,
+        -25.5
+      ],
+      "owner": null,
+      "lcsc": "C73651",
+      "mpn": "TCAN332DR",
+      "size": [
+        5.8,
+        7.9
+      ],
+      "noConnect": [
+        "pin5",
+        "pin8"
+      ],
+      "section": "serial_U19",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C54",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -31.3,
+        -30.3
+      ],
+      "owner": "U19",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 0,
+      "decoupling_straight_line_mm": 2.6503578632207385,
+      "section": "serial_U19",
+      "sch": [
+        5,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R75",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "CAN_TX"
+      },
+      "sheet": "serial",
+      "xy": [
+        -40,
+        -23
+      ],
+      "owner": "U19",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "serial_U19",
+      "sch": [
+        8,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SM24CANB_02HTG",
+      "name": "D2",
+      "connections": {
+        "pin1": "CAN_H",
+        "pin2": "CAN_L",
+        "pin3": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -27,
+        -26.5
+      ],
+      "owner": "U19",
+      "lcsc": "C151237",
+      "mpn": "SM24CANB-02HTG",
+      "size": [
+        3.9,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "serial_U19",
+      "sch": [
+        11,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MAX3485EESA_T",
+      "name": "U20",
+      "connections": {
+        "pin1": "RS485_RX",
+        "pin2": "RS485_DE",
+        "pin3": "RS485_DE",
+        "pin4": "RS485_TX",
+        "pin5": "GND",
+        "pin6": "RS485_A",
+        "pin7": "RS485_B",
+        "pin8": "V3V3"
+      },
+      "sheet": "serial",
+      "xy": [
+        -22,
+        -26
+      ],
+      "owner": null,
+      "lcsc": "C9943",
+      "mpn": "MAX3485EESA+T",
+      "size": [
+        5.8,
+        7.9
+      ],
+      "noConnect": [],
+      "section": "serial_U20",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C55",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -26.75,
+        -23.5
+      ],
+      "owner": "U20",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 180,
+      "decoupling_straight_line_mm": 2.022470964720136,
+      "section": "serial_U20",
+      "sch": [
+        22,
+        4
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R76",
+      "connections": {
+        "pin1": "RS485_DE",
+        "pin2": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -22,
+        -31.5
+      ],
+      "owner": "U20",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "serial_U20",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "PSM712_LF_T7",
+      "name": "D3",
+      "connections": {
+        "pin1": "RS485_A",
+        "pin2": "RS485_B",
+        "pin3": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -27.5,
+        -31
+      ],
+      "owner": "U20",
+      "lcsc": "C32677",
+      "mpn": "PSM712-LF-T7",
+      "size": [
+        4.14,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "serial_U20",
+      "sch": [
+        28,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MAX3232ESE_T",
+      "name": "U21",
+      "connections": {
+        "pin1": "RS232_C1P",
+        "pin2": "RS232_VP",
+        "pin3": "RS232_C1N",
+        "pin4": "RS232_C2P",
+        "pin5": "RS232_C2N",
+        "pin6": "RS232_VN",
+        "pin8": "GND",
+        "pin10": "GND",
+        "pin11": "RS232_TX",
+        "pin12": "RS232_RX",
+        "pin13": "RS232_RX_CONN",
+        "pin14": "RS232_TX_CONN",
+        "pin15": "GND",
+        "pin16": "V3V3"
+      },
+      "sheet": "serial",
+      "xy": [
+        -34.5,
+        -5.000000000000001
+      ],
+      "owner": null,
+      "lcsc": "C15846",
+      "mpn": "MAX3232ESE+T",
+      "size": [
+        10.8,
+        8.342
+      ],
+      "noConnect": [
+        "pin7",
+        "pin9"
+      ],
+      "section": "serial_U21",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C56",
+      "connections": {
+        "pin1": "RS232_C1P",
+        "pin2": "RS232_C1N"
+      },
+      "sheet": "serial",
+      "xy": [
+        -34.5,
+        -10.5
+      ],
+      "owner": "U21",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "serial_U21",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C57",
+      "connections": {
+        "pin1": "RS232_C2P",
+        "pin2": "RS232_C2N"
+      },
+      "sheet": "serial",
+      "xy": [
+        -38,
+        -10.5
+      ],
+      "owner": "U21",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "serial_U21",
+      "sch": [
+        8,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C58",
+      "connections": {
+        "pin1": "RS232_VP",
+        "pin2": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -34.5,
+        -12.5
+      ],
+      "owner": "U21",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "serial_U21",
+      "sch": [
+        11,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C59",
+      "connections": {
+        "pin1": "RS232_VN",
+        "pin2": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -38,
+        -12.5
+      ],
+      "owner": "U21",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "serial_U21",
+      "sch": [
+        5,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C60",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "serial",
+      "xy": [
+        -41,
+        -1.5
+      ],
+      "owner": "U21",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "rotation": 90,
+      "decoupling_straight_line_mm": 2.0558927346532454,
+      "section": "serial_U21",
+      "sch": [
+        8,
+        -9.8
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "B8B_PH_K_S_LF__SN_",
+      "name": "J6",
+      "connections": {
+        "pin1": "RS232_TX_CONN",
+        "pin2": "RS232_RX_CONN",
+        "pin3": "GND",
+        "pin4": "CAN_H",
+        "pin5": "CAN_L",
+        "pin6": "GND",
+        "pin7": "RS485_A",
+        "pin8": "RS485_B"
+      },
+      "sheet": "serial",
+      "xy": [
+        -15.5,
+        -2
+      ],
+      "owner": null,
+      "lcsc": "C157974",
+      "mpn": "B8B-PH-K-S(LF)(SN)",
+      "size": [
+        18.9,
+        6.7
+      ],
+      "noConnect": [],
+      "section": "serial_J6",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "B6B_PH_K_S_LF__SN_",
+      "name": "J7",
+      "connections": {
+        "pin1": "DIN0_24V",
+        "pin2": "DIN1_24V",
+        "pin3": "STOPL_24V",
+        "pin4": "STOPR_24V",
+        "pin5": "HOME_24V",
+        "pin6": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        2,
+        -38.5
+      ],
+      "owner": null,
+      "lcsc": "C131342",
+      "mpn": "B6B-PH-K-S(LF)(SN)",
+      "size": [
+        14.9,
+        6.528
+      ],
+      "noConnect": [],
+      "section": "inputs_J7",
+      "sch": [
+        17,
+        -36
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "B4B_PH_K_S_LF__SN_",
+      "name": "J8",
+      "connections": {
+        "pin1": "STEP_24V",
+        "pin2": "DIR_24V",
+        "pin3": "GND",
+        "pin4": "V3V3"
+      },
+      "sheet": "inputs",
+      "xy": [
+        15,
+        -38.550037
+      ],
+      "owner": null,
+      "lcsc": "C131334",
+      "mpn": "B4B-PH-K-S(LF)(SN)",
+      "size": [
+        10.8,
+        5.8
+      ],
+      "noConnect": [],
+      "section": "inputs_J8",
+      "sch": [
+        0,
+        -48
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q17",
+      "connections": {
+        "pin1": "DIN0_BASE",
+        "pin2": "GND",
+        "pin3": "DIN0"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -7,
+        -31
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q17",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R77",
+      "connections": {
+        "pin1": "DIN0_24V",
+        "pin2": "DIN0_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -7,
+        -28
+      ],
+      "owner": "Q17",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q17",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R78",
+      "connections": {
+        "pin1": "DIN0_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -4.5,
+        -34
+      ],
+      "owner": "Q17",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q17",
+      "sch": [
+        8,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R79",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "DIN0"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -11,
+        -32.5
+      ],
+      "owner": "Q17",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q17",
+      "sch": [
+        11,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D4",
+      "connections": {
+        "pin1": "DIN0_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -26.5,
+        -20
+      ],
+      "owner": "Q17",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q17",
+      "sch": [
+        5,
+        2.1999999999999993
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q18",
+      "connections": {
+        "pin1": "DIN1_BASE",
+        "pin2": "GND",
+        "pin3": "DIN1"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -2,
+        -31
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q18",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R80",
+      "connections": {
+        "pin1": "DIN1_24V",
+        "pin2": "DIN1_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -4.5,
+        -26
+      ],
+      "owner": "Q18",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q18",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R81",
+      "connections": {
+        "pin1": "DIN1_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        0,
+        -21
+      ],
+      "owner": "Q18",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q18",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R82",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "DIN1"
+      },
+      "sheet": "inputs",
+      "xy": [
+        9.5,
+        -34
+      ],
+      "owner": "Q18",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q18",
+      "sch": [
+        28,
+        4
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D5",
+      "connections": {
+        "pin1": "DIN1_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        -9.5,
+        -7.5
+      ],
+      "owner": "Q18",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q18",
+      "sch": [
+        22,
+        2.1999999999999993
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q19",
+      "connections": {
+        "pin1": "STOP_L_BASE",
+        "pin2": "GND",
+        "pin3": "STOP_L"
+      },
+      "sheet": "inputs",
+      "xy": [
+        8,
+        -31
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q19",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R83",
+      "connections": {
+        "pin1": "STOPL_24V",
+        "pin2": "STOP_L_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        12,
+        -28
+      ],
+      "owner": "Q19",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q19",
+      "sch": [
+        5,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R84",
+      "connections": {
+        "pin1": "STOP_L_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        13,
+        -34
+      ],
+      "owner": "Q19",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q19",
+      "sch": [
+        8,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R85",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "STOP_L"
+      },
+      "sheet": "inputs",
+      "xy": [
+        15.5,
+        -28
+      ],
+      "owner": "Q19",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q19",
+      "sch": [
+        11,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D6",
+      "connections": {
+        "pin1": "STOP_L_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        28.5,
+        -33.5
+      ],
+      "owner": "Q19",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q19",
+      "sch": [
+        5,
+        -9.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q20",
+      "connections": {
+        "pin1": "STOP_R_BASE",
+        "pin2": "GND",
+        "pin3": "STOP_R"
+      },
+      "sheet": "inputs",
+      "xy": [
+        8,
+        -26.5
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q20",
+      "sch": [
+        17,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R86",
+      "connections": {
+        "pin1": "STOPR_24V",
+        "pin2": "STOP_R_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        16.5,
+        -34
+      ],
+      "owner": "Q20",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q20",
+      "sch": [
+        22,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R87",
+      "connections": {
+        "pin1": "STOP_R_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        20,
+        -34
+      ],
+      "owner": "Q20",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q20",
+      "sch": [
+        25,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R88",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "STOP_R"
+      },
+      "sheet": "inputs",
+      "xy": [
+        4,
+        -11
+      ],
+      "owner": "Q20",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q20",
+      "sch": [
+        28,
+        -8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D7",
+      "connections": {
+        "pin1": "STOP_R_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        15.5,
+        -1.8
+      ],
+      "owner": "Q20",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q20",
+      "sch": [
+        22,
+        -9.799999999999997
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q21",
+      "connections": {
+        "pin1": "HOME_IN_BASE",
+        "pin2": "GND",
+        "pin3": "HOME_IN"
+      },
+      "sheet": "inputs",
+      "xy": [
+        13,
+        -31
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q21",
+      "sch": [
+        0,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R89",
+      "connections": {
+        "pin1": "HOME_24V",
+        "pin2": "HOME_IN_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        23.5,
+        -34
+      ],
+      "owner": "Q21",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q21",
+      "sch": [
+        5,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R90",
+      "connections": {
+        "pin1": "HOME_IN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        27,
+        -31
+      ],
+      "owner": "Q21",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q21",
+      "sch": [
+        8,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R91",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "HOME_IN"
+      },
+      "sheet": "inputs",
+      "xy": [
+        33,
+        -33
+      ],
+      "owner": "Q21",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q21",
+      "sch": [
+        11,
+        -20
+      ],
+      "rotation": 180,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D8",
+      "connections": {
+        "pin1": "HOME_IN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        37.5,
+        -33.5
+      ],
+      "owner": "Q21",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q21",
+      "sch": [
+        5,
+        -21.799999999999997
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q22",
+      "connections": {
+        "pin1": "STEP_IN_BASE",
+        "pin2": "GND",
+        "pin3": "STEP_IN"
+      },
+      "sheet": "inputs",
+      "xy": [
+        18,
+        -31
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q22",
+      "sch": [
+        17,
+        -24
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R92",
+      "connections": {
+        "pin1": "STEP_24V",
+        "pin2": "STEP_IN_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        37.5,
+        -27
+      ],
+      "owner": "Q22",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q22",
+      "sch": [
+        22,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R93",
+      "connections": {
+        "pin1": "STEP_IN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        37.5,
+        -25
+      ],
+      "owner": "Q22",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q22",
+      "sch": [
+        25,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R94",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "STEP_IN"
+      },
+      "sheet": "inputs",
+      "xy": [
+        37.5,
+        -23
+      ],
+      "owner": "Q22",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q22",
+      "sch": [
+        28,
+        -20
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D9",
+      "connections": {
+        "pin1": "STEP_IN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        38.5,
+        -14.5
+      ],
+      "owner": "Q22",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q22",
+      "sch": [
+        22,
+        -21.799999999999997
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q23",
+      "connections": {
+        "pin1": "DIR_IN_BASE",
+        "pin2": "GND",
+        "pin3": "DIR_IN"
+      },
+      "sheet": "inputs",
+      "xy": [
+        23,
+        -31
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "inputs_Q23",
+      "sch": [
+        0,
+        -36
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R95",
+      "connections": {
+        "pin1": "DIR_24V",
+        "pin2": "DIR_IN_BASE"
+      },
+      "sheet": "inputs",
+      "xy": [
+        38.5,
+        -36
+      ],
+      "owner": "Q23",
+      "value": "47k",
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q23",
+      "sch": [
+        5,
+        -32
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R96",
+      "connections": {
+        "pin1": "DIR_IN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        38.5,
+        -38
+      ],
+      "owner": "Q23",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q23",
+      "sch": [
+        8,
+        -32
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R97",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "DIR_IN"
+      },
+      "sheet": "inputs",
+      "xy": [
+        37.5,
+        -21
+      ],
+      "owner": "Q23",
+      "value": "4.7k",
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q23",
+      "sch": [
+        11,
+        -32
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D10",
+      "connections": {
+        "pin1": "DIR_IN_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "inputs",
+      "xy": [
+        38.5,
+        -5.5
+      ],
+      "owner": "Q23",
+      "lcsc": "C155214",
+      "mpn": "BAV21W-7-F",
+      "size": [
+        5.235,
+        2.5
+      ],
+      "noConnect": [],
+      "section": "inputs_Q23",
+      "sch": [
+        5,
+        -33.8
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "B4B_PH_K_S_LF__SN_",
+      "name": "J9",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "HW_ENABLE_24V",
+        "pin3": "OUT0",
+        "pin4": "OUT1"
+      },
+      "sheet": "outputs",
+      "xy": [
+        14,
+        38.949963
+      ],
+      "owner": null,
+      "lcsc": "C131334",
+      "mpn": "B4B-PH-K-S(LF)(SN)",
+      "size": [
+        10.8,
+        5.8
+      ],
+      "noConnect": [],
+      "section": "outputs_J9",
+      "sch": [
+        0,
+        -12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q24",
+      "connections": {
+        "pin1": "OUT0_BASE",
+        "pin2": "GND",
+        "pin3": "OUT0"
+      },
+      "sheet": "outputs",
+      "xy": [
+        31,
+        -30
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "outputs_Q24",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R98",
+      "connections": {
+        "pin1": "OUT0_DRIVE",
+        "pin2": "OUT0_BASE"
+      },
+      "sheet": "outputs",
+      "xy": [
+        38.5,
+        -40
+      ],
+      "owner": "Q24",
+      "value": "1k",
+      "lcsc": "C21190",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "outputs_Q24",
+      "sch": [
+        5,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R99",
+      "connections": {
+        "pin1": "OUT0_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "outputs",
+      "xy": [
+        37,
+        -12
+      ],
+      "owner": "Q24",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "outputs_Q24",
+      "sch": [
+        8,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SS110",
+      "name": "D11",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "OUT0"
+      },
+      "sheet": "outputs",
+      "xy": [
+        21,
+        22.5
+      ],
+      "owner": "Q24",
+      "lcsc": "C2482",
+      "mpn": "SS110",
+      "size": [
+        7.3,
+        3.5
+      ],
+      "noConnect": [],
+      "section": "outputs_Q24",
+      "sch": [
+        11,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "MMBT5551LT1G",
+      "name": "Q25",
+      "connections": {
+        "pin1": "OUT1_BASE",
+        "pin2": "GND",
+        "pin3": "OUT1"
+      },
+      "sheet": "outputs",
+      "xy": [
+        37,
+        -30
+      ],
+      "owner": null,
+      "lcsc": "C41095",
+      "mpn": "MMBT5551LT1G",
+      "size": [
+        4.15,
+        3.8
+      ],
+      "noConnect": [],
+      "section": "outputs_Q25",
+      "sch": [
+        17,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R100",
+      "connections": {
+        "pin1": "OUT1_DRIVE",
+        "pin2": "OUT1_BASE"
+      },
+      "sheet": "outputs",
+      "xy": [
+        37,
+        -3
+      ],
+      "owner": "Q25",
+      "value": "1k",
+      "lcsc": "C21190",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "outputs_Q25",
+      "sch": [
+        22,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R101",
+      "connections": {
+        "pin1": "OUT1_BASE",
+        "pin2": "GND"
+      },
+      "sheet": "outputs",
+      "xy": [
+        33.5,
+        -2.5
+      ],
+      "owner": "Q25",
+      "value": "10k",
+      "lcsc": "C25804",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "outputs_Q25",
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "SS110",
+      "name": "D12",
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "OUT1"
+      },
+      "sheet": "outputs",
+      "xy": [
+        -16,
+        40
+      ],
+      "owner": "Q25",
+      "lcsc": "C2482",
+      "mpn": "SS110",
+      "size": [
+        7.3,
+        3.5
+      ],
+      "noConnect": [],
+      "section": "outputs_Q25",
+      "sch": [
+        28,
+        4
+      ],
+      "rotation": 0,
+      "layer": "top"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "checked_at": "2026-10-06T10:26:24.924Z",
+  "entry_sha256": "7f9cc7af5edb6f751f04d390b7d9220a49bbeb2010ebdf976f1315ca9a6fba12",
+  "model": "source checks plus externally routed KiCad PCB verification",
+  "checks": [
+    {
+      "name": "typecheck",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 3.666,
+      "log": "docs/checks/typecheck.log"
+    },
+    {
+      "name": "preview",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 25.084,
+      "log": "docs/checks/preview.log"
+    },
+    {
+      "name": "topology-tests",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 0.098,
+      "log": "docs/checks/topology-tests.log"
+    },
+    {
+      "name": "netlist",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 1.777,
+      "log": "docs/checks/netlist.log"
+    },
+    {
+      "name": "schematic",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 1.477,
+      "log": "docs/checks/schematic.log"
+    },
+    {
+      "name": "placement",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 28.326,
+      "log": "docs/checks/placement.log"
+    },
+    {
+      "name": "routing-difficulty",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 29.073,
+      "log": "docs/checks/routing-difficulty.log"
+    },
+    {
+      "name": "decoupling",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 0.049,
+      "log": "docs/checks/decoupling.log"
+    },
+    {
+      "name": "assembly",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 0.048,
+      "log": "docs/checks/assembly.log"
+    },
+    {
+      "name": "local-copper",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 7.096,
+      "log": "docs/checks/local-copper.log"
+    },
+    {
+      "name": "shorts",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 9.689,
+      "log": "docs/checks/shorts.log"
+    },
+    {
+      "name": "kicad-drc",
+      "exit_code": 0,
+      "status": "pass",
+      "seconds": 0.035,
+      "log": "docs/checks/kicad-drc.log"
+    }
+  ],
+  "circuit_messages": {
+    "source_refdes_convention_warning": 27,
+    "source_component_pins_underspecified_warning": 31,
+    "source_no_power_pin_defined_warning": 32,
+    "source_no_ground_pin_defined_warning": 31
+  },
+  "routed_board_verified": true,
+  "manufacturing_released": false,
+  "limitations": [
+    "The KiCad DRC proves geometric connectivity under the committed project rules; it does not replace physical validation.",
+    "Placement and schematic CLI checks include advisory heuristics; their nonzero exit codes are retained.",
+    "Stock is a separate timestamped check in stock-report.json, not reserved assembly inventory.",
+    "See routing-report.json for the final route record and release-status.json for hardware/firmware gates."
+  ]
+}

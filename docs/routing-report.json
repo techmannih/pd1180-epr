@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-10-06T10:21:35.226Z",
+  "revision": "0.2.0",
+  "complete": true,
+  "router": "freerouting 2.4.1 with KiCad copper-plane completion",
+  "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.2.kicad_pcb",
+  "statistics": {
+    "components_including_mounts": 255,
+    "populated_components": 251,
+    "pads": 898,
+    "traces": 1129,
+    "vias": 526,
+    "copper_pours": 72,
+    "layers": 4
+  },
+  "kicad_drc": {
+    "report": "dist/manufacturing/kicad-drc.json",
+    "violations": 0,
+    "unconnected_items": 0
+  },
+  "manufacturing": {
+    "report": "dist/manufacturing/manufacturing-report.json",
+    "gerber_and_drill_files": 15,
+    "archive": "dist/pd1180-epr-r0.2-manufacturing.zip"
+  },
+  "physical_validation_required": [
+    "high-current copper temperature rise at target motor profile",
+    "48 V EPR negotiation and fault recovery",
+    "motor-control firmware and shutdown timing",
+    "brake resistor energy and thermal sizing",
+    "conducted and radiated EMC"
+  ]
+}

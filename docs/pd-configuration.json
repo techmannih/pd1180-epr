@@ -1,0 +1,38 @@
+{
+  "status": "requirements-only-not-a-TI-configuration-image",
+  "controller": "TPS26750SRSMR",
+  "tool": "TI USBCPD Application Customization Tool linked from the TPS26750 product page",
+  "eeprom": {
+    "part": "M24512-RMN6TP",
+    "bytes": 65536,
+    "bus": "I2Cc",
+    "address_7_bit": "0x50",
+    "image": null
+  },
+  "boot": {
+    "mode": "SafeMode",
+    "adcin1": 7,
+    "adcin2": 0,
+    "i2ct_address_7_bit": "0x20"
+  },
+  "requirements": {
+    "power_role": "sink-only",
+    "data_role": "UFP",
+    "power_role_swap": false,
+    "vconn_role_swap": false,
+    "epr": true,
+    "requested_max_voltage_mv": 48000,
+    "requested_max_current_ma": 5000,
+    "gpio2": "EPR_EN output to TPD4S480",
+    "gpio0": "TPD4S480 fault input; exact application event assignment requires TI-tool verification",
+    "power_path_en": "sinking path valid, translated by Q2/Q3"
+  },
+  "mcu_permit_conditions": [
+    "APP mode and approved configuration identity",
+    "active 48 V / 5 A EPR contract",
+    "no protection fault",
+    "MCU watchdog healthy",
+    "valid bus measurements"
+  ],
+  "missing_image_behavior": "POWER_PERMIT and MCU_RUN remain low"
+}

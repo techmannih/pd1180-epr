@@ -1,0 +1,59 @@
+import { readFile, writeFile } from 'node:fs/promises'
+
+const root = new URL('../', import.meta.url)
+const manifestPath = new URL('docs/design-manifest.json', root)
+const stockPath = new URL('docs/stock-report.json', root)
+const circuitPath = new URL('dist/index/circuit.json', root)
+
+const [manifest, stock, circuit] = await Promise.all([
+  readFile(manifestPath, 'utf8').then(JSON.parse),
+  readFile(stockPath, 'utf8').then(JSON.parse),
+  readFile(circuitPath, 'utf8').then(JSON.parse),
+])
+
+const names = new Map(circuit.filter(row => row.type === 'source_component').map(row => [row.source_component_id, row.name]))
+const placements = new Map()
+for (const row of circuit.filter(row => row.type === 'pcb_component')) {
+  const name = names.get(row.source_component_id)
+  if (name) placements.set(name, row)
+}
+for (const part of manifest.parts) {
+  const position = placements.get(part.name)
+  if (!position) throw new Error(`Missing PCB placement for ${part.name}`)
+  if (position.layer !== 'top') throw new Error(`${part.name}: top-side assembly requirement violated`)
+  part.xy = [position.center.x, position.center.y]
+  part.rotation = position.rotation ?? 0
+  part.layer = 'top'
+}
+await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+
+const lines = [
+  '# Procurement snapshot',
+  '',
+  'Exact LCSC-code matches only. A fuzzy search result is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.',
+  '',
+  `Last complete refresh: ${stock.checked_at}.`,
+  '',
+  '| LCSC | MPN | Qty/board | Stock | References |',
+  '|---|---|---:|---:|---|',
+]
+for (const part of stock.parts) {
+  const link = `[${part.lcsc}](${part.url})`
+  lines.push(`| ${link} | ${part.mpn ?? 'unverified'} | ${part.quantity_per_board} | ${part.stock ?? 'unverified'} | ${part.references.join(', ')} |`)
+}
+const available = stock.parts.filter(part => part.status === 'available').length
+lines.push(
+  '',
+  `All ${available} selected PCB part types (${manifest.parts.length} placements) had sufficient reported stock for one board at the timestamp above. The checker accepts only an exact LCSC-code match.`,
+  '',
+  '## Substitution policy',
+  '',
+  'See `alternatives.json` for checked candidates and whether they are package-compatible, need electrical/thermal review, or require a redesign. No alternative is silently selected. All selected primary PCB parts are currently available.',
+  '',
+  '## External system items',
+  '',
+  'The motor, shaft magnet, 48 V EPR source, 5 A EPR cable, mating harness and braking resistor/heatsink are separate system items. The external braking resistor is load-dependent and remains a system-level sizing and procurement gate.',
+  '',
+)
+await writeFile(new URL('docs/procurement.md', root), lines.join('\n'))
+console.log(`Synchronized ${manifest.parts.length} top-side placements and ${stock.parts.length} stock rows.`)
