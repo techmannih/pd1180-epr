@@ -26,6 +26,7 @@ const pinLabels = {
 export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
   return (
     <connector
+      standard="usb_c"
       pinLabels={pinLabels}
       supplierPartNumbers={{
   "jlcpcb": [

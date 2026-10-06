@@ -8,7 +8,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and top-only placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs. |
 | `check-cloud-package.mjs` | Keeps generated payloads out of tscircuit cloud builds, enforces a compact source upload, rejects oversized loose GitHub-import files and prevents runtime `@tsci/*` dependencies that are not locally pinned under `imports/`. |
-| `check-feature-parity.mjs` | Verifies the product feature contract against compiled components, nets, evidence and the top-only assembly rule. |
+| `check-feature-parity.mjs` | Verifies the product feature contract against compiled components, nets and evidence, enforces tscircuit's standard USB-C connector model, and checks the top-only assembly rule. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
 | `check-firmware.mjs` | Builds and runs the host-side safety-state/TMC configuration tests. |

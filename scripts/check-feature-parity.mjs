@@ -2,7 +2,9 @@ import { access, readFile, writeFile } from 'node:fs/promises'
 import { FEATURE_PARITY } from '../feature-parity.tsx'
 
 const circuit = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
-const components = new Set(circuit.filter((row) => row.type === 'source_component').map((row) => row.name))
+const sourceComponents = circuit.filter((row) => row.type === 'source_component')
+const components = new Set(sourceComponents.map((row) => row.name))
+const sourceByName = new Map(sourceComponents.map((row) => [row.name, row]))
 const nets = new Set(circuit.filter((row) => row.type === 'source_net').map((row) => row.name))
 const pcbBySource = new Map(circuit.filter((row) => row.type === 'pcb_component').map((row) => [row.source_component_id, row]))
 const errors = []
@@ -25,11 +27,15 @@ const bottomFitted = circuit.filter((row) => row.type === 'source_component').fl
 })
 if (bottomFitted.length) errors.push(`Top-only assembly violated by ${bottomFitted.join(', ')}`)
 
+const usbCStandardConnector = sourceByName.get('J1')?.standard === 'usb_c'
+if (!usbCStandardConnector) errors.push('J1 must use tscircuit connector standard="usb_c"')
+
 const report = {
   checked_at: new Date().toISOString(),
   features: results.length,
   passing: results.filter((item) => item.pass).length,
   top_only_assembly: bottomFitted.length === 0,
+  usb_c_standard_connector: usbCStandardConnector,
   results,
   errors,
 }

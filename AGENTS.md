@@ -52,6 +52,9 @@ The tscircuit cloud package is a source preview package. Keep `dist/**`, `releas
 
 ## Schematic and electrical review
 
+- Make every schematic readable, with clear labels and no overlapping symbols, wires or text.
+- Add `<schematictext>` near each chip explaining its function and relevant ratings, such as voltage, current or power. Keep those notes concise and place them where they do not collide with the circuit.
+- Model every USB-C receptacle with tscircuit's `<connector standard="usb_c">`; retain the exact reviewed supplier part, physical pad map and footprint when a JLCPCB import supplies the package.
 - Split the schematic into functional A4 sheets with clear signal direction, rail names, connector pin numbers and short section notes where the circuit is dense.
 - Run `bun run check:schematic-style` after every schematic placement or symbol change. It must reproduce the tscircuit viewer's **Run Style Analysis** result with zero issues across every sheet. Fix text/net-label collisions, cramped symbols, component orientation, bypass grouping, gate-network grouping and long visible rail paths in source coordinates; do not hide warnings, remove evidence or suppress an issue type.
 - Check supplier pin numbering independently from logical aliases. USB-C, TVS diodes, MOSFETs, shunts, connectors and exposed pads require explicit polarity/pin-map review.
