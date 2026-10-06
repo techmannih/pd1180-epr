@@ -1,71 +1,79 @@
 {
-  "checked_at": "2026-10-06T17:21:02.130Z",
+  "checked_at": "2026-10-06T18:45:26.816Z",
   "main_entrypoint": "index.circuit.tsx",
   "registry_dependencies": [],
   "ignored_files": [
+    ".github/**",
     "checks/**",
     "dist/**",
     "build/**",
     "release/**",
     "__snapshots__/**",
+    "docs/**",
+    "engineering/**",
+    "firmware/**",
     "firmware/build/**",
+    "previews/**",
+    "routing/**",
+    "scripts/**",
+    "sourcing/**",
     "*.log"
   ],
-  "included_files": 253,
-  "included_bytes": 4833242,
-  "included_mebibytes": 4.61,
+  "included_files": 54,
+  "included_bytes": 446880,
+  "included_mebibytes": 0.43,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
-      "path": "previews/pd1180-epr-top.png",
-      "bytes": 2087832
-    },
-    {
-      "path": "previews/pd1180-epr-bottom.png",
-      "bytes": 1546665
-    },
-    {
       "path": "index.circuit.tsx",
       "bytes": 154341
-    },
-    {
-      "path": "docs/design-manifest.json",
-      "bytes": 140551
-    },
-    {
-      "path": "previews/mounting-template.png",
-      "bytes": 100627
     },
     {
       "path": "bun.lock",
       "bytes": 90696
     },
     {
-      "path": "docs/stock-evidence/C25804.json",
-      "bytes": 82602
+      "path": "README.md",
+      "bytes": 16186
     },
     {
-      "path": "previews/pd1180-epr-overview.png",
-      "bytes": 41667
+      "path": "imports/STM32G0B1CBT6.local.js",
+      "bytes": 14333
     },
     {
-      "path": "docs/stock-report.json",
-      "bytes": 40583
+      "path": "imports/TMC5160A_TA_T.tsx",
+      "bytes": 12968
     },
     {
-      "path": "sourcing/stock-snapshot.json",
-      "bytes": 40583
+      "path": "AGENTS.md",
+      "bytes": 9767
+    },
+    {
+      "path": "imports/TPS26750SRSMR.tsx",
+      "bytes": 7864
+    },
+    {
+      "path": "imports/B6B_PH_K_S_LF__SN_.tsx",
+      "bytes": 5941
+    },
+    {
+      "path": "delivery-manifest.json",
+      "bytes": 5784
+    },
+    {
+      "path": "imports/B8B_PH_K_S_LF__SN_.tsx",
+      "bytes": 5652
     }
   ],
-  "github_import_files": 335,
-  "github_import_bytes": 20944405,
-  "github_import_mebibytes": 19.97,
+  "github_import_files": 337,
+  "github_import_bytes": 21189813,
+  "github_import_mebibytes": 20.21,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 4361220
+      "bytes": 4354937
     },
     {
       "path": "release/pcb-3d.png",
@@ -88,20 +96,20 @@
       "bytes": 827618
     },
     {
-      "path": "checks/vendor/circuit-json-schematic-placement-analysis.browser.js",
-      "bytes": 723024
+      "path": "docs/checks/routing-difficulty.log",
+      "bytes": 786488
     },
     {
-      "path": "docs/checks/routing-difficulty.log",
-      "bytes": 524344
+      "path": "checks/vendor/circuit-json-schematic-placement-analysis.browser.js",
+      "bytes": 723024
     },
     {
       "path": "__snapshots__/index.circuit-schematic-usb-pd.snap.svg",
       "bytes": 387388
     },
     {
-      "path": "release/schematics/usb-pd.svg",
-      "bytes": 385658
+      "path": "__snapshots__/index.circuit-schematic.snap.svg",
+      "bytes": 385071
     }
   ],
   "errors": []

@@ -29,6 +29,20 @@ test('48-V connector goes through the EPR protector; PD controller never sees ra
   on('U2',2,'PD_3V3');on('U2',3,'GND') // SafeMode, address 0x20.
   on('Q1',2,'VBUS_LV');on('Q1',3,'USB_VBUS')
 })
+test('USB-PD CC communication and USB 2.0 data remain separate end to end',()=>{
+  on('J1',15,'CC1_CONN');on('J1',9,'CC2_CONN')
+  on('U1',4,'CC1_CONN');on('U1',7,'CC1_CONN');on('U1',12,'CC1_PD');on('U2',24,'CC1_PD')
+  on('U1',5,'CC2_CONN');on('U1',6,'CC2_CONN');on('U1',11,'CC2_PD');on('U2',25,'CC2_PD')
+  for(const pin of [11,13])on('J1',pin,'USB_DP_CONN')
+  for(const pin of [12,14])on('J1',pin,'USB_DM_CONN')
+  on('U1',1,'USB_DP_CONN');on('U1',15,'USB_DP_PROTECTED');on('R71',1,'USB_DP_PROTECTED');on('R71',2,'USB_DP');on('U16',34,'USB_DP')
+  on('U1',2,'USB_DM_CONN');on('U1',14,'USB_DM_PROTECTED');on('R72',1,'USB_DM_PROTECTED');on('R72',2,'USB_DM');on('U16',33,'USB_DM')
+  // TPS26750 USB_P/USB_N are unused because STM32 owns USB data; TI requires unused GPIO4/GPIO5 to GND.
+  on('U2',22,'GND');on('U2',23,'GND')
+  const independentSignals=['CC1_PD','CC2_PD','USB_DP','USB_DM'].map(netKey)
+  expect(independentSignals.every(Boolean)).toBe(true)
+  expect(new Set(independentSignals).size).toBe(independentSignals.length)
+})
 test('logic boots upstream of the gated motor power path',()=>{
   on('U5',2,'USB_VBUS');on('U5',5,'BUCK_FB');on('L1',2,'V3V3_USB')
   on('Q4',1,'USB_VBUS');on('Q4',5,'EFUSE_IN');on('U6',17,'VMOTOR')
@@ -49,6 +63,12 @@ test('both bridges have four external FETs and independent low-side shunts',()=>
     for(const pin of [1,2,3])on('Q'+lo,pin,'SENSE_'+phase[0])
   }
   on('RS1',1,'SENSE_A');on('RS1',2,'GND');on('RS2',1,'SENSE_B');on('RS2',2,'GND')
+  on('U7',8,'SENSE_A');on('U7',9,'SENSE_B')
+})
+test('MCU receives independent input-current and motor-bus voltage telemetry',()=>{
+  on('U6',13,'IIN_MON');on('R26',1,'IIN_MON');on('U16',12,'IIN_MON')
+  on('R31',1,'VMOTOR');on('R31',2,'VMON_MID');on('R32',1,'VMON_MID');on('R32',2,'VMON_ADC');on('U16',11,'VMON_ADC')
+  expect(netKey('IIN_MON')).not.toBe(netKey('VMON_ADC'))
 })
 test('brake dissipates downstream energy without feeding the USB supply',()=>{
   on('J3',1,'VMOTOR');on('J3',2,'BRAKE_RETURN');on('Q16',5,'BRAKE_RETURN');on('Q16',1,'GND')

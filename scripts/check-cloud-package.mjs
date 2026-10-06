@@ -4,7 +4,21 @@ import { join, relative } from 'node:path'
 const config = JSON.parse(await readFile('tscircuit.config.json', 'utf8'))
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
 const ignored = config.ignoredFiles || []
-const requiredIgnores = ['checks/**', 'dist/**', 'build/**', 'release/**', '__snapshots__/**', 'firmware/build/**']
+const requiredIgnores = [
+  '.github/**',
+  'checks/**',
+  'dist/**',
+  'build/**',
+  'release/**',
+  '__snapshots__/**',
+  'docs/**',
+  'engineering/**',
+  'firmware/**',
+  'previews/**',
+  'routing/**',
+  'scripts/**',
+  'sourcing/**',
+]
 const errors = []
 
 for (const pattern of requiredIgnores) {
@@ -12,6 +26,8 @@ for (const pattern of requiredIgnores) {
 }
 if (config.mainEntrypoint !== 'index.circuit.tsx') errors.push('Cloud mainEntrypoint must remain index.circuit.tsx')
 if (!config.includeBoardFiles?.includes('index.circuit.tsx')) errors.push('Cloud includeBoardFiles must include index.circuit.tsx')
+if (config.build?.routingDisabled !== true) errors.push('Cloud release builds must disable autorouting; verified manufacturing routing is delivered from GitHub')
+if ((config.build?.workerTimeoutMs || 0) < 2_700_000) errors.push('Cloud worker timeout must be at least 45 minutes')
 
 const registryDependencies = Object.keys(packageJson.dependencies || {}).filter((name) => name.startsWith('@tsci/'))
 if (registryDependencies.length) {

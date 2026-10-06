@@ -5,15 +5,24 @@
     "index.circuit.tsx"
   ],
   "ignoredFiles": [
+    ".github/**",
     "checks/**",
     "dist/**",
     "build/**",
     "release/**",
     "__snapshots__/**",
+    "docs/**",
+    "engineering/**",
+    "firmware/**",
     "firmware/build/**",
+    "previews/**",
+    "routing/**",
+    "scripts/**",
+    "sourcing/**",
     "*.log"
   ],
   "build": {
-    "workerTimeoutMs": 1200000
+    "workerTimeoutMs": 2700000,
+    "routingDisabled": true
   }
 }

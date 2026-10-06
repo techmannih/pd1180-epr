@@ -50,7 +50,7 @@ The requested contract is 240 W. The nominal eFuse current limit is approximatel
 
 The motor bulk bank stores only about 0.237 J between 48 V and the nominal 53 V brake threshold. It cannot absorb sustained regeneration. J3 connects a separately selected braking resistor and heatsink; 10 Ω / 300 W is an initial engineering target, not a validated load rating. Actual speed, attached inertia, stopping time and duty cycle determine the final resistor and thermal design.
 
-Detailed calculations, tolerances and protection behavior are recorded in [docs/design.md](docs/design.md).
+Detailed calculations, tolerances and protection behavior are recorded in [docs/design.md](docs/design.md). The separate CC, USB-data and current-monitor paths are traced pin by pin in [docs/usb-pd-architecture.md](docs/usb-pd-architecture.md).
 
 ## Motor control and feedback
 
@@ -164,7 +164,7 @@ Current committed results:
 |---|---|
 | KiCad DRC | PASS — 0 violations, 0 unconnected items |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 11 tests, 518 assertions |
+| Topology regression | PASS — 12 tests, 427 assertions |
 | Decoupling | PASS — 32/32 targets |
 | Assembly | PASS — 251/251 fitted parts on top |
 | Stock | PASS — 67/67 unique fitted LCSC codes available |
@@ -188,7 +188,7 @@ The `release/` directory contains:
 
 Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-only assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
 
-The tscircuit cloud package intentionally excludes generated `dist/`, `release/`, snapshot and firmware-build payloads. The release GLB is ZIP-packaged because the GitHub importer skips archive payloads while loose multi-megabyte models can exceed the sandbox RPC limit. This keeps online builds small and reliable while GitHub retains the complete manufacturing handoff and its hashes. `bun run check:cloud-package` enforces this separation.
+The tscircuit cloud package contains only the runtime board source and pinned component imports. Documentation, checks, scripts, firmware, previews, routing evidence, sourcing evidence and generated manufacturing data remain in GitHub. Cloud release rendering disables autorouting so the worker does not recompute the large board and time out; the complete routed KiCad/Gerber handoff remains in `release/` and stays covered by the routing fingerprint and zero-error KiCad DRC. `bun run check:cloud-package` enforces this separation.
 
 ## Repository map
 

@@ -15,6 +15,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
 - [ ] All 12 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
 - [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
+- [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: PD stays on CC1/CC2, STM32 USB data stays on D+/D−, TPS26750 USB_P/USB_N are grounded as unused, and neither path aliases the other.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
 - [ ] PD contract, power-good, voltage window and fault signals gate the motor stage independently of a normal firmware command.
 - [ ] Every IC supply pin has local bypassing; bulk-capacitance, discharge and reverse-feed paths are explained.
@@ -23,6 +24,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Power, protection and thermal
 
 - [ ] Input/eFuse UVLO, OVP, inrush and current-limit calculations include tolerance and startup state.
+- [ ] TPS26631 `IIN_MON` and the independent VMOTOR divider reach separate STM32 ADC inputs; phase-current regulation remains on the TMC5160A shunt inputs.
 - [ ] Phase-current programming, RMS/peak convention, shunt dissipation and current-sense polarity are consistent.
 - [ ] Regeneration energy, 60 V driver margin and external brake resistor/heatsink pulse/average ratings are reviewed for the actual load.
 - [ ] Connector, cable, via and copper current ratings are checked at enclosure temperature.
