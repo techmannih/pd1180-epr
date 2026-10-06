@@ -188,7 +188,7 @@ The `release/` directory contains:
 
 Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-only assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
 
-The tscircuit cloud package contains only the runtime board source and pinned component imports. Documentation, checks, scripts, firmware, previews, routing evidence, sourcing evidence and generated manufacturing data remain in GitHub. Cloud release rendering disables autorouting so the worker does not recompute the large board and time out; the complete routed KiCad/Gerber handoff remains in `release/` and stays covered by the routing fingerprint and zero-error KiCad DRC. `bun run check:cloud-package` enforces this separation.
+The configured tscircuit runtime source set contains only the board entrypoint, its root-level dependencies and pinned component imports. The GitHub release importer currently materializes other supported tracked files before starting the CLI, even when they match `ignoredFiles`; `bun run check:cloud-package` therefore checks both the compact configured source set and the larger fixed-filter GitHub payload. Cloud release rendering disables autorouting so the worker does not recompute the large board and time out; the complete routed KiCad/Gerber handoff remains in `release/` and stays covered by the routing fingerprint and zero-error KiCad DRC.
 
 ## Repository map
 

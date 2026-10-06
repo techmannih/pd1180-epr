@@ -34,6 +34,8 @@ Program U3 with the approved TI TPS26750 patch/configuration image and U16 with 
 
 The EPR charger, EPR cable, motor, shaft magnet, external braking resistor/heatsink and bus terminators are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 
+The hosted tscircuit 3D assembly does not currently include a motor primitive because `assembly.motor` does not support a `nema34` standard. Do not substitute `nema23` or invent an unsupported enum. Until native NEMA 34 support exists, verify the motor fit with `mounting-template.svg`, the motor drawing, standoff dimensions and an external mechanical assembly review.
+
 ## Imported-part corrections
 
 The STM32 registry component is retained with a complete datasheet pin-label override, power/ground attributes and a courtyard. CSD19534 drain thermal vias now have explicit net connections. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion. These edits are local to `imports/`.
