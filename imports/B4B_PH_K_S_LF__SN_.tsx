@@ -30,7 +30,7 @@ export const B4B_PH_K_S_LF__SN_ = (props: ChipProps<typeof pinLabels>) => {
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C131334.obj?uuid=3b95b8b4d5d24ff4a871a43c952e432a",
         stepUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C131334.step?uuid=3b95b8b4d5d24ff4a871a43c952e432a",
         pcbRotationOffset: 180,
-        modelOriginPosition: { x: 2.9999872999999297, y: -0.5500383000000056, z: -0.000005999999999950489 },
+        modelOriginPosition: { x: 2.9999872999999297, y: -0.0, z: -0.000005999999999950489 },
       }}
       {...props}
     />
