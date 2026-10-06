@@ -28,8 +28,11 @@ def main() -> None:
         if PASSIVE_REFERENCE.fullmatch(text):
             board.Remove(drawing)
             removed.append(text)
-        elif "PD1180-EPR r0.2" in text:
-            drawing.SetText(text.replace("PD1180-EPR r0.2", "PD1180-EPR r0.3"))
+        elif text.startswith("PD1180-EPR"):
+            drawing.SetText("PD1180-EPR — NEMA 34 Smart Motor-Mounted")
+            updated.append(text)
+        elif text == "48V EPR CONTROLLER":
+            drawing.SetText("Stepper Controller with USB-C PD 3.1 EPR · r0.3")
             updated.append(text)
     pcbnew.SaveBoard(str(args.board), board)
     print({"passive_references_removed": len(removed), "version_labels_updated": len(updated)})

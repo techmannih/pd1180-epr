@@ -1401,8 +1401,8 @@ export const PD1180EPR = () => (
     <trace name="BYPASS_C63" from=".U22 > .pin2" to=".C63 > .pin1" pcbPathRelativeTo=".U22 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.635, "y": -2.84607}, {"x": -0.635, "y": -3.94607}, {"x": -0.75, "y": -3.94607}, {"x": -0.75, "y": -5.175}]} />
     <trace name="BYPASS_C69" from=".U23 > .pin1" to=".C69 > .pin1" pcbPathRelativeTo=".U23 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.649986, "y": -1.100074}, {"x": -0.649986, "y": -2.200074}, {"x": -0.75, "y": -2.200074}, {"x": -0.75, "y": -2.925}]} />
     <trace name="BYPASS_C70" from=".U24 > .pin1" to=".C70 > .pin1" pcbPathRelativeTo=".U24 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.649986, "y": -1.100074}, {"x": -0.649986, "y": -2.200074}, {"x": -0.75, "y": -2.200074}, {"x": -0.75, "y": -2.925}]} />
-    <silkscreentext text="PD1180-EPR r0.3" pcbX={0} pcbY={42} fontSize="1mm" />
-    <silkscreentext text="48V EPR CONTROLLER" pcbX={0} pcbY={40.8} fontSize="0.8mm" />
+    <silkscreentext text="PD1180-EPR — NEMA 34 Smart Motor-Mounted" pcbX={0} pcbY={42} fontSize="0.8mm" />
+    <silkscreentext text="Stepper Controller with USB-C PD 3.1 EPR · r0.3" pcbX={0} pcbY={40.8} fontSize="0.8mm" />
     {/* Readable component references, placed clear of copper and adjacent labels. */}
     {/* Readable component references, placed clear of pads and adjacent labels. */}
     <silkscreentext text="Y1" pcbX={-11.0000} pcbY={-15.7500} fontSize={0.7} anchorAlignment="center" layer="top" />
