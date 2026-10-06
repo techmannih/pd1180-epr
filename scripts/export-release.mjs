@@ -41,6 +41,9 @@ const copies = [
   ['dist/manufacturing/assembly-cpl.csv', 'jlc-cpl.csv'],
   ['dist/manufacturing/kicad-drc.json', 'kicad-drc.json'],
   ['dist/manufacturing/manufacturing-report.json', 'manufacturing-report.json'],
+  ['mounting-template.svg', 'mounting-template.svg'],
+  ['previews/mounting-template.png', 'mounting-template.png'],
+  ['docs/feature-parity-check.json', 'feature-parity-check.json'],
   ['docs/verification.json', 'verification.json'],
   ['docs/power-routing-check.json', 'power-routing-check.json'],
   ['docs/release-status.json', 'release-status.json'],
@@ -86,7 +89,7 @@ Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus 
 
 The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all 67 unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
-Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. The complete 3D model is stored as \`pd1180-epr-r0.3-glb.zip\` so cloud imports do not serialize a large loose binary. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
+Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. Print \`mounting-template.svg\` at 100% and measure its calibration bar before comparing it with the motor. The complete 3D model is stored as \`pd1180-epr-r0.3-glb.zip\` so cloud imports do not serialize a large loose binary. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
 `)
 
 const artifactPaths = standards.release.required_files.filter((path) => !path.endsWith('/delivery-manifest.json') && !path.endsWith('/sha256.json'))
@@ -120,7 +123,11 @@ const deliveryManifest = {
   },
   artifacts,
 }
-await writeFile(join(release, 'delivery-manifest.json'), `${JSON.stringify(deliveryManifest, null, 2)}\n`)
+const deliveryManifestText = `${JSON.stringify(deliveryManifest, null, 2)}\n`
+await Promise.all([
+  writeFile(join(release, 'delivery-manifest.json'), deliveryManifestText),
+  writeFile('delivery-manifest.json', deliveryManifestText),
+])
 
 async function listFiles(directory, prefix = '') {
   const files = []

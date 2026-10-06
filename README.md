@@ -132,6 +132,10 @@ All fitted components are on top, including the centered encoder and its local b
 
 The current KiCad route passes with zero DRC violations and zero unconnected items. Power nets use reinforced copper corridors and parallel transfer vias. The 1 oz external-layer IPC-2221 screening result is 6.12 A at a 20 °C rise; enclosure temperature, layer sharing, neck-down regions, connector heating and switching losses still require powered thermal measurements.
 
+The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json`, includes a 20 mm calibration bar and is checked for drift in every full review. Print it at 100% and confirm all four asymmetric rear-face holes and the shaft axis against the actual motor before ordering.
+
+![PD1180-EPR mounting template](previews/mounting-template.png)
+
 ## Parts and procurement
 
 - 251 populated components use exact JLCPCB/LCSC identities.
@@ -164,10 +168,10 @@ Current committed results:
 | Assembly | PASS — 251/251 fitted parts on top |
 | Stock | PASS — 67/67 unique fitted LCSC codes available |
 | Alternatives | PASS — 11/11 selected candidates available |
-| Release delivery | PASS — 31 required files, 4 ZIP archives, 30 recursive SHA-256 entries |
+| Release delivery | PASS — 34 required files, 4 ZIP archives, 33 recursive SHA-256 entries |
 | Route identity | PASS — source topology/placement and routed KiCad hashes match |
 
-Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [release/delivery-manifest.json](release/delivery-manifest.json).
+Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 
 ## Manufacturing release
 
@@ -190,9 +194,13 @@ The tscircuit cloud package intentionally excludes generated `dist/`, `release/`
 | Path | Purpose |
 |---|---|
 | `AGENTS.md` | Automatic design and review rules for AI-assisted changes |
+| `board-markings.tsx` | Product identity and rear-side tscircuit attribution |
+| `feature-parity.tsx` | Machine-checked product feature contract |
 | `board-standards.json` | Machine-readable fabrication, via, marking, assembly and delivery policy |
 | `hardware-contract.json` | Product dimensions, ratings, controller and reset-safe outputs |
+| `mounting-template.svg` | Print-at-100% mechanical fit template generated from the hardware contract |
 | `index.circuit.tsx` | Authoritative code-defined circuit, schematic layout and PCB intent |
+| `engineering/` | Reviewer map linking contracts to generated evidence |
 | `imports/` | Locally pinned component models and symbol/footprint corrections |
 | `firmware/` | Safety state machine, generated pins and TMC5160A startup configuration |
 | `routing/` | Power-copper requirements and guarded route fingerprint |

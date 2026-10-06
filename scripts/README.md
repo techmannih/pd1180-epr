@@ -8,8 +8,9 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and top-only placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs. |
 | `check-cloud-package.mjs` | Keeps generated payloads out of tscircuit cloud builds, enforces a compact source upload and rejects oversized loose GitHub-import files. |
+| `check-feature-parity.mjs` | Verifies the product feature contract against compiled components, nets, evidence and the top-only assembly rule. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
-| `check-delivery.mjs` | Verifies required release files, recursive SHA-256 hashes, archive readability and source/release consistency. |
+| `check-delivery.mjs` | Verifies required release files, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
 | `check-firmware.mjs` | Builds and runs the host-side safety-state/TMC configuration tests. |
 | `check-kicad-drc.mjs` | Fails on any violation or unconnected item in the final KiCad DRC report. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
@@ -25,8 +26,9 @@ Every executable script is listed here so a reviewer can understand the release 
 | `export-assembly.mjs` | Generates JLC-compatible BOM/CPL and the assembly review data. |
 | `export-manufacturing.mjs` | Uses KiCad CLI to export Gerbers, drills, positions, DRC, top/bottom renders and manufacturing ZIP. |
 | `export-previews.mjs` | Renders top PCB and all functional schematic sheets. |
-| `export-release.mjs` | Builds the versioned release, sourcing tables, delivery manifest and recursive hashes. |
+| `export-release.mjs` | Builds the versioned release, synchronized root/release delivery manifests, sourcing tables and recursive hashes. |
 | `generate-firmware-pins.mjs` | Generates the STM32 pin header from the hardware pin contract or checks it for drift. |
+| `generate-mounting-template.mjs` | Generates the 100%-scale SVG/PNG mounting template from the hardware contract and detects stale copies. |
 | `import-routed-kicad.mjs` | Imports externally routed KiCad copper into reviewable Circuit JSON artifacts. |
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
 | `normalize-generated-svgs.mjs` | Removes generator-only trailing whitespace so previews remain deterministic in review. |
@@ -34,7 +36,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `reinforce-power-copper.py` | Adds clearance-aware power corridors and parallel transfer vias to the final KiCad route. |
 | `remove-isolated-zones.py` | Removes generated copper islands that do not connect to the intended net. |
 | `sync-generated-docs.mjs` | Synchronizes generated manifest and pin/placement documentation. |
-| `verify.mjs` | Runs independent checks, preserves logs and writes the machine-readable verification summary. |
+| `verify.mjs` | Runs independent checks, preserves logs and writes root Markdown plus machine-readable verification summaries. |
 | `via-net-identity.test.mjs` | Regression-tests via net identity and prevents accidental layer-transition shorts. |
 
 The Python routing helpers are board-specific. Do not reuse their geometry on another board. The check patterns, failure behavior and documentation structure are reusable.

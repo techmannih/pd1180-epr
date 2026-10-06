@@ -8,6 +8,10 @@ const manifest = JSON.parse(await readFile('release/delivery-manifest.json', 'ut
 const errors = []
 const checked = []
 
+const rootManifest = await readFile('delivery-manifest.json', 'utf8').catch(() => '')
+const releaseManifest = await readFile('release/delivery-manifest.json', 'utf8')
+if (rootManifest !== releaseManifest) errors.push('Root delivery-manifest.json does not match release/delivery-manifest.json')
+
 for (const path of standards.release.required_files) {
   try {
     await access(path)
