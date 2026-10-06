@@ -4,7 +4,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-70
 
 **Revision:** r0.3 · **Status:** prototype-fabrication-ready · **Assembly:** top side only · **Production validation:** open
 
-[View the board on tscircuit](https://tscircuit.com/techmannih/pd1180-epr) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
+[View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
 ![PD1180-EPR assembled-board overview](previews/pd1180-epr-overview.png)
 
