@@ -2,6 +2,7 @@ import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 
 const config = JSON.parse(await readFile('tscircuit.config.json', 'utf8'))
+const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
 const ignored = config.ignoredFiles || []
 const requiredIgnores = ['checks/**', 'dist/**', 'build/**', 'release/**', '__snapshots__/**', 'firmware/build/**']
 const errors = []
@@ -11,6 +12,11 @@ for (const pattern of requiredIgnores) {
 }
 if (config.mainEntrypoint !== 'index.circuit.tsx') errors.push('Cloud mainEntrypoint must remain index.circuit.tsx')
 if (!config.includeBoardFiles?.includes('index.circuit.tsx')) errors.push('Cloud includeBoardFiles must include index.circuit.tsx')
+
+const registryDependencies = Object.keys(packageJson.dependencies || {}).filter((name) => name.startsWith('@tsci/'))
+if (registryDependencies.length) {
+  errors.push(`Cloud runtime dependencies must be self-contained under imports/: ${registryDependencies.join(', ')}`)
+}
 
 const ignoredPrefixes = ignored.filter((pattern) => pattern.endsWith('/**')).map((pattern) => pattern.slice(0, -3))
 const defaultIgnoredRoots = new Set(['.git', '.tscircuit', '.vscode', 'node_modules'])
@@ -66,6 +72,7 @@ for (const file of githubImportFiles.filter((item) => item.bytes > maximumGitHub
 const report = {
   checked_at: new Date().toISOString(),
   main_entrypoint: config.mainEntrypoint,
+  registry_dependencies: registryDependencies,
   ignored_files: ignored,
   included_files: included.length,
   included_bytes: totalBytes,

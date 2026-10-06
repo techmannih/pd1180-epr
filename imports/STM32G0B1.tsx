@@ -1,8 +1,7 @@
 import React from "react"
 import type { ChipProps } from "@tscircuit/props"
-// Registry v0.1.0 expects the classic JSX React global.
-// @ts-expect-error The registry package does not ship TypeScript declarations.
-import { STM32G0B1CBT6 as RegistryMCU } from "@tsci/TTangZH.STM32G0B1CBT6"
+// @ts-expect-error The pinned local component is emitted JavaScript.
+import { STM32G0B1CBT6 as LocalMCU } from "./STM32G0B1CBT6.local.js"
 export const stm32PinLabels = {
   "pin1": [
     "PC13"
@@ -153,8 +152,8 @@ export const stm32PinLabels = {
 } as const
 export const STM32G0B1 = (props: ChipProps<typeof stm32PinLabels>) => {
   Object.assign(globalThis, { React })
-  return <RegistryMCU {...props} pinLabels={stm32PinLabels}
+  return <LocalMCU {...props} pinLabels={stm32PinLabels}
     pinAttributes={{ pin4: { requiresPower: true }, pin5: { requiresPower: true }, pin6: { requiresPower: true }, pin7: { requiresGround: true } }}>
     <courtyardrect width="11mm" height="11mm" />
-  </RegistryMCU>
+  </LocalMCU>
 }
