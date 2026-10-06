@@ -156,22 +156,23 @@ bun install --frozen-lockfile
 bun run review
 ```
 
-The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, schematic/PCB placement, decoupling, exact supplier identities, top-only assembly, local critical copper, shorts, KiCad DRC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
+The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, top-only assembly, local critical copper, shorts, KiCad DRC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
 
 Current committed results:
 
 | Gate | Result |
 |---|---|
 | KiCad DRC | PASS — 0 violations, 0 unconnected items |
+| Schematic style | PASS — 0 issues across all viewer analysis categories |
 | Topology regression | PASS — 11 tests, 518 assertions |
 | Decoupling | PASS — 32/32 targets |
 | Assembly | PASS — 251/251 fitted parts on top |
 | Stock | PASS — 67/67 unique fitted LCSC codes available |
 | Alternatives | PASS — 11/11 selected candidates available |
-| Release delivery | PASS — 34 required files, 4 ZIP archives, 33 recursive SHA-256 entries |
+| Release delivery | PASS — 35 required files, 4 ZIP archives, 34 recursive SHA-256 entries |
 | Route identity | PASS — source topology/placement and routed KiCad hashes match |
 
-Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
+Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 
 ## Manufacturing release
 
@@ -182,7 +183,7 @@ The `release/` directory contains:
 - JLCPCB BOM and top-side placement CSV;
 - ZIP-packaged 3D GLB plus top and bottom renders;
 - twelve schematic-sheet SVGs;
-- order settings, hardware contract, power-routing evidence and release status;
+- order settings, hardware contract, schematic-style evidence, power-routing evidence and release status;
 - delivery manifest and recursive SHA-256 hashes.
 
 Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-only assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
@@ -204,6 +205,7 @@ The tscircuit cloud package intentionally excludes generated `dist/`, `release/`
 | `imports/` | Locally pinned component models and symbol/footprint corrections |
 | `firmware/` | Safety state machine, generated pins and TMC5160A startup configuration |
 | `routing/` | Power-copper requirements and guarded route fingerprint |
+| `checks/` | Pinned viewer-equivalent review engine used by local and CI checks |
 | `docs/` | Design calculations, assembly, procurement, bring-up and verification evidence |
 | `scripts/` | Documented generation and fail-closed review tools |
 | `sourcing/` | Stock-qualified BOM, alternatives and external-system items |

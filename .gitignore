@@ -33,7 +33,9 @@ yarn-error.log*
 
 # tscircuit cache
 .tscircuit/
-checks/
+/checks/*
+!/checks/vendor/
+!/checks/vendor/**
 
 # Local routing experiments and scratch output
 .cache/

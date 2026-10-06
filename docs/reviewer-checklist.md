@@ -12,6 +12,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 ## Schematic
 
+- [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
 - [ ] All 12 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
 - [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.

@@ -17,6 +17,7 @@ function csv(rows) { return rows.map((row) => row.map(csvCell).join(',')).join('
 const stock = JSON.parse(await readFile('docs/stock-report.json', 'utf8'))
 const alternatives = JSON.parse(await readFile('docs/alternatives.json', 'utf8'))
 const external = JSON.parse(await readFile('docs/external-parts.json', 'utf8'))
+const schematicStyle = JSON.parse(await readFile('docs/checks/schematic-style.json', 'utf8'))
 await writeFile(join(sourcing, 'bom-with-stock.csv'), csv([
   ['LCSC', 'MPN', 'Value', 'Package', 'References', 'Qty/board', 'Stock', 'Status', 'Checked at'],
   ...stock.parts.map((part) => [part.lcsc, part.mpn, part.value, part.package, part.references, part.quantity_per_board, part.stock, part.status, part.checked_at]),
@@ -44,6 +45,7 @@ const copies = [
   ['mounting-template.svg', 'mounting-template.svg'],
   ['previews/mounting-template.png', 'mounting-template.png'],
   ['docs/feature-parity-check.json', 'feature-parity-check.json'],
+  ['docs/checks/schematic-style.json', 'schematic-style-check.json'],
   ['docs/verification.json', 'verification.json'],
   ['docs/power-routing-check.json', 'power-routing-check.json'],
   ['docs/release-status.json', 'release-status.json'],
@@ -89,6 +91,8 @@ Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus 
 
 The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all 67 unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
+The tscircuit viewer-equivalent schematic style analysis reports zero issues across all 12 sheets; see \`schematic-style-check.json\`.
+
 Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. Print \`mounting-template.svg\` at 100% and measure its calibration bar before comparing it with the motor. The complete 3D model is stored as \`pd1180-epr-r0.3-glb.zip\` so cloud imports do not serialize a large loose binary. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
 `)
 
@@ -120,6 +124,7 @@ const deliveryManifest = {
     alternative_records: alternatives.parts.length,
     alternatives_available: alternatives.parts.filter((part) => part.status === 'available').length,
     alternatives_requiring_redesign: alternatives.parts.filter((part) => part.classification === 'not-approved-redesign-required').length,
+    schematic_style_issues: schematicStyle.total_issues,
   },
   artifacts,
 }

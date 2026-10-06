@@ -17,6 +17,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
 | `check-release.mjs` | Enforces prototype-order gates while reporting remaining physical system gates separately. |
+| `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint or placement changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
 | `check-stock.mjs` | Refreshes exact JLCSearch stock evidence for the fitted BOM. |

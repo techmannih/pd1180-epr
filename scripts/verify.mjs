@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'tscircuit.config.json']
+const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'tscircuit.config.json', 'scripts/check-schematic-style.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
@@ -18,6 +18,7 @@ const checks = [
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['preview', ['run', 'build:preview']],
+  ['schematic-style', ['run', 'check:schematic-style']],
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],

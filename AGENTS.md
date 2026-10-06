@@ -20,6 +20,7 @@ Every board repository should contain:
 - `hardware-contract.json`: exact dimensions, interfaces, safety states and electrical targets.
 - `index.circuit.tsx`: authoritative code-defined schematic and PCB intent.
 - `routing/`: routing policy plus a guarded topology/placement fingerprint.
+- `checks/`: pinned review engines and reusable machine-check assets that must stay out of the cloud source package.
 - `sourcing/`: exact supplier codes, stock evidence and reviewed alternatives.
 - `docs/`: design decisions, reviewer checklist, assembly, bring-up and open validation gates.
 - `scripts/README.md`: purpose and inputs/outputs of every script.
@@ -52,6 +53,7 @@ The tscircuit cloud package is a source preview package. Keep `dist/**`, `releas
 ## Schematic and electrical review
 
 - Split the schematic into functional A4 sheets with clear signal direction, rail names, connector pin numbers and short section notes where the circuit is dense.
+- Run `bun run check:schematic-style` after every schematic placement or symbol change. It must reproduce the tscircuit viewer's **Run Style Analysis** result with zero issues across every sheet. Fix text/net-label collisions, cramped symbols, component orientation, bypass grouping, gate-network grouping and long visible rail paths in source coordinates; do not hide warnings, remove evidence or suppress an issue type.
 - Check supplier pin numbering independently from logical aliases. USB-C, TVS diodes, MOSFETs, shunts, connectors and exposed pads require explicit polarity/pin-map review.
 - Every IC rail needs a local bypass path and a bulk-capacitance rationale. Checks should use placed copper distance where practical.
 - Calculate regulator limits, divider tolerances, current limits, shunt loss, connector current, transient headroom, regeneration/braking energy and temperature rise. State which numbers are estimates and which are measured.
@@ -74,6 +76,7 @@ Run `bun run review` before a prototype handoff. The review must cover:
 - typecheck and locked toolchain installation;
 - firmware pin-contract consistency and host tests;
 - source topology/netlist and schematic checks;
+- the viewer-equivalent schematic style analysis with zero issues on every sheet;
 - component and schematic placement;
 - top-only assembly and exact supplier identities;
 - local bypass and critical-copper checks;
