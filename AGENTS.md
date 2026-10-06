@@ -1,0 +1,92 @@
+# PCB design and release rules
+
+This file is the first design instruction for any AI or reviewer working in this repository. Read `board-standards.json`, `hardware-contract.json`, `docs/reviewer-checklist.md` and `scripts/README.md` before changing the circuit, placement, routing or release files.
+
+## Rule hierarchy
+
+1. The user's current requirement has priority.
+2. Electrical limits and pin mappings come from primary manufacturer data and `hardware-contract.json`.
+3. Reusable board defaults come from `board-standards.json`.
+4. Project-specific overrides must be recorded with their calculation, source and validation status.
+
+Do not copy voltage, current, thermal, connector, stack-up or motor assumptions from another board. Reuse its review method only. Keep calculated targets, verified CAD facts and measured hardware results clearly separated.
+
+## Required project structure
+
+Every board repository should contain:
+
+- `AGENTS.md`: rules an AI must follow.
+- `board-standards.json`: machine-readable fabrication, assembly, marking and release policy.
+- `hardware-contract.json`: exact dimensions, interfaces, safety states and electrical targets.
+- `index.circuit.tsx`: authoritative code-defined schematic and PCB intent.
+- `routing/`: routing policy plus a guarded topology/placement fingerprint.
+- `sourcing/`: exact supplier codes, stock evidence and reviewed alternatives.
+- `docs/`: design decisions, reviewer checklist, assembly, bring-up and open validation gates.
+- `scripts/README.md`: purpose and inputs/outputs of every script.
+- `release/`: versioned manufacturing and review handoff with hashes.
+- `.github/workflows/`: the same non-hardware checks used locally.
+
+## Assembly and part sourcing
+
+- All populated parts must be on the top layer. Do not place even optional or DNP footprints on the bottom unless the user changes this repository-wide rule.
+- Bottom copper and bottom silkscreen are allowed. Bottom paste must be absent for a top-only assembly release.
+- Every fitted part needs an exact JLCPCB/LCSC code, package match and timestamped stock result. A fuzzy search or similar package name is not an acceptable match.
+- Record at least one reviewed alternative for parts whose availability or lifecycle can block assembly. Alternatives must match electrical rating, pinout, package, polarity and thermal needs; never substitute automatically.
+- Through-hole parts, tall parts, press-fit items, cables, motors, magnets, heatsinks and brake resistors must be listed as assembly or external-system boundaries.
+
+## Fabrication defaults
+
+- Record board size, layer count, thickness, copper weight, finish, mask colour, impedance needs and assembly side in the order settings.
+- Default routing via: 0.45 mm pad / 0.20 mm finished drill or larger.
+- Default power/thermal via: 0.60 mm pad / 0.30 mm finished drill or larger.
+- Maintain at least 0.10 mm annular ring. Prefer 0.15 mm for ordinary routing and power vias.
+- A smaller or via-in-pad geometry needs an explicit exception, exact count, fabricator capability and filled/capped treatment where solder wicking is possible.
+- Use through vias across all copper layers unless the fabrication package explicitly calls for reviewed blind or buried vias.
+- Copper-to-edge, hole clearances, trace/space, solder-mask and silkscreen limits must be checked against the selected fabrication service, then encoded in the CAD rules.
+- Route changes must pass the routing fingerprint, native checks, final KiCad DRC and power-copper checks. Never copy or edit a fingerprint to make stale routing pass.
+
+## Schematic and electrical review
+
+- Split the schematic into functional A4 sheets with clear signal direction, rail names, connector pin numbers and short section notes where the circuit is dense.
+- Check supplier pin numbering independently from logical aliases. USB-C, TVS diodes, MOSFETs, shunts, connectors and exposed pads require explicit polarity/pin-map review.
+- Every IC rail needs a local bypass path and a bulk-capacitance rationale. Checks should use placed copper distance where practical.
+- Calculate regulator limits, divider tolerances, current limits, shunt loss, connector current, transient headroom, regeneration/braking energy and temperature rise. State which numbers are estimates and which are measured.
+- Safety-critical outputs must reset inactive. Power negotiation, power-good, voltage window, temperature and fault state must gate the motor stage before firmware can enable it.
+- A successful compile, DRC or stock query does not prove hardware operation. Keep powered bring-up, thermal, EMC, mechanical fit and firmware-programming gates open until evidence exists.
+
+## PCB review
+
+- Place protection at the connector, bypass parts at the relevant pins, switching loops compactly and sense branches as true Kelvin connections.
+- Keep high-current paths explicit. Record their layer use, minimum width, copper weight, via count and analytical current/temperature screen.
+- Inspect ground continuity, return paths, plane necks, thermal-pad stitching, shunt bypasses, USB reference continuity, antenna/shaft/mounting keepouts and connector access.
+- Mark connector function, polarity, pin 1, hazardous/high-voltage rails, product name and revision where space permits.
+- Include `Made with tscircuit` branding on silkscreen. Branding must not overlap pads, holes, component courtyards or required safety markings.
+- Keep the board visually reviewable: readable references for connectors and major parts, uncluttered passive references, and top/bottom plus 3D previews.
+
+## Mandatory validation and delivery
+
+Run `bun run review` before a prototype handoff. The review must cover:
+
+- typecheck and locked toolchain installation;
+- firmware pin-contract consistency and host tests;
+- source topology/netlist and schematic checks;
+- component and schematic placement;
+- top-only assembly and exact supplier identities;
+- local bypass and critical-copper checks;
+- routing fingerprint and final-route policy;
+- shorts and final KiCad DRC with zero violations and zero unconnected items;
+- power-corridor/via analysis;
+- live stock and alternative-part evidence;
+- required release files, archive integrity and SHA-256 hashes.
+
+Never suppress, filter or waive a failing check without documenting the physical reason and adding a focused regression check. A release script must fail closed if source changes during validation or if generated release data no longer matches the verified circuit.
+
+## Reviewer handoff
+
+- Lead with the exact board revision and intended prototype use.
+- Provide one command (`bun run review`) and one checklist (`docs/reviewer-checklist.md`).
+- Point reviewers to machine-readable evidence rather than asking them to repeat routine discovery.
+- Separate prototype-order gates from post-assembly validation gates.
+- Do not describe a board as production-ready until programmed hardware has passed staged electrical, thermal, mechanical and EMC validation.
+
+When adding or removing a script, update `scripts/README.md`; the script-catalog check enforces this. When adding a release artifact, update `board-standards.json` and the delivery checker.

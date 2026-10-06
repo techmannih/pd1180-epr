@@ -28,6 +28,7 @@ await run(kicad, ['pcb', 'export', 'drill', '--output', `${gerbers}/`, '--excell
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-positions.csv'), '--side', 'front', '--format', 'csv', '--units', 'mm', finalBoard])
 await run(kicad, ['pcb', 'drc', '--all-track-errors', '--format', 'json', '--output', join(out, 'kicad-drc.json'), finalBoard])
 await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board.png'), '--width', '1800', '--height', '1800', '--side', 'top', '--background', 'opaque', '--quality', 'high', '--perspective', '--rotate', '325,0,35', finalBoard])
+await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board-bottom.png'), '--width', '1800', '--height', '1800', '--side', 'bottom', '--background', 'opaque', '--quality', 'high', '--perspective', '--rotate', '325,0,35', finalBoard])
 for (const file of await readdir(project)) {
   if (file.endsWith('.kicad_prl')) await rm(join(project, file), { force: true })
 }

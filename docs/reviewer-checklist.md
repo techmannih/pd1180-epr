@@ -1,0 +1,57 @@
+# PD1180-EPR reviewer checklist
+
+Start with `bun install --frozen-lockfile` and run `bun run review`. Machine checks produce evidence under `docs/`, `routing/` and `release/`; this checklist focuses reviewer time on design decisions and physical risks.
+
+## Requirements and mechanics
+
+- [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
+- [ ] Board outline is 85.9 × 85.9 mm and all four 4.2 mm mounting holes match the documented coordinates.
+- [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
+- [ ] Every populated component is top-side; the bottom assembly preview contains no fitted parts or paste.
+- [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.
+
+## Schematic
+
+- [ ] All 12 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
+- [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
+- [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
+- [ ] PD contract, power-good, voltage window and fault signals gate the motor stage independently of a normal firmware command.
+- [ ] Every IC supply pin has local bypassing; bulk-capacitance, discharge and reverse-feed paths are explained.
+- [ ] Unused pins, shields, exposed pads, test points and external termination requirements are explicit.
+
+## Power, protection and thermal
+
+- [ ] Input/eFuse UVLO, OVP, inrush and current-limit calculations include tolerance and startup state.
+- [ ] Phase-current programming, RMS/peak convention, shunt dissipation and current-sense polarity are consistent.
+- [ ] Regeneration energy, 60 V driver margin and external brake resistor/heatsink pulse/average ratings are reviewed for the actual load.
+- [ ] Connector, cable, via and copper current ratings are checked at enclosure temperature.
+- [ ] USB detach, hard reset, cable fault, 3.3 V collapse and residual VMOTOR energy all lead to a safe state.
+
+## Placement and routing
+
+- [ ] Protection parts sit at the connector and high-current/charge-pump/bootstrap loops are compact.
+- [ ] Shunt sense connections are Kelvin-routed and cannot be bypassed by load copper.
+- [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
+- [ ] Ordinary vias follow the reviewed 0.60/0.30 or 0.45/0.20 mm pairs; only the documented six 0.40/0.20 mm filled/capped exceptions remain.
+- [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
+- [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
+- [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
+
+## Sourcing and assembly
+
+- [ ] BOM manufacturer part number, package, polarity and exact LCSC code match each imported footprint.
+- [ ] Live stock is refreshed immediately before ordering; timestamped evidence is availability information, not a reservation.
+- [ ] Alternatives are checked for pinout, voltage/current/temperature rating, package, lifecycle and firmware impact.
+- [ ] JLC placement preview is manually reviewed for IC pin 1, diode/capacitor polarity, connector orientation, rotations and centroids.
+- [ ] Filled/capped via-in-pad, four layers, 1 oz copper, 1.6 mm thickness and top-only assembly are present in the quote.
+
+## Delivery and bring-up
+
+- [ ] `bun run review` passes and `release/delivery-manifest.json` matches the exact release files.
+- [ ] Gerber, drill, BOM, CPL, KiCad, schematic, 3D, firmware contract and SHA-256 files open successfully.
+- [ ] Prototype-order gates and system-validation gates are reported separately.
+- [ ] TPS26750 full-flash image and STM32 firmware hashes are recorded before powered motor testing.
+- [ ] Bring-up begins current-limited without a motor, then validates rails, PD negotiation, protection, brake, gate drive, current regulation and thermal rise in stages.
+- [ ] Production status remains blocked until mechanical fit, programmed operation, thermal, fault, EMC/ESD and load testing have recorded evidence.
+
+Reviewer sign-off should record board revision, commit, release hashes, open risks and the exact evidence used. Do not sign off from screenshots alone.

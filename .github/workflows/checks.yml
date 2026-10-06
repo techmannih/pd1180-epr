@@ -14,10 +14,7 @@ jobs:
         with:
           bun-version: 1.3.14
       - run: bun install --frozen-lockfile
-      - run: bun run verify
-      - run: bun run check:stock
-      - run: bun run check:alternatives
-      - run: bun run check:release
+      - run: bun run review
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -25,5 +22,7 @@ jobs:
           path: |
             dist/
             docs/checks/
+            docs/*-check.json
+            routing/fingerprint.json
             release/
           retention-days: 14

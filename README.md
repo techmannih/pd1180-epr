@@ -7,17 +7,19 @@ The 85.9 × 85.9 mm board has four M4 mounting holes and 251 populated parts. Ev
 ## Project layout
 
 - `index.circuit.tsx`: complete circuit, multi-sheet schematic placement, PCB placement and local critical copper.
+- `AGENTS.md`: automatic design and review instructions for AI-assisted board changes.
+- `board-standards.json`: machine-readable assembly, fabrication, via, marking, routing and delivery rules.
 - `imports/`: locally pinned JLCPCB/EasyEDA component models.
 - `firmware/`: generated STM32G0B1 pin contract, safety state machine and TMC5160A boot configuration.
 - `docs/`: design, pinout, procurement, verification, assembly and bring-up records.
-- `routing/`: final power-copper and via requirements.
+- `routing/`: final power-copper and via requirements plus a reviewed route fingerprint.
 - `sourcing/`: stock-qualified BOM, alternatives and external system items.
 - `release/`: order settings and the final prototype handoff.
-- `scripts/`: topology, placement, copper, stock, assembly and release checks.
+- `scripts/`: topology, placement, copper, stock, assembly and release checks; `scripts/README.md` explains each tool.
 - `dist/index/`: generated circuit JSON plus top/bottom PCB and schematic previews.
 - `dist/schematics/`: the 12 individual schematic sheets.
 - `dist/routed/`: routed-board circuit JSON plus a reviewable PCB SVG/PNG.
-- `dist/manufacturing/`: routed KiCad project, 12 child schematic sheets, Gerbers, drill files, DRC, BOM, CPL and 3D render.
+- `dist/manufacturing/`: routed KiCad project, 12 child schematic sheets, Gerbers, drill files, DRC, BOM, CPL and top/bottom 3D renders.
 - `dist/pd1180-epr-r0.3-manufacturing.zip`: complete fabrication and assembly handoff.
 
 ## Build and verify
@@ -28,15 +30,10 @@ bun run dev
 bun run build:preview
 bun run verify:preview
 BOARD_QUANTITY=10 bun run check:stock
-bun run export:previews
-bun run verify --routed
-bun run check:stock
-bun run check:alternatives
-bun run check:release
-bun run export:release
+bun run review
 ```
 
-The checks validate source connectivity, component placement, top-only assembly, critical bypass routing, the final KiCad DRC, stock evidence and generated outputs. See [verification](docs/verification.md), [assembly](docs/assembly.md), [bring-up](docs/bring-up.md), [procurement](docs/procurement.md) and [system compatibility](docs/compatibility.md).
+The fail-closed review validates source connectivity, component placement, top-only assembly, approved via sizes, markings, critical bypass routing, final KiCad DRC, route identity, live stock evidence, release ZIP integrity and recursive SHA-256 hashes. See [reviewer checklist](docs/reviewer-checklist.md), [verification](docs/verification.md), [assembly](docs/assembly.md), [bring-up](docs/bring-up.md), [procurement](docs/procurement.md) and [system compatibility](docs/compatibility.md).
 
 ## Power architecture
 

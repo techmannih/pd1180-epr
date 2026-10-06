@@ -5,11 +5,19 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
+const verifiedInputPaths = ['index.circuit.tsx', 'package.json', 'hardware-contract.json', 'board-standards.json']
+async function hashInputs() {
+  return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
+}
+const inputsBefore = await hashInputs()
 const checks = [
+  ['toolchain', ['run', 'check:toolchain']],
   ['typecheck', ['run', 'typecheck']],
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['preview', ['run', 'build:preview']],
+  ['normalize-svgs', ['run', 'normalize:svgs']],
+  ['script-catalog', ['run', 'check:script-catalog']],
   ['topology-tests', ['test', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['schematic', ['run', 'check:schematic']],
@@ -17,10 +25,12 @@ const checks = [
   ['routing-difficulty', ['run', 'check:routing']],
   ['decoupling', ['run', 'check:decoupling']],
   ['assembly', ['run', 'check:assembly']],
+  ['board-standards', ['run', 'check:standards']],
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
   ...(routed ? [['kicad-drc', ['run', 'check:kicad-drc']]] : []),
   ...(routed ? [['power-routing', ['run', 'check:power-routing']]] : []),
+  ...(routed ? [['routing-fingerprint', ['run', 'check:routing-fingerprint']]] : []),
 ]
 await mkdir('docs/checks', {recursive: true})
 const results=[]
@@ -38,11 +48,18 @@ for (const [name,args] of checks) {
   console.log(`${name}: ${exit_code===0?'PASS':'FAIL'} (${log})`)
 }
 const data=JSON.parse(await readFile('dist/index/circuit.json'))
+const inputsAfter = await hashInputs()
+const changedInputs = verifiedInputPaths.filter((path) => inputsBefore[path] !== inputsAfter[path])
+await writeFile('docs/checks/input-stability.log', changedInputs.length ? `Changed during validation:\n${changedInputs.join('\n')}\n` : 'Verified inputs remained unchanged during validation.\n')
+results.push({name:'input-stability',exit_code:changedInputs.length?1:0,status:changedInputs.length?'fail':'pass',seconds:0,log:'docs/checks/input-stability.log'})
+console.log(`input-stability: ${changedInputs.length?'FAIL':'PASS'} (docs/checks/input-stability.log)`)
 const counts={}
 for(const row of data) if(row.type.endsWith('_error')||row.type.endsWith('_warning')) counts[row.type]=(counts[row.type]||0)+1
 const report={
   checked_at:new Date().toISOString(),
-  entry_sha256:createHash('sha256').update(await readFile('index.circuit.tsx')).digest('hex'),
+  entry_sha256:inputsBefore['index.circuit.tsx'],
+  verified_inputs:inputsBefore,
+  source_changed_during_validation:changedInputs,
   model:routed?'source checks plus externally routed KiCad PCB verification':'routing-disabled review preview',
   checks:results,
   circuit_messages:counts,

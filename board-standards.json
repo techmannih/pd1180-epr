@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "purpose": "Reusable tscircuit board rules with explicit PD1180-EPR project overrides",
+  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "revision": "0.3.0",
+  "assembly": {
+    "populated_layers": ["top"],
+    "bottom_components_allowed": false,
+    "bottom_paste_allowed": false,
+    "exact_supplier_code_required": true,
+    "stock_evidence_required": true,
+    "reviewed_alternatives_required": true
+  },
+  "fabrication": {
+    "layers": 4,
+    "finished_thickness_mm": 1.6,
+    "copper_oz_all_layers": 1,
+    "minimum_trace_space_mm": 0.09,
+    "minimum_copper_to_edge_mm": 0.2,
+    "minimum_silkscreen_text_height_mm": 0.8,
+    "via_type": "through",
+    "via_pairs_mm": [
+      {
+        "name": "power_and_general",
+        "pad": 0.6,
+        "drill": 0.3,
+        "minimum_annular_ring": 0.15
+      },
+      {
+        "name": "dense_signal",
+        "pad": 0.45,
+        "drill": 0.2,
+        "minimum_annular_ring": 0.125
+      },
+      {
+        "name": "imported_via_in_pad_exception",
+        "pad": 0.4,
+        "drill": 0.2,
+        "minimum_annular_ring": 0.1,
+        "maximum_count": 6,
+        "process": "filled and capped"
+      }
+    ],
+    "via_pair_tolerance_mm": 0.011,
+    "via_in_pad_process": "filled and capped"
+  },
+  "project_geometry": {
+    "board_width_mm": 85.9,
+    "board_height_mm": 85.9,
+    "schematic_sheet_size": "a4",
+    "schematic_sheet_count": 12,
+    "mounting_hole_count": 4,
+    "mounting_hole_diameter_mm": 4.2
+  },
+  "markings": {
+    "required_source_text": [
+      "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
+      "Stepper Controller with USB-C PD 3.1 EPR · r0.3",
+      "Made with tscircuit"
+    ],
+    "required_kicad_text": [
+      "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
+      "Stepper Controller with USB-C PD 3.1 EPR · r0.3",
+      "Made with tscircuit"
+    ]
+  },
+  "routing": {
+    "critical_power_nets": [
+      "USB_VBUS",
+      "EFUSE_IN",
+      "VMOTOR",
+      "MOTOR_A1",
+      "MOTOR_A2",
+      "MOTOR_B1",
+      "MOTOR_B2",
+      "SENSE_A",
+      "SENSE_B",
+      "BRAKE_RETURN"
+    ],
+    "nominal_power_corridor_width_mm": 2.4,
+    "power_zone_clearance_mm": 0.16,
+    "route_fingerprint": "routing/fingerprint.json"
+  },
+  "release": {
+    "required_files": [
+      "release/README.md",
+      "release/circuit.json",
+      "release/hardware-contract.json",
+      "release/jlc-bom.csv",
+      "release/jlc-cpl.csv",
+      "release/kicad-drc.json",
+      "release/manufacturing-report.json",
+      "release/order-settings.json",
+      "release/pcb-3d.png",
+      "release/pcb-bottom.png",
+      "release/pd1180-epr-r0.3-gerbers.zip",
+      "release/pd1180-epr-r0.3-kicad.zip",
+      "release/pd1180-epr-r0.3-manufacturing.zip",
+      "release/pd1180-epr.glb",
+      "release/power-routing-check.json",
+      "release/release-status.json",
+      "release/verification.json",
+      "release/delivery-manifest.json",
+      "release/sha256.json",
+      "release/schematics/usb-pd.svg",
+      "release/schematics/logic-power.svg",
+      "release/schematics/motor-power.svg",
+      "release/schematics/motion.svg",
+      "release/schematics/bridge-a.svg",
+      "release/schematics/bridge-b.svg",
+      "release/schematics/brake.svg",
+      "release/schematics/mcu.svg",
+      "release/schematics/encoder.svg",
+      "release/schematics/inputs.svg",
+      "release/schematics/outputs.svg",
+      "release/schematics/serial.svg"
+    ],
+    "zip_files": [
+      "release/pd1180-epr-r0.3-gerbers.zip",
+      "release/pd1180-epr-r0.3-kicad.zip",
+      "release/pd1180-epr-r0.3-manufacturing.zip"
+    ],
+    "prototype_gate_requires_zero_drc": true,
+    "production_requires_physical_validation": true
+  }
+}
