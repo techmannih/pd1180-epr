@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import JSZip from 'jszip'
+import { writeCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const release = 'release'
 const sourcing = 'sourcing'
@@ -37,7 +38,6 @@ await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 const copies = [
   ['dist/manufacturing/kicad-board.png', 'pcb-3d.png'],
   ['dist/manufacturing/kicad-board-bottom.png', 'pcb-bottom.png'],
-  ['dist/index/circuit.json', 'circuit.json'],
   ['dist/manufacturing/assembly-bom.csv', 'jlc-bom.csv'],
   ['dist/manufacturing/assembly-cpl.csv', 'jlc-cpl.csv'],
   ['dist/manufacturing/kicad-drc.json', 'kicad-drc.json'],
@@ -53,6 +53,7 @@ const copies = [
   ['dist/pd1180-epr-r0.3-manufacturing.zip', 'pd1180-epr-r0.3-manufacturing.zip'],
 ]
 for (const [from, to] of copies) await copyFile(from, join(release, to))
+await writeCloudViewerCircuit()
 for (const file of await readdir('dist/schematics')) {
   if (file.endsWith('.svg')) await copyFile(join('dist/schematics', file), join(release, 'schematics', file))
 }
@@ -91,7 +92,7 @@ Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus 
 
 The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all 67 unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
-The tscircuit viewer-equivalent schematic style analysis reports zero issues across all 12 sheets; see \`schematic-style-check.json\`.
+The tscircuit viewer-equivalent schematic style analysis reports zero issues across all 12 sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 
 Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. Print \`mounting-template.svg\` at 100% and measure its calibration bar before comparing it with the motor. The complete 3D model is stored as \`pd1180-epr-r0.3-glb.zip\` so cloud imports do not serialize a large loose binary. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
 `)

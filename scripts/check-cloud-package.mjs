@@ -9,7 +9,23 @@ const requiredIgnores = [
   'checks/**',
   'dist/**',
   'build/**',
-  'release/**',
+  'release/*.zip',
+  'release/*.png',
+  'release/*.svg',
+  'release/*.csv',
+  'release/*.md',
+  'release/schematics/**',
+  'release/delivery-manifest.json',
+  'release/feature-parity-check.json',
+  'release/hardware-contract.json',
+  'release/kicad-drc.json',
+  'release/manufacturing-report.json',
+  'release/order-settings.json',
+  'release/power-routing-check.json',
+  'release/release-status.json',
+  'release/schematic-style-check.json',
+  'release/sha256.json',
+  'release/verification.json',
   '__snapshots__/**',
   'docs/**',
   'engineering/**',
@@ -24,9 +40,9 @@ const errors = []
 for (const pattern of requiredIgnores) {
   if (!ignored.includes(pattern)) errors.push(`tscircuit.config.json must ignore ${pattern}`)
 }
-if (config.mainEntrypoint !== 'index.circuit.tsx') errors.push('Cloud mainEntrypoint must remain index.circuit.tsx')
-if (!config.includeBoardFiles?.includes('index.circuit.tsx')) errors.push('Cloud includeBoardFiles must include index.circuit.tsx')
-if (config.build?.routingDisabled !== true) errors.push('Cloud release builds must disable autorouting; verified manufacturing routing is delivered from GitHub')
+if (config.mainEntrypoint !== 'release/circuit.json') errors.push('Cloud mainEntrypoint must use release/circuit.json')
+if (!config.includeBoardFiles?.includes('release/circuit.json')) errors.push('Cloud includeBoardFiles must include release/circuit.json')
+if (config.build?.routingDisabled !== true) errors.push('Cloud release builds must disable autorouting; release/circuit.json already replays verified manufacturing routing')
 if ((config.build?.workerTimeoutMs || 0) < 2_700_000) errors.push('Cloud worker timeout must be at least 45 minutes')
 
 const registryDependencies = Object.keys(packageJson.dependencies || {}).filter((name) => name.startsWith('@tsci/'))
@@ -34,7 +50,8 @@ if (registryDependencies.length) {
   errors.push(`Cloud runtime dependencies must be self-contained under imports/: ${registryDependencies.join(', ')}`)
 }
 
-const ignoredPrefixes = ignored.filter((pattern) => pattern.endsWith('/**')).map((pattern) => pattern.slice(0, -3))
+const ignoredMatchers = ignored.map((pattern) => new Bun.Glob(pattern))
+const shouldIgnore = (path) => ignoredMatchers.some((matcher) => matcher.match(path))
 const defaultIgnoredRoots = new Set(['.git', '.tscircuit', '.vscode', 'node_modules'])
 const included = []
 const githubImportFiles = []
@@ -44,10 +61,9 @@ async function walk(directory) {
     const path = join(directory, entry.name)
     const projectPath = relative('.', path).replaceAll('\\', '/')
     const root = projectPath.split('/')[0]
-    if (defaultIgnoredRoots.has(root) || ignoredPrefixes.some((prefix) => projectPath === prefix || projectPath.startsWith(`${prefix}/`))) continue
+    if (defaultIgnoredRoots.has(root) || shouldIgnore(projectPath)) continue
     if (entry.isDirectory()) await walk(path)
     else {
-      if (ignored.includes('*.log') && entry.name.endsWith('.log')) continue
       const info = await stat(path)
       included.push({ path: projectPath, bytes: info.size })
     }

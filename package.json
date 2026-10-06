@@ -52,6 +52,8 @@
     "check:delivery": "bun scripts/check-delivery.mjs",
     "check:toolchain": "bun scripts/check-toolchain.mjs",
     "check:cloud-package": "bun scripts/check-cloud-package.mjs",
+    "generate:cloud-viewer": "bun scripts/generate-cloud-viewer.mjs",
+    "check:cloud-viewer": "bun scripts/check-cloud-viewer.mjs",
     "check:feature-parity": "bun scripts/check-feature-parity.mjs",
     "check:mounting-template": "bun scripts/generate-mounting-template.mjs --check",
     "normalize:svgs": "bun scripts/normalize-generated-svgs.mjs",
@@ -60,7 +62,7 @@
     "check:firmware": "bun scripts/check-firmware.mjs",
     "export:release": "bun scripts/export-release.mjs",
     "generate:mounting-template": "bun scripts/generate-mounting-template.mjs",
-    "review": "bun run check:stock && bun run check:alternatives && bun run verify && bun run export:previews && bun run export:release && bun run check:release"
+    "review": "bun run check:stock && bun run check:alternatives && bun run verify && bun run export:previews && bun run export:release && bun run check:cloud-viewer && bun run check:release"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

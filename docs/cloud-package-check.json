@@ -1,13 +1,29 @@
 {
-  "checked_at": "2026-10-06T18:59:57.181Z",
-  "main_entrypoint": "index.circuit.tsx",
+  "checked_at": "2026-10-06T19:25:17.793Z",
+  "main_entrypoint": "release/circuit.json",
   "registry_dependencies": [],
   "ignored_files": [
     ".github/**",
     "checks/**",
     "dist/**",
     "build/**",
-    "release/**",
+    "release/*.zip",
+    "release/*.png",
+    "release/*.svg",
+    "release/*.csv",
+    "release/*.md",
+    "release/schematics/**",
+    "release/delivery-manifest.json",
+    "release/feature-parity-check.json",
+    "release/hardware-contract.json",
+    "release/kicad-drc.json",
+    "release/manufacturing-report.json",
+    "release/order-settings.json",
+    "release/power-routing-check.json",
+    "release/release-status.json",
+    "release/schematic-style-check.json",
+    "release/sha256.json",
+    "release/verification.json",
     "__snapshots__/**",
     "docs/**",
     "engineering/**",
@@ -19,11 +35,15 @@
     "sourcing/**",
     "*.log"
   ],
-  "included_files": 54,
-  "included_bytes": 447154,
-  "included_mebibytes": 0.43,
+  "included_files": 55,
+  "included_bytes": 8630144,
+  "included_mebibytes": 8.23,
   "maximum_mebibytes": 20,
   "largest_files": [
+    {
+      "path": "release/circuit.json",
+      "bytes": 8181982
+    },
     {
       "path": "index.circuit.tsx",
       "bytes": 154341
@@ -34,7 +54,7 @@
     },
     {
       "path": "README.md",
-      "bytes": 16305
+      "bytes": 16526
     },
     {
       "path": "imports/STM32G0B1CBT6.local.js",
@@ -46,7 +66,7 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 9922
+      "bytes": 10024
     },
     {
       "path": "imports/TPS26750SRSMR.tsx",
@@ -59,21 +79,17 @@
     {
       "path": "delivery-manifest.json",
       "bytes": 5784
-    },
-    {
-      "path": "imports/B8B_PH_K_S_LF__SN_.tsx",
-      "bytes": 5652
     }
   ],
-  "github_import_files": 337,
-  "github_import_bytes": 21190458,
-  "github_import_mebibytes": 20.21,
+  "github_import_files": 340,
+  "github_import_bytes": 25029188,
+  "github_import_mebibytes": 23.87,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 4354937
+      "bytes": 8181982
     },
     {
       "path": "release/pcb-3d.png",

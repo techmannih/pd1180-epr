@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import { access, readFile, stat, writeFile } from 'node:fs/promises'
 import JSZip from 'jszip'
+import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const hashes = JSON.parse(await readFile('release/sha256.json', 'utf8'))
@@ -63,16 +64,16 @@ for (const path of standards.release.required_files) {
   if (path.endsWith('/delivery-manifest.json') || path.endsWith('/sha256.json')) continue
   if (!manifestPaths.has(path)) errors.push(`${path}: missing from delivery manifest`)
 }
-const sourceCircuit = createHash('sha256').update(await readFile('dist/index/circuit.json')).digest('hex')
-const releaseCircuit = createHash('sha256').update(await readFile('release/circuit.json')).digest('hex')
-if (sourceCircuit !== releaseCircuit) errors.push('release/circuit.json does not match the verified source circuit')
+const expectedCloudCircuit = `${JSON.stringify((await createCloudViewerCircuit()).circuit)}\n`
+const releaseCircuit = await readFile('release/circuit.json', 'utf8')
+if (releaseCircuit !== expectedCloudCircuit) errors.push('release/circuit.json does not match the verified source model plus KiCad routing')
 
 const report = {
   checked_at: new Date().toISOString(),
   required_files: standards.release.required_files.length,
   recursive_hashes: Object.keys(hashes).length,
   archives: standards.release.zip_files.length,
-  source_release_circuit_match: sourceCircuit === releaseCircuit,
+  cloud_viewer_circuit_match: releaseCircuit === expectedCloudCircuit,
   checked,
   errors,
 }

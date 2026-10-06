@@ -8,6 +8,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and top-only placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs. |
 | `check-cloud-package.mjs` | Keeps generated payloads out of tscircuit cloud builds, enforces a compact source upload, rejects oversized loose GitHub-import files and prevents runtime `@tsci/*` dependencies that are not locally pinned under `imports/`. |
+| `check-cloud-viewer.mjs` | Regenerates the hosted viewer artifact in memory and proves it preserves the source schematic/3D model plus the exact verified KiCad copper counts. |
 | `check-feature-parity.mjs` | Verifies the product feature contract against compiled components, nets and evidence, enforces tscircuit's standard USB-C connector model, and checks the top-only assembly rule. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
@@ -29,6 +30,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `export-previews.mjs` | Renders top PCB and all functional schematic sheets. |
 | `export-release.mjs` | Builds the versioned release, synchronized root/release delivery manifests, sourcing tables and recursive hashes. |
 | `generate-firmware-pins.mjs` | Generates the STM32 pin header from the hardware pin contract or checks it for drift. |
+| `generate-cloud-viewer.mjs` | Combines the verified source schematic/3D model with routed KiCad traces, vias and pours for deterministic hosted PCB viewing. |
 | `generate-mounting-template.mjs` | Generates the 100%-scale SVG/PNG mounting template from the hardware contract and detects stale copies. |
 | `import-routed-kicad.mjs` | Imports externally routed KiCad copper into reviewable Circuit JSON artifacts. |
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
