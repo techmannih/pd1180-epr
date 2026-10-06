@@ -5,13 +5,14 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['index.circuit.tsx', 'package.json', 'hardware-contract.json', 'board-standards.json']
+const verifiedInputPaths = ['index.circuit.tsx', 'package.json', 'hardware-contract.json', 'board-standards.json', 'tscircuit.config.json']
 async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
+  ['cloud-package', ['run', 'check:cloud-package']],
   ['typecheck', ['run', 'typecheck']],
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],

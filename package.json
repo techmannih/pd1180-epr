@@ -1,6 +1,6 @@
 {
-  "name": "@tsci/pd1180-epr",
-  "version": "0.3.0",
+  "name": "@tsci/techmannih.pd1180-epr",
+  "version": "0.3.1",
   "private": true,
   "packageManager": "bun@1.3.14",
   "description": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
@@ -45,6 +45,7 @@
     "check:script-catalog": "bun scripts/check-script-catalog.mjs",
     "check:delivery": "bun scripts/check-delivery.mjs",
     "check:toolchain": "bun scripts/check-toolchain.mjs",
+    "check:cloud-package": "bun scripts/check-cloud-package.mjs",
     "normalize:svgs": "bun scripts/normalize-generated-svgs.mjs",
     "generate:firmware-pins": "bun scripts/generate-firmware-pins.mjs",
     "check:firmware-pins": "bun scripts/generate-firmware-pins.mjs --check",

@@ -26,6 +26,8 @@ Every board repository should contain:
 - `release/`: versioned manufacturing and review handoff with hashes.
 - `.github/workflows/`: the same non-hardware checks used locally.
 
+The tscircuit cloud package is a source preview package. Keep `dist/**`, `release/**`, `build/**`, `checks/**`, `__snapshots__/**` and `firmware/build/**` in `tscircuit.config.json` `ignoredFiles`; manufacturing binaries remain versioned in GitHub and are verified separately. Package large binary release assets as ZIP archives so the GitHub importer does not serialize them as loose files. Run `bun run check:cloud-package` after changing upload rules.
+
 ## Assembly and part sourcing
 
 - All populated parts must be on the top layer. Do not place even optional or DNP footprints on the bottom unless the user changes this repository-wide rule.

@@ -6,4 +6,4 @@ Upload `pd1180-epr-r0.3-gerbers.zip` for the PCB and use `jlc-bom.csv` plus `jlc
 
 The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all 67 unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
-Use `pcb-3d.png` and `pcb-bottom.png` for visual review. `delivery-manifest.json` records the exact file sizes and hashes, while `sha256.json` recursively covers this release directory.
+Use `pcb-3d.png` and `pcb-bottom.png` for visual review. The complete 3D model is stored as `pd1180-epr-r0.3-glb.zip` so cloud imports do not serialize a large loose binary. `delivery-manifest.json` records the exact file sizes and hashes, while `sha256.json` recursively covers this release directory.

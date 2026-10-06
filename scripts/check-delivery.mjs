@@ -34,6 +34,7 @@ for (const path of standards.release.zip_files) {
     const zip = await JSZip.loadAsync(await readFile(path), { checkCRC32: true })
     const entries = Object.values(zip.files).filter((entry) => !entry.dir)
     if (!entries.length) errors.push(`${path}: archive is empty`)
+    if (path.endsWith('-glb.zip') && !zip.file('pd1180-epr.glb')) errors.push(`${path}: pd1180-epr.glb is missing`)
   } catch (error) {
     errors.push(`${path}: invalid ZIP (${error.message})`)
   }

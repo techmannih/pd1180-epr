@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import JSZip from 'jszip'
 
@@ -36,7 +36,6 @@ await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 const copies = [
   ['dist/manufacturing/kicad-board.png', 'pcb-3d.png'],
   ['dist/manufacturing/kicad-board-bottom.png', 'pcb-bottom.png'],
-  ['dist/index/3d.glb', 'pd1180-epr.glb'],
   ['dist/index/circuit.json', 'circuit.json'],
   ['dist/manufacturing/assembly-bom.csv', 'jlc-bom.csv'],
   ['dist/manufacturing/assembly-cpl.csv', 'jlc-cpl.csv'],
@@ -65,9 +64,18 @@ async function zipDirectory(directory, destination) {
   await add(directory)
   await writeFile(destination, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }))
 }
+async function zipFile(source, archivedName, destination) {
+  const zip = new JSZip()
+  zip.file(archivedName, await readFile(source))
+  await writeFile(destination, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }))
+}
+// Cloud GitHub imports skip ZIP payloads but may try to serialize loose binaries.
+// Keep the reviewable GLB in the release while avoiding the sandbox RPC-size limit.
+await rm(join(release, 'pd1180-epr.glb'), { force: true })
 await Promise.all([
   zipDirectory('dist/manufacturing/gerbers', join(release, 'pd1180-epr-r0.3-gerbers.zip')),
   zipDirectory('dist/manufacturing/kicad-project', join(release, 'pd1180-epr-r0.3-kicad.zip')),
+  zipFile('dist/index/3d.glb', 'pd1180-epr.glb', join(release, 'pd1180-epr-r0.3-glb.zip')),
 ])
 
 await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
@@ -78,7 +86,7 @@ Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus 
 
 The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all 67 unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
-Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
+Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. The complete 3D model is stored as \`pd1180-epr-r0.3-glb.zip\` so cloud imports do not serialize a large loose binary. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
 `)
 
 const artifactPaths = standards.release.required_files.filter((path) => !path.endsWith('/delivery-manifest.json') && !path.endsWith('/sha256.json'))
