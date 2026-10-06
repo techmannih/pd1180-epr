@@ -1,16 +1,16 @@
 {
   "recorded_at": "2026-10-06T10:21:35.226Z",
-  "revision": "0.2.0",
+  "revision": "0.3.0",
   "complete": true,
-  "router": "freerouting 2.4.1 with KiCad copper-plane completion",
-  "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.2.kicad_pcb",
+  "router": "verified Freerouting connectivity with KiCad 2.4 mm power-corridor reinforcement",
+  "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
   "statistics": {
     "components_including_mounts": 255,
     "populated_components": 251,
-    "pads": 898,
-    "traces": 1129,
-    "vias": 526,
-    "copper_pours": 72,
+    "pads": 904,
+    "traces": 3531,
+    "vias": 620,
+    "copper_pours": 507,
     "layers": 4
   },
   "kicad_drc": {
@@ -21,7 +21,7 @@
   "manufacturing": {
     "report": "dist/manufacturing/manufacturing-report.json",
     "gerber_and_drill_files": 15,
-    "archive": "dist/pd1180-epr-r0.2-manufacturing.zip"
+    "archive": "dist/pd1180-epr-r0.3-manufacturing.zip"
   },
   "physical_validation_required": [
     "high-current copper temperature rise at target motor profile",

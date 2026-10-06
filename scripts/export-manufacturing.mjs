@@ -12,20 +12,21 @@ const kicad = process.env.KICAD_CLI || 'kicad-cli'
 const out = 'dist/manufacturing'
 const gerbers = join(out, 'gerbers')
 const project = join(out, 'kicad-project')
+const boardBase = basename(boardPath, extname(boardPath))
 await rm(out, { recursive: true, force: true })
 await Promise.all([mkdir(gerbers, { recursive: true }), mkdir(project, { recursive: true })])
 
-const finalBoard = join(project, 'pd1180-epr-r0.2.kicad_pcb')
+const finalBoard = join(project, `${boardBase}.kicad_pcb`)
 await copyFile(boardPath, finalBoard)
 const sourceProject = join(dirname(boardPath), `${basename(boardPath, extname(boardPath))}.kicad_pro`)
-await copyFile(sourceProject, join(project, 'pd1180-epr-r0.2.kicad_pro'))
+await copyFile(sourceProject, join(project, `${boardBase}.kicad_pro`))
 for (const file of await readdir(projectPath)) {
   if (/\.kicad_(sch|pro)$/.test(file)) await copyFile(join(projectPath, file), join(project, file))
 }
 await run(kicad, ['pcb', 'export', 'gerbers', '--output', `${gerbers}/`, '--layers', 'F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,Edge.Cuts', '--subtract-soldermask', '--check-zones', finalBoard])
 await run(kicad, ['pcb', 'export', 'drill', '--output', `${gerbers}/`, '--excellon-units', 'mm', '--excellon-separate-th', '--generate-map', '--map-format', 'gerberx2', '--generate-report', '--report-path', join(out, 'drill-report.txt'), finalBoard])
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-positions.csv'), '--side', 'front', '--format', 'csv', '--units', 'mm', finalBoard])
-await run(kicad, ['pcb', 'drc', '--format', 'json', '--output', join(out, 'kicad-drc.json'), finalBoard])
+await run(kicad, ['pcb', 'drc', '--all-track-errors', '--format', 'json', '--output', join(out, 'kicad-drc.json'), finalBoard])
 await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board.png'), '--width', '1800', '--height', '1800', '--side', 'top', '--background', 'opaque', '--quality', 'high', '--perspective', '--rotate', '325,0,35', finalBoard])
 for (const file of await readdir(project)) {
   if (file.endsWith('.kicad_prl')) await rm(join(project, file), { force: true })
@@ -56,5 +57,5 @@ async function addDirectory(directory, prefix = '') {
   }
 }
 await addDirectory(out)
-await writeFile('dist/pd1180-epr-r0.2-manufacturing.zip', await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }))
+await writeFile(`dist/${boardBase}-manufacturing.zip`, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }))
 console.log(JSON.stringify(report, null, 2))

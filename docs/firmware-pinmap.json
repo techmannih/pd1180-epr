@@ -1,6 +1,19 @@
 {
   "mcu": "STM32G0B1CBT6",
-  "status": "hardware-pin-map-not-firmware",
+  "status": "firmware-contract",
+  "package": "LQFP48",
+  "pin_to_gpio": {
+    "pin1": "PC13", "pin2": "PC14", "pin3": "PC15",
+    "pin8": "PF0", "pin9": "PF1", "pin10": "PF2",
+    "pin11": "PA0", "pin12": "PA1", "pin13": "PA2", "pin14": "PA3",
+    "pin15": "PA4", "pin16": "PA5", "pin17": "PA6", "pin18": "PA7",
+    "pin20": "PB1", "pin21": "PB2", "pin22": "PB10", "pin23": "PB11", "pin24": "PB12",
+    "pin25": "PB13", "pin26": "PB14", "pin27": "PB15", "pin28": "PA8", "pin29": "PA9",
+    "pin30": "PC6", "pin31": "PC7", "pin32": "PA10", "pin33": "PA11", "pin34": "PA12",
+    "pin35": "PA13", "pin36": "PA14", "pin37": "PA15",
+    "pin38": "PD0", "pin39": "PD1", "pin40": "PD2", "pin41": "PD3", "pin42": "PD4",
+    "pin43": "PB3", "pin44": "PB4", "pin45": "PB5", "pin46": "PB6", "pin47": "PB7", "pin48": "PB8"
+  },
   "pin_to_net": {
     "pin1": "STATUS_GPIO",
     "pin2": "DIN0",
@@ -65,14 +78,9 @@
     "hse_hz": 16000000,
     "usb": "HSI48 + CRS or a qualified 48 MHz clock setup"
   },
-  "missing_software": [
+  "external_release_inputs": [
     "TI PD configuration image",
-    "board startup and watchdog",
-    "PD contract/fault state machine",
-    "TMC motor configuration and motion API",
     "encoder calibration",
-    "USB serial / RS232 / RS485 protocol",
-    "CAN application protocol",
     "TMCL/CANopen support if required"
   ]
 }

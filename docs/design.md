@@ -56,7 +56,7 @@ The logic rail is supplied from reverse-blocked USB-derived and motor-derived re
 
 ## Layout release requirements
 
-The inner ground plane and nominal 2 mm high-current net widths are intent, not ampacity proof. Complete the bridge current loops, Kelvin shunt returns, charge-pump/bootstrap paths, QFN thermal stitching and eFuse copper according to the manufacturers' layout guidance. Verify finished copper weight, local neck-downs, current density, temperature rise and creepage/clearance against the actual environment.
+The final r0.3 route reinforces the high-current nets with nominal 2.4 mm copper corridors and parallel 0.6/0.3 mm vias. The 1 oz IPC-2221 external-layer screening estimate is 6.12 A at a 20 °C rise. Dense package exits, clipped zone geometry, current sharing between layers and enclosure temperature still require powered thermal validation. Verify the bridge loops, Kelvin shunt returns, charge-pump/bootstrap paths, QFN thermal stitching and eFuse copper against the manufacturers' layout guidance.
 
 The imported CSD19534 footprint contains four vias inside its drain pad. They are now explicitly connected to the drain and the board declares via-in-pad fabrication. Specify filled-and-capped vias; ordinary open holes can wick solder and invalidate assembly assumptions.
 

@@ -1,6 +1,6 @@
 {
   "name": "@tsci/pd1180-epr",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Single-axis stepper controller with 48 V USB-C EPR input",
   "main": "index.circuit.tsx",
@@ -36,7 +36,12 @@
     "snapshot:3d": "tsci snapshot index.circuit.tsx --3d --camera-preset top-left-corner --disable-parts-engine",
     "snapshot:3d:update": "tsci snapshot index.circuit.tsx --update --3d --camera-preset top-left-corner --disable-parts-engine",
     "verify:preview": "bun scripts/verify.mjs",
-    "check:geometry": "bun scripts/check-local-copper.mjs"
+    "check:geometry": "bun scripts/check-local-copper.mjs",
+    "check:power-routing": "bun scripts/check-power-routing.mjs",
+    "generate:firmware-pins": "bun scripts/generate-firmware-pins.mjs",
+    "check:firmware-pins": "bun scripts/generate-firmware-pins.mjs --check",
+    "check:firmware": "bun scripts/check-firmware.mjs",
+    "export:release": "bun scripts/export-release.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

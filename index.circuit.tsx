@@ -166,7 +166,7 @@ export const PD1180EPR = () => (
     <net name="BRAKE_GATE" isPowerNet={false} />
     <net name="BRAKE_MID" isPowerNet={false} />
     <net name="BRAKE_ON" isPowerNet={false} />
-    <net name="BRAKE_RETURN" isPowerNet={false} nominalTraceWidth="2mm" />
+    <net name="BRAKE_RETURN" isPowerNet={false} nominalTraceWidth="2.4mm" />
     <net name="BRAKE_SENSE" isPowerNet={false} />
     <net name="BUCK_BOOT" isPowerNet={false} />
     <net name="BUCK_FB" isPowerNet={false} />
@@ -197,7 +197,7 @@ export const PD1180EPR = () => (
     <net name="EEP_SDA" isPowerNet={false} />
     <net name="EFUSE_EN" isPowerNet={false} />
     <net name="EFUSE_FAULT_N" isPowerNet={false} />
-    <net name="EFUSE_IN" isPowerNet nominalTraceWidth="2mm" />
+    <net name="EFUSE_IN" isPowerNet nominalTraceWidth="2.4mm" />
     <net name="ENABLE_CHAIN" isPowerNet={false} />
     <net name="ENC_A" isPowerNet={false} />
     <net name="ENC_B" isPowerNet={false} />
@@ -232,10 +232,10 @@ export const PD1180EPR = () => (
     <net name="ILIM_SET" isPowerNet={false} />
     <net name="LOGIC_PG" isPowerNet={false} />
     <net name="MCU_RUN" isPowerNet={false} />
-    <net name="MOTOR_A1" isPowerNet={false} nominalTraceWidth="2mm" />
-    <net name="MOTOR_A2" isPowerNet={false} nominalTraceWidth="2mm" />
-    <net name="MOTOR_B1" isPowerNet={false} nominalTraceWidth="2mm" />
-    <net name="MOTOR_B2" isPowerNet={false} nominalTraceWidth="2mm" />
+    <net name="MOTOR_A1" isPowerNet={false} nominalTraceWidth="2.4mm" />
+    <net name="MOTOR_A2" isPowerNet={false} nominalTraceWidth="2.4mm" />
+    <net name="MOTOR_B1" isPowerNet={false} nominalTraceWidth="2.4mm" />
+    <net name="MOTOR_B2" isPowerNet={false} nominalTraceWidth="2.4mm" />
     <net name="MOTOR_BUCK_BOOT" isPowerNet={false} />
     <net name="MOTOR_BUCK_FB" isPowerNet={false} />
     <net name="MOTOR_BUCK_SW" isPowerNet={false} />
@@ -288,8 +288,8 @@ export const PD1180EPR = () => (
     <net name="RUN_PG" isPowerNet={false} />
     <net name="RUN_SAFE" isPowerNet={false} />
     <net name="SD_MODE" isPowerNet={false} />
-    <net name="SENSE_A" isPowerNet={false} nominalTraceWidth="2mm" />
-    <net name="SENSE_B" isPowerNet={false} nominalTraceWidth="2mm" />
+    <net name="SENSE_A" isPowerNet={false} nominalTraceWidth="2.4mm" />
+    <net name="SENSE_B" isPowerNet={false} nominalTraceWidth="2.4mm" />
     <net name="SLEW_CAP" isPowerNet={false} />
     <net name="SPI_MISO" isPowerNet={false} />
     <net name="SPI_MOSI" isPowerNet={false} />
@@ -321,7 +321,7 @@ export const PD1180EPR = () => (
     <net name="USB_DP" isPowerNet={false} />
     <net name="USB_DP_CONN" isPowerNet={false} />
     <net name="USB_DP_PROTECTED" isPowerNet={false} />
-    <net name="USB_VBUS" isPowerNet nominalTraceWidth="2mm" />
+    <net name="USB_VBUS" isPowerNet nominalTraceWidth="2.4mm" />
     <net name="UVLO_DIV" isPowerNet={false} />
     <net name="UVLO_MID" isPowerNet={false} />
     <net name="V3V3" isPowerNet />
@@ -330,7 +330,7 @@ export const PD1180EPR = () => (
     <net name="VBUS_LV" isPowerNet />
     <net name="VMON_ADC" isPowerNet={false} />
     <net name="VMON_MID" isPowerNet={false} />
-    <net name="VMOTOR" isPowerNet nominalTraceWidth="2mm" />
+    <net name="VMOTOR" isPowerNet nominalTraceWidth="2.4mm" />
     <net name="VMOTOR_OK" isPowerNet={false} />
     <net name="VREF_2V495" isPowerNet={false} />
 
@@ -1401,7 +1401,7 @@ export const PD1180EPR = () => (
     <trace name="BYPASS_C63" from=".U22 > .pin2" to=".C63 > .pin1" pcbPathRelativeTo=".U22 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.635, "y": -2.84607}, {"x": -0.635, "y": -3.94607}, {"x": -0.75, "y": -3.94607}, {"x": -0.75, "y": -5.175}]} />
     <trace name="BYPASS_C69" from=".U23 > .pin1" to=".C69 > .pin1" pcbPathRelativeTo=".U23 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.649986, "y": -1.100074}, {"x": -0.649986, "y": -2.200074}, {"x": -0.75, "y": -2.200074}, {"x": -0.75, "y": -2.925}]} />
     <trace name="BYPASS_C70" from=".U24 > .pin1" to=".C70 > .pin1" pcbPathRelativeTo=".U24 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.649986, "y": -1.100074}, {"x": -0.649986, "y": -2.200074}, {"x": -0.75, "y": -2.200074}, {"x": -0.75, "y": -2.925}]} />
-    <silkscreentext text="PD1180-EPR r0.2" pcbX={0} pcbY={42} fontSize="1mm" />
+    <silkscreentext text="PD1180-EPR r0.3" pcbX={0} pcbY={42} fontSize="1mm" />
     <silkscreentext text="48V EPR CONTROLLER" pcbX={0} pcbY={40.8} fontSize="0.8mm" />
     {/* Readable component references, placed clear of copper and adjacent labels. */}
     {/* Readable component references, placed clear of pads and adjacent labels. */}

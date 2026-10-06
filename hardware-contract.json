@@ -1,0 +1,44 @@
+{
+  "name": "PD1180-EPR",
+  "revision": "0.3.0",
+  "controller": "STM32G0B1CBT6",
+  "motor_driver": "TMC5160A with eight CSD19534Q5A MOSFETs",
+  "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
+  "mechanical": {
+    "board_mm": [85.9, 85.9],
+    "mounting_holes": [
+      {"diameter_mm": 4.2, "x_mm": 13.9, "y_mm": 81.35},
+      {"diameter_mm": 4.2, "x_mm": 81.35, "y_mm": 72.0},
+      {"diameter_mm": 4.2, "x_mm": 4.55, "y_mm": 13.9},
+      {"diameter_mm": 4.2, "x_mm": 72.0, "y_mm": 4.55}
+    ],
+    "assembly": "top-only"
+  },
+  "fabrication": {
+    "layers": 4,
+    "finished_thickness_mm": 1.6,
+    "copper_oz_all_layers": 1,
+    "minimum_trace_space_mm": 0.09,
+    "solder_mask": "green",
+    "surface_finish": "lead-free HASL or ENIG",
+    "power_corridor_nominal_width_mm": 2.4,
+    "power_zone_clearance_mm": 0.16,
+    "signal_via_mm": {"diameter": 0.45, "drill": 0.2},
+    "power_via_mm": {"diameter": 0.6, "drill": 0.3},
+    "via_in_pad": "filled and capped for CSD19534 thermal pads"
+  },
+  "rated_targets": {
+    "pd_contract_v": 48,
+    "pd_contract_a": 5,
+    "motor_phase_rms_a": 5.5,
+    "motor": "QSH8618-96-55-700"
+  },
+  "reset_safe_outputs": {
+    "POWER_PERMIT": 0,
+    "MCU_RUN": 0,
+    "RS485_DE": 0,
+    "OUT0_DRIVE": 0,
+    "OUT1_DRIVE": 0,
+    "SD_MODE": 0
+  }
+}

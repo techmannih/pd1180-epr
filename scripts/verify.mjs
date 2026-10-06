@@ -7,6 +7,8 @@ import { createHash } from 'node:crypto'
 const routed = process.argv.includes('--routed')
 const checks = [
   ['typecheck', ['run', 'typecheck']],
+  ['firmware-pins', ['run', 'check:firmware-pins']],
+  ['firmware', ['run', 'check:firmware']],
   ['preview', ['run', 'build:preview']],
   ['topology-tests', ['test', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
@@ -18,6 +20,7 @@ const checks = [
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
   ...(routed ? [['kicad-drc', ['run', 'check:kicad-drc']]] : []),
+  ...(routed ? [['power-routing', ['run', 'check:power-routing']]] : []),
 ]
 await mkdir('docs/checks', {recursive: true})
 const results=[]
@@ -44,7 +47,8 @@ const report={
   checks:results,
   circuit_messages:counts,
   routed_board_verified:routed && results.every(r=>r.exit_code===0),
-  manufacturing_released:false,
+  prototype_fabrication_orderable:routed && results.every(r=>r.exit_code===0),
+  production_released:false,
   limitations:[
     'The KiCad DRC proves geometric connectivity under the committed project rules; it does not replace physical validation.',
     'Placement and schematic CLI checks include advisory heuristics; their nonzero exit codes are retained.',

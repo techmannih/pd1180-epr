@@ -1,0 +1,28 @@
+{
+  "service": "JLCPCB PCB + SMT assembly",
+  "revision": "r0.3",
+  "pcb": {
+    "dimensions_mm": [85.9, 85.9],
+    "layers": 4,
+    "quantity": 5,
+    "thickness_mm": 1.6,
+    "copper_weight_oz": {"outer": 1, "inner": 1},
+    "minimum_trace_space_mm": 0.09,
+    "solder_mask": "green",
+    "silkscreen": "white",
+    "surface_finish": "lead-free HASL or ENIG",
+    "remove_order_number": true,
+    "electrical_test": "100 percent",
+    "via_in_pad": "filled and capped"
+  },
+  "assembly": {
+    "side": "top",
+    "bom": "jlc-bom.csv",
+    "cpl": "jlc-cpl.csv",
+    "dnp": "Do not substitute electrical values or package variants without engineering review"
+  },
+  "programming": {
+    "U3_eeprom": "Assemble blank unless a TI-generated full-flash binary is supplied to the programming service",
+    "U16_mcu": "Assemble blank; program and validate over SWD during bring-up"
+  }
+}

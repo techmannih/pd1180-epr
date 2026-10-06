@@ -1,0 +1,126 @@
+{
+  "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
+  "fabrication_basis": {
+    "layers": 4,
+    "finished_thickness_mm": 1.6,
+    "copper_oz": 1,
+    "signal_minimum_mm": 0.09,
+    "power_corridor_nominal_width_mm": 2.4,
+    "power_corridor_clearance_mm": 0.16,
+    "parallel_via_size_mm": 0.6,
+    "parallel_via_drill_mm": 0.3
+  },
+  "ipc_2221_external_estimate": {
+    "temperature_rise_c": 20,
+    "current_a": 6.12,
+    "note": "Analytical screening only; inner-layer sharing, clipped geometry, connectors, and thermal environment require prototype validation."
+  },
+  "nets": {
+    "USB_VBUS": {
+      "routed_segments": 64,
+      "segment_layers": [
+        "F.Cu"
+      ],
+      "reinforced_corridors": 59,
+      "corridor_coverage_ratio": 0.922,
+      "vias": 11
+    },
+    "EFUSE_IN": {
+      "routed_segments": 26,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 24,
+      "corridor_coverage_ratio": 0.923,
+      "vias": 14
+    },
+    "VMOTOR": {
+      "routed_segments": 162,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 153,
+      "corridor_coverage_ratio": 0.944,
+      "vias": 44
+    },
+    "MOTOR_A1": {
+      "routed_segments": 34,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 33,
+      "corridor_coverage_ratio": 0.971,
+      "vias": 11
+    },
+    "MOTOR_A2": {
+      "routed_segments": 47,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 45,
+      "corridor_coverage_ratio": 0.957,
+      "vias": 21
+    },
+    "MOTOR_B1": {
+      "routed_segments": 44,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 42,
+      "corridor_coverage_ratio": 0.955,
+      "vias": 14
+    },
+    "MOTOR_B2": {
+      "routed_segments": 41,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 40,
+      "corridor_coverage_ratio": 0.976,
+      "vias": 18
+    },
+    "SENSE_A": {
+      "routed_segments": 40,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu"
+      ],
+      "reinforced_corridors": 40,
+      "corridor_coverage_ratio": 1,
+      "vias": 6
+    },
+    "SENSE_B": {
+      "routed_segments": 33,
+      "segment_layers": [
+        "F.Cu"
+      ],
+      "reinforced_corridors": 31,
+      "corridor_coverage_ratio": 0.939,
+      "vias": 0
+    },
+    "BRAKE_RETURN": {
+      "routed_segments": 17,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 16,
+      "corridor_coverage_ratio": 0.941,
+      "vias": 12
+    }
+  },
+  "errors": []
+}

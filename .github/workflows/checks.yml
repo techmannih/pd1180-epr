@@ -1,0 +1,29 @@
+name: Circuit checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+      - run: bun run verify
+      - run: bun run check:stock
+      - run: bun run check:alternatives
+      - run: bun run check:release
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pd1180-epr-checks
+          path: |
+            dist/
+            docs/checks/
+            release/
+          retention-days: 14
