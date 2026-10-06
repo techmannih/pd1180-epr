@@ -38,7 +38,7 @@ import { W25Q32JVSSIQ } from "./imports/W25Q32JVSSIQ"
 import { X322516MLB4SI } from "./imports/X322516MLB4SI"
 
 export const PD1180EPR = () => (
-  <board name="PD1180_EPR" title="48 V EPR Stepper Controller" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" layers={4} isViaInPadAllowed thickness="1.6mm" borderRadius="5.9mm"
+  <board name="PD1180_EPR" title="PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" layers={4} isViaInPadAllowed thickness="1.6mm" borderRadius="5.9mm"
     defaultTraceWidth="0.25mm" minTraceWidth="0.15mm" minViaHoleDiameter="0.3mm" minViaPadDiameter="0.6mm"
     schAutoLayoutEnabled schTraceAutoLabelEnabled schMaxTraceDistance={0.8}
     autorouter="auto-local" autorouterEffortLevel="5x" autorouterVersion="beta_pipeline7" >

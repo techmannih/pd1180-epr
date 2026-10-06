@@ -1,8 +1,10 @@
-# Assembly
+# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+
+## Assembly
 
 Use `bun run check:release` to review every manufacturing and bring-up gate before ordering or energizing a board.
 
-## Stack and placement
+### Stack and placement
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes. Final copper weight and stack-up are selected during current/thermal and USB impedance review.
 - Every populated part is on the top side. The AS5047P and its local components are top-side parts centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
@@ -10,7 +12,7 @@ Use `bun run check:release` to review every manufacturing and bring-up gate befo
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
-## Connector pinout
+### Connector pinout
 
 | Connector | Pins in order |
 |---|---|

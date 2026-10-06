@@ -1,4 +1,6 @@
-# Verification summary
+# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+
+## Verification summary
 
 The committed source, generated previews, routed KiCad board and manufacturing package were checked together on 2026-10-06.
 

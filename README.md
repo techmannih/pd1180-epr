@@ -1,6 +1,6 @@
-# PD1180-EPR
+# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-PD1180-EPR is a code-defined, four-layer single-axis stepper controller powered from a USB-C PD 3.1 EPR 48 V / 5 A contract. It combines a TMC5160A with external MOSFET bridges, an STM32G0B1 controller, an on-axis AS5047P magnetic encoder, USB 2.0, CAN, RS485, RS232, Step/Dir, 24 V inputs, protected outputs, hardware shutdown and an external braking-resistor interface.
+PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR is a code-defined, four-layer single-axis stepper controller powered from a USB-C PD 3.1 EPR 48 V / 5 A contract. It combines a TMC5160A with external MOSFET bridges, an STM32G0B1 controller, an on-axis AS5047P magnetic encoder, USB 2.0, CAN, RS485, RS232, Step/Dir, 24 V inputs, protected outputs, hardware shutdown and an external braking-resistor interface.
 
 The 85.9 × 85.9 mm board has four M4 mounting holes and 251 populated parts. Every populated PCB part is assigned an exact JLCPCB/LCSC code; the checked BOM contains 67 unique orderable codes. All populated parts, including the encoder and its local components, are on the top side.
 

@@ -1,6 +1,8 @@
-# System compatibility and integration
+# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-| Area | PD1180-EPR r0.3 |
+## System compatibility and integration
+
+| Area | PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR, r0.3 |
 |---|---|
 | Input power | USB-C PD 3.1 EPR 48 V / 5 A requested contract; the motor output remains inhibited until a valid contract is confirmed |
 | Logic power | Independent USB-side and motor-bus buck regulators, reverse-blocked into the 3.3 V rail |

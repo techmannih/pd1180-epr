@@ -1,4 +1,6 @@
-# Bring-up plan
+# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+
+## Bring-up plan
 
 Complete routing, design review and assembly inspection before these steps. Use current-limited equipment and a PD protocol analyzer; do not begin with an unrestricted 48 V source and motor attached.
 
@@ -14,6 +16,6 @@ Complete routing, design review and assembly inspection before these steps. Use 
 
 Record waveforms, measured component temperatures, firmware/configuration hashes and pass/fail limits. Update `release-status.json` only after the associated evidence exists.
 
-## Logic backup and USB loss
+### Logic backup and USB loss
 
 With the motor disconnected, supply VMOTOR from a current-limited bench supply and disconnect USB. Confirm U22 maintains V3V3, U13/U14 and the brake reference operate, USB_VBUS stays unpowered, and the bridge enable returns inactive. Sweep both buck inputs and load V3V3 through the expected range; scope handover droop and reverse current through U23/U24. Exercise the brake at progressively higher bus voltage with a rated load and verify current, hysteresis, switch stress and worst-case comparator/reference tolerances before attempting regenerative motor tests.

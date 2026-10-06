@@ -1,4 +1,6 @@
-# Firmware
+# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+
+## Firmware
 
 This directory contains the board-level safety state machine, generated STM32G0B1 pin contract and the initial TMC5160A current configuration. The host build makes the power sequence and immediate fault shutdown reviewable without requiring an STM32 toolchain.
 
