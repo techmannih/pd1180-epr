@@ -43,12 +43,24 @@ ${holes.map((hole, index) => `<text x="55" y="${119 + index * 3}" text-anchor="m
 
 const png = new Resvg(svg, { fitTo: { mode: 'width', value: 1320 }, background: 'white' }).render().asPng()
 
+const readPngDimensions = (buffer) => {
+  const signature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+  if (buffer.length < 24 || !buffer.subarray(0, 8).equals(signature)) return null
+  return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) }
+}
+
 if (check) {
   const existingSvg = await readFile('mounting-template.svg', 'utf8').catch(() => '')
   const existingPng = await readFile('previews/mounting-template.png').catch(() => Buffer.alloc(0))
+  const pngDimensions = readPngDimensions(Buffer.from(existingPng))
   const errors = []
   if (existingSvg !== svg) errors.push('mounting-template.svg is stale; run bun run generate:mounting-template')
-  if (!Buffer.from(existingPng).equals(Buffer.from(png))) errors.push('previews/mounting-template.png is stale; run bun run generate:mounting-template')
+  // resvg uses the host font resolver, so otherwise-equivalent text pixels can
+  // differ between macOS and Linux. The SVG is the checked mechanical source;
+  // verify the PNG derivative by its format and exact physical aspect instead.
+  if (pngDimensions?.width !== 1320 || pngDimensions?.height !== 1740) {
+    errors.push('previews/mounting-template.png is missing or has the wrong 1320 x 1740 dimensions; run bun run generate:mounting-template')
+  }
   console.log(JSON.stringify({ board_mm: [boardWidth, boardHeight], mounting_holes: holes.length, contract_sha256: contractHash, errors }, null, 2))
   if (errors.length) process.exitCode = 1
 } else {
