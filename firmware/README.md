@@ -14,4 +14,4 @@ ctest --test-dir firmware/build --output-on-failure
 
 The final STM32 target port must bind these pure-C modules to GPIO, ADC, SPI, USB, CAN and serial peripherals. The generated TI TPS26750 configuration image is an external release input and must be programmed into U3 before EPR operation.
 
-J10 is the dedicated USB 2.0 data port. Firmware must sample `PIN_USB_DATA_VBUS_SENSE` on PB0/ADC_IN8 and enable the USB device pull-up only while valid J10 VBUS is present; J1 remains the independent EPR power port.
+J1 carries both USB 2.0 data and EPR power. Firmware must sample `PIN_USB_VBUS_SENSE` on PB0/ADC_IN8 and enable the USB device pull-up only while J1 VBUS is present. The 1 MΩ / 47 kΩ divider produces about 0.224 V at 5 V, 2.154 V at 48 V and 2.693 V at 60 V; use a threshold below the 5 V minimum while rejecting a discharged cable.

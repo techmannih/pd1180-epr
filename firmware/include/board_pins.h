@@ -20,7 +20,7 @@ typedef struct { char port; uint8_t bit; uint8_t package_pin; } board_pin_t;
 #define PIN_SPI_SCK           BOARD_PIN('A', 5, 16)
 #define PIN_SPI_MISO          BOARD_PIN('A', 6, 17)
 #define PIN_SPI_MOSI          BOARD_PIN('A', 7, 18)
-#define PIN_USB_DATA_VBUS_SENSE BOARD_PIN('B', 0, 19)
+#define PIN_USB_VBUS_SENSE    BOARD_PIN('B', 0, 19)
 #define PIN_PD_IRQ_N          BOARD_PIN('B', 1, 20)
 #define PIN_EFUSE_FAULT_N     BOARD_PIN('B', 2, 21)
 #define PIN_RS485_DE          BOARD_PIN('B', 10, 22)

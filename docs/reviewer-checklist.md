@@ -15,7 +15,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
 - [ ] All 12 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
 - [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
-- [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 carries EPR CC/VBUS only; J10 carries USB 2.0 data with two CC Rd resistors and independent VBUS attach sensing; neither VBUS net aliases the other.
+- [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 alone carries EPR CC/VBUS and USB 2.0 D+/D−; the VBUS ADC divider remains below 3.0 V through 60 V input.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
 - [ ] PD contract, power-good, voltage window and fault signals gate the motor stage independently of a normal firmware command.
 - [ ] Every IC supply pin has local bypassing; bulk-capacitance, discharge and reverse-feed paths are explained.

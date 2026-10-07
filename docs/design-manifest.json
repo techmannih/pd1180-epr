@@ -23,7 +23,11 @@
         "pin17": "USB_VBUS",
         "pin18": "USB_VBUS",
         "pin9": "CC2_CONN",
-        "pin15": "CC1_CONN"
+        "pin15": "CC1_CONN",
+        "pin11": "USB_DP_CONN",
+        "pin13": "USB_DP_CONN",
+        "pin12": "USB_DM_CONN",
+        "pin14": "USB_DM_CONN"
       },
       "sheet": "usb-pd",
       "xy": [
@@ -40,10 +44,6 @@
       ],
       "noConnect": [
         "pin10",
-        "pin11",
-        "pin12",
-        "pin13",
-        "pin14",
         "pin16"
       ],
       "section": "usb-pd_J1",
@@ -5237,7 +5237,8 @@
         "pin45": "PD_SCL",
         "pin46": "PD_SDA",
         "pin47": "TMC_DIAG1",
-        "pin48": "VMOTOR_OK"
+        "pin48": "VMOTOR_OK",
+        "pin19": "USB_VBUS_SENSE"
       },
       "sheet": "mcu",
       "xy": [
@@ -7623,116 +7624,11 @@
       "layer": "top"
     },
     {
-      "tag": "USB4105_GF_A",
-      "name": "J10",
-      "connections": {
-        "pin1": "GND",
-        "pin2": "GND",
-        "pin3": "GND",
-        "pin4": "GND",
-        "pin5": "GND",
-        "pin6": "GND",
-        "pin19": "GND",
-        "pin20": "GND",
-        "pin7": "USB_DATA_VBUS",
-        "pin8": "USB_DATA_VBUS",
-        "pin17": "USB_DATA_VBUS",
-        "pin18": "USB_DATA_VBUS",
-        "pin9": "USB_DATA_CC2",
-        "pin15": "USB_DATA_CC1",
-        "pin11": "USB_DP_CONN",
-        "pin13": "USB_DP_CONN",
-        "pin12": "USB_DM_CONN",
-        "pin14": "USB_DM_CONN"
-      },
-      "sheet": "usb-pd",
-      "xy": [
-        -36.4249991,
-        2.0000000000000004
-      ],
-      "owner": null,
-      "rotation": 270,
-      "lcsc": "C3020560",
-      "mpn": "USB4105-GF-A",
-      "size": [
-        11.275,
-        10.64
-      ],
-      "noConnect": [
-        "pin10",
-        "pin16"
-      ],
-      "section": "usb-pd_J10",
-      "sch": [
-        0,
-        12
-      ],
-      "layer": "top"
-    },
-    {
-      "tag": "resistor",
-      "name": "R105",
-      "connections": {
-        "pin1": "USB_DATA_CC1",
-        "pin2": "GND"
-      },
-      "sheet": "usb-pd",
-      "xy": [
-        -31,
-        19.5
-      ],
-      "owner": "J10",
-      "value": "5.1k",
-      "lcsc": "C23186",
-      "footprint": "0603",
-      "size": [
-        2.7,
-        1.5
-      ],
-      "noConnect": [],
-      "section": "usb-pd_J10",
-      "sch": [
-        4,
-        15
-      ],
-      "rotation": 0,
-      "layer": "top"
-    },
-    {
-      "tag": "resistor",
-      "name": "R106",
-      "connections": {
-        "pin1": "USB_DATA_CC2",
-        "pin2": "GND"
-      },
-      "sheet": "usb-pd",
-      "xy": [
-        -31.5,
-        14
-      ],
-      "owner": "J10",
-      "value": "5.1k",
-      "lcsc": "C23186",
-      "footprint": "0603",
-      "size": [
-        2.7,
-        1.5
-      ],
-      "noConnect": [],
-      "section": "usb-pd_J10",
-      "sch": [
-        6.5,
-        15
-      ],
-      "rotation": 0,
-      "layer": "top"
-    },
-    {
       "tag": "resistor",
       "name": "R107",
       "connections": {
-        "pin1": "USB_DATA_VBUS",
-        "pin2": "USB_DATA_VBUS_SENSE"
+        "pin1": "USB_VBUS",
+        "pin2": "USB_VBUS_SENSE"
       },
       "sheet": "usb-pd",
       "xy": [
@@ -7740,15 +7636,15 @@
         16
       ],
       "owner": "J10",
-      "value": "100k",
-      "lcsc": "C25803",
+      "value": "1M",
+      "lcsc": "C22935",
       "footprint": "0603",
       "size": [
         2.7,
         1.5
       ],
       "noConnect": [],
-      "section": "usb-pd_J10",
+      "section": "usb-pd_J1",
       "sch": [
         4,
         12
@@ -7760,7 +7656,7 @@
       "tag": "resistor",
       "name": "R108",
       "connections": {
-        "pin1": "USB_DATA_VBUS_SENSE",
+        "pin1": "USB_VBUS_SENSE",
         "pin2": "GND"
       },
       "sheet": "usb-pd",
@@ -7769,15 +7665,15 @@
         16
       ],
       "owner": "J10",
-      "value": "100k",
-      "lcsc": "C25803",
+      "value": "47k",
+      "lcsc": "C25819",
       "footprint": "0603",
       "size": [
         2.7,
         1.5
       ],
       "noConnect": [],
-      "section": "usb-pd_J10",
+      "section": "usb-pd_J1",
       "sch": [
         6.5,
         12
@@ -7789,7 +7685,7 @@
       "tag": "capacitor",
       "name": "C72",
       "connections": {
-        "pin1": "USB_DATA_VBUS_SENSE",
+        "pin1": "USB_VBUS_SENSE",
         "pin2": "GND"
       },
       "sheet": "usb-pd",
@@ -7807,7 +7703,7 @@
         1.5
       ],
       "noConnect": [],
-      "section": "usb-pd_J10",
+      "section": "usb-pd_J1",
       "sch": [
         9,
         12

@@ -93,9 +93,9 @@ export const PD1180EPR = () => (
     <hole name="H4" pcbX={-24.5} pcbY={-38.4} diameter="4.2mm" />
     <schematicsheet name="usb-pd" displayName="USB-C EPR Power and USB Data" sheetIndex={1} sheetWidth="400mm" sheetHeight="400mm">
       <schematictext schX={-4} schY={8} fontSize={0.6} anchor="top_left" text="01 / USB-C EPR Power and USB Data" />
-      <schematictext schX={-4} schY={6.6} fontSize={0.26} anchor="top_left" text="J1 is 48 V / 5 A EPR power; J10 is isolated USB 2.0 device data and 5 V attach sense." />
-      <schematictext schX={-4} schY={5.8} fontSize={0.23} anchor="top_left" text="U1: 48 V CC/VBUS protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate." />
-      <schematictext schX={-4} schY={5.1} fontSize={0.23} anchor="top_left" text="Q1: protected VBUS blocking control. Q2/Q3: PD path level translation and valid-path indication." />
+      <schematictext schX={-4} schY={6.6} fontSize={0.26} anchor="top_left" text="J1 carries 48 V / 5 A EPR power and USB 2.0 device data on one USB-C receptacle." />
+      <schematictext schX={-4} schY={5.8} fontSize={0.23} anchor="top_left" text="U1: 48 V CC/VBUS and D+/D- protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate." />
+      <schematictext schX={-4} schY={5.1} fontSize={0.23} anchor="top_left" text="R107/R108/C72: 5-60 V attach sense. Q1: protected VBUS control. Q2/Q3: PD-path level translation." />
     </schematicsheet>
     <schematicsheet name="logic-power" displayName="USB and Motor Logic Supplies" sheetIndex={2} sheetWidth="330mm" sheetHeight="335mm">
       <schematictext schX={-4} schY={8} fontSize={0.6} anchor="top_left" text="02 / USB and Motor Logic Supplies" />
@@ -152,8 +152,7 @@ export const PD1180EPR = () => (
       <schematictext schX={-4} schY={6.6} fontSize={0.26} anchor="top_left" text="J9: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review." />
       <schematictext schX={-4} schY={5.8} fontSize={0.23} anchor="top_left" text="Q24/Q25: open-collector 24 V output drivers; base pulldowns keep outputs off during reset." />
     </schematicsheet>
-    <schematicsection name="usb-pd_J1" displayName="48 V EPR Power Port / J1" />
-    <schematicsection name="usb-pd_J10" displayName="USB 2.0 Data Port / J10" />
+    <schematicsection name="usb-pd_J1" displayName="48 V EPR Power and USB 2.0 Data / J1" />
     <schematicsection name="usb-pd_U1" displayName="EPR Port Protection / U1" />
     <schematicsection name="usb-pd_U2" displayName="EPR PD Controller / U2" />
     <schematicsection name="usb-pd_U3" displayName="PD Configuration EEPROM / U3" />
@@ -373,10 +372,7 @@ export const PD1180EPR = () => (
     <net name="USB_DM" isPowerNet={false} />
     <net name="USB_DM_CONN" isPowerNet={false} />
     <net name="USB_DM_PROTECTED" isPowerNet={false} />
-    <net name="USB_DATA_CC1" isPowerNet={false} />
-    <net name="USB_DATA_CC2" isPowerNet={false} />
-    <net name="USB_DATA_VBUS" isPowerNet />
-    <net name="USB_DATA_VBUS_SENSE" isPowerNet={false} />
+    <net name="USB_VBUS_SENSE" isPowerNet={false} />
     <net name="USB_DP" isPowerNet={false} />
     <net name="USB_DP_CONN" isPowerNet={false} />
     <net name="USB_DP_PROTECTED" isPowerNet={false} />
@@ -393,36 +389,24 @@ export const PD1180EPR = () => (
     <net name="VMOTOR_OK" isPowerNet={false} />
     <net name="VREF_2V495" isPowerNet={false} />
 
-    {/* USB-PD power port and physically separate USB 2.0 data port. */}
+    {/* One USB-C receptacle carries EPR power and USB 2.0 data. */}
     <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={0} schY={0} schWidth={1.575} pcbX={-36} pcbY={15}
       pcbRotation={270}
-      noConnect={["pin10", "pin11", "pin12", "pin13", "pin14", "pin16"]}
-      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.USB_VBUS", pin8: "net.USB_VBUS", pin17: "net.USB_VBUS", pin18: "net.USB_VBUS", pin9: "net.CC2_CONN", pin15: "net.CC1_CONN" }} />
-    <USB4105_GF_A name="J10" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J10" schX={0} schY={12} schWidth={1.575} pcbX={-36} pcbY={2}
-      pcbRotation={270}
       noConnect={["pin10", "pin16"]}
-      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.USB_DATA_VBUS", pin8: "net.USB_DATA_VBUS", pin17: "net.USB_DATA_VBUS", pin18: "net.USB_DATA_VBUS", pin9: "net.USB_DATA_CC2", pin15: "net.USB_DATA_CC1", pin11: "net.USB_DP_CONN", pin13: "net.USB_DP_CONN", pin12: "net.USB_DM_CONN", pin14: "net.USB_DM_CONN" }} />
-    <resistor name="R105" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J10" schX={4} schY={14} pcbX={-31} pcbY={19.5}
+      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.USB_VBUS", pin8: "net.USB_VBUS", pin17: "net.USB_VBUS", pin18: "net.USB_VBUS", pin9: "net.CC2_CONN", pin15: "net.CC1_CONN", pin11: "net.USB_DP_CONN", pin13: "net.USB_DP_CONN", pin12: "net.USB_DM_CONN", pin14: "net.USB_DM_CONN" }} />
+    <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={5} schY={3} pcbX={-22.0} pcbY={16.0}
       schRotation={-90}
-      resistance="5.1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23186"] }}
-      connections={{ pin1: "net.USB_DATA_CC1", pin2: "net.GND" }} />
-    <resistor name="R106" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J10" schX={6.5} schY={14} pcbX={-31.5} pcbY={14.0}
+      resistance="1M" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C22935"] }}
+      connections={{ pin1: "net.USB_VBUS", pin2: "net.USB_VBUS_SENSE" }} />
+    <resistor name="R108" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={7.5} schY={3} pcbX={-19.0} pcbY={16.0}
       schRotation={-90}
-      resistance="5.1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23186"] }}
-      connections={{ pin1: "net.USB_DATA_CC2", pin2: "net.GND" }} />
-    <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J10" schX={4} schY={12} pcbX={-22.0} pcbY={16.0}
-      schRotation={-90}
-      resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
-      connections={{ pin1: "net.USB_DATA_VBUS", pin2: "net.USB_DATA_VBUS_SENSE" }} />
-    <resistor name="R108" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J10" schX={6.5} schY={12} pcbX={-19.0} pcbY={16.0}
-      schRotation={-90}
-      resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
-      connections={{ pin1: "net.USB_DATA_VBUS_SENSE", pin2: "net.GND" }} />
-    <capacitor name="C72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J10" schX={9} schY={12} pcbX={-23.0} pcbY={14.0} pcbRotation={180}
+      resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
+      connections={{ pin1: "net.USB_VBUS_SENSE", pin2: "net.GND" }} />
+    <capacitor name="C72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={10} schY={3} pcbX={-23.0} pcbY={14.0} pcbRotation={180}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxVoltageRating="50V"
-      connections={{ pin1: "net.USB_DATA_VBUS_SENSE", pin2: "net.GND" }} />
+      connections={{ pin1: "net.USB_VBUS_SENSE", pin2: "net.GND" }} />
     <TPD4S480RUKR name="U1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U1" schX={17} schY={0} pcbX={-30} pcbY={24.5}
       connections={{ pin1: "net.USB_DP_CONN", pin2: "net.USB_DM_CONN", pin3: "net.CC_VBIAS", pin4: "net.CC1_CONN", pin5: "net.CC2_CONN", pin6: "net.CC2_CONN", pin7: "net.CC1_CONN", pin8: "net.GND", pin9: "net.CC_FAULT_N", pin10: "net.PD_3V3", pin11: "net.CC2_PD", pin12: "net.CC1_PD", pin13: "net.GND", pin14: "net.USB_DM_PROTECTED", pin15: "net.USB_DP_PROTECTED", pin16: "net.EPR_EN", pin17: "net.EPR_BLK_GATE", pin18: "net.GND", pin19: "net.VBUS_LV", pin20: "net.USB_VBUS", pin21: "net.GND" }} />
     <TPS26750SRSMR name="U2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={0} schY={-12} pcbX={-24} pcbY={24}
@@ -1135,7 +1119,7 @@ export const PD1180EPR = () => (
 
     {/* MCU */}
     <STM32G0B1 name="U16" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={0} schY={0} pcbX={-20} pcbY={-12}
-      connections={{ pin1: "net.STATUS_GPIO", pin2: "net.DIN0", pin3: "net.DIN1", pin4: "net.V3V3", pin5: "net.V3V3", pin6: "net.V3V3", pin7: "net.GND", pin8: "net.OSC_IN", pin9: "net.OSC_OUT", pin10: "net.NRST", pin11: "net.VMON_ADC", pin12: "net.IIN_MON", pin13: "net.RS485_TX", pin14: "net.RS485_RX", pin15: "net.TMC_CS_N", pin16: "net.SPI_SCK", pin17: "net.SPI_MISO", pin18: "net.SPI_MOSI", pin19: "net.USB_DATA_VBUS_SENSE", pin20: "net.PD_IRQ_N", pin21: "net.EFUSE_FAULT_N", pin22: "net.RS485_DE", pin23: "net.ENC_CS_N", pin24: "net.FLASH_CS_N", pin25: "net.STOP_L", pin26: "net.STOP_R", pin27: "net.HOME_IN", pin28: "net.SD_MODE", pin29: "net.RS232_TX", pin30: "net.STEP_IN", pin31: "net.DIR_IN", pin32: "net.RS232_RX", pin33: "net.USB_DM", pin34: "net.USB_DP", pin35: "net.SWDIO", pin36: "net.SWCLK", pin37: "net.MCU_RUN", pin38: "net.CAN_RX", pin39: "net.CAN_TX", pin40: "net.OUT0_DRIVE", pin41: "net.OUT1_DRIVE", pin42: "net.TMC_DIAG0", pin43: "net.MOTOR_PG", pin44: "net.POWER_PERMIT", pin45: "net.PD_SCL", pin46: "net.PD_SDA", pin47: "net.TMC_DIAG1", pin48: "net.VMOTOR_OK" }} />
+      connections={{ pin1: "net.STATUS_GPIO", pin2: "net.DIN0", pin3: "net.DIN1", pin4: "net.V3V3", pin5: "net.V3V3", pin6: "net.V3V3", pin7: "net.GND", pin8: "net.OSC_IN", pin9: "net.OSC_OUT", pin10: "net.NRST", pin11: "net.VMON_ADC", pin12: "net.IIN_MON", pin13: "net.RS485_TX", pin14: "net.RS485_RX", pin15: "net.TMC_CS_N", pin16: "net.SPI_SCK", pin17: "net.SPI_MISO", pin18: "net.SPI_MOSI", pin19: "net.USB_VBUS_SENSE", pin20: "net.PD_IRQ_N", pin21: "net.EFUSE_FAULT_N", pin22: "net.RS485_DE", pin23: "net.ENC_CS_N", pin24: "net.FLASH_CS_N", pin25: "net.STOP_L", pin26: "net.STOP_R", pin27: "net.HOME_IN", pin28: "net.SD_MODE", pin29: "net.RS232_TX", pin30: "net.STEP_IN", pin31: "net.DIR_IN", pin32: "net.RS232_RX", pin33: "net.USB_DM", pin34: "net.USB_DP", pin35: "net.SWDIO", pin36: "net.SWCLK", pin37: "net.MCU_RUN", pin38: "net.CAN_RX", pin39: "net.CAN_TX", pin40: "net.OUT0_DRIVE", pin41: "net.OUT1_DRIVE", pin42: "net.TMC_DIAG0", pin43: "net.MOTOR_PG", pin44: "net.POWER_PERMIT", pin45: "net.PD_SCL", pin46: "net.PD_SDA", pin47: "net.TMC_DIAG1", pin48: "net.VMOTOR_OK" }} />
     <capacitor name="C44" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={5} schY={6} pcbX={-20.75} pcbY={-19.25}
       schRotation={-90}
       pcbRotation={270}
@@ -1200,12 +1184,12 @@ export const PD1180EPR = () => (
     <TS_1088_AR02016 name="SW1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_SW1" schX={5} schY={-3} pcbX={-14} pcbY={-40} pcbRotation={180} layer="top" schRotation={-90}
       connections={{ pin1: "net.NRST", pin2: "net.GND" }} />
     {/* Bottom-side service pads replace a bulky debug connector. */}
-    <testpoint name="TP_SWD_3V3" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-6} pcbX={-20} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
-    <testpoint name="TP_SWDIO" schSheetName="mcu" schSectionName="mcu_U16" schX={-6} schY={-6} pcbX={-17} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWDIO" }} />
-    <testpoint name="TP_SWD_GND" schSheetName="mcu" schSectionName="mcu_U16" schX={-4} schY={-6} pcbX={-14} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
-    <testpoint name="TP_SWCLK" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-8} pcbX={-20} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWCLK" }} />
-    <testpoint name="TP_NRST" schSheetName="mcu" schSectionName="mcu_U16" schX={-6} schY={-8} pcbX={-17} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.NRST" }} />
-    <testpoint name="TP_STATUS" schSheetName="mcu" schSectionName="mcu_U16" schX={-4} schY={-8} pcbX={-14} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.STATUS_GPIO" }} />
+    <testpoint name="TP_SWD_3V3" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-4.8} pcbX={-20} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
+    <testpoint name="TP_SWDIO" schSheetName="mcu" schSectionName="mcu_U16" schX={-6} schY={-4.8} pcbX={-17} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWDIO" }} />
+    <testpoint name="TP_SWD_GND" schSheetName="mcu" schSectionName="mcu_U16" schX={-4} schY={-4.8} pcbX={-14} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
+    <testpoint name="TP_SWCLK" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-6.2} pcbX={-20} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWCLK" }} />
+    <testpoint name="TP_NRST" schSheetName="mcu" schSectionName="mcu_U16" schX={-6} schY={-6.2} pcbX={-17} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.NRST" }} />
+    <testpoint name="TP_STATUS" schSheetName="mcu" schSectionName="mcu_U16" schX={-4} schY={-6.2} pcbX={-14} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.STATUS_GPIO" }} />
     <W25Q32JVSSIQ name="U17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U17" schX={13} schY={-2.5} pcbX={-13} pcbY={-26}
       connections={{ pin1: "net.FLASH_CS_N", pin2: "net.SPI_MISO", pin3: "net.V3V3", pin4: "net.GND", pin5: "net.SPI_MOSI", pin6: "net.SPI_SCK", pin7: "net.V3V3", pin8: "net.V3V3" }} />
     <resistor name="R73" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U17" schX={12} schY={1} pcbX={-8.0} pcbY={-26.0}
@@ -1496,8 +1480,7 @@ export const PD1180EPR = () => (
     {/* Readable component references, placed clear of pads and adjacent labels. */}
     <silkscreentext text="Y1" pcbX={-11.0000} pcbY={-15.7500} fontSize={0.7} anchorAlignment="center" layer="top" />
     <silkscreentext text="SW1" pcbX={-14.0000} pcbY={-38.5000} fontSize={0.7} anchorAlignment="center" layer="top" />
-    <silkscreentext text="J1 48V EPR" pcbX={-34.0} pcbY={21.0} fontSize={0.7} anchorAlignment="center" layer="top" />
-    <silkscreentext text="J10 USB DATA" pcbX={-34.0} pcbY={-4.0} fontSize={0.7} anchorAlignment="center" layer="top" />
+    <silkscreentext text="J1 EPR + USB DATA" pcbX={-33.0} pcbY={21.0} fontSize={0.7} anchorAlignment="center" layer="top" />
     <silkscreentext text="J2 MOTOR" pcbX={20.0} pcbY={-36.0} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J6" pcbX={-15.5000} pcbY={-0.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J7" pcbX={2.0000} pcbY={-37.0000} fontSize={0.8} anchorAlignment="center" layer="top" />

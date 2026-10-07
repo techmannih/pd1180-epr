@@ -39,7 +39,7 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   expect(minimumCenterToEdge).toBeGreaterThan(7.9)
 })
 test('source connectivity does not short power, ground, or the switched motor rail',()=>{
-  const names=['GND','USB_VBUS','USB_DATA_VBUS','VMOTOR','V3V3','V3V3_USB','V3V3_MOTOR','VBUS_LV','PD_1V5','TMC_12V']
+  const names=['GND','USB_VBUS','VMOTOR','V3V3','V3V3_USB','V3V3_MOTOR','VBUS_LV','PD_1V5','TMC_12V']
   const keys=names.map(netKey)
   expect(keys.every(Boolean)).toBe(true)
   expect(new Set(keys).size).toBe(names.length)
@@ -51,20 +51,21 @@ test('48-V connector goes through the EPR protector; PD controller never sees ra
   on('U2',2,'PD_3V3');on('U2',3,'GND') // SafeMode, address 0x20.
   on('Q1',2,'VBUS_LV');on('Q1',3,'USB_VBUS')
 })
-test('USB-PD power and USB 2.0 data use separate Type-C receptacles and nets',()=>{
+test('one Type-C receptacle carries EPR power and protected USB 2.0 data',()=>{
   on('J1',15,'CC1_CONN');on('J1',9,'CC2_CONN')
   on('U1',4,'CC1_CONN');on('U1',7,'CC1_CONN');on('U1',12,'CC1_PD');on('U2',24,'CC1_PD')
   on('U1',5,'CC2_CONN');on('U1',6,'CC2_CONN');on('U1',11,'CC2_PD');on('U2',25,'CC2_PD')
-  for(const pin of [11,12,13,14])expect(key('J1',pin)).toBeUndefined()
-  for(const pin of [11,13])on('J10',pin,'USB_DP_CONN')
-  for(const pin of [12,14])on('J10',pin,'USB_DM_CONN')
-  on('J10',15,'USB_DATA_CC1');on('R105',1,'USB_DATA_CC1');on('R105',2,'GND')
-  on('J10',9,'USB_DATA_CC2');on('R106',1,'USB_DATA_CC2');on('R106',2,'GND')
-  for(const pin of [7,8,17,18])on('J10',pin,'USB_DATA_VBUS')
-  on('R107',1,'USB_DATA_VBUS');on('R107',2,'USB_DATA_VBUS_SENSE')
-  on('R108',1,'USB_DATA_VBUS_SENSE');on('R108',2,'GND')
-  on('C72',1,'USB_DATA_VBUS_SENSE');on('C72',2,'GND');on('U16',19,'USB_DATA_VBUS_SENSE')
-  expect(netKey('USB_DATA_VBUS')).not.toBe(netKey('USB_VBUS'))
+  for(const pin of [11,13])on('J1',pin,'USB_DP_CONN')
+  for(const pin of [12,14])on('J1',pin,'USB_DM_CONN')
+  expect(comp('J10')).toBeUndefined()
+  for(const removed of ['R105','R106'])expect(comp(removed)).toBeUndefined()
+  on('R107',1,'USB_VBUS');on('R107',2,'USB_VBUS_SENSE')
+  on('R108',1,'USB_VBUS_SENSE');on('R108',2,'GND')
+  on('C72',1,'USB_VBUS_SENSE');on('C72',2,'GND');on('U16',19,'USB_VBUS_SENSE')
+  expect(manifest.parts.find(p=>p.name==='R107').value).toBe('1M')
+  expect(manifest.parts.find(p=>p.name==='R108').value).toBe('47k')
+  expect(60*47000/(1000000+47000)).toBeLessThan(3.0)
+  expect(5*47000/(1000000+47000)).toBeGreaterThan(0.2)
   on('U1',1,'USB_DP_CONN');on('U1',15,'USB_DP_PROTECTED');on('R71',1,'USB_DP_PROTECTED');on('R71',2,'USB_DP');on('U16',34,'USB_DP')
   on('U1',2,'USB_DM_CONN');on('U1',14,'USB_DM_PROTECTED');on('R72',1,'USB_DM_PROTECTED');on('R72',2,'USB_DM');on('U16',33,'USB_DM')
   // TPS26750 USB_P/USB_N are unused because STM32 owns USB data; TI requires unused GPIO4/GPIO5 to GND.
@@ -104,8 +105,8 @@ test('brake dissipates downstream energy without feeding the USB supply',()=>{
   on('J3',1,'VMOTOR');on('J3',2,'BRAKE_RETURN');on('Q16',5,'BRAKE_RETURN');on('Q16',1,'GND')
   on('U13',3,'BRAKE_SENSE');on('U13',4,'VREF_2V495');on('U15',6,'BRAKE_ON')
 })
-test('MCU pin mapping retains USB attach sense, data, FDCAN and SWD without sharing their pins',()=>{
-  for(const [pin,net]of [[19,'USB_DATA_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK'],[38,'CAN_RX'],[39,'CAN_TX']])on('U16',pin,net)
+test('MCU pin mapping retains EPR-safe USB attach sense, data, FDCAN and SWD without sharing their pins',()=>{
+  for(const [pin,net]of [[19,'USB_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK'],[38,'CAN_RX'],[39,'CAN_TX']])on('U16',pin,net)
   expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(48)
 })
 test('analytical limits have margin below the 5-A USB input contract',()=>{

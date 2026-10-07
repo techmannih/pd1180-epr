@@ -1,6 +1,6 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-700 NEMA 34 stepper motor. J1 requests a 48 V / 5 A USB Power Delivery 3.1 EPR contract, while the physically separate J10 provides USB 2.0 device data. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
+PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-700 NEMA 34 stepper motor. A single J1 USB-C receptacle requests a 48 V / 5 A USB Power Delivery 3.1 EPR contract and carries USB 2.0 device data. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
 
 **Revision:** r0.3 · **Status:** prototype engineering release · **Assembly:** top and bottom · **Production validation:** open
 
@@ -17,8 +17,8 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-70
 | Area | Implementation |
 |---|---|
 | USB-C power | TPS26750 sink-only USB PD 3.1 EPR controller requesting 48 V / 5 A |
-| USB ports | Separate J1 EPR power and J10 USB 2.0 data receptacles |
-| USB protection | TPD4S480 CC/data protection, CC Rd and independent VBUS sensing |
+| USB port | Combined J1 EPR power and USB 2.0 data receptacle |
+| USB protection | TPD4S480 CC/data protection and 5–60 V-tolerant VBUS sensing |
 | Input protection | TPS26631 eFuse, inrush control, voltage qualification, current limit and reverse-current blocking |
 | Motor stage | TMC5160A with eight 100 V CSD19534Q5A MOSFETs and two 33 mΩ phase shunts |
 | Motor target | QSH8618-96-55-700, 5.5 A RMS phase current, 7.0 Nm holding torque |
@@ -36,13 +36,12 @@ The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-g
 ## Power architecture
 
 ```text
-USB-C J1 (EPR power) ── VBUS/CC ── TPD4S480 ── TPS26750 ── TPS26631 ── VMOTOR
-                                             │                │
-                                             │                ├── TMC5160A + external H bridges
-                                             │                ├── motor connector J2
-                                             │                └── external brake connector J3
-USB-C J10 (data) ────── D+/D− ──── TPD4S480 ─────────────── STM32 USB
-                   └── CC1/CC2 Rd + isolated 5 V VBUS attach sense
+USB-C J1 ── VBUS/CC ── TPD4S480 ── TPS26750 ── TPS26631 ── VMOTOR
+       │                                      │                │
+       ├── D+/D− ──── TPD4S480 ──────────────┼──────────── STM32 USB
+       └── VBUS ───── 1 MΩ / 47 kΩ divider ──┘                ├── TMC5160A + external H bridges
+                                                              ├── motor connector J2
+                                                              └── external brake connector J3
                  USB-side 3.3 V buck ────────┼── ideal-diode OR ── V3V3
                  motor-side 3.3 V buck ──────┘
 ```
@@ -65,8 +64,7 @@ Firmware must configure current scaling, gate drive, dead time, chopper behavior
 
 | Connector | Function | Pins / notes |
 |---|---|---|
-| J1 | USB-C EPR power | 48 V / 5 A requested contract; D+/D− unused; shell bonded to ground |
-| J10 | USB-C data | USB 2.0 device D+/D−, independent CC Rd and 5 V attach sensing; no motor-power connection |
+| J1 | USB-C EPR power + data | 48 V / 5 A requested contract, USB 2.0 D+/D− and 5–60 V-tolerant VBUS attach sensing; shell bonded to ground |
 | J2 | Motor | A1, A2, B1, B2 |
 | J3 | External brake | VMOTOR and switched resistor return |
 | J6 | Serial buses | RS232 TX/RX, CAN H/L, RS485 A/B and grounds |
@@ -75,7 +73,7 @@ Firmware must configure current scaling, gate drive, dead time, chopper behavior
 
 CAN and RS485 are non-isolated. Termination and RS485 bias belong at the system level. J9 exposes the motor bus; it is not a regulated 24 V accessory output.
 
-SWD, reset/status and encoder ABI signals use labelled bottom-side service pads instead of three extra cable connectors. This keeps field connectors limited to the two USB-C ports, motor, brake, serial, machine I/O and output/enable interfaces.
+SWD, reset/status and encoder ABI signals use labelled bottom-side service pads instead of three extra cable connectors. This keeps field connectors limited to one USB-C port, motor, brake, serial, machine I/O and output/enable interfaces.
 
 ## Firmware contract
 
@@ -85,7 +83,7 @@ The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmw
 |---|---|
 | Motor SPI | `TMC_CS_N`, `SPI_SCK`, `SPI_MISO`, `SPI_MOSI`, `TMC_DIAG0`, `TMC_DIAG1` |
 | Encoder/flash | `ENC_CS_N`, `FLASH_CS_N` on the shared SPI bus |
-| USB | `USB_DATA_VBUS_SENSE`, `USB_DM`, `USB_DP` |
+| USB | `USB_VBUS_SENSE`, `USB_DM`, `USB_DP` |
 | Power safety | `PD_IRQ_N`, `EFUSE_FAULT_N`, `MOTOR_PG`, `VMOTOR_OK`, `POWER_PERMIT`, `MCU_RUN` |
 | Motion inputs | `STEP_IN`, `DIR_IN`, `STOP_L`, `STOP_R`, `HOME_IN` |
 | Communications | CAN RX/TX, RS485 RX/TX/DE and RS232 RX/TX |

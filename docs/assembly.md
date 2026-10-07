@@ -16,8 +16,7 @@ Use `bun run check:release` to review every manufacturing and bring-up gate befo
 
 | Connector | Pins in order |
 |---|---|
-| J1 | USB-C EPR power only; 48 V / 5 A requested contract, D+/D− unused, shell to ground |
-| J10 | USB-C 2.0 device data; independent CC Rd and 5 V VBUS attach sense, shell to ground |
+| J1 | Combined USB-C EPR power and USB 2.0 device data; 48 V / 5 A requested contract, D+/D− to STM32, shell to ground |
 | J2, motor | A1, A2, B1, B2 |
 | J3, external brake | VMOTOR, switched resistor return |
 | J6, serial | RS232 TX, RS232 RX, GND, CAN H, CAN L, GND, RS485 A, RS485 B |

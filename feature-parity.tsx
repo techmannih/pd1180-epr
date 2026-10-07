@@ -5,9 +5,9 @@
 export const FEATURE_PARITY = [
   {
     id: "usb_pd_epr",
-    feature: "Separate USB-C PD 3.1 EPR power and USB 2.0 device ports",
-    components: ["J1", "J10", "U1", "U2", "U3", "U4", "R105", "R106", "R107", "R108", "C72"],
-    nets: ["USB_VBUS", "USB_DATA_VBUS", "USB_DATA_VBUS_SENSE", "USB_DP", "USB_DM", "PD_IRQ_N"],
+    feature: "Single-port USB-C PD 3.1 EPR power and USB 2.0 device data",
+    components: ["J1", "U1", "U2", "U3", "U4", "R107", "R108", "C72"],
+    nets: ["USB_VBUS", "USB_VBUS_SENSE", "USB_DP", "USB_DM", "PD_IRQ_N"],
     evidence: "docs/pd-configuration.json",
   },
   {

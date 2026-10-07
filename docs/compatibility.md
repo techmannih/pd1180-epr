@@ -7,7 +7,7 @@
 | Input power | USB-C PD 3.1 EPR 48 V / 5 A requested contract; the motor output remains inhibited until a valid contract is confirmed |
 | Logic power | Independent USB-side and motor-bus buck regulators, reverse-blocked into the 3.3 V rail |
 | Motor stage | TMC5160A with external MOSFET bridges; 5.5 A RMS phase-current design target |
-| USB | Separate USB-C receptacles for EPR power (J1) and USB 2.0 device data (J10) |
+| USB | One J1 USB-C receptacle for EPR power and USB 2.0 device data; simultaneous operation requires an upstream EPR source that also exposes a USB host |
 | Step/Dir | 24 V transistor-conditioned Step and Direction inputs |
 | Encoder | Bottom-side AS5047P aligned at board center, plus labelled ABI service pads |
 | Field buses | CAN, RS485 and RS232; bus termination is fitted in the external harness |

@@ -1,13 +1,12 @@
 # USB-C PD, USB data and current-sense architecture
 
-This note records the compiled paths that keep USB Power Delivery, USB 2.0 data and motor/input-current sensing independent. `scripts/design.test.mjs` checks these paths against `dist/index/circuit.json`; prose alone is not accepted as evidence.
+This note records the compiled paths that combine USB Power Delivery and USB 2.0 data on one receptacle while keeping motor/input-current sensing independent. `scripts/design.test.mjs` checks these paths against `dist/index/circuit.json`; prose alone is not accepted as evidence.
 
-## Two physical USB-C ports
+## One physical USB-C port
 
-J1 and J10 both use tscircuit's standard `<connector standard="usb_c">` model with the exact JLCPCB/LCSC `C3020560` USB4105-GF-A footprint.
+J1 uses tscircuit's standard `<connector standard="usb_c">` model with the exact JLCPCB/LCSC `C3020560` USB4105-GF-A footprint. Its VBUS contacts share `USB_VBUS`, its CC pins reach the TPS26750 through U1, and its D+/D− contacts reach the STM32 through U1 and R71/R72. J1 SBU1/SBU2 are unused.
 
-- J1 is the power port. Its VBUS contacts share `USB_VBUS`, its CC pins reach the PD controller through U1, and its D+/D− pins are explicitly unused.
-- J10 is the data port. Its D+/D− pins reach the STM32, each CC pin has its own 5.1 kΩ Rd, and its 5 V `USB_DATA_VBUS` rail is used only for attach sensing. `USB_DATA_VBUS` and the 48 V-capable `USB_VBUS` rail are distinct nets.
+The connector can carry EPR power and USB 2.0 simultaneously when the upstream port provides both a 48 V / 5 A EPR source and a USB host. A power-only EPR charger supplies the motor without USB data; an ordinary host can provide USB data at its supported power level but cannot be assumed to supply 240 W.
 
 ## Power Delivery path
 
@@ -26,19 +25,16 @@ The board still requires a reviewed TI-generated full-flash configuration image 
 ## USB 2.0 data and attach path
 
 ```text
-J10 D+/D-
+J1 D+/D-
   -> U1 TPD4S480 SBU protection channels used in TI's documented DP/DM configuration
   -> R71/R72 22 ohm series resistors
   -> U16 STM32G0B1 USB_DP / USB_DM
 
-J10 CC1 -> R105 5.1k -> GND
-J10 CC2 -> R106 5.1k -> GND
-
-J10 5 V VBUS -> R107 100k -> USB_DATA_VBUS_SENSE -> R108 100k || C72 100nF -> GND
-                                                     -> U16 PB0 / ADC_IN8
+J1 VBUS -> R107 1 Mohm -> USB_VBUS_SENSE -> R108 47 kohm || C72 100nF -> GND
+                                             -> U16 PB0 / ADC_IN8
 ```
 
-At 5 V the equal divider presents approximately 2.5 V to PB0, inside the 3.3 V MCU domain. Firmware must use this signal for J10 attach/detach state and must not assert the USB device pull-up when J10 VBUS is absent. The J10 VBUS rail is never ORed into logic or motor power.
+TPS26750 owns the Type-C Rd/CC sink behavior, so no second set of discrete CC pulldowns is fitted. The divider ratio is 47 / 1047. It presents approximately 0.224 V at 5 V, 2.154 V at 48 V and 2.693 V at the 60 V review limit. This keeps PB0 below 3.0 V across the reviewed range while retaining an ADC-detectable default-USB level. Firmware must use a validated threshold below the 5 V minimum and must not assert the USB device pull-up when VBUS is absent.
 
 TI documents that the TPD4S480 SBU OVP FETs may protect USB 2.0 DP/DM instead of SBU. This is the configuration used here: connector DP/DM connect to `C_SBU1/C_SBU2`, while the protected system side connects to `SBU1/SBU2`.
 
