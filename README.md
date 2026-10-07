@@ -171,7 +171,7 @@ Current committed results:
 | Assembly | PASS — 251 supplier-backed parts plus 11 service test pads on permitted layers |
 | Stock | PASS — 65/65 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
-| Release delivery | PASS — 35 required files, 4 ZIP archives, 34 recursive SHA-256 entries |
+| Release delivery | PASS — 36 required files, 4 ZIP archives, 35 recursive SHA-256 entries |
 | Route identity | PASS — source topology/placement and routed KiCad hashes match |
 
 Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
