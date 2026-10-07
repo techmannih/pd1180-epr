@@ -12,7 +12,8 @@ for (const part of data.parts) {
     checked.push({ ...part, status: 'no-drop-in-selected' })
     continue
   }
-  const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${part.alternative}`
+  const numericLcsc = part.alternative.replace(/^C/, '')
+  const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${numericLcsc}`
   try {
     const { stdout } = await run('curl', ['--fail', '--silent', '--show-error', '-L', '--retry', '2', '--max-time', '40', url], { maxBuffer: 8_000_000 })
     const response = JSON.parse(stdout)

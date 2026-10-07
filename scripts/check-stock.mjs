@@ -22,25 +22,31 @@ await mkdir(new URL('../docs/stock-evidence/', import.meta.url), { recursive: tr
 await Promise.all(Array.from({ length: 5 }, async () => {
   while (index < entries.length) {
     const entry = entries[index++]
-    let url = `https://jlcsearch.tscircuit.com/components/list.json?search=${entry.lcsc}`
+    // JLCSearch expects the numeric LCSC id. Supplying the leading "C" can
+    // produce a fuzzy/no-result response, so strip it before every request.
+    const numericLcsc = entry.lcsc.slice(1)
+    const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${numericLcsc}`
     try {
       const { stdout } = await run('curl', ['--fail', '--silent', '--show-error', '-L', '--retry', '2', '--max-time', '40', url], { maxBuffer: 8_000_000 })
-      let response = JSON.parse(stdout)
+      const response = JSON.parse(stdout)
       let exact = (response.components || []).find(p => `C${String(p.lcsc).replace(/^C/, '')}` === entry.lcsc)
+      let fallback_url = null
+      let fallback_response = null
       // The generic search index occasionally omits stocked catalog resistors.
       // An exact code match in the typed catalog is also valid evidence.
       if (!exact && entry.kind === 'resistor') {
         const ohms = Number.parseFloat(entry.value) * (entry.value.endsWith('k') ? 1000 : entry.value.endsWith('M') ? 1e6 : 1)
-        url = `https://jlcsearch.tscircuit.com/resistors/list.json?resistance=${ohms}&package=${entry.footprint}`
-        const fallback = await run('curl', ['--fail', '--silent', '-L', '--max-time', '40', url])
-        response = JSON.parse(fallback.stdout)
-        exact = (response.resistors || []).find(p => `C${String(p.lcsc).replace(/^C/, '')}` === entry.lcsc)
+        fallback_url = `https://jlcsearch.tscircuit.com/resistors/list.json?resistance=${ohms}&package=${entry.footprint}`
+        const fallback = await run('curl', ['--fail', '--silent', '-L', '--max-time', '40', fallback_url])
+        fallback_response = JSON.parse(fallback.stdout)
+        exact = (fallback_response.resistors || []).find(p => `C${String(p.lcsc).replace(/^C/, '')}` === entry.lcsc)
       }
       const checked_at = new Date().toISOString()
-      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify({ url, checked_at, response }, null, 2))
-      results.push({ ...entry, checked_at, url, mpn: exact?.mfr ?? null, package: exact?.package ?? null,
+      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify({ url, fallback_url, checked_at, response, fallback_response }, null, 2))
+      const package_match = entry.footprint && exact?.package ? entry.footprint.toLowerCase() === exact.package.toLowerCase() : null
+      results.push({ ...entry, checked_at, url, fallback_url, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
-        status: !exact ? 'unverified-no-exact-match' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
+        status: !exact ? 'unverified-no-exact-match' : package_match === false ? 'package-mismatch' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
         required: entry.quantity_per_board * quantity })
     } catch (error) { results.push({ ...entry, url, status: 'unverified-network-error', error: String(error.message) }) }
   }

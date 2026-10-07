@@ -6,6 +6,7 @@ const manifest=JSON.parse(readFileSync(new URL('../docs/design-manifest.json',im
 const components=data.filter(e=>e.type==='source_component')
 const ports=data.filter(e=>e.type==='source_port')
 const nets=data.filter(e=>e.type==='source_net')
+const pcbComponents=data.filter(e=>e.type==='pcb_component')
 const comp=name=>components.find(e=>e.name===name)
 const port=(name,pin)=>ports.find(e=>e.source_component_id===comp(name)?.source_component_id && e.pin_number===pin)
 const key=(name,pin)=>port(name,pin)?.subcircuit_connectivity_map_key
@@ -17,6 +18,25 @@ test('all physical parts are present and have their intended JLC code',()=>{
   expect(supplierBacked.length).toBe(manifest.parts.length)
   for(const p of manifest.parts) expect(comp(p.name)?.supplier_part_numbers?.jlcpcb).toContain(p.lcsc)
   expect(components.filter(component=>!component.supplier_part_numbers?.jlcpcb?.length).every(component=>component.name.startsWith('TP_'))).toBe(true)
+})
+test('C22 bulk capacitor body and CAD model stay inside the stepped board outline',()=>{
+  const source=comp('C22')
+  const pcb=pcbComponents.find(item=>item.source_component_id===source.source_component_id)
+  const cad=data.find(item=>item.type==='cad_component'&&item.pcb_component_id===pcb.pcb_component_id)
+  const board=data.find(item=>item.type==='pcb_board')
+  expect(pcb.center).toEqual({x:30,y:22})
+  expect(cad.position.x).toBe(30);expect(cad.position.y).toBe(22)
+  expect(cad.model_step_url).toContain('C407954.step')
+  const distance=(point,start,end)=>{
+    const dx=end.x-start.x,dy=end.y-start.y
+    if(dx===0&&dy===0)return Math.hypot(point.x-start.x,point.y-start.y)
+    const t=Math.max(0,Math.min(1,((point.x-start.x)*dx+(point.y-start.y)*dy)/(dx*dx+dy*dy)))
+    return Math.hypot(point.x-(start.x+t*dx),point.y-(start.y+t*dy))
+  }
+  const edges=board.outline.map((point,index)=>[point,board.outline[(index+1)%board.outline.length]])
+  const minimumCenterToEdge=Math.min(...edges.map(([start,end])=>distance(pcb.center,start,end)))
+  // Imported courtyard radius is 6.505 mm, leaving more than 1.4 mm to the exact STEP outline.
+  expect(minimumCenterToEdge).toBeGreaterThan(7.9)
 })
 test('source connectivity does not short power, ground, or the switched motor rail',()=>{
   const names=['GND','USB_VBUS','USB_DATA_VBUS','VMOTOR','V3V3','V3V3_USB','V3V3_MOTOR','VBUS_LV','PD_1V5','TMC_12V']
