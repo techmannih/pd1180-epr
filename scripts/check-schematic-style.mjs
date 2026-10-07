@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 
 const circuitPath = process.argv[2] || 'dist/index/circuit.json'
 const analyzerPath = new URL('../checks/vendor/circuit-json-schematic-placement-analysis.browser.js', import.meta.url)
-const expectedAnalyzerSha256 = '62428d06ace175a8474161908505eb4e1a1e8ece649c93a3d423a643bcc242bc'
+const expectedAnalyzerSha256 = '598a25590702cbce18554dcd23a7516411975d8e2e0de9c0e3a0918574fd2729'
 
 const analyzerSource = await readFile(analyzerPath)
 const analyzerSha256 = createHash('sha256').update(analyzerSource).digest('hex')

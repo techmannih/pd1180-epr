@@ -42,6 +42,8 @@ Object.assign(projectData.board.design_settings.rules, {
   min_through_hole_diameter: 0.2,
   min_track_width: 0.09,
   min_via_annular_width: 0.10,
+  // The routed release keeps a reviewed set of 0.40/0.20 mm filled-and-capped
+  // escape vias; newly generated routes use the 0.45/0.20 mm default below.
   min_via_diameter: 0.4,
 })
 Object.assign(projectData.board.design_settings.defaults.zones, {

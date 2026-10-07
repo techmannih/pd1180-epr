@@ -5,11 +5,11 @@ export const MMBT5551LT1G = (props: Omit<TransistorProps, "type">) => {
     <transistor
       type="npn"
       symbol={
-        <symbol name="MMBT5551LT1G_NPN" width={1.4} height={1.4}>
-          <schematictext text="{NAME}" schX={-0.35} schY={0.25} fontSize={0.18} color="#006464" anchor="bottom_left" />
-          <port name="pin1" pinNumber={1} aliases={["base", "B"]} direction="left" schX={-0.7} schY={0} schStemLength={0.25} />
-          <port name="pin3" pinNumber={3} aliases={["collector", "C"]} direction="up" schX={0.3} schY={0.7} schStemLength={0.25} />
-          <port name="pin2" pinNumber={2} aliases={["emitter", "E"]} direction="down" schX={0.3} schY={-0.7} schStemLength={0.25} />
+        <symbol name="MMBT5551LT1G_NPN" width={1.8} height={1.8}>
+          <schematictext text="{NAME}" schX={-0.45} schY={0.35} fontSize={0.18} color="#006464" anchor="bottom_left" />
+          <port name="pin1" pinNumber={1} aliases={["B", "base"]} direction="left" schX={-0.9} schY={0} schStemLength={0.45} />
+          <port name="pin3" pinNumber={3} aliases={["C", "collector"]} direction="up" schX={0.3} schY={0.9} schStemLength={0.48} />
+          <port name="pin2" pinNumber={2} aliases={["E", "emitter"]} direction="down" schX={0.3} schY={-0.9} schStemLength={0.48} />
           <schematicpath points={[{ x: -0.45, y: 0 }, { x: -0.08, y: 0 }]} strokeColor="#880000" />
           <schematicpath points={[{ x: -0.08, y: -0.3 }, { x: -0.08, y: 0.3 }]} strokeColor="#880000" />
           <schematicpath points={[{ x: -0.08, y: 0.18 }, { x: 0.3, y: 0.42 }]} strokeColor="#880000" />

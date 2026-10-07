@@ -2,7 +2,7 @@
 
 Exact LCSC-code matches only. A fuzzy search result is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-07T05:59:25.104Z.
+Last complete refresh: 2026-10-07T08:14:59.424Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|
@@ -68,7 +68,7 @@ Last complete refresh: 2026-10-07T05:59:25.104Z.
 | [C1858393](https://jlcsearch.tscircuit.com/components/list.json?search=1858393) | LMR36510ADDAR | 2 | 1663 | U5, U22 |
 | [C2847904](https://jlcsearch.tscircuit.com/components/list.json?search=2847904) | STM32G0B1CBT6 | 1 | 775 | U16 |
 | [C2869734](https://jlcsearch.tscircuit.com/components/list.json?search=2869734) | LM66100DCKR | 2 | 7533 | U23, U24 |
-| [C2985721](https://jlcsearch.tscircuit.com/components/list.json?search=2985721) | HoLLR2512-3W-33mR-1% | 2 | 25283 | RS1, RS2 |
+| [C2985721](https://jlcsearch.tscircuit.com/components/list.json?search=2985721) | HoLLR2512-3W-33mR-1% | 2 | 25283 | R109, R110 |
 | [C3020560](https://jlcsearch.tscircuit.com/components/list.json?search=3020560) | USB4105-GF-A | 2 | 11505 | J1, J10 |
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 517 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 3323 | U1 |

@@ -56,6 +56,7 @@ The tscircuit cloud entrypoint is `release/circuit.json`, a generated viewer art
 ## Schematic and electrical review
 
 - Make every schematic readable, with clear labels and no overlapping symbols, wires or text.
+- For custom imported symbols, put the short visible pin label first (`G`, `S`, `D`, `B`, `C`, `E`) and retain semantic aliases after it. Size the symbol body and stems so pin names, reference text and net labels cannot overlap.
 - Add `<schematictext>` near each chip explaining its function and relevant ratings, such as voltage, current or power. Keep those notes concise and place them where they do not collide with the circuit.
 - Model every USB-C receptacle with tscircuit's `<connector standard="usb_c">`; retain the exact reviewed supplier part, physical pad map and footprint when a JLCPCB import supplies the package.
 - When power and data use separate USB-C receptacles, keep their VBUS nets physically and electrically separate. A data-only UFP port needs an independent Rd on each CC pin and a valid VBUS attach/detach sense path before firmware enables the USB peripheral.
@@ -75,6 +76,7 @@ The tscircuit cloud entrypoint is `release/circuit.json`, a generated viewer art
 - Mark connector function, polarity, pin 1, hazardous/high-voltage rails, product name and revision where space permits.
 - Include `Made with tscircuit` branding on silkscreen. Branding must not overlap pads, holes, component courtyards or required safety markings.
 - Keep the board visually reviewable: readable references for connectors and major parts, uncluttered passive references, and top/bottom plus 3D previews.
+- Place user-operated switches and controls on the accessible top side unless the enclosure explicitly provides bottom access; verify the fitted actuator can be pressed after assembly.
 
 ## Mandatory validation and delivery
 
