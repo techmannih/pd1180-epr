@@ -18,6 +18,7 @@ const checks = [
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['preview', ['run', 'build:preview']],
+  ['source-schematic', ['run', 'check:source-schematic']],
   ['schematic-style', ['run', 'check:schematic-style']],
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],

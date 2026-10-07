@@ -1,16 +1,18 @@
 {
-  "recorded_at": "2026-10-06T10:21:35.226Z",
+  "recorded_at": "2026-10-07T18:05:05.314489+00:00",
   "revision": "0.3.0",
   "complete": true,
-  "router": "verified Freerouting connectivity with KiCad 2.4 mm power-corridor reinforcement",
+  "router": "Freerouting seed with KiCad-reviewed local completion and 2.4 mm power-corridor reinforcement",
   "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
   "statistics": {
-    "components_including_mounts": 255,
-    "populated_components": 251,
-    "pads": 904,
-    "traces": 3531,
-    "vias": 620,
-    "copper_pours": 507,
+    "components_including_mounts_and_service_pads": 266,
+    "supplier_backed_fitted_components": 251,
+    "service_testpads": 11,
+    "mounting_holes": 4,
+    "pads": 908,
+    "traces": 3906,
+    "vias": 523,
+    "copper_pours": 487,
     "layers": 4
   },
   "kicad_drc": {
@@ -20,7 +22,7 @@
   },
   "manufacturing": {
     "report": "dist/manufacturing/manufacturing-report.json",
-    "gerber_and_drill_files": 15,
+    "gerber_and_drill_files": 16,
     "archive": "dist/pd1180-epr-r0.3-manufacturing.zip"
   },
   "physical_validation_required": [
@@ -28,6 +30,7 @@
     "48 V EPR negotiation and fault recovery",
     "motor-control firmware and shutdown timing",
     "brake resistor energy and thermal sizing",
+    "motor rear-face fit and shaft-magnet alignment",
     "conducted and radiated EMC"
   ]
 }

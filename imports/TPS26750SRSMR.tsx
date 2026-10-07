@@ -19,7 +19,7 @@ const pinLabels = {
   pin16: ["I2Cc_SCL"],
   pin17: ["N_I2Cc_IRQ"],
   pin18: ["GPIO3"],
-  pin19: ["GND5"],
+  pin19: ["VSYS"],
   pin20: ["POWER_PATH_EN"],
   pin21: ["NC"],
   pin22: ["GPIO4","USB_P","LD1"],

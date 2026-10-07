@@ -18,7 +18,7 @@ J1 CC1/CC2
   -> configured sink-only 48 V / 5 A EPR negotiation
 ```
 
-The TPS26750 is the dedicated PD controller. TI specifies EPR sink support at 28 V, 36 V and 48 V and shows the PD exchange on CC. U2's optional `USB_P`/`USB_N` pins do not carry board USB data; pins 22 and 23 are grounded as TI requires for unused GPIO4/GPIO5. The TPS26750 `POWER_PATH_EN` output is translated and combined with the MCU permit before the TPS26631 eFuse can energize the motor bus.
+The TPS26750 is the dedicated PD controller. TI specifies EPR sink support at 28 V, 36 V and 48 V and shows the PD exchange on CC. U2's optional `USB_P`/`USB_N` pins do not carry board USB data; pins 22 and 23 are grounded as TI requires for unused GPIO4/GPIO5. `POWER_PATH_EN` drives the exact two-NMOS buffer from TI Figure 8-5: R9 (0 Ω) drives Q2, R11 pulls Q2's drain up to `PD_3V3`, R12 (0 Ω) drives Q3, and R13 pulls `PD_PATH_OK` up to `PD_3V3`. Q2/Q3 are the CSD17484F4 devices used by the TPS26750 EVM. `PD_PATH_OK` is then combined with the MCU permit before the TPS26631 eFuse can energize the motor bus.
 
 The board still requires a reviewed TI-generated full-flash configuration image in U3. A blank image leaves the design in SafeMode and does not negotiate 48 V.
 
@@ -50,6 +50,8 @@ TI documents that the TPD4S480 SBU OVP FETs may protect USB 2.0 DP/DM instead of
 
 - [Texas Instruments TPS26750 product page](https://www.ti.com/product/TPS26750)
 - [Texas Instruments TPS26750 datasheet](https://www.ti.com/lit/ds/symlink/tps26750.pdf)
+- [Texas Instruments TPS26750 EVM user guide](https://www.ti.com/lit/ug/slvucp8a/slvucp8a.pdf)
+- [Texas Instruments CSD17484F4 datasheet](https://www.ti.com/lit/ds/symlink/csd17484f4.pdf)
 - [Texas Instruments TPD4S480 datasheet](https://www.ti.com/lit/ds/symlink/tpd4s480.pdf)
 - [STMicroelectronics STM32G0B1CB datasheet](https://www.st.com/resource/en/datasheet/stm32g0b1cb.pdf)
 - [USB-IF USB Type-C cable and connector specification](https://www.usb.org/document-library/usb-type-cr-cable-and-connector-specification-release-20)

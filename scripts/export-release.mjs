@@ -19,6 +19,13 @@ const stock = JSON.parse(await readFile('docs/stock-report.json', 'utf8'))
 const alternatives = JSON.parse(await readFile('docs/alternatives.json', 'utf8'))
 const external = JSON.parse(await readFile('docs/external-parts.json', 'utf8'))
 const schematicStyle = JSON.parse(await readFile('docs/checks/schematic-style.json', 'utf8'))
+const kicadErc = JSON.parse(await readFile('dist/manufacturing/kicad-erc.json', 'utf8'))
+if (!Array.isArray(kicadErc.sheets)) throw new Error('KiCad ERC report is missing its sheets array')
+const kicadErcViolations = kicadErc.sheets.flatMap((sheet) => {
+  if (!Array.isArray(sheet.violations)) throw new Error(`KiCad ERC sheet ${sheet.path || '<unknown>'} is missing its violations array`)
+  return sheet.violations
+})
+if (kicadErcViolations.length) throw new Error(`Release blocked: KiCad ERC contains ${kicadErcViolations.length} violations`)
 await writeFile(join(sourcing, 'bom-with-stock.csv'), csv([
   ['LCSC', 'MPN', 'Value', 'Package', 'References', 'Qty/board', 'Stock', 'Status', 'Checked at'],
   ...stock.parts.map((part) => [part.lcsc, part.mpn, part.value, part.package, part.references, part.quantity_per_board, part.stock, part.status, part.checked_at]),
@@ -41,6 +48,7 @@ const copies = [
   ['dist/manufacturing/assembly-bom.csv', 'jlc-bom.csv'],
   ['dist/manufacturing/assembly-cpl.csv', 'jlc-cpl.csv'],
   ['dist/manufacturing/kicad-drc.json', 'kicad-drc.json'],
+  ['dist/manufacturing/kicad-erc.json', 'kicad-erc.json'],
   ['dist/manufacturing/manufacturing-report.json', 'manufacturing-report.json'],
   ['mounting-template.svg', 'mounting-template.svg'],
   ['previews/mounting-template.png', 'mounting-template.png'],
@@ -90,7 +98,7 @@ await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Moto
 
 Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for two-sided assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for the 40 MOSFET drain-pad thermal vias, and top/bottom assembly.
 
-The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The committed native KiCad checks have zero PCB DRC violations, zero unconnected items, zero schematic-parity issues and zero schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style analysis reports zero issues across all 12 sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 
@@ -120,6 +128,7 @@ const deliveryManifest = {
   checks: {
     kicad_drc_violations: 0,
     kicad_unconnected_items: 0,
+    kicad_erc_violations: kicadErcViolations.length,
     stock_parts: stock.parts.length,
     stock_unavailable: stock.parts.filter((part) => part.status !== 'available').length,
     alternative_records: alternatives.parts.length,

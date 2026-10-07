@@ -10,7 +10,9 @@ if (!Number.isInteger(quantity) || quantity < 1) throw new Error('BOARD_QUANTITY
 const grouped = new Map()
 for (const part of manifest.parts) {
   if (!/^C\d+$/.test(part.lcsc)) throw new Error(`Missing supplier code: ${part.name}`)
+  if (typeof part.footprint !== 'string' || !part.footprint.trim()) throw new Error(`${part.name}: missing expected JLC package in design manifest`)
   const entry = grouped.get(part.lcsc) || { lcsc: part.lcsc, references: [], quantity_per_board: 0, value: part.value, footprint: part.footprint, kind: part.tag }
+  if (entry.footprint.trim().toLowerCase() !== part.footprint.trim().toLowerCase()) throw new Error(`${part.lcsc}: inconsistent expected JLC packages (${entry.footprint} / ${part.footprint})`)
   entry.references.push(part.name)
   entry.quantity_per_board++
   grouped.set(part.lcsc, entry)
@@ -50,10 +52,10 @@ await Promise.all(Array.from({ length: 5 }, async () => {
       }
       const checked_at = new Date().toISOString()
       await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify({ url, fallback_url, checked_at, response, fallback_response }, null, 2))
-      const package_match = entry.footprint && exact?.package ? entry.footprint.toLowerCase() === exact.package.toLowerCase() : null
+      const package_match = typeof exact?.package === 'string' && entry.footprint.trim().toLowerCase() === exact.package.trim().toLowerCase()
       results.push({ ...entry, checked_at, url, fallback_url, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
-        status: !exact ? 'unverified-no-exact-match' : package_match === false ? 'package-mismatch' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
+        status: !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
         required: entry.quantity_per_board * quantity })
     } catch (error) { results.push({ ...entry, url, status: 'unverified-network-error', error: String(error.message) }) }
   }
@@ -61,5 +63,5 @@ await Promise.all(Array.from({ length: 5 }, async () => {
 results.sort((a,b) => Number(a.lcsc.slice(1)) - Number(b.lcsc.slice(1)))
 const report = { checked_at: new Date().toISOString(), board_quantity: quantity, stock_is_not_reserved: true, parts: results }
 await writeFile(new URL('../docs/stock-report.json', import.meta.url), JSON.stringify(report, null, 2))
-console.log(JSON.stringify({ unique_parts: results.length, available: results.filter(p=>p.status==='available').length, problems: results.filter(p=>p.status!=='available') }, null, 2))
-if (results.some(p=>p.status!=='available')) process.exitCode = 1
+console.log(JSON.stringify({ unique_parts: results.length, package_matches: results.filter(p=>p.package_match===true).length, available: results.filter(p=>p.status==='available').length, problems: results.filter(p=>p.status!=='available') }, null, 2))
+if (results.some(p=>p.status!=='available'||p.package_match!==true)) process.exitCode = 1

@@ -91,7 +91,7 @@ Run `bun run review` before a prototype handoff. The review must cover:
 - permitted top/bottom assembly placement and exact supplier identities;
 - local bypass and critical-copper checks;
 - routing fingerprint and final-route policy;
-- shorts and final KiCad DRC with zero violations and zero unconnected items;
+- shorts and final native KiCad checks with zero PCB DRC violations, zero unconnected items, zero schematic-parity issues and zero schematic ERC violations across every sheet;
 - power-corridor/via analysis;
 - live stock and alternative-part evidence;
 - required release files, archive integrity and SHA-256 hashes.

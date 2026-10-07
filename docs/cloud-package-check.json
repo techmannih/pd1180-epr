@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-07T14:13:35.613Z",
+  "checked_at": "2026-10-07T18:07:40.911Z",
   "main_entrypoint": "release/circuit.json",
   "registry_dependencies": [],
   "ignored_files": [
@@ -17,6 +17,7 @@
     "release/feature-parity-check.json",
     "release/hardware-contract.json",
     "release/kicad-drc.json",
+    "release/kicad-erc.json",
     "release/manufacturing-report.json",
     "release/order-settings.json",
     "release/power-routing-check.json",
@@ -35,9 +36,9 @@
     "sourcing/**",
     "*.log"
   ],
-  "included_files": 55,
-  "included_bytes": 6766823,
-  "included_mebibytes": 6.45,
+  "included_files": 56,
+  "included_bytes": 6773578,
+  "included_mebibytes": 6.46,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
@@ -46,7 +47,7 @@
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 136701
+      "bytes": 138225
     },
     {
       "path": "bun.lock",
@@ -54,7 +55,7 @@
     },
     {
       "path": "README.md",
-      "bytes": 17714
+      "bytes": 17825
     },
     {
       "path": "imports/STM32G0B1CBT6.local.js",
@@ -66,11 +67,11 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 12093
+      "bytes": 12191
     },
     {
       "path": "imports/TPS26750SRSMR.tsx",
-      "bytes": 7864
+      "bytes": 7865
     },
     {
       "path": "imports/B6B_PH_K_S_LF__SN_.tsx",
@@ -81,9 +82,9 @@
       "bytes": 5840
     }
   ],
-  "github_import_files": 297,
-  "github_import_bytes": 20537112,
-  "github_import_mebibytes": 19.59,
+  "github_import_files": 299,
+  "github_import_bytes": 20576622,
+  "github_import_mebibytes": 19.62,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
@@ -92,23 +93,23 @@
       "bytes": 6326256
     },
     {
-      "path": "release/pcb-3d.png",
-      "bytes": 2036092
-    },
-    {
       "path": "previews/pd1180-epr-overview.png",
-      "bytes": 2009981
+      "bytes": 2014889
     },
     {
       "path": "previews/pd1180-epr-top.png",
+      "bytes": 2014889
+    },
+    {
+      "path": "release/pcb-3d.png",
       "bytes": 2009981
     },
     {
-      "path": "release/pcb-bottom.png",
-      "bytes": 1714958
+      "path": "previews/pd1180-epr-bottom.png",
+      "bytes": 1710358
     },
     {
-      "path": "previews/pd1180-epr-bottom.png",
+      "path": "release/pcb-bottom.png",
       "bytes": 1703011
     },
     {
@@ -117,15 +118,15 @@
     },
     {
       "path": "release/schematics/usb-pd.svg",
-      "bytes": 414000
+      "bytes": 380018
     },
     {
       "path": "release/schematics/motion.svg",
-      "bytes": 356027
+      "bytes": 356024
     },
     {
       "path": "release/schematics/mcu.svg",
-      "bytes": 263561
+      "bytes": 264039
     }
   ],
   "errors": []

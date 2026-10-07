@@ -19,6 +19,7 @@ const requiredIgnores = [
   'release/feature-parity-check.json',
   'release/hardware-contract.json',
   'release/kicad-drc.json',
+  'release/kicad-erc.json',
   'release/manufacturing-report.json',
   'release/order-settings.json',
   'release/power-routing-check.json',

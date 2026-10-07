@@ -39,7 +39,7 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   expect(minimumCenterToEdge).toBeGreaterThan(7.9)
 })
 test('source connectivity does not short power, ground, or the switched motor rail',()=>{
-  const names=['GND','USB_VBUS','VMOTOR','V3V3','V3V3_USB','V3V3_MOTOR','VBUS_LV','PD_1V5','TMC_12V']
+  const names=['GND','USB_VBUS','VMOTOR','V3V3','V3V3_USB','V3V3_MOTOR','LOGIC_OR_PRIORITY','VBUS_LV','PD_1V5','TMC_12V']
   const keys=names.map(netKey)
   expect(keys.every(Boolean)).toBe(true)
   expect(new Set(keys).size).toBe(names.length)
@@ -51,10 +51,37 @@ test('48-V connector goes through the EPR protector; PD controller never sees ra
   on('U2',2,'PD_3V3');on('U2',3,'GND') // SafeMode, address 0x20.
   on('Q1',2,'VBUS_LV');on('Q1',3,'USB_VBUS')
 })
+test('TPS26750 POWER_PATH_EN uses the TI EVM dual-NMOS buffer',()=>{
+  on('U2',20,'PD_PATH_HV');on('R9',1,'PD_PATH_HV');on('R9',2,'PD_LEVEL_BASE')
+  on('Q2',1,'PD_LEVEL_BASE');on('Q2',2,'GND');on('Q2',3,'PD_PATH_N')
+  on('R11',1,'PD_3V3');on('R11',2,'PD_PATH_N')
+  on('R12',1,'PD_PATH_N');on('R12',2,'PD_INV_BASE')
+  on('Q3',1,'PD_INV_BASE');on('Q3',2,'GND');on('Q3',3,'PD_PATH_OK')
+  on('R13',1,'PD_3V3');on('R13',2,'PD_PATH_OK')
+  expect(comp('R10')).toBeUndefined()
+  for(const name of ['Q2','Q3']){
+    expect(comp(name).manufacturer_part_number).toBe('CSD17484F4')
+    expect(comp(name).supplier_part_numbers.jlcpcb).toContain('C2862245')
+    expect(comp(name).channel_type).toBe('n')
+    expect(comp(name).mosfet_mode).toBe('enhancement')
+  }
+  for(const name of ['R9','R12']){
+    expect(comp(name).resistance).toBe(0)
+    expect(comp(name).supplier_part_numbers.jlcpcb).toContain('C21189')
+  }
+  for(const name of ['R11','R13']){
+    expect(comp(name).resistance).toBe(100000)
+    expect(comp(name).supplier_part_numbers.jlcpcb).toContain('C25803')
+  }
+})
 test('one Type-C receptacle carries EPR power and protected USB 2.0 data',()=>{
   on('J1',15,'CC1_CONN');on('J1',9,'CC2_CONN')
   on('U1',4,'CC1_CONN');on('U1',7,'CC1_CONN');on('U1',12,'CC1_PD');on('U2',24,'CC1_PD')
   on('U1',5,'CC2_CONN');on('U1',6,'CC2_CONN');on('U1',11,'CC2_PD');on('U2',25,'CC2_PD')
+  on('C2',1,'PD_3V3');on('C2',2,'GND')
+  expect(comp('C2').capacitance).toBe(1e-6)
+  expect(comp('C2').supplier_part_numbers.jlcpcb).toContain('C15849')
+  expect(manifest.parts.find(p=>p.name==='C2').value).toBe('1uF')
   for(const pin of [11,13])on('J1',pin,'USB_DP_CONN')
   for(const pin of [12,14])on('J1',pin,'USB_DM_CONN')
   expect(comp('J10')).toBeUndefined()
@@ -121,9 +148,11 @@ test('analytical limits have margin below the 5-A USB input contract',()=>{
   expect(5.5**2*.033).toBeLessThan(3) // dissipation per phase shunt
 })
 
-test('motor-side buck keeps the brake logic alive with USB absent and both inputs reverse-blocked',()=>{
-  on('U22',2,'VMOTOR');on('L2',2,'V3V3_MOTOR')
+test('LM66100 status interlock keeps the dual 3.3-V ORing output continuous',()=>{
   on('U23',1,'V3V3_USB');on('U24',1,'V3V3_MOTOR')
-  for(const name of ['U23','U24']){on(name,3,'V3V3');on(name,6,'V3V3');on(name,2,'GND')}
+  on('U23',3,'V3V3_MOTOR');on('U23',5,'LOGIC_OR_PRIORITY')
+  on('R111',1,'V3V3_USB');on('R111',2,'LOGIC_OR_PRIORITY')
+  on('U24',3,'LOGIC_OR_PRIORITY');on('U24',5,'GND')
+  for(const name of ['U23','U24']){on(name,6,'V3V3');on(name,2,'GND')}
   on('U13',5,'V3V3');on('U14',5,'V3V3');on('R59',1,'V3V3')
 })

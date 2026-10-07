@@ -1,8 +1,8 @@
 # Procurement snapshot
 
-Exact LCSC-code matches only. A fuzzy search result is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
+Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-07T14:29:40.851Z.
+Last complete refresh: 2026-10-07T17:32:07.577Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|
@@ -13,11 +13,12 @@ Last complete refresh: 2026-10-07T14:29:40.851Z.
 | [C9943](https://jlcsearch.tscircuit.com/components/list.json?search=9943) | MAX3485EESA+T | 1 | 27908 | U20 |
 | [C13738](https://jlcsearch.tscircuit.com/components/list.json?search=13738) | X322516MLB4SI | 1 | 172398 | Y1 |
 | [C13967](https://jlcsearch.tscircuit.com/components/list.json?search=13967) | CL21B474KBFNNNE | 1 | 211110 | C27 |
-| [C14663](https://jlcsearch.tscircuit.com/components/list.json?search=14663) | CC0603KRX7R9BB104 | 32 | 12618106 | C2, C9, C10, C14, C65, C69, C70, C18, C19, C24, C28, C36, C37, C38, C39, C40, C41, C43, C44, C45, C46, C48, C51, C52, C54, C55, C56, C57, C58, C59, C60, C72 |
+| [C14663](https://jlcsearch.tscircuit.com/components/list.json?search=14663) | CC0603KRX7R9BB104 | 31 | 12618106 | C9, C10, C14, C65, C69, C70, C18, C19, C24, C28, C36, C37, C38, C39, C40, C41, C43, C44, C45, C46, C48, C51, C52, C54, C55, C56, C57, C58, C59, C60, C72 |
 | [C15725](https://jlcsearch.tscircuit.com/components/list.json?search=15725) | CL10B104KC8NNNC | 7 | 1221863 | C1, C12, C63, C20, C29, C31, C61 |
 | [C15846](https://jlcsearch.tscircuit.com/components/list.json?search=15846) | MAX3232ESE+T | 1 | 25896 | U21 |
-| [C15849](https://jlcsearch.tscircuit.com/components/list.json?search=15849) | CL10A105KB8NNNC | 4 | 5979916 | C13, C64, C42, C53 |
+| [C15849](https://jlcsearch.tscircuit.com/components/list.json?search=15849) | CL10A105KB8NNNC | 5 | 5979916 | C2, C13, C64, C42, C53 |
 | [C19666](https://jlcsearch.tscircuit.com/components/list.json?search=19666) | CL10A475KO8NNNC | 1 | 1373603 | C26 |
+| [C21189](https://jlcsearch.tscircuit.com/components/list.json?search=21189) | 0603WAF0000T5E | 2 | 6153233 | R9, R12 |
 | [C21190](https://jlcsearch.tscircuit.com/components/list.json?search=21190) | 0603WAF1001T5E | 4 | 8013731 | R55, R66, R98, R100 |
 | [C22827](https://jlcsearch.tscircuit.com/components/list.json?search=22827) | 0603WAF1803T5E | 5 | 11034 | R19, R20, R31, R32, R60 |
 | [C22859](https://jlcsearch.tscircuit.com/components/list.json?search=22859) | 0603WAF100JT5E | 9 | 2873490 | R38, R39, R42, R43, R46, R47, R50, R51, R68 |
@@ -28,13 +29,13 @@ Last complete refresh: 2026-10-07T14:29:40.851Z.
 | [C23162](https://jlcsearch.tscircuit.com/components/list.json?search=23162) | 0603WAF4701T5E | 13 | 7433362 | R3, R4, R5, R6, R7, R8, R79, R82, R85, R88, R91, R94, R97 |
 | [C23345](https://jlcsearch.tscircuit.com/components/list.json?search=23345) | 0603WAF220JT5E | 2 | 2657294 | R71, R72 |
 | [C23892](https://jlcsearch.tscircuit.com/components/list.json?search=23892) | TL431AIDBZR | 1 | 216018 | U12 |
-| [C25803](https://jlcsearch.tscircuit.com/components/list.json?search=25803) | 0603WAF1003T5E | 17 | 7990119 | R2, R9, R10, R15, R16, R102, R40, R41, R44, R45, R48, R49, R52, R53, R57, R67, R69 |
-| [C25804](https://jlcsearch.tscircuit.com/components/list.json?search=25804) | 0603WAF1002T5E | 33 | 37165617 | R1, R11, R12, R13, R14, R18, R104, R21, R24, R28, R29, R30, R35, R36, R37, R54, R56, R58, R62, R70, R73, R74, R75, R76, R78, R81, R84, R87, R90, R93, R96, R99, R101 |
+| [C25803](https://jlcsearch.tscircuit.com/components/list.json?search=25803) | 0603WAF1003T5E | 17 | 7990119 | R2, R11, R13, R15, R16, R102, R40, R41, R44, R45, R48, R49, R52, R53, R57, R67, R69 |
+| [C25804](https://jlcsearch.tscircuit.com/components/list.json?search=25804) | 0603WAF1002T5E | 31 | 37165617 | R1, R14, R18, R104, R111, R21, R24, R28, R29, R30, R35, R36, R37, R54, R56, R58, R62, R70, R73, R74, R75, R76, R78, R81, R84, R87, R90, R93, R96, R99, R101 |
 | [C25819](https://jlcsearch.tscircuit.com/components/list.json?search=25819) | 0603WAF4702T5E | 8 | 1803082 | R77, R80, R83, R86, R89, R92, R95, R108 |
 | [C25969](https://jlcsearch.tscircuit.com/components/list.json?search=25969) | 0603WAF4303T5E | 2 | 26399 | R23, R64 |
 | [C32677](https://jlcsearch.tscircuit.com/components/list.json?search=32677) | PSM712-LF-T7 | 1 | 317834 | D3 |
 | [C38523](https://jlcsearch.tscircuit.com/components/list.json?search=38523) | CL10C120JB8NNNC | 2 | 444842 | C49, C50 |
-| [C41095](https://jlcsearch.tscircuit.com/components/list.json?search=41095) | MMBT5551LT1G | 13 | 142386 | Q2, Q3, Q14, Q15, Q17, Q18, Q19, Q20, Q21, Q22, Q23, Q24, Q25 |
+| [C41095](https://jlcsearch.tscircuit.com/components/list.json?search=41095) | MMBT5551LT1G | 11 | 142386 | Q14, Q15, Q17, Q18, Q19, Q20, Q21, Q22, Q23, Q24, Q25 |
 | [C45783](https://jlcsearch.tscircuit.com/components/list.json?search=45783) | CL21A226MAQNNNE | 6 | 1734789 | C15, C16, C17, C66, C67, C68 |
 | [C51205](https://jlcsearch.tscircuit.com/components/list.json?search=51205) | CL31B475KBHNNNE | 2 | 17195 | C5, C47 |
 | [C73651](https://jlcsearch.tscircuit.com/components/list.json?search=73651) | TCAN332DR | 1 | 765 | U19 |
@@ -66,13 +67,14 @@ Last complete refresh: 2026-10-07T14:29:40.851Z.
 | [C1850273](https://jlcsearch.tscircuit.com/components/list.json?search=1850273) | TPS26631RGER | 1 | 63 | U6 |
 | [C1858393](https://jlcsearch.tscircuit.com/components/list.json?search=1858393) | LMR36510ADDAR | 2 | 1663 | U5, U22 |
 | [C2847904](https://jlcsearch.tscircuit.com/components/list.json?search=2847904) | STM32G0B1CBT6 | 1 | 775 | U16 |
+| [C2862245](https://jlcsearch.tscircuit.com/components/list.json?search=2862245) | CSD17484F4 | 2 | 3261 | Q2, Q3 |
 | [C2869734](https://jlcsearch.tscircuit.com/components/list.json?search=2869734) | LM66100DCKR | 2 | 7533 | U23, U24 |
 | [C2985721](https://jlcsearch.tscircuit.com/components/list.json?search=2985721) | HoLLR2512-3W-33mR-1% | 2 | 25283 | R109, R110 |
 | [C3020560](https://jlcsearch.tscircuit.com/components/list.json?search=3020560) | USB4105-GF-A | 1 | 11505 | J1 |
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 517 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 3323 | U1 |
 
-All 65 selected PCB part types (251 placements) had sufficient reported stock for one board at the timestamp above. The checker accepts only an exact LCSC-code match.
+All 67 selected PCB part types (251 placements) had sufficient reported stock for one board at the timestamp above, and all 67 supplier package names matched the pinned manifest expectation.
 
 ## Substitution policy
 

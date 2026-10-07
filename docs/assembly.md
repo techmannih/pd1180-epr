@@ -35,8 +35,12 @@ The hosted tscircuit 3D assembly does not currently include a motor primitive be
 
 ## Imported-part corrections
 
-The STM32 registry component is retained with a complete datasheet pin-label override, power/ground attributes and a courtyard. CSD19534 drain thermal vias are implemented in the final KiCad route with explicit drain-net identities and bottom copper ties. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion.
+The STM32 registry component is retained with a complete datasheet pin-label override, power/ground attributes and a courtyard. CSD19534 drain thermal vias are implemented in the final KiCad route with explicit drain-net identities and bottom copper ties. Q2/Q3 use the exact CSD17484F4 PicoStar-3 land pattern and G/S/D pin map from the imported JLC part. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion.
+
+## PD power-path enable buffer
+
+Fit Q2/Q3 as CSD17484F4 (`C2862245`), R9/R12 as 0 Ω (`C21189`), and R11/R13 as 100 kΩ (`C25803`). Both pull-ups terminate at `PD_3V3`, U2's LDO_3V3 rail. This is the two-NMOS non-inverting buffer in the TPS26750 EVM and Figure 8-5 of the TPS26750 datasheet. R10 is intentionally absent; do not add the retired BJT base pull-down.
 
 ## Logic backup supply
 
-U22, L2 and U24 provide motor-side logic backup; U5, L1 and U23 provide USB-side startup. Fit both LM66100 parts. Their CE pins sense common V3V3; tying CE to ground would remove the intended reverse-current blocking. The 3.3 V header pins are logic references; an external accessory current budget has not been allocated.
+U22, L2 and U24 provide motor-side logic backup; U5, L1 and U23 provide USB-side startup. Fit both LM66100 parts and R111. The wiring follows TI Figure 17: U23 CE senses V3V3_MOTOR, U23 ST and U24 CE share LOGIC_OR_PRIORITY, and R111 pulls that interlock up to V3V3_USB. U24 ST is grounded because it is unused. Do not substitute the simpler common-output CE wiring; equal inputs can turn both devices off. The 3.3 V header pins are logic references; an external accessory current budget has not been allocated.

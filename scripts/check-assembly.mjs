@@ -8,10 +8,13 @@ const errors=[]
 const fittedNames=new Set(manifest.parts.map(part=>part.name))
 const serviceTestpoints=components.filter(component=>component.name.startsWith('TP_'))
 for(const part of manifest.parts){
+ if(typeof part.footprint!=='string'||!part.footprint.trim())errors.push(`${part.name}: missing expected JLC package in manifest`)
  const source=components.find(x=>x.name===part.name)
  if(!source?.supplier_part_numbers?.jlcpcb?.includes(part.lcsc))errors.push(`${part.name}: supplier code differs from manifest`)
  const entry=stock.parts.find(x=>x.lcsc===part.lcsc)
  if(entry?.status!=='available')errors.push(`${part.name}: no exact stocked part evidence`)
+ if(entry?.package_match!==true)errors.push(`${part.name}: supplier package was not proven against ${part.footprint??'an expected package'}`)
+ if(entry?.footprint?.trim().toLowerCase()!==part.footprint?.trim().toLowerCase())errors.push(`${part.name}: stock evidence package expectation is stale`)
  if(!json.some(x=>x.type==='pcb_component'&&x.source_component_id===source?.source_component_id))errors.push(`${part.name}: no PCB component`)
 }
 for(const component of components){

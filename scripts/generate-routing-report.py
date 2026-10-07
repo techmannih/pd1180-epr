@@ -17,11 +17,18 @@ def main() -> None:
     parser.add_argument("drc", type=Path)
     parser.add_argument("manufacturing_report", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("docs/design-manifest.json"),
+        help="supplier-backed fitted-parts manifest (default: docs/design-manifest.json)",
+    )
     args = parser.parse_args()
 
     board = pcbnew.LoadBoard(str(args.board.resolve()))
     drc = json.loads(args.drc.read_text())
     manufacturing = json.loads(args.manufacturing_report.read_text())
+    manifest = json.loads(args.manifest.read_text())
     tracks = list(board.GetTracks())
     vias = [item for item in tracks if isinstance(item, pcbnew.PCB_VIA)]
     route_segments = [item for item in tracks if not isinstance(item, pcbnew.PCB_VIA)]
@@ -35,7 +42,7 @@ def main() -> None:
         "board": str(args.board),
         "statistics": {
             "components_including_mounts_and_service_pads": len(board.GetFootprints()),
-            "supplier_backed_fitted_components": 254,
+            "supplier_backed_fitted_components": len(manifest["parts"]),
             "service_testpads": 11,
             "mounting_holes": 4,
             "pads": len(board.GetPads()),

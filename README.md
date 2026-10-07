@@ -158,13 +158,13 @@ bun install --frozen-lockfile
 bun run review
 ```
 
-The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, two-sided assembly, local critical copper, shorts, KiCad DRC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
+The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, two-sided assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
 
 Current committed results:
 
 | Gate | Result |
 |---|---|
-| KiCad DRC | PASS — 0 violations, 0 unconnected items |
+| Native KiCad PCB DRC + schematic ERC | PASS — 0 DRC violations, 0 unconnected items, 0 schematic-parity issues, 0 ERC violations |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
 | Topology regression | PASS — 14 tests, 620 assertions |
 | Decoupling | PASS — 32/32 targets |

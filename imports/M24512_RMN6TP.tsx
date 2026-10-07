@@ -7,7 +7,7 @@ const pinLabels = {
   pin4: ["VSS"],
   pin5: ["SDA"],
   pin6: ["SCL"],
-  pin7: ["N_WC"],
+  pin7: ["WC"],
   pin8: ["VCC"]
 } as const
 

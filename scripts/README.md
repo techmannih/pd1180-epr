@@ -5,7 +5,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | Script | Purpose |
 |---|---|
 | `add-board-planes.py` | Adds board-outline-conformal GND and V3V3 planes to the routed four-layer PCB. |
-| `check-alternatives.mjs` | Rechecks reviewed LCSC alternative parts and writes availability evidence. |
+| `check-alternatives.mjs` | Rechecks reviewed LCSC alternative parts, their pinned live package names and intended package compatibility, then writes availability evidence. |
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and permitted top/bottom placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs. |
 | `check-cloud-package.mjs` | Keeps generated payloads out of tscircuit cloud builds, enforces a compact source upload, rejects oversized loose GitHub-import files and prevents runtime `@tsci/*` dependencies that are not locally pinned under `imports/`. |
@@ -14,7 +14,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
 | `check-firmware.mjs` | Builds and runs the host-side safety-state/TMC configuration tests. |
-| `check-kicad-drc.mjs` | Fails on any violation or unconnected item in the final KiCad DRC report. |
+| `check-kicad-drc.mjs` | Fails on any final KiCad PCB DRC violation, unconnected item, schematic-parity issue or nested schematic ERC violation. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
@@ -22,13 +22,14 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint or placement changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
-| `check-stock.mjs` | Refreshes exact JLCSearch stock evidence for the fitted BOM. |
+| `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
+| `check-source-schematic.mjs` | Audits all fixed-size schematic sheets, functional annotations, source-net fanout, the single USB-C power/data chain, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
 | `clean-silkscreen.py` | Removes dense passive references and applies the reviewed product/revision markings in KiCad. |
 | `design.test.mjs` | Regression tests electrical topology, fixed parts and safety behavior. |
 | `export-assembly.mjs` | Generates JLC-compatible BOM/CPL and the assembly review data. |
 | `export-kicad-route.mjs` | Exports the current Circuit JSON to a fresh KiCad PCB/project and hierarchical schematics for external routing. |
-| `export-manufacturing.mjs` | Uses KiCad CLI to export Gerbers, drills, positions, DRC, top/bottom renders and manufacturing ZIP. |
+| `export-manufacturing.mjs` | Uses KiCad CLI to export Gerbers, drills, positions, PCB DRC, schematic ERC, top/bottom renders and the manufacturing ZIP. |
 | `export-previews.mjs` | Renders top PCB and all functional schematic sheets. |
 | `export-release.mjs` | Builds the versioned release, synchronized root/release delivery manifests, sourcing tables and recursive hashes. |
 | `export-silkscreen-evidence.py` | Records every visible final KiCad top/bottom silkscreen label and its physical text size. |
@@ -39,6 +40,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `import-routed-kicad.mjs` | Imports externally routed KiCad copper into reviewable Circuit JSON artifacts. |
 | `import-specctra-route.py` | Imports a Freerouting Specctra SES result into its matching KiCad PCB, reverses the temporary bottom-placement routing compensation, and records connectivity counts. |
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
+| `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, and publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. |
 | `normalize-generated-svgs.mjs` | Removes generator-only trailing whitespace so previews remain deterministic in review. |
 | `prepare-r03-dsn.py` | Applies r0.3 routing classes and compensates the KiCad/Specctra bottom-footprint rotation convention before autorouting. |
 | `reinforce-power-copper.py` | Adds clearance-aware power corridors and parallel transfer vias to the final KiCad route. |
