@@ -1036,7 +1036,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.RUN_BASE", pin2: "net.GND" }} />
     <MMBT5551LT1G name="Q14" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_enable" schX={5} schY={-20} pcbX={1.0} pcbY={-17.0} pcbRotation={180}
       connections={{ base: "net.RUN_BASE", emitter: "net.ENABLE_CHAIN", collector: "net.DRV_EN_N" }} />
-    <MMBT5551LT1G name="Q15" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_enable" schX={9} schY={-20} pcbX={-4.0} pcbY={-20.0}
+    <MMBT5551LT1G name="Q15" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_enable" schX={9.103} schY={-20} pcbX={-4.0} pcbY={-20.0}
       connections={{ base: "net.HW_ENABLE_BASE", emitter: "net.GND", collector: "net.ENABLE_CHAIN" }} />
     <resistor name="R57" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_enable" schX={13} schY={-20} pcbX={-8.0} pcbY={-13.0}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
@@ -1045,7 +1045,7 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.HW_ENABLE_BASE", pin2: "net.GND" }} />
-    <BAV21W_7_F name="D1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_enable" schX={9} schY={-22.5} pcbX={-4.0} pcbY={-23.5}
+    <BAV21W_7_F name="D1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_enable" schX={8.9} schY={-22.5} pcbX={-4.0} pcbY={-23.5}
       schRotation={90}
       connections={{ pin1: "net.HW_ENABLE_BASE", pin2: "net.GND" }} />
 

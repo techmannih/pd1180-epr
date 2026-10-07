@@ -6,16 +6,12 @@ export const CSD17484F4 = (props: Omit<MosfetProps, "channelType" | "mosfetMode"
       channelType="n"
       mosfetMode="enhancement"
       symbol={
-        <symbol name="CSD17484F4_NMOS" width={1.8} height={1.8}>
-          <schematictext text="{NAME}" schX={-0.45} schY={0.35} fontSize={0.18} color="#006464" anchor="bottom_left" />
-          <port name="pin1" pinNumber={1} aliases={["G", "gate"]} direction="left" schX={-0.9} schY={0} schStemLength={0.4} />
-          <port name="pin2" pinNumber={2} aliases={["S", "source"]} direction="down" schX={0.25} schY={-0.9} schStemLength={0.45} />
-          <port name="pin3" pinNumber={3} aliases={["D", "drain"]} direction="up" schX={0.25} schY={0.9} schStemLength={0.45} />
-          <schematicpath points={[{ x: -0.5, y: 0 }, { x: -0.25, y: 0 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.2, y: -0.28 }, { x: -0.2, y: 0.28 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.12, y: -0.2 }, { x: 0.25, y: -0.2 }, { x: 0.25, y: -0.45 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.12, y: 0.2 }, { x: 0.25, y: 0.2 }, { x: 0.25, y: 0.45 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: 0.25, y: 0.08 }, { x: 0.13, y: -0.05 }, { x: 0.37, y: -0.05 }, { x: 0.25, y: 0.08 }]} strokeColor="#880000" isFilled fillColor="#880000" />
+        <symbol width={2.2} height={1.8}>
+          <schematictext text={props.name} schX={0} schY={0.35} fontSize={0.16} color="#006464" anchor="bottom_center" />
+          <schematicrect schX={0} schY={0} width={1.2} height={1} strokeWidth={0.03} color="#880000" />
+          <port name="pin1" pinNumber={1} aliases={["G", "gate"]} direction="left" schX={-0.9} schY={0.25} schStemLength={0.3} />
+          <port name="pin2" pinNumber={2} aliases={["S", "source"]} direction="left" schX={-0.9} schY={-0.25} schStemLength={0.3} />
+          <port name="pin3" pinNumber={3} aliases={["D", "drain"]} direction="right" schX={0.9} schY={0} schStemLength={0.3} />
         </symbol>
       }
       supplierPartNumbers={{

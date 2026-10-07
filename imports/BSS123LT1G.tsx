@@ -6,16 +6,22 @@ export const BSS123LT1G = (props: Omit<MosfetProps, "channelType" | "mosfetMode"
       channelType="n"
       mosfetMode="enhancement"
       symbol={
-        <symbol name="BSS123LT1G_NMOS" width={1.8} height={1.8}>
-          <schematictext text="{NAME}" schX={-0.45} schY={0.35} fontSize={0.18} color="#006464" anchor="bottom_left" />
-          <port name="pin1" pinNumber={1} aliases={["G", "gate"]} direction="left" schX={-0.9} schY={0} schStemLength={0.4} />
-          <port name="pin2" pinNumber={2} aliases={["S", "source"]} direction="down" schX={0.25} schY={-0.9} schStemLength={0.45} />
-          <port name="pin3" pinNumber={3} aliases={["D", "drain"]} direction="up" schX={0.25} schY={0.9} schStemLength={0.45} />
-          <schematicpath points={[{ x: -0.5, y: 0 }, { x: -0.25, y: 0 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.2, y: -0.28 }, { x: -0.2, y: 0.28 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.12, y: -0.2 }, { x: 0.25, y: -0.2 }, { x: 0.25, y: -0.45 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.12, y: 0.2 }, { x: 0.25, y: 0.2 }, { x: 0.25, y: 0.45 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: 0.25, y: 0.08 }, { x: 0.13, y: -0.05 }, { x: 0.37, y: -0.05 }, { x: 0.25, y: 0.08 }]} strokeColor="#880000" isFilled fillColor="#880000" />
+        <symbol>
+          <schematictext text={props.name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematicpath points={[{ x: 0, y: 0 }, { x: 0.381, y: -0.127 }, { x: 0.381, y: 0.127 }, { x: 0, y: 0 }]} strokeWidth={0.0635} strokeColor="#880000" isFilled fillColor="#880000" />
+          <schematicpath points={[{ x: 1.27, y: 0.127 }, { x: 1.0795, y: -0.1905 }, { x: 1.4605, y: -0.1905 }, { x: 1.27, y: 0.127 }]} strokeWidth={0.0635} strokeColor="#880000" isFilled fillColor="#880000" />
+          <schematicpath points={[{ x: 0, y: 0.4445 }, { x: 0.635, y: 0.4445 }, { x: 0.635, y: 0.635 }, { x: 1.27, y: 0.635 }, { x: 1.27, y: 0.127 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: 0 }, { x: 0.635, y: 0 }, { x: 0.635, y: -0.635 }, { x: 1.27, y: -0.635 }, { x: 1.27, y: -0.1905 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0.635, y: -0.4445 }, { x: 0, y: -0.4445 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: -0.127, y: 0.5715 }, { x: -0.127, y: -0.5715 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: 0.5715 }, { x: 0, y: 0.3175 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: -0.127 }, { x: 0, y: 0.127 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: -0.5715 }, { x: 0, y: -0.3175 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: -0.635, y: 0 }, { x: -0.127, y: 0 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 1.524, y: 0.127 }, { x: 1.397, y: 0.127 }, { x: 1.143, y: 0.127 }, { x: 1.016, y: 0.127 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <port name="pin3" pinNumber={3} aliases={["D", "drain"]} direction="up" schX={0.635} schY={1.27} schStemLength={0.635} />
+          <port name="pin1" pinNumber={1} aliases={["G", "gate"]} direction="left" schX={-1.27} schY={0} schStemLength={0.635} />
+          <port name="pin2" pinNumber={2} aliases={["S", "source"]} direction="down" schX={0.635} schY={-1.27} schStemLength={0.635} />
         </symbol>
       }
       supplierPartNumbers={{

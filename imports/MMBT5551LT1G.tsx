@@ -5,16 +5,15 @@ export const MMBT5551LT1G = (props: Omit<TransistorProps, "type">) => {
     <transistor
       type="npn"
       symbol={
-        <symbol name="MMBT5551LT1G_NPN" width={1.8} height={1.8}>
-          <schematictext text="{NAME}" schX={-0.45} schY={0.35} fontSize={0.18} color="#006464" anchor="bottom_left" />
-          <port name="pin1" pinNumber={1} aliases={["B", "base"]} direction="left" schX={-0.9} schY={0} schStemLength={0.45} />
-          <port name="pin3" pinNumber={3} aliases={["C", "collector"]} direction="up" schX={0.3} schY={0.9} schStemLength={0.48} />
-          <port name="pin2" pinNumber={2} aliases={["E", "emitter"]} direction="down" schX={0.3} schY={-0.9} schStemLength={0.48} />
-          <schematicpath points={[{ x: -0.45, y: 0 }, { x: -0.08, y: 0 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.08, y: -0.3 }, { x: -0.08, y: 0.3 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.08, y: 0.18 }, { x: 0.3, y: 0.42 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: -0.08, y: -0.18 }, { x: 0.3, y: -0.42 }]} strokeColor="#880000" />
-          <schematicpath points={[{ x: 0.3, y: -0.42 }, { x: 0.18, y: -0.33 }, { x: 0.2, y: -0.48 }, { x: 0.3, y: -0.42 }]} strokeColor="#880000" isFilled fillColor="#880000" />
+        <symbol>
+          <schematictext text={props.name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <port name="pin3" pinNumber={3} aliases={["C", "collector"]} direction="up" schX={0.635} schY={1.27} schStemLength={0.635} />
+          <port name="pin1" pinNumber={1} aliases={["B", "base"]} direction="left" schX={-0.635} schY={0} schStemLength={0.635} />
+          <port name="pin2" pinNumber={2} aliases={["E", "emitter"]} direction="down" schX={0.635} schY={-1.27} schStemLength={0.635} />
+          <schematicpath points={[{ x: 0.635, y: 0.635 }, { x: 0, y: 0.1905 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: -0.1905 }, { x: 0.635, y: -0.635 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: 0.5715 }, { x: 0, y: -0.5715 }]} strokeWidth={0.0635} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0.635, y: -0.635 }, { x: 0.4445, y: -0.3175 }, { x: 0.254, y: -0.5715 }, { x: 0.635, y: -0.635 }]} strokeWidth={0.0635} strokeColor="#880000" isFilled fillColor="#880000" />
         </symbol>
       }
       supplierPartNumbers={{
