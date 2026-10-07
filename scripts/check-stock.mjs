@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises'
+import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 
@@ -18,7 +18,14 @@ for (const part of manifest.parts) {
 const entries = [...grouped.values()]
 const results = []
 let index = 0
-await mkdir(new URL('../docs/stock-evidence/', import.meta.url), { recursive: true })
+const evidenceDirectory = new URL('../docs/stock-evidence/', import.meta.url)
+await mkdir(evidenceDirectory, { recursive: true })
+const activeEvidence = new Set(entries.map(entry => `${entry.lcsc}.json`))
+for (const file of await readdir(evidenceDirectory)) {
+  if (file.endsWith('.json') && !file.startsWith('alternatives-') && !activeEvidence.has(file)) {
+    await rm(new URL(file, evidenceDirectory))
+  }
+}
 await Promise.all(Array.from({ length: 5 }, async () => {
   while (index < entries.length) {
     const entry = entries[index++]

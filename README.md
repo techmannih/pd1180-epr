@@ -29,7 +29,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-70
 | Outputs | Hardware enable plus two protected low-side outputs |
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
 | Programming | SWD for STM32 and configuration EEPROM for the PD controller |
-| Assembly | 254 JLC-sourced fitted parts plus 11 service test pads, split across top and bottom |
+| Assembly | 251 JLC-sourced fitted parts plus 11 service test pads, split across top and bottom |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, external hardware enable and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN`, `RS485_DE`, both protected outputs and standalone-mode selection inactive.
 
@@ -99,7 +99,7 @@ The design is split into twelve A4 functional sheets:
 
 | Sheet | Scope |
 |---|---|
-| USB PD/data | Separate power/data receptacles, CC/data protection, PD controller, configuration EEPROM and data-port attach sensing |
+| USB PD/data | Combined J1 power/data receptacle, CC/data protection, PD controller, configuration EEPROM and EPR-safe VBUS attach sensing |
 | Logic power | USB-side and motor-side buck supplies with reverse-blocked rail ORing |
 | Motor power | eFuse, reverse blocking, bulk capacitance and motor-bus qualification |
 | Motion | TMC5160A control, mode selection, limit inputs and encoder interface |
@@ -140,9 +140,9 @@ The printable [mounting template](mounting-template.svg) is generated from `hard
 
 ## Parts and procurement
 
-- 254 populated components use exact JLCPCB/LCSC identities.
-- The fitted BOM contains 66 unique LCSC codes.
-- The latest committed live check reports 66/66 available.
+- 251 populated components use exact JLCPCB/LCSC identities.
+- The fitted BOM contains 65 unique LCSC codes.
+- The latest committed live check reports 65/65 available.
 - Eleven selected alternative candidates are currently available.
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
@@ -166,10 +166,10 @@ Current committed results:
 |---|---|
 | KiCad DRC | PASS — 0 violations, 0 unconnected items |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 14 tests, 631 assertions |
+| Topology regression | PASS — 14 tests, 620 assertions |
 | Decoupling | PASS — 32/32 targets |
-| Assembly | PASS — 254 supplier-backed parts plus 11 service test pads on permitted layers |
-| Stock | PASS — 66/66 unique fitted LCSC codes available at the recorded timestamp |
+| Assembly | PASS — 251 supplier-backed parts plus 11 service test pads on permitted layers |
+| Stock | PASS — 65/65 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
 | Release delivery | PASS — 35 required files, 4 ZIP archives, 34 recursive SHA-256 entries |
 | Route identity | PASS — source topology/placement and routed KiCad hashes match |
@@ -190,7 +190,7 @@ The `release/` directory contains:
 
 Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top/bottom assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
 
-The hosted tscircuit entrypoint is the generated `release/circuit.json`. It preserves the code-defined 12-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks 926/926 routed-port mappings and compares its copper counts with the KiCad import. Cloud autorouting remains disabled because the verified route is already present and recomputing this board can time out. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks both the configured 8 MiB viewer source set and the larger fixed-filter GitHub payload.
+The hosted tscircuit entrypoint is the generated `release/circuit.json`. It preserves the code-defined 12-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks 902/902 routed-port mappings and compares its copper counts with the KiCad import. Cloud autorouting remains disabled because the verified route is already present and recomputing this board can time out. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks both the configured 8 MiB viewer source set and the larger fixed-filter GitHub payload.
 
 ## Repository map
 
