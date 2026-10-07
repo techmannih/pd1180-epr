@@ -142,7 +142,7 @@ The printable [mounting template](mounting-template.svg) is generated from `hard
 
 - 251 populated components use exact JLCPCB/LCSC identities.
 - The fitted BOM contains 65 unique LCSC codes.
-- The latest committed live check reports 65/65 available.
+- The latest committed live check reports 67/67 available.
 - Eleven selected alternative candidates are currently available.
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
@@ -169,7 +169,7 @@ Current committed results:
 | Topology regression | PASS — 14 tests, 620 assertions |
 | Decoupling | PASS — 32/32 targets |
 | Assembly | PASS — 251 supplier-backed parts plus 11 service test pads on permitted layers |
-| Stock | PASS — 65/65 unique fitted LCSC codes available at the recorded timestamp |
+| Stock | PASS — 67/67 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
 | Release delivery | PASS — 36 required files, 4 ZIP archives, 35 recursive SHA-256 entries |
 | Route identity | PASS — source topology/placement and routed KiCad hashes match |
