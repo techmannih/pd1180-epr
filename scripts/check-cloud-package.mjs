@@ -71,23 +71,17 @@ async function walk(directory) {
 }
 await walk('.')
 
-async function walkGitHubImport(directory) {
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    const path = join(directory, entry.name)
-    const projectPath = relative('.', path).replaceAll('\\', '/')
-    const root = projectPath.split('/')[0]
-    // GitHub package import has a fixed filter: generated dist data and ZIP
-    // archives are not materialized into the cloud sandbox.
-    if (defaultIgnoredRoots.has(root) || root === 'dist') continue
-    if (entry.isDirectory()) await walkGitHubImport(path)
-    else {
-      if (entry.name.endsWith('.zip')) continue
-      const info = await stat(path)
-      githubImportFiles.push({ path: projectPath, bytes: info.size })
-    }
-  }
+// A GitHub import receives committed files, not ignored local check logs or
+// scratch outputs. Measure the Git index so the release gate matches that
+// payload exactly, then apply the importer's fixed dist/ZIP filter.
+const gitFilesResult = Bun.spawnSync(['git', 'ls-files', '-z'])
+if (gitFilesResult.exitCode !== 0) throw new Error(gitFilesResult.stderr.toString())
+for (const projectPath of gitFilesResult.stdout.toString().split('\0').filter(Boolean)) {
+  const root = projectPath.split('/')[0]
+  if (root === 'dist' || projectPath.endsWith('.zip')) continue
+  const info = await stat(projectPath)
+  githubImportFiles.push({ path: projectPath, bytes: info.size })
 }
-await walkGitHubImport('.')
 
 const totalBytes = included.reduce((sum, file) => sum + file.bytes, 0)
 const largestFiles = included.toSorted((a, b) => b.bytes - a.bytes).slice(0, 10)

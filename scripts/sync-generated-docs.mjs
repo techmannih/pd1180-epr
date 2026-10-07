@@ -4,11 +4,13 @@ const root = new URL('../', import.meta.url)
 const manifestPath = new URL('docs/design-manifest.json', root)
 const stockPath = new URL('docs/stock-report.json', root)
 const circuitPath = new URL('dist/index/circuit.json', root)
+const standardsPath = new URL('board-standards.json', root)
 
-const [manifest, stock, circuit] = await Promise.all([
+const [manifest, stock, circuit, standards] = await Promise.all([
   readFile(manifestPath, 'utf8').then(JSON.parse),
   readFile(stockPath, 'utf8').then(JSON.parse),
   readFile(circuitPath, 'utf8').then(JSON.parse),
+  readFile(standardsPath, 'utf8').then(JSON.parse),
 ])
 
 const names = new Map(circuit.filter(row => row.type === 'source_component').map(row => [row.source_component_id, row.name]))
@@ -20,10 +22,10 @@ for (const row of circuit.filter(row => row.type === 'pcb_component')) {
 for (const part of manifest.parts) {
   const position = placements.get(part.name)
   if (!position) throw new Error(`Missing PCB placement for ${part.name}`)
-  if (position.layer !== 'top') throw new Error(`${part.name}: top-side assembly requirement violated`)
+  if (!standards.assembly.populated_layers.includes(position.layer)) throw new Error(`${part.name}: assembly layer ${position.layer} is not permitted`)
   part.xy = [position.center.x, position.center.y]
   part.rotation = position.rotation ?? 0
-  part.layer = 'top'
+  part.layer = position.layer
 }
 await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
 
@@ -56,4 +58,5 @@ lines.push(
   '',
 )
 await writeFile(new URL('docs/procurement.md', root), lines.join('\n'))
-console.log(`Synchronized ${manifest.parts.length} top-side placements and ${stock.parts.length} stock rows.`)
+const counts = Object.fromEntries(standards.assembly.populated_layers.map(layer => [layer, manifest.parts.filter(part => part.layer === layer).length]))
+console.log(`Synchronized ${manifest.parts.length} two-sided placements (${Object.entries(counts).map(([layer, count]) => `${layer}: ${count}`).join(', ')}) and ${stock.parts.length} stock rows.`)

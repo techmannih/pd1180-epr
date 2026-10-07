@@ -8,8 +8,8 @@ PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 
 
 ### Power sequence
 
-1. USB VBUS initially supplies 5 V. U5, LMR36510, starts from this and provides V3V3_USB before any motor power is enabled. U23 passes that rail to V3V3. LM5164 was rejected for this position because its 6 V minimum input cannot bootstrap from default USB 5 V.
-2. U1, TPD4S480, protects both CC pins and USB data using its supported SBU channels. J1's actual SBU pins are unused. Its VBUS divider feeds U2's low-voltage VBUS sense pins. Q1 bypasses that divider in SPR with its source toward VBUS_LV and drain toward raw VBUS.
+1. J1 VBUS initially supplies 5 V. U5, LMR36510, starts from this and provides V3V3_USB before any motor power is enabled. U23 passes that rail to V3V3. LM5164 was rejected for this position because its 6 V minimum input cannot bootstrap from default USB 5 V. J10 VBUS is a separate, sense-only data-port rail and never powers the motor path.
+2. U1, TPD4S480, protects J1's two CC pins and J10's USB D+/D− signals using the device's documented alternate SBU-channel application. J1 D+/D− and both receptacles' SBU pins are unused. U1's VBUS divider feeds U2's low-voltage VBUS sense pins. Q1 bypasses that divider in SPR with its source toward VBUS_LV and drain toward raw VBUS.
 3. U2, TPS26750, boots in SafeMode: ADCIN1 to LDO_3V3, ADCIN2 to ground, I2Ct address 0x20. The 64 KiB EEPROM is at 0x50 on the independent I2Cc bus. An appropriate TI configuration image is required; a blank EEPROM does not negotiate 48 V.
 4. PD POWER_PATH_EN is not a 3.3 V signal. Q2/Q3 translate it before U4 combines it with an MCU power permit. Firmware may assert that permit only after an active 48 V / 5 A EPR contract and valid fault status. Loss of the contract must remove the permit immediately.
 5. U6, TPS26631, provides inrush/current limiting and voltage qualification. Q4 implements reverse-current blocking, with Q5 providing its fast gate pull-down. Motor bulk capacitance is downstream of this switch.
@@ -44,13 +44,13 @@ U8/U9 select native left/right endstop signals in ramp mode or external Step/Dir
 
 DRV_EN_N has a pull-up. Its sink path requires two series transistors: MCU_RUN with motor power-good and voltage-good, plus the externally asserted hardware-enable input. Open or grounded hardware enable disables the bridge. This is a functional enable, not a certified safe-torque-off circuit. The motor-side buck sustains this logic while motor capacitors are charged; power-loss disable timing and comparator operation still need bench validation.
 
-The AS5047P is a top-side part at the board origin. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs feed the motion controller. J5 exposes those outputs for observation, not for driving from a second encoder.
+The AS5047P is a bottom-side part at the board origin, facing the motor shaft magnet. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs feed the motion controller and are exposed only on labelled service pads for observation.
 
 ### Interfaces
 
 CAN uses TCAN332 and RS485 uses MAX3485E. Supply bypass and bus ESD parts are included. Fit 120 Ω termination externally only at the two physical ends of each bus; establish RS485 bias at the system level. These are non-isolated interfaces.
 
-RS232 uses MAX3232 at 3.3 V, with its four charge-pump capacitors. USB 2.0 data has the TPD4S480 short-to-VBUS protection and MCU-side series resistors. Route USB as a 90 Ω differential pair with an uninterrupted reference plane; no impedance claim is made for the current placement.
+RS232 uses MAX3232 at 3.3 V, with its four charge-pump capacitors. J10 USB 2.0 data has independent 5.1 kΩ Rd resistors, a divided/filtered VBUS attach sense on PB0/ADC_IN8, TPD4S480 protection and MCU-side series resistors. Firmware must keep the USB peripheral detached unless `USB_DATA_VBUS_SENSE` indicates valid J10 VBUS. Route USB as a 90 Ω differential pair with an uninterrupted reference plane; no impedance claim is made for the current placement.
 
 GPIO/stop/home/Step/Dir inputs use 160 V NPN stages and base-emitter reverse protection. Nominal use is 24 V logic; thresholds and transient immunity are unqualified. Outputs are low-side NPN switches with flyback diodes; begin qualification below 100 mA per channel. J9 pin 1 is **the 48 V motor bus**, not a regulated 24 V accessory rail. An accessory requiring 24 V needs a separate supply.
 

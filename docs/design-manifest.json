@@ -23,16 +23,12 @@
         "pin17": "USB_VBUS",
         "pin18": "USB_VBUS",
         "pin9": "CC2_CONN",
-        "pin15": "CC1_CONN",
-        "pin11": "USB_DP_CONN",
-        "pin13": "USB_DP_CONN",
-        "pin12": "USB_DM_CONN",
-        "pin14": "USB_DM_CONN"
+        "pin15": "CC1_CONN"
       },
       "sheet": "usb-pd",
       "xy": [
         -36.4249991,
-        33
+        15
       ],
       "owner": null,
       "rotation": 270,
@@ -44,6 +40,10 @@
       ],
       "noConnect": [
         "pin10",
+        "pin11",
+        "pin12",
+        "pin13",
+        "pin14",
         "pin16"
       ],
       "section": "usb-pd_J1",
@@ -81,8 +81,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -34,
-        22
+        -30,
+        24.5
       ],
       "owner": null,
       "lcsc": "C43131250",
@@ -170,8 +170,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -39,
-        22
+        -24,
+        40.5
       ],
       "owner": "U1",
       "lcsc": "C78755",
@@ -198,8 +198,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -34,
-        18.5
+        -30.5,
+        21
       ],
       "owner": "U1",
       "value": "100nF",
@@ -216,7 +216,7 @@
         25,
         4
       ],
-      "rotation": 180,
+      "rotation": 0,
       "layer": "top"
     },
     {
@@ -228,8 +228,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -29.75,
-        22.75
+        -29.6,
+        28.8
       ],
       "owner": "U1",
       "value": "100nF",
@@ -241,7 +241,7 @@
         1.5
       ],
       "noConnect": [],
-      "rotation": 0,
+      "rotation": 90,
       "decoupling_straight_line_mm": 1.9256449644132223,
       "section": "usb-pd_U1",
       "sch": [
@@ -442,8 +442,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -34,
-        25.5
+        -18,
+        36
       ],
       "owner": "U1",
       "value": "10k",
@@ -459,8 +459,8 @@
         22,
         2.2
       ],
-      "rotation": 0,
-      "layer": "top"
+      "rotation": 180,
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -471,8 +471,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -37.5,
-        18.5
+        -34,
+        22
       ],
       "owner": "U1",
       "value": "100k",
@@ -489,7 +489,7 @@
         2.2
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "M24512_RMN6TP",
@@ -652,8 +652,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -29,
-        25
+        -34,
+        21.5
       ],
       "owner": "U2",
       "value": "4.7k",
@@ -681,8 +681,8 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -27.5,
-        28
+        -20,
+        31
       ],
       "owner": "U2",
       "value": "4.7k",
@@ -699,7 +699,7 @@
         -11.6
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -826,7 +826,7 @@
       },
       "sheet": "usb-pd",
       "xy": [
-        -27.5,
+        -14,
         30
       ],
       "owner": "U2",
@@ -844,7 +844,7 @@
         -15.2
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -1069,7 +1069,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -35,
+        -25,
         7
       ],
       "owner": null,
@@ -1086,7 +1086,7 @@
         0
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "SWPA6045S220MT",
@@ -1097,7 +1097,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -25,
+        -15,
         7
       ],
       "owner": null,
@@ -1114,7 +1114,7 @@
         0
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1125,8 +1125,8 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -35,
-        13
+        -21,
+        8.5
       ],
       "owner": "U5",
       "value": "2.2uF",
@@ -1143,8 +1143,8 @@
         5,
         4
       ],
-      "rotation": 0,
-      "layer": "top"
+      "rotation": 90,
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1155,8 +1155,8 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -35.75,
-        1
+        -22.3,
+        1.5
       ],
       "owner": "U5",
       "value": "100nF",
@@ -1168,14 +1168,14 @@
         1.5
       ],
       "noConnect": [],
-      "rotation": 270,
+      "rotation": 180,
       "decoupling_straight_line_mm": 2.33176755807692,
       "section": "logic-power_U5",
       "sch": [
         8,
         4
       ],
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1186,7 +1186,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -40,
+        -30,
         7
       ],
       "owner": "U5",
@@ -1205,7 +1205,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1216,7 +1216,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -40,
+        -30,
         5
       ],
       "owner": "U5",
@@ -1235,7 +1235,7 @@
         2.2
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1246,7 +1246,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -25,
+        -15,
         12
       ],
       "owner": "L1",
@@ -1265,7 +1265,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1276,7 +1276,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -29,
+        -19,
         12
       ],
       "owner": "L1",
@@ -1294,8 +1294,8 @@
         25,
         4
       ],
-      "rotation": 0,
-      "layer": "top"
+      "rotation": 180,
+      "layer": "bottom"
     },
     {
       "tag": "capacitor",
@@ -1306,7 +1306,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -21,
+        -11,
         12
       ],
       "owner": "L1",
@@ -1325,7 +1325,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -1336,7 +1336,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -40,
+        -30,
         9
       ],
       "owner": "U5",
@@ -1354,7 +1354,7 @@
         2.2
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -1365,7 +1365,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -33,
+        -19,
         1.5
       ],
       "owner": "U5",
@@ -1383,7 +1383,7 @@
         2.2
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -1394,7 +1394,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -40,
+        -30,
         3
       ],
       "owner": "U5",
@@ -1412,7 +1412,7 @@
         0.3999999999999999
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "LMR36510ADDAR",
@@ -1912,8 +1912,8 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -38.5,
-        1
+        -27,
+        -4
       ],
       "owner": "U23",
       "value": "10uF",
@@ -1931,7 +1931,7 @@
         -20
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "CSD19534Q5A",
@@ -2528,7 +2528,7 @@
       "sheet": "motor-power",
       "xy": [
         32,
-        19
+        27
       ],
       "owner": null,
       "lcsc": "C407954",
@@ -2556,7 +2556,7 @@
       "sheet": "motor-power",
       "xy": [
         32,
-        6
+        8
       ],
       "owner": null,
       "lcsc": "C407954",
@@ -4059,8 +4059,8 @@
       },
       "sheet": "bridge-a",
       "xy": [
-        28,
-        35
+        20,
+        -39
       ],
       "owner": null,
       "lcsc": "C160317",
@@ -5601,7 +5601,7 @@
       },
       "sheet": "mcu",
       "xy": [
-        -34,
+        -12,
         -20
       ],
       "owner": null,
@@ -5618,39 +5618,7 @@
         -3
       ],
       "rotation": 0,
-      "layer": "top"
-    },
-    {
-      "tag": "B6B_PH_K_S_LF__SN_",
-      "name": "J4",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "SWDIO",
-        "pin3": "GND",
-        "pin4": "SWCLK",
-        "pin5": "NRST",
-        "pin6": "STATUS_GPIO"
-      },
-      "sheet": "mcu",
-      "xy": [
-        -28.999999999999996,
-        -37
-      ],
-      "owner": null,
-      "lcsc": "C131342",
-      "mpn": "B6B-PH-K-S(LF)(SN)",
-      "size": [
-        14.9,
-        6.528
-      ],
-      "noConnect": [],
-      "section": "mcu_J4",
-      "sch": [
-        -5,
-        -5.5
-      ],
-      "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "W25Q32JVSSIQ",
@@ -5768,7 +5736,7 @@
         0
       ],
       "owner": null,
-      "layer": "top",
+      "layer": "bottom",
       "lcsc": "C962063",
       "mpn": "AS5047P-ATSM",
       "size": [
@@ -5803,7 +5771,7 @@
       "value": "10k",
       "lcsc": "C25804",
       "footprint": "0603",
-      "layer": "top",
+      "layer": "bottom",
       "size": [
         2.7,
         1.5
@@ -5833,13 +5801,13 @@
       "lcsc": "C14663",
       "footprint": "0603",
       "voltage": 50,
-      "layer": "top",
+      "layer": "bottom",
       "size": [
         2.7,
         1.5
       ],
       "noConnect": [],
-      "rotation": 90,
+      "rotation": 270,
       "decoupling_straight_line_mm": 2.374904000000001,
       "section": "encoder_U18",
       "sch": [
@@ -5864,7 +5832,7 @@
       "lcsc": "C15849",
       "footprint": "0603",
       "voltage": 25,
-      "layer": "top",
+      "layer": "bottom",
       "size": [
         2.7,
         1.5
@@ -5876,37 +5844,6 @@
         4
       ],
       "rotation": 0
-    },
-    {
-      "tag": "B5B_PH_K_S_LF__SN_",
-      "name": "J5",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "ENC_A",
-        "pin3": "ENC_B",
-        "pin4": "ENC_I",
-        "pin5": "GND"
-      },
-      "sheet": "encoder",
-      "xy": [
-        -13,
-        -37
-      ],
-      "owner": null,
-      "lcsc": "C157993",
-      "mpn": "B5B-PH-K-S(LF)(SN)",
-      "size": [
-        12.9,
-        6.7
-      ],
-      "noConnect": [],
-      "section": "encoder_J5",
-      "sch": [
-        17,
-        0
-      ],
-      "rotation": 0,
-      "layer": "top"
     },
     {
       "tag": "TCAN332DR",
@@ -5922,7 +5859,7 @@
       "sheet": "serial",
       "xy": [
         -32,
-        -25.5
+        -23.5
       ],
       "owner": null,
       "lcsc": "C73651",
@@ -5952,8 +5889,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -31.3,
-        -30.3
+        -31.4,
+        -28.5
       ],
       "owner": "U19",
       "value": "100nF",
@@ -5965,7 +5902,7 @@
         1.5
       ],
       "noConnect": [],
-      "rotation": 0,
+      "rotation": 180,
       "decoupling_straight_line_mm": 2.6503578632207385,
       "section": "serial_U19",
       "sch": [
@@ -6176,8 +6113,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -34.5,
-        -5.000000000000001
+        -35.5,
+        -10.5
       ],
       "owner": null,
       "lcsc": "C15846",
@@ -6207,8 +6144,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -34.5,
-        -10.5
+        -35.5,
+        -16
       ],
       "owner": "U21",
       "value": "100nF",
@@ -6237,8 +6174,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -38,
-        -10.5
+        -39,
+        -16
       ],
       "owner": "U21",
       "value": "100nF",
@@ -6267,8 +6204,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -34.5,
-        -12.5
+        -35.5,
+        -18
       ],
       "owner": "U21",
       "value": "100nF",
@@ -6297,8 +6234,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -38,
-        -12.5
+        -39,
+        -18
       ],
       "owner": "U21",
       "value": "100nF",
@@ -6327,8 +6264,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -41,
-        -1.5
+        -39.5,
+        -5.2
       ],
       "owner": "U21",
       "value": "100nF",
@@ -6340,7 +6277,7 @@
         1.5
       ],
       "noConnect": [],
-      "rotation": 90,
+      "rotation": 0,
       "decoupling_straight_line_mm": 2.0558927346532454,
       "section": "serial_U21",
       "sch": [
@@ -6384,63 +6321,35 @@
       "layer": "top"
     },
     {
-      "tag": "B6B_PH_K_S_LF__SN_",
+      "tag": "B8B_PH_K_S_LF__SN_",
       "name": "J7",
       "connections": {
-        "pin1": "DIN0_24V",
-        "pin2": "DIN1_24V",
-        "pin3": "STOPL_24V",
-        "pin4": "STOPR_24V",
-        "pin5": "HOME_24V",
-        "pin6": "GND"
+        "pin1": "HOME_24V",
+        "pin2": "STOPL_24V",
+        "pin3": "STOPR_24V",
+        "pin4": "DIN0_24V",
+        "pin5": "DIN1_24V",
+        "pin6": "STEP_24V",
+        "pin7": "DIR_24V",
+        "pin8": "GND"
       },
       "sheet": "inputs",
       "xy": [
-        2,
+        2.0000000000000004,
         -38.5
       ],
       "owner": null,
-      "lcsc": "C131342",
-      "mpn": "B6B-PH-K-S(LF)(SN)",
+      "lcsc": "C157974",
+      "mpn": "B8B-PH-K-S(LF)(SN)",
       "size": [
-        14.9,
-        6.528
+        18.9,
+        6.7
       ],
       "noConnect": [],
       "section": "inputs_J7",
       "sch": [
         17,
         -36
-      ],
-      "rotation": 0,
-      "layer": "top"
-    },
-    {
-      "tag": "B4B_PH_K_S_LF__SN_",
-      "name": "J8",
-      "connections": {
-        "pin1": "STEP_24V",
-        "pin2": "DIR_24V",
-        "pin3": "GND",
-        "pin4": "V3V3"
-      },
-      "sheet": "inputs",
-      "xy": [
-        15,
-        -38.550037
-      ],
-      "owner": null,
-      "lcsc": "C131334",
-      "mpn": "B4B-PH-K-S(LF)(SN)",
-      "size": [
-        10.8,
-        5.8
-      ],
-      "noConnect": [],
-      "section": "inputs_J8",
-      "sch": [
-        0,
-        -48
       ],
       "rotation": 0,
       "layer": "top"
@@ -6570,8 +6479,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        -26.5,
-        -20
+        -3.9999999999999996,
+        -24
       ],
       "owner": "Q17",
       "lcsc": "C155214",
@@ -6587,7 +6496,7 @@
         2.1999999999999993
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -6714,8 +6623,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        -9.5,
-        -7.5
+        3.9999999999999996,
+        -24
       ],
       "owner": "Q18",
       "lcsc": "C155214",
@@ -6731,7 +6640,7 @@
         2.1999999999999993
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -6858,8 +6767,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        28.5,
-        -33.5
+        10,
+        -24
       ],
       "owner": "Q19",
       "lcsc": "C155214",
@@ -6875,7 +6784,7 @@
         -9.8
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -7117,8 +7026,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        33,
-        -33
+        34,
+        -12
       ],
       "owner": "Q21",
       "value": "4.7k",
@@ -7135,7 +7044,7 @@
         -20
       ],
       "rotation": 180,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "BAV21W_7_F",
@@ -7146,8 +7055,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        37.5,
-        -33.5
+        34,
+        -9
       ],
       "owner": "Q21",
       "lcsc": "C155214",
@@ -7163,7 +7072,7 @@
         -21.799999999999997
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -7203,8 +7112,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        37.5,
-        -27
+        34,
+        -6
       ],
       "owner": "Q22",
       "value": "47k",
@@ -7220,8 +7129,8 @@
         22,
         -20
       ],
-      "rotation": 0,
-      "layer": "top"
+      "rotation": 180,
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7232,8 +7141,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        37.5,
-        -25
+        34,
+        -3
       ],
       "owner": "Q22",
       "value": "10k",
@@ -7250,7 +7159,7 @@
         -20
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7261,8 +7170,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        37.5,
-        -23
+        34,
+        0
       ],
       "owner": "Q22",
       "value": "4.7k",
@@ -7279,7 +7188,7 @@
         -20
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "BAV21W_7_F",
@@ -7290,8 +7199,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        38.5,
-        -14.5
+        34,
+        -21
       ],
       "owner": "Q22",
       "lcsc": "C155214",
@@ -7307,7 +7216,7 @@
         -21.799999999999997
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -7347,8 +7256,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        38.5,
-        -36
+        34,
+        3
       ],
       "owner": "Q23",
       "value": "47k",
@@ -7364,8 +7273,8 @@
         5,
         -32
       ],
-      "rotation": 0,
-      "layer": "top"
+      "rotation": 180,
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7376,8 +7285,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        38.5,
-        -38
+        30,
+        -18
       ],
       "owner": "Q23",
       "value": "10k",
@@ -7394,7 +7303,7 @@
         -32
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7434,8 +7343,8 @@
       },
       "sheet": "inputs",
       "xy": [
-        38.5,
-        -5.5
+        38,
+        15
       ],
       "owner": "Q23",
       "lcsc": "C155214",
@@ -7451,7 +7360,7 @@
         -33.8
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "B4B_PH_K_S_LF__SN_",
@@ -7493,8 +7402,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        31,
-        -30
+        18,
+        -31
       ],
       "owner": null,
       "lcsc": "C41095",
@@ -7510,7 +7419,7 @@
         0
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7521,8 +7430,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        38.5,
-        -40
+        18,
+        -27
       ],
       "owner": "Q24",
       "value": "1k",
@@ -7539,7 +7448,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7550,8 +7459,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        37,
-        -12
+        22,
+        -31
       ],
       "owner": "Q24",
       "value": "10k",
@@ -7568,7 +7477,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "SS110",
@@ -7579,8 +7488,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        21,
-        22.5
+        23,
+        30
       ],
       "owner": "Q24",
       "lcsc": "C2482",
@@ -7596,7 +7505,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -7608,8 +7517,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        37,
-        -30
+        27,
+        -31
       ],
       "owner": null,
       "lcsc": "C41095",
@@ -7625,7 +7534,7 @@
         0
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7636,8 +7545,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        37,
-        -3
+        27,
+        -27
       ],
       "owner": "Q25",
       "value": "1k",
@@ -7654,7 +7563,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "resistor",
@@ -7665,8 +7574,8 @@
       },
       "sheet": "outputs",
       "xy": [
-        33.5,
-        -2.5
+        30,
+        -28.5
       ],
       "owner": "Q25",
       "value": "10k",
@@ -7683,7 +7592,7 @@
         4
       ],
       "rotation": 0,
-      "layer": "top"
+      "layer": "bottom"
     },
     {
       "tag": "SS110",
@@ -7711,6 +7620,199 @@
         4
       ],
       "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "USB4105_GF_A",
+      "name": "J10",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "GND",
+        "pin3": "GND",
+        "pin4": "GND",
+        "pin5": "GND",
+        "pin6": "GND",
+        "pin19": "GND",
+        "pin20": "GND",
+        "pin7": "USB_DATA_VBUS",
+        "pin8": "USB_DATA_VBUS",
+        "pin17": "USB_DATA_VBUS",
+        "pin18": "USB_DATA_VBUS",
+        "pin9": "USB_DATA_CC2",
+        "pin15": "USB_DATA_CC1",
+        "pin11": "USB_DP_CONN",
+        "pin13": "USB_DP_CONN",
+        "pin12": "USB_DM_CONN",
+        "pin14": "USB_DM_CONN"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -36.4249991,
+        2.0000000000000004
+      ],
+      "owner": null,
+      "rotation": 270,
+      "lcsc": "C3020560",
+      "mpn": "USB4105-GF-A",
+      "size": [
+        11.275,
+        10.64
+      ],
+      "noConnect": [
+        "pin10",
+        "pin16"
+      ],
+      "section": "usb-pd_J10",
+      "sch": [
+        0,
+        12
+      ],
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R105",
+      "connections": {
+        "pin1": "USB_DATA_CC1",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -31,
+        19.5
+      ],
+      "owner": "J10",
+      "value": "5.1k",
+      "lcsc": "C23186",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_J10",
+      "sch": [
+        4,
+        15
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R106",
+      "connections": {
+        "pin1": "USB_DATA_CC2",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -31.5,
+        14
+      ],
+      "owner": "J10",
+      "value": "5.1k",
+      "lcsc": "C23186",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_J10",
+      "sch": [
+        6.5,
+        15
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R107",
+      "connections": {
+        "pin1": "USB_DATA_VBUS",
+        "pin2": "USB_DATA_VBUS_SENSE"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -22,
+        16
+      ],
+      "owner": "J10",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_J10",
+      "sch": [
+        4,
+        12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "resistor",
+      "name": "R108",
+      "connections": {
+        "pin1": "USB_DATA_VBUS_SENSE",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -19,
+        16
+      ],
+      "owner": "J10",
+      "value": "100k",
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_J10",
+      "sch": [
+        6.5,
+        12
+      ],
+      "rotation": 0,
+      "layer": "top"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C72",
+      "connections": {
+        "pin1": "USB_DATA_VBUS_SENSE",
+        "pin2": "GND"
+      },
+      "sheet": "usb-pd",
+      "xy": [
+        -23,
+        14
+      ],
+      "owner": "J10",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "size": [
+        2.7,
+        1.5
+      ],
+      "noConnect": [],
+      "section": "usb-pd_J10",
+      "sch": [
+        9,
+        12
+      ],
+      "rotation": 180,
       "layer": "top"
     }
   ]

@@ -7,6 +7,7 @@ const components = new Set(sourceComponents.map((row) => row.name))
 const sourceByName = new Map(sourceComponents.map((row) => [row.name, row]))
 const nets = new Set(circuit.filter((row) => row.type === 'source_net').map((row) => row.name))
 const pcbBySource = new Map(circuit.filter((row) => row.type === 'pcb_component').map((row) => [row.source_component_id, row]))
+const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const errors = []
 const results = []
 
@@ -21,21 +22,24 @@ for (const item of FEATURE_PARITY) {
   results.push({ id: item.id, feature: item.feature, components: item.components.length, nets: item.nets.length, evidence: item.evidence, pass: !missingComponents.length && !missingNets.length && evidenceExists })
 }
 
-const bottomFitted = circuit.filter((row) => row.type === 'source_component').flatMap((source) => {
+const fittedByLayer = Object.fromEntries(standards.assembly.populated_layers.map((layer) => [layer, []]))
+const disallowedFitted = circuit.filter((row) => row.type === 'source_component').flatMap((source) => {
   const pcb = pcbBySource.get(source.source_component_id)
-  return pcb && !pcb.do_not_place && pcb.layer !== 'top' ? [source.name] : []
+  if (!pcb || pcb.do_not_place) return []
+  if (fittedByLayer[pcb.layer]) fittedByLayer[pcb.layer].push(source.name)
+  return standards.assembly.populated_layers.includes(pcb.layer) ? [] : [source.name]
 })
-if (bottomFitted.length) errors.push(`Top-only assembly violated by ${bottomFitted.join(', ')}`)
+if (disallowedFitted.length) errors.push(`Assembly layer policy violated by ${disallowedFitted.join(', ')}`)
 
-const usbCStandardConnector = sourceByName.get('J1')?.standard === 'usb_c'
-if (!usbCStandardConnector) errors.push('J1 must use tscircuit connector standard="usb_c"')
+const usbCStandardConnectors = ['J1', 'J10'].filter((name) => sourceByName.get(name)?.standard === 'usb_c')
+if (usbCStandardConnectors.length !== 2) errors.push('J1 and J10 must both use tscircuit connector standard="usb_c"')
 
 const report = {
   checked_at: new Date().toISOString(),
   features: results.length,
   passing: results.filter((item) => item.pass).length,
-  top_only_assembly: bottomFitted.length === 0,
-  usb_c_standard_connector: usbCStandardConnector,
+  assembly_layers: Object.fromEntries(Object.entries(fittedByLayer).map(([layer, names]) => [layer, names.length])),
+  usb_c_standard_connectors: usbCStandardConnectors,
   results,
   errors,
 }

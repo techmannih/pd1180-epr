@@ -5,9 +5,9 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Requirements and mechanics
 
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
-- [ ] Board outline is 85.9 × 85.9 mm and all four 4.2 mm mounting holes match the documented coordinates.
+- [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the documented asymmetric coordinates.
 - [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
-- [ ] Every populated component is top-side; the bottom assembly preview contains no fitted parts or paste.
+- [ ] Two-sided assembly preview matches the policy: tall power parts and field connectors on top; centered encoder, local bypass, low-profile circuitry and service pads on bottom.
 - [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.
 
 ## Schematic
@@ -15,7 +15,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
 - [ ] All 12 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
 - [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
-- [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: PD stays on CC1/CC2, STM32 USB data stays on D+/D−, TPS26750 USB_P/USB_N are grounded as unused, and neither path aliases the other.
+- [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 carries EPR CC/VBUS only; J10 carries USB 2.0 data with two CC Rd resistors and independent VBUS attach sensing; neither VBUS net aliases the other.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
 - [ ] PD contract, power-good, voltage window and fault signals gate the motor stage independently of a normal firmware command.
 - [ ] Every IC supply pin has local bypassing; bulk-capacitance, discharge and reverse-feed paths are explained.
@@ -46,7 +46,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Live stock is refreshed immediately before ordering; timestamped evidence is availability information, not a reservation.
 - [ ] Alternatives are checked for pinout, voltage/current/temperature rating, package, lifecycle and firmware impact.
 - [ ] JLC placement preview is manually reviewed for IC pin 1, diode/capacitor polarity, connector orientation, rotations and centroids.
-- [ ] Filled/capped via-in-pad, four layers, 1 oz copper, 1.6 mm thickness and top-only assembly are present in the quote.
+- [ ] Filled/capped via-in-pad, four layers, 1 oz copper, 1.6 mm thickness and top/bottom assembly are present in the quote.
 
 ## Delivery and bring-up
 

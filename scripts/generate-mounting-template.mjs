@@ -5,6 +5,8 @@ import { Resvg } from '@resvg/resvg-js'
 const check = process.argv.includes('--check')
 const contractText = await readFile('hardware-contract.json', 'utf8')
 const contract = JSON.parse(contractText)
+const mechanicalText = await readFile(contract.mechanical.reference, 'utf8')
+const mechanical = JSON.parse(mechanicalText)
 const [boardWidth, boardHeight] = contract.mechanical.board_mm
 const holes = contract.mechanical.mounting_holes
 const pageWidth = 110
@@ -14,6 +16,32 @@ const sx = (x) => boardLeft + x
 const sy = (y) => boardTop + boardHeight - y
 const clean = (n) => Number(n.toFixed(3))
 const contractHash = createHash('sha256').update(contractText).digest('hex')
+const mechanicalHash = createHash('sha256').update(mechanicalText).digest('hex')
+
+const point = ([x, y]) => `${clean(sx(x))} ${clean(sy(y))}`
+const perimeter = mechanical.board.perimeter
+const first = perimeter[0]?.from
+if (!first) throw new Error('Mechanical reference has no perimeter start point')
+const outlineCommands = [`M${point(first)}`]
+for (const segment of perimeter) {
+  if (segment.type === 'line') outlineCommands.push(`L${point(segment.to)}`)
+  else if (segment.type === 'polyline') {
+    for (const vertex of segment.points) outlineCommands.push(`L${point(vertex)}`)
+  } else if (segment.type === 'arc') {
+    const endRadians = segment.end_deg * Math.PI / 180
+    const end = [
+      segment.center[0] + segment.radius * Math.cos(endRadians),
+      segment.center[1] + segment.radius * Math.sin(endRadians),
+    ]
+    const delta = ((segment.end_deg - segment.start_deg) % 360 + 360) % 360
+    const largeArc = delta > 180 ? 1 : 0
+    // STEP coordinates use Y-up while SVG uses Y-down, so a positive STEP
+    // arc is the counter-clockwise SVG sweep.
+    outlineCommands.push(`A${segment.radius} ${segment.radius} 0 ${largeArc} 0 ${point(end)}`)
+  } else throw new Error(`Unsupported perimeter segment: ${segment.type}`)
+}
+outlineCommands.push('Z')
+const outlinePath = outlineCommands.join(' ')
 
 const holeSvg = holes.map((hole, index) => {
   const x = clean(sx(hole.x_mm))
@@ -22,12 +50,12 @@ const holeSvg = holes.map((hole, index) => {
   return `<g><circle cx="${x}" cy="${y}" r="${r}"/><path d="M${clean(x - 3)} ${y}h6M${x} ${clean(y - 3)}v6"/><text x="${clean(x + 3.4)}" y="${clean(y - 2.4)}" font-size="2.2" fill="#111" stroke="none">H${index + 1}</text></g>`
 }).join('\n')
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="110mm" height="145mm" viewBox="0 0 110 145" data-contract-sha256="${contractHash}">
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="110mm" height="145mm" viewBox="0 0 110 145" data-contract-sha256="${contractHash}" data-mechanical-sha256="${mechanicalHash}">
 <rect width="110" height="145" fill="white"/>
 <g font-family="Arial,sans-serif" fill="#111">
 <text x="55" y="8" text-anchor="middle" font-size="4">PD1180-EPR / NEMA 34 mounting template</text>
 <text x="55" y="14" text-anchor="middle" font-size="2.6">TOP VIEW · Print at 100% · Do not scale</text>
-<rect x="${clean(boardLeft)}" y="${boardTop}" width="${boardWidth}" height="${boardHeight}" rx="5.9" fill="none" stroke="#111" stroke-width="0.3"/>
+<path d="${outlinePath}" fill="none" stroke="#111" stroke-width="0.3"/>
 <g fill="none" stroke="#111" stroke-width="0.22">${holeSvg}
 <path d="M51 ${clean(boardTop + boardHeight / 2)}h8M55 ${clean(boardTop + boardHeight / 2 - 4)}v8" stroke="#888"/>
 </g>
@@ -61,7 +89,7 @@ if (check) {
   if (pngDimensions?.width !== 1320 || pngDimensions?.height !== 1740) {
     errors.push('previews/mounting-template.png is missing or has the wrong 1320 x 1740 dimensions; run bun run generate:mounting-template')
   }
-  console.log(JSON.stringify({ board_mm: [boardWidth, boardHeight], mounting_holes: holes.length, contract_sha256: contractHash, errors }, null, 2))
+  console.log(JSON.stringify({ board_mm: [boardWidth, boardHeight], mounting_holes: holes.length, perimeter_segments: perimeter.length, contract_sha256: contractHash, mechanical_sha256: mechanicalHash, errors }, null, 2))
   if (errors.length) process.exitCode = 1
 } else {
   await writeFile('mounting-template.svg', svg)

@@ -88,9 +88,9 @@ await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Moto
 
 ## r0.3 prototype handoff
 
-Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for top-side assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, filled/capped via-in-pad and top-only assembly.
+Upload \`pd1180-epr-r0.3-gerbers.zip\` for the PCB and use \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for two-sided assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, filled/capped via-in-pad and top/bottom assembly.
 
-The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all 67 unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The committed KiCad DRC has zero violations and zero unconnected items. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. The assembled board boots safe with blank U3/U16; 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style analysis reports zero issues across all 12 sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 

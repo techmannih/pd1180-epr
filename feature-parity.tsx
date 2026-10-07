@@ -5,9 +5,9 @@
 export const FEATURE_PARITY = [
   {
     id: "usb_pd_epr",
-    feature: "USB-C PD 3.1 EPR power and USB 2.0 data",
-    components: ["J1", "U1", "U2", "U3", "U4"],
-    nets: ["USB_VBUS", "USB_DP", "USB_DM", "PD_IRQ_N"],
+    feature: "Separate USB-C PD 3.1 EPR power and USB 2.0 device ports",
+    components: ["J1", "J10", "U1", "U2", "U3", "U4", "R105", "R106", "R107", "R108", "C72"],
+    nets: ["USB_VBUS", "USB_DATA_VBUS", "USB_DATA_VBUS_SENSE", "USB_DP", "USB_DM", "PD_IRQ_N"],
     evidence: "docs/pd-configuration.json",
   },
   {
@@ -34,14 +34,14 @@ export const FEATURE_PARITY = [
   {
     id: "controller",
     feature: "STM32 control, flash and SWD programming",
-    components: ["U16", "U17", "J4"],
+    components: ["U16", "U17", "TP_SWDIO", "TP_SWCLK", "TP_NRST"],
     nets: ["SWDIO", "MCU_RUN", "POWER_PERMIT"],
     evidence: "docs/firmware-pinmap.json",
   },
   {
     id: "encoder",
-    feature: "Top-side AS5047P magnetic encoder and ABI monitor",
-    components: ["U18", "J5"],
+    feature: "Bottom-side AS5047P shaft encoder with ABI test access",
+    components: ["U18", "TP_ENC_A", "TP_ENC_B", "TP_ENC_I"],
     nets: ["ENC_A", "ENC_B", "ENC_I", "ENC_CS_N"],
     evidence: "docs/design.md",
   },
@@ -55,7 +55,7 @@ export const FEATURE_PARITY = [
   {
     id: "machine_io",
     feature: "24 V machine inputs, Step/Dir, hardware enable and protected outputs",
-    components: ["J7", "J8", "J9", "Q24", "Q25", "D11", "D12"],
+    components: ["J7", "J9", "Q24", "Q25", "D11", "D12"],
     nets: ["STEP_24V", "DIR_24V", "OUT0", "OUT1"],
     evidence: "hardware-contract.json",
   },

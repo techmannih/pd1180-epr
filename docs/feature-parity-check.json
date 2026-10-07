@@ -1,15 +1,21 @@
 {
-  "checked_at": "2026-10-06T19:33:49.240Z",
+  "checked_at": "2026-10-07T04:15:57.101Z",
   "features": 8,
   "passing": 8,
-  "top_only_assembly": true,
-  "usb_c_standard_connector": true,
+  "assembly_layers": {
+    "top": 213,
+    "bottom": 52
+  },
+  "usb_c_standard_connectors": [
+    "J1",
+    "J10"
+  ],
   "results": [
     {
       "id": "usb_pd_epr",
-      "feature": "USB-C PD 3.1 EPR power and USB 2.0 data",
-      "components": 5,
-      "nets": 4,
+      "feature": "Separate USB-C PD 3.1 EPR power and USB 2.0 device ports",
+      "components": 11,
+      "nets": 6,
       "evidence": "docs/pd-configuration.json",
       "pass": true
     },
@@ -40,15 +46,15 @@
     {
       "id": "controller",
       "feature": "STM32 control, flash and SWD programming",
-      "components": 3,
+      "components": 5,
       "nets": 3,
       "evidence": "docs/firmware-pinmap.json",
       "pass": true
     },
     {
       "id": "encoder",
-      "feature": "Top-side AS5047P magnetic encoder and ABI monitor",
-      "components": 2,
+      "feature": "Bottom-side AS5047P shaft encoder with ABI test access",
+      "components": 4,
       "nets": 4,
       "evidence": "docs/design.md",
       "pass": true
@@ -64,7 +70,7 @@
     {
       "id": "machine_io",
       "feature": "24 V machine inputs, Step/Dir, hardware enable and protected outputs",
-      "components": 7,
+      "components": 6,
       "nets": 4,
       "evidence": "hardware-contract.json",
       "pass": true

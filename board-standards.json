@@ -4,9 +4,9 @@
   "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.3.0",
   "assembly": {
-    "populated_layers": ["top"],
-    "bottom_components_allowed": false,
-    "bottom_paste_allowed": false,
+    "populated_layers": ["top", "bottom"],
+    "bottom_components_allowed": true,
+    "bottom_paste_allowed": true,
     "exact_supplier_code_required": true,
     "stock_evidence_required": true,
     "reviewed_alternatives_required": true
@@ -50,7 +50,14 @@
     "schematic_sheet_size": "a4",
     "schematic_sheet_count": 12,
     "mounting_hole_count": 4,
-    "mounting_hole_diameter_mm": 4.2
+    "mounting_hole_diameter_mm": 4.2,
+    "mounting_holes_centered_mm": [
+      {"name": "H1", "x": 38.4, "y": -24.5},
+      {"name": "H2", "x": 24.5, "y": 38.4},
+      {"name": "H3", "x": -38.4, "y": 24.5},
+      {"name": "H4", "x": -24.5, "y": -38.4}
+    ],
+    "mechanical_reference": "engineering/tmcm-1180-v11-mechanical-reference.json"
   },
   "markings": {
     "required_source_text": [

@@ -7,7 +7,7 @@ Use `bun run check:release` to review every manufacturing and bring-up gate befo
 ### Stack and placement
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes. Final copper weight and stack-up are selected during current/thermal and USB impedance review.
-- Every populated part is on the top side. The AS5047P and its local components are top-side parts centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
+- Assembly is two-sided. Tall power parts and field connectors stay on top; the AS5047P, its local bypass parts, low-profile logic power and service pads are on the bottom. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
 - The power MOSFET drain pads contain connected via-in-pad holes. Order filled-and-capped via-in-pad processing if this footprint is retained.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
@@ -16,21 +16,19 @@ Use `bun run check:release` to review every manufacturing and bring-up gate befo
 
 | Connector | Pins in order |
 |---|---|
-| J1 | USB-C, EPR power and USB 2.0 data; shell to ground |
+| J1 | USB-C EPR power only; 48 V / 5 A requested contract, D+/D− unused, shell to ground |
+| J10 | USB-C 2.0 device data; independent CC Rd and 5 V VBUS attach sense, shell to ground |
 | J2, motor | A1, A2, B1, B2 |
 | J3, external brake | VMOTOR, switched resistor return |
-| J4, SWD | 3.3 V reference, SWDIO, GND, SWCLK, NRST, status GPIO |
-| J5, encoder monitor | 3.3 V, A, B, index, GND; do not drive these outputs |
 | J6, serial | RS232 TX, RS232 RX, GND, CAN H, CAN L, GND, RS485 A, RS485 B |
-| J7, inputs | IN0, IN1, STOP L, STOP R, HOME, GND |
-| J8, step/dir | 24 V STEP input, 24 V DIR input, GND, 3.3 V reference |
+| J7, machine inputs | HOME, STOP L, STOP R, IN0, IN1, 24 V STEP, 24 V DIR, GND |
 | J9, outputs/enable | **48 V VMOTOR**, hardware enable, OUT0, OUT1 |
 
 Pin numbering follows the imported physical footprints. Mating housings, contacts, wire gauge and strain relief are separate procurement items.
 
 ## Programming and external items
 
-Program U3 with the approved TI TPS26750 patch/configuration image and U16 with board-specific firmware before motor bring-up. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface.
+Program U3 with the approved TI TPS26750 patch/configuration image and U16 with board-specific firmware before motor bring-up. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled bottom service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
 
 The EPR charger, EPR cable, motor, shaft magnet, external braking resistor/heatsink and bus terminators are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 

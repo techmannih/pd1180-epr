@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "reference_file": "TMCM-1180_V11(1).stp",
+  "reference_sha256": "a00b09b77df283d2d708476e9e6c31b99742a467ec82ff01fc5799fa8a7ab3f8",
+  "reference_bytes": 49705381,
+  "source_product": "TMCM-1180 V1.1",
+  "coordinate_system": {
+    "step_origin": "lower-left of the 85.9 mm board envelope",
+    "tscircuit_transform": "x = STEP_X - 42.95; y = STEP_Y - 42.95",
+    "units": "mm"
+  },
+  "board": {
+    "envelope": {"width": 85.9, "height": 85.9},
+    "step_solid_thickness": 1.47574,
+    "fabrication_thickness": 1.6,
+    "corner_arc_radius": 5.9,
+    "perimeter": [
+      {"type": "line", "from": [13.9, 2.0], "to": [13.9, 8.0]},
+      {"type": "arc", "center": [8.0, 8.0], "radius": 5.9, "start_deg": 0, "end_deg": 90},
+      {"type": "polyline", "points": [[8.0, 13.9], [2.0, 13.9], [0.0, 15.9], [0.0, 70.0], [2.0, 72.0], [8.0, 72.0]]},
+      {"type": "arc", "center": [8.0, 77.9], "radius": 5.9, "start_deg": -90, "end_deg": 0},
+      {"type": "polyline", "points": [[13.9, 77.9], [13.9, 83.9], [15.9, 85.9], [70.0, 85.9], [72.0, 83.9], [72.0, 77.9]]},
+      {"type": "arc", "center": [77.9, 77.9], "radius": 5.9, "start_deg": 180, "end_deg": 270},
+      {"type": "polyline", "points": [[77.9, 72.0], [83.9, 72.0], [85.9, 70.0], [85.9, 15.9], [83.9, 13.9], [77.9, 13.9]]},
+      {"type": "arc", "center": [77.9, 8.0], "radius": 5.9, "start_deg": 90, "end_deg": 180},
+      {"type": "polyline", "points": [[72.0, 8.0], [72.0, 2.0], [70.0, 0.0], [15.9, 0.0], [13.9, 2.0]]}
+    ]
+  },
+  "mounting_holes": [
+    {"name": "H1", "step_center": [81.35, 18.45], "tscircuit_center": [38.4, -24.5], "step_diameter": 4.191, "fabrication_diameter": 4.2},
+    {"name": "H2", "step_center": [67.45, 81.35], "tscircuit_center": [24.5, 38.4], "step_diameter": 4.191, "fabrication_diameter": 4.2},
+    {"name": "H3", "step_center": [4.55, 67.45], "tscircuit_center": [-38.4, 24.5], "step_diameter": 4.191, "fabrication_diameter": 4.2},
+    {"name": "H4", "step_center": [18.45, 4.55], "tscircuit_center": [-24.5, -38.4], "step_diameter": 4.191, "fabrication_diameter": 4.2}
+  ],
+  "step_entities": {
+    "product": 10809,
+    "shape_representation": 3165,
+    "solid": 3166,
+    "shell": 3167,
+    "top_face": 10587,
+    "bottom_face": 10374,
+    "mounting_cylinder_faces": [7278, 8310, 9170, 10030]
+  },
+  "validation": "Dimensions and centers were extracted from the supplied STEP BREP. The 4.191 mm modeled hole is rounded to the 4.2 mm fabrication drill used by the board contract."
+}

@@ -13,3 +13,5 @@ ctest --test-dir firmware/build --output-on-failure
 `POWER_PERMIT` remains low until a stable 48 V / 5 A EPR contract is reported. `MCU_RUN` remains low until motor power-good and the independent VMOTOR window are also stable. Any PD/eFuse/watchdog fault removes both outputs in the same state-machine tick.
 
 The final STM32 target port must bind these pure-C modules to GPIO, ADC, SPI, USB, CAN and serial peripherals. The generated TI TPS26750 configuration image is an external release input and must be programmed into U3 before EPR operation.
+
+J10 is the dedicated USB 2.0 data port. Firmware must sample `PIN_USB_DATA_VBUS_SENSE` on PB0/ADC_IN8 and enable the USB device pull-up only while valid J10 VBUS is present; J1 remains the independent EPR power port.

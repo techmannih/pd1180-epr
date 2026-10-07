@@ -29,6 +29,7 @@
     "check:decoupling": "bun scripts/check-decoupling.mjs",
     "check:release": "bun scripts/check-release.mjs && bun run check:delivery",
     "export:assembly": "bun scripts/export-assembly.mjs",
+    "export:kicad-route": "bun scripts/export-kicad-route.mjs",
     "build:handoff": "bun run verify && bun run export:assembly",
     "verify": "bun scripts/verify.mjs --routed",
     "check": "bun run verify",

@@ -33,11 +33,12 @@ The tscircuit cloud entrypoint is `release/circuit.json`, a generated viewer art
 
 ## Assembly and part sourcing
 
-- All populated parts must be on the top layer. Do not place even optional or DNP footprints on the bottom unless the user changes this repository-wide rule.
-- Bottom copper and bottom silkscreen are allowed. Bottom paste must be absent for a top-only assembly release.
+- This project uses two-sided assembly. Keep tall power parts and field connectors on top; use the bottom for the shaft encoder, its local bypass parts, low-profile service pads and reviewed low-profile circuitry.
+- Bottom paste is required for fitted bottom-side SMT parts. The CPL and order settings must identify both assembly sides explicitly.
 - Every fitted part needs an exact JLCPCB/LCSC code, package match and timestamped stock result. A fuzzy search or similar package name is not an acceptable match.
 - Record at least one reviewed alternative for parts whose availability or lifecycle can block assembly. Alternatives must match electrical rating, pinout, package, polarity and thermal needs; never substitute automatically.
 - Through-hole parts, tall parts, press-fit items, cables, motors, magnets, heatsinks and brake resistors must be listed as assembly or external-system boundaries.
+- Never infer mounting coordinates from a screenshot or rounded bounding box. When a manufacturer STEP/drawing exists, record its hash, coordinate transform, exact outline and hole centers in a machine-readable mechanical reference, then check the compiled PCB against those values.
 
 ## Fabrication defaults
 
@@ -55,6 +56,7 @@ The tscircuit cloud entrypoint is `release/circuit.json`, a generated viewer art
 - Make every schematic readable, with clear labels and no overlapping symbols, wires or text.
 - Add `<schematictext>` near each chip explaining its function and relevant ratings, such as voltage, current or power. Keep those notes concise and place them where they do not collide with the circuit.
 - Model every USB-C receptacle with tscircuit's `<connector standard="usb_c">`; retain the exact reviewed supplier part, physical pad map and footprint when a JLCPCB import supplies the package.
+- When power and data use separate USB-C receptacles, keep their VBUS nets physically and electrically separate. A data-only UFP port needs an independent Rd on each CC pin and a valid VBUS attach/detach sense path before firmware enables the USB peripheral.
 - Split the schematic into functional A4 sheets with clear signal direction, rail names, connector pin numbers and short section notes where the circuit is dense.
 - Run `bun run check:schematic-style` after every schematic placement or symbol change. It must reproduce the tscircuit viewer's **Run Style Analysis** result with zero issues across every sheet. Fix text/net-label collisions, cramped symbols, component orientation, bypass grouping, gate-network grouping and long visible rail paths in source coordinates; do not hide warnings, remove evidence or suppress an issue type.
 - Check supplier pin numbering independently from logical aliases. USB-C, TVS diodes, MOSFETs, shunts, connectors and exposed pads require explicit polarity/pin-map review.
@@ -81,7 +83,7 @@ Run `bun run review` before a prototype handoff. The review must cover:
 - source topology/netlist and schematic checks;
 - the viewer-equivalent schematic style analysis with zero issues on every sheet;
 - component and schematic placement;
-- top-only assembly and exact supplier identities;
+- permitted top/bottom assembly placement and exact supplier identities;
 - local bypass and critical-copper checks;
 - routing fingerprint and final-route policy;
 - shorts and final KiCad DRC with zero violations and zero unconnected items;

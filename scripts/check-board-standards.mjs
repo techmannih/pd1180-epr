@@ -22,7 +22,7 @@ else {
 
 const components = circuit.filter((row) => row.type === 'pcb_component')
 const badLayers = components.filter((row) => !standards.assembly.populated_layers.includes(row.layer))
-if (badLayers.length) errors.push(`${badLayers.length} PCB components are outside the allowed top assembly layer`)
+if (badLayers.length) errors.push(`${badLayers.length} PCB components are outside the allowed assembly layers`)
 
 const sheets = circuit.filter((row) => row.type === 'schematic_sheet')
 if (sheets.length !== standards.project_geometry.schematic_sheet_count) errors.push(`Expected ${standards.project_geometry.schematic_sheet_count} schematic sheets, found ${sheets.length}`)
@@ -30,6 +30,14 @@ for (const sheet of sheets) if (sheet.sheet_size?.toLowerCase() !== standards.pr
 
 const mountingHoles = circuit.filter((row) => row.type === 'pcb_hole' && close(row.hole_diameter, standards.project_geometry.mounting_hole_diameter_mm, 0.01))
 if (mountingHoles.length !== standards.project_geometry.mounting_hole_count) errors.push(`Expected ${standards.project_geometry.mounting_hole_count} mounting holes, found ${mountingHoles.length}`)
+const boardMountingHoles = mountingHoles.filter((row) => row.pcb_component_id == null)
+const mountingHoleEvidence = []
+for (const expected of standards.project_geometry.mounting_holes_centered_mm) {
+  const actual = boardMountingHoles.find((row) => close(row.x, expected.x, 0.01) && close(row.y, expected.y, 0.01))
+  if (!actual) errors.push(`${expected.name}: missing mounting hole at (${expected.x}, ${expected.y}) mm`)
+  mountingHoleEvidence.push({ name: expected.name, expected: { x: expected.x, y: expected.y }, actual: actual ? { x: actual.x, y: actual.y, diameter: actual.hole_diameter } : null })
+}
+if (pcbBoard?.outline?.length < 20) errors.push('PCB outline does not contain the stepped TMCM-1180 perimeter and corner arcs')
 
 const silk = circuit.filter((row) => row.type === 'pcb_silkscreen_text').map((row) => row.text)
 for (const text of standards.markings.required_source_text) if (!silk.includes(text)) errors.push(`Missing source silkscreen marking: ${text}`)
@@ -95,7 +103,8 @@ if ((drc.unconnected_items || []).length) errors.push(`Final KiCad DRC contains 
 
 const assembly = JSON.parse(await readFile('docs/assembly-check.json', 'utf8'))
 if (assembly.errors?.length) errors.push(...assembly.errors.map((error) => `Assembly: ${error}`))
-if (components.length !== assembly.parts + 40) warnings.push(`Circuit has ${components.length} PCB component records and ${assembly.parts} fitted manifest parts; confirm the ${components.length - assembly.parts} record difference remains intentional`)
+const supplierBackedSources = circuit.filter((row) => row.type === 'source_component' && row.supplier_part_numbers?.jlcpcb?.length)
+if (supplierBackedSources.length !== assembly.parts) errors.push(`Circuit has ${supplierBackedSources.length} supplier-backed source parts but the assembly manifest has ${assembly.parts}`)
 
 const report = {
   checked_at: new Date().toISOString(),
@@ -107,6 +116,9 @@ const report = {
     layers: pcbBoard?.num_layers,
     schematic_sheets: sheets.length,
     mounting_holes: mountingHoles.length,
+    mounting_hole_positions: mountingHoleEvidence,
+    outline_points: pcbBoard?.outline?.length ?? 0,
+    mechanical_reference: standards.project_geometry.mechanical_reference,
   },
   assembly: { pcb_component_records: components.length, allowed_layers: standards.assembly.populated_layers, bottom_paste_present: gerberFiles.some((name) => /B[_-]Paste/i.test(name)) },
   via_counts: Object.fromEntries(viaSummary),
