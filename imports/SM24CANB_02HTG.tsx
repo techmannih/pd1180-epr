@@ -10,6 +10,7 @@ export const SM24CANB_02HTG = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{ pin1: { requiresPower: true }, pin3: { requiresGround: true } }}
       supplierPartNumbers={{
   "jlcpcb": [
     "C151237"

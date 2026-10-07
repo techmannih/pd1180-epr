@@ -20,7 +20,7 @@ export const FEATURE_PARITY = [
   {
     id: "motor_stage",
     feature: "TMC5160A and 100 V external MOSFET bridges",
-    components: ["U7", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "RS1", "RS2", "J2"],
+    components: ["U7", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "R109", "R110", "J2"],
     nets: ["MOTOR_A1", "MOTOR_A2", "MOTOR_B1", "MOTOR_B2", "SENSE_A", "SENSE_B"],
     evidence: "docs/power-routing-check.json",
   },

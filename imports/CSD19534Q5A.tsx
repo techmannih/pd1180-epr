@@ -1,21 +1,39 @@
-import type { ChipProps } from "@tscircuit/props"
+import type { MosfetProps } from "@tscircuit/props"
 
-const pinLabels = {
-  pin1: ["S1"],
-  pin2: ["S2"],
-  pin3: ["S3"],
-  pin4: ["G"],
-  pin5: ["D1"],
-  pin6: ["D2"],
-  pin7: ["D3"],
-  pin8: ["D4"],
-  pin9: ["D5"]
-} as const
+type PowerMosfetConnections = {
+  source?: string
+  gate?: string
+  drain?: string
+}
+type PowerMosfetProps = Omit<
+  MosfetProps,
+  "channelType" | "mosfetMode" | "connections" | "symbol"
+> & {
+  connections?: PowerMosfetConnections
+}
 
-export const CSD19534Q5A = (props: ChipProps<typeof pinLabels>) => {
+export const CSD19534Q5A = ({ connections, ...props }: PowerMosfetProps) => {
   return (
-    <chip
-      pinLabels={pinLabels}
+    <>
+    <mosfet
+      channelType="n"
+      mosfetMode="enhancement"
+      symbol={
+        <symbol name="CSD19534Q5A_POWER_NMOS" width={2.8} height={2.2}>
+          <schematictext text="{NAME}" schX={-0.5} schY={0.5} fontSize={0.18} color="#006464" anchor="bottom_left" />
+          <schematicrect schX={0} schY={0} width={1.7} height={1.25} strokeWidth={0.03} color="#880000" />
+          <schematictext text="N-MOSFET" schX={0} schY={0.08} fontSize={0.16} color="#880000" anchor="center" />
+          <port name="pin1" pinNumber={1} aliases={["source", "S1"]} direction="down" schX={-0.45} schY={-0.9} schStemLength={0.28} />
+          <port name="pin2" pinNumber={2} aliases={["S2"]} direction="down" schX={0} schY={-0.9} schStemLength={0.28} />
+          <port name="pin3" pinNumber={3} aliases={["S3"]} direction="down" schX={0.45} schY={-0.9} schStemLength={0.28} />
+          <port name="pin4" pinNumber={4} aliases={["gate", "G"]} direction="left" schX={-1.15} schY={0} schStemLength={0.3} />
+          <port name="pin5" pinNumber={5} aliases={["drain", "D1"]} direction="up" schX={-0.6} schY={0.9} schStemLength={0.28} />
+          <port name="pin6" pinNumber={6} aliases={["D2"]} direction="up" schX={-0.3} schY={0.9} schStemLength={0.28} />
+          <port name="pin7" pinNumber={7} aliases={["D3"]} direction="up" schX={0} schY={0.9} schStemLength={0.28} />
+          <port name="pin8" pinNumber={8} aliases={["D4"]} direction="up" schX={0.3} schY={0.9} schStemLength={0.28} />
+          <port name="pin9" pinNumber={9} aliases={["D5"]} direction="up" schX={0.6} schY={0.9} schStemLength={0.28} />
+        </symbol>
+      }
       supplierPartNumbers={{
   "jlcpcb": [
     "C114200"
@@ -32,10 +50,6 @@ export const CSD19534Q5A = (props: ChipProps<typeof pinLabels>) => {
 <smtpad portHints={["pin7"]} pcbX="-0.635mm" pcbY="3.025394mm" width="0.7999984mm" height="1.3210032mm" shape="rect" />
 <smtpad portHints={["pin8"]} pcbX="-1.905mm" pcbY="3.025394mm" width="0.7999984mm" height="1.3210032mm" shape="rect" />
 <smtpad portHints={["pin9"]} pcbX="0mm" pcbY="0.649986mm" width="4.5999908mm" height="3.5999928mm" shape="rect" />
-<via connectsTo={`.${props.name} > .pin9`} pcbX="-0.499872mm" pcbY="1.150112mm" outerDiameter="0.6096mm" holeDiameter="0.3048mm" layers={["top","bottom"]} />
-<via connectsTo={`.${props.name} > .pin9`} pcbX="0.500126mm" pcbY="1.150112mm" outerDiameter="0.6096mm" holeDiameter="0.3048mm" layers={["top","bottom"]} />
-<via connectsTo={`.${props.name} > .pin9`} pcbX="-0.499872mm" pcbY="0.150114mm" outerDiameter="0.6096mm" holeDiameter="0.3048mm" layers={["top","bottom"]} />
-<via connectsTo={`.${props.name} > .pin9`} pcbX="0.500126mm" pcbY="0.150114mm" outerDiameter="0.6096mm" holeDiameter="0.3048mm" layers={["top","bottom"]} />
 <fabricationnotepath route={[{"x":-2.3755096000001004,"y":-3.101187600000003},{"x":-2.5862026000000924,"y":-3.101187600000003},{"x":-2.5862026000000924,"y":-3.101187600000003},{"x":-2.5862026000000924,"y":3.101187600000003},{"x":-2.5862026000000924,"y":3.101187600000003},{"x":-2.3755096000001004,"y":3.101187600000003}]} />
 <fabricationnotepath route={[{"x":2.3755095999999867,"y":-3.101187600000003},{"x":2.5862025999999787,"y":-3.101187600000003},{"x":2.5862025999999787,"y":-3.101187600000003},{"x":2.5862025999999787,"y":3.101187600000003},{"x":2.5862025999999787,"y":3.101187600000003},{"x":2.3755095999999867,"y":3.101187600000003}]} />
 <silkscreencircle pcbX="-2.84988mm" pcbY="-3.800094mm" radius="0.199898mm" />
@@ -49,5 +63,15 @@ export const CSD19534Q5A = (props: ChipProps<typeof pinLabels>) => {
       }}
       {...props}
     />
+    {connections?.source && <trace name={`${props.name}_PIN1_SOURCE`} from={`.${props.name} > .pin1`} to={connections.source} />}
+    {connections?.source && <trace name={`${props.name}_PIN2_SOURCE`} from={`.${props.name} > .pin2`} to={connections.source} />}
+    {connections?.source && <trace name={`${props.name}_PIN3_SOURCE`} from={`.${props.name} > .pin3`} to={connections.source} />}
+    {connections?.gate && <trace name={`${props.name}_PIN4_GATE`} from={`.${props.name} > .pin4`} to={connections.gate} />}
+    {connections?.drain && <trace name={`${props.name}_PIN5_DRAIN`} from={`.${props.name} > .pin5`} to={connections.drain} />}
+    {connections?.drain && <trace name={`${props.name}_PIN6_DRAIN`} from={`.${props.name} > .pin6`} to={connections.drain} />}
+    {connections?.drain && <trace name={`${props.name}_PIN7_DRAIN`} from={`.${props.name} > .pin7`} to={connections.drain} />}
+    {connections?.drain && <trace name={`${props.name}_PIN8_DRAIN`} from={`.${props.name} > .pin8`} to={connections.drain} />}
+    {connections?.drain && <trace name={`${props.name}_PIN9_DRAIN`} from={`.${props.name} > .pin9`} to={connections.drain} />}
+    </>
   )
 }

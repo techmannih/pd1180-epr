@@ -126,8 +126,9 @@ Rendered SVG and PNG sheets are available under `dist/schematics/`; the release 
 | Mounting | Four 4.2 mm holes on the documented asymmetric motor pattern |
 | Power corridor | Nominal 2.4 mm with 0.16 mm zone clearance |
 | General/power via | 0.60 mm pad / 0.30 mm finished drill |
+| MOSFET drain-pad thermal vias | 40 total: four 0.60/0.30 mm through vias under each of ten CSD19534Q5A drain pads; epoxy filled and copper capped |
 | Dense signal via | 0.45 mm pad / 0.20 mm finished drill |
-| Via-in-pad exception | Six 0.40/0.20 mm holes, filled and capped |
+| Dense signal exception | Sixteen 0.40/0.20 mm holes, filled and capped |
 | Assembly side | Top and bottom |
 | Solder mask / legend | Green / white |
 
@@ -167,7 +168,7 @@ Current committed results:
 |---|---|
 | KiCad DRC | PASS — 0 violations, 0 unconnected items |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 13 tests, 584 assertions |
+| Topology regression | PASS — 14 tests, 631 assertions |
 | Decoupling | PASS — 32/32 targets |
 | Assembly | PASS — 254 supplier-backed parts plus 11 service test pads on permitted layers |
 | Stock | PASS — 66/66 unique fitted LCSC codes available at the recorded timestamp |
@@ -191,7 +192,7 @@ The `release/` directory contains:
 
 Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top/bottom assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
 
-The hosted tscircuit entrypoint is the generated `release/circuit.json`. It preserves the code-defined 12-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks 898/898 routed-port mappings and compares its copper counts with the KiCad import. Cloud autorouting remains disabled because the verified route is already present and recomputing this board can time out. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks both the configured 8 MiB viewer source set and the larger fixed-filter GitHub payload.
+The hosted tscircuit entrypoint is the generated `release/circuit.json`. It preserves the code-defined 12-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks 926/926 routed-port mappings and compares its copper counts with the KiCad import. Cloud autorouting remains disabled because the verified route is already present and recomputing this board can time out. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks both the configured 8 MiB viewer source set and the larger fixed-filter GitHub payload.
 
 ## Repository map
 

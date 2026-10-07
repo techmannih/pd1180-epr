@@ -92,7 +92,7 @@ test('both bridges have four external FETs and independent low-side shunts',()=>
     for(const pin of [5,6,7,8,9])on('Q'+lo,pin,'MOTOR_'+phase)
     for(const pin of [1,2,3])on('Q'+lo,pin,'SENSE_'+phase[0])
   }
-  on('RS1',1,'SENSE_A');on('RS1',2,'GND');on('RS2',1,'SENSE_B');on('RS2',2,'GND')
+  on('R109',1,'SENSE_A');on('R109',2,'GND');on('R110',1,'SENSE_B');on('R110',2,'GND')
   on('U7',8,'SENSE_A');on('U7',9,'SENSE_B')
 })
 test('MCU receives independent input-current and motor-bus voltage telemetry',()=>{

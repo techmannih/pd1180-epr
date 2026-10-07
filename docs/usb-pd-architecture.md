@@ -46,7 +46,7 @@ TI documents that the TPD4S480 SBU OVP FETs may protect USB 2.0 DP/DM instead of
 
 - U6 TPS26631 pin 13 produces `IIN_MON`; R26 converts it to a voltage and U16 pin 12 reads it with an ADC.
 - The independent VMOTOR divider R31/R32/R33 produces `VMON_ADC`; U16 pin 11 reads motor-bus voltage with a separate ADC channel.
-- RS1 and RS2 are independent 33 mΩ, 3 W low-side phase shunts connected to TMC5160A `SRAH` and `SRBH` inputs for phase-current regulation.
+- R109 and R110 are independent 33 mΩ, 3 W low-side phase shunts connected to TMC5160A `SRAH` and `SRBH` inputs for phase-current regulation.
 - The TMC5160A is intentionally an external-bridge controller. Q6–Q13 are its two full MOSFET bridges, not manual substitutes for an integrated output stage.
 - Firmware must calibrate input-current telemetry and configure TMC5160A current scaling, gate drive and chopper behavior for the actual motor. The netlist proves the paths exist; powered validation proves accuracy and stability.
 

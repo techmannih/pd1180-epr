@@ -10,6 +10,7 @@ export const TL431AIDBZR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{ pin1: { requiresPower: true }, pin3: { requiresGround: true } }}
       supplierPartNumbers={{
   "jlcpcb": [
     "C23892"

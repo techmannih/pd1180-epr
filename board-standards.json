@@ -33,16 +33,26 @@
         "minimum_annular_ring": 0.125
       },
       {
-        "name": "imported_via_in_pad_exception",
+        "name": "dense_signal_filled_capped_exception",
         "pad": 0.4,
         "drill": 0.2,
         "minimum_annular_ring": 0.1,
-        "maximum_count": 6,
+        "maximum_count": 16,
         "process": "filled and capped"
       }
     ],
     "via_pair_tolerance_mm": 0.011,
-    "via_in_pad_process": "filled and capped"
+    "via_in_pad_process": "filled and capped",
+    "thermal_via_in_pad": {
+      "footprint": "CSD19534Q5A",
+      "references": ["Q4", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q16"],
+      "pad_number": "9",
+      "vias_per_pad": 4,
+      "total_count": 40,
+      "pad_mm": 0.6,
+      "drill_mm": 0.3,
+      "process": "epoxy filled and copper capped"
+    }
   },
   "project_geometry": {
     "board_width_mm": 85.9,

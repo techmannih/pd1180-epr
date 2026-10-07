@@ -14,7 +14,15 @@
     "surface_finish": "lead-free HASL or ENIG",
     "remove_order_number": true,
     "electrical_test": "100 percent",
-    "via_in_pad": "filled and capped"
+    "via_in_pad": "epoxy filled and copper capped",
+    "thermal_via_in_pad": {
+      "references": ["Q4", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q16"],
+      "pad_number": "9 (drain exposed pad)",
+      "vias_per_pad": 4,
+      "total_vias": 40,
+      "via_pad_mm": 0.6,
+      "finished_drill_mm": 0.3
+    }
   },
   "assembly": {
     "side": "both",

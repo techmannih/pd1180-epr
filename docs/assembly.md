@@ -8,7 +8,7 @@ Use `bun run check:release` to review every manufacturing and bring-up gate befo
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes. Final copper weight and stack-up are selected during current/thermal and USB impedance review.
 - Assembly is two-sided. Tall power parts and field connectors stay on top; the AS5047P, its local bypass parts, low-profile logic power and service pads are on the bottom. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
-- The power MOSFET drain pads contain connected via-in-pad holes. Order filled-and-capped via-in-pad processing if this footprint is retained.
+- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total). Order epoxy-filled and copper-capped via-in-pad processing; the regression checks verify the exact references, count, dimensions, layers and drain-net identity.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
@@ -36,7 +36,7 @@ The hosted tscircuit 3D assembly does not currently include a motor primitive be
 
 ## Imported-part corrections
 
-The STM32 registry component is retained with a complete datasheet pin-label override, power/ground attributes and a courtyard. CSD19534 drain thermal vias now have explicit net connections. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion. These edits are local to `imports/`.
+The STM32 registry component is retained with a complete datasheet pin-label override, power/ground attributes and a courtyard. CSD19534 drain thermal vias are implemented in the final KiCad route with explicit drain-net identities and bottom copper ties. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion.
 
 ## Logic backup supply
 

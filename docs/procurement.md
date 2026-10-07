@@ -2,7 +2,7 @@
 
 Exact LCSC-code matches only. A fuzzy search result is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-07T05:54:42.403Z.
+Last complete refresh: 2026-10-07T05:59:25.104Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|

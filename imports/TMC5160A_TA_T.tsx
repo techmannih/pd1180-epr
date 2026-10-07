@@ -150,6 +150,16 @@ const pinLabels = {
 } as const
 export const TMC5160A_TA_T = (props: ChipProps<typeof pinLabels>) => (
   <chip
+    pinAttributes={{
+      pin4: { requiresPower: true },
+      pin6: { requiresGround: true },
+      pin19: { requiresGround: true },
+      pin20: { requiresPower: true },
+      pin29: { requiresPower: true },
+      pin30: { requiresGround: true },
+      pin33: { requiresPower: true },
+      pin49: { requiresGround: true },
+    }}
     footprint={<footprint>
         <smtpad portHints={["pin1"]} pcbX="-2.7500580000001946mm" pcbY="-4.199889999999982mm" layer="top" width="0.2800096mm" height="1.5999967999999998mm" radius="0.1400048mm" shape="pill" />
 <smtpad portHints={["pin2"]} pcbX="-2.249932000000058mm" pcbY="-4.199889999999982mm" layer="top" width="0.2800096mm" height="1.5999967999999998mm" radius="0.1400048mm" shape="pill" />

@@ -31,11 +31,17 @@ const project = new CircuitJsonToKicadProConverter(circuitJson, {
 })
 project.runUntilFinished()
 const projectData = JSON.parse(project.getOutputString())
+projectData.board ??= {}
+projectData.board.design_settings ??= {}
+projectData.board.design_settings.rules ??= {}
+projectData.board.design_settings.defaults ??= {}
+projectData.board.design_settings.defaults.zones ??= {}
 Object.assign(projectData.board.design_settings.rules, {
   min_copper_edge_clearance: 0.2,
   min_hole_clearance: 0.13,
   min_through_hole_diameter: 0.2,
   min_track_width: 0.09,
+  min_via_annular_width: 0.10,
   min_via_diameter: 0.4,
 })
 Object.assign(projectData.board.design_settings.defaults.zones, {

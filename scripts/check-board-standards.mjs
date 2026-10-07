@@ -74,7 +74,8 @@ function forms(name) {
 
 const tolerance = standards.fabrication.via_pair_tolerance_mm
 const viaSummary = new Map()
-for (const form of forms('via')) {
+const viaForms = forms('via')
+for (const form of viaForms) {
   const pad = Number(form.match(/\(size ([0-9.]+)\)/)?.[1])
   const drill = Number(form.match(/\(drill ([0-9.]+)\)/)?.[1])
   if (!Number.isFinite(pad) || !Number.isFinite(drill)) {
@@ -93,6 +94,47 @@ for (const pair of standards.fabrication.via_pairs_mm) {
   const count = viaSummary.get(pair.name) || 0
   if (pair.maximum_count != null && count > pair.maximum_count) errors.push(`${pair.name}: ${count} vias exceed maximum ${pair.maximum_count}`)
 }
+
+const thermalPolicy = standards.fabrication.thermal_via_in_pad
+const parsedVias = viaForms.map((form) => ({
+  x: Number(form.match(/\(at ([-0-9.]+) ([-0-9.]+)\)/)?.[1]),
+  y: Number(form.match(/\(at ([-0-9.]+) ([-0-9.]+)\)/)?.[2]),
+  pad: Number(form.match(/\(size ([0-9.]+)\)/)?.[1]),
+  drill: Number(form.match(/\(drill ([0-9.]+)\)/)?.[1]),
+  layers: form.match(/\(layers "([^"]+)" "([^"]+)"\)/)?.slice(1),
+  net: form.match(/\(net "([^"]+)"\)/)?.[1],
+}))
+const thermalEvidence = []
+for (const form of forms('footprint').filter((item) => item.startsWith(`(footprint "${thermalPolicy.footprint}"`))) {
+  const reference = form.match(/\(property "Reference" "([^"]+)"/)?.[1]
+  const footprintAt = form.match(/\n\t\t\(at ([-0-9.]+) ([-0-9.]+)(?: ([-0-9.]+))?\)/)
+  const padSource = form.slice(form.indexOf(`(pad "${thermalPolicy.pad_number}"`))
+  const padAt = padSource.match(/\(at ([-0-9.]+) ([-0-9.]+)(?: ([-0-9.]+))?\)/)
+  const net = padSource.match(/\(net "([^"]+)"\)/)?.[1]
+  if (!reference || !footprintAt || !padAt || !net) {
+    errors.push('Unable to parse a CSD19534Q5A drain pad from the final KiCad board')
+    continue
+  }
+  const [fx, fy] = footprintAt.slice(1, 3).map(Number)
+  const angle = Number(footprintAt[3] || 0)
+  const [px, py] = padAt.slice(1, 3).map(Number)
+  const radians = angle * Math.PI / 180
+  const center = {
+    x: fx + px * Math.cos(radians) - py * Math.sin(radians),
+    y: fy + px * Math.sin(radians) + py * Math.cos(radians),
+  }
+  const thermalVias = parsedVias.filter((via) => Math.abs(via.x - center.x) < 0.8 && Math.abs(via.y - center.y) < 0.8)
+  if (thermalVias.length !== thermalPolicy.vias_per_pad) errors.push(`${reference}: expected ${thermalPolicy.vias_per_pad} drain-pad thermal vias, found ${thermalVias.length}`)
+  for (const via of thermalVias) {
+    if (via.net !== net) errors.push(`${reference}: thermal via net ${via.net} does not match drain pad net ${net}`)
+    if (!close(via.pad, thermalPolicy.pad_mm, tolerance) || !close(via.drill, thermalPolicy.drill_mm, tolerance)) errors.push(`${reference}: thermal via dimensions differ from policy`)
+    if (JSON.stringify(via.layers) !== JSON.stringify(['F.Cu', 'B.Cu'])) errors.push(`${reference}: thermal via is not a through via`)
+  }
+  thermalEvidence.push({ reference, drain_net: net, via_count: thermalVias.length })
+}
+const thermalReferences = thermalEvidence.map((row) => row.reference).sort()
+if (JSON.stringify(thermalReferences) !== JSON.stringify([...thermalPolicy.references].sort())) errors.push('Final thermal-via footprint references differ from policy')
+if (thermalEvidence.reduce((sum, row) => sum + row.via_count, 0) !== thermalPolicy.total_count) errors.push(`Expected ${thermalPolicy.total_count} drain-pad thermal vias in total`)
 
 const gerberFiles = await readdir('dist/manufacturing/gerbers')
 if (!standards.assembly.bottom_paste_allowed && gerberFiles.some((name) => /B[_-]Paste/i.test(name))) errors.push('Bottom paste Gerber is present for a top-only assembly')
@@ -122,6 +164,7 @@ const report = {
   },
   assembly: { pcb_component_records: components.length, allowed_layers: standards.assembly.populated_layers, bottom_paste_present: gerberFiles.some((name) => /B[_-]Paste/i.test(name)) },
   via_counts: Object.fromEntries(viaSummary),
+  thermal_via_in_pad: { process: thermalPolicy.process, total: thermalEvidence.reduce((sum, row) => sum + row.via_count, 0), footprints: thermalEvidence },
   markings_checked: standards.markings.required_source_text,
   drc: { violations: (drc.violations || []).length, unconnected_items: (drc.unconnected_items || []).length },
   warnings,
