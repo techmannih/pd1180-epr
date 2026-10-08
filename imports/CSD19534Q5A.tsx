@@ -1,4 +1,16 @@
-import type { MosfetProps } from "@tscircuit/props"
+import type { ChipProps } from "@tscircuit/props"
+
+const pinLabels = {
+  pin1: ["S1"],
+  pin2: ["S2"],
+  pin3: ["S3"],
+  pin4: ["G"],
+  pin5: ["D1"],
+  pin6: ["D2"],
+  pin7: ["D3"],
+  pin8: ["D4"],
+  pin9: ["D5"],
+} as const
 
 type PowerMosfetConnections = {
   source?: string
@@ -6,8 +18,8 @@ type PowerMosfetConnections = {
   drain?: string
 }
 type PowerMosfetProps = Omit<
-  MosfetProps,
-  "channelType" | "mosfetMode" | "connections" | "symbol"
+  ChipProps<typeof pinLabels>,
+  "connections"
 > & {
   connections?: PowerMosfetConnections
 }
@@ -15,25 +27,8 @@ type PowerMosfetProps = Omit<
 export const CSD19534Q5A = ({ connections, ...props }: PowerMosfetProps) => {
   return (
     <>
-    <mosfet
-      channelType="n"
-      mosfetMode="enhancement"
-      symbol={
-        <symbol width={3.6} height={3.4}>
-          <schematictext text={props.name} schX={0} schY={0.9} fontSize={0.18} color="#006464" anchor="bottom_center" />
-          <schematicrect schX={0} schY={0} width={2} height={2.4} strokeWidth={0.03} color="#880000" />
-          <port name="pin1" pinNumber={1} aliases={["S1", "source"]} direction="left" schX={-1.4} schY={0.8} schStemLength={0.4} />
-          <port name="pin2" pinNumber={2} aliases={["S2"]} direction="left" schX={-1.4} schY={0.4} schStemLength={0.4} />
-          <port name="pin3" pinNumber={3} aliases={["S3"]} direction="left" schX={-1.4} schY={0} schStemLength={0.4} />
-          <port name="pin4" pinNumber={4} aliases={["G", "gate"]} direction="left" schX={-1.4} schY={-0.4} schStemLength={0.4} />
-          <port name="pin5" pinNumber={5} aliases={["D1", "drain"]} direction="left" schX={-1.4} schY={-0.8} schStemLength={0.4} />
-          <port name="pin9" pinNumber={9} aliases={["D5"]} direction="right" schX={1.4} schY={0.8} schStemLength={0.4} />
-          <port name="pin8" pinNumber={8} aliases={["D4"]} direction="right" schX={1.4} schY={0.4} schStemLength={0.4} />
-          <port name="pin7" pinNumber={7} aliases={["D3"]} direction="right" schX={1.4} schY={0} schStemLength={0.4} />
-          <port name="pin6" pinNumber={6} aliases={["D2"]} direction="right" schX={1.4} schY={-0.4} schStemLength={0.4} />
-          <schematictext text="CSD19534Q5A" schX={0} schY={-1.48} fontSize={0.15} color="#006464" anchor="top_center" />
-        </symbol>
-      }
+    <chip
+      pinLabels={pinLabels}
       supplierPartNumbers={{
   "jlcpcb": [
     "C114200"
