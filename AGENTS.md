@@ -11,6 +11,10 @@ This file is the first design instruction for any AI or reviewer working in this
 
 Do not copy voltage, current, thermal, connector, stack-up or motor assumptions from another board. Reuse its review method only. Keep calculated targets, verified CAD facts and measured hardware results clearly separated.
 
+## User-approved schematic freeze
+
+The user approved and pushed the schematic in commit `8a21b01` and explicitly prohibited further schematic changes. Preserve all schematic placement, symbols, labels, values, pin mappings and logical connectivity unless the user explicitly reopens that scope. PCB routing work may change PCB-only properties and routing configuration, but must not change `sch*` properties, schematic graphics or imported symbols. Do not restore older schematic snapshots while refreshing PCB artifacts. Verify the schematic is unchanged against this user-approved source after PCB work.
+
 ## Required project structure
 
 Every board repository should contain:
