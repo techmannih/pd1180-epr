@@ -44,8 +44,9 @@ if (runtimeConfig.platformConfig?.routingDisabled !== true) errors.push('Interac
 for (const pattern of requiredIgnores) {
   if (!ignored.includes(pattern)) errors.push(`tscircuit.config.json must ignore ${pattern}`)
 }
-for (const key of ['mainEntrypoint', 'previewComponentPath', 'siteDefaultComponentPath']) {
-  if (config[key] !== 'index.circuit.tsx') errors.push(`${key} must open index.circuit.tsx`)
+if (config.mainEntrypoint !== 'index.circuit.tsx') errors.push('mainEntrypoint must remain index.circuit.tsx')
+for (const key of ['previewComponentPath', 'siteDefaultComponentPath']) {
+  if (config[key] !== 'release/circuit.json') errors.push(`${key} must show the verified routed PCB`)
 }
 if (config.buildCommand !== 'tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine') errors.push('Cloud buildCommand must explicitly build index.circuit.tsx so selectable imports are not built as separate boards')
 if (config.build?.routingDisabled !== true) errors.push('Cloud source previews must disable autorouting; the verified manufacturing route remains in release/circuit.json')

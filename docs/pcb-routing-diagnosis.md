@@ -28,3 +28,11 @@ Exact live supplier checks passed for all 67 populated part codes before this ro
 ## Next routing work
 
 The existing verified copper can be used for PCB viewing while keeping the approved schematic. A requirement to regenerate copper through the tscircuit autorouter needs separate PCB-only work on the local via path and solver/placement input, followed by a successful complete route and native DRC. Do not alter schematic symbols or connectivity, suppress unconnected errors, or refresh the routing fingerprint merely to make a failing route pass.
+
+## Routed preview fix
+
+The source-only `BYPASS_C26` path now has wire contacts at the via coordinate on both layers; `checkTracesAreContiguous` returns zero errors for all local routes. The approved schematic's 2,783 records remain exactly identical.
+
+`bun run build` / `bun run build:pcb` now validates and refreshes the complete routed viewer. `bun run dev` opens that viewer directly, while `index.circuit.tsx` remains the editable source entrypoint and imports remain selectable. The hosted site default also selects the routed viewer. This uses the existing native-DRC-verified copper and does not claim the failed tscircuit solver completed a new route.
+
+Browser verification confirmed the full routed PCB with **0 errors** and successful standalone USB import PCB/schematic switching. No warning was suppressed. This update refreshes the viewer artifact and its hashes; it does not issue a new manufacturing approval.

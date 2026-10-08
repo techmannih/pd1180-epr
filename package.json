@@ -11,9 +11,10 @@
   },
   "main": "index.circuit.tsx",
   "scripts": {
-    "dev": "bun run check:toolchain && tsci dev",
+    "dev": "bun run check:toolchain && tsci dev release/circuit.json",
     "typecheck": "tsc --noEmit",
-    "build": "bun run build:preview",
+    "build": "bun run build:pcb",
+    "build:pcb": "bun scripts/refresh-routed-preview.mjs",
     "check:netlist": "bun scripts/check-netlist.mjs",
     "check:placement": "tsci check placement dist/index/circuit.json",
     "check:schematic": "tsci check schematic-placement dist/index/circuit.json",
