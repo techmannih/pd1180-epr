@@ -392,7 +392,7 @@ export const PD1180EPR = () => (
     <net name="VREF_2V495" isPowerNet={false} />
 
     {/* One USB-C receptacle carries EPR power and USB 2.0 data. */}
-    <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-2.6} schY={-2} schWidth={2.3} schHeight={1.1} pcbX={-36} pcbY={15}
+    <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-2.6} schY={-2} schWidth={2.3} schHeight={1.8} pcbX={-36} pcbY={15}
       pcbRotation={270}
       schPinArrangement={{
         rightSide: { pins: ["pin7", "pin15", "pin9", "pin13", "pin12"], direction: "top-to-bottom" },
@@ -479,11 +479,11 @@ export const PD1180EPR = () => (
       decouplingFor=".U2 > .pin4"
       maxVoltageRating="10V"
       connections={{ pin1: "net.PD_1V5", pin2: "net.GND" }} />
-    <resistor name="R1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={6.82} schY={-0.3} pcbX={-18.0} pcbY={36.0} pcbRotation={180} layer="bottom"
+    <resistor name="R1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={7.4} schY={-0.3} pcbX={-18.0} pcbY={36.0} pcbRotation={180} layer="bottom"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.CC_FAULT_N" }} />
-    <resistor name="R2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={8.3} schY={-0.3} pcbX={-34.0} pcbY={22.0} layer="bottom"
+    <resistor name="R2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={9.1} schY={-0.3} pcbX={-34.0} pcbY={22.0} layer="bottom"
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.EPR_EN", pin2: "net.GND" }} />
