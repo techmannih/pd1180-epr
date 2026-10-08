@@ -44,7 +44,7 @@ for (const pattern of requiredIgnores) {
 if (config.mainEntrypoint !== 'release/circuit.json') errors.push('Cloud mainEntrypoint must use release/circuit.json')
 if (!config.includeBoardFiles?.includes('release/circuit.json')) errors.push('Cloud includeBoardFiles must include release/circuit.json')
 if (config.build?.routingDisabled !== true) errors.push('Cloud release builds must disable autorouting; release/circuit.json already replays verified manufacturing routing')
-if ((config.build?.workerTimeoutMs || 0) < 2_700_000) errors.push('Cloud worker timeout must be at least 45 minutes')
+if ((config.build?.workerTimeoutMs || 0) < 3_600_000) errors.push('Cloud worker timeout must be at least 60 minutes')
 
 const registryDependencies = Object.keys(packageJson.dependencies || {}).filter((name) => name.startsWith('@tsci/'))
 if (registryDependencies.length) {
