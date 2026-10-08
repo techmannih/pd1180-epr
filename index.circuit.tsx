@@ -392,7 +392,7 @@ export const PD1180EPR = () => (
     <net name="VREF_2V495" isPowerNet={false} />
 
     {/* One USB-C receptacle carries EPR power and USB 2.0 data. */}
-    <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-1.7} schY={-2} schWidth={1.575} schHeight={1.1} pcbX={-36} pcbY={15}
+    <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-2.6} schY={-2} schWidth={2.3} schHeight={1.1} pcbX={-36} pcbY={15}
       pcbRotation={270}
       schPinArrangement={{
         rightSide: { pins: ["pin7", "pin15", "pin9", "pin13", "pin12"], direction: "top-to-bottom" },
