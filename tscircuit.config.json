@@ -1,9 +1,14 @@
 {
   "$schema": "https://cdn.jsdelivr.net/npm/@tscircuit/cli/types/tscircuit.config.schema.json",
-  "mainEntrypoint": "release/circuit.json",
+  "mainEntrypoint": "index.circuit.tsx",
+  "previewComponentPath": "index.circuit.tsx",
+  "siteDefaultComponentPath": "index.circuit.tsx",
   "includeBoardFiles": [
+    "**/*.tsx",
+    "imports/**/*.{ts,js,jsx}",
     "release/circuit.json"
   ],
+  "buildCommand": "tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine",
   "ignoredFiles": [
     ".github/**",
     "checks/**",

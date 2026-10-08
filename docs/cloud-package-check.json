@@ -1,6 +1,12 @@
 {
-  "checked_at": "2026-10-08T13:43:25.812Z",
-  "main_entrypoint": "release/circuit.json",
+  "checked_at": "2026-10-08T14:12:21.016Z",
+  "main_entrypoint": "index.circuit.tsx",
+  "preview_component_path": "index.circuit.tsx",
+  "site_default_component_path": "index.circuit.tsx",
+  "cloud_build_command": "tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine",
+  "selectable_source_files": 42,
+  "selectable_import_files": 39,
+  "unavailable_viewer_files": [],
   "registry_dependencies": [],
   "ignored_files": [
     ".github/**",
@@ -37,13 +43,13 @@
     "*.log"
   ],
   "included_files": 56,
-  "included_bytes": 6803522,
-  "included_mebibytes": 6.49,
+  "included_bytes": 6861332,
+  "included_mebibytes": 6.54,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 6349046
+      "bytes": 6406102
     },
     {
       "path": "index.circuit.tsx",
@@ -55,7 +61,7 @@
     },
     {
       "path": "README.md",
-      "bytes": 17825
+      "bytes": 18080
     },
     {
       "path": "imports/STM32G0B1CBT6.local.js",
@@ -67,7 +73,7 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 12336
+      "bytes": 12597
     },
     {
       "path": "imports/TPD4S480RUKR.tsx",
@@ -83,14 +89,14 @@
     }
   ],
   "github_import_files": 300,
-  "github_import_bytes": 20657343,
-  "github_import_mebibytes": 19.7,
+  "github_import_bytes": 20713208,
+  "github_import_mebibytes": 19.75,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 6349046
+      "bytes": 6406102
     },
     {
       "path": "previews/pd1180-epr-overview.png",
@@ -118,15 +124,15 @@
     },
     {
       "path": "release/schematics/usb-pd.svg",
-      "bytes": 367065
+      "bytes": 364093
     },
     {
       "path": "release/schematics/motion.svg",
-      "bytes": 354662
+      "bytes": 354389
     },
     {
       "path": "release/schematics/mcu.svg",
-      "bytes": 263723
+      "bytes": 263729
     }
   ],
   "errors": []

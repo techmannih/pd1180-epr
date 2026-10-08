@@ -41,9 +41,11 @@ const errors = []
 for (const pattern of requiredIgnores) {
   if (!ignored.includes(pattern)) errors.push(`tscircuit.config.json must ignore ${pattern}`)
 }
-if (config.mainEntrypoint !== 'release/circuit.json') errors.push('Cloud mainEntrypoint must use release/circuit.json')
-if (!config.includeBoardFiles?.includes('release/circuit.json')) errors.push('Cloud includeBoardFiles must include release/circuit.json')
-if (config.build?.routingDisabled !== true) errors.push('Cloud release builds must disable autorouting; release/circuit.json already replays verified manufacturing routing')
+for (const key of ['mainEntrypoint', 'previewComponentPath', 'siteDefaultComponentPath']) {
+  if (config[key] !== 'index.circuit.tsx') errors.push(`${key} must open index.circuit.tsx`)
+}
+if (config.buildCommand !== 'tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine') errors.push('Cloud buildCommand must explicitly build index.circuit.tsx so selectable imports are not built as separate boards')
+if (config.build?.routingDisabled !== true) errors.push('Cloud source previews must disable autorouting; the verified manufacturing route remains in release/circuit.json')
 if ((config.build?.workerTimeoutMs || 0) < 3_600_000) errors.push('Cloud worker timeout must be at least 60 minutes')
 
 const registryDependencies = Object.keys(packageJson.dependencies || {}).filter((name) => name.startsWith('@tsci/'))
@@ -53,6 +55,8 @@ if (registryDependencies.length) {
 
 const ignoredMatchers = ignored.map((pattern) => new Bun.Glob(pattern))
 const shouldIgnore = (path) => ignoredMatchers.some((matcher) => matcher.match(path))
+const boardMatchers = (config.includeBoardFiles || []).map((pattern) => new Bun.Glob(pattern))
+const isSelectable = (path) => boardMatchers.some((matcher) => matcher.match(path))
 const defaultIgnoredRoots = new Set(['.git', '.tscircuit', '.vscode', 'node_modules'])
 const included = []
 const githubImportFiles = []
@@ -77,7 +81,12 @@ await walk('.')
 // payload exactly, then apply the importer's fixed dist/ZIP filter.
 const gitFilesResult = Bun.spawnSync(['git', 'ls-files', '-z'])
 if (gitFilesResult.exitCode !== 0) throw new Error(gitFilesResult.stderr.toString())
-for (const projectPath of gitFilesResult.stdout.toString().split('\0').filter(Boolean)) {
+const trackedFiles = gitFilesResult.stdout.toString().split('\0').filter(Boolean)
+const sourceFiles = trackedFiles.filter((path) => path.endsWith('.tsx') || /^imports\/.*\.(ts|js|jsx)$/.test(path))
+const requiredViewerFiles = [...sourceFiles, 'release/circuit.json']
+const unavailableViewerFiles = requiredViewerFiles.filter((path) => shouldIgnore(path) || !isSelectable(path))
+if (unavailableViewerFiles.length) errors.push(`Viewer must expose every TSX/import and the routed artifact: ${unavailableViewerFiles.join(', ')}`)
+for (const projectPath of trackedFiles) {
   const root = projectPath.split('/')[0]
   if (root === 'dist' || projectPath.endsWith('.zip')) continue
   const info = await stat(projectPath)
@@ -99,6 +108,12 @@ for (const file of githubImportFiles.filter((item) => item.bytes > maximumGitHub
 const report = {
   checked_at: new Date().toISOString(),
   main_entrypoint: config.mainEntrypoint,
+  preview_component_path: config.previewComponentPath,
+  site_default_component_path: config.siteDefaultComponentPath,
+  cloud_build_command: config.buildCommand,
+  selectable_source_files: sourceFiles.length,
+  selectable_import_files: sourceFiles.filter((path) => path.startsWith('imports/')).length,
+  unavailable_viewer_files: unavailableViewerFiles,
   registry_dependencies: registryDependencies,
   ignored_files: ignored,
   included_files: included.length,
