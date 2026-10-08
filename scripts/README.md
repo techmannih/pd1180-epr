@@ -5,6 +5,8 @@ Every executable script is listed here so a reviewer can understand the release 
 | Script | Purpose |
 |---|---|
 | `add-board-planes.py` | Adds board-outline-conformal GND and V3V3 planes to the routed four-layer PCB. |
+| `build-firmware.mjs` | Builds and packages the pinned STM32 ARM commissioning image; --check proves source/artifact hashes match and motion remains locked. |
+| `check-operating-mode.mjs` | Fails for encoder connections incompatible with the selected external STEP/DIR mode; records the exact hardware blocker. |
 | `check-alternatives.mjs` | Rechecks reviewed LCSC alternative parts, their pinned live package names and intended package compatibility, then writes availability evidence. |
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and permitted top/bottom placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs. |

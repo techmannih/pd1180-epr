@@ -7,6 +7,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(pd1180_control STATIC
   src/control.c
+  src/pd_contract.c
   src/tmc5160_config.c
 )
 target_include_directories(pd1180_control PUBLIC include)

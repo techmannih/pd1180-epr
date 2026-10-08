@@ -10,6 +10,12 @@ dist/autorouter-debug/
 dist/route-krt/
 dist/index/3d.step
 dist/assembly-review/DRAFT-*
+# Hosted-site intermediates are rebuilt from the versioned release/circuit.json.
+dist/index.cjs
+dist/index.d.ts
+dist/index.html
+dist/index.js
+dist/release/
 
 # Environment variables
 .env
@@ -42,3 +48,6 @@ __snapshots__/
 .cache/
 route-*.circuit.tsx
 docs/checks/*.log
+
+# Reproducible embedded build output; exported firmware is packaged separately.
+firmware/.pio/

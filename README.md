@@ -2,7 +2,9 @@
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-700 NEMA 34 stepper motor. A single J1 USB-C receptacle requests a 48 V / 5 A USB Power Delivery 3.1 EPR contract and carries USB 2.0 device data. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
 
-**Revision:** r0.3 · **Status:** prototype engineering release · **Assembly:** top and bottom · **Production validation:** open
+**Revision:** r0.3 · **Status:** order blocked for external STEP/DIR · **Assembly:** top and bottom · **Production validation:** open
+
+**2026-10-09 review:** U7 pins 23–25 currently connect to encoder ABI nets, which conflict with their STEP/DIR-mode functions. Do not order for that operating mode until the [electrical correction](docs/step-dir-hardware-review.md) is approved, applied and rerouted. The [STM32 commissioning firmware](firmware/) provides USB/power diagnostics with motion locked; the TI EEPROM image and powered motor tests remain pending.
 
 [View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
@@ -54,7 +56,7 @@ Detailed calculations, tolerances and protection behavior are recorded in [docs/
 
 ## Motor control and feedback
 
-The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native ramp control can select the board's limit inputs; Step/Dir mode selects the external conditioned inputs.
+The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native ramp control selects the board's limit inputs. External STEP/DIR is the selected product mode, but its current encoder pin conflict must be corrected before enabling it.
 
 The bottom-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five bottom service pads for probing. The board assumes a diametrically magnetized shaft magnet aligned to the sensor axis; magnet diameter, gap, runout and stray-field behavior remain mechanical validation items.
 
@@ -77,7 +79,7 @@ SWD, reset/status and encoder ABI signals use labelled bottom-side service pads 
 
 ## Firmware contract
 
-The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmware-pinmap.json) and [firmware/include/board_pins.h](firmware/include/board_pins.h). The host-testable safety state machine keeps the board reviewable without requiring an embedded toolchain.
+The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmware-pinmap.json) and [firmware/include/board_pins.h](firmware/include/board_pins.h). The shared safety logic has host tests; the pinned PlatformIO target builds a flashable USB commissioning image with motor outputs locked pending the hardware correction. See [firmware build/programming instructions](firmware/README.md).
 
 | Function | MCU signals |
 |---|---|

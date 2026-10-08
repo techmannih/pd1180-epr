@@ -1,0 +1,36 @@
+{
+  "build": {
+    "core": "stm32",
+    "cpu": "cortex-m0plus",
+    "extra_flags": "-DSTM32G0 -DSTM32G0xx -DSTM32G0B1xx -DARDUINO_GENERIC_G0B1CBTX",
+    "f_cpu": "64000000L",
+    "mcu": "stm32g0b1cbt6",
+    "product_line": "STM32G0B1xx",
+    "variant": "STM32G0xx/G0B1C(B-C-E)(T-U)_G0C1C(C-E)(T-U)",
+    "arduino": {
+      "variant_h": "variant_generic.h"
+    },
+    "framework_extra_flags": {
+      "arduino": "-D__CORTEX_SC=0"
+    }
+  },
+  "debug": {
+    "jlink_device": "STM32G0B1CB",
+    "openocd_target": "stm32g0x",
+    "svd_path": "STM32G0B1.svd"
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "name": "PD1180 STM32G0B1CBT6 LQFP48 GP 128K",
+  "upload": {
+    "maximum_ram_size": 147456,
+    "maximum_size": 131072,
+    "protocol": "stlink",
+    "protocols": [
+      "stlink"
+    ]
+  },
+  "url": "https://github.com/techmannih/pd1180-epr",
+  "vendor": "PD1180"
+}

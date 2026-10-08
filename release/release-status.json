@@ -1,14 +1,17 @@
 {
-  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.3.0",
-  "status": "prototype-fabrication-ready",
-  "fabrication_orderable": true,
+  "status": "blocked-external-step-dir-hardware-conflict",
+  "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
     "input": "USB-C PD 3.1 EPR 48 V / 5 A contract",
     "motor_bus_current_limit_nominal_a": 4.477612,
     "motor_phase_current_target_rms_a": 5.5,
-    "board_size_mm": [85.9, 85.9],
+    "board_size_mm": [
+      85.9,
+      85.9
+    ],
     "assembly_side": "top-and-bottom"
   },
   "prototype_order_gates": {
@@ -20,7 +23,8 @@
     "live_lcsc_stock_check": true,
     "alternative_parts_review": true,
     "power_copper_analytical_check": true,
-    "mounting_pattern_matches_tmcm1180": true
+    "mounting_pattern_matches_tmcm1180": true,
+    "selected_operating_mode_electrically_compatible": false
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -28,5 +32,6 @@
     "brake_resistor_heatsink_and_load_energy_validated": false,
     "motor_magnet_alignment_validated": false,
     "powered_bringup_thermal_and_emc_validation": false
-  }
+  },
+  "blocking_review": "docs/step-dir-hardware-review.md"
 }

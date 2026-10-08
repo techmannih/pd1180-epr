@@ -15,10 +15,12 @@ int main(void) {
     .motor_power_good = true,
     .vmotor_in_range = true,
     .watchdog_healthy = true,
+    .configuration_verified = true, .sample_fresh = true, .driver_ready = true, .motion_wiring_verified = true,
   };
+  if (!pd1180_control_arm(&control, &inputs)) return 1;
   for (unsigned elapsed = 0; elapsed < 350; elapsed += 10) pd1180_control_tick(&control, &inputs, 10);
   printf("permit=%u run=%u tmc_registers=%zu mcu_run_pin=P%c%u\n",
     control.power_permit, control.mcu_run, pd1180_tmc5160_boot_config_count,
-    PIN_MCU_RUN.port, PIN_MCU_RUN.bit);
+    PD1180_PIN_MCU_RUN.port, PD1180_PIN_MCU_RUN.bit);
   return control.motor_commands_enabled ? 0 : 1;
 }

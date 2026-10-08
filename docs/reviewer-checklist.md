@@ -51,6 +51,8 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 ## Delivery and bring-up
 
+- [ ] Resolve the selected STEP/DIR mode conflict at U7 pins 23–25; see `step-dir-hardware-review.md`. A clean geometric DRC does not validate mode-dependent pin functions.
+
 - [ ] `bun run review` passes and `release/delivery-manifest.json` matches the exact release files.
 - [ ] Gerber, drill, BOM, CPL, KiCad, schematic, 3D, firmware contract and SHA-256 files open successfully.
 - [ ] Prototype-order gates and system-validation gates are reported separately.

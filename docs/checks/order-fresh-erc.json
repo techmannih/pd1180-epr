@@ -1,0 +1,105 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-09T00:07:00",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Library symbol issue",
+            "key": "lib_symbol_issues"
+        },
+        {
+            "description": "Footprint link issue",
+            "key": "footprint_link_issues"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.5",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052",
+            "violations": []
+        },
+        {
+            "path": "/USB-C EPR Power and USB Data/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/cfab77cd-7615-40c8-885a-c7e16963f397",
+            "violations": []
+        },
+        {
+            "path": "/USB and Motor Logic Supplies/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/dc323044-685e-4c89-8e68-28b147d83d0e",
+            "violations": []
+        },
+        {
+            "path": "/Protected 48 V Motor Bus/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/ff67ac86-08b7-488f-8112-7d97f2077fdb",
+            "violations": []
+        },
+        {
+            "path": "/Motion Controller and Enable Chain/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/4c6bc426-63ee-4007-8395-b1c580586bc2",
+            "violations": []
+        },
+        {
+            "path": "/Motor Phase A Power Bridge/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/d547a930-cdbc-4d4e-b29c-4052a2850e91",
+            "violations": []
+        },
+        {
+            "path": "/Motor Phase B Power Bridge/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/e5062724-4e32-46ea-98fa-8c65c671819e",
+            "violations": []
+        },
+        {
+            "path": "/Regeneration Brake and Overvoltage/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/dd63db7a-40e5-422a-b3fc-0b57550ed63f",
+            "violations": []
+        },
+        {
+            "path": "/MCU, Clock, Memory and Debug/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/07041646-aaf2-45f7-ab53-7adcd4224a5f",
+            "violations": []
+        },
+        {
+            "path": "/Shaft Encoder and Monitor/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/6f2bb5d4-44e3-4c58-9ba0-677974afd40b",
+            "violations": []
+        },
+        {
+            "path": "/CAN, RS485 and RS232/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/bf8be367-acf2-4f3d-842b-fd819330b657",
+            "violations": []
+        },
+        {
+            "path": "/24 V Inputs and Step/Direction/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/aed6bb5c-88fa-4107-9a1e-2a7aa5b5ce40",
+            "violations": []
+        },
+        {
+            "path": "/Hardware Enable and Outputs/",
+            "uuid_path": "/93276a6d-ae71-49bc-84c0-d5988d306052/1a8c8bd3-0c85-4d7c-91f9-371593b69cde",
+            "violations": []
+        }
+    ],
+    "source": "pd1180-epr-r0.3.kicad_sch"
+}

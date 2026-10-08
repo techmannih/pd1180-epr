@@ -1,10 +1,13 @@
 {
   "schema_version": 1,
   "purpose": "Reusable tscircuit board rules with explicit PD1180-EPR project overrides",
-  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.3.0",
   "assembly": {
-    "populated_layers": ["top", "bottom"],
+    "populated_layers": [
+      "top",
+      "bottom"
+    ],
     "bottom_components_allowed": true,
     "bottom_paste_allowed": true,
     "exact_supplier_code_required": true,
@@ -45,7 +48,18 @@
     "via_in_pad_process": "filled and capped",
     "thermal_via_in_pad": {
       "footprint": "CSD19534Q5A",
-      "references": ["Q4", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q16"],
+      "references": [
+        "Q4",
+        "Q6",
+        "Q7",
+        "Q8",
+        "Q9",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q16"
+      ],
       "pad_number": "9",
       "vias_per_pad": 4,
       "total_count": 40,
@@ -62,22 +76,38 @@
     "mounting_hole_count": 4,
     "mounting_hole_diameter_mm": 4.2,
     "mounting_holes_centered_mm": [
-      {"name": "H1", "x": 38.4, "y": -24.5},
-      {"name": "H2", "x": 24.5, "y": 38.4},
-      {"name": "H3", "x": -38.4, "y": 24.5},
-      {"name": "H4", "x": -24.5, "y": -38.4}
+      {
+        "name": "H1",
+        "x": 38.4,
+        "y": -24.5
+      },
+      {
+        "name": "H2",
+        "x": 24.5,
+        "y": 38.4
+      },
+      {
+        "name": "H3",
+        "x": -38.4,
+        "y": 24.5
+      },
+      {
+        "name": "H4",
+        "x": -24.5,
+        "y": -38.4
+      }
     ],
     "mechanical_reference": "engineering/tmcm-1180-v11-mechanical-reference.json"
   },
   "markings": {
     "required_source_text": [
-      "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
-      "Stepper Controller with USB-C PD 3.1 EPR · r0.3",
+      "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted",
+      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.3",
       "Made with tscircuit"
     ],
     "required_kicad_text": [
-      "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
-      "Stepper Controller with USB-C PD 3.1 EPR · r0.3",
+      "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted",
+      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.3",
       "Made with tscircuit"
     ]
   },
@@ -135,13 +165,15 @@
       "release/schematics/encoder.svg",
       "release/schematics/inputs.svg",
       "release/schematics/outputs.svg",
-      "release/schematics/serial.svg"
+      "release/schematics/serial.svg",
+      "release/pd1180-commissioning-firmware.zip"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",
       "release/pd1180-epr-r0.3-glb.zip",
       "release/pd1180-epr-r0.3-kicad.zip",
-      "release/pd1180-epr-r0.3-manufacturing.zip"
+      "release/pd1180-epr-r0.3-manufacturing.zip",
+      "release/pd1180-commissioning-firmware.zip"
     ],
     "prototype_gate_requires_zero_drc": true,
     "prototype_gate_requires_zero_erc": true,

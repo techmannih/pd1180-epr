@@ -1,11 +1,15 @@
 import { spawn } from 'node:child_process'
 import { createWriteStream } from 'node:fs'
-import { readFile, writeFile, mkdir } from 'node:fs/promises'
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
 const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
+  for (const file of (await readdir(dir)).sort()) verifiedInputPaths.push(`${dir}/${file}`)
+}
+verifiedInputPaths.push('firmware/platformio.ini', 'docs/firmware-pinmap.json', 'docs/pd-configuration.json', 'docs/release-status.json', 'scripts/build-firmware.mjs', 'scripts/check-operating-mode.mjs')
 async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
@@ -18,6 +22,8 @@ const checks = [
   ['import-previews', ['run', 'check:import-previews']],
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
+  ['firmware-target', ['run', 'check:firmware-target']],
+  ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
   ['source-schematic', ['run', 'check:source-schematic']],
   ['schematic-style', ['run', 'check:schematic-style']],

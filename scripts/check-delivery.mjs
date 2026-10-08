@@ -39,6 +39,16 @@ for (const path of standards.release.zip_files) {
     const zip = await JSZip.loadAsync(await readFile(path), { checkCRC32: true })
     const entries = Object.values(zip.files).filter((entry) => !entry.dir)
     if (!entries.length) errors.push(`${path}: archive is empty`)
+    if (path.endsWith('-commissioning-firmware.zip')) {
+      for (const name of ['firmware.bin', 'firmware.elf', 'manifest.json', 'README.md']) {
+        if (!zip.file(name)) errors.push(`${path}: ${name} missing`)
+      }
+      const m = JSON.parse(await zip.file('manifest.json').async('string'))
+      if (m.motor_operation_enabled !== false) errors.push(`${path}: frozen-board motion must remain disabled`)
+      for (const [name, hash] of Object.entries(m.artifacts)) {
+        if (createHash('sha256').update(await zip.file(name).async('nodebuffer')).digest('hex') !== hash) errors.push(`${path}: ${name} hash mismatch`)
+      }
+    }
     if (path.endsWith('-glb.zip') && !zip.file('pd1180-epr.glb')) errors.push(`${path}: pd1180-epr.glb is missing`)
   } catch (error) {
     errors.push(`${path}: invalid ZIP (${error.message})`)

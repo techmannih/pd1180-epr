@@ -1,0 +1,37 @@
+{
+  "built_at": "2026-10-08T18:46:04.159Z",
+  "target": "STM32G0B1CBT6",
+  "image_type": "commissioning-diagnostics-only",
+  "motor_operation_enabled": false,
+  "flash_address": "0x08000000",
+  "initial_sp": "0x20024000",
+  "reset_vector": "0x800981d",
+  "max_flash_bytes": 131072,
+  "image_bytes": 49096,
+  "inputs": {
+    "firmware/platformio.ini": "1e197dc67134e2a6b5c6992a27779a9819584b8d0c404980e3464fd7a41be139",
+    "firmware/README.md": "1f089b737b6598db3b4e1b525ada6215f5ad7e95185dbb78d015ef61c12d2f54",
+    "docs/firmware-pinmap.json": "ac8994f1d2324bc4104efffc141d8165307a5cb8d500e6cafca974ee0ef08514",
+    "scripts/build-firmware.mjs": "7563bc0f322cfe78d27010978131b8f856e601382c53ef01272d29f65db2bd07",
+    "firmware/src/control.c": "8a28297d8ae06f7d6ea92e2142870c20e32ae7741f7663fd24928ee6fe2a5cf9",
+    "firmware/src/main.c": "1b2c29203614df368b87df5187285dd6da968392ab29496deac0900aca2872a0",
+    "firmware/src/pd_contract.c": "81070c895f2190e477e773e1edc85cc82e26030bd028f23f04f55e57af240687",
+    "firmware/src/tmc5160_config.c": "5960787a32fef1e35de6eaa43ef4d83d43ae91cdadec12193d2f0bb3fd5a74e9",
+    "firmware/include/board_pins.h": "675899087ca0cf80c779f65d61d1f38f13f4c764b91d81992f4da1555643bb9a",
+    "firmware/include/control.h": "b3663d5e52a08a9d6d3eb4a8b242e2292f35bb70fcd687bb76770c488cb8cf35",
+    "firmware/include/pd_contract.h": "d1c5ba4b42105e73d7ab7e775e558c27e9c7a5439d83cf537f0abb4ec5b61fc8",
+    "firmware/include/tmc5160_config.h": "e98f528c15755365c050f52c065814b724f5da707e59407aa23880221b5ea3fa",
+    "firmware/target/main.cpp": "62dfca2cef3d823d40c779084ec9213cb81285e76a901231ad388837679f52cd",
+    "firmware/boards/pd1180.json": "bf96ddf2d976e26caed4ab68d285cf0372f9f332aae4cb8824f425951788489c"
+  },
+  "artifacts": {
+    "firmware.bin": "203db4ef7a08b5965004a3787550d7e0bf56485515060073bbca6ed0497cf7bf",
+    "firmware.elf": "2cae1a5c2672832fb04532bb1ec426e8961509030920b105627094ff21869ee1"
+  },
+  "unverified": [
+    "USB enumeration and measured GPIO levels on hardware",
+    "TI configuration image/programming",
+    "STEP/DIR hardware ECO",
+    "motor operation and thermal/EMC validation"
+  ]
+}

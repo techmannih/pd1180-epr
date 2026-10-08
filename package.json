@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "private": true,
   "packageManager": "bun@1.3.14",
-  "description": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "description": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "homepage": "https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller",
   "repository": {
     "type": "git",
@@ -67,7 +67,10 @@
     "check:firmware": "bun scripts/check-firmware.mjs",
     "export:release": "bun scripts/export-release.mjs",
     "generate:mounting-template": "bun scripts/generate-mounting-template.mjs",
-    "review": "bun run check:stock && bun run check:alternatives && bun run verify && bun run export:previews && bun run export:release && bun run check:cloud-viewer && bun run check:release"
+    "review": "bun run check:stock && bun run check:alternatives && bun run verify && bun run export:previews && bun run export:release && bun run check:cloud-viewer && bun run check:release",
+    "build:firmware": "bun scripts/build-firmware.mjs",
+    "check:firmware-target": "bun scripts/build-firmware.mjs --check",
+    "check:operating-mode": "bun scripts/check-operating-mode.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",
