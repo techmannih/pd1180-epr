@@ -1254,7 +1254,7 @@ export const PD1180EPR = () => (
     <TCAN332DR name="U19" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U19" schX={0} schY={0} pcbX={-32.0} pcbY={-23.5}
       noConnect={["pin5", "pin8"]}
       connections={{ pin1: "net.CAN_TX", pin2: "net.GND", pin3: "net.V3V3", pin4: "net.CAN_RX", pin6: "net.CAN_L", pin7: "net.CAN_H" }} />
-    <capacitor name="C54" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U19" schX={18} schY={7} pcbX={-31.4} pcbY={-28.5} pcbRotation={180}
+    <capacitor name="C54" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U19" schX={19} schY={7} pcbX={-31.4} pcbY={-28.5} pcbRotation={180}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
@@ -1269,7 +1269,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.CAN_H", pin2: "net.CAN_L", pin3: "net.GND" }} />
     <MAX3485EESA_T name="U20" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U20" schX={17} schY={0} pcbX={-22} pcbY={-26}
       connections={{ pin1: "net.RS485_RX", pin2: "net.RS485_DE", pin3: "net.RS485_DE", pin4: "net.RS485_TX", pin5: "net.GND", pin6: "net.RS485_A", pin7: "net.RS485_B", pin8: "net.V3V3" }} />
-    <capacitor name="C55" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U20" schX={22} schY={7} pcbX={-26.75} pcbY={-23.5}
+    <capacitor name="C55" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U20" schX={20.3} schY={7} pcbX={-26.75} pcbY={-23.5}
       schRotation={-90}
       pcbRotation={180}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
@@ -1308,7 +1308,7 @@ export const PD1180EPR = () => (
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.RS232_VN", pin2: "net.GND" }} />
-    <capacitor name="C60" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U21" schX={26} schY={7} pcbX={-39.5} pcbY={-5.2}
+    <capacitor name="C60" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U21" schX={21.6} schY={7} pcbX={-39.5} pcbY={-5.2}
       schRotation={-90}
       pcbRotation={0}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
