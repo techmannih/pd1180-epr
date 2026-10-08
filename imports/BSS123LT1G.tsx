@@ -1,13 +1,15 @@
 import type { MosfetProps } from "@tscircuit/props"
 
 export const BSS123LT1G = (props: Omit<MosfetProps, "channelType" | "mosfetMode">) => {
+  const { name = "Q1", ...restProps } = props
   return (
     <mosfet
+      name={name}
       channelType="n"
       mosfetMode="enhancement"
       symbol={
         <symbol>
-          <schematictext text={props.name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematictext text={name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
           <schematicpath points={[{ x: 0, y: 0 }, { x: 0.381, y: -0.127 }, { x: 0.381, y: 0.127 }, { x: 0, y: 0 }]} strokeWidth={0.0635} strokeColor="#880000" isFilled fillColor="#880000" />
           <schematicpath points={[{ x: 1.27, y: 0.127 }, { x: 1.0795, y: -0.1905 }, { x: 1.4605, y: -0.1905 }, { x: 1.27, y: 0.127 }]} strokeWidth={0.0635} strokeColor="#880000" isFilled fillColor="#880000" />
           <schematicpath points={[{ x: 0, y: 0.4445 }, { x: 0.635, y: 0.4445 }, { x: 0.635, y: 0.635 }, { x: 1.27, y: 0.635 }, { x: 1.27, y: 0.127 }]} strokeWidth={0.0635} strokeColor="#880000" />
@@ -47,7 +49,7 @@ export const BSS123LT1G = (props: Omit<MosfetProps, "channelType" | "mosfetMode"
         pcbRotationOffset: 180,
         modelOriginPosition: { x: 0.00003809999999759839, y: -0.00003810000001180924, z: 0.050795 },
       }}
-      {...props}
+      {...restProps}
     />
   )
 }

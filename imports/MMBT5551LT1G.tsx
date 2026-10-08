@@ -1,12 +1,14 @@
 import type { TransistorProps } from "@tscircuit/props"
 
 export const MMBT5551LT1G = (props: Omit<TransistorProps, "type">) => {
+  const { name = "Q1", ...restProps } = props
   return (
     <transistor
+      name={name}
       type="npn"
       symbol={
         <symbol>
-          <schematictext text={props.name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematictext text={name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
           <port name="pin3" pinNumber={3} aliases={["C", "collector"]} direction="up" schX={0.635} schY={1.27} schStemLength={0.635} />
           <port name="pin1" pinNumber={1} aliases={["B", "base"]} direction="left" schX={-0.635} schY={0} schStemLength={0.635} />
           <port name="pin2" pinNumber={2} aliases={["E", "emitter"]} direction="down" schX={0.635} schY={-1.27} schStemLength={0.635} />
@@ -37,7 +39,7 @@ export const MMBT5551LT1G = (props: Omit<TransistorProps, "type">) => {
         pcbRotationOffset: 180,
         modelOriginPosition: { x: 0.000012700000070253736, y: -0.000012699999956566899, z: 0.050795 },
       }}
-      {...props}
+      {...restProps}
     />
   )
 }

@@ -157,3 +157,6 @@ export const STM32G0B1 = (props: ChipProps<typeof stm32PinLabels>) => {
     <courtyardrect width="11mm" height="11mm" />
   </LocalMCU>
 }
+
+// The standalone viewer must render the component, not the pin-label export.
+export default STM32G0B1

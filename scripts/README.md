@@ -14,6 +14,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
 | `check-firmware.mjs` | Builds and runs the host-side safety-state/TMC configuration tests. |
+| `check-import-previews.mjs` | Executes every imported TSX as a standalone viewer entrypoint and requires both PCB and schematic component output without component-creation failures. |
 | `check-kicad-drc.mjs` | Fails on any final KiCad PCB DRC violation, unconnected item, schematic-parity issue or nested schematic ERC violation. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |

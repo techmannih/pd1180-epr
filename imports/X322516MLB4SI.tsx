@@ -1,14 +1,16 @@
 import type { CrystalProps } from "@tscircuit/props"
 
-type ImportedCrystalProps = Omit<CrystalProps, "frequency" | "pinVariant">
+type ImportedCrystalProps = Omit<CrystalProps, "frequency" | "pinVariant" | "loadCapacitance"> &
+  Pick<Partial<CrystalProps>, "loadCapacitance">
 
 export const X322516MLB4SI = (props: ImportedCrystalProps) => {
-  const { name = "X1", ...restProps } = props
+  const { name = "X1", loadCapacitance = "9pF", ...restProps } = props
 
   return (
     <crystal
       name={name}
       frequency="16MHz"
+      loadCapacitance={loadCapacitance}
       pinVariant="four_pin"
       supplierPartNumbers={{
   "jlcpcb": [

@@ -32,14 +32,16 @@ const pinAttributes = {
 } as const
 
 export const TPD4S480RUKR = (props: ChipProps<typeof pinLabels>) => {
+  const { name = "U1", ...restProps } = props
   return (
     <chip
+      name={name}
       pinLabels={pinLabels}
       pinAttributes={pinAttributes}
       symbol={
         <symbol>
           <schematicrect schX={0} schY={0} width={4} height={6.6} strokeWidth={0.06} color="#880000" />
-          <schematictext text={props.name} schX={0} schY={3.1} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematictext text={name} schX={0} schY={3.1} fontSize={0.22} color="#006464" anchor="bottom_center" />
           <schematictext text="TPD4S480RUKR" schX={0} schY={-3.1} fontSize={0.2} color="#006464" anchor="top_center" />
 
           <port name="pin4" pinNumber={4} aliases={["CC1", "C_CC1"]} direction="left" schX={-2.6} schY={1.8} schStemLength={0.6} />
@@ -107,7 +109,7 @@ export const TPD4S480RUKR = (props: ChipProps<typeof pinLabels>) => {
         pcbRotationOffset: 0,
         modelOriginPosition: { x: -0.00015240000004723697, y: -0.0001015999999935957, z: 0 },
       }}
-      {...props}
+      {...restProps}
     />
   )
 }

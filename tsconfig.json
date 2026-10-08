@@ -12,11 +12,13 @@
     "resolveJsonModule": true,
     "types": [
       "react",
+      "tscircuit",
       "@tscircuit/core",
       "node"
     ]
   },
   "include": [
+    "tscircuit.config.ts",
     "*.tsx",
     "imports/**/*.tsx"
   ]

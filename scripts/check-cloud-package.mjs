@@ -1,5 +1,6 @@
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
+import runtimeConfig from '../tscircuit.config.ts'
 
 const config = JSON.parse(await readFile('tscircuit.config.json', 'utf8'))
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
@@ -37,6 +38,8 @@ const requiredIgnores = [
   'sourcing/**',
 ]
 const errors = []
+if (runtimeConfig.platformConfig?.partsEngineDisabled !== true) errors.push('Runtime previews must use pinned local parts so remote metadata does not block file switching')
+if (runtimeConfig.platformConfig?.routingDisabled !== true) errors.push('Interactive previews must use the same routing-disabled policy as build previews')
 
 for (const pattern of requiredIgnores) {
   if (!ignored.includes(pattern)) errors.push(`tscircuit.config.json must ignore ${pattern}`)
@@ -55,6 +58,7 @@ if (registryDependencies.length) {
 
 const ignoredMatchers = ignored.map((pattern) => new Bun.Glob(pattern))
 const shouldIgnore = (path) => ignoredMatchers.some((matcher) => matcher.match(path))
+if (shouldIgnore('tscircuit.config.ts')) errors.push('The viewer must receive tscircuit.config.ts for its runtime preview settings')
 const boardMatchers = (config.includeBoardFiles || []).map((pattern) => new Bun.Glob(pattern))
 const isSelectable = (path) => boardMatchers.some((matcher) => matcher.match(path))
 const defaultIgnoredRoots = new Set(['.git', '.tscircuit', '.vscode', 'node_modules'])

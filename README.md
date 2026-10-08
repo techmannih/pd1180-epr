@@ -192,6 +192,8 @@ Apply every value in [release/order-settings.json](release/order-settings.json),
 
 The hosted tscircuit editor opens `index.circuit.tsx` by default. Its file selector includes all source TSX files, all imported components under `imports/`, and `release/circuit.json`. The cloud build explicitly targets `index.circuit.tsx`, so imported components remain selectable without each becoming a separate CI board build. Cloud autorouting stays disabled for the source preview.
 
+After pulling updates, run `bun install --frozen-lockfile` and restart `bun run dev`. The dev command checks the installed toolchain before starting. `tscircuit.config.ts` makes interactive previews use the pinned local component definitions and disables preview autorouting, just like the build. This prevents remote pin-metadata requests from holding the main-board render open while another component is selected. Live supplier stock checks still run in `bun run review`.
+
 Select `release/circuit.json` for the final routed view. It preserves the code-defined 12-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks 902/902 routed-port mappings and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
 
 ## Repository map

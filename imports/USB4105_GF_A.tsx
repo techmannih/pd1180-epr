@@ -24,14 +24,16 @@ const pinLabels = {
 } as const
 
 export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
+  const { name = "J1", ...restProps } = props
   return (
     <connector
+      name={name}
       standard="usb_c"
       pinLabels={pinLabels}
       symbol={
         <symbol>
           <schematicrect schX={0} schY={0} width={4.2} height={5} strokeWidth={0.06} color="#880000" />
-          <schematictext text={props.name} schX={0} schY={2.25} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematictext text={name} schX={0} schY={2.25} fontSize={0.22} color="#006464" anchor="bottom_center" />
           <schematictext text="USB4105-GF-A" schX={0} schY={-2.25} fontSize={0.2} color="#006464" anchor="top_center" />
 
           <port name="SBU1" pinNumber={10} aliases={["pin10", "A8"]} direction="left" schX={-2.7} schY={1.2} schStemLength={0.6} />
@@ -86,7 +88,7 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
         pcbRotationOffset: 0,
         modelOriginPosition: { x: 0, y: 1.5075092000000494, z: -0.0000020000000000575113 },
       }}
-      {...props}
+      {...restProps}
     />
   )
 }
