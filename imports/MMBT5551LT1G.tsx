@@ -8,14 +8,14 @@ export const MMBT5551LT1G = (props: Omit<TransistorProps, "type">) => {
       type="npn"
       symbol={
         <symbol>
-          <schematictext text={name} schX={0} schY={0.5} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematictext text={name} schX={0} schY={0.7} fontSize={0.22} color="#006464" anchor="bottom_center" />
           <port name="pin3" pinNumber={3} aliases={["C", "collector"]} direction="up" schX={0.635} schY={1.27} schStemLength={0.635} />
           <port name="pin1" pinNumber={1} aliases={["B", "base"]} direction="left" schX={-0.635} schY={0} schStemLength={0.635} />
           <port name="pin2" pinNumber={2} aliases={["E", "emitter"]} direction="down" schX={0.635} schY={-1.27} schStemLength={0.635} />
-          <schematicpath points={[{ x: 0.635, y: 0.635 }, { x: 0, y: 0.1905 }]} strokeWidth={0.0635} strokeColor="#880000" />
-          <schematicpath points={[{ x: 0, y: -0.1905 }, { x: 0.635, y: -0.635 }]} strokeWidth={0.0635} strokeColor="#880000" />
-          <schematicpath points={[{ x: 0, y: 0.5715 }, { x: 0, y: -0.5715 }]} strokeWidth={0.0635} strokeColor="#880000" />
-          <schematicpath points={[{ x: 0.635, y: -0.635 }, { x: 0.4445, y: -0.3175 }, { x: 0.254, y: -0.5715 }, { x: 0.635, y: -0.635 }]} strokeWidth={0.0635} strokeColor="#880000" isFilled fillColor="#880000" />
+          <schematicpath points={[{ x: 0.635, y: 0.635 }, { x: 0, y: 0.1905 }]} strokeWidth={0.035} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: -0.1905 }, { x: 0.635, y: -0.635 }]} strokeWidth={0.035} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0, y: 0.5715 }, { x: 0, y: -0.5715 }]} strokeWidth={0.035} strokeColor="#880000" />
+          <schematicpath points={[{ x: 0.635, y: -0.635 }, { x: 0.4445, y: -0.3175 }, { x: 0.254, y: -0.5715 }, { x: 0.635, y: -0.635 }]} strokeWidth={0.035} strokeColor="#880000" isFilled fillColor="#880000" />
         </symbol>
       }
       supplierPartNumbers={{
