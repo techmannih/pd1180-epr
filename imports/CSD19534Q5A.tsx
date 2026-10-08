@@ -1,11 +1,11 @@
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
-  pin1: ["S1"],
+  pin1: ["S1", "source"],
   pin2: ["S2"],
   pin3: ["S3"],
-  pin4: ["G"],
-  pin5: ["D1"],
+  pin4: ["G", "gate"],
+  pin5: ["D1", "drain"],
   pin6: ["D2"],
   pin7: ["D3"],
   pin8: ["D4"],

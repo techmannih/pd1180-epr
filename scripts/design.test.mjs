@@ -62,8 +62,9 @@ test('TPS26750 POWER_PATH_EN uses the TI EVM dual-NMOS buffer',()=>{
   for(const name of ['Q2','Q3']){
     expect(comp(name).manufacturer_part_number).toBe('CSD17484F4')
     expect(comp(name).supplier_part_numbers.jlcpcb).toContain('C2862245')
-    expect(comp(name).channel_type).toBe('n')
-    expect(comp(name).mosfet_mode).toBe('enhancement')
+    expect(port(name,1).port_hints).toContain('gate')
+    expect(port(name,2).port_hints).toContain('source')
+    expect(port(name,3).port_hints).toContain('drain')
   }
   for(const name of ['R9','R12']){
     expect(comp(name).resistance).toBe(0)
