@@ -28,6 +28,24 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
     <connector
       standard="usb_c"
       pinLabels={pinLabels}
+      symbol={
+        <symbol>
+          <schematicrect schX={0} schY={0} width={4.2} height={5} strokeWidth={0.06} color="#880000" />
+          <schematictext text={props.name} schX={0} schY={2.25} fontSize={0.22} color="#006464" anchor="bottom_center" />
+          <schematictext text="USB4105-GF-A" schX={0} schY={-2.25} fontSize={0.2} color="#006464" anchor="top_center" />
+
+          <port name="SBU1" pinNumber={10} aliases={["pin10", "A8"]} direction="left" schX={-2.7} schY={1.2} schStemLength={0.6} />
+          <port name="SBU2" pinNumber={16} aliases={["pin16", "B8"]} direction="left" schX={-2.7} schY={0.4} schStemLength={0.6} />
+          <port name="GND1" pinNumber={5} aliases={["pin5", "A12"]} direction="left" schX={-2.7} schY={-0.4} schStemLength={0.6} />
+          <port name="EH1" pinNumber={1} aliases={["pin1"]} direction="left" schX={-2.7} schY={-1.2} schStemLength={0.6} />
+
+          <port name="VBUS" pinNumber={7} aliases={["pin7", "VBUS1", "A9"]} direction="right" schX={2.7} schY={1.6} schStemLength={0.6} />
+          <port name="CC1" pinNumber={15} aliases={["pin15", "A5"]} direction="right" schX={2.7} schY={0.8} schStemLength={0.6} />
+          <port name="CC2" pinNumber={9} aliases={["pin9", "B5"]} direction="right" schX={2.7} schY={0} schStemLength={0.6} />
+          <port name="DP" pinNumber={13} aliases={["pin13", "DP1", "A6"]} direction="right" schX={2.7} schY={-0.8} schStemLength={0.6} />
+          <port name="DM" pinNumber={12} aliases={["pin12", "DN1", "A7"]} direction="right" schX={2.7} schY={-1.6} schStemLength={0.6} />
+        </symbol>
+      }
       supplierPartNumbers={{
   "jlcpcb": [
     "C3020560"

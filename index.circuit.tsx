@@ -392,7 +392,7 @@ export const PD1180EPR = () => (
     <net name="VREF_2V495" isPowerNet={false} />
 
     {/* One USB-C receptacle carries EPR power and USB 2.0 data. */}
-    <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-2.6} schY={-2} schWidth={2.3} schHeight={1.8} pcbX={-36} pcbY={15}
+    <USB4105_GF_A name="J1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-5} schY={-3.5} pcbX={-36} pcbY={15}
       pcbRotation={270}
       schPinArrangement={{
         rightSide: { pins: ["pin7", "pin15", "pin9", "pin13", "pin12"], direction: "top-to-bottom" },
@@ -400,20 +400,20 @@ export const PD1180EPR = () => (
       }}
       noConnect={["pin10", "pin16"]}
       connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.USB_VBUS", pin8: "net.USB_VBUS", pin17: "net.USB_VBUS", pin18: "net.USB_VBUS", pin9: "net.CC2_CONN", pin15: "net.CC1_CONN", pin11: "net.USB_DP_CONN", pin13: "net.USB_DP_CONN", pin12: "net.USB_DM_CONN", pin14: "net.USB_DM_CONN" }} />
-    <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={10.2} schY={1.5} pcbX={-22.0} pcbY={16.0}
+    <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={8.9} schY={3} pcbX={-22.0} pcbY={16.0}
       schRotation={-90}
       resistance="1M" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C22935"] }}
       connections={{ pin1: "net.USB_VBUS", pin2: "net.USB_VBUS_SENSE" }} />
-    <resistor name="R108" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={11.34} schY={-0.3} pcbX={-19.0} pcbY={16.0}
+    <resistor name="R108" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={10.5} schY={1.2} pcbX={-19.0} pcbY={16.0}
       schRotation={-90}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.USB_VBUS_SENSE", pin2: "net.GND" }} />
-    <capacitor name="C72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={12.5} schY={-0.3} pcbX={-23.0} pcbY={14.0} pcbRotation={180}
+    <capacitor name="C72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={12.5} schY={1.2} pcbX={-23.0} pcbY={14.0} pcbRotation={180}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxVoltageRating="50V"
       connections={{ pin1: "net.USB_VBUS_SENSE", pin2: "net.GND" }} />
-    <TPD4S480RUKR name="U1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={3.32} schY={-2} schWidth={2.435} schHeight={2} pcbX={-30} pcbY={24.5}
+    <TPD4S480RUKR name="U1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={4.83} schY={-3.5} pcbX={-30} pcbY={24.5}
       schPinArrangement={{
         leftSide: { pins: ["pin20", "pin4", "pin5", "pin1", "pin2", "pin18", "pin13", "pin8", "pin21"], direction: "top-to-bottom" },
         rightSide: { pins: ["pin19", "pin17", "pin16", "pin12", "pin11", "pin15", "pin14", "pin9", "pin10", "pin3"], direction: "top-to-bottom" },
@@ -422,9 +422,9 @@ export const PD1180EPR = () => (
     <TPS26750SRSMR name="U2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={0} schY={-12} pcbX={-24} pcbY={24}
       noConnect={["pin21", "pin28", "pin29"]}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_3V3", pin3: "net.GND", pin4: "net.PD_1V5", pin5: "net.CC_FAULT_N", pin6: "net.GND", pin7: "net.EPR_EN", pin8: "net.PD_SDA", pin9: "net.PD_SCL", pin10: "net.PD_IRQ_N", pin11: "net.GND", pin12: "net.GND", pin13: "net.GND", pin14: "net.GND", pin15: "net.EEP_SDA", pin16: "net.EEP_SCL", pin17: "net.EEP_IRQ_N", pin18: "net.GND", pin19: "net.GND", pin20: "net.PD_PATH_HV", pin22: "net.GND", pin23: "net.GND", pin24: "net.CC1_PD", pin25: "net.CC2_PD", pin26: "net.VBUS_LV", pin27: "net.VBUS_LV", pin30: "net.GND", pin31: "net.GND", pin32: "net.V3V3", pin33: "net.GND" }} />
-    <BSS123LT1G name="Q1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={10.28} schY={-4} pcbX={-24.0} pcbY={40.5}
+    <BSS123LT1G name="Q1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={10.8} schY={-4} pcbX={-24.0} pcbY={40.5}
       connections={{ gate: "net.EPR_BLK_GATE", source: "net.VBUS_LV", drain: "net.USB_VBUS" }} />
-    <capacitor name="C1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={6.5} schY={1.5} pcbX={-27.0} pcbY={16.0} pcbRotation={180} layer="bottom"
+    <capacitor name="C1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={6.5} schY={3} pcbX={-27.0} pcbY={16.0} pcbRotation={180} layer="bottom"
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15725"] }}
       maxDecouplingTraceLength="30mm"
@@ -437,19 +437,19 @@ export const PD1180EPR = () => (
       decouplingFor=".U1 > .pin10"
       maxVoltageRating="50V"
       connections={{ pin1: "net.PD_3V3", pin2: "net.GND" }} />
-    <capacitor name="C3" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={4} schY={-7.5} pcbX={-24.0} pcbY={28.0}
+    <capacitor name="C3" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={2.63} schY={-7.5} pcbX={-24.0} pcbY={28.0}
       schRotation={-90}
       capacitance="220pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C106210"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.CC1_PD", pin2: "net.GND" }} />
-    <capacitor name="C4" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={6} schY={-7.5} pcbX={-21.5} pcbY={20.0}
+    <capacitor name="C4" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={7.03} schY={-7.5} pcbX={-21.5} pcbY={20.0}
       schRotation={-90}
       capacitance="220pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C106210"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.CC2_PD", pin2: "net.GND" }} />
-    <capacitor name="C5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={8} schY={-7.5} pcbX={-18.5} pcbY={25.5}
+    <capacitor name="C5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={8.5} schY={-7.5} pcbX={-18.5} pcbY={25.5}
       schRotation={-90}
       capacitance="4.7uF" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C51205"] }}
       maxDecouplingTraceLength="30mm"
@@ -479,11 +479,11 @@ export const PD1180EPR = () => (
       decouplingFor=".U2 > .pin4"
       maxVoltageRating="10V"
       connections={{ pin1: "net.PD_1V5", pin2: "net.GND" }} />
-    <resistor name="R1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={7.4} schY={-0.3} pcbX={-18.0} pcbY={36.0} pcbRotation={180} layer="bottom"
+    <resistor name="R1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={9.5} schY={2} pcbX={-18.0} pcbY={36.0} pcbRotation={180} layer="bottom"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.CC_FAULT_N" }} />
-    <resistor name="R2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={9.1} schY={-0.3} pcbX={-34.0} pcbY={22.0} layer="bottom"
+    <resistor name="R2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={11} schY={2} pcbX={-34.0} pcbY={22.0} layer="bottom"
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.EPR_EN", pin2: "net.GND" }} />
