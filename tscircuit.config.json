@@ -8,7 +8,7 @@
     "imports/**/*.{ts,js,jsx}",
     "release/circuit.json"
   ],
-  "buildCommand": "tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine",
+  "buildCommand": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build release/circuit.json --site --preview-images --use-cdn-javascript --concurrency 4",
   "ignoredFiles": [
     ".github/**",
     "checks/**",

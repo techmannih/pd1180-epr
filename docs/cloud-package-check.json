@@ -1,9 +1,15 @@
 {
-  "checked_at": "2026-10-08T17:27:54.597Z",
+  "checked_at": "2026-10-08T18:10:36.919Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
-  "cloud_build_command": "tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine",
+  "cloud_build_command": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build release/circuit.json --site --preview-images --use-cdn-javascript --concurrency 4",
+  "cloud_build_targets": [
+    "index.circuit.tsx",
+    "release/circuit.json"
+  ],
+  "hosted_preview_output": "dist/release/circuit.json",
+  "verified_preview_records": 12024,
   "selectable_source_files": 42,
   "selectable_import_files": 39,
   "unavailable_viewer_files": [],
@@ -43,7 +49,7 @@
     "*.log"
   ],
   "included_files": 57,
-  "included_bytes": 6854501,
+  "included_bytes": 6855181,
   "included_mebibytes": 6.54,
   "maximum_mebibytes": 20,
   "largest_files": [
@@ -61,7 +67,7 @@
     },
     {
       "path": "README.md",
-      "bytes": 19004
+      "bytes": 19252
     },
     {
       "path": "imports/STM32G0B1CBT6.local.js",
@@ -69,7 +75,7 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 13854
+      "bytes": 14178
     },
     {
       "path": "imports/TMC5160A_TA_T.tsx",
@@ -88,9 +94,9 @@
       "bytes": 5941
     }
   ],
-  "github_import_files": 305,
-  "github_import_bytes": 20723322,
-  "github_import_mebibytes": 19.76,
+  "github_import_files": 307,
+  "github_import_bytes": 20732121,
+  "github_import_mebibytes": 19.77,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [

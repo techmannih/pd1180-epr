@@ -48,7 +48,30 @@ if (config.mainEntrypoint !== 'index.circuit.tsx') errors.push('mainEntrypoint m
 for (const key of ['previewComponentPath', 'siteDefaultComponentPath']) {
   if (config[key] !== 'release/circuit.json') errors.push(`${key} must show the verified routed PCB`)
 }
-if (config.buildCommand !== 'tsci build index.circuit.tsx --ci --concurrency 4 --disable-parts-engine') errors.push('Cloud buildCommand must explicitly build index.circuit.tsx so selectable imports are not built as separate boards')
+const buildCommands = (config.buildCommand || '').split('&&').map((command) => command.trim().split(/\s+/))
+const buildTargets = buildCommands.filter(([cli, action]) => cli === 'tsci' && action === 'build').map((args) => args[2])
+for (const target of new Set([config.mainEntrypoint, config.previewComponentPath, config.siteDefaultComponentPath])) {
+  if (!buildTargets.includes(target)) errors.push(`Cloud buildCommand does not build selected component ${target}; the hosted viewer requires its dist/ output`)
+}
+if (buildTargets.some((target) => !['index.circuit.tsx', 'release/circuit.json'].includes(target))) errors.push('Cloud builds must explicitly target the source and routed JSON, without compiling every imported part')
+if (!buildCommands.some((args) => args[2] === config.mainEntrypoint && args.includes('--transpile'))) errors.push('The library must transpile the editable TSX source')
+if (!buildCommands.some((args) => args[2] === config.siteDefaultComponentPath && args.includes('--site'))) errors.push('The static site must be generated from the selected routed preview')
+const previewBuildOutput = `dist/${config.previewComponentPath}`
+let verifiedPreviewRecords = null
+if (process.argv.includes('--built')) {
+  try {
+    const source = JSON.parse(await readFile(config.previewComponentPath, 'utf8'))
+    const built = JSON.parse(await readFile(previewBuildOutput, 'utf8'))
+    if (!Array.isArray(built) || !built.some((row) => row.type === 'pcb_trace') || !built.some((row) => row.type === 'schematic_component')) errors.push(`${previewBuildOutput} must contain the complete routed board and schematic`)
+    if (JSON.stringify(source) !== JSON.stringify(built)) errors.push(`${previewBuildOutput} differs from the verified routed preview`)
+    if (built.some((row) => row.type?.endsWith('_error') || row.error_type)) errors.push(`${previewBuildOutput} contains circuit errors`)
+    verifiedPreviewRecords = built.length
+    const site = await readFile('dist/index.html', 'utf8')
+    if (!site.includes(config.siteDefaultComponentPath)) errors.push('Generated static site does not reference the selected routed preview')
+  } catch (error) {
+    errors.push(`Hosted preview build output is unavailable: ${error.message}`)
+  }
+}
 if (config.build?.routingDisabled !== true) errors.push('Cloud source previews must disable autorouting; the verified manufacturing route remains in release/circuit.json')
 if ((config.build?.workerTimeoutMs || 0) < 3_600_000) errors.push('Cloud worker timeout must be at least 60 minutes')
 
@@ -116,6 +139,9 @@ const report = {
   preview_component_path: config.previewComponentPath,
   site_default_component_path: config.siteDefaultComponentPath,
   cloud_build_command: config.buildCommand,
+  cloud_build_targets: buildTargets,
+  hosted_preview_output: previewBuildOutput,
+  verified_preview_records: verifiedPreviewRecords,
   selectable_source_files: sourceFiles.length,
   selectable_import_files: sourceFiles.filter((path) => path.startsWith('imports/')).length,
   unavailable_viewer_files: unavailableViewerFiles,

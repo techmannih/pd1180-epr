@@ -36,3 +36,13 @@ The source-only `BYPASS_C26` path now has wire contacts at the via coordinate on
 `bun run build` / `bun run build:pcb` now validates and refreshes the complete routed viewer. `bun run dev` opens that viewer directly, while `index.circuit.tsx` remains the editable source entrypoint and imports remain selectable. The hosted site default also selects the routed viewer. This uses the existing native-DRC-verified copper and does not claim the failed tscircuit solver completed a new route.
 
 Browser verification confirmed the full routed PCB with **0 errors** and successful standalone USB import PCB/schematic switching. No warning was suppressed. This update refreshes the viewer artifact and its hashes; it does not issue a new manufacturing approval.
+
+## Hosted preview output regression (2026-10-08)
+
+Release v0.3.36 at commit `002a0aa` completed its cloud job, but its preview API returned `circuit_json_found: false`. The package contained `release/circuit.json` and `dist/index/circuit.json`, while the configured `previewComponentPath` required **`dist/release/circuit.json`**. The missing selected build output disabled the hosted PCB, schematic, 3D and BOM tabs. A localhost render did not test this contract.
+
+The cloud command now compiles/transpiles the source, then separately builds the verified routed JSON and generates the static site from it. It does not change source schematic records or copper. `check:cloud-package` requires both selected build targets; `check:cloud-package --built` also requires the actual hosted output to exist, contain the routed board and schematic, match the verified artifact exactly, contain no error records and appear in the generated site. The missing-output regression check failed as expected before the corrected build.
+
+The output lookup is documented in the [official tscircuit preview resolver](https://github.com/tscircuit/tscircuit.com/blob/main/fake-snippets-api/routes/api/package_releases/get_preview_circuit_json.ts).
+
+A clean temporary build of the exact cloud command passed with source transpilation, PCB SVG, schematic SVG, 3D PNG and static site generation. The selected output preserves all 12,024 routed records, including 1,264 traces, 523 vias and all 2,783 schematic records, with zero circuit error records. The `--built` check passed; 42 source files (39 imports) remain selectable.
