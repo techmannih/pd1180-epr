@@ -24,7 +24,10 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Power, protection and thermal
 
 - [ ] Input/eFuse UVLO, OVP, inrush and current-limit calculations include tolerance and startup state.
-- [ ] TPS26631 `IIN_MON` and the independent VMOTOR divider reach separate STM32 ADC inputs; phase-current regulation remains on the TMC5160A shunt inputs.
+- [ ] TPS26631 `IIN_MON` and the independent VMOTOR divider reach ADS1115 channels 1/0 at address 0x49. STM32 PA0/PA1 read INA240 phase-current diagnostics; regulation remains on the TMC5160A's independent 33 mΩ shunts.
+- [ ] Kelvin branches join load/ground copper only at the designated shunt terminal; the final native critical-copper check passes. Inspect their lengths and switching-noise exposure as well as DRC.
+- [ ] TMP102 at 0x48 inhibits RUN_SAFE through U33. Verify ALERT polarity, 70 °C cutoff, 55 °C re-arm threshold, missing-sensor behavior and board-to-junction temperature correlation on hardware.
+- [ ] DATA USB alone powers diagnostics through TPS2553, TLV755 and the second LM66100 OR. Measure startup, pre-configuration, configured and suspend current; test both-source transitions and reverse current before claiming USB power compliance.
 - [ ] Phase-current programming, RMS/peak convention, shunt dissipation and current-sense polarity are consistent.
 - [ ] Regeneration energy, 60 V driver margin and external brake resistor/heatsink pulse/average ratings are reviewed for the actual load.
 - [ ] Connector, cable, via and copper current ratings are checked at enclosure temperature.

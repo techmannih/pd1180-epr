@@ -103,9 +103,11 @@ const expectedSheetGeometry = {
   serial: [12, 380, 230, 3],
   inputs: [11, 380, 435, 3],
   outputs: [13, 360, 205, 3],
+  "usb-logic": [14, 320, 240, 3],
+  telemetry: [15, 370, 420, 3],
 }
-check(sheets.length === 13, "exactly 13 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 13, "all schematic sheet names are unique")
+check(sheets.length === 15, "exactly 15 schematic sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name )).size === 15, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -146,7 +148,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 40, "40 high-level sheet annotations are present", {
+check(annotations.length === 46, "46 high-level sheet annotations are present", {
   actual: annotations.length,
 })
 
@@ -306,7 +308,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 182, "182 named source nets are present", { actual: sourceNets.length })
+check(sourceNets.length === 195, "195 named source nets are present", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -380,7 +382,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 73, "73 capacitors audited", { actual: capacitors.length })
+check(capacitors.length === 85, "85 capacitors audited", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -417,7 +419,8 @@ const expectedNoConnects = [
   "J1.11:DP2", "J1.12:DM", "J1.13:DP", "J1.14:DN2", "J10.10:SBU1", "J10.16:SBU2",
   "U1.14:SBU2", "U1.15:SBU1", "U7.25:ENCN_DCO_CFG6",
   "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
-  "U23.4:NC", "U24.4:NC",
+  "U23.4:NC", "U24.4:NC", "U25.4:NC", "U26.4:NC", "U27.4:NC",
+  "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
   "U18.8:W", "U18.9:V", "U18.10:U",
   "U19.5:NC1", "U19.8:NC2",

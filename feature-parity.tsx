@@ -12,9 +12,9 @@ export const FEATURE_PARITY = [
   },
   {
     id: "protected_power",
-    feature: "eFuse, reverse blocking and dual-source 3.3 V logic power",
-    components: ["U5", "U6", "Q4", "Q5", "U22", "U23", "U24"],
-    nets: ["EFUSE_IN", "EFUSE_FAULT_N", "VMOTOR", "V3V3"],
+    feature: "eFuse, reverse blocking and independent USB DATA logic power",
+    components: ["U5", "U6", "Q4", "Q5", "U22", "U23", "U24", "U25", "U26", "U27", "U28"],
+    nets: ["EFUSE_IN", "EFUSE_FAULT_N", "VMOTOR", "V3V3_BOARD", "V3V3_USB", "V3V3"],
     evidence: "docs/design.md",
   },
   {
@@ -40,10 +40,24 @@ export const FEATURE_PARITY = [
   },
   {
     id: "encoder",
-    feature: "Bottom-side AS5047P shaft encoder with ABI test access",
+    feature: "Centered top-side AS5047P shaft encoder with ABI test access",
     components: ["U18", "TP_ENC_A", "TP_ENC_B", "TP_ENC_I"],
     nets: ["ENC_A", "ENC_B", "ENC_I", "ENC_CS_N"],
     evidence: "docs/design.md",
+  },
+  {
+    id: "thermal_inhibit",
+    feature: "Board temperature diagnostics and hardware motor inhibit",
+    components: ["U29", "U33", "R114", "C79", "C85"],
+    nets: ["TEMP_OK", "RUN_WINDOW_OK", "RUN_SAFE"],
+    evidence: "hardware-contract.json",
+  },
+  {
+    id: "phase_diagnostics",
+    feature: "Bidirectional phase-current diagnostics and separate bus telemetry",
+    components: ["U30", "U31", "U32", "R115", "R116", "R117", "R118", "C83", "C84"],
+    nets: ["PHASE_A_ADC", "PHASE_B_ADC", "VMON_ADC", "IIN_MON"],
+    evidence: "docs/firmware-pinmap.json",
   },
   {
     id: "industrial_interfaces",

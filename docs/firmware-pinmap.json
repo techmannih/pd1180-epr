@@ -59,8 +59,8 @@
     "pin8": "OSC_IN",
     "pin9": "OSC_OUT",
     "pin10": "NRST",
-    "pin11": "VMON_ADC",
-    "pin12": "IIN_MON",
+    "pin11": "PHASE_A_ADC",
+    "pin12": "PHASE_B_ADC",
     "pin13": "RS485_TX",
     "pin14": "RS485_RX",
     "pin15": "TMC_CS_N",
@@ -122,5 +122,24 @@
     "url": "https://www.st.com/resource/en/datasheet/stm32g0b1ne.pdf",
     "document": "DS13560 Rev 6, figure 5, page 38, GP version STM32G0B1CxT",
     "review": "Pins 42..48 = PB3..PB9. Original firmware contract incorrectly inserted PD4 at pin42."
+  },
+  "diagnostic_devices": {
+    "TMP102": {
+      "address": 72,
+      "high_deci_c": 700,
+      "low_deci_c": 550
+    },
+    "ADS1115": {
+      "address": 73,
+      "ain0": "VMON_ADC",
+      "ain1": "IIN_MON",
+      "full_scale_mv": 4096
+    },
+    "INA240A1": {
+      "phase_a_gpio": "PA0",
+      "phase_b_gpio": "PA1",
+      "shunt_milliohm": 5,
+      "gain_v_per_v": 20
+    }
   }
 }

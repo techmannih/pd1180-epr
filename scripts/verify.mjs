@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
   for (const file of (await readdir(dir)).sort()) verifiedInputPaths.push(`${dir}/${file}`)
 }
@@ -41,6 +41,7 @@ const checks = [
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
   ...(routed ? [['kicad-drc', ['run', 'check:kicad-drc']]] : []),
+  ...(routed ? [['critical-copper', ['run', 'check:critical-copper']]] : []),
   ...(routed ? [['power-routing', ['run', 'check:power-routing']]] : []),
   ...(routed ? [['routing-fingerprint', ['run', 'check:routing-fingerprint']]] : []),
 ]

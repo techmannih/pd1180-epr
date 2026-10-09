@@ -10,7 +10,9 @@
     "MOTOR_B2",
     "SENSE_A",
     "SENSE_B",
-    "BRAKE_RETURN"
+    "BRAKE_RETURN",
+    "MOTOR_A1_OUT",
+    "MOTOR_B1_OUT"
   ],
   "power_corridor_width_mm": 2.4,
   "power_corridor_clearance_mm": 0.16,
@@ -27,5 +29,7 @@
     "violations": 0,
     "unconnected": 0
   },
-  "source": "docs/power-routing-check.json"
+  "source": "docs/power-routing-check.json",
+  "kelvin_policy": "routing/critical-paths.json",
+  "kelvin_terminal_only_connections_required": true
 }

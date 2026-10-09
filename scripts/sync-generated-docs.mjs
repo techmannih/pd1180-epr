@@ -24,6 +24,9 @@ for (const part of manifest.parts) {
   if (!position) throw new Error(`Missing PCB placement for ${part.name}`)
   if (!standards.assembly.populated_layers.includes(position.layer)) throw new Error(`${part.name}: assembly layer ${position.layer} is not permitted`)
   part.xy = [position.center.x, position.center.y]
+  part.size = [position.width, position.height]
+  const schematic = circuit.find(row => row.type === 'schematic_component' && row.source_component_id === position.source_component_id)
+  if (schematic) part.sch = [schematic.center.x, schematic.center.y]
   part.rotation = position.rotation ?? 0
   part.layer = position.layer
 }

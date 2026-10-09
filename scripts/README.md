@@ -19,6 +19,9 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-import-previews.mjs` | Executes every imported TSX as a standalone viewer entrypoint and requires both PCB and schematic component output without component-creation failures. |
 | `check-kicad-drc.mjs` | Fails on any final KiCad PCB DRC violation, unconnected item, schematic-parity issue or nested schematic ERC violation. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
+| `critical_copper.py` | Reads Kelvin/analog-return paths from compiled source. `keepouts` reserves their top-layer pours, `dsn --dsn INPUT` protects them from new router branches, and `check` proves final native copper remains intact and joins other same-net copper only at the designated receiving terminal. Inputs: `routing/critical-paths.json`, source circuit JSON and native PCB; output: a PCB, DSN or hash-bound check report. |
+| `check-critical-copper.mjs` | Requires passing native Kelvin evidence for every policy path and exact hashes of the final PCB, compiled source, policy and native checker; rejects stale or incomplete reports. |
+| `test-critical-copper.py` | Native KiCad regressions: accept a load connection at the shunt terminal; reject missing sense copper, a same-net spur or a plane via before that terminal. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
 | `check-release.mjs` | Enforces prototype-order gates while reporting remaining physical system gates separately. |

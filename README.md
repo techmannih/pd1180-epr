@@ -2,17 +2,15 @@
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-700 NEMA 34 stepper motor. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
 
-**Revision:** r0.4 ECO · **Status:** prototype CAD/release checks passed · **Assembly:** top and bottom · **Production validation:** open
+**Revision:** r0.4 reference ECO · **Status:** routing and USB suspend power management incomplete · **Assembly:** top only · **Fabrication:** blocked
 
-**2026-10-09 ECO:** Separate PD POWER and USB DATA ports, consolidate industrial signals into one keyed 20-pin J7 harness, and retain the TMC5160 external bridges. U7 pins 23/24 are grounded and pin25 is NC for STEP/DIR mode. The new route passes native DRC, ERC and schematic parity; release files are generated from this ECO. The STM32 commissioning firmware remains motion-locked, and TI configuration plus powered tests remain pending.
+**Reference-board changes:** Retain the separate PD POWER / USB DATA ports, industrial J7 harness and TMC5160 external bridges. Add TMP102 hardware temperature inhibit, INA240 phase-current diagnostics, ADS1115 bus telemetry and a DATA-powered logic supply. Place bootstrap/gate/bypass parts locally and preserve Kelvin connections to the shunt terminals. The source checks pass; full native routing and USB suspend power management remain open. The STM32 commissioning firmware is motion-locked. TI programming and powered tests are also pending.
 
 [View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
-The previews below show the r0.4 ECO routed board.
+The preview below shows current placement and local traces only. It is not a completed route. The existing manufacturing archives and hosted routed view belong to baseline commit `49c3ac7` and must not be used to fabricate this changed source.
 
-![PD1180-EPR ECO assembled layout](dist/index/3d.png)
-
-![PD1180-EPR ECO bottom](previews/pd1180-epr-bottom.png)
+![Reference ECO placement; routing incomplete](previews/reference-eco-placement.png)
 
 
 
@@ -27,13 +25,14 @@ The previews below show the r0.4 ECO routed board.
 | Motor stage | TMC5160A with eight 100 V CSD19534Q5A MOSFETs and two 33 mΩ phase shunts |
 | Motor target | QSH8618-96-55-700, 5.5 A RMS phase current, 7.0 Nm holding torque |
 | Controller | STM32G0B1CBT6 with USB device, CAN, SPI, I²C and serial peripherals |
-| Position feedback | Bottom-side AS5047P magnetic encoder at the shaft axis, with ABI test access |
+| Position feedback | Top-side AS5047P magnetic encoder at the shaft axis, with ABI test access |
+| Temperature/current diagnostics | TMP102 hardware inhibit; two INA240 phase monitors; ADS1115 bus monitors |
 | Motion inputs | 24 V Step/Dir plus HOME, left stop and right stop inputs |
 | Communications | USB 2.0, CAN, RS485 and RS232 |
 | Outputs | Hardware enable plus two protected low-side outputs |
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
 | Programming | SWD for STM32 and configuration EEPROM for the PD controller |
-| Assembly | 254 JLC-sourced fitted parts plus 11 service test pads, split across top and bottom |
+| Assembly | 282 JLC-sourced fitted parts plus 11 service test pads, all on top |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, external hardware enable and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN`, `RS485_DE`, both protected outputs and standalone-mode selection inactive.
 
@@ -43,13 +42,14 @@ The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-g
 J1 PD POWER VBUS -> reverse blocking / eFuse -> VMOTOR -> TMC5160 + external bridges
         |                                       |       motor J2 / brake J3
         +-> U5 3.3 V startup supply              +-> U22 3.3 V brake-control backup
-                         U23 / U24 reverse-blocked OR -> V3V3
+                         U23 / U24 reverse-blocked OR -> V3V3_BOARD
 J1 CC1/2 -> U1 protection -> U2 TPS26750 EPR controller
 J10 USB DATA D+/D- -> D15 shunt ESD -> R71/R72 -> STM32 USB
-J10 VBUS -> ESD bypass + attach divider only (no connection to PD VBUS or VMOTOR)
+J10 VBUS -> U28 current limiter -> U25 LDO -> V3V3_USB
+V3V3_BOARD / V3V3_USB -> U26 / U27 reverse-blocked OR -> V3V3
 ```
 
-USB diagnostics use both cables: J1 supplies startup logic at default 5 V and J10 connects the host. U22 remains powered from VMOTOR so loss of PD power does not remove the brake-control supply while the motor bus is energized. USB DATA alone does not power the board. Handover and regeneration still require powered verification.
+The added DATA supply is intended to power setup and diagnostics independently of J1. USB suspend power management is not implemented: always-on peripherals can exceed the allowed suspend current even if the MCU sleeps. Power-domain changes and matching firmware are required before fabrication. U22 retains VMOTOR-fed brake-control power after PD loss. Startup current, rail handover and regeneration also need qualification. The commissioning image keeps the motor locked.
 
 The requested contract is 240 W. The nominal eFuse current limit is approximately 4.48 A, so the board-side motor input limit is about 215 W at 48 V before conversion and switching losses. USB input current and phase current are different quantities; the motor-stage target is 5.5 A RMS per phase.
 
@@ -91,7 +91,7 @@ The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmw
 | Power safety | `PD_IRQ_N`, `EFUSE_FAULT_N`, `MOTOR_PG`, `VMOTOR_OK`, `POWER_PERMIT`, `MCU_RUN` |
 | Motion inputs | `STEP_IN`, `DIR_IN`, `STOP_L`, `STOP_R`, `HOME_IN` |
 | Communications | CAN RX/TX, RS485 RX/TX/DE and RS232 RX/TX |
-| Monitoring | `VMON_ADC`, `IIN_MON`, status GPIO |
+| Monitoring | `PHASE_A_ADC` / `PHASE_B_ADC` on PA0/PA1; ADS1115 bus monitoring and TMP102 temperature on I²C |
 
 The STM32 target peripheral port and TI-generated TPS26750 full-flash image are release inputs. The assembled board is intentionally safe with blank U3 and U16, but it cannot negotiate 48 V or run the motor until both devices are programmed.
 
@@ -99,7 +99,7 @@ U16 remains STM32G0B1 because this board uses its native USB device, FDCAN, ADC,
 
 ## Schematic organization
 
-The design is split into thirteen functional sheets:
+The design is split into fifteen functional sheets:
 
 | Sheet | Scope |
 |---|---|
@@ -111,12 +111,14 @@ The design is split into thirteen functional sheets:
 | Bridge A / Bridge B | External MOSFET half-bridges, bootstrap networks and phase shunts |
 | Brake | Bus-voltage comparators, brake MOSFET drive and external resistor connector |
 | MCU | STM32G0B1, clock, reset, SWD, flash and shared control buses |
-| Encoder | Bottom-side AS5047P supply, SPI/ABI signals and service test pads |
+| Encoder | Top-side AS5047P supply, SPI/ABI signals and service test pads |
+| USB logic | DATA current limiter, 3.3 V LDO and reverse-blocking source selection |
+| Telemetry | Temperature inhibit, phase-current amplifiers and bus-monitor ADC |
 | Inputs | 24 V Step/Dir, stop, home and digital input conditioning |
 | Outputs | Protected low-side outputs and hardware enable chain |
 | Serial | CAN, RS485 and RS232 transceivers with ESD support |
 
-Rendered SVG and PNG sheets are available under `dist/schematics/`; the release package contains the thirteen SVG sheets.
+The current source has fifteen sheets. Rendered release sheets must be regenerated after the ECO passes routing and native checks.
 
 ## PCB, mechanics and assembly
 
@@ -131,13 +133,13 @@ Rendered SVG and PNG sheets are available under `dist/schematics/`; the release 
 | General/power via | 0.60 mm pad / 0.30 mm finished drill |
 | MOSFET drain-pad thermal vias | 40 total: four 0.60/0.30 mm through vias under each of ten CSD19534Q5A drain pads; epoxy filled and copper capped |
 | Dense signal via | 0.45 mm pad / 0.20 mm finished drill |
-| Dense signal exception | Sixteen 0.40/0.20 mm holes, filled and capped |
-| Assembly side | Top and bottom |
+| Dense signal exception | Historical route only; no new smaller vias are authorized |
+| Assembly side | Top only |
 | Solder mask / legend | Green / white |
 
 All fitted components, including the centered encoder, its local bypass parts, logic power and labelled service pads, are on top. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
-The current KiCad route passes with zero DRC violations and zero unconnected items. Power nets use reinforced copper corridors and parallel transfer vias. The 1 oz external-layer IPC-2221 screening result is 6.12 A at a 20 °C rise; enclosure temperature, layer sharing, neck-down regions, connector heating and switching losses still require powered thermal measurements.
+The changed source does not yet have a verified complete KiCad route. Its local copper passes clearance checks; final connections, filled planes, Kelvin isolation and actual power-copper necks still require inspection. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
 The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% and confirm all four rear-face holes and the shaft axis against the actual motor before ordering.
 
@@ -145,9 +147,9 @@ The printable [mounting template](mounting-template.svg) is generated from `hard
 
 ## Parts and procurement
 
-- 254 populated components use exact JLCPCB/LCSC identities.
-- The fitted BOM contains 68 unique LCSC codes.
-- The latest committed live check reports 68/68 available.
+- 282 populated components use exact JLCPCB/LCSC identities.
+- The fitted BOM contains 75 unique LCSC codes.
+- The latest committed live check reports 75/75 available at its recorded timestamp.
 - Eleven selected alternative candidates are currently available.
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
@@ -169,37 +171,39 @@ Current verification evidence:
 
 | Gate | Result |
 |---|---|
-| Native KiCad PCB DRC + schematic ERC | PASS — 0 DRC violations, 0 unconnected items, 0 schematic-parity issues, 0 ERC violations |
+| Native KiCad PCB DRC + schematic ERC | Pending for this ECO; existing final-route reports describe the baseline |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 19 tests, 728 assertions |
-| Decoupling | PASS — 32/32 targets |
-| Assembly | PASS — 254 supplier-backed parts plus 11 service test pads on permitted layers |
-| Stock | PASS — 68/68 unique fitted LCSC codes available at the recorded timestamp |
+| Topology regression | PASS — 22 tests, including source topology and via-net identity |
+| Kelvin-check regressions | PASS — 7 native tests; final-route evidence still required |
+| Decoupling | PASS — 42/42 targets |
+| Assembly | PASS — 282 fitted parts plus 11 service test pads on top |
+| Stock | PASS — 75/75 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
-| Release delivery | PASS — 38 required files, 5 ZIP archives, 37 recursive SHA-256 entries |
-| Route identity | PASS — source topology/placement and routed KiCad hashes match |
+| Release delivery | Blocked; existing manufacturing archives are historical |
+| Route identity | Fails closed because the source differs from the saved route |
+| USB suspend power management | Not implemented; fabrication blocker |
 
 Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 
 ## Manufacturing release
 
-The `release/` directory contains:
+The `release/` manufacturing payload remains historical until the new ECO passes all gates. Do not order it for the current source. After verification it must be regenerated with:
 
 - PCB Gerber ZIP and the routed KiCad project ZIP;
 - complete manufacturing ZIP with drills, Gerbers, DRC, BOM, CPL and project files;
 - JLCPCB BOM and top-side placement CSV;
 - ZIP-packaged 3D GLB plus top and bottom renders;
-- thirteen schematic-sheet SVGs;
+- fifteen schematic-sheet SVGs;
 - order settings, hardware contract, schematic-style evidence, power-routing evidence and release status;
 - delivery manifest and recursive SHA-256 hashes.
 
-Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-side assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
+After a new verified release exists, apply its order settings: four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-side assembly. Review orientation, polarity, connector direction and the through-hole assembly plan before ordering.
 
 The hosted tscircuit editor opens the complete routed PCB in `release/circuit.json` by default. The authoritative editable source remains `index.circuit.tsx`. Its file selector includes all source TSX files, all imported components under `imports/`, and `release/circuit.json`. The cloud build compiles/transpiles `index.circuit.tsx`, then builds `release/circuit.json` into `dist/release/circuit.json` for the hosted viewer and static site. Imported components remain selectable without each becoming a separate CI board build. Run `bun run check:cloud-package --built` after the cloud build to verify the selected preview exists and exactly matches the routed artifact. Cloud autorouting stays disabled for the source preview.
 
 After pulling updates, run `bun install --frozen-lockfile` and restart `bun run dev`. The dev command checks the installed toolchain before starting. `tscircuit.config.ts` makes interactive previews use the pinned local component definitions and disables preview autorouting, just like the build. This prevents remote pin-metadata requests from holding the main-board render open while another component is selected. Live supplier stock checks still run in `bun run review`.
 
-Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. It preserves the code-defined 13-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
+Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it preserves the code-defined 15-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
 
 ## Repository map
 

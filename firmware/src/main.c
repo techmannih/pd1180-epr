@@ -16,6 +16,7 @@ int main(void) {
     .vmotor_in_range = true,
     .watchdog_healthy = true,
     .configuration_verified = true, .sample_fresh = true, .driver_ready = true, .motion_wiring_verified = true,
+    .temperature_valid = true, .temperature_deci_c = 250,
   };
   if (!pd1180_control_arm(&control, &inputs)) return 1;
   for (unsigned elapsed = 0; elapsed < 350; elapsed += 10) pd1180_control_tick(&control, &inputs, 10);

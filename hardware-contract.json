@@ -6,7 +6,7 @@
   "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
   "usb_ports": {
     "J1": "Dedicated 48 V / 5 A USB-C PD 3.1 EPR POWER sink; no USB data",
-    "J10": "USB 2.0 DATA self-powered device; independent 5.1k CC1/CC2 Rd; VBUS feeds ESD and attach sense only; requires J1 for startup logic"
+    "J10": "USB 2.0 DATA plus independent, current-limited logic power; two 5.1k CC Rd; no PD negotiation and no connection to VMOTOR"
   },
   "mechanical": {
     "board_mm": [
@@ -129,11 +129,50 @@
     "current_rating": "3 A/contact with AWG22 per JST; system output current remains limited by the original output circuitry."
   },
   "logic_power": {
-    "U5": "PD_VBUS (5-48 V) -> V3V3_PD -> U23 -> V3V3",
-    "U22": "VMOTOR -> V3V3_MOTOR -> U24 -> V3V3 (brake-control backup after PD loss)",
+    "U5": "PD_VBUS -> V3V3_PD -> U23 -> V3V3_BOARD",
+    "U22": "VMOTOR -> V3V3_MOTOR -> U24 -> V3V3_BOARD (brake backup)",
     "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
-    "reverse_blocking": "LM66100 OR after both regulators; no VBUS-to-VBUS connection",
-    "usb_default_budget": "J10 draws only ESD/sense current; USB attach/detach and backfeed require bench measurement.",
-    "usb_data_power": "Self-powered device; PD POWER supplies startup logic. J10 VBUS is used only for ESD and attach sense."
+    "reverse_blocking": "Two cascaded status-interlocked LM66100 pairs; DATA and PD VBUS are never connected",
+    "usb_default_budget": "Startup before enumeration and USB suspend current must be measured and qualified; the current limiter is overload protection, not a USB enumeration policy",
+    "usb_data_power": "USB DATA alone powers setup/diagnostics. Firmware advertises bus-powered, 500 mA configuration. VMOTOR remains PD-only.",
+    "U25": "USB_DATA_VBUS -> TPS2553 U28 -> TLV75533 U25 -> V3V3_USB",
+    "selection": "U26/U27 + R112: status-interlocked LM66100 OR of V3V3_BOARD and V3V3_USB into V3V3"
+  },
+  "diagnostics": {
+    "temperature": {
+      "device": "TMP102AIDRLR",
+      "address": 72,
+      "hardware_inhibit": "TEMP_OK -> U33 AND -> RUN_SAFE",
+      "trip_c": 70,
+      "manual_rearm_max_c": 55,
+      "derating_starts_c": 60,
+      "stale_limit_ms": 500,
+      "validation": "Board temperature only; MOSFET junction correlation and thresholds require load testing"
+    },
+    "phase_current": {
+      "device": "INA240A1DR x2",
+      "shunt_milliohm": 5,
+      "shunt_nominal_watts": 1,
+      "gain_v_per_v": 20,
+      "output_offset_v": 1.65,
+      "output_volts_per_ampere": 0.1,
+      "mcu_channels": [
+        "PA0",
+        "PA1"
+      ],
+      "output_filter": {
+        "series_ohm": 1000,
+        "shunt_f": 1e-08
+      },
+      "validation": "Instantaneous diagnostics; nominal VDDA and offset require calibration. Not a short-circuit trip or an RMS estimate."
+    },
+    "bus_monitors": {
+      "device": "ADS1115IDGSR",
+      "address": 73,
+      "ain0": "VMON_ADC",
+      "ain1": "IIN_MON",
+      "reference_range_v": 4.096,
+      "sample_rate_sps": 128
+    }
   }
 }

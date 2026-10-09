@@ -1,11 +1,16 @@
 import { readFile, writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 
 const boardPath = process.argv[2] || 'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb'
 const source = await readFile(boardPath, 'utf8')
+const sense = JSON.parse(await readFile('docs/critical-copper-check.json', 'utf8'))
+if (sense.board_sha256 !== createHash('sha256').update(source).digest('hex') || !Array.isArray(sense.errors) || sense.errors.length) throw new Error('Power audit requires current, passing native Kelvin isolation evidence')
+const senseSegments = new Set(sense.paths.flatMap(path => path.segment_uuids))
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const powerNets = [
   'PD_VBUS', 'EFUSE_IN', 'VMOTOR',
   'MOTOR_A1', 'MOTOR_A2', 'MOTOR_B1', 'MOTOR_B2',
+  'MOTOR_A1_OUT', 'MOTOR_B1_OUT',
   'SENSE_A', 'SENSE_B', 'BRAKE_RETURN',
 ]
 
@@ -66,7 +71,10 @@ let thermalTieTotal = 0
 for (const name of powerNets) {
   const netSegments = segments.filter((form) => netName(form) === name)
   const thermalTieSegments = netSegments.filter((form) => isThermalTie(form, name))
-  const corridorSegments = netSegments.filter((form) => !thermalTieSegments.includes(form))
+  // Proven input-only Kelvin branches carry sense current, not motor current.
+  // Their exact UUIDs come from the native terminal-isolation check above.
+  const signalBranches = netSegments.filter(form => senseSegments.has(form.match(/\(uuid "?([^"\s)]+)"?\)/)?.[1]))
+  const corridorSegments = netSegments.filter((form) => !thermalTieSegments.includes(form) && !signalBranches.includes(form))
   thermalTieTotal += thermalTieSegments.length
   const netVias = vias.filter((form) => netName(form) === name)
   const netZones = zones.filter((form) => netName(form) === name)
@@ -88,6 +96,7 @@ for (const name of powerNets) {
   nets[name] = {
     routed_segments: netSegments.length,
     thermal_via_tie_segments: thermalTieSegments.length,
+    verified_sense_branch_segments: signalBranches.length,
     corridor_eligible_segments: corridorSegments.length,
     segment_layers: layers,
     reinforced_corridors: corridors.length,

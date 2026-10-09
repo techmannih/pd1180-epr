@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process'
 await mkdir('firmware/build', { recursive: true })
 const compiler = process.env.CC || 'cc'
 const common = ['-std=c11', '-Wall', '-Wextra', '-Werror', '-Wpedantic', '-Ifirmware/include',
-  'firmware/src/control.c', 'firmware/src/pd_contract.c', 'firmware/src/tmc5160_config.c']
+  'firmware/src/control.c', 'firmware/src/telemetry.c', 'firmware/src/pd_contract.c', 'firmware/src/tmc5160_config.c']
 
 function run(command, args) {
   return new Promise((resolve, reject) => {

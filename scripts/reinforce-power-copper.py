@@ -15,6 +15,8 @@ import math
 from pathlib import Path
 
 import pcbnew
+import wx
+from critical_copper import load_paths, is_branch_track
 
 
 POWER_NETS = {
@@ -22,6 +24,8 @@ POWER_NETS = {
     "EFUSE_IN",
     "VMOTOR",
     "MOTOR_A1",
+    "MOTOR_A1_OUT",
+    "MOTOR_B1_OUT",
     "MOTOR_A2",
     "MOTOR_B1",
     "MOTOR_B2",
@@ -170,13 +174,15 @@ def main() -> None:
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
     args = parser.parse_args()
-
+    app = wx.App(False)
     board = pcbnew.LoadBoard(str(args.input))
+    sense_paths = load_paths(board)
     tracks = [
         item
         for item in board.GetTracks()
         if not isinstance(item, pcbnew.PCB_VIA)
         and item.GetNetname() in POWER_NETS
+        and not is_branch_track(item, sense_paths)
         and item.GetLayer() in (pcbnew.F_Cu, pcbnew.In1_Cu, pcbnew.In2_Cu, pcbnew.B_Cu)
     ]
     # KiCad requires intersecting zones to have distinct priorities, including

@@ -18,6 +18,8 @@ typedef struct {
   bool driver_ready;
   bool motion_wiring_verified;
   bool stop_active;
+  bool temperature_valid;
+  int16_t temperature_deci_c;
 } pd1180_inputs_t;
 
 typedef struct {
@@ -29,6 +31,7 @@ typedef struct {
   uint32_t power_start_ms;
   bool armed;
   bool fault_latched;
+  uint16_t current_limit_permille;
 } pd1180_control_t;
 
 void pd1180_control_reset(pd1180_control_t *state);

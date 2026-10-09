@@ -1,9 +1,9 @@
 {
-  "checked_at": "2026-10-09T13:45:17.876Z",
-  "features": 8,
-  "passing": 8,
+  "checked_at": "2026-10-09T18:38:27.306Z",
+  "features": 10,
+  "passing": 10,
   "assembly_layers": {
-    "top": 265
+    "top": 293
   },
   "usb_c_standard_connectors": [
     "J1",
@@ -20,9 +20,9 @@
     },
     {
       "id": "protected_power",
-      "feature": "eFuse, reverse blocking and dual-source 3.3 V logic power",
-      "components": 7,
-      "nets": 4,
+      "feature": "eFuse, reverse blocking and independent USB DATA logic power",
+      "components": 11,
+      "nets": 6,
       "evidence": "docs/design.md",
       "pass": true
     },
@@ -52,10 +52,26 @@
     },
     {
       "id": "encoder",
-      "feature": "Bottom-side AS5047P shaft encoder with ABI test access",
+      "feature": "Centered top-side AS5047P shaft encoder with ABI test access",
       "components": 4,
       "nets": 4,
       "evidence": "docs/design.md",
+      "pass": true
+    },
+    {
+      "id": "thermal_inhibit",
+      "feature": "Board temperature diagnostics and hardware motor inhibit",
+      "components": 5,
+      "nets": 3,
+      "evidence": "hardware-contract.json",
+      "pass": true
+    },
+    {
+      "id": "phase_diagnostics",
+      "feature": "Bidirectional phase-current diagnostics and separate bus telemetry",
+      "components": 9,
+      "nets": 4,
+      "evidence": "docs/firmware-pinmap.json",
       "pass": true
     },
     {
