@@ -79,7 +79,15 @@ export async function createCloudViewerCircuit({
   }
 
   const importedTypes = new Set(['pcb_trace', 'pcb_via', 'pcb_copper_pour'])
-  const circuit = sourceCircuit.filter((element) => !importedTypes.has(element.type))
+  const circuit = sourceCircuit.filter((element) => !importedTypes.has(element.type)).map((element) => {
+    if (element.type !== 'source_project_metadata') return element
+    // CLI 0.0.2774 hashes reports and release/circuit.json into its local build
+    // cache key. Publishing that key creates a self-referential, changing hash.
+    // It is not circuit data or release provenance: the routing fingerprint,
+    // verified-input SHA-256 and delivery manifest provide those checks.
+    const { source_filesystem_md5_hash, ...metadata } = element
+    return metadata
+  })
   let attributedTraceCount = 0
   const attributedSourceTraces = new Set()
 

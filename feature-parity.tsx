@@ -5,9 +5,9 @@
 export const FEATURE_PARITY = [
   {
     id: "usb_pd_epr",
-    feature: "Single-port USB-C PD 3.1 EPR power and USB 2.0 device data",
-    components: ["J1", "U1", "U2", "U3", "U4", "R107", "R108", "C72"],
-    nets: ["USB_VBUS", "USB_VBUS_SENSE", "USB_DP", "USB_DM", "PD_IRQ_N"],
+    feature: "Separate USB-C PD POWER and USB 2.0 DATA",
+    components: ["J1", "J10", "R105", "R106", "D15", "U1", "U2", "U3", "U4", "R107", "R108", "C72"],
+    nets: ["PD_VBUS", "USB_DATA_VBUS", "USB_VBUS_SENSE", "USB_DP", "USB_DM", "PD_IRQ_N"],
     evidence: "docs/pd-configuration.json",
   },
   {
@@ -48,14 +48,14 @@ export const FEATURE_PARITY = [
   {
     id: "industrial_interfaces",
     feature: "CAN, RS485 and RS232",
-    components: ["U19", "U20", "U21", "J6"],
+    components: ["U19", "U20", "U21", "J7"],
     nets: ["CAN_H", "CAN_L", "RS485_A", "RS485_B", "RS232_TX", "RS232_RX"],
     evidence: "docs/compatibility.md",
   },
   {
     id: "machine_io",
     feature: "24 V machine inputs, Step/Dir, hardware enable and protected outputs",
-    components: ["J7", "J9", "Q24", "Q25", "D11", "D12"],
+    components: ["J7", "Q24", "Q25", "D11", "D12"],
     nets: ["STEP_24V", "DIR_24V", "OUT0", "OUT1"],
     evidence: "hardware-contract.json",
   },

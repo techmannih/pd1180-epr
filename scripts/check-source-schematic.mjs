@@ -99,12 +99,13 @@ const expectedSheetGeometry = {
   brake: [7, 370, 345, 3],
   mcu: [8, 295, 190, 3],
   encoder: [9, 335, 140, 3],
-  serial: [10, 380, 230, 3],
-  inputs: [11, 365, 435, 3],
-  outputs: [12, 360, 205, 3],
+  "usb-data": [10, 380, 230, 3],
+  serial: [12, 380, 230, 3],
+  inputs: [11, 380, 435, 3],
+  outputs: [13, 360, 205, 3],
 }
-check(sheets.length === 12, "exactly 12 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 12, "all schematic sheet names are unique")
+check(sheets.length === 13, "exactly 13 schematic sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 13, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -145,7 +146,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 37, "37 high-level sheet annotations are present", {
+check(annotations.length === 40, "40 high-level sheet annotations are present", {
   actual: annotations.length,
 })
 
@@ -156,10 +157,12 @@ const extentViolations = []
 const sheetBoundsSummary = []
 
 function within(sheet, x, y, tolerance = 1e-9) {
-  const minX = sheet.center.x - sheet.sheet_width / 2
-  const maxX = sheet.center.x + sheet.sheet_width / 2
-  const minY = sheet.center.y - sheet.sheet_height / 2
-  const maxY = sheet.center.y + sheet.sheet_height / 2
+  const scale = 10.16 / 1.1 // KiCad mm per tscircuit schematic unit
+  const margin = 5 / scale
+  const minX = sheet.center.x - sheet.sheet_width / (2 * scale) + margin
+  const maxX = sheet.center.x + sheet.sheet_width / (2 * scale) - margin
+  const minY = sheet.center.y - sheet.sheet_height / (2 * scale) + margin
+  const maxY = sheet.center.y + sheet.sheet_height / (2 * scale) - margin
   return (
     x >= minX - tolerance && x <= maxX + tolerance && y >= minY - tolerance && y <= maxY + tolerance
   )
@@ -303,7 +306,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 179, "179 named source nets are present", { actual: sourceNets.length })
+check(sourceNets.length === 182, "182 named source nets are present", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -315,41 +318,46 @@ check(unknownKeys.length === 0, "every connectivity key resolves to a named sour
   unknown_keys: unknownKeys,
 })
 
-// 3. One receptacle carries EPR power and USB 2.0 data end-to-end.
+// 3. Independent PD POWER and DATA receptacles, rails and CC paths.
 const usbCComponents = sourceComponents.filter((component) => component.standard === "usb_c")
 const usbNamedConnectors = sourceComponents.filter(
   (component) => component.ftype === "simple_connector" && /usb|type.?c/i.test(component.manufacturer_part_number || ""),
 )
-check(usbCComponents.length === 1, "exactly one USB-C-standard connector exists", {
+check(usbCComponents.length === 2, "exactly two USB-C-standard connector exists", {
   refs: usbCComponents.map((component) => component.name),
 })
-check(usbCComponents[0]?.name === "J1", "the sole USB-C receptacle is J1")
-check(usbNamedConnectors.length === 1, "exactly one connector MPN is USB/Type-C related", {
+check(["J1", "J10"].every(ref => usbCComponents.some(c => c.name === ref)), "PD J1 and DATA J10 use standard USB-C")
+check(usbNamedConnectors.length === 2, "exactly two connector MPN is USB/Type-C related", {
   refs: usbNamedConnectors.map((component) => component.name),
 })
-check(!sourceComponentByName.J10, "legacy second USB connector J10 is absent")
+check(!sourceComponentByName.J6 && !sourceComponentByName.J9, "J7 consolidates industrial harness connectors")
 
 const usbExpectedPins = [
-  ["J1", 7, "USB_VBUS"], ["J1", 8, "USB_VBUS"], ["J1", 17, "USB_VBUS"], ["J1", 18, "USB_VBUS"],
+  ["J1", 7, "PD_VBUS"], ["J1", 8, "PD_VBUS"], ["J1", 17, "PD_VBUS"], ["J1", 18, "PD_VBUS"],
   ["J1", 15, "CC1_CONN"], ["J1", 9, "CC2_CONN"],
-  ["J1", 11, "USB_DP_CONN"], ["J1", 13, "USB_DP_CONN"],
-  ["J1", 12, "USB_DM_CONN"], ["J1", 14, "USB_DM_CONN"],
-  ["U1", 20, "USB_VBUS"], ["U1", 19, "VBUS_LV"],
+  ["J10", 11, "USB_DP_CONN"], ["J10", 13, "USB_DP_CONN"],
+  ["J10", 12, "USB_DM_CONN"], ["J10", 14, "USB_DM_CONN"],
+  ["U1", 20, "PD_VBUS"], ["U1", 19, "VBUS_LV"],
   ["U1", 4, "CC1_CONN"], ["U1", 7, "CC1_CONN"], ["U1", 12, "CC1_PD"], ["U2", 24, "CC1_PD"],
   ["U1", 5, "CC2_CONN"], ["U1", 6, "CC2_CONN"], ["U1", 11, "CC2_PD"], ["U2", 25, "CC2_PD"],
-  ["U1", 1, "USB_DP_CONN"], ["U1", 15, "USB_DP_PROTECTED"],
-  ["R71", 1, "USB_DP_PROTECTED"], ["R71", 2, "USB_DP"], ["U16", 34, "USB_DP"],
-  ["U1", 2, "USB_DM_CONN"], ["U1", 14, "USB_DM_PROTECTED"],
-  ["R72", 1, "USB_DM_PROTECTED"], ["R72", 2, "USB_DM"], ["U16", 33, "USB_DM"],
-  ["U6", 5, "USB_VBUS"], ["Q4", 1, "USB_VBUS"], ["Q4", 5, "EFUSE_IN"],
+  ["D15", 1, "USB_DP_CONN"],
+  ["R71", 1, "USB_DP_CONN"], ["R71", 2, "USB_DP"], ["U16", 34, "USB_DP"],
+  ["D15", 3, "USB_DM_CONN"],
+  ["R72", 1, "USB_DM_CONN"], ["R72", 2, "USB_DM"], ["U16", 33, "USB_DM"],
+  ...[7,8,17,18].map(pin => ["J10", pin, "USB_DATA_VBUS"]),
+  ["J10",15,"DATA_CC1"], ["J10",9,"DATA_CC2"], ["R105",1,"DATA_CC1"], ["R106",1,"DATA_CC2"],
+  ["R105",2,"GND"], ["R106",2,"GND"], ["R107",1,"USB_DATA_VBUS"], ["U22",2,"VMOTOR"],
+  ["U6", 5, "PD_VBUS"], ["Q4", 1, "PD_VBUS"], ["Q4", 5, "EFUSE_IN"],
 ]
 const usbMismatches = usbExpectedPins
   .map(([ref, pin, expected]) => ({ ref, pin, expected, actual: pinNet(ref, pin) }))
   .filter((entry) => entry.actual !== entry.expected)
-check(usbMismatches.length === 0, "single-port EPR, CC, D+/D-, protection, and MCU chains match", {
+check(usbMismatches.length === 0, "separate-port EPR, CC, D+/D-, protection, and MCU chains match", {
   mismatches: usbMismatches,
 })
-check(pinNet("J1", 10) === null && pinNet("J1", 16) === null, "J1 SBU1/SBU2 are intentional no-connects")
+check([11,12,13,14].every(pin => pinNet("J1", pin) === null), "PD J1 data pins are NC")
+check(pinNet("J10",10) === null && pinNet("J10",16) === null, "DATA J10 SBU pins are NC")
+check(pinNet("J1",7) !== pinNet("J10",7), "PD and DATA VBUS remain separate")
 
 const j1 = sourceComponentByName.J1
 const j1PinSummary = (sourcePortsByComponent.get(j1.source_component_id) || [])
@@ -372,7 +380,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 72, "72 capacitors audited", { actual: capacitors.length })
+check(capacitors.length === 73, "73 capacitors audited", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -406,7 +414,8 @@ check(testPointIssues.length === 0, "every test point probes a shared functional
 // 5. Exact, intentional no-connect allowlist. Source connectivity is canonical; graphical
 // is_connected can be false for ports intentionally joined by matching net labels.
 const expectedNoConnects = [
-  "J1.10:SBU1", "J1.16:SBU2",
+  "J1.11:DP2", "J1.12:DM", "J1.13:DP", "J1.14:DN2", "J10.10:SBU1", "J10.16:SBU2",
+  "U1.14:SBU2", "U1.15:SBU1", "U7.25:ENCN_DCO_CFG6",
   "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
   "U23.4:NC", "U24.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
@@ -420,7 +429,7 @@ const missingNoConnects = expectedNoConnects.filter((label) => !actualNoConnects
 const extraNoConnects = actualNoConnects.filter((label) => !expectedNoConnects.includes(label))
 check(
   actualNoConnects.length === expectedNoConnects.length && missingNoConnects.length === 0 && extraNoConnects.length === 0,
-  "source no-connect set exactly matches the 21-pin intentional allowlist",
+  "source no-connect set exactly matches the reviewed intentional allowlist",
   { expected: expectedNoConnects, actual: actualNoConnects, missing: missingNoConnects, extra: extraNoConnects },
 )
 
@@ -438,8 +447,9 @@ check(ncMissingPcbPad.length === 0, "every intentional NC is represented by a PC
 // Stacked physical pins may be hidden from the drawn symbol, but they must be a small,
 // explicit set of electrically connected duplicates; no NC pin may disappear this way.
 const expectedHiddenSchematicPorts = [
-  "J1.2:EH2", "J1.3:EH3", "J1.4:EH4", "J1.6:GND2", "J1.8:VBUS2", "J1.11:DP2",
-  "J1.14:DN2", "J1.17:VBUS3", "J1.18:VBUS4", "J1.19:GND3", "J1.20:GND4",
+  "J1.2:EH2", "J1.3:EH3", "J1.4:EH4", "J1.6:GND2", "J1.8:VBUS2",
+  "J1.17:VBUS3", "J1.18:VBUS4", "J1.19:GND3", "J1.20:GND4",
+  ...["2:EH2","3:EH3","4:EH4","6:GND2","8:VBUS2","11:DP2","14:DN2","17:VBUS3","18:VBUS4","19:GND3","20:GND4"].map(pin => `J10.${pin}`),
   "U1.6:RPD_G2", "U1.7:RPD_G1",
 ].sort()
 const actualHiddenSchematicPorts = sourcePorts
@@ -450,7 +460,7 @@ const hiddenPortDelta = [
   ...expectedHiddenSchematicPorts.filter((label) => !actualHiddenSchematicPorts.includes(label)),
   ...actualHiddenSchematicPorts.filter((label) => !expectedHiddenSchematicPorts.includes(label)),
 ]
-check(hiddenPortDelta.length === 0, "only the 13 expected stacked duplicate pins are hidden in schematic symbols", {
+check(hiddenPortDelta.length === 0, "only the expected stacked duplicate pins are hidden in schematic symbols", {
   expected: expectedHiddenSchematicPorts,
   actual: actualHiddenSchematicPorts,
   delta: hiddenPortDelta,

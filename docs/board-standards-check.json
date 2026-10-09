@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-10-08T18:54:41.388Z",
+  "checked_at": "2026-10-09T06:57:06.165Z",
   "policy": "board-standards.json",
   "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "geometry": {
     "width_mm": 85.9,
     "height_mm": 85.9,
     "layers": 4,
-    "schematic_sheets": 12,
+    "schematic_sheets": 13,
     "mounting_holes": 4,
     "mounting_hole_positions": [
       {
@@ -62,7 +62,7 @@
     "mechanical_reference": "engineering/tmcm-1180-v11-mechanical-reference.json"
   },
   "assembly": {
-    "pcb_component_records": 262,
+    "pcb_component_records": 265,
     "allowed_layers": [
       "top",
       "bottom"
@@ -70,9 +70,9 @@
     "bottom_paste_present": true
   },
   "via_counts": {
-    "power_and_general": 465,
-    "dense_signal": 43,
-    "dense_signal_filled_capped_exception": 15
+    "dense_signal": 123,
+    "power_and_general": 451,
+    "dense_signal_filled_capped_exception": 12
   },
   "thermal_via_in_pad": {
     "process": "epoxy filled and copper capped",
@@ -89,8 +89,8 @@
         "via_count": 4
       },
       {
-        "reference": "Q9",
-        "drain_net": "MOTOR_A2",
+        "reference": "Q6",
+        "drain_net": "VMOTOR",
         "via_count": 4
       },
       {
@@ -99,8 +99,18 @@
         "via_count": 4
       },
       {
+        "reference": "Q9",
+        "drain_net": "MOTOR_A2",
+        "via_count": 4
+      },
+      {
         "reference": "Q11",
         "drain_net": "MOTOR_B1",
+        "via_count": 4
+      },
+      {
+        "reference": "Q7",
+        "drain_net": "MOTOR_A1",
         "via_count": 4
       },
       {
@@ -114,25 +124,15 @@
         "via_count": 4
       },
       {
-        "reference": "Q7",
-        "drain_net": "MOTOR_A1",
-        "via_count": 4
-      },
-      {
         "reference": "Q16",
         "drain_net": "BRAKE_RETURN",
-        "via_count": 4
-      },
-      {
-        "reference": "Q6",
-        "drain_net": "VMOTOR",
         "via_count": 4
       }
     ]
   },
   "markings_checked": [
     "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
-    "Stepper Controller with USB-C PD 3.1 EPR · r0.3",
+    "Stepper Controller with USB-C PD 3.1 EPR · r0.4 ECO",
     "Made with tscircuit"
   ],
   "drc": {

@@ -4,7 +4,7 @@ const boardPath = process.argv[2] || 'dist/manufacturing/kicad-project/pd1180-ep
 const source = await readFile(boardPath, 'utf8')
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const powerNets = [
-  'USB_VBUS', 'EFUSE_IN', 'VMOTOR',
+  'PD_VBUS', 'EFUSE_IN', 'VMOTOR',
   'MOTOR_A1', 'MOTOR_A2', 'MOTOR_B1', 'MOTOR_B2',
   'SENSE_A', 'SENSE_B', 'BRAKE_RETURN',
 ]

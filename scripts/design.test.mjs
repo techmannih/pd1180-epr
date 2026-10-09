@@ -1,5 +1,9 @@
 import { test, expect } from 'bun:test'
 import {readFileSync} from 'node:fs'
+import { mkdtemp, writeFile, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const data=JSON.parse(readFileSync(new URL('../dist/index/circuit.json',import.meta.url)))
 const manifest=JSON.parse(readFileSync(new URL('../docs/design-manifest.json',import.meta.url)))
@@ -12,6 +16,29 @@ const port=(name,pin)=>ports.find(e=>e.source_component_id===comp(name)?.source_
 const key=(name,pin)=>port(name,pin)?.subcircuit_connectivity_map_key
 const netKey=name=>nets.find(e=>e.name===name)?.subcircuit_connectivity_map_key
 const on=(name,pin,net)=>expect(key(name,pin)).toBe(netKey(net))
+
+test('hosted release ignores only the CLI cache key while preserving every source model record', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'pd1180-viewer-cache-'))
+  try {
+    const changedCache = structuredClone(data)
+    changedCache.find(row => row.type === 'source_project_metadata').source_filesystem_md5_hash = 'different-local-build-cache'
+    const alternateSource = join(directory, 'source.json')
+    await writeFile(alternateSource, JSON.stringify(changedCache))
+    const original = (await createCloudViewerCircuit()).circuit
+    const rebuilt = (await createCloudViewerCircuit({ sourceCircuitPath: alternateSource })).circuit
+    expect(rebuilt).toEqual(original)
+    const copper = new Set(['pcb_trace', 'pcb_via', 'pcb_copper_pour'])
+    const expectedModel = data.filter(row => !copper.has(row.type)).map(row => {
+      const expected = structuredClone(row)
+      if (expected.type === 'source_project_metadata') delete expected.source_filesystem_md5_hash
+      return expected
+    })
+    expect(original.filter(row => !copper.has(row.type))).toEqual(expectedModel)
+    expect(original.some(row => row.type === 'pcb_trace')).toBe(true)
+  } finally {
+    await rm(directory, { recursive: true, force: true })
+  }
+}, 120000)
 
 test('all physical parts are present and have their intended JLC code',()=>{
   const supplierBacked=components.filter(component=>component.supplier_part_numbers?.jlcpcb?.length)
@@ -39,17 +66,17 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   expect(minimumCenterToEdge).toBeGreaterThan(7.9)
 })
 test('source connectivity does not short power, ground, or the switched motor rail',()=>{
-  const names=['GND','USB_VBUS','VMOTOR','V3V3','V3V3_USB','V3V3_MOTOR','LOGIC_OR_PRIORITY','VBUS_LV','PD_1V5','TMC_12V']
+  const names=['USB_DATA_VBUS','GND','PD_VBUS','VMOTOR','V3V3','V3V3_PD','V3V3_MOTOR','LOGIC_OR_PRIORITY','VBUS_LV','PD_1V5','TMC_12V']
   const keys=names.map(netKey)
   expect(keys.every(Boolean)).toBe(true)
   expect(new Set(keys).size).toBe(names.length)
 })
 test('48-V connector goes through the EPR protector; PD controller never sees raw 48 V',()=>{
-  for(const pin of [7,8,17,18])on('J1',pin,'USB_VBUS')
-  on('U1',20,'USB_VBUS');on('U1',19,'VBUS_LV')
+  for(const pin of [7,8,17,18])on('J1',pin,'PD_VBUS')
+  on('U1',20,'PD_VBUS');on('U1',19,'VBUS_LV')
   on('U2',26,'VBUS_LV');on('U2',27,'VBUS_LV')
   on('U2',2,'PD_3V3');on('U2',3,'GND') // SafeMode, address 0x20.
-  on('Q1',2,'VBUS_LV');on('Q1',3,'USB_VBUS')
+  on('Q1',2,'VBUS_LV');on('Q1',3,'PD_VBUS')
 })
 test('TPS26750 POWER_PATH_EN uses the TI EVM dual-NMOS buffer',()=>{
   on('U2',20,'PD_PATH_HV');on('R9',1,'PD_PATH_HV');on('R9',2,'PD_LEVEL_BASE')
@@ -75,7 +102,7 @@ test('TPS26750 POWER_PATH_EN uses the TI EVM dual-NMOS buffer',()=>{
     expect(comp(name).supplier_part_numbers.jlcpcb).toContain('C25803')
   }
 })
-test('one Type-C receptacle carries EPR power and protected USB 2.0 data',()=>{
+test('separate Type-C receptacles carry EPR power and protected USB 2.0 data',()=>{
   on('J1',15,'CC1_CONN');on('J1',9,'CC2_CONN')
   on('U1',4,'CC1_CONN');on('U1',7,'CC1_CONN');on('U1',12,'CC1_PD');on('U2',24,'CC1_PD')
   on('U1',5,'CC2_CONN');on('U1',6,'CC2_CONN');on('U1',11,'CC2_PD');on('U2',25,'CC2_PD')
@@ -83,19 +110,19 @@ test('one Type-C receptacle carries EPR power and protected USB 2.0 data',()=>{
   expect(comp('C2').capacitance).toBe(1e-6)
   expect(comp('C2').supplier_part_numbers.jlcpcb).toContain('C15849')
   expect(manifest.parts.find(p=>p.name==='C2').value).toBe('1uF')
-  for(const pin of [11,13])on('J1',pin,'USB_DP_CONN')
-  for(const pin of [12,14])on('J1',pin,'USB_DM_CONN')
-  expect(comp('J10')).toBeUndefined()
-  for(const removed of ['R105','R106'])expect(comp(removed)).toBeUndefined()
-  on('R107',1,'USB_VBUS');on('R107',2,'USB_VBUS_SENSE')
+  for(const pin of [11,13])on('J10',pin,'USB_DP_CONN')
+  for(const pin of [12,14])on('J10',pin,'USB_DM_CONN')
+  expect(comp('J10').standard).toBe('usb_c')
+  for(const [ref,net] of [['R105','DATA_CC1'],['R106','DATA_CC2']]) { on(ref,1,net);on(ref,2,'GND');expect(comp(ref).resistance).toBe(5100) }
+  on('R107',1,'USB_DATA_VBUS');on('R107',2,'USB_VBUS_SENSE')
   on('R108',1,'USB_VBUS_SENSE');on('R108',2,'GND')
   on('C72',1,'USB_VBUS_SENSE');on('C72',2,'GND');on('U16',19,'USB_VBUS_SENSE')
   expect(manifest.parts.find(p=>p.name==='R107').value).toBe('1M')
   expect(manifest.parts.find(p=>p.name==='R108').value).toBe('47k')
   expect(60*47000/(1000000+47000)).toBeLessThan(3.0)
   expect(5*47000/(1000000+47000)).toBeGreaterThan(0.2)
-  on('U1',1,'USB_DP_CONN');on('U1',15,'USB_DP_PROTECTED');on('R71',1,'USB_DP_PROTECTED');on('R71',2,'USB_DP');on('U16',34,'USB_DP')
-  on('U1',2,'USB_DM_CONN');on('U1',14,'USB_DM_PROTECTED');on('R72',1,'USB_DM_PROTECTED');on('R72',2,'USB_DM');on('U16',33,'USB_DM')
+  on('D15',1,'USB_DP_CONN');on('R71',1,'USB_DP_CONN');on('R71',2,'USB_DP');on('U16',34,'USB_DP')
+  on('D15',3,'USB_DM_CONN');on('R72',1,'USB_DM_CONN');on('R72',2,'USB_DM');on('U16',33,'USB_DM')
   // TPS26750 USB_P/USB_N are unused because STM32 owns USB data; TI requires unused GPIO4/GPIO5 to GND.
   on('U2',22,'GND');on('U2',23,'GND')
   const independentSignals=['CC1_PD','CC2_PD','USB_DP','USB_DM'].map(netKey)
@@ -103,8 +130,8 @@ test('one Type-C receptacle carries EPR power and protected USB 2.0 data',()=>{
   expect(new Set(independentSignals).size).toBe(independentSignals.length)
 })
 test('logic boots upstream of the gated motor power path',()=>{
-  on('U5',2,'USB_VBUS');on('U5',5,'BUCK_FB');on('L1',2,'V3V3_USB')
-  on('Q4',1,'USB_VBUS');on('Q4',5,'EFUSE_IN');on('U6',17,'VMOTOR')
+  on('U5',2,'PD_VBUS');on('U5',5,'BUCK_FB');on('L1',2,'V3V3_PD')
+  on('Q4',1,'PD_VBUS');on('Q4',5,'EFUSE_IN');on('U6',17,'VMOTOR')
   on('U4',1,'PD_PATH_OK');on('U4',2,'POWER_PERMIT');on('U6',12,'EFUSE_EN')
   expect(manifest.parts.find(p=>p.name==='R14').value).toBe('10k')
 })
@@ -150,10 +177,32 @@ test('analytical limits have margin below the 5-A USB input contract',()=>{
 })
 
 test('LM66100 status interlock keeps the dual 3.3-V ORing output continuous',()=>{
-  on('U23',1,'V3V3_USB');on('U24',1,'V3V3_MOTOR')
+  on('U23',1,'V3V3_PD');on('U24',1,'V3V3_MOTOR')
   on('U23',3,'V3V3_MOTOR');on('U23',5,'LOGIC_OR_PRIORITY')
-  on('R111',1,'V3V3_USB');on('R111',2,'LOGIC_OR_PRIORITY')
+  on('R111',1,'V3V3_PD');on('R111',2,'LOGIC_OR_PRIORITY')
   on('U24',3,'LOGIC_OR_PRIORITY');on('U24',5,'GND')
   for(const name of ['U23','U24']){on(name,6,'V3V3');on(name,2,'GND')}
   on('U13',5,'V3V3');on('U14',5,'V3V3');on('R59',1,'V3V3')
+})
+
+test('USB DATA has independent CC, attach sense and ESD while VMOTOR retains brake backup',()=>{
+  for(const pin of [7,8,17,18])on('J10',pin,'USB_DATA_VBUS')
+  for(const pin of [11,12,13,14])expect(key('J1',pin)).toBeFalsy()
+  on('J10',15,'DATA_CC1');on('J10',9,'DATA_CC2')
+  on('D15',2,'GND');on('D15',4,'DATA_CC1');on('D15',5,'USB_DATA_VBUS');on('D15',6,'DATA_CC2')
+  on('C73',1,'USB_DATA_VBUS');on('C73',2,'GND')
+  for(const ref of ['C62','C63']) { on(ref,1,'VMOTOR');on(ref,2,'GND') }
+  on('U22',2,'VMOTOR');on('U22',3,'VMOTOR')
+  expect(new Set(['PD_VBUS','USB_DATA_VBUS','VMOTOR','DATA_CC1','DATA_CC2','CC1_PD','CC2_PD'].map(netKey)).size).toBe(7)
+})
+test('one 20-pin harness retains all industrial interfaces',()=>{
+  expect(comp('J6')).toBeUndefined();expect(comp('J9')).toBeUndefined()
+  expect(comp('J7').manufacturer_part_number).toBe('B20B-PHDSS(LF)(SN)')
+  const expected=['HOME_24V','STOPL_24V','STOPR_24V','DIN0_24V','DIN1_24V','STEP_24V','DIR_24V','GND','RS232_TX_CONN','RS232_RX_CONN','GND','CAN_H','CAN_L','GND','RS485_A','RS485_B','VMOTOR','HW_ENABLE_24V','OUT0','OUT1']
+  expected.forEach((net,index)=>on('J7',index+1,net))
+  for(const ref of ['U19','U20','U21','Q17','Q18','Q24','Q25'])expect(comp(ref)).toBeDefined()
+})
+test('STEP/DIR multifunction pins cannot contend with encoder outputs',()=>{
+  on('U7',23,'GND');on('U7',24,'GND');expect(key('U7',25)).toBeFalsy()
+  on('U18',6,'ENC_B');on('U18',7,'ENC_A');on('U18',14,'ENC_I')
 })

@@ -1,20 +1,21 @@
 {
-  "checked_at": "2026-10-08T18:53:32.123Z",
+  "checked_at": "2026-10-09T06:54:52.599Z",
   "features": 8,
   "passing": 8,
   "assembly_layers": {
-    "top": 209,
+    "top": 212,
     "bottom": 53
   },
   "usb_c_standard_connectors": [
-    "J1"
+    "J1",
+    "J10"
   ],
   "results": [
     {
       "id": "usb_pd_epr",
-      "feature": "Single-port USB-C PD 3.1 EPR power and USB 2.0 device data",
-      "components": 8,
-      "nets": 5,
+      "feature": "Separate USB-C PD POWER and USB 2.0 DATA",
+      "components": 12,
+      "nets": 6,
       "evidence": "docs/pd-configuration.json",
       "pass": true
     },
@@ -69,7 +70,7 @@
     {
       "id": "machine_io",
       "feature": "24 V machine inputs, Step/Dir, hardware enable and protected outputs",
-      "components": 6,
+      "components": 5,
       "nets": 4,
       "evidence": "hardware-contract.json",
       "pass": true

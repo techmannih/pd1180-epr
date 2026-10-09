@@ -1,11 +1,31 @@
 {
-  "revision": "0.3.0",
-  "critical_nets": ["USB_VBUS", "EFUSE_IN", "VMOTOR", "MOTOR_A1", "MOTOR_A2", "MOTOR_B1", "MOTOR_B2", "SENSE_A", "SENSE_B", "BRAKE_RETURN"],
+  "revision": "0.4.0-ECO",
+  "critical_nets": [
+    "PD_VBUS",
+    "EFUSE_IN",
+    "VMOTOR",
+    "MOTOR_A1",
+    "MOTOR_A2",
+    "MOTOR_B1",
+    "MOTOR_B2",
+    "SENSE_A",
+    "SENSE_B",
+    "BRAKE_RETURN"
+  ],
   "power_corridor_width_mm": 2.4,
   "power_corridor_clearance_mm": 0.16,
   "minimum_corridor_coverage_ratio": 0.75,
-  "power_via": {"diameter_mm": 0.6, "drill_mm": 0.3},
-  "signal_via": {"diameter_mm": 0.45, "drill_mm": 0.2},
-  "drc": {"violations": 0, "unconnected": 0},
+  "power_via": {
+    "diameter_mm": 0.6,
+    "drill_mm": 0.3
+  },
+  "signal_via": {
+    "diameter_mm": 0.45,
+    "drill_mm": 0.2
+  },
+  "drc": {
+    "violations": 0,
+    "unconnected": 0
+  },
   "source": "docs/power-routing-check.json"
 }

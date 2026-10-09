@@ -36,7 +36,7 @@ def main() -> None:
     unconnected = drc.get("unconnected_items", [])
     report = {
         "recorded_at": datetime.now(timezone.utc).isoformat(),
-        "revision": "0.3.0",
+        "revision": json.loads(Path("hardware-contract.json").read_text())["revision"],
         "complete": not violations and not unconnected,
         "router": "Freerouting seed with KiCad-reviewed local completion and 2.4 mm power-corridor reinforcement",
         "board": str(args.board),

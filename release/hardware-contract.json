@@ -1,19 +1,51 @@
 {
-  "name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
-  "revision": "0.3.0",
+  "name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "revision": "0.4.0-ECO",
   "controller": "STM32G0B1CBT6",
   "motor_driver": "TMC5160A with eight CSD19534Q5A MOSFETs",
   "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
   "usb_ports": {
-    "J1": "Combined 48 V / 5 A USB-C PD 3.1 EPR power and USB 2.0 device data"
+    "J1": "Dedicated 48 V / 5 A USB-C PD 3.1 EPR POWER sink; no USB data",
+    "J10": "USB 2.0 DATA self-powered device; independent 5.1k CC1/CC2 Rd; VBUS feeds ESD and attach sense only; requires J1 for startup logic"
   },
   "mechanical": {
-    "board_mm": [85.9, 85.9],
+    "board_mm": [
+      85.9,
+      85.9
+    ],
     "mounting_holes": [
-      {"name": "H1", "diameter_mm": 4.2, "x_mm": 81.35, "y_mm": 18.45, "centered_x_mm": 38.4, "centered_y_mm": -24.5},
-      {"name": "H2", "diameter_mm": 4.2, "x_mm": 67.45, "y_mm": 81.35, "centered_x_mm": 24.5, "centered_y_mm": 38.4},
-      {"name": "H3", "diameter_mm": 4.2, "x_mm": 4.55, "y_mm": 67.45, "centered_x_mm": -38.4, "centered_y_mm": 24.5},
-      {"name": "H4", "diameter_mm": 4.2, "x_mm": 18.45, "y_mm": 4.55, "centered_x_mm": -24.5, "centered_y_mm": -38.4}
+      {
+        "name": "H1",
+        "diameter_mm": 4.2,
+        "x_mm": 81.35,
+        "y_mm": 18.45,
+        "centered_x_mm": 38.4,
+        "centered_y_mm": -24.5
+      },
+      {
+        "name": "H2",
+        "diameter_mm": 4.2,
+        "x_mm": 67.45,
+        "y_mm": 81.35,
+        "centered_x_mm": 24.5,
+        "centered_y_mm": 38.4
+      },
+      {
+        "name": "H3",
+        "diameter_mm": 4.2,
+        "x_mm": 4.55,
+        "y_mm": 67.45,
+        "centered_x_mm": -38.4,
+        "centered_y_mm": 24.5
+      },
+      {
+        "name": "H4",
+        "diameter_mm": 4.2,
+        "x_mm": 18.45,
+        "y_mm": 4.55,
+        "centered_x_mm": -24.5,
+        "centered_y_mm": -38.4
+      }
     ],
     "outline": "TMCM-1180 V1.1 stepped perimeter with four 5.9 mm concave corner arcs",
     "reference": "engineering/tmcm-1180-v11-mechanical-reference.json",
@@ -28,8 +60,14 @@
     "surface_finish": "lead-free HASL or ENIG",
     "power_corridor_nominal_width_mm": 2.4,
     "power_zone_clearance_mm": 0.16,
-    "signal_via_mm": {"diameter": 0.45, "drill": 0.2},
-    "power_via_mm": {"diameter": 0.6, "drill": 0.3},
+    "signal_via_mm": {
+      "diameter": 0.45,
+      "drill": 0.2
+    },
+    "power_via_mm": {
+      "diameter": 0.6,
+      "drill": 0.3
+    },
     "via_in_pad": "filled and capped for CSD19534 thermal pads"
   },
   "rated_targets": {
@@ -45,5 +83,50 @@
     "OUT0_DRIVE": 0,
     "OUT1_DRIVE": 0,
     "SD_MODE": 0
+  },
+  "connectors": {
+    "J1": "USB PD POWER",
+    "J10": "USB DATA",
+    "J2": "Motor A1/A2/B1/B2",
+    "J3": "External regeneration brake resistor",
+    "J7": "20-pin keyed JST PHD industrial harness; all former J6/J7/J9 functions retained"
+  },
+  "industrial_harness": {
+    "reference": "J7",
+    "mpn": "B20B-PHDSS(LF)(SN)",
+    "lcsc": "C471521",
+    "mate": "PHDR-20VS",
+    "pin_to_net": {
+      "1": "HOME_24V",
+      "2": "STOPL_24V",
+      "3": "STOPR_24V",
+      "4": "DIN0_24V",
+      "5": "DIN1_24V",
+      "6": "STEP_24V",
+      "7": "DIR_24V",
+      "8": "GND",
+      "9": "RS232_TX_CONN",
+      "10": "RS232_RX_CONN",
+      "11": "GND",
+      "12": "CAN_H",
+      "13": "CAN_L",
+      "14": "GND",
+      "15": "RS485_A",
+      "16": "RS485_B",
+      "17": "VMOTOR",
+      "18": "HW_ENABLE_24V",
+      "19": "OUT0",
+      "20": "OUT1"
+    },
+    "warning": "Pin 17 is protected VMOTOR (~48 V), not a 24 V auxiliary output. New harness is not pin-compatible with previous separate connectors.",
+    "current_rating": "3 A/contact with AWG22 per JST; system output current remains limited by the original output circuitry."
+  },
+  "logic_power": {
+    "U5": "PD_VBUS (5-48 V) -> V3V3_PD -> U23 -> V3V3",
+    "U22": "VMOTOR -> V3V3_MOTOR -> U24 -> V3V3 (brake-control backup after PD loss)",
+    "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
+    "reverse_blocking": "LM66100 OR after both regulators; no VBUS-to-VBUS connection",
+    "usb_default_budget": "J10 draws only ESD/sense current; USB attach/detach and backfeed require bench measurement.",
+    "usb_data_power": "Self-powered device; PD POWER supplies startup logic. J10 VBUS is used only for ESD and attach sense."
   }
 }

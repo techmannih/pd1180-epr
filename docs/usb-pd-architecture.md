@@ -1,12 +1,12 @@
 # USB-C PD, USB data and current-sense architecture
 
-This note records the compiled paths that combine USB Power Delivery and USB 2.0 data on one receptacle while keeping motor/input-current sensing independent. `scripts/design.test.mjs` checks these paths against `dist/index/circuit.json`; prose alone is not accepted as evidence.
+The r0.4 ECO separates PD POWER J1 from USB DATA J10, preserving the original motor-bus backup supply. `scripts/design.test.mjs` checks physical numbered-pin connections in `dist/index/circuit.json`.
 
-## One physical USB-C port
+## Two independent USB-C ports
 
-J1 uses tscircuit's standard `<connector standard="usb_c">` model with the exact JLCPCB/LCSC `C3020560` USB4105-GF-A footprint. Its VBUS contacts share `USB_VBUS`, its CC pins reach the TPS26750 through U1, and its D+/D− contacts reach the STM32 through U1 and R71/R72. J1 SBU1/SBU2 are unused.
+J1 and J10 use tscircuit's standard USB-C connector with the exact C3020560 USB4105-GF-A footprint. J1 VBUS is PD_VBUS and J10 VBUS is USB_DATA_VBUS; they are never joined. J1 D+/D− pins are NC. Its SBU contacts use U1's protected SBU channels, whose system-side outputs are NC. J10 is a self-powered USB device: connect J1 for logic startup, including at default 5 V before EPR negotiation. J10 VBUS feeds only ESD bypass and attach sensing.
 
-The connector can carry EPR power and USB 2.0 simultaneously when the upstream port provides both a 48 V / 5 A EPR source and a USB host. A power-only EPR charger supplies the motor without USB data; an ordinary host can provide USB data at its supported power level but cannot be assumed to supply 240 W.
+U5 derives logic power from PD_VBUS before the motor eFuse. U22 retains VMOTOR-fed logic backup for brake control after PD loss. U23/U24 retain their reverse-blocked rail OR. Detach, reverse current and regeneration remain mandatory bench checks.
 
 ## Power Delivery path
 
@@ -24,19 +24,9 @@ The board still requires a reviewed TI-generated full-flash configuration image 
 
 ## USB 2.0 data and attach path
 
-```text
-J1 D+/D-
-  -> U1 TPD4S480 SBU protection channels used in TI's documented DP/DM configuration
-  -> R71/R72 22 ohm series resistors
-  -> U16 STM32G0B1 USB_DP / USB_DM
+J10 DP1/DP2 share USB_DP_CONN; DM1/DM2 share USB_DM_CONN. D15 USBLC6-4SC6 protects both data lines and both CC lines, with pin2 GND and pin5 DATA VBUS. R71/R72 remain the 22 Ω series links to U16. C73 provides the 100 nF TVS VBUS bypass. J10 CC1 and CC2 each have their own 5.1 kΩ pulldown; they are not joined to the PD controller.
 
-J1 VBUS -> R107 1 Mohm -> USB_VBUS_SENSE -> R108 47 kohm || C72 100nF -> GND
-                                             -> U16 PB0 / ADC_IN8
-```
-
-TPS26750 owns the Type-C Rd/CC sink behavior, so no second set of discrete CC pulldowns is fitted. The divider ratio is 47 / 1047. It presents approximately 0.224 V at 5 V, 2.154 V at 48 V and 2.693 V at the 60 V review limit. This keeps PB0 below 3.0 V across the reviewed range while retaining an ADC-detectable default-USB level. Firmware must use a validated threshold below the 5 V minimum and must not assert the USB device pull-up when VBUS is absent.
-
-TI documents that the TPD4S480 SBU OVP FETs may protect USB 2.0 DP/DM instead of SBU. This is the configuration used here: connector DP/DM connect to `C_SBU1/C_SBU2`, while the protected system side connects to `SBU1/SBU2`.
+J10 VBUS feeds R107 1 MΩ / R108 47 kΩ with C72 100 nF, and U16 PB0 senses their junction. At 5 V, nominal ADC voltage is 0.224 V. Firmware scales the divider, enables USB above 4.0 V VBUS, and detaches below 3.0 V. Validate thresholds, ADC error and attach/detach timing on hardware. PD VBUS presence alone must never enable the USB pull-up.
 
 ## Motor current and voltage feedback
 
@@ -53,6 +43,7 @@ TI documents that the TPD4S480 SBU OVP FETs may protect USB 2.0 DP/DM instead of
 - [Texas Instruments TPS26750 EVM user guide](https://www.ti.com/lit/ug/slvucp8a/slvucp8a.pdf)
 - [Texas Instruments CSD17484F4 datasheet](https://www.ti.com/lit/ds/symlink/csd17484f4.pdf)
 - [Texas Instruments TPD4S480 datasheet](https://www.ti.com/lit/ds/symlink/tpd4s480.pdf)
+- [ST USBLC6-4 datasheet](https://www.st.com/resource/en/datasheet/usblc6-4.pdf)
 - [STMicroelectronics STM32G0B1CB datasheet](https://www.st.com/resource/en/datasheet/stm32g0b1cb.pdf)
 - [USB-IF USB Type-C cable and connector specification](https://www.usb.org/document-library/usb-type-cr-cable-and-connector-specification-release-20)
 

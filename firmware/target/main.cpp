@@ -9,9 +9,9 @@ extern "C" {
 #include "pd_contract.h"
 }
 
-// This image is a flashable commissioning/diagnostic image for the frozen PCB.
-// Never turn on SD_MODE: U7 pin25 would contend with the encoder index output.
-// Removing this interlock requires the reviewed hardware ECO and new route checks.
+// Commissioning image: motor outputs stay locked until the new ECO has passed
+// route checks, programmed PD-image verification and powered bring-up.
+// U7 mode-pin contention is corrected in source; firmware does not assume the PCB was rebuilt.
 static constexpr bool motionWiringVerified = false;
 static constexpr bool pdImageVerified = false;
 static TwoWire pdBus(PB7, PB6);
@@ -92,10 +92,10 @@ static void executeCommand() {
     safeOutputs(); pd1180_control_disarm(&control); reply("OK DISARM\r\n");
   } else if(!strcmp(command,"ARM")) {
     safeOutputs();
-    reply("BLOCKED: STEP/DIR hardware conflict; TI configuration not verified\r\n");
+    reply("BLOCKED: ECO hardware and TI configuration not verified\r\n");
   } else if(!strcmp(command,"STATUS")) {
     char status[124];
-    snprintf(status,sizeof(status),"PD_OK=%u EPR48=%u VBUS_MV=%lu VMOTOR_MV=%lu PG=%u WINDOW=%u RUN=0 ECO_REQUIRED=1\r\n",
+    snprintf(status,sizeof(status),"PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu PG=%u WINDOW=%u RUN=0 ECO_REQUIRED=1\r\n",
       pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
       inputs.motor_power_good,inputs.vmotor_in_range);
     reply(status);

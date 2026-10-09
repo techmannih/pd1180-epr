@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 POWER_NETS = {
-    "USB_VBUS",
+    "PD_VBUS",
     "EFUSE_IN",
     "VMOTOR",
     "MOTOR_A1",

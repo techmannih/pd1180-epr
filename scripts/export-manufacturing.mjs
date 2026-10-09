@@ -60,8 +60,8 @@ await run(kicad, ['pcb', 'export', 'gerbers', '--output', `${gerbers}/`, '--laye
 await run(kicad, ['pcb', 'export', 'drill', '--output', `${gerbers}/`, '--excellon-units', 'mm', '--excellon-separate-th', '--generate-map', '--map-format', 'gerberx2', '--generate-report', '--report-path', join(out, 'drill-report.txt'), finalBoard])
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-positions.csv'), '--side', 'front', '--format', 'csv', '--units', 'mm', finalBoard])
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-back-positions.csv'), '--side', 'back', '--format', 'csv', '--units', 'mm', finalBoard])
-await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board.png'), '--width', '1800', '--height', '1800', '--side', 'top', '--background', 'opaque', '--quality', 'high', '--perspective', '--rotate', '325,0,35', finalBoard])
-await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board-bottom.png'), '--width', '1800', '--height', '1800', '--side', 'bottom', '--background', 'opaque', '--quality', 'high', '--perspective', '--rotate', '325,0,35', finalBoard])
+await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board.png'), '--width', '1800', '--height', '1800', '--side', 'top', '--background', 'opaque', '--quality', 'high', '--perspective', '--zoom', '0.68', '--rotate', '325,0,35', finalBoard])
+await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board-bottom.png'), '--width', '1800', '--height', '1800', '--side', 'bottom', '--background', 'opaque', '--quality', 'high', '--perspective', '--zoom', '0.68', '--rotate', '325,0,35', finalBoard])
 await Promise.all([
   copyFile(join(out, 'kicad-board.png'), 'previews/pd1180-epr-top.png'),
   copyFile(join(out, 'kicad-board-bottom.png'), 'previews/pd1180-epr-bottom.png'),

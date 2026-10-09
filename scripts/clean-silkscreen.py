@@ -64,7 +64,7 @@ def main() -> None:
             drawing.SetText("PD1180-EPR — NEMA 34 Smart Motor-Mounted")
             updated.append(text)
         elif drawing.GetLayer() == pcbnew.F_SilkS and text == "48V EPR CONTROLLER":
-            drawing.SetText("Stepper Controller with USB-C PD 3.1 EPR · r0.3")
+            drawing.SetText("Stepper Controller with USB-C PD 3.1 EPR · r0.4 ECO")
             updated.append(text)
         if pcbnew.ToMM(drawing.GetTextHeight()) < 0.8:
             drawing.SetTextHeight(pcbnew.FromMM(0.8))

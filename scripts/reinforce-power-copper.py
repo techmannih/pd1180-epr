@@ -18,7 +18,7 @@ import pcbnew
 
 
 POWER_NETS = {
-    "USB_VBUS",
+    "PD_VBUS",
     "EFUSE_IN",
     "VMOTOR",
     "MOTOR_A1",
@@ -36,15 +36,9 @@ VIA_DIAMETER_MM = 0.60
 VIA_DRILL_MM = 0.30
 VIA_PITCH_MM = 0.90
 
-# These route-segment corridors collapse to isolated islands or copper slivers
-# after KiCad clips them around the dense TMC5160, eFuse and bridge geometry.
-# The underlying routed trace remains the connectivity spine.  Omitting only
-# these deterministic priorities keeps every critical net above the checked
-# 75% corridor-coverage floor while allowing native KiCad DRC to stay clean.
-SKIP_CORRIDOR_PRIORITIES = {
-    109, 116, 119, 179, 269, 303, 304, 349, 390,
-    405, 423, 429, 431, 581, 582, 586, 598,
-}
+# r0.4 is a new route. Generate every corridor and remove only isolated zones
+# identified by this candidate's native DRC; r0.3 priority numbers are invalid.
+SKIP_CORRIDOR_PRIORITIES = set()
 
 
 def mm(value: int) -> float:
@@ -139,7 +133,17 @@ def add_parallel_vias(board: pcbnew.BOARD) -> tuple[int, int]:
     for original in originals:
         origin = original.GetPosition()
         net = original.GetNet()
-        made = 0
+        # The ECO reuses verified copper, including existing parallel vias.
+        # Count same-net neighbours before adding more to an existing group.
+        made = min(3, sum(
+            1 for other in board.GetTracks()
+            if isinstance(other, pcbnew.PCB_VIA)
+            and other.m_Uuid != original.m_Uuid
+            and other.GetNetname() == original.GetNetname()
+            and math.hypot(mm(other.GetPosition().x - origin.x), mm(other.GetPosition().y - origin.y)) <= 1.4
+        ))
+        if made >= 3:
+            continue
         for dx, dy in offsets:
             candidate = point(mm(origin.x) + dx, mm(origin.y) + dy)
             if not safe_for_via(candidate, original.GetNetCode(), blockers):

@@ -1,13 +1,19 @@
 {
-  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "service": "JLCPCB PCB + SMT assembly",
-  "revision": "r0.3",
+  "revision": "0.4.0-ECO",
   "pcb": {
-    "dimensions_mm": [85.9, 85.9],
+    "dimensions_mm": [
+      85.9,
+      85.9
+    ],
     "layers": 4,
     "quantity": 5,
     "thickness_mm": 1.6,
-    "copper_weight_oz": {"outer": 1, "inner": 1},
+    "copper_weight_oz": {
+      "outer": 1,
+      "inner": 1
+    },
     "minimum_trace_space_mm": 0.09,
     "solder_mask": "green",
     "silkscreen": "white",
@@ -16,7 +22,18 @@
     "electrical_test": "100 percent",
     "via_in_pad": "epoxy filled and copper capped",
     "thermal_via_in_pad": {
-      "references": ["Q4", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q16"],
+      "references": [
+        "Q4",
+        "Q6",
+        "Q7",
+        "Q8",
+        "Q9",
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13",
+        "Q16"
+      ],
       "pad_number": "9 (drain exposed pad)",
       "vias_per_pad": 4,
       "total_vias": 40,

@@ -29,7 +29,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    wx.App(False)
+    app = wx.App(False)
     board = pcbnew.LoadBoard(str(args.board.resolve()))
     import_session = args.session.resolve()
     restored_bottom_placements = 0

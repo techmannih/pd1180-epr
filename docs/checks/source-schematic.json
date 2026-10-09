@@ -1,46 +1,48 @@
 {
-  "generated_at": "2026-10-08T18:53:31.676Z",
+  "generated_at": "2026-10-09T06:54:52.053Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "087b4c1bf94a695324cd421f1f73708f8c92a5bf8d16f49234b078b2bb078fda",
-    "bytes": 4135782
+    "sha256": "1eae2d220176b96d918090a136b131b64f6bcb869e53e0d1344b0dc93dac066e",
+    "bytes": 4258165
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9481,
-    "sheets": 12,
-    "source_components": 262,
-    "source_ports": 902,
-    "connected_source_ports": 881,
-    "intentional_no_connect_ports": 21,
-    "source_nets": 179,
+    "elements": 9769,
+    "sheets": 13,
+    "source_components": 265,
+    "source_ports": 934,
+    "connected_source_ports": 906,
+    "intentional_no_connect_ports": 28,
+    "source_nets": 182,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 72,
+    "capacitors": 73,
     "test_points": 11,
-    "annotations": 37,
+    "annotations": 40,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 73,
-    "3": 64,
-    "4": 22,
+    "2": 76,
+    "3": 61,
+    "4": 24,
     "5": 5,
     "6": 1,
+    "7": 1,
     "8": 1,
     "9": 2,
     "10": 2,
     "12": 4,
     "16": 1,
-    "18": 1,
+    "17": 1,
     "42": 1,
     "61": 1,
-    "193": 1
+    "207": 1
   },
   "usb_c": {
     "connectors": [
-      "J1"
+      "J1",
+      "J10"
     ],
     "j1_pins": [
       {
@@ -76,12 +78,12 @@
       {
         "pin": 7,
         "name": "VBUS",
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "pin": 8,
         "name": "VBUS2",
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "pin": 9,
@@ -91,27 +93,27 @@
       {
         "pin": 10,
         "name": "SBU1",
-        "net": "NC"
+        "net": "PD_SBU1_CONN"
       },
       {
         "pin": 11,
         "name": "DP2",
-        "net": "USB_DP_CONN"
+        "net": "NC"
       },
       {
         "pin": 12,
         "name": "DM",
-        "net": "USB_DM_CONN"
+        "net": "NC"
       },
       {
         "pin": 13,
         "name": "DP",
-        "net": "USB_DP_CONN"
+        "net": "NC"
       },
       {
         "pin": 14,
         "name": "DN2",
-        "net": "USB_DM_CONN"
+        "net": "NC"
       },
       {
         "pin": 15,
@@ -121,17 +123,17 @@
       {
         "pin": 16,
         "name": "SBU2",
-        "net": "NC"
+        "net": "PD_SBU2_CONN"
       },
       {
         "pin": 17,
         "name": "VBUS3",
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "pin": 18,
         "name": "VBUS4",
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "pin": 19,
@@ -148,22 +150,22 @@
       {
         "ref": "J1",
         "pin": 7,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "J1",
         "pin": 8,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "J1",
         "pin": 17,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "J1",
         "pin": 18,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "J1",
@@ -176,29 +178,29 @@
         "net": "CC2_CONN"
       },
       {
-        "ref": "J1",
+        "ref": "J10",
         "pin": 11,
         "net": "USB_DP_CONN"
       },
       {
-        "ref": "J1",
+        "ref": "J10",
         "pin": 13,
         "net": "USB_DP_CONN"
       },
       {
-        "ref": "J1",
+        "ref": "J10",
         "pin": 12,
         "net": "USB_DM_CONN"
       },
       {
-        "ref": "J1",
+        "ref": "J10",
         "pin": 14,
         "net": "USB_DM_CONN"
       },
       {
         "ref": "U1",
         "pin": 20,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "U1",
@@ -246,19 +248,14 @@
         "net": "CC2_PD"
       },
       {
-        "ref": "U1",
+        "ref": "D15",
         "pin": 1,
         "net": "USB_DP_CONN"
       },
       {
-        "ref": "U1",
-        "pin": 15,
-        "net": "USB_DP_PROTECTED"
-      },
-      {
         "ref": "R71",
         "pin": 1,
-        "net": "USB_DP_PROTECTED"
+        "net": "USB_DP_CONN"
       },
       {
         "ref": "R71",
@@ -271,19 +268,14 @@
         "net": "USB_DP"
       },
       {
-        "ref": "U1",
-        "pin": 2,
+        "ref": "D15",
+        "pin": 3,
         "net": "USB_DM_CONN"
-      },
-      {
-        "ref": "U1",
-        "pin": 14,
-        "net": "USB_DM_PROTECTED"
       },
       {
         "ref": "R72",
         "pin": 1,
-        "net": "USB_DM_PROTECTED"
+        "net": "USB_DM_CONN"
       },
       {
         "ref": "R72",
@@ -296,14 +288,74 @@
         "net": "USB_DM"
       },
       {
+        "ref": "J10",
+        "pin": 7,
+        "net": "USB_DATA_VBUS"
+      },
+      {
+        "ref": "J10",
+        "pin": 8,
+        "net": "USB_DATA_VBUS"
+      },
+      {
+        "ref": "J10",
+        "pin": 17,
+        "net": "USB_DATA_VBUS"
+      },
+      {
+        "ref": "J10",
+        "pin": 18,
+        "net": "USB_DATA_VBUS"
+      },
+      {
+        "ref": "J10",
+        "pin": 15,
+        "net": "DATA_CC1"
+      },
+      {
+        "ref": "J10",
+        "pin": 9,
+        "net": "DATA_CC2"
+      },
+      {
+        "ref": "R105",
+        "pin": 1,
+        "net": "DATA_CC1"
+      },
+      {
+        "ref": "R106",
+        "pin": 1,
+        "net": "DATA_CC2"
+      },
+      {
+        "ref": "R105",
+        "pin": 2,
+        "net": "GND"
+      },
+      {
+        "ref": "R106",
+        "pin": 2,
+        "net": "GND"
+      },
+      {
+        "ref": "R107",
+        "pin": 1,
+        "net": "USB_DATA_VBUS"
+      },
+      {
+        "ref": "U22",
+        "pin": 2,
+        "net": "VMOTOR"
+      },
+      {
         "ref": "U6",
         "pin": 5,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "Q4",
         "pin": 1,
-        "net": "USB_VBUS"
+        "net": "PD_VBUS"
       },
       {
         "ref": "Q4",
@@ -313,8 +365,14 @@
     ]
   },
   "intentional_no_connects": [
-    "J1.10:SBU1",
-    "J1.16:SBU2",
+    "J1.11:DP2",
+    "J1.12:DM",
+    "J1.13:DP",
+    "J1.14:DN2",
+    "J10.10:SBU1",
+    "J10.16:SBU2",
+    "U1.14:SBU2",
+    "U1.15:SBU1",
     "U18.10:U",
     "U18.8:W",
     "U18.9:V",
@@ -333,7 +391,8 @@
     "U6.21:N_C4",
     "U6.22:N_C3",
     "U6.23:N_C2",
-    "U6.24:N_C1"
+    "U6.24:N_C1",
+    "U7.25:ENCN_DCO_CFG6"
   ],
   "test_points": [
     {
@@ -351,8 +410,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 193,
-      "non_testpoint_peers": 191
+      "total_ports_on_net": 207,
+      "non_testpoint_peers": 205
     },
     {
       "ref": "TP_SWCLK",
@@ -381,56 +440,56 @@
     {
       "ref": "TP_ENC_A",
       "net": "ENC_A",
-      "total_ports_on_net": 3,
-      "non_testpoint_peers": 2
+      "total_ports_on_net": 2,
+      "non_testpoint_peers": 1
     },
     {
       "ref": "TP_ENC_B",
       "net": "ENC_B",
-      "total_ports_on_net": 3,
-      "non_testpoint_peers": 2
+      "total_ports_on_net": 2,
+      "non_testpoint_peers": 1
     },
     {
       "ref": "TP_ENC_I",
       "net": "ENC_I",
-      "total_ports_on_net": 3,
-      "non_testpoint_peers": 2
+      "total_ports_on_net": 2,
+      "non_testpoint_peers": 1
     },
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 193,
-      "non_testpoint_peers": 191
+      "total_ports_on_net": 207,
+      "non_testpoint_peers": 205
     }
   ],
   "sheets": [
     {
       "index": 1,
       "name": "usb-pd",
-      "display_name": "USB-C EPR Power and USB Data",
+      "display_name": "USB-C PD POWER",
       "frame": [
         400,
         400
       ],
       "annotations": [
-        "01 / USB-C EPR Power and USB Data",
-        "J1 carries 48 V / 5 A EPR power and USB 2.0 device data on one USB-C receptacle.",
-        "U1: 48 V CC/VBUS and D+/D- protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate.",
-        "R107/R108/C72: 5-60 V attach sense. Q1: protected VBUS control. Q2/Q3: PD-path level translation."
+        "01 / USB-C PD POWER",
+        "J1: dedicated 48 V / 5 A EPR sink. USB DATA is on J10; the two VBUS rails are separate.",
+        "U1: 48 V CC/VBUS and unused SBU protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate.",
+        "J1 D+/D-: not connected. Q1: protected VBUS control. Q2/Q3: PD-path level translation."
       ]
     },
     {
       "index": 2,
       "name": "logic-power",
-      "display_name": "USB and Motor Logic Supplies",
+      "display_name": "PD and Motor Backup Supplies",
       "frame": [
         330,
         335
       ],
       "annotations": [
-        "02 / USB and Motor Logic Supplies",
-        "Either USB or motor bus sustains 3.3 V; ideal diodes block reverse current.",
-        "U5: USB 5 V buck. U22: motor-bus auxiliary buck. U23/U24 + R111: status-interlocked ideal-diode OR into the shared 3.3 V rail."
+        "02 / PD and Motor Backup Supplies",
+        "PD VBUS starts the 3.3 V rail; the motor-bus buck retains brake-control backup after PD loss.",
+        "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked ideal-diode OR into the shared 3.3 V rail."
       ]
     },
     {
@@ -513,7 +572,7 @@
       ],
       "annotations": [
         "08 / MCU, Clock, Memory and Debug",
-        "3.3 V STM32G0B1; USB data, SWD, SPI motion control and serial interfaces.",
+        "3.3 V STM32G0B1; USB diagnostics, SWD, SPI motion control and external STEP/DIR.",
         "U16: system MCU with native USB, FDCAN and ADC monitoring. U17: 32 Mbit external SPI configuration/telemetry flash."
       ]
     },
@@ -533,16 +592,16 @@
     },
     {
       "index": 10,
-      "name": "serial",
-      "display_name": "CAN, RS485 and RS232",
+      "name": "usb-data",
+      "display_name": "USB DATA and Attach Sense",
       "frame": [
         380,
         230
       ],
       "annotations": [
-        "10 / CAN, RS485 and RS232",
-        "External CAN/RS485 termination; J6 carries RS232, CAN and RS485.",
-        "U19: 3.3 V CAN transceiver; D2: CAN TVS. U20: RS485 transceiver; D3: RS485 TVS. U21: RS232 transceiver."
+        "10 / USB DATA and Attach Sense",
+        "J10: self-powered USB 2.0 device. Connect PD POWER for setup; independent CC pulldowns, no PD negotiation.",
+        "D15: D+/D-/CC ESD. R107/R108/C72: DATA VBUS attach sense. USB DATA cannot feed VMOTOR."
       ]
     },
     {
@@ -550,17 +609,31 @@
       "name": "inputs",
       "display_name": "24 V Inputs and Step/Direction",
       "frame": [
-        365,
+        380,
         435
       ],
       "annotations": [
         "11 / 24 V Inputs and Step/Direction",
-        "Non-isolated 24 V inputs. J7 consolidates home, stops, digital inputs and Step/Direction.",
-        "Q17-Q23: 24 V tolerant NPN input conditioners for HOME, limits, DIN0/1 and Step/Direction signals."
+        "Non-isolated 24 V inputs. J7: keyed 20-pin harness combines all control I/O and industrial buses; pinout is in hardware-contract.json.",
+        "Q17-Q23: HOME, limits, DIN0/1 and Step/Direction conditioners. Q14: hardware enable on the motion sheet."
       ]
     },
     {
       "index": 12,
+      "name": "serial",
+      "display_name": "CAN, RS485 and RS232",
+      "frame": [
+        380,
+        230
+      ],
+      "annotations": [
+        "12 / CAN, RS485 and RS232",
+        "External CAN/RS485 termination; J7 carries RS232, CAN and RS485.",
+        "U19: 3.3 V CAN transceiver; D2: CAN TVS. U20: RS485 transceiver; D3: RS485 TVS. U21: RS232 transceiver."
+      ]
+    },
+    {
+      "index": 13,
       "name": "outputs",
       "display_name": "Hardware Enable and Outputs",
       "frame": [
@@ -568,8 +641,8 @@
         205
       ],
       "annotations": [
-        "12 / Hardware Enable and Outputs",
-        "J9: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
+        "13 / Hardware Enable and Outputs",
+        "J7: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
         "Q24/Q25: open-collector 24 V output drivers; base pulldowns keep outputs off during reset."
       ]
     }
@@ -578,14 +651,14 @@
     {
       "index": 1,
       "name": "usb-pd",
-      "elements": 411,
-      "coordinate_points_checked": 832
+      "elements": 390,
+      "coordinate_points_checked": 796
     },
     {
       "index": 2,
       "name": "logic-power",
-      "elements": 228,
-      "coordinate_points_checked": 522
+      "elements": 229,
+      "coordinate_points_checked": 528
     },
     {
       "index": 3,
@@ -596,8 +669,8 @@
     {
       "index": 4,
       "name": "motion",
-      "elements": 403,
-      "coordinate_points_checked": 702
+      "elements": 398,
+      "coordinate_points_checked": 703
     },
     {
       "index": 5,
@@ -631,21 +704,27 @@
     },
     {
       "index": 10,
-      "name": "serial",
-      "elements": 197,
-      "coordinate_points_checked": 313
+      "name": "usb-data",
+      "elements": 144,
+      "coordinate_points_checked": 323
     },
     {
       "index": 11,
       "name": "inputs",
-      "elements": 312,
-      "coordinate_points_checked": 511
+      "elements": 346,
+      "coordinate_points_checked": 568
     },
     {
       "index": 12,
+      "name": "serial",
+      "elements": 172,
+      "coordinate_points_checked": 272
+    },
+    {
+      "index": 13,
       "name": "outputs",
-      "elements": 84,
-      "coordinate_points_checked": 142
+      "elements": 73,
+      "coordinate_points_checked": 118
     }
   ],
   "checks": [
@@ -653,8 +732,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 262,
-        "schematic": 262
+        "source": 265,
+        "schematic": 265
       }
     },
     {
@@ -673,9 +752,9 @@
     },
     {
       "ok": true,
-      "message": "exactly 12 schematic sheets",
+      "message": "exactly 13 schematic sheets",
       "details": {
-        "actual": 12
+        "actual": 13
       }
     },
     {
@@ -706,10 +785,10 @@
       "details": {
         "actual": 4,
         "texts": [
-          "01 / USB-C EPR Power and USB Data",
-          "J1 carries 48 V / 5 A EPR power and USB 2.0 device data on one USB-C receptacle.",
-          "U1: 48 V CC/VBUS and D+/D- protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate.",
-          "R107/R108/C72: 5-60 V attach sense. Q1: protected VBUS control. Q2/Q3: PD-path level translation."
+          "01 / USB-C PD POWER",
+          "J1: dedicated 48 V / 5 A EPR sink. USB DATA is on J10; the two VBUS rails are separate.",
+          "U1: 48 V CC/VBUS and unused SBU protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate.",
+          "J1 D+/D-: not connected. Q1: protected VBUS control. Q2/Q3: PD-path level translation."
         ]
       }
     },
@@ -745,9 +824,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "02 / USB and Motor Logic Supplies",
-          "Either USB or motor bus sustains 3.3 V; ideal diodes block reverse current.",
-          "U5: USB 5 V buck. U22: motor-bus auxiliary buck. U23/U24 + R111: status-interlocked ideal-diode OR into the shared 3.3 V rail."
+          "02 / PD and Motor Backup Supplies",
+          "PD VBUS starts the 3.3 V rail; the motor-bus buck retains brake-control backup after PD loss.",
+          "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked ideal-diode OR into the shared 3.3 V rail."
         ]
       }
     },
@@ -974,7 +1053,7 @@
         "actual": 3,
         "texts": [
           "08 / MCU, Clock, Memory and Debug",
-          "3.3 V STM32G0B1; USB data, SWD, SPI motion control and serial interfaces.",
+          "3.3 V STM32G0B1; USB diagnostics, SWD, SPI motion control and external STEP/DIR.",
           "U16: system MCU with native USB, FDCAN and ADC monitoring. U17: 32 Mbit external SPI configuration/telemetry flash."
         ]
       }
@@ -1027,11 +1106,87 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet usb-data"
+    },
+    {
+      "ok": true,
+      "message": "usb-data keeps sheet index 10"
+    },
+    {
+      "ok": true,
+      "message": "usb-data keeps fixed 380 x 230 frame",
+      "details": {
+        "actual": [
+          380,
+          230
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "usb-data has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "10 / USB DATA and Attach Sense",
+          "J10: self-powered USB 2.0 device. Connect PD POWER for setup; independent CC pulldowns, no PD negotiation.",
+          "D15: D+/D-/CC ESD. R107/R108/C72: DATA VBUS attach sense. USB DATA cannot feed VMOTOR."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "usb-data has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "usb-data explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "known fixed geometry for sheet inputs"
+    },
+    {
+      "ok": true,
+      "message": "inputs keeps sheet index 11"
+    },
+    {
+      "ok": true,
+      "message": "inputs keeps fixed 380 x 435 frame",
+      "details": {
+        "actual": [
+          380,
+          435
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "inputs has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "11 / 24 V Inputs and Step/Direction",
+          "Non-isolated 24 V inputs. J7: keyed 20-pin harness combines all control I/O and industrial buses; pinout is in hardware-contract.json.",
+          "Q17-Q23: HOME, limits, DIN0/1 and Step/Direction conditioners. Q14: hardware enable on the motion sheet."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "inputs has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "inputs explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet serial"
     },
     {
       "ok": true,
-      "message": "serial keeps sheet index 10"
+      "message": "serial keeps sheet index 12"
     },
     {
       "ok": true,
@@ -1049,8 +1204,8 @@
       "details": {
         "actual": 3,
         "texts": [
-          "10 / CAN, RS485 and RS232",
-          "External CAN/RS485 termination; J6 carries RS232, CAN and RS485.",
+          "12 / CAN, RS485 and RS232",
+          "External CAN/RS485 termination; J7 carries RS232, CAN and RS485.",
           "U19: 3.3 V CAN transceiver; D2: CAN TVS. U20: RS485 transceiver; D3: RS485 TVS. U21: RS232 transceiver."
         ]
       }
@@ -1065,49 +1220,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet inputs"
-    },
-    {
-      "ok": true,
-      "message": "inputs keeps sheet index 11"
-    },
-    {
-      "ok": true,
-      "message": "inputs keeps fixed 365 x 435 frame",
-      "details": {
-        "actual": [
-          365,
-          435
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "inputs has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "11 / 24 V Inputs and Step/Direction",
-          "Non-isolated 24 V inputs. J7 consolidates home, stops, digital inputs and Step/Direction.",
-          "Q17-Q23: 24 V tolerant NPN input conditioners for HOME, limits, DIN0/1 and Step/Direction signals."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "inputs has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "inputs explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet outputs"
     },
     {
       "ok": true,
-      "message": "outputs keeps sheet index 12"
+      "message": "outputs keeps sheet index 13"
     },
     {
       "ok": true,
@@ -1125,8 +1242,8 @@
       "details": {
         "actual": 3,
         "texts": [
-          "12 / Hardware Enable and Outputs",
-          "J9: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
+          "13 / Hardware Enable and Outputs",
+          "J7: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
           "Q24/Q25: open-collector 24 V output drivers; base pulldowns keep outputs off during reset."
         ]
       }
@@ -1141,9 +1258,9 @@
     },
     {
       "ok": true,
-      "message": "37 high-level sheet annotations are present",
+      "message": "40 high-level sheet annotations are present",
       "details": {
-        "actual": 37
+        "actual": 40
       }
     },
     {
@@ -1162,17 +1279,17 @@
     },
     {
       "ok": true,
-      "message": "179 named source nets are present",
+      "message": "182 named source nets are present",
       "details": {
-        "actual": 179
+        "actual": 182
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 179,
-        "source_nets": 179
+        "connected_groups": 182,
+        "source_nets": 182
       }
     },
     {
@@ -1191,46 +1308,56 @@
     },
     {
       "ok": true,
-      "message": "exactly one USB-C-standard connector exists",
+      "message": "exactly two USB-C-standard connector exists",
       "details": {
         "refs": [
-          "J1"
+          "J1",
+          "J10"
         ]
       }
     },
     {
       "ok": true,
-      "message": "the sole USB-C receptacle is J1"
+      "message": "PD J1 and DATA J10 use standard USB-C"
     },
     {
       "ok": true,
-      "message": "exactly one connector MPN is USB/Type-C related",
+      "message": "exactly two connector MPN is USB/Type-C related",
       "details": {
         "refs": [
-          "J1"
+          "J1",
+          "J10"
         ]
       }
     },
     {
       "ok": true,
-      "message": "legacy second USB connector J10 is absent"
+      "message": "J7 consolidates industrial harness connectors"
     },
     {
       "ok": true,
-      "message": "single-port EPR, CC, D+/D-, protection, and MCU chains match",
+      "message": "separate-port EPR, CC, D+/D-, protection, and MCU chains match",
       "details": {
         "mismatches": []
       }
     },
     {
       "ok": true,
-      "message": "J1 SBU1/SBU2 are intentional no-connects"
+      "message": "PD J1 data pins are NC"
     },
     {
       "ok": true,
-      "message": "72 capacitors audited",
+      "message": "DATA J10 SBU pins are NC"
+    },
+    {
+      "ok": true,
+      "message": "PD and DATA VBUS remain separate"
+    },
+    {
+      "ok": true,
+      "message": "73 capacitors audited",
       "details": {
-        "actual": 72
+        "actual": 73
       }
     },
     {
@@ -1256,11 +1383,17 @@
     },
     {
       "ok": true,
-      "message": "source no-connect set exactly matches the 21-pin intentional allowlist",
+      "message": "source no-connect set exactly matches the reviewed intentional allowlist",
       "details": {
         "expected": [
-          "J1.10:SBU1",
-          "J1.16:SBU2",
+          "J1.11:DP2",
+          "J1.12:DM",
+          "J1.13:DP",
+          "J1.14:DN2",
+          "J10.10:SBU1",
+          "J10.16:SBU2",
+          "U1.14:SBU2",
+          "U1.15:SBU1",
           "U18.10:U",
           "U18.8:W",
           "U18.9:V",
@@ -1279,11 +1412,18 @@
           "U6.21:N_C4",
           "U6.22:N_C3",
           "U6.23:N_C2",
-          "U6.24:N_C1"
+          "U6.24:N_C1",
+          "U7.25:ENCN_DCO_CFG6"
         ],
         "actual": [
-          "J1.10:SBU1",
-          "J1.16:SBU2",
+          "J1.11:DP2",
+          "J1.12:DM",
+          "J1.13:DP",
+          "J1.14:DN2",
+          "J10.10:SBU1",
+          "J10.16:SBU2",
+          "U1.14:SBU2",
+          "U1.15:SBU1",
           "U18.10:U",
           "U18.8:W",
           "U18.9:V",
@@ -1302,7 +1442,8 @@
           "U6.21:N_C4",
           "U6.22:N_C3",
           "U6.23:N_C2",
-          "U6.24:N_C1"
+          "U6.24:N_C1",
+          "U7.25:ENCN_DCO_CFG6"
         ],
         "missing": [],
         "extra": []
@@ -1324,11 +1465,9 @@
     },
     {
       "ok": true,
-      "message": "only the 13 expected stacked duplicate pins are hidden in schematic symbols",
+      "message": "only the expected stacked duplicate pins are hidden in schematic symbols",
       "details": {
         "expected": [
-          "J1.11:DP2",
-          "J1.14:DN2",
           "J1.17:VBUS3",
           "J1.18:VBUS4",
           "J1.19:GND3",
@@ -1338,12 +1477,21 @@
           "J1.4:EH4",
           "J1.6:GND2",
           "J1.8:VBUS2",
+          "J10.11:DP2",
+          "J10.14:DN2",
+          "J10.17:VBUS3",
+          "J10.18:VBUS4",
+          "J10.19:GND3",
+          "J10.20:GND4",
+          "J10.2:EH2",
+          "J10.3:EH3",
+          "J10.4:EH4",
+          "J10.6:GND2",
+          "J10.8:VBUS2",
           "U1.6:RPD_G2",
           "U1.7:RPD_G1"
         ],
         "actual": [
-          "J1.11:DP2",
-          "J1.14:DN2",
           "J1.17:VBUS3",
           "J1.18:VBUS4",
           "J1.19:GND3",
@@ -1353,6 +1501,17 @@
           "J1.4:EH4",
           "J1.6:GND2",
           "J1.8:VBUS2",
+          "J10.11:DP2",
+          "J10.14:DN2",
+          "J10.17:VBUS3",
+          "J10.18:VBUS4",
+          "J10.19:GND3",
+          "J10.20:GND4",
+          "J10.2:EH2",
+          "J10.3:EH3",
+          "J10.4:EH4",
+          "J10.6:GND2",
+          "J10.8:VBUS2",
           "U1.6:RPD_G2",
           "U1.7:RPD_G1"
         ],

@@ -15,6 +15,8 @@ Do not copy voltage, current, thermal, connector, stack-up or motor assumptions 
 
 The user approved and pushed the schematic in commit `8a21b01` and explicitly prohibited further schematic changes. Preserve all schematic placement, symbols, labels, values, pin mappings and logical connectivity unless the user explicitly reopens that scope. PCB routing work may change PCB-only properties and routing configuration, but must not change `sch*` properties, schematic graphics or imported symbols. Do not restore older schematic snapshots while refreshing PCB artifacts. Verify the schematic is unchanged against this user-approved source after PCB work.
 
+The user reopened the architecture scope on 2026-10-09: separate PD POWER / USB DATA, consolidate connectors, retain all industrial interfaces, and retain the TMC5160 external bridges. Changes to affected connectivity and schematic sections are authorized. Preserve unrelated approved schematic layout. The r0.3 route is historical until the ECO passes fresh routing and native checks.
+
 ## Required project structure
 
 Every board repository should contain:
@@ -60,6 +62,7 @@ Keep `release/circuit.json` selectable as the final routed view. It preserves th
 - Use through vias across all copper layers unless the fabrication package explicitly calls for reviewed blind or buried vias.
 - Copper-to-edge, hole clearances, trace/space, solder-mask and silkscreen limits must be checked against the selected fabrication service, then encoded in the CAD rules.
 - Route changes must pass the routing fingerprint, native checks, final KiCad DRC and power-copper checks. Never copy or edit a fingerprint to make stale routing pass.
+- For new Specctra routing, use `export-routing-interchange.py` and `import-routing-copper.py`: preserve actual pad coordinates/layers in a world-aligned routing copy and import copper only. Do not apply the legacy blanket bottom-rotation adjustment to that copy.
 
 ## Schematic and electrical review
 
