@@ -4,7 +4,8 @@
   "user_decisions": {
     "separate_usb_ports": true,
     "industrial_interfaces": "retain CAN, RS485, RS232 and all I/O",
-    "external_motor_bridges": "retain TMC5160A and eight CSD19534Q5A MOSFETs"
+    "external_motor_bridges": "retain TMC5160A and eight CSD19534Q5A MOSFETs",
+    "industrial_connector_placement": "J7 beside motor connector J2 at the board edge"
   },
   "changes": [
     "J1 is PD POWER only; J10 is self-powered USB DATA with VBUS attach sense",
@@ -12,7 +13,8 @@
     "U5 boots from PD VBUS before the motor eFuse; U22 retains VMOTOR-fed brake backup; LM66100 stages isolate both 3.3 V supplies. USB DATA is self-powered and uses PD POWER for startup.",
     "J7 20-pin JST PHD replaces J6/J7/J9 without deleting industrial features",
     "TMC5160 SD_MODE pin functions: pin23 DCEN grounded, pin24 DCIN grounded, pin25 DCO NC; encoder SPI and ABI test pads retained",
-    "R105 and D12 PCB orientations corrected; only local copper rerouted, logical connections preserved"
+    "R105 and D12 PCB orientations corrected; only local copper rerouted, logical connections preserved",
+    "J7 moved from the board center to (-2, -39) mm beside J2; SW1 shifted 4 mm left for clearance. Schematic and pinout unchanged; affected copper rerouted and VMOTOR reinforced with 2.4 mm corridors and parallel power vias."
   ],
   "sources": [
     "https://www.ti.com/lit/ds/symlink/lmr36510.pdf",
@@ -48,5 +50,27 @@
     "delivery_required_files": 38,
     "delivery_zip_archives": 5,
     "mapped_viewer_ports": 934
+  },
+  "connector_relocation": {
+    "baseline_commit": "3cb470b1edb3a1562233fa85b4c145d706f3ea6c",
+    "J7_center_mm": [
+      -2,
+      -39
+    ],
+    "J2_center_mm": [
+      20,
+      -39
+    ],
+    "SW1_center_mm": [
+      -18,
+      -40
+    ],
+    "schematic_records_compared": 2901,
+    "schematic_records_unchanged": true,
+    "source_matched_pad_geometries": 942,
+    "native_drc_violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0,
+    "erc_violations": 0
   }
 }

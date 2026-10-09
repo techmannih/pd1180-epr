@@ -33,7 +33,7 @@ export const B20B_PHDSS_LF__SN_ = (props: ChipProps<typeof pinLabels>) => {
   ]
 }}
       manufacturerPartNumber="B20B-PHDSS(LF)(SN)"
-      footprint={<footprint>
+      footprint={<footprint insertionDirection="from_above">
         <platedhole  portHints={["pin1"]} pcbX="8.999982mm" pcbY="-0.999871mm" outerDiameter="1.524mm" holeDiameter="0.9144mm" shape="circle" />
 <platedhole  portHints={["pin2"]} pcbX="8.999982mm" pcbY="1.000125mm" outerDiameter="1.524mm" holeDiameter="0.9144mm" shape="circle" />
 <platedhole  portHints={["pin3"]} pcbX="6.999986mm" pcbY="-0.999871mm" outerDiameter="1.524mm" holeDiameter="0.9144mm" shape="circle" />

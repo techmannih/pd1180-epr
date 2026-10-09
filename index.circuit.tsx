@@ -1208,7 +1208,7 @@ export const PD1180EPR = () => (
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.OSC_OUT", pin2: "net.GND" }} />
-    <TS_1088_AR02016 name="SW1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_SW1" schX={5} schY={-3} pcbX={-14} pcbY={-40} layer="top" schRotation={-90}
+    <TS_1088_AR02016 name="SW1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_SW1" schX={5} schY={-3} pcbX={-18} pcbY={-40} layer="top" schRotation={-90}
       connections={{ pin1: "net.NRST", pin2: "net.GND" }} />
     {/* Bottom-side service pads replace a bulky debug connector. */}
     <testpoint name="TP_SWD_3V3" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-4.8} pcbX={-20} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
@@ -1263,7 +1263,7 @@ export const PD1180EPR = () => (
     <testpoint name="TP_ENC_GND" schSheetName="encoder" schSectionName="encoder_U18" schX={19.5} schY={-3.8} pcbX={0} pcbY={-34} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
 
     {/* INTERFACES */}
-    <B20B_PHDSS_LF__SN_ name="J7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_J7" schX={17} schY={-27} pcbX={-14.5} pcbY={-2}
+    <B20B_PHDSS_LF__SN_ name="J7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_J7" schX={17} schY={-27} pcbX={-2} pcbY={-39}
       schWidth={5} schHeight={2.2}
       schPinArrangement={{ leftSide: { pins: ["pin1", "pin2", "pin3", "pin4", "pin5", "pin6", "pin7", "pin8", "pin17", "pin18"], direction: "top-to-bottom" }, rightSide: { pins: ["pin9", "pin10", "pin11", "pin12", "pin13", "pin14", "pin15", "pin16", "pin19", "pin20"], direction: "top-to-bottom" } }}
       connections={{ pin1: "net.HOME_24V", pin2: "net.STOPL_24V", pin3: "net.STOPR_24V", pin4: "net.DIN0_24V", pin5: "net.DIN1_24V", pin6: "net.STEP_24V", pin7: "net.DIR_24V", pin8: "net.GND", pin9: "net.RS232_TX_CONN", pin10: "net.RS232_RX_CONN", pin11: "net.GND", pin12: "net.CAN_H", pin13: "net.CAN_L", pin14: "net.GND", pin15: "net.RS485_A", pin16: "net.RS485_B", pin17: "net.VMOTOR", pin18: "net.HW_ENABLE_24V", pin19: "net.OUT0", pin20: "net.OUT1" }} />
@@ -1521,7 +1521,7 @@ export const PD1180EPR = () => (
     {/* Readable component references, placed clear of copper and adjacent labels. */}
     {/* Readable component references, placed clear of pads and adjacent labels. */}
     <silkscreentext text="Y1" pcbX={-11.0000} pcbY={-15.7500} fontSize={0.7} anchorAlignment="center" layer="top" />
-    <silkscreentext text="SW1" pcbX={-14.0000} pcbY={-38.5000} fontSize={0.7} anchorAlignment="center" layer="top" />
+    <silkscreentext text="SW1" pcbX={-18.0000} pcbY={-38.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J2 MOTOR" pcbX={20.0} pcbY={-36.0} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J3" pcbX={0.0000} pcbY={38.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U16" pcbX={-20.0000} pcbY={-6.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
