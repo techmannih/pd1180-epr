@@ -49,7 +49,14 @@
     ],
     "outline": "TMCM-1180 V1.1 stepped perimeter with four 5.9 mm concave corner arcs",
     "reference": "engineering/tmcm-1180-v11-mechanical-reference.json",
-    "assembly": "two-sided"
+    "assembly": "top-side only",
+    "encoder": {
+      "reference": "U18",
+      "assembly_layer": "top",
+      "centered_x_mm": 0,
+      "centered_y_mm": 0,
+      "validation": "Magnet orientation and working gap require mechanical and powered validation after changing assembly side."
+    }
   },
   "fabrication": {
     "layers": 4,

@@ -20,5 +20,5 @@ for(const p of data.filter(x=>x.type==='pcb_component')){
  }
 }
 await writeFile('dist/assembly-review/assembly-cpl.csv',cpl.join('\n')+'\n')
-await writeFile('dist/assembly-review/READ-ME.txt','Engineering two-sided assembly package. Origin is the board center. Through-hole parts are included and may require separate assembly. Confirm top/bottom rotations, polarity, encoder orientation and connector insertion direction with the assembler; see docs/assembly.md.\n')
+await writeFile('dist/assembly-review/READ-ME.txt','Engineering top-side assembly package. Origin is the board center. Through-hole parts are included and may require separate assembly. Confirm top-side rotations, polarity, encoder orientation and connector insertion direction with the assembler; see docs/assembly.md.\n')
 console.log(`Exported ${grouped.size} BOM lines and ${cpl.length-1} placements for review.`)

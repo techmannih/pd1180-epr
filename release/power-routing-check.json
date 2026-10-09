@@ -18,125 +18,125 @@
   "thermal_via_tie_segments": 40,
   "nets": {
     "PD_VBUS": {
-      "routed_segments": 95,
+      "routed_segments": 73,
       "thermal_via_tie_segments": 0,
-      "corridor_eligible_segments": 95,
+      "corridor_eligible_segments": 73,
       "segment_layers": [
         "F.Cu",
-        "B.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 93,
-      "corridor_coverage_ratio": 0.979,
-      "vias": 23
+      "reinforced_corridors": 71,
+      "corridor_coverage_ratio": 0.973,
+      "vias": 4
     },
     "EFUSE_IN": {
-      "routed_segments": 30,
+      "routed_segments": 29,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 26,
+      "corridor_eligible_segments": 25,
       "segment_layers": [
         "F.Cu",
-        "B.Cu",
-        "In1.Cu"
+        "B.Cu"
       ],
-      "reinforced_corridors": 26,
-      "corridor_coverage_ratio": 1,
-      "vias": 13
+      "reinforced_corridors": 29,
+      "corridor_coverage_ratio": 1.16,
+      "vias": 6
     },
     "VMOTOR": {
-      "routed_segments": 265,
+      "routed_segments": 187,
       "thermal_via_tie_segments": 16,
-      "corridor_eligible_segments": 249,
+      "corridor_eligible_segments": 171,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 258,
-      "corridor_coverage_ratio": 1.036,
-      "vias": 55
+      "reinforced_corridors": 180,
+      "corridor_coverage_ratio": 1.053,
+      "vias": 40
     },
     "MOTOR_A1": {
-      "routed_segments": 42,
+      "routed_segments": 49,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 38,
+      "corridor_eligible_segments": 45,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
-        "In1.Cu"
+        "In1.Cu",
+        "In2.Cu"
       ],
-      "reinforced_corridors": 41,
-      "corridor_coverage_ratio": 1.079,
-      "vias": 13
+      "reinforced_corridors": 48,
+      "corridor_coverage_ratio": 1.067,
+      "vias": 10
     },
     "MOTOR_A2": {
-      "routed_segments": 42,
+      "routed_segments": 48,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 38,
+      "corridor_eligible_segments": 44,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 42,
-      "corridor_coverage_ratio": 1.105,
-      "vias": 15
+      "reinforced_corridors": 47,
+      "corridor_coverage_ratio": 1.068,
+      "vias": 10
     },
     "MOTOR_B1": {
-      "routed_segments": 40,
+      "routed_segments": 41,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 36,
+      "corridor_eligible_segments": 37,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 39,
-      "corridor_coverage_ratio": 1.083,
-      "vias": 14
+      "reinforced_corridors": 40,
+      "corridor_coverage_ratio": 1.081,
+      "vias": 8
     },
     "MOTOR_B2": {
-      "routed_segments": 53,
+      "routed_segments": 46,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 49,
+      "corridor_eligible_segments": 42,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 51,
-      "corridor_coverage_ratio": 1.041,
+      "reinforced_corridors": 44,
+      "corridor_coverage_ratio": 1.048,
       "vias": 15
     },
     "SENSE_A": {
-      "routed_segments": 41,
+      "routed_segments": 61,
       "thermal_via_tie_segments": 0,
-      "corridor_eligible_segments": 41,
+      "corridor_eligible_segments": 61,
       "segment_layers": [
         "F.Cu",
+        "B.Cu",
         "In1.Cu"
       ],
-      "reinforced_corridors": 41,
+      "reinforced_corridors": 61,
       "corridor_coverage_ratio": 1,
-      "vias": 14
+      "vias": 15
     },
     "SENSE_B": {
-      "routed_segments": 35,
+      "routed_segments": 89,
       "thermal_via_tie_segments": 0,
-      "corridor_eligible_segments": 35,
+      "corridor_eligible_segments": 89,
       "segment_layers": [
         "F.Cu",
-        "In1.Cu",
-        "In2.Cu"
+        "B.Cu",
+        "In1.Cu"
       ],
-      "reinforced_corridors": 32,
-      "corridor_coverage_ratio": 0.914,
-      "vias": 12
+      "reinforced_corridors": 87,
+      "corridor_coverage_ratio": 0.978,
+      "vias": 6
     },
     "BRAKE_RETURN": {
       "routed_segments": 17,
@@ -144,7 +144,8 @@
       "corridor_eligible_segments": 13,
       "segment_layers": [
         "F.Cu",
-        "B.Cu"
+        "B.Cu",
+        "In2.Cu"
       ],
       "reinforced_corridors": 17,
       "corridor_coverage_ratio": 1.308,

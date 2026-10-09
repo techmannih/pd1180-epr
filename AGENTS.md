@@ -43,8 +43,8 @@ Keep `release/circuit.json` selectable as the final routed view. It preserves th
 
 ## Assembly and part sourcing
 
-- This project uses two-sided assembly. Keep tall power parts and field connectors on top; use the bottom for the shaft encoder, its local bypass parts, low-profile service pads and reviewed low-profile circuitry.
-- Bottom paste is required for fitted bottom-side SMT parts. The CPL and order settings must identify both assembly sides explicitly.
+- The user requested top-only component assembly on 2026-10-09. All fitted components and service pads, including the centered U18 encoder, must be on top. Preserve the four-layer copper stack and keep bypass capacitors beside their IC power pins. Encoder magnet gap/orientation need renewed physical validation.
+- No fitted components or solder paste belong on the bottom. The CPL and order settings must identify top-side assembly.
 - Every fitted part needs an exact JLCPCB/LCSC code, package match and timestamped stock result. A fuzzy search or similar package name is not an acceptable match.
 - Before placement, routing, review or release work, query every fitted LCSC code against `https://jlcsearch.tscircuit.com/components/list.json?search=<numeric-id>` with the leading `C` removed (for example, query `492401` for `C492401`). Require an exact returned LCSC id, a package match and stock greater than the build quantity. Missing, zero-stock or insufficient-stock parts block the work until a reviewed stocked alternative is selected and the source import/BOM is updated.
 - Never rely on a previous stock snapshot for an order decision. Regenerate `docs/stock-report.json` and the per-part evidence immediately before release; the timestamp is evidence only and does not reserve inventory.

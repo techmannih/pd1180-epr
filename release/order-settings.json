@@ -39,10 +39,12 @@
       "total_vias": 40,
       "via_pad_mm": 0.6,
       "finished_drill_mm": 0.3
-    }
+    },
+    "via_in_pad_count": 71,
+    "via_in_pad_count_basis": "40 MOSFET thermal vias plus 31 other through-via drills overlapping top solder lands; exact coordinates in engineering/top-side-placement.json"
   },
   "assembly": {
-    "side": "both",
+    "side": "top",
     "bom": "jlc-bom.csv",
     "cpl": "jlc-cpl.csv",
     "dnp": "Do not substitute electrical values or package variants without engineering review"

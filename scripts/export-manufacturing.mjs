@@ -9,6 +9,8 @@ const boardPathArg = process.argv[2]
 const projectPathArg = process.argv[3]
 if (!boardPathArg || !projectPathArg) throw new Error('Usage: bun scripts/export-manufacturing.mjs <routed.kicad_pcb> <kicad-project-directory>')
 const kicad = process.env.KICAD_CLI || 'kicad-cli'
+const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
+const gerberLayers = ['F.Cu', 'In1.Cu', 'In2.Cu', 'B.Cu', 'F.Paste', ...(standards.assembly.bottom_paste_allowed ? ['B.Paste'] : []), 'F.Silkscreen', 'B.Silkscreen', 'F.Mask', 'B.Mask', 'Edge.Cuts'].join(',')
 const out = 'dist/manufacturing'
 const boardPath = resolve(boardPathArg)
 const projectPath = resolve(projectPathArg)
@@ -56,7 +58,7 @@ await run(kicad, [
   '--output', join(out, 'kicad-erc.json'),
   finalSchematic,
 ])
-await run(kicad, ['pcb', 'export', 'gerbers', '--output', `${gerbers}/`, '--layers', 'F.Cu,In1.Cu,In2.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,Edge.Cuts', '--subtract-soldermask', '--check-zones', finalBoard])
+await run(kicad, ['pcb', 'export', 'gerbers', '--output', `${gerbers}/`, '--layers', gerberLayers, '--subtract-soldermask', '--check-zones', finalBoard])
 await run(kicad, ['pcb', 'export', 'drill', '--output', `${gerbers}/`, '--excellon-units', 'mm', '--excellon-separate-th', '--generate-map', '--map-format', 'gerberx2', '--generate-report', '--report-path', join(out, 'drill-report.txt'), finalBoard])
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-positions.csv'), '--side', 'front', '--format', 'csv', '--units', 'mm', finalBoard])
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-back-positions.csv'), '--side', 'back', '--format', 'csv', '--units', 'mm', finalBoard])

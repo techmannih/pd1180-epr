@@ -60,4 +60,4 @@ lines.push(
 )
 await writeFile(new URL('docs/procurement.md', root), lines.join('\n'))
 const counts = Object.fromEntries(standards.assembly.populated_layers.map(layer => [layer, manifest.parts.filter(part => part.layer === layer).length]))
-console.log(`Synchronized ${manifest.parts.length} two-sided placements (${Object.entries(counts).map(([layer, count]) => `${layer}: ${count}`).join(', ')}) and ${stock.parts.length} stock rows.`)
+console.log(`Synchronized ${manifest.parts.length} component placements (${Object.entries(counts).map(([layer, count]) => `${layer}: ${count}`).join(', ')}) and ${stock.parts.length} stock rows.`)

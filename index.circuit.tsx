@@ -409,15 +409,15 @@ export const PD1180EPR = () => (
       noConnect={["pin11", "pin12", "pin13", "pin14"]}
 
       connections={{ pin10: "net.PD_SBU1_CONN", pin16: "net.PD_SBU2_CONN", pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.PD_VBUS", pin8: "net.PD_VBUS", pin17: "net.PD_VBUS", pin18: "net.PD_VBUS", pin9: "net.CC2_CONN", pin15: "net.CC1_CONN" }} />
-    <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={5} schY={0} pcbX={-22.0} pcbY={16.0}
+    <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={5} schY={0} pcbX={-22.25} pcbY={16.0}
       schRotation={-90}
       resistance="1M" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C22935"] }}
       connections={{ pin1: "net.USB_DATA_VBUS", pin2: "net.USB_VBUS_SENSE" }} />
-    <resistor name="R108" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={5} schY={-3} pcbX={-19.0} pcbY={16.0}
+    <resistor name="R108" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={5} schY={-3} pcbX={-15.75} pcbY={18}
       schRotation={-90}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.USB_VBUS_SENSE", pin2: "net.GND" }} />
-    <capacitor name="C72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={8} schY={-3} pcbX={-23.0} pcbY={14.0} pcbRotation={180}
+    <capacitor name="C72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={8} schY={-3} pcbX={-25.5} pcbY={14.75} pcbRotation={180}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxVoltageRating="50V"
@@ -435,7 +435,7 @@ export const PD1180EPR = () => (
     <BSS123LT1G name="Q1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={3.8} schY={0} pcbX={-24.0} pcbY={40.5}
       connections={{ gate: "net.EPR_BLK_GATE", source: "net.VBUS_LV", drain: "net.PD_VBUS" }} schRotation={90} />
 
-    <capacitor name="C1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={6.5} schY={3} pcbX={-27.0} pcbY={16.0} pcbRotation={180} layer="bottom"
+    <capacitor name="C1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={6.5} schY={3} pcbX={-31} pcbY={19} pcbRotation={180} layer="top"
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15725"] }}
       maxDecouplingTraceLength="30mm"
@@ -490,11 +490,11 @@ export const PD1180EPR = () => (
       decouplingFor=".U2 > .pin4"
       maxVoltageRating="10V"
       connections={{ pin1: "net.PD_1V5", pin2: "net.GND" }} />
-    <resistor name="R1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={9.5} schY={0} pcbX={-18.0} pcbY={36.0} pcbRotation={180} layer="bottom"
+    <resistor name="R1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={9.5} schY={0} pcbX={-14} pcbY={36.0} pcbRotation={180} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.CC_FAULT_N" }} />
-    <resistor name="R2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={8} schY={2} pcbX={-34.0} pcbY={22.0} layer="bottom"
+    <resistor name="R2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={8} schY={2} pcbX={-34.0} pcbY={24} layer="top"
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.EPR_EN", pin2: "net.GND" }} />
@@ -516,7 +516,7 @@ export const PD1180EPR = () => (
     <resistor name="R4" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U3" schX={16} schY={-8.5} pcbX={-14.0} pcbY={34.0}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
-      connections={{ pin1: "net.PD_3V3", pin2: "net.EEP_SCL" }} />
+      connections={{ pin1: "net.PD_3V3", pin2: "net.EEP_SCL" }} pcbRotation={180} />
     <resistor name="R5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U3" schX={18} schY={-8.5} pcbX={-24.0} pcbY={32.0}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
@@ -525,11 +525,11 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_SDA" }} />
-    <resistor name="R7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={8} schY={-11.6} pcbX={-20.0} pcbY={31.0} layer="bottom"
+    <resistor name="R7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={8} schY={-11.6} pcbX={-18} pcbY={29.25} layer="top"
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_SCL" }} />
-    <resistor name="R8" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={10.93} schY={-11.6} pcbX={-20.5} pcbY={28.0} pcbRotation={180}
+    <resistor name="R8" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={10.93} schY={-11.6} pcbX={-20.5} pcbY={27.5} pcbRotation={180}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_IRQ_N" }} />
@@ -538,16 +538,16 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.PD_PATH_HV", pin2: "net.PD_LEVEL_BASE" }} />
     <CSD17484F4 name="Q2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={11.17} schY={-13.4} pcbX={-17.5} pcbY={20.0} pcbRotation={180}
       connections={{ pin1: "net.PD_LEVEL_BASE", pin2: "net.GND", pin3: "net.PD_PATH_N" }} />
-    <resistor name="R11" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={5} schY={-15.2} pcbX={-14.0} pcbY={30.0} layer="bottom"
+    <resistor name="R11" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={5} schY={-15.2} pcbX={-14.0} pcbY={30.0} layer="top"
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_PATH_N" }} />
-    <resistor name="R12" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={8} schY={-15.2} pcbX={-25.0} pcbY={16.5} pcbRotation={180}
+    <resistor name="R12" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={8} schY={-15.2} pcbX={-25.5} pcbY={16.5} pcbRotation={180}
       resistance="0" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C21189"] }}
       connections={{ pin1: "net.PD_PATH_N", pin2: "net.PD_INV_BASE" }} />
     <CSD17484F4 name="Q3" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={9.5} schY={-16.5} pcbX={-29.5} pcbY={16.5} pcbRotation={180}
       connections={{ pin1: "net.PD_INV_BASE", pin2: "net.GND", pin3: "net.PD_PATH_OK" }} />
-    <resistor name="R13" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={9.8} schY={-14.5} pcbX={-17.0} pcbY={28.0}
+    <resistor name="R13" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd" schSectionName="usb-pd_U2" schX={9.8} schY={-14.5} pcbX={-17.0} pcbY={27.5}
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_PATH_OK" }} />
@@ -571,76 +571,76 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
 
     {/* POWER */}
-    <LMR36510ADDAR name="U5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={0} schY={0} pcbX={-25} pcbY={7} layer="bottom"
+    <LMR36510ADDAR name="U5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={0} schY={0} pcbX={-27} pcbY={8} layer="top"
       connections={{ pin1: "net.GND", pin2: "net.PD_VBUS", pin3: "net.PD_VBUS", pin4: "net.LOGIC_PG", pin5: "net.BUCK_FB", pin6: "net.BUCK_VCC", pin7: "net.BUCK_BOOT", pin8: "net.BUCK_SW", pin9: "net.GND" }} />
-    <SWPA6045S220MT name="L1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={4} schY={0} pcbX={-15} pcbY={7} layer="bottom"
+    <SWPA6045S220MT name="L1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={4} schY={0} pcbX={-19} pcbY={11.5} layer="top"
       connections={{ pin1: "net.BUCK_SW", pin2: "net.V3V3_PD" }} />
-    <capacitor name="C11" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={2} schY={4} pcbX={-21.0} pcbY={8.5} pcbRotation={90} layer="bottom"
+    <capacitor name="C11" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={2} schY={4} pcbX={-25} pcbY={1.5} pcbRotation={270} layer="top"
       schRotation={-90}
       capacitance="2.2uF" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C170101"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="100V"
       connections={{ pin1: "net.PD_VBUS", pin2: "net.GND" }} />
-    <capacitor name="C12" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={3} schY={4} pcbX={-22.3} pcbY={1.5} layer="bottom"
+    <capacitor name="C12" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={3} schY={4} pcbX={-27.635} pcbY={2.2289} layer="top"
       schRotation={-90}
-      pcbRotation={180}
+      pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15725"] }}
       maxDecouplingTraceLength="30mm"
       decouplingFor=".U5 > .pin2"
       maxVoltageRating="100V"
       connections={{ pin1: "net.PD_VBUS", pin2: "net.GND" }} />
-    <capacitor name="C13" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={4.2} schY={4}  pcbX={-30.0} pcbY={7.0} layer="bottom"
+    <capacitor name="C13" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={4.2} schY={4}  pcbX={-25} pcbY={13} layer="top"
       schRotation={-90}
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.BUCK_VCC", pin2: "net.GND" }} />
-    <capacitor name="C14" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={3.75} schY={2.2} pcbX={-30.0} pcbY={5.0} layer="bottom"
+    <capacitor name="C14" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={3.75} schY={2.2} pcbX={-28.1} pcbY={13} layer="top"
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
-      connections={{ pin1: "net.BUCK_BOOT", pin2: "net.BUCK_SW" }} />
-    <capacitor name="C15" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={8} schY={4} pcbX={-15.0} pcbY={12.0} layer="bottom"
+      connections={{ pin1: "net.BUCK_BOOT", pin2: "net.BUCK_SW" }} pcbRotation={180} />
+    <capacitor name="C15" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={8} schY={4} pcbX={-19} pcbY={16} layer="top"
       schRotation={-90}
       capacitance="22uF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C45783"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.V3V3_PD", pin2: "net.GND" }} />
-    <capacitor name="C16" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={9.2} schY={4} pcbX={-19.0} pcbY={12.0} pcbRotation={180} layer="bottom"
+    <capacitor name="C16" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={9.2} schY={4} pcbX={-15.5} pcbY={16.25} pcbRotation={180} layer="top"
       schRotation={-90}
       capacitance="22uF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C45783"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.V3V3_PD", pin2: "net.GND" }} />
-    <capacitor name="C17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={10.4} schY={4} pcbX={-11.0} pcbY={12.0} layer="bottom"
+    <capacitor name="C17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={10.4} schY={4} pcbX={-19} pcbY={18} layer="top"
       schRotation={-90}
       capacitance="22uF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C45783"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.V3V3_PD", pin2: "net.GND" }} />
-    <resistor name="R16" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={8.6} schY={1.4} pcbX={-30.0} pcbY={9.0} layer="bottom"
+    <resistor name="R16" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={8.6} schY={1.4} pcbX={-21} pcbY={7.25} layer="top"
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
-      connections={{ pin1: "net.V3V3_PD", pin2: "net.BUCK_FB" }} />
-    <resistor name="R17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={-2.6} schY={-2} pcbX={-19.0} pcbY={1.5} layer="bottom"
+      connections={{ pin1: "net.V3V3_PD", pin2: "net.BUCK_FB" }} pcbRotation={180} />
+    <resistor name="R17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={-2.6} schY={-2} pcbX={-22.25} pcbY={2.75} layer="top"
       schRotation={-90}
       resistance="43.2k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C137720"] }}
       connections={{ pin1: "net.BUCK_FB", pin2: "net.GND" }} />
-    <resistor name="R18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={5.5} schY={0.4} pcbX={-30.0} pcbY={3.0} layer="bottom"
+    <resistor name="R18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U5" schX={5.5} schY={0.4} pcbX={-17.75} pcbY={6} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.V3V3_PD", pin2: "net.LOGIC_PG" }} />
-    <LMR36510ADDAR name="U22" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={0} schY={-12} pcbX={-15} pcbY={10}
+    <LMR36510ADDAR name="U22" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={0} schY={-12} pcbX={-11} pcbY={9}
       connections={{ pin1: "net.GND", pin2: "net.VMOTOR", pin3: "net.VMOTOR", pin4: "net.MOTOR_LOGIC_PG", pin5: "net.MOTOR_BUCK_FB", pin6: "net.MOTOR_BUCK_VCC", pin7: "net.MOTOR_BUCK_BOOT", pin8: "net.MOTOR_BUCK_SW", pin9: "net.GND" }} />
-    <SWPA6045S220MT name="L2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={4} schY={-12} pcbX={-6} pcbY={15}
+    <SWPA6045S220MT name="L2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={4} schY={-12} pcbX={-3.5} pcbY={15}
       connections={{ pin1: "net.MOTOR_BUCK_SW", pin2: "net.V3V3_MOTOR" }} />
-    <capacitor name="C62" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={5} schY={-8} pcbX={-15.0} pcbY={16.0}
+    <capacitor name="C62" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={5} schY={-8} pcbX={-7.5} pcbY={2.5}
       schRotation={-90}
       capacitance="2.2uF" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C170101"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="100V"
-      connections={{ pin1: "net.VMOTOR", pin2: "net.GND" }} />
-    <capacitor name="C63" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={6.5} schY={-8} pcbX={-15.75} pcbY={4.0}
+      connections={{ pin1: "net.VMOTOR", pin2: "net.GND" }} pcbRotation={270} />
+    <capacitor name="C63" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={6.5} schY={-8} pcbX={-11.635} pcbY={3.4789}
       schRotation={-90}
       pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15725"] }}
@@ -648,18 +648,18 @@ export const PD1180EPR = () => (
       decouplingFor=".U22 > .pin2"
       maxVoltageRating="100V"
       connections={{ pin1: "net.VMOTOR", pin2: "net.GND" }} />
-    <capacitor name="C64" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={13} schY={-6.5} pcbX={-18.5} pcbY={4.5}
+    <capacitor name="C64" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={13} schY={-6.5} pcbX={-9.5} pcbY={14.3}
       schRotation={-90}
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.MOTOR_BUCK_VCC", pin2: "net.GND" }} />
-    <capacitor name="C65" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={4.75} schY={-9.8} pcbX={-20.0} pcbY={14.5}
+    <capacitor name="C65" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={4.75} schY={-9.8} pcbX={-12.8} pcbY={14.4}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
-      connections={{ pin1: "net.MOTOR_BUCK_BOOT", pin2: "net.MOTOR_BUCK_SW" }} />
-    <capacitor name="C66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={7.73} schY={-8} pcbX={-6.0} pcbY={10.0}
+      connections={{ pin1: "net.MOTOR_BUCK_BOOT", pin2: "net.MOTOR_BUCK_SW" }} pcbRotation={180} />
+    <capacitor name="C66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={7.73} schY={-8} pcbX={-5} pcbY={10.0}
       schRotation={-90}
       capacitance="22uF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C45783"] }}
       maxDecouplingTraceLength="30mm"
@@ -677,29 +677,29 @@ export const PD1180EPR = () => (
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.V3V3_MOTOR", pin2: "net.GND" }} />
-    <resistor name="R102" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={6.8} schY={-11.4} pcbX={-18.5} pcbY={2.5}
+    <resistor name="R102" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={6.8} schY={-11.4} pcbX={-14} pcbY={2.5}
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.V3V3_MOTOR", pin2: "net.MOTOR_BUCK_FB" }} />
-    <resistor name="R103" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={11.8} schY={-10.2} pcbX={-13.5} pcbY={18.5} pcbRotation={180}
+    <resistor name="R103" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={11.8} schY={-10.2} pcbX={-12} pcbY={18} pcbRotation={180}
       schRotation={-90}
       resistance="43.2k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C137720"] }}
       connections={{ pin1: "net.MOTOR_BUCK_FB", pin2: "net.GND" }} />
-    <resistor name="R104" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={5.5} schY={-11.6} pcbX={-6.5} pcbY={7.5}
+    <resistor name="R104" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U22" schX={5.5} schY={-11.6} pcbX={-6.5} pcbY={7}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
-      connections={{ pin1: "net.V3V3_MOTOR", pin2: "net.MOTOR_LOGIC_PG" }} />
-    <LM66100DCKR name="U23" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={1} schY={-21} pcbX={-27.0} pcbY={1.0}
+      connections={{ pin1: "net.V3V3_MOTOR", pin2: "net.MOTOR_LOGIC_PG" }} pcbRotation={180} />
+    <LM66100DCKR name="U23" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={1} schY={-21} pcbX={-22} pcbY={0}
       noConnect={["pin4"]}
       connections={{ pin1: "net.V3V3_PD", pin2: "net.GND", pin3: "net.V3V3_MOTOR", pin5: "net.LOGIC_OR_PRIORITY", pin6: "net.V3V3" }} />
-    <LM66100DCKR name="U24" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U24" schX={11} schY={-21} pcbX={-10} pcbY={8}
+    <LM66100DCKR name="U24" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U24" schX={11} schY={-21} pcbX={-10} pcbY={0}
       noConnect={["pin4"]}
       connections={{ pin1: "net.V3V3_MOTOR", pin2: "net.GND", pin3: "net.LOGIC_OR_PRIORITY", pin5: "net.GND", pin6: "net.V3V3" }} />
-    <resistor name="R111" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={6} schY={-19} pcbX={-24.5} pcbY={4} pcbRotation={180}
+    <resistor name="R111" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={6} schY={-19} pcbX={-25} pcbY={-2} pcbRotation={180}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.V3V3_PD", pin2: "net.LOGIC_OR_PRIORITY" }} />
-    <capacitor name="C69" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={11.6} schY={4} pcbX={-27.75} pcbY={-2.75}
+    <capacitor name="C69" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={11.6} schY={4} pcbX={-22.65} pcbY={-4.0251}
       schRotation={-90}
       pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
@@ -707,7 +707,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U23 > .pin1"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3_PD", pin2: "net.GND" }} />
-    <capacitor name="C70" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U24" schX={11.43} schY={-7.8} pcbX={-10.75} pcbY={4.25}
+    <capacitor name="C70" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U24" schX={11.43} schY={-7.8} pcbX={-10.65} pcbY={-4.0251}
       schRotation={-90}
       pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
@@ -715,7 +715,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U24 > .pin1"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3_MOTOR", pin2: "net.GND" }} />
-    <capacitor name="C71" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={6} schY={-23} pcbX={-27.0} pcbY={-4.0} layer="bottom"
+    <capacitor name="C71" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="logic-power" schSectionName="logic-power_U23" schX={6} schY={-23} pcbX={-25} pcbY={-4.5} layer="top"
       schRotation={-90}
       capacitance="10uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C96446"] }}
       maxDecouplingTraceLength="30mm"
@@ -768,7 +768,7 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="20k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C4184"] }}
       connections={{ pin1: "net.IIN_MON", pin2: "net.GND" }} />
-    <capacitor name="C19" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={14.5} schY={-3.5} pcbX={1.5} pcbY={19.0} pcbRotation={180}
+    <capacitor name="C19" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={14.5} schY={-3.5} pcbX={1.5} pcbY={19.25} pcbRotation={180}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
@@ -782,7 +782,7 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.PG_DIV", pin2: "net.GND" }} />
-    <resistor name="R29" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={18} schY={-1.4} pcbX={1.0} pcbY={17.0} pcbRotation={180}
+    <resistor name="R29" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={18} schY={-1.4} pcbX={2.25} pcbY={14.25} pcbRotation={180}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.MOTOR_PG" }} />
@@ -829,7 +829,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.VMON_ADC", pin2: "net.GND" }} />
 
     {/* MOTION */}
-    <TMC5160A_TA_T name="U7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={-3} schY={-4} pcbX={8} pcbY={5}
+    <TMC5160A_TA_T name="U7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={-3} schY={-4} pcbX={8.25} pcbY={5}
       noConnect={["pin25"]}
       connections={{ pin1: "net.GH_B1_DRV", pin2: "net.BOOT_B1", pin3: "net.TMC_12V", pin4: "net.VMOTOR", pin5: "net.TMC_5V", pin6: "net.GND", pin7: "net.GND", pin8: "net.SENSE_A", pin9: "net.SENSE_B", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin13: "net.TMC_CS_N", pin14: "net.SPI_SCK", pin15: "net.SPI_MOSI", pin16: "net.SPI_MISO", pin17: "net.REFL_STEP", pin18: "net.REFR_DIR", pin19: "net.GND", pin20: "net.V3V3", pin21: "net.SD_MODE", pin22: "net.V3V3", pin23: "net.GND", pin24: "net.GND", pin26: "net.TMC_DIAG0", pin27: "net.TMC_DIAG1", pin28: "net.DRV_EN_N", pin29: "net.TMC_VCC", pin30: "net.GND", pin31: "net.TMC_CPO", pin32: "net.TMC_CPI", pin33: "net.VMOTOR", pin34: "net.TMC_VCP", pin35: "net.BOOT_A2", pin36: "net.GH_A2_DRV", pin37: "net.MOTOR_A2", pin38: "net.GL_A2_DRV", pin39: "net.GL_A1_DRV", pin40: "net.MOTOR_A1", pin41: "net.GH_A1_DRV", pin42: "net.BOOT_A1", pin43: "net.BOOT_B2", pin44: "net.GH_B2_DRV", pin45: "net.MOTOR_B2", pin46: "net.GL_B2_DRV", pin47: "net.GL_B1_DRV", pin48: "net.MOTOR_B1", pin49: "net.GND" }} />
     <capacitor name="C25" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={5} schY={4} pcbX={4.5} pcbY={-2.0}
@@ -840,7 +840,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U7 > .pin3"
       maxVoltageRating="25V"
       connections={{ pin1: "net.TMC_12V", pin2: "net.GND" }} />
-    <capacitor name="C26" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={-4} schY={4} pcbX={8.0} pcbY={-0.8} layer="bottom"
+    <capacitor name="C26" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={-4} schY={4} pcbX={9} pcbY={-2} layer="top"
       schRotation={-90}
       pcbRotation={270}
       capacitance="4.7uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C19666"] }}
@@ -860,7 +860,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U7 > .pin29"
       maxVoltageRating="50V"
       connections={{ pin1: "net.TMC_VCC", pin2: "net.GND" }} />
-    <capacitor name="C28" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={12} schY={4} pcbX={14.1} pcbY={5.75} pcbRotation={270}
+    <capacitor name="C28" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={12} schY={4} pcbX={14.35} pcbY={5.75} pcbRotation={270}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
@@ -880,24 +880,24 @@ export const PD1180EPR = () => (
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="100V"
       connections={{ pin1: "net.TMC_CPO", pin2: "net.TMC_CPI" }} />
-    <capacitor name="C31" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={8} schY={0.4} pcbX={-4.5} pcbY={3.0} schRotation={90}
+    <capacitor name="C31" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={8} schY={0.4} pcbX={-4.5} pcbY={1.5} schRotation={90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15725"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="100V"
-      connections={{ pin1: "net.TMC_VCP", pin2: "net.VMOTOR" }} />
-    <capacitor name="C61" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={12.05} schY={2.2} pcbX={7} pcbY={-1.05}
+      connections={{ pin1: "net.TMC_VCP", pin2: "net.VMOTOR" }} pcbRotation={180} />
+    <capacitor name="C61" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={12.05} schY={2.2} pcbX={6.8} pcbY={-2}
       schRotation={-90}
-      pcbRotation={0}
+      pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15725"] }}
       maxDecouplingTraceLength="30mm"
       decouplingFor=".U7 > .pin4"
       maxVoltageRating="100V"
       connections={{ pin1: "net.VMOTOR", pin2: "net.GND" }} />
-    <resistor name="R35" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={5} schY={-1.4} pcbX={3.0} pcbY={-5.0}
+    <resistor name="R35" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={5} schY={-1.4} pcbX={6.5} pcbY={-5.0}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.TMC_CS_N" }} />
-    <resistor name="R36" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={8} schY={-1.4} pcbX={14.9} pcbY={10.5}
+    <resistor name="R36" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={8} schY={-1.4} pcbX={14.9} pcbY={11.25}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.SD_MODE", pin2: "net.GND" }} />
@@ -909,7 +909,7 @@ export const PD1180EPR = () => (
       connections={{ source: "net.MOTOR_A1", gate: "net.GH_A1", drain: "net.VMOTOR" }} />
     <CSD19534Q5A name="Q7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q7" schX={13} schY={0} pcbX={19.5} pcbY={7}
       connections={{ source: "net.SENSE_A", gate: "net.GL_A1", drain: "net.MOTOR_A1" }} />
-    <resistor name="R38" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q6" schX={4} schY={2.5} pcbX={11.5} pcbY={16.0}
+    <resistor name="R38" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q6" schX={4} schY={2.5} pcbX={11.5} pcbY={16.25}
       resistance="10" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C22859"] }}
       connections={{ pin1: "net.GH_A1_DRV", pin2: "net.GH_A1" }} />
     <resistor name="R39" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q7" schX={17} schY={2.5} pcbX={23.95} pcbY={7.0}
@@ -936,7 +936,7 @@ export const PD1180EPR = () => (
     <resistor name="R43" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q9" schX={17} schY={-6.5} pcbX={24.0} pcbY={-27.5}
       resistance="10" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C22859"] }}
       connections={{ pin1: "net.GL_A2_DRV", pin2: "net.GL_A2" }} />
-    <resistor name="R44" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q8" schX={5.5} schY={-6.5} pcbX={27.5} pcbY={-2.5}
+    <resistor name="R44" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q8" schX={5.5} schY={-6.5} pcbX={27.5} pcbY={-2.75}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.GH_A2", pin2: "net.MOTOR_A2" }} />
     <resistor name="R45" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_Q9" schX={18.5} schY={-6.5} pcbX={20.5} pcbY={-27.5} pcbRotation={180}
@@ -963,7 +963,7 @@ export const PD1180EPR = () => (
     <resistor name="R49" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-b" schSectionName="bridge-b_Q11" schX={18.5} schY={2.5} pcbX={11.0} pcbY={-18.0}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.GL_B1", pin2: "net.SENSE_B" }} />
-    <capacitor name="C34" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={11} schY={-3.2} pcbX={-1.5} pcbY={-5}
+    <capacitor name="C34" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U7" schX={11} schY={-3.2} pcbX={-2.5} pcbY={-5}
       capacitance="220nF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C513710"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="100V"
@@ -1077,7 +1077,7 @@ export const PD1180EPR = () => (
     <resistor name="R61" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_sense" schX={23.83} schY={4} pcbX={13.0} pcbY={-22.0}
       resistance="20k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C4184"] }}
       connections={{ pin1: "net.BRAKE_MID", pin2: "net.BRAKE_SENSE" }} />
-    <resistor name="R62" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_sense" schX={25} schY={4} pcbX={12.0} pcbY={-25.0} pcbRotation={180}
+    <resistor name="R62" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_sense" schX={25} schY={4} pcbX={12.0} pcbY={-27} pcbRotation={180}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.BRAKE_SENSE", pin2: "net.GND" }} />
@@ -1101,7 +1101,7 @@ export const PD1180EPR = () => (
     <resistor name="R65" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={8} schY={-8} pcbX={6.0} pcbY={-34.0}
       resistance="20k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C4184"] }}
       connections={{ pin1: "net.MOTOR_OVP_SENSE", pin2: "net.MOTOR_OVP_LOW" }} />
-    <resistor name="R66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={11} schY={-8} pcbX={-1.0} pcbY={-34.0} pcbRotation={180}
+    <resistor name="R66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={11} schY={-8} pcbX={-12.5} pcbY={-34.25} pcbRotation={180}
       schRotation={-90}
       resistance="1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C21190"] }}
       connections={{ pin1: "net.MOTOR_OVP_LOW", pin2: "net.GND" }} />
@@ -1118,7 +1118,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
     <UCC27511DBVR name="U15" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U15" schX={17} schY={-12} pcbX={16} pcbY={30}
       connections={{ pin1: "net.TMC_12V", pin2: "net.BRAKE_DRIVE", pin3: "net.BRAKE_DRIVE", pin4: "net.GND", pin5: "net.GND", pin6: "net.BRAKE_ON" }} />
-    <capacitor name="C42" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U15" schX={22} schY={-8} pcbX={16.0} pcbY={33.5}
+    <capacitor name="C42" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U15" schX={22} schY={-8} pcbX={15} pcbY={33.5}
       schRotation={-90}
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }}
       maxDecouplingTraceLength="30mm"
@@ -1171,7 +1171,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U16 > .pin4"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
-    <capacitor name="C47" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={8.6} schY={6} pcbX={-28.0} pcbY={-12.0} pcbRotation={180}
+    <capacitor name="C47" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={8.6} schY={6} pcbX={-28.0} pcbY={-15.75} pcbRotation={180}
       schRotation={-90}
       capacitance="4.7uF" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C51205"] }}
       maxDecouplingTraceLength="30mm"
@@ -1190,7 +1190,7 @@ export const PD1180EPR = () => (
     <resistor name="R71" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={4.84} schY={0} pcbX={-12.5} pcbY={-10.0}
       resistance="22" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23345"] }}
       connections={{ pin1: "net.USB_DP_CONN", pin2: "net.USB_DP" }} />
-    <resistor name="R72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={8.39} schY={0} pcbX={-27.5} pcbY={-14.5}
+    <resistor name="R72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={8.39} schY={0} pcbX={-27.5} pcbY={-13.75}
       resistance="22" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23345"] }}
       connections={{ pin1: "net.USB_DM_CONN", pin2: "net.USB_DM" }} />
     <X322516MLB4SI name="Y1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_Y1" schX={0} schY={5.5} pcbX={-11} pcbY={-18}
@@ -1211,16 +1211,16 @@ export const PD1180EPR = () => (
     <TS_1088_AR02016 name="SW1" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_SW1" schX={5} schY={-3} pcbX={-18} pcbY={-40} layer="top" schRotation={-90}
       connections={{ pin1: "net.NRST", pin2: "net.GND" }} />
     {/* Bottom-side service pads replace a bulky debug connector. */}
-    <testpoint name="TP_SWD_3V3" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-4.8} pcbX={-20} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
-    <testpoint name="TP_SWDIO" schSheetName="mcu" schSectionName="mcu_U16" schX={-2} schY={-4.8} pcbX={-17} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWDIO" }} />
-    <testpoint name="TP_SWD_GND" schSheetName="mcu" schSectionName="mcu_U16" schX={4} schY={-4.8} pcbX={-14} pcbY={-33} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
-    <testpoint name="TP_SWCLK" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-6.8} pcbX={-20} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWCLK" }} />
-    <testpoint name="TP_NRST" schSheetName="mcu" schSectionName="mcu_U16" schX={-2} schY={-6.8} pcbX={-17} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.NRST" }} />
-    <testpoint name="TP_STATUS" schSheetName="mcu" schSectionName="mcu_U16" schX={4} schY={-6.8} pcbX={-14} pcbY={-30} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.STATUS_GPIO" }} />
+    <testpoint name="TP_SWD_3V3" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-4.8} pcbX={-22} pcbY={-33.8} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
+    <testpoint name="TP_SWDIO" schSheetName="mcu" schSectionName="mcu_U16" schX={-2} schY={-4.8} pcbX={-19.5} pcbY={-33.8} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWDIO" }} />
+    <testpoint name="TP_SWD_GND" schSheetName="mcu" schSectionName="mcu_U16" schX={4} schY={-4.8} pcbX={-17} pcbY={-33.8} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
+    <testpoint name="TP_SWCLK" schSheetName="mcu" schSectionName="mcu_U16" schX={-8} schY={-6.8} pcbX={-21.25} pcbY={-35.8} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.SWCLK" }} />
+    <testpoint name="TP_NRST" schSheetName="mcu" schSectionName="mcu_U16" schX={-2} schY={-6.8} pcbX={-19.25} pcbY={-36.3} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.NRST" }} />
+    <testpoint name="TP_STATUS" schSheetName="mcu" schSectionName="mcu_U16" schX={4} schY={-6.8} pcbX={-17} pcbY={-36.3} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.STATUS_GPIO" }} />
     <W25Q32JVSSIQ name="U17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U17" schX={13} schY={-2.5} schWidth={1.74} schHeight={2.4} pcbX={-13} pcbY={-26}
       schPinArrangement={{ leftSide: ["pin1", "pin2"], rightSide: ["pin5", "pin6"], topSide: ["pin3", "pin7", "pin8"], bottomSide: ["pin4"] }}
       connections={{ pin1: "net.FLASH_CS_N", pin2: "net.SPI_MISO", pin3: "net.V3V3", pin4: "net.GND", pin5: "net.SPI_MOSI", pin6: "net.SPI_SCK", pin7: "net.V3V3", pin8: "net.V3V3" }} />
-    <resistor name="R73" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U17" schX={10.2} schY={-1} pcbX={-8.0} pcbY={-26.0}
+    <resistor name="R73" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U17" schX={10.2} schY={-1} pcbX={-8.0} pcbY={-27.75}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.FLASH_CS_N" }} />
@@ -1234,33 +1234,33 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
 
     {/* ENCODER */}
-    <AS5047P_ATSM name="U18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={0} schY={0} pcbX={0} pcbY={0} pcbRotation={180} layer="bottom"
+    <AS5047P_ATSM name="U18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={0} schY={0} pcbX={0} pcbY={0} pcbRotation={180} layer="top"
       noConnect={["pin8", "pin9", "pin10"]}
       connections={{ pin1: "net.ENC_CS_N", pin2: "net.SPI_SCK", pin3: "net.SPI_MISO", pin4: "net.SPI_MOSI", pin5: "net.GND", pin6: "net.ENC_B", pin7: "net.ENC_A", pin11: "net.V3V3", pin12: "net.V3V3", pin13: "net.GND", pin14: "net.ENC_I" }} />
-    <resistor name="R74" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={5} schY={4} pcbX={-8.0} pcbY={4.5} layer="bottom"
+    <resistor name="R74" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={5} schY={4} pcbX={-4.75} pcbY={3.25} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.ENC_CS_N" }} />
-    <capacitor name="C52" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={8} schY={4} pcbX={0.0} pcbY={-5.8} layer="bottom"
+    <capacitor name="C52" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={8} schY={4} pcbX={0.0} pcbY={-5.55} layer="top"
       schRotation={-90}
-      pcbRotation={90}
+      pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
       decouplingFor=".U18 > .pin11"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
-    <capacitor name="C53" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={9.2} schY={4} pcbX={6.0} pcbY={-5.0} pcbRotation={180} layer="bottom"
+    <capacitor name="C53" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={9.2} schY={4} pcbX={3.3} pcbY={-5.3} pcbRotation={180} layer="top"
       schRotation={-90}
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="25V"
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
     {/* Encoder observation remains available without a second field connector. */}
-    <testpoint name="TP_ENC_3V3" schSheetName="encoder" schSectionName="encoder_U18" schX={12} schY={-2} pcbX={-12} pcbY={-34} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
-    <testpoint name="TP_ENC_A" schSheetName="encoder" schSectionName="encoder_U18" schX={17} schY={-2} pcbX={-9} pcbY={-34} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.ENC_A" }} />
-    <testpoint name="TP_ENC_B" schSheetName="encoder" schSectionName="encoder_U18" schX={22} schY={-2} pcbX={-6} pcbY={-34} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.ENC_B" }} />
-    <testpoint name="TP_ENC_I" schSheetName="encoder" schSectionName="encoder_U18" schX={14.5} schY={-3.8} pcbX={-3} pcbY={-34} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.ENC_I" }} />
-    <testpoint name="TP_ENC_GND" schSheetName="encoder" schSectionName="encoder_U18" schX={19.5} schY={-3.8} pcbX={0} pcbY={-34} layer="bottom" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
+    <testpoint name="TP_ENC_3V3" schSheetName="encoder" schSectionName="encoder_U18" schX={12} schY={-2} pcbX={-10} pcbY={-35} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.V3V3" }} />
+    <testpoint name="TP_ENC_A" schSheetName="encoder" schSectionName="encoder_U18" schX={17} schY={-2} pcbX={-7.5} pcbY={-35} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.ENC_A" }} />
+    <testpoint name="TP_ENC_B" schSheetName="encoder" schSectionName="encoder_U18" schX={22} schY={-2} pcbX={-5} pcbY={-35} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.ENC_B" }} />
+    <testpoint name="TP_ENC_I" schSheetName="encoder" schSectionName="encoder_U18" schX={14.5} schY={-3.8} pcbX={-2.5} pcbY={-35} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.ENC_I" }} />
+    <testpoint name="TP_ENC_GND" schSheetName="encoder" schSectionName="encoder_U18" schX={19.5} schY={-3.8} pcbX={0} pcbY={-35} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} pcbX="0mm" pcbY="0mm" shape="circle" radius="0.7mm" /><courtyardcircle pcbX="0mm" pcbY="0mm" radius="0.95mm" /></footprint>} connections={{ pin1: "net.GND" }} />
 
     {/* INTERFACES */}
     <B20B_PHDSS_LF__SN_ name="J7" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_J7" schX={17} schY={-27} pcbX={-2} pcbY={-39}
@@ -1269,26 +1269,26 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.HOME_24V", pin2: "net.STOPL_24V", pin3: "net.STOPR_24V", pin4: "net.DIN0_24V", pin5: "net.DIN1_24V", pin6: "net.STEP_24V", pin7: "net.DIR_24V", pin8: "net.GND", pin9: "net.RS232_TX_CONN", pin10: "net.RS232_RX_CONN", pin11: "net.GND", pin12: "net.CAN_H", pin13: "net.CAN_L", pin14: "net.GND", pin15: "net.RS485_A", pin16: "net.RS485_B", pin17: "net.VMOTOR", pin18: "net.HW_ENABLE_24V", pin19: "net.OUT0", pin20: "net.OUT1" }} />
     <MMBT5551LT1G name="Q19" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={0} schY={-9} pcbX={8.0} pcbY={-31.0}
       connections={{ base: "net.STOP_L_BASE", emitter: "net.GND", collector: "net.STOP_L" }} />
-    <resistor name="R83" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={5} schY={-7} pcbX={12.0} pcbY={-28.0}
+    <resistor name="R83" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={5} schY={-7} pcbX={15.25} pcbY={-28.0}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.STOPL_24V", pin2: "net.STOP_L_BASE" }} />
-    <resistor name="R84" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={8} schY={-7} pcbX={13.0} pcbY={-34.0}
+    <resistor name="R84" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={8} schY={-7} pcbX={12.25} pcbY={-34.0}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.STOP_L_BASE", pin2: "net.GND" }} />
-    <resistor name="R85" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={11} schY={-7} pcbX={15.5} pcbY={-28.0}
+    <resistor name="R85" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={11} schY={-7} pcbX={15.5} pcbY={-33.5}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
-      connections={{ pin1: "net.V3V3", pin2: "net.STOP_L" }} />
-    <BAV21W_7_F name="D6" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={9.5} schY={-7} pcbX={10.0} pcbY={-24.0} layer="bottom"
+      connections={{ pin1: "net.V3V3", pin2: "net.STOP_L" }} pcbRotation={180} />
+    <BAV21W_7_F name="D6" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={9.5} schY={-7} pcbX={12.5} pcbY={-25} layer="top"
       schRotation={90}
-      connections={{ pin1: "net.STOP_L_BASE", pin2: "net.GND" }} />
+      connections={{ pin1: "net.STOP_L_BASE", pin2: "net.GND" }} pcbRotation={180} />
     <MMBT5551LT1G name="Q20" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={17} schY={-9} pcbX={8.0} pcbY={-26.5}
       connections={{ base: "net.STOP_R_BASE", emitter: "net.GND", collector: "net.STOP_R" }} />
-    <resistor name="R86" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={22} schY={-7} pcbX={16.5} pcbY={-34.0}
+    <resistor name="R86" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={22} schY={-7} pcbX={18.75} pcbY={-34.0}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.STOPR_24V", pin2: "net.STOP_R_BASE" }} />
-    <resistor name="R87" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={25} schY={-7} pcbX={20.0} pcbY={-34.0}
+    <resistor name="R87" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={25} schY={-7} pcbX={22} pcbY={-34.0}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.STOP_R_BASE", pin2: "net.GND" }} />
@@ -1301,42 +1301,42 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.STOP_R_BASE", pin2: "net.GND" }} />
     <MMBT5551LT1G name="Q21" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={0} schY={-18} pcbX={13} pcbY={-31}
       connections={{ base: "net.HOME_IN_BASE", emitter: "net.GND", collector: "net.HOME_IN" }} />
-    <resistor name="R89" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={5} schY={-16} pcbX={23.5} pcbY={-34.0}
+    <resistor name="R89" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={5} schY={-16} pcbX={25.25} pcbY={-34.0}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.HOME_24V", pin2: "net.HOME_IN_BASE" }} />
     <resistor name="R90" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={8} schY={-16} pcbX={27.0} pcbY={-31.0}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.HOME_IN_BASE", pin2: "net.GND" }} />
-    <resistor name="R91" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={11} schY={-16} pcbX={34.0} pcbY={-12.0} pcbRotation={180} layer="bottom"
+    <resistor name="R91" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={11} schY={-16} pcbX={34.0} pcbY={-3} pcbRotation={180} layer="top"
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.HOME_IN" }} />
-    <BAV21W_7_F name="D8" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={9.5} schY={-16} pcbX={38.0} pcbY={-9.0} layer="bottom"
+    <BAV21W_7_F name="D8" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q21" schX={9.5} schY={-16} pcbX={40} pcbY={-12} layer="top"
       schRotation={90}
       connections={{ pin1: "net.HOME_IN_BASE", pin2: "net.GND" }} />
     <MMBT5551LT1G name="Q22" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={17} schY={-18} pcbX={18} pcbY={-31}
       connections={{ base: "net.STEP_IN_BASE", emitter: "net.GND", collector: "net.STEP_IN" }} />
-    <resistor name="R92" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={22} schY={-16} pcbX={38.0} pcbY={-6.0} pcbRotation={180} layer="bottom"
+    <resistor name="R92" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={22} schY={-16} pcbX={38.0} pcbY={-6.0} pcbRotation={180} layer="top"
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.STEP_24V", pin2: "net.STEP_IN_BASE" }} />
-    <resistor name="R93" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={25} schY={-16} pcbX={34.0} pcbY={-3.0} layer="bottom"
+    <resistor name="R93" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={25} schY={-16} pcbX={30.75} pcbY={-3.0} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
-      connections={{ pin1: "net.STEP_IN_BASE", pin2: "net.GND" }} />
-    <resistor name="R94" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={28} schY={-16} pcbX={34.0} pcbY={0.0} layer="bottom"
+      connections={{ pin1: "net.STEP_IN_BASE", pin2: "net.GND" }} pcbRotation={180} />
+    <resistor name="R94" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={28} schY={-16} pcbX={23.75} pcbY={2} layer="top"
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.STEP_IN" }} />
-    <BAV21W_7_F name="D9" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={26.5} schY={-16} pcbX={34.0} pcbY={-21.0} layer="bottom"
+    <BAV21W_7_F name="D9" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q22" schX={26.5} schY={-16} pcbX={37.5} pcbY={-14.25} layer="top"
       schRotation={90}
       connections={{ pin1: "net.STEP_IN_BASE", pin2: "net.GND" }} />
     <MMBT5551LT1G name="Q23" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={0} schY={-27} pcbX={23} pcbY={-31}
       connections={{ base: "net.DIR_IN_BASE", emitter: "net.GND", collector: "net.DIR_IN" }} />
-    <resistor name="R95" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={5} schY={-25} pcbX={34.0} pcbY={3.0} pcbRotation={180} layer="bottom"
+    <resistor name="R95" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={5} schY={-25} pcbX={40.25} pcbY={8} pcbRotation={0} layer="top"
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.DIR_24V", pin2: "net.DIR_IN_BASE" }} />
-    <resistor name="R96" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={8} schY={-25} pcbX={30.0} pcbY={-18.0} layer="bottom"
+    <resistor name="R96" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={8} schY={-25} pcbX={28} pcbY={-26.75} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.DIR_IN_BASE", pin2: "net.GND" }} />
@@ -1344,9 +1344,9 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.DIR_IN" }} />
-    <BAV21W_7_F name="D10" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={9.5} schY={-25} pcbX={38.0} pcbY={15.0} layer="bottom"
+    <BAV21W_7_F name="D10" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q23" schX={9.5} schY={-25} pcbX={39} pcbY={18} layer="top"
       schRotation={90}
-      connections={{ pin1: "net.DIR_IN_BASE", pin2: "net.GND" }} />
+      connections={{ pin1: "net.DIR_IN_BASE", pin2: "net.GND" }} pcbRotation={180} />
 
     <USB4105_GF_A name="J10" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={-5} schY={0} pcbX={-36} pcbY={1} pcbRotation={270}
       schWidth={1.4}
@@ -1354,13 +1354,13 @@ export const PD1180EPR = () => (
       schPinStyle={{ pin7: { topMargin: 0.1, bottomMargin: 0.1 }, pin15: { topMargin: 0.1, bottomMargin: 0.1 }, pin9: { topMargin: 0.1, bottomMargin: 0.1 }, pin13: { topMargin: 0.1, bottomMargin: 0.1 }, pin12: { topMargin: 0.1, bottomMargin: 0.1 }, pin10: { topMargin: 0.1, bottomMargin: 0.1 }, pin16: { topMargin: 0.1, bottomMargin: 0.1 } }}
       noConnect={["pin10", "pin16"]}
       connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.USB_DATA_VBUS", pin8: "net.USB_DATA_VBUS", pin17: "net.USB_DATA_VBUS", pin18: "net.USB_DATA_VBUS", pin9: "net.DATA_CC2", pin15: "net.DATA_CC1", pin11: "net.USB_DP_CONN", pin13: "net.USB_DP_CONN", pin12: "net.USB_DM_CONN", pin14: "net.USB_DM_CONN" }} />
-    <resistor name="R105" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={-5} schY={-6} schRotation={-90} pcbX={-30} pcbY={5} pcbRotation={180}
+    <resistor name="R105" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={-5} schY={-6} schRotation={-90} pcbX={-31.5} pcbY={5} pcbRotation={180}
       resistance="5.1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23186"] }} connections={{ pin1: "net.DATA_CC1", pin2: "net.GND" }} />
     <resistor name="R106" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={-2} schY={-6} schRotation={-90} pcbX={-30} pcbY={-4}
       resistance="5.1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23186"] }} connections={{ pin1: "net.DATA_CC2", pin2: "net.GND" }} />
     <USBLC6_4SC6 name="D15" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={1} schY={-6} pcbX={-30.5} pcbY={1.2}
       connections={{ pin1: "net.USB_DP_CONN", pin2: "net.GND", pin3: "net.USB_DM_CONN", pin4: "net.DATA_CC1", pin5: "net.USB_DATA_VBUS", pin6: "net.DATA_CC2" }} />
-    <capacitor name="C73" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={5} schY={-6} schRotation={-90} pcbX={-30.5} pcbY={-1.5}
+    <capacitor name="C73" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={5} schY={-6} schRotation={-90} pcbX={-30.5} pcbY={-1.75}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} maxVoltageRating="50V" connections={{ pin1: "net.USB_DATA_VBUS", pin2: "net.GND" }} />
 
     <TCAN332DR name="U19" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U19" schX={0} schY={0} pcbX={-32.0} pcbY={-23.5}
@@ -1393,7 +1393,7 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.RS485_DE", pin2: "net.GND" }} />
-    <PSM712_LF_T7 name="D3" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U20" schX={28} schY={4} pcbX={-27.5} pcbY={-31.0}
+    <PSM712_LF_T7 name="D3" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U20" schX={28} schY={4} pcbX={-27.5} pcbY={-30.75}
       connections={{ pin1: "net.RS485_A", pin2: "net.RS485_B", pin3: "net.GND" }} />
     <MAX3232ESE_T name="U21" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="serial" schSectionName="serial_U21" schX={0} schY={-12} pcbX={-35.5} pcbY={-10.5}
       noConnect={["pin7", "pin9"]}
@@ -1430,10 +1430,10 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
     <MMBT5551LT1G name="Q17" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={0} schY={0} pcbX={-7} pcbY={-31}
       connections={{ base: "net.DIN0_BASE", emitter: "net.GND", collector: "net.DIN0" }} />
-    <resistor name="R77" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={5} schY={2} pcbX={-7.0} pcbY={-28.0}
+    <resistor name="R77" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={5} schY={2} pcbX={-4.75} pcbY={-28.0}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
-      connections={{ pin1: "net.DIN0_24V", pin2: "net.DIN0_BASE" }} />
-    <resistor name="R78" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={8} schY={2} pcbX={-4.5} pcbY={-34.0}
+      connections={{ pin1: "net.DIN0_24V", pin2: "net.DIN0_BASE" }} pcbRotation={180} />
+    <resistor name="R78" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={8} schY={2} pcbX={2.5} pcbY={-34.75}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.DIN0_BASE", pin2: "net.GND" }} />
@@ -1441,86 +1441,86 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.DIN0" }} />
-    <BAV21W_7_F name="D4" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={9.5} schY={2} pcbX={-4.0} pcbY={-24.0} layer="bottom"
+    <BAV21W_7_F name="D4" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={9.5} schY={2} pcbX={-7.5} pcbY={-25.75} layer="top"
       schRotation={90}
       connections={{ pin1: "net.DIN0_BASE", pin2: "net.GND" }} />
     <MMBT5551LT1G name="Q18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={17} schY={0} pcbX={-2} pcbY={-31} pcbRotation={180}
       connections={{ base: "net.DIN1_BASE", emitter: "net.GND", collector: "net.DIN1" }} />
-    <resistor name="R80" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={22} schY={2} pcbX={-4.5} pcbY={-26.0}
+    <resistor name="R80" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={22} schY={2} pcbX={-8} pcbY={-23.75}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.DIN1_24V", pin2: "net.DIN1_BASE" }} />
-    <resistor name="R81" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={25} schY={2} pcbX={0.0} pcbY={-21.0}
+    <resistor name="R81" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={25} schY={2} pcbX={4.5} pcbY={-15.25}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.DIN1_BASE", pin2: "net.GND" }} />
-    <resistor name="R82" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={28} schY={2} pcbX={9.5} pcbY={-34.0} pcbRotation={180}
+    <resistor name="R82" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={28} schY={2} pcbX={16.25} pcbY={-21.25} pcbRotation={180}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.DIN1" }} />
-    <BAV21W_7_F name="D5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={26.5} schY={2} pcbX={4.0} pcbY={-24.0} layer="bottom"
+    <BAV21W_7_F name="D5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q18" schX={26.5} schY={2} pcbX={1} pcbY={-20} layer="top"
       schRotation={90}
       connections={{ pin1: "net.DIN1_BASE", pin2: "net.GND" }} />
-    <MMBT5551LT1G name="Q24" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={0} schY={0} pcbX={18} pcbY={-31} layer="bottom"
+    <MMBT5551LT1G name="Q24" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={0} schY={0} pcbX={29} pcbY={-0.25} layer="top"
       connections={{ base: "net.OUT0_BASE", emitter: "net.GND", collector: "net.OUT0" }} />
-    <resistor name="R98" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={-3} schY={0} pcbX={18} pcbY={-27.0} layer="bottom"
+    <resistor name="R98" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={-3} schY={0} pcbX={25} pcbY={0} layer="top"
       resistance="1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C21190"] }}
       connections={{ pin1: "net.OUT0_DRIVE", pin2: "net.OUT0_BASE" }} />
-    <resistor name="R99" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={-1.5} schY={-2} pcbX={22.0} pcbY={-31.0} layer="bottom"
+    <resistor name="R99" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={-1.5} schY={-2} pcbX={32.5} pcbY={0.75} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.OUT0_BASE", pin2: "net.GND" }} />
-    <SS110 name="D11" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={4} schY={3} pcbX={23.0} pcbY={30.0} layer="bottom"
+    <SS110 name="D11" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q24" schX={4} schY={3} pcbX={20} pcbY={34} layer="top"
       schRotation={90}
       connections={{ pin1: "net.VMOTOR", pin2: "net.OUT0" }} />
-    <MMBT5551LT1G name="Q25" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={17} schY={0} pcbX={27} pcbY={-31} layer="bottom"
+    <MMBT5551LT1G name="Q25" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={17} schY={0} pcbX={37} pcbY={-0.25} layer="top"
       connections={{ base: "net.OUT1_BASE", emitter: "net.GND", collector: "net.OUT1" }} />
-    <resistor name="R100" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={14} schY={0} pcbX={27.0} pcbY={-27.0} layer="bottom"
+    <resistor name="R100" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={14} schY={0} pcbX={38} pcbY={-4} layer="top"
       resistance="1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C21190"] }}
       connections={{ pin1: "net.OUT1_DRIVE", pin2: "net.OUT1_BASE" }} />
-    <resistor name="R101" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={15.5} schY={-2} pcbX={30.0} pcbY={-28.5} layer="bottom"
+    <resistor name="R101" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={15.5} schY={-2} pcbX={40.25} pcbY={3} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25804"] }}
       connections={{ pin1: "net.OUT1_BASE", pin2: "net.GND" }} />
     <SS110 name="D12" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="outputs" schSectionName="outputs_Q25" schX={21} schY={3} pcbX={-16} pcbY={40} pcbRotation={180}
       schRotation={90}
       connections={{ pin1: "net.VMOTOR", pin2: "net.OUT1" }} />
-    <trace name="BYPASS_C54" from=".U19 > .pin3" to=".C54 > .pin1" pcbPathRelativeTo=".U19 > .pin3" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": 0.635, "y": -2.599944}, {"x": 1.425, "y": -5.0}]} />
-    <trace name="BYPASS_C55" from=".U20 > .pin8" to=".C55 > .pin1" pcbPathRelativeTo=".U20 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.905, "y": 2.599944}, {"x": -1.905, "y": 3.699944}, {"x": -3.925, "y": 3.699944}, {"x": -3.925, "y": 2.5}]} />
-    <trace name="BYPASS_C60" from=".U21 > .pin16" to=".C60 > .pin1" pcbPathRelativeTo=".U21 > .pin16" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -4.445, "y": 2.73558}, {"x": -4.825, "y": 5.3}]} />
+    <trace name="BYPASS_C54" from=".U19 > .pin3" to=".C54 > .pin1" pcbPathRelativeTo=".U19 > .pin3" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":0.635,"y":-2.599944},{"x":0.635,"y":-3.711942},{"x":1.425,"y":-3.711942},{"x":1.425,"y":-5.0}]} />
+    <trace name="BYPASS_C55" from=".U20 > .pin8" to=".C55 > .pin1" pcbPathRelativeTo=".U20 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.905,"y":2.599944},{"x":-1.905,"y":2.5},{"x":-3.925,"y":2.5}]} />
+    <trace name="BYPASS_C60" from=".U21 > .pin16" to=".C60 > .pin1" pcbPathRelativeTo=".U21 > .pin16" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-4.445,"y":2.73558},{"x":-4.825,"y":2.73558},{"x":-4.825,"y":5.3}]} />
     {/* Local bypasses: <=3mm pad-to-pad placement, <=5mm routed path. */}
-    <trace name="BYPASS_C2" from=".U1 > .pin10" to=".C2 > .pin1" pcbPathRelativeTo=".U1 > .pin10" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": 1.499997, "y": 0.799719}, {"x": 2.0, "y": 1.8}, {"x": 0.4, "y": 3.475}]} />
-    <trace name="BYPASS_C6" from=".U2 > .pin32" to=".C6 > .pin1" pcbPathRelativeTo=".U2 > .pin32" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -2.050034, "y": -1.400048}, {"x": -3.150034, "y": -1.400048}, {"x": -3.150034, "y": -2.925}, {"x": -4.0, "y": -2.925}]} />
-    <trace name="BYPASS_C7" from=".U2 > .pin1" to=".C7 > .pin1" pcbPathRelativeTo=".U2 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.400048, "y": -2.050034}, {"x": -1.400048, "y": -3.150034}, {"x": -2.0, "y": -3.150034}, {"x": -2.0, "y": -3.925}]} />
-    <trace name="BYPASS_C8" from=".U2 > .pin4" to=".C8 > .pin1" pcbPathRelativeTo=".U2 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.200152, "y": -2.050034}, {"x": -0.200152, "y": -3.150034}, {"x": 0.0, "y": -3.150034}, {"x": 0.0, "y": -3.925}]} />
-    <trace name="BYPASS_C9" from=".U3 > .pin8" to=".C9 > .pin1" pcbPathRelativeTo=".U3 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.905, "y": 2.599944}, {"x": -1.905, "y": 3.699944}, {"x": -3.925, "y": 3.699944}, {"x": -3.925, "y": 2.5}]} />
-    <trace name="BYPASS_C10" from=".U4 > .pin5" to=".C10 > .pin1" pcbPathRelativeTo=".U4 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.300099, "y": -0.94996}, {"x": -2.400099, "y": -0.94996}, {"x": -2.400099, "y": -1.0}, {"x": -3.175, "y": -1.0}]} />
-    <trace name="BYPASS_C12" from=".U5 > .pin2" to=".C12 > .pin1" pcbPathRelativeTo=".U5 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": 0.635, "y": -2.84607}, {"x": 1.875, "y": -5.5}]} />
-    <trace name="BYPASS_C21" from=".U6 > .pin17" to=".C21 > .pin1" pcbPathRelativeTo=".U6 > .pin17" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.750062, "y": 1.941957}, {"x": -0.750062, "y": 3.041957}, {"x": -0.7875, "y": 3.041957}, {"x": -0.7875, "y": 4.5}]} />
-    <trace name="BYPASS_C25" from=".U7 > .pin3" to=".C25 > .pin1" pcbPathRelativeTo=".U7 > .pin3" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.75006, "y": -4.19989}, {"x": -1.75006, "y": -5.35}, {"x": -3, "y": -5.35}, {"x": -3, "y": -6.0875}, {"x": -3.5, "y": -6.0875}]} />
-    <trace name="BYPASS_C26" from=".U7 > .pin5" to=".C26 > .pin1" pcbPathRelativeTo=".U7 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.750062, "y": -4.19989}, {"x": -0.750062, "y": -5.2}, {"x": -0.750062, "y": -5.2, "via": true, "fromLayer": "top", "toLayer": "bottom"}, {"x": -0.750062, "y": -5.2}, {"x": -0.750062, "y": -6.625}, {"x": 0.0, "y": -6.625}]} />
-    <trace name="BYPASS_C27" from=".U7 > .pin29" to=".C27 > .pin1" pcbPathRelativeTo=".U7 > .pin29" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": 0.750062, "y": 4.19989}, {"x": 0.750062, "y": 6.0875}, {"x": 1, "y": 6.0875}]} />
-    <trace name="BYPASS_C28" from=".U7 > .pin20" to=".C28 > .pin1" pcbPathRelativeTo=".U7 > .pin20" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": 4.19989, "y": 0.750062}, {"x": 6.1, "y": 0.750062}, {"x": 6.1, "y": 1.575}]} />
-    <trace name="BYPASS_C29" from=".U7 > .pin33" to=".C29 > .pin1" pcbPathRelativeTo=".U7 > .pin33" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.249934, "y": 4.19989}, {"x": -1.25, "y": 5.975}]} />
-    <trace name="BYPASS_C61" from=".U7 > .pin4" to=".C61 > .pin1" pcbPathRelativeTo=".U7 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.249934, "y": -4.19989}, {"x": -1.249934, "y": -5.8}, {"x": -1.825, "y": -6.05}]} />
-    <trace name="BYPASS_C36" from=".U8 > .pin5" to=".C36 > .pin1" pcbPathRelativeTo=".U8 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.899922, "y": 0.0}, {"x": -1.999922, "y": 0.0}, {"x": -1.999922, "y": 0.0}, {"x": -2.925, "y": 0.0}]} />
-    <trace name="BYPASS_C37" from=".U9 > .pin5" to=".C37 > .pin1" pcbPathRelativeTo=".U9 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.899922, "y": 0.0}, {"x": -1.999922, "y": 0.0}, {"x": -1.999922, "y": 0.0}, {"x": -2.925, "y": 0.0}]} />
-    <trace name="BYPASS_C38" from=".U10 > .pin5" to=".C38 > .pin1" pcbPathRelativeTo=".U10 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.300099, "y": -0.94996}, {"x": -2.400099, "y": -0.94996}, {"x": -2.400099, "y": -1.0}, {"x": -3.175, "y": -1.0}]} />
-    <trace name="BYPASS_C39" from=".U11 > .pin5" to=".C39 > .pin1" pcbPathRelativeTo=".U11 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.300099, "y": -0.94996}, {"x": -2.400099, "y": -0.94996}, {"x": -2.400099, "y": -1.0}, {"x": -3.175, "y": -1.0}]} />
-    <trace name="BYPASS_C40" from=".U13 > .pin5" to=".C40 > .pin1" pcbPathRelativeTo=".U13 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.300099, "y": -0.94996}, {"x": -2.400099, "y": -0.94996}, {"x": -2.400099, "y": 1.0}, {"x": -3.175, "y": 1.0}]} />
-    <trace name="BYPASS_C41" from=".U14 > .pin5" to=".C41 > .pin1" pcbPathRelativeTo=".U14 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.300099, "y": -0.94996}, {"x": -2.400099, "y": -0.94996}, {"x": -2.400099, "y": -3.0}, {"x": -1.325, "y": -3.0}]} />
-    <trace name="BYPASS_C43" from=".U15 > .pin1" to=".C43 > .pin1" pcbPathRelativeTo=".U15 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.94996, "y": -1.149096}, {"x": -0.94996, "y": -2.249096}, {"x": -1.0, "y": -2.249096}, {"x": -1.0, "y": -3.175}]} />
-    <trace name="BYPASS_C44" from=".U16 > .pin6" to=".C44 > .pin1" pcbPathRelativeTo=".U16 > .pin6" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.249936, "y": -4.249928}, {"x": -0.249936, "y": -5.349928}, {"x": -0.75, "y": -5.349928}, {"x": -0.75, "y": -6.425}]} />
-    <trace name="BYPASS_C45" from=".U16 > .pin5" to=".C45 > .pin1" pcbPathRelativeTo=".U16 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.750062, "y": -4.249928}, {"x": -0.750062, "y": -5.349928}, {"x": 1.25, "y": -5.349928}, {"x": 1.25, "y": -6.425}]} />
-    <trace name="BYPASS_C46" from=".U16 > .pin4" to=".C46 > .pin1" pcbPathRelativeTo=".U16 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.249934, "y": -4.249928}, {"x": -1.249934, "y": -5.349928}, {"x": -2.75, "y": -5.349928}, {"x": -2.75, "y": -6.425}]} />
-    <trace name="BYPASS_C51" from=".U17 > .pin8" to=".C51 > .pin1" pcbPathRelativeTo=".U17 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -1.905, "y": 3.530092}, {"x": -1.905, "y": 4.630092}, {"x": -4.25, "y": 4.630092}, {"x": -4.25, "y": 3.575}]} />
-    <trace name="BYPASS_C52" from=".U18 > .pin11" to=".C52 > .pin1" pcbPathRelativeTo=".U18 > .pin11" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": 0, "y": 2.800096}, {"x": 0, "y": 4.975}]} />
-    <trace name="BYPASS_C63" from=".U22 > .pin2" to=".C63 > .pin1" pcbPathRelativeTo=".U22 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.635, "y": -2.84607}, {"x": -0.635, "y": -3.94607}, {"x": -0.75, "y": -3.94607}, {"x": -0.75, "y": -5.175}]} />
-    <trace name="BYPASS_C69" from=".U23 > .pin1" to=".C69 > .pin1" pcbPathRelativeTo=".U23 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.649986, "y": -1.100074}, {"x": -0.649986, "y": -2.200074}, {"x": -0.75, "y": -2.200074}, {"x": -0.75, "y": -2.925}]} />
-    <trace name="BYPASS_C70" from=".U24 > .pin1" to=".C70 > .pin1" pcbPathRelativeTo=".U24 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x": -0.649986, "y": -1.100074}, {"x": -0.649986, "y": -2.200074}, {"x": -0.75, "y": -2.200074}, {"x": -0.75, "y": -2.925}]} />
+    <trace name="BYPASS_C2" from=".U1 > .pin10" to=".C2 > .pin1" pcbPathRelativeTo=".U1 > .pin10" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":1.499997,"y":0.799719},{"x":1.4,"y":0.799719},{"x":1.4,"y":2.9},{"x":0.4,"y":2.9},{"x":0.4,"y":3.475}]} />
+    <trace name="BYPASS_C6" from=".U2 > .pin32" to=".C6 > .pin1" pcbPathRelativeTo=".U2 > .pin32" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-2.050034,"y":-1.400048},{"x":-2.050034,"y":-1.611997},{"x":-4.0,"y":-1.611997},{"x":-4.0,"y":-2.925}]} />
+    <trace name="BYPASS_C7" from=".U2 > .pin1" to=".C7 > .pin1" pcbPathRelativeTo=".U2 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.400048,"y":-2.050034},{"x":-1.400048,"y":-3.313},{"x":-1.738034,"y":-3.313},{"x":-1.738034,"y":-3.537},{"x":-2.0,"y":-3.537},{"x":-2.0,"y":-3.925}]} />
+    <trace name="BYPASS_C8" from=".U2 > .pin4" to=".C8 > .pin1" pcbPathRelativeTo=".U2 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.200152,"y":-2.050034},{"x":-0.200152,"y":-3.925},{"x":0.0,"y":-3.925}]} />
+    <trace name="BYPASS_C9" from=".U3 > .pin8" to=".C9 > .pin1" pcbPathRelativeTo=".U3 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.905,"y":2.599944},{"x":-1.905,"y":2.5},{"x":-3.925,"y":2.5}]} />
+    <trace name="BYPASS_C10" from=".U4 > .pin5" to=".C10 > .pin1" pcbPathRelativeTo=".U4 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.300099,"y":-0.94996},{"x":-1.300099,"y":-1.0},{"x":-3.175,"y":-1.0}]} />
+    <trace name="BYPASS_C12" from=".U5 > .pin2" to=".C12 > .pin1" pcbPathRelativeTo=".U5 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.635,"y":-2.84607},{"x":-0.635,"y":-4.9461}]} />
+    <trace name="BYPASS_C21" from=".U6 > .pin17" to=".C21 > .pin1" pcbPathRelativeTo=".U6 > .pin17" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.750062,"y":1.941957},{"x":-0.7875,"y":1.941957},{"x":-0.7875,"y":4.5}]} />
+    <trace name="BYPASS_C25" from=".U7 > .pin3" to=".C25 > .pin1" pcbPathRelativeTo=".U7 > .pin3" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.75006,"y":-4.19989},{"x":-1.897927,"y":-4.19989},{"x":-1.897927,"y":-5.211888},{"x":-3.187892,"y":-5.211888},{"x":-3.187892,"y":-6.0875},{"x":-3.75,"y":-6.0875}]} />
+    <trace name="BYPASS_C26" from=".U7 > .pin5" to=".C26 > .pin1" pcbPathRelativeTo=".U7 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.750062,"y":-4.19989},{"x":-0.601941,"y":-4.19989},{"x":-0.601941,"y":-5.211888},{"x":0.102069,"y":-5.211888},{"x":0.102069,"y":-5.563},{"x":0.75,"y":-5.563},{"x":0.75,"y":-6.175}]} />
+    <trace name="BYPASS_C27" from=".U7 > .pin29" to=".C27 > .pin1" pcbPathRelativeTo=".U7 > .pin29" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":0.750062,"y":4.19989},{"x":0.75,"y":4.19989},{"x":0.75,"y":6.0875}]} />
+    <trace name="BYPASS_C28" from=".U7 > .pin20" to=".C28 > .pin1" pcbPathRelativeTo=".U7 > .pin20" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":4.19989,"y":0.750062},{"x":4.19989,"y":0.897929},{"x":5.413,"y":0.897929},{"x":5.413,"y":1.575},{"x":6.1,"y":1.575}]} />
+    <trace name="BYPASS_C29" from=".U7 > .pin33" to=".C29 > .pin1" pcbPathRelativeTo=".U7 > .pin33" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.249934,"y":4.19989},{"x":-1.398055,"y":4.19989},{"x":-1.398055,"y":5.211888},{"x":-1.5,"y":5.211888},{"x":-1.5,"y":5.975}]} />
+    <trace name="BYPASS_C61" from=".U7 > .pin4" to=".C61 > .pin1" pcbPathRelativeTo=".U7 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.249934,"y":-4.19989},{"x":-1.398055,"y":-4.19989},{"x":-1.398055,"y":-5.211888},{"x":-1.45,"y":-5.211888},{"x":-1.45,"y":-6.175}]} />
+    <trace name="BYPASS_C36" from=".U8 > .pin5" to=".C36 > .pin1" pcbPathRelativeTo=".U8 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.899922,"y":0.0},{"x":-2.925,"y":0.0}]} />
+    <trace name="BYPASS_C37" from=".U9 > .pin5" to=".C37 > .pin1" pcbPathRelativeTo=".U9 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.899922,"y":0.0},{"x":-2.925,"y":0.0}]} />
+    <trace name="BYPASS_C38" from=".U10 > .pin5" to=".C38 > .pin1" pcbPathRelativeTo=".U10 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.300099,"y":-0.94996},{"x":-1.300099,"y":-1.0},{"x":-3.175,"y":-1.0}]} />
+    <trace name="BYPASS_C39" from=".U11 > .pin5" to=".C39 > .pin1" pcbPathRelativeTo=".U11 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.300099,"y":-0.94996},{"x":-1.300099,"y":-1.0},{"x":-3.175,"y":-1.0}]} />
+    <trace name="BYPASS_C40" from=".U13 > .pin5" to=".C40 > .pin1" pcbPathRelativeTo=".U13 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.300099,"y":-0.94996},{"x":-1.300099,"y":0.437961},{"x":-2.062098,"y":0.437961},{"x":-2.062098,"y":0.511999},{"x":-3.175,"y":0.511999},{"x":-3.175,"y":1.0}]} />
+    <trace name="BYPASS_C41" from=".U14 > .pin5" to=".C41 > .pin1" pcbPathRelativeTo=".U14 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.300099,"y":-0.94996},{"x":-1.325,"y":-0.94996},{"x":-1.325,"y":-3.0}]} />
+    <trace name="BYPASS_C43" from=".U15 > .pin1" to=".C43 > .pin1" pcbPathRelativeTo=".U15 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.94996,"y":-1.149096},{"x":-1.0,"y":-1.149096},{"x":-1.0,"y":-3.175}]} />
+    <trace name="BYPASS_C44" from=".U16 > .pin6" to=".C44 > .pin1" pcbPathRelativeTo=".U16 > .pin6" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.249936,"y":-4.249928},{"x":-0.75,"y":-4.249928},{"x":-0.75,"y":-6.425}]} />
+    <trace name="BYPASS_C45" from=".U16 > .pin5" to=".C45 > .pin1" pcbPathRelativeTo=".U16 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.750062,"y":-4.249928},{"x":-0.097065,"y":-4.249928},{"x":-0.097065,"y":-5.211926},{"x":1.25,"y":-5.211926},{"x":1.25,"y":-6.425}]} />
+    <trace name="BYPASS_C46" from=".U16 > .pin4" to=".C46 > .pin1" pcbPathRelativeTo=".U16 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.249934,"y":-4.249928},{"x":-1.403059,"y":-4.249928},{"x":-1.403059,"y":-5.211926},{"x":-2.75,"y":-5.211926},{"x":-2.75,"y":-6.425}]} />
+    <trace name="BYPASS_C51" from=".U17 > .pin8" to=".C51 > .pin1" pcbPathRelativeTo=".U17 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.905,"y":3.530092},{"x":-1.905,"y":3.575},{"x":-4.25,"y":3.575}]} />
+    <trace name="BYPASS_C52" from=".U18 > .pin11" to=".C52 > .pin1" pcbPathRelativeTo=".U18 > .pin11" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":0.0,"y":2.800096},{"x":-0.0,"y":2.800096},{"x":-0.0,"y":4.725}]} />
+    <trace name="BYPASS_C63" from=".U22 > .pin2" to=".C63 > .pin1" pcbPathRelativeTo=".U22 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.635,"y":-2.84607},{"x":-0.635,"y":-4.6961}]} />
+    <trace name="BYPASS_C69" from=".U23 > .pin1" to=".C69 > .pin1" pcbPathRelativeTo=".U23 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.649986,"y":-1.100074},{"x":-0.65,"y":-1.100074},{"x":-0.65,"y":-3.2001}]} />
+    <trace name="BYPASS_C70" from=".U24 > .pin1" to=".C70 > .pin1" pcbPathRelativeTo=".U24 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.649986,"y":-1.100074},{"x":-0.65,"y":-1.100074},{"x":-0.65,"y":-3.2001}]} />
     <BoardMarkings />
     {/* Readable component references, placed clear of copper and adjacent labels. */}
     {/* Readable component references, placed clear of pads and adjacent labels. */}
-    <silkscreentext text="Y1" pcbX={-11.0000} pcbY={-15.7500} fontSize={0.7} anchorAlignment="center" layer="top" />
+    <silkscreentext text="Y1" pcbX={-11.0000} pcbY={-15.7500} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="SW1" pcbX={-18.0000} pcbY={-38.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J2 MOTOR" pcbX={20.0} pcbY={-36.0} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J3" pcbX={0.0000} pcbY={38.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
@@ -1528,11 +1528,11 @@ export const PD1180EPR = () => (
     <silkscreentext text="U7" pcbX={2.0000} pcbY={5.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U21" pcbX={-35.5} pcbY={-10.5} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U17" pcbX={-16.2500} pcbY={-26.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U5" pcbX={-38.0000} pcbY={7.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U22" pcbX={-18.2500} pcbY={10.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U18 ENCODER" pcbX={0} pcbY={8} fontSize={0.8} anchorAlignment="center" layer="bottom" />
-    <silkscreentext text="SWD TEST" pcbX={-17} pcbY={-28} fontSize={0.7} anchorAlignment="center" layer="bottom" />
-    <silkscreentext text="ENC TEST" pcbX={-6} pcbY={-32} fontSize={0.7} anchorAlignment="center" layer="bottom" />
+    <silkscreentext text="U5" pcbX={-31.5} pcbY={8} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="U22" pcbX={-13.5} pcbY={4.5} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="U18 ENCODER" pcbX={-1} pcbY={7} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="SWD TEST" pcbX={-17.5} pcbY={-32} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="ENC TEST" pcbX={-6} pcbY={-33.4} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U3" pcbX={-21.7500} pcbY={34.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U19" pcbX={-36} pcbY={-23.5} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U20" pcbX={-18.7500} pcbY={-26.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
@@ -1546,14 +1546,14 @@ export const PD1180EPR = () => (
     <silkscreentext text="U10" pcbX={-4.0000} pcbY={-7.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U12" pcbX={2.5000} pcbY={-22.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U15" pcbX={13.5000} pcbY={30.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U24" pcbX={-10.0000} pcbY={10.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U23" pcbX={-27} pcbY={3.2} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U8" pcbX={4.0000} pcbY={-6.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="U24" pcbX={-7.8} pcbY={-0.6} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="U23" pcbX={-19} pcbY={0} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="U8" pcbX={6.3} pcbY={-8} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U9" pcbX={8.0000} pcbY={-11.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="L1" pcbX={-25.0000} pcbY={10.0000} fontSize={0.7} anchorAlignment="center" layer="top" />
-    <silkscreentext text="L2" pcbX={-6.0000} pcbY={18.0000} fontSize={0.7} anchorAlignment="center" layer="top" />
-    <silkscreentext text="R109" pcbX={20.0000} pcbY={-21.7500} fontSize={0.7} anchorAlignment="center" layer="top" />
-    <silkscreentext text="R110" pcbX={31.0000} pcbY={-21.7500} fontSize={0.7} anchorAlignment="center" layer="top" />
+    <silkscreentext text="L1" pcbX={-20} pcbY={15} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="L2" pcbX={-4} pcbY={19} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="R109" pcbX={20.0000} pcbY={-21.7500} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="R110" pcbX={31.0000} pcbY={-21.7500} fontSize={0.8} anchorAlignment="center" layer="top" />
   </board>
 )
 

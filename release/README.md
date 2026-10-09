@@ -2,11 +2,11 @@
 
 ## r0.4 ECO review handoff — powered validation pending
 
-The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB setup uses both cables; the motor-bus backup supply is retained for brake control after PD loss. Status: prototype-cad-verified-system-validation-pending. See `engineering/reviewer-eco.json` and `docs/step-dir-hardware-review.md`.
+The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB setup uses both cables; the motor-bus backup supply is retained for brake control after PD loss. Status: top-side-route-verified-powered-validation-pending. See `engineering/reviewer-eco.json` and `docs/step-dir-hardware-review.md`.
 
 The included `pd1180-commissioning-firmware.zip` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-For the checked prototype handoff, use the newly generated Gerbers together with `jlc-bom.csv` plus `jlc-cpl.csv` for two-sided assembly. Apply every value in `order-settings.json`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for the 40 MOSFET drain-pad thermal vias, and top/bottom assembly.
+For the checked prototype handoff, use the newly generated Gerbers together with `jlc-bom.csv` plus `jlc-cpl.csv` for top-side assembly. Apply every value in `order-settings.json`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for the 40 MOSFET drain-pad thermal vias, and top-side assembly.
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents, silkscreen and hardware contract are the r0.4 ECO identified by this delivery manifest.
 

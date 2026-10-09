@@ -7,8 +7,8 @@ Use `bun run check:release` to review every manufacturing and bring-up gate befo
 ### Stack and placement
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes. Final copper weight and stack-up are selected during current/thermal and USB impedance review.
-- Assembly is two-sided. Tall power parts and field connectors stay on top; the AS5047P, its local bypass parts, low-profile logic power and service pads are on the bottom. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
-- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total). Order epoxy-filled and copper-capped via-in-pad processing; the regression checks verify the exact references, count, dimensions, layers and drain-net identity.
+- Assembly is top-side only. All fitted components, the AS5047P, its local bypass parts and service pads are on top. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
+- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total). The final top-side route has 71 via drills overlapping top solder lands, including these 40 thermal vias; exact locations are recorded in `engineering/top-side-placement.json`. Order epoxy-filled and copper-capped processing for every via-in-pad; the regression checks verify the exact references, count, dimensions, layers and drain-net identity.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
@@ -27,7 +27,7 @@ Pin numbering follows the imported physical footprints. Mating housings, contact
 
 ## Programming and external items
 
-Program U3 with the approved TI TPS26750 patch/configuration image and U16 with board-specific firmware before motor bring-up. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled bottom service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
+Program U3 with the approved TI TPS26750 patch/configuration image and U16 with board-specific firmware before motor bring-up. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled top service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
 
 The EPR charger, EPR cable, motor, shaft magnet, external braking resistor/heatsink and bus terminators are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 

@@ -61,7 +61,7 @@ Detailed calculations, tolerances and protection behavior are recorded in [docs/
 
 The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native ramp control selects the board's limit inputs. External STEP/DIR is the selected product mode. The former encoder/mode-pin conflict is corrected in the ECO source; motion stays inhibited until native and powered validation pass.
 
-The bottom-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five bottom service pads for probing. The board assumes a diametrically magnetized shaft magnet aligned to the sensor axis; magnet diameter, gap, runout and stray-field behavior remain mechanical validation items.
+The top-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The board assumes a diametrically magnetized shaft magnet aligned to the sensor axis; magnet diameter, gap, runout and stray-field behavior remain mechanical validation items.
 
 Firmware must configure current scaling, gate drive, dead time, chopper behavior, motion limits and encoder calibration for the actual motor. A register default is not approval for 5.5 A operation.
 
@@ -77,7 +77,7 @@ Firmware must configure current scaling, gate drive, dead time, chopper behavior
 
 J7 pinout: 1 HOME, 2 STOP L, 3 STOP R, 4 IN0, 5 IN1, 6 STEP, 7 DIR, 8 GND, 9 RS232 TX, 10 RS232 RX, 11 GND, 12 CAN H, 13 CAN L, 14 GND, 15 RS485 A, 16 RS485 B, 17 **VMOTOR (48 V nominal)**, 18 hardware enable, 19 OUT0, 20 OUT1. Inputs remain 24 V nominal. This harness is not pin-compatible with the previous headers; pin17 is not a regulated 24 V output. Use the numbered physical pin map in `hardware-contract.json` when making the cable.
 
-CAN and RS485 remain non-isolated. Termination and RS485 bias belong at the system level. SWD/reset/status and encoder ABI signals remain on labelled bottom-side service pads. There are five cable connectors, with all industrial features retained.
+CAN and RS485 remain non-isolated. Termination and RS485 bias belong at the system level. SWD/reset/status and encoder ABI signals remain on labelled top-side service pads. There are five cable connectors, with all industrial features retained.
 
 ## Firmware contract
 
@@ -135,7 +135,7 @@ Rendered SVG and PNG sheets are available under `dist/schematics/`; the release 
 | Assembly side | Top and bottom |
 | Solder mask / legend | Green / white |
 
-Tall power parts and all field connectors remain on top. The centered encoder, its local bypass parts, low-profile logic power and labelled service pads are on the bottom. Bottom paste is therefore required. The bottom also carries the `ts` and `Made with tscircuit` board marking. Bulk capacitors and through-hole headers may require selective or hand soldering.
+All fitted components, including the centered encoder, its local bypass parts, logic power and labelled service pads, are on top. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
 The current KiCad route passes with zero DRC violations and zero unconnected items. Power nets use reinforced copper corridors and parallel transfer vias. The 1 oz external-layer IPC-2221 screening result is 6.12 A at a 20 °C rise; enclosure temperature, layer sharing, neck-down regions, connector heating and switching losses still require powered thermal measurements.
 
@@ -163,7 +163,7 @@ bun install --frozen-lockfile
 bun run review
 ```
 
-The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, two-sided assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
+The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, top-side assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
 
 Current verification evidence:
 
@@ -187,13 +187,13 @@ The `release/` directory contains:
 
 - PCB Gerber ZIP and the routed KiCad project ZIP;
 - complete manufacturing ZIP with drills, Gerbers, DRC, BOM, CPL and project files;
-- JLCPCB BOM and two-sided placement CSV;
+- JLCPCB BOM and top-side placement CSV;
 - ZIP-packaged 3D GLB plus top and bottom renders;
 - thirteen schematic-sheet SVGs;
 - order settings, hardware contract, schematic-style evidence, power-routing evidence and release status;
 - delivery manifest and recursive SHA-256 hashes.
 
-Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top/bottom assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
+Apply every value in [release/order-settings.json](release/order-settings.json), especially four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-side assembly. Review component orientation, polarity, connector direction and the through-hole assembly plan in the JLC viewer before submitting the order.
 
 The hosted tscircuit editor opens the complete routed PCB in `release/circuit.json` by default. The authoritative editable source remains `index.circuit.tsx`. Its file selector includes all source TSX files, all imported components under `imports/`, and `release/circuit.json`. The cloud build compiles/transpiles `index.circuit.tsx`, then builds `release/circuit.json` into `dist/release/circuit.json` for the hosted viewer and static site. Imported components remain selectable without each becoming a separate CI board build. Run `bun run check:cloud-package --built` after the cloud build to verify the selected preview exists and exactly matches the routed artifact. Cloud autorouting stays disabled for the source preview.
 

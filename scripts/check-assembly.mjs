@@ -28,7 +28,7 @@ if(serviceTestpoints.length!==11)errors.push(`Expected 11 bare service pads, fou
 const sourceIds=new Set(components.map(component=>component.source_component_id))
 const positions=json.filter(x=>x.type==='pcb_component'&&sourceIds.has(x.source_component_id))
 const encoder=positions.find(x=>x.source_component_id===components.find(x=>x.name==='U18')?.source_component_id)
-if(encoder?.layer!=='bottom'||encoder.center.x!==0||encoder.center.y!==0)errors.push('Encoder must be on the bottom at the intended shaft origin')
+if(encoder?.layer!=='top'||encoder.center.x!==0||encoder.center.y!==0)errors.push('Encoder must be on the top at the intended shaft origin')
 for(const position of positions)if(!standards.assembly.populated_layers.includes(position.layer))errors.push(`${components.find(x=>x.source_component_id===position.source_component_id)?.name??position.pcb_component_id}: layer ${position.layer} is not permitted`)
 const layers=Object.fromEntries(standards.assembly.populated_layers.map(layer=>[layer,positions.filter(position=>position.layer===layer).length]))
 const report={checked_at:new Date().toISOString(),parts:manifest.parts.length,service_testpoints:serviceTestpoints.length,unique_supplier_parts:new Set(manifest.parts.map(p=>p.lcsc)).size,layers,errors}

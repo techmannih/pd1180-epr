@@ -101,7 +101,7 @@ The ECO separates PD POWER and USB DATA, consolidates the industrial harness and
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-For the checked prototype handoff, use the newly generated Gerbers together with \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for two-sided assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for the 40 MOSFET drain-pad thermal vias, and top/bottom assembly.
+For the checked prototype handoff, use the newly generated Gerbers together with \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for top-side assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for the 40 MOSFET drain-pad thermal vias, and top-side assembly.
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents, silkscreen and hardware contract are the r0.4 ECO identified by this delivery manifest.
 

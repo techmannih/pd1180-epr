@@ -7,7 +7,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
 - [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the documented asymmetric coordinates.
 - [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
-- [ ] Two-sided assembly preview matches the policy: tall power parts and field connectors on top; centered encoder, local bypass, low-profile circuitry and service pads on bottom.
+- [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and the encoder remains centered. Validate the revised encoder-to-magnet gap.
 - [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.
 
 ## Schematic
@@ -47,7 +47,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Live stock is refreshed immediately before ordering; timestamped evidence is availability information, not a reservation.
 - [ ] Alternatives are checked for pinout, voltage/current/temperature rating, package, lifecycle and firmware impact.
 - [ ] JLC placement preview is manually reviewed for IC pin 1, diode/capacitor polarity, connector orientation, rotations and centroids.
-- [ ] Filled/capped via-in-pad, four layers, 1 oz copper, 1.6 mm thickness and top/bottom assembly are present in the quote.
+- [ ] Filled/capped via-in-pad, four layers, 1 oz copper, 1.6 mm thickness and top-side assembly are present in the quote.
 
 ## Delivery and bring-up
 

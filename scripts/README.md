@@ -28,7 +28,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
 | `check-source-schematic.mjs` | Audits all fixed-size schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
-| `clean-silkscreen.py` | Removes dense passive references and applies the reviewed product/revision markings in KiCad. |
+| `clean-silkscreen.py` | Removes dense passive references and applies reviewed markings. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings while retaining references and polarity marks; native DRC remains mandatory. |
 | `design.test.mjs` | Regression tests electrical topology, fixed parts and safety behavior. |
 | `export-assembly.mjs` | Generates JLC-compatible BOM/CPL and the assembly review data. |
 | `export-routing-interchange.py` | Exports a routing-only copy with unique, world-aligned footprint images while asserting every pad coordinate, layer, angle and net is unchanged; no blanket bottom rotation is needed. |
@@ -47,6 +47,8 @@ Every executable script is listed here so a reviewer can understand the release 
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
 | `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, and publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. |
 | `normalize-generated-svgs.mjs` | Removes generator-only trailing whitespace so previews remain deterministic in review. |
+| `prepare-routing-seed.py` | Adds the exact 40 drain-pad thermal vias and bottom ties, plus 34 short capacitor ground-return escapes, to a fresh top-side export; native DRC and plane connectivity remain mandatory. |
+| `prepare-routing-rules.py` | Applies 0.15 mm signal / 0.50 mm power escape rules and power via selection to the world-aligned routing export, without changing placement. Final power paths require corridor reinforcement and native DRC. |
 | `prepare-r03-dsn.py` | Applies r0.3 routing classes and compensates the KiCad/Specctra bottom-footprint rotation convention before autorouting. |
 | `reinforce-power-copper.py` | Adds clearance-aware power corridors and parallel transfer vias to the final KiCad route. |
 | `refresh-routed-preview.mjs` | Builds the latest source, checks local route continuity and the saved PCB fingerprint/DRC, refreshes the routed viewer without changing schematic records, and updates only its delivery hashes. Does not approve a new manufacturing release. |
