@@ -16,3 +16,5 @@ extern const size_t pd1180_tmc5160_boot_config_count;
 
 #define PD1180_TMC_STEP_GCONF 0x00000068u
 #define PD1180_TMC_STEP_CHOPCONF 0x144100C5u
+#define PD1180_TMC_SHORT_CONF ((1u << 16) | (12u << 8) | 6u)
+#define PD1180_TMC_DRV_CONF (4u << 8)

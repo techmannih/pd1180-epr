@@ -57,4 +57,6 @@ The separately tested motor service initializes with DRV_ENN high and TOFF zero,
 
 These paths are integrated but not enabled in the archived commissioning image. Enabling them requires recorded PD-image/readback and powered hardware qualification; no USB command can bypass that decision. Gate timing, switching overshoot, short-circuit detection and chopper parameters remain starting values requiring oscilloscope and current-probe checks before increasing toward 5.5 A RMS. No OTP is programmed.
 
+Initialization explicitly writes SHORT_CONF=0x00010C06 (S2G=12, S2VS=6, 1 µs filter, normal delay) and DRV_CONF=0x00000400 (four-clock break-before-make, weak drive). ADI §11.2 recommends S2G≥12 when VS can exceed 52 V. These initial settings no longer depend on OTP variants; both writes require a valid SPI echo while TOFF remains zero. The timing is not a measured or qualified gate waveform. Regression tests cover both documented OTP variants and reject corrupted writes to either register.
+
 Protocol and register reference: [ADI TMC5160A datasheet, rev. 1.18](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf), sections 4 and 6. Host regressions cover pipelined reads, write corruption, invalid device responses, mode-pin mismatches, driver resets/faults, current derating and explicit rearm.

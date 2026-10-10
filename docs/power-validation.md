@@ -2,6 +2,23 @@
 
 **Status: power ECO CAD verified; order hold remains. No PCB has been assembled or powered.** The user authorized changes to the driver-supply and brake/OVP sections on 2026-10-10. Unrelated schematic placement and symbols remain frozen. The regenerated native board has zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Use only the matching regenerated manufacturing package; this CAD result does not close the system-validation gates.
 
+## Independent pre-order audit — 2026-10-10
+
+The audited native PCB SHA-256 is `e97ad49ce1460acea8b69487f246bf4806e632261c876f245a82a8a7a832a931`, from source commit `51d4abeef20cd5ba113ff5a20b78f97c0e055ef3`. A fresh KiCad invocation, independent of the cached check reports, found zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Raw reports: [PCB](checks/pre-order-native-drc.json), [schematic](checks/pre-order-native-erc.json). The complete automated review is recorded in [verification.json](verification.json); its passing results do not cover every manufacturer design instruction.
+
+| Review area | Finding |
+|---|---|
+| Assembly and geometry | 295 fitted parts plus 11 service pads on top; minimum via drill 0.30 mm; 69 filled/capped via-in-pad locations |
+| Local routing | All 46 specified bypass paths, nine Kelvin/analog branches, USB reference and power-routing checks passed |
+| Filled-copper calculation | Re-exported the current native copper and solved MOTOR_A1 Q7:9 → R115:1 at 0.075/0.05 mm mesh: 3.2831/3.2946 mΩ, 0.349% difference; fine-mesh loss 0.0997 W at 5.5 A, excluding contacts/devices and thermal feedback. [Evidence](../engineering/filled-copper-review.json) |
+| Driver initialization | Fixed reliance on OTP short-detection and dead-time defaults. Explicit register writes, disabled-chopper sequencing and write-corruption regressions pass. The regression failed on the previous configuration. See [firmware details](../firmware/README.md#tmc5160-external-stepdir-service) |
+| TPS26631 current monitor | **Open correction:** C19 places 100 nF directly from IMON to GND. TI §8.3.9 prohibits an IMON bypass capacitor because it delays current information. With R26=20 kΩ, the ideal RC time constant is 2 ms. C19 removal is proposed; the specific schematic-freeze approval and matching artifact regeneration are pending. This does not establish a fault in the eFuse's independent internal current limit. |
+| Programming and operation | The TPS26750 full-flash image and qualified motor-operation firmware are absent. The supplied STM32 image supports commissioning diagnostics and deliberately keeps motion locked. Exact motor/load, stop profile and adapter/cable are not confirmed. |
+
+The [C19 source proposal](../engineering/proposed-remove-c19.patch) removes only that capacitor; it is **not applied** and is not a manufacturing ECO by itself. Approval must be followed by native schematic/PCB, BOM/CPL, checks and release regeneration. The source pin connection was compared against [TI TPS2663 §8.3.9](https://www.ti.com/lit/ds/symlink/tps2663.pdf); the existing generic CAD checks did not detect this component-specific rule.
+
+**Disposition: keep the order hold.** Passing connectivity and design calculations does not mean the delivered assembly can currently run a motor. Programming and agreed functional acceptance must be completed before shipment for a ready-to-run delivery; provider acceptance and actual test records are not yet available. See [assembly requirements](assembly.md) and [order settings](../release/order-settings.json).
+
 ## Correction and calculation record
 
 The original connection put U7 VSA on a motor bus whose brake threshold exceeded VSA's 50 V recommended operating limit. U34 now generates a separate 12 V rail from VMOTOR; U7 VSA and 12VOUT, including C61, connect to that rail. VS remains on VMOTOR. The compiled connectivity check rejects a short between these rails, including a short introduced by an explicit bypass trace. The external-supply range is 10–13 V; absolute maximum ratings are not used as operating limits. See [TMC5160A §3.2 and §28](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf).

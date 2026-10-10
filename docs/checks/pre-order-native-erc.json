@@ -1,0 +1,125 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-10T14:20:13",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Library symbol issue",
+            "key": "lib_symbol_issues"
+        },
+        {
+            "description": "Footprint link issue",
+            "key": "footprint_link_issues"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.5",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97",
+            "violations": []
+        },
+        {
+            "path": "/USB-C PD POWER/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/aad5fee0-1633-4509-b9be-09895d4e06c8",
+            "violations": []
+        },
+        {
+            "path": "/PD and Motor Backup Supplies/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/58af3f9e-7b75-4ebe-90c2-1d0819a3f1ba",
+            "violations": []
+        },
+        {
+            "path": "/Protected 48 V Motor Bus/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/a986f742-2c88-45ac-8531-5c55a8ba8818",
+            "violations": []
+        },
+        {
+            "path": "/Motion Controller and Enable Chain/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/2fa727fb-7b60-400e-904c-5f221639202c",
+            "violations": []
+        },
+        {
+            "path": "/Motor Phase A Power Bridge/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/569c25db-57d1-4702-b704-88dc06dc3aa2",
+            "violations": []
+        },
+        {
+            "path": "/Motor Phase B Power Bridge/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/203ca055-1c91-43f5-834b-203827479592",
+            "violations": []
+        },
+        {
+            "path": "/Regeneration Brake and Overvoltage/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51",
+            "violations": []
+        },
+        {
+            "path": "/MCU, Clock, Memory and Debug/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/3ae5a10d-b572-4e98-97bc-cfd89b4696c4",
+            "violations": []
+        },
+        {
+            "path": "/Shaft Encoder and Monitor/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/d45acbbc-17ee-4ce4-a18c-4230c418115b",
+            "violations": []
+        },
+        {
+            "path": "/USB DATA and Attach Sense/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/b11c6a95-36ca-47e4-8c2a-f7ced9338896",
+            "violations": []
+        },
+        {
+            "path": "/24 V Inputs and Step/Direction/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/897aead5-aa12-4e84-a8ac-456ee7954451",
+            "violations": []
+        },
+        {
+            "path": "/CAN, RS485 and RS232/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/3f7d5e5e-2203-4147-8222-d98413a759b0",
+            "violations": []
+        },
+        {
+            "path": "/Hardware Enable and Outputs/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/28203838-a819-417a-9c99-56fd62ce9046",
+            "violations": []
+        },
+        {
+            "path": "/USB Logic Power/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/f9b654ee-f99c-4cf7-997b-d64c2048499c",
+            "violations": []
+        },
+        {
+            "path": "/Temperature and Current Diagnostics/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/1f352f74-1775-4e8d-bf5b-9404a340d149",
+            "violations": []
+        },
+        {
+            "path": "/Regulated Driver Supply/",
+            "uuid_path": "/c04facae-e812-4ae4-9853-e4e120a44c97/cbf4a7d3-4895-4df6-a23d-d88f83048304",
+            "violations": []
+        }
+    ],
+    "source": "pd1180-epr-r0.3.kicad_sch"
+}

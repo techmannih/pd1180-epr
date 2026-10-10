@@ -2,8 +2,8 @@
   "status": "analytical-screen-only-hardware-qualification-pending",
   "baseline_commit": "d28bcf61d0d0479ad3a44b3ad14bfbf5b858c435",
   "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
-  "board_sha256": "ca3715aa25884e35cc3925a0c5e498852de8ee2de2fae081cf484d3a2d74c6bf",
-  "change": "Parallel B.Cu corridor from Q7 drain stitching to R115 input, four 0.60/0.30 mm vias and a 2.4 mm F.Cu landing. All nine Kelvin/analog branches remain isolated until their terminal pads. Via drills now meet the 0.30 mm minimum; this analytical screen was rerun on the updated filled copper.",
+  "board_sha256": "e97ad49ce1460acea8b69487f246bf4806e632261c876f245a82a8a7a832a931",
+  "change": "Parallel B.Cu corridor from Q7 drain stitching to R115 input, four 0.60/0.30 mm vias and a 2.4 mm F.Cu landing. All nine Kelvin/analog branches remain isolated until their terminal pads. Via drills now meet the 0.30 mm minimum; this analytical screen was rerun on the updated filled copper. Rechecked after the separate 12 V driver-supply ECO; the A1 corridor resistance is unchanged.",
   "before": [
     {
       "net": "MOTOR_A1",
@@ -61,7 +61,7 @@
       "source_nodes": 2928,
       "destination_nodes": 368,
       "components": 1,
-      "board_sha256": "ca3715aa25884e35cc3925a0c5e498852de8ee2de2fae081cf484d3a2d74c6bf",
+      "board_sha256": "e97ad49ce1460acea8b69487f246bf4806e632261c876f245a82a8a7a832a931",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -82,7 +82,7 @@
       "source_nodes": 6552,
       "destination_nodes": 840,
       "components": 1,
-      "board_sha256": "ca3715aa25884e35cc3925a0c5e498852de8ee2de2fae081cf484d3a2d74c6bf",
+      "board_sha256": "e97ad49ce1460acea8b69487f246bf4806e632261c876f245a82a8a7a832a931",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -113,5 +113,7 @@
     "model_tests": "python scripts/test-filled-power-copper.py",
     "baseline_board": "git show d28bcf61d0d0479ad3a44b3ad14bfbf5b858c435:dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb"
   },
-  "qualification": "No temperature-rise, PWM-current or 5.5 A continuous-current qualification is claimed."
+  "qualification": "No temperature-rise, PWM-current or 5.5 A continuous-current qualification is claimed.",
+  "reviewed_source_commit": "51d4abeef20cd5ba113ff5a20b78f97c0e055ef3",
+  "reviewed_at": "2026-10-10T08:53:42.865092+00:00"
 }
