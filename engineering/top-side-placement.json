@@ -796,13 +796,13 @@
         ]
       }
     ],
-    "board_sha256": "8165e9b6237d0e2330f5513b83214b638e02ee9d98eb960bd934575025556f4f"
+    "board_sha256": "b57a97de0d59069538bb80063f72260d76a59fa89e2b122e46a7fe6417fd6c0a"
   },
   "assembly_model": {
     "glb": "dist/release/3d.glb",
     "input": "release/circuit.json",
-    "input_sha256": "8326efc6bd959bf2d9b2908c1281bcd9fc8e405d495ae0ee9644806110b27161",
-    "glb_sha256": "3340dad5f65c41df5dad99bb866de68620764ced010cbdf5404db5017cfbf883",
+    "input_sha256": "1a95b0dcd3a38207466bc3ad5788e1e265af5251be1b543d2e4d70afd086ee6f",
+    "glb_sha256": "2d42ee7cf71604531bf2e1a4835f1608edaf718f1105bd3bfa0e20e2134abccf",
     "contains": "Current top-side source components and exact final KiCad routing"
   },
   "preview_advisory": {
@@ -868,32 +868,51 @@
     "baseline_commit": "b38aa63c568504deec009184d52fd277ab1c7e7c"
   },
   "usb_label_update": {
-    "baseline_commit": "a8688e9488fce955834c7015a15bbd76ff149f5b",
-    "board_sha256": "8165e9b6237d0e2330f5513b83214b638e02ee9d98eb960bd934575025556f4f",
-    "recorded_at": "2026-10-10T09:43:07.767985+00:00",
-    "change": "Move PWR above J1 and DATA below J10, outside USB shell/courtyard; retain 0.8 mm text height.",
+    "baseline_commit": "3a0f0727f6638f1e0b6786f2762a76a99fef2f51",
+    "board_sha256": "b57a97de0d59069538bb80063f72260d76a59fa89e2b122e46a7fe6417fd6c0a",
+    "recorded_at": "2026-10-10T13:54:33.302827+00:00",
+    "change": "Move PWR and DATA into the user-marked left-edge spaces, rotated 90 degrees, with 1 mm knockout text (25% larger).",
     "native_comparison": "Board serialization is byte-identical after removing only the two modified gr_text objects. Pads, component placement, tracks, vias, zone outlines and filled polygons are unchanged.",
+    "source_comparison": "Every compiled record except silkscreen text and the filesystem cache hash is unchanged; all 3275 schematic records match exactly.",
     "labels": [
       {
         "text": "PWR",
         "native_xy_mm": [
-          61.5,
-          78.8
+          58.15,
+          77.8
         ],
-        "courtyard_clearance_mm": 0.32375,
-        "shell_clearance_mm": 0.99875
+        "rotation_deg": 90,
+        "font_height_mm": 1.0,
+        "knockout": true,
+        "native_ink_bounds_mm": [
+          57.418708,
+          76.232936,
+          58.790913,
+          79.319443
+        ],
+        "left_edge_clearance_mm": 0.368708
       },
       {
         "text": "DATA",
         "native_xy_mm": [
-          64,
-          105.3
+          58.15,
+          108.2
         ],
-        "courtyard_clearance_mm": 0.42375,
-        "shell_clearance_mm": 1.09875
+        "rotation_deg": 90,
+        "font_height_mm": 1.0,
+        "knockout": true,
+        "native_ink_bounds_mm": [
+          57.418708,
+          106.37162,
+          58.79093,
+          109.88611
+        ],
+        "left_edge_clearance_mm": 0.368708
       }
     ],
-    "source_comparison": "Every compiled record except silkscreen text and the filesystem cache hash is unchanged; all 3275 schematic records match exactly.",
-    "model_evidence": "assembly_model: current routed GLB; native text bounding box compared with the fitted USB model bounds."
+    "edge_reference": "Physical Edge.Cuts centerline x=57.05 mm, not the outline-stroke bounding box.",
+    "assembled_preview": "previews/usb-port-labels.png",
+    "assembled_preview_sha256": "20568bc3443adafddbcfab785722bc80f6a6a8cea08165f7119ff1d2e41ababc",
+    "visual_review": "Both vertical knockout labels are readable in the actual assembled GLB and sit in the requested edge spaces outside the connector bodies."
   }
 }

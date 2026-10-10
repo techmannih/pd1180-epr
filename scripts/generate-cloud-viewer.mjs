@@ -27,6 +27,53 @@ export async function createCloudViewerCircuit({
   converter.runUntilFinished()
   const routedCircuit = converter.getOutput()
 
+  const result = combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit)
+  return {
+    ...result,
+    report: {
+      ...result.report,
+      source_circuit: sourceCircuitPath,
+      routed_board: routedBoardPath,
+      converter_warnings: converter.getWarnings(),
+    },
+  }
+}
+
+export function combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit) {
+  const sourceNetsByName = new Map(sourceCircuit
+    .filter((element) => element.type === 'source_net')
+    .map((net) => [net.name, net]))
+  const sourceTraceByNetId = new Map()
+  for (const trace of sourceCircuit.filter((element) => element.type === 'source_trace')) {
+    for (const netId of trace.connected_source_net_ids || []) {
+      if (!sourceTraceByNetId.has(netId)) sourceTraceByNetId.set(netId, trace.source_trace_id)
+    }
+  }
+  const routedNets = new Map(routedCircuit
+    .filter((element) => element.type === 'source_net')
+    .map((net) => [net.source_net_id, net]))
+  const routedTraces = new Map(routedCircuit
+    .filter((element) => element.type === 'source_trace')
+    .map((trace) => [trace.source_trace_id, trace]))
+  const namedCopperCounts = { pcb_trace: 0, pcb_via: 0, pcb_copper_pour: 0 }
+  const routedNetNames = new Set()
+
+  function resolveSourceNet(element) {
+    const trace = routedTraces.get(element.source_trace_id)
+    const names = new Set([
+      element.net_name,
+      routedNets.get(element.source_net_id)?.name,
+      ...(trace?.connected_source_net_ids || []).map((id) => routedNets.get(id)?.name),
+    ].filter(Boolean))
+    if (names.size !== 1) throw new Error(`${element.type}: expected one named routed net, found ${[...names].join(', ') || 'none'}`)
+    const [name] = names
+    const sourceNet = sourceNetsByName.get(name)
+    if (!sourceNet) throw new Error(`${element.type}: routed net ${name} is absent from the source circuit`)
+    namedCopperCounts[element.type]++
+    routedNetNames.add(name)
+    return sourceNet
+  }
+
   const sourceComponents = new Map(
     sourceCircuit
       .filter((element) => element.type === 'source_component')
@@ -43,13 +90,6 @@ export async function createCloudViewerCircuit({
       .map((element) => [element.pcb_component_id, element]),
   )
   const basePortByKey = new Map()
-  const sourceTraceByPort = new Map()
-
-  for (const trace of sourceCircuit.filter((element) => element.type === 'source_trace')) {
-    for (const sourcePortId of trace.connected_source_port_ids || []) {
-      if (!sourceTraceByPort.has(sourcePortId)) sourceTraceByPort.set(sourcePortId, trace.source_trace_id)
-    }
-  }
   for (const pcbPort of sourceCircuit.filter((element) => element.type === 'pcb_port')) {
     const sourcePort = sourcePorts.get(pcbPort.source_port_id)
     const pcbComponent = basePcbComponents.get(pcbPort.pcb_component_id)
@@ -95,26 +135,23 @@ export async function createCloudViewerCircuit({
     const trace = structuredClone(imported)
     trace.pcb_trace_id = `pcb_trace_cloud_routed_${index}`
     trace.subcircuit_id = 'subcircuit_source_group_0'
-    let sourceTraceId
+    const sourceNet = resolveSourceNet(imported)
+    const sourceTraceId = sourceTraceByNetId.get(sourceNet.source_net_id)
+    if (!sourceTraceId) throw new Error(`No source trace connects named net ${sourceNet.name}`)
     for (const point of trace.route || []) {
       for (const endpointField of ['start_pcb_port_id', 'end_pcb_port_id']) {
         if (!point[endpointField]) continue
         const basePort = routedPortToBasePort.get(point[endpointField])
         if (basePort) {
           point[endpointField] = basePort.pcb_port_id
-          sourceTraceId ||= sourceTraceByPort.get(basePort.source_port_id)
         } else {
           delete point[endpointField]
         }
       }
     }
-    if (sourceTraceId) {
-      trace.source_trace_id = sourceTraceId
-      attributedTraceCount += 1
-      attributedSourceTraces.add(sourceTraceId)
-    } else {
-      delete trace.source_trace_id
-    }
+    trace.source_trace_id = sourceTraceId
+    attributedTraceCount += 1
+    attributedSourceTraces.add(sourceTraceId)
     circuit.push(trace)
   }
 
@@ -122,6 +159,7 @@ export async function createCloudViewerCircuit({
     const via = structuredClone(imported)
     via.pcb_via_id = `pcb_via_cloud_routed_${index}`
     via.subcircuit_id = 'subcircuit_source_group_0'
+    via.source_net_id = resolveSourceNet(imported).source_net_id
     delete via.source_trace_id
     delete via.pcb_port_ids
     circuit.push(via)
@@ -130,6 +168,7 @@ export async function createCloudViewerCircuit({
     const pour = structuredClone(imported)
     pour.pcb_copper_pour_id = `pcb_copper_pour_cloud_routed_${index}`
     pour.subcircuit_id = 'subcircuit_source_group_0'
+    pour.source_net_id = resolveSourceNet(imported).source_net_id
     circuit.push(pour)
   }
 
@@ -140,16 +179,15 @@ export async function createCloudViewerCircuit({
     circuit,
     report: {
       schema_version: 1,
-      source_circuit: sourceCircuitPath,
-      routed_board: routedBoardPath,
       mapped_pcb_ports: routedPortToBasePort.size,
       imported_pcb_ports: routedCounts.pcb_port || 0,
       attributed_pcb_traces: attributedTraceCount,
       attributed_source_traces: attributedSourceTraces.size,
+      named_copper_counts: namedCopperCounts,
+      routed_net_names: [...routedNetNames].sort(),
       source_counts: sourceCounts,
       routed_board_counts: routedCounts,
       cloud_viewer_counts: outputCounts,
-      converter_warnings: converter.getWarnings(),
     },
   }
 }

@@ -9,6 +9,7 @@ const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.ts
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
+verifiedInputPaths.push('bun.lock', 'scripts/generate-cloud-viewer.mjs', 'scripts/check-cloud-viewer.mjs', 'scripts/cloud-viewer-net-names.test.mjs')
 for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
   for (const file of (await readdir(dir)).sort()) verifiedInputPaths.push(`${dir}/${file}`)
 }
@@ -33,7 +34,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs']],
+  ['topology-tests', ['test', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['power-audit', ['run', 'check:power-audit']],
   ['schematic', ['run', 'check:schematic']],

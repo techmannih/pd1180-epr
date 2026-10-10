@@ -16,6 +16,9 @@ for (const type of ['pcb_trace', 'pcb_via', 'pcb_copper_pour']) {
   if ((report.cloud_viewer_counts[type] || 0) !== (report.routed_board_counts[type] || 0)) {
     errors.push(`${type}: cloud viewer does not exactly replay the verified KiCad copper count`)
   }
+  if ((report.named_copper_counts[type] || 0) !== (report.cloud_viewer_counts[type] || 0)) {
+    errors.push(`${type}: not every copper item resolves to a named source net`)
+  }
 }
 if (report.mapped_pcb_ports !== report.imported_pcb_ports) {
   errors.push(`Only ${report.mapped_pcb_ports}/${report.imported_pcb_ports} routed KiCad ports map to source ports`)

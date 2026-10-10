@@ -11,7 +11,8 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and permitted top/bottom placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs. |
 | `check-cloud-package.mjs` | Guards the source entrypoint, visibility of every TSX/import and both explicit CI build targets; `--built` verifies the selected hosted output exists and matches the complete routed JSON; enforces a compact upload, rejects oversized loose GitHub-import files and prevents runtime `@tsci/*` dependencies that are not locally pinned under `imports/`. |
-| `check-cloud-viewer.mjs` | Regenerates the hosted viewer artifact in memory and proves it preserves the source schematic/3D model plus the exact verified KiCad copper counts. |
+| `check-cloud-viewer.mjs` | Regenerates the hosted viewer artifact in memory and proves it preserves the source schematic/3D model, verified KiCad copper counts and a named source net for every route, via and pour. |
+| `cloud-viewer-net-names.test.mjs` | Regresses KiCad 10 named branch routes without pad endpoints, via/pour net remapping, unchanged schematic/route geometry and rejection of missing, unknown or conflicting net identities. |
 | `check-feature-parity.mjs` | Verifies the product feature contract against compiled components, nets and evidence, enforces tscircuit's standard USB-C connector model, and checks permitted assembly layers. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
