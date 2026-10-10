@@ -11,6 +11,27 @@ const close = (actual, expected, tolerance = 1e-6) => Math.abs(actual - expected
 
 const sourceBoard = circuit.find((row) => row.type === 'source_board')
 const pcbBoard = circuit.find((row) => row.type === 'pcb_board')
+const minimumViaDrill = standards.fabrication.minimum_via_drill_mm
+if (!Number.isFinite(minimumViaDrill) || minimumViaDrill < 0.3) errors.push('Via drill policy must enforce the user-required 0.30 mm minimum')
+const project = JSON.parse(await readFile(boardPath.replace(/\.kicad_pcb$/, '.kicad_pro'), 'utf8'))
+const projectRules = project.board?.design_settings?.rules
+const requireDrill = (value, label) => {
+  if (!Number.isFinite(value) || value < minimumViaDrill - 1e-9) errors.push(`${label}: via drill ${value} mm is below ${minimumViaDrill} mm`)
+}
+requireDrill(pcbBoard?.min_via_hole_diameter, 'Compiled source minimum')
+requireDrill(projectRules?.min_through_hole_diameter, 'KiCad minimum drill rule')
+for (const netclass of project.net_settings?.classes || []) requireDrill(netclass.via_drill, `KiCad netclass ${netclass.name}`)
+for (const pair of standards.fabrication.via_pairs_mm) requireDrill(pair.drill, `Approved pair ${pair.name}`)
+const order = JSON.parse(await readFile('release/order-settings.json', 'utf8'))
+requireDrill(order.pcb.minimum_via_finished_drill_mm, 'Fabrication order minimum')
+const contract = JSON.parse(await readFile('hardware-contract.json', 'utf8'))
+const routing = JSON.parse(await readFile('routing/requirements.json', 'utf8'))
+const escapes = JSON.parse(await readFile('routing/pin-escapes.json', 'utf8'))
+for (const kind of ['signal', 'power']) {
+  requireDrill(contract.fabrication[`${kind}_via_mm`]?.drill, `Hardware contract ${kind} via`)
+  requireDrill(routing[`${kind}_via`]?.drill_mm, `Routing ${kind} via`)
+}
+for (const escape of escapes.pin_escapes) if (escape.via_drill_mm != null) requireDrill(escape.via_drill_mm, `Escape ${escape.reference}:${escape.pin}`)
 if (sourceBoard?.title !== standards.product_name) errors.push('Source board title does not match the canonical product name')
 if (!pcbBoard) errors.push('Missing pcb_board record')
 else {
@@ -83,11 +104,12 @@ for (const form of viaForms) {
     errors.push('Final board contains a via without parseable pad/drill dimensions')
     continue
   }
+  requireDrill(drill, 'Final PCB via')
   const pair = standards.fabrication.via_pairs_mm.find((item) => close(pad, item.pad, tolerance) && close(drill, item.drill, tolerance))
   if (!pair) errors.push(`Unapproved via pair ${pad}/${drill} mm`)
   else {
     const ring = (pad - drill) / 2
-    if (ring + tolerance < pair.minimum_annular_ring) errors.push(`${pair.name}: ${ring.toFixed(3)} mm annular ring is below policy`)
+    if (ring + 1e-9 < pair.minimum_annular_ring) errors.push(`${pair.name}: ${ring.toFixed(3)} mm annular ring is below policy`)
     viaSummary.set(pair.name, (viaSummary.get(pair.name) || 0) + 1)
   }
 }
@@ -160,6 +182,8 @@ const report = {
     mechanical_reference: standards.project_geometry.mechanical_reference,
   },
   assembly: { pcb_component_records: components.length, allowed_layers: standards.assembly.populated_layers, bottom_paste_present: gerberFiles.some((name) => /B[_-]Paste/i.test(name)) },
+  minimum_via_drill_mm: minimumViaDrill,
+  smallest_finished_via_drill_mm: Math.min(...parsedVias.map((via) => via.drill)),
   via_counts: Object.fromEntries(viaSummary),
   thermal_via_in_pad: { process: thermalPolicy.process, total: thermalEvidence.reduce((sum, row) => sum + row.via_count, 0), footprints: thermalEvidence },
   markings_checked: standards.markings.required_source_text,

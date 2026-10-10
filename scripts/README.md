@@ -64,7 +64,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `remove-isolated-zones.py` | Removes generated copper islands that do not connect to the intended net. |
 | `sync-generated-docs.mjs` | Synchronizes generated manifest and pin/placement documentation. |
 | `verify.mjs` | Runs independent checks, preserves logs and writes root Markdown plus machine-readable verification summaries. |
-| `via-net-identity.test.mjs` | Verifies the exact final KiCad drain-pad thermal-via count, dimensions, layers and net identity for every CSD19534Q5A. |
+| `via-net-identity.test.mjs` | Verifies the exact final KiCad drain-pad thermal-via count, dimensions, layers and net identity for every CSD19534Q5A, and enforces the user-required 0.30 mm minimum via drill in the native board, compiled source and KiCad rules. |
 
 The Python routing helpers are board-specific. Do not reuse their geometry on another board. The check patterns, failure behavior and documentation structure are reusable.
 

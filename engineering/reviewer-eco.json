@@ -149,6 +149,19 @@
     },
     "motor_phase_copper_evidence": "engineering/filled-copper-review.json",
     "usb_reference_evidence": "docs/usb-reference-check.json",
-    "release_3d": "Release export regenerates GLB from the exact final routed circuit, deletes previous output first and requires a valid complete GLB before packaging."
+    "release_3d": "Release export regenerates GLB from the exact final routed circuit, deletes previous output first and requires a valid complete GLB before packaging.",
+    "via_drill_correction": {
+      "baseline_commit": "d02df91171e6f44e42e1531dce0d28b64a0d0e21",
+      "board_sha256": "ca3715aa25884e35cc3925a0c5e498852de8ee2de2fae081cf484d3a2d74c6bf",
+      "pads_compared": 1042,
+      "all_pad_positions_geometry_and_nets_unchanged": true,
+      "via_count": 561,
+      "minimum_finished_via_drill_mm": 0.3,
+      "via_pad_drill_counts": {
+        "0.50/0.30": 416,
+        "0.60/0.30": 145
+      },
+      "changes": "416 dense-signal vias at 0.50/0.30 mm and 145 power/general vias at 0.60/0.30 mm. Local trace adjustments preserve all footprint/pad geometry and all nine original sense branches. Removed two disconnected pour fragments, merged adjoining SENSE_B pours at a copper sliver, and added one digital-ground via."
+    }
   }
 }

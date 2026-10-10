@@ -91,7 +91,7 @@ const TMCM1180_OUTLINE = [
 
 export const PD1180EPR = () => (
   <board name="PD1180_EPR" title="PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" outline={TMCM1180_OUTLINE} layers={4} isViaInPadAllowed thickness="1.6mm"
-    defaultTraceWidth="0.25mm" minTraceWidth="0.15mm" minViaHoleDiameter="0.2mm" minViaPadDiameter="0.45mm"
+    defaultTraceWidth="0.25mm" minTraceWidth="0.15mm" minViaHoleDiameter="0.3mm" minViaPadDiameter="0.5mm"
     schAutoLayoutEnabled schTraceAutoLabelEnabled schMaxTraceDistance={0.8}
     autorouter="auto-local" autorouterEffortLevel="5x" autorouterVersion="beta_pipeline7" >
     {/* Four 4.191 mm STEP holes, rounded to the 4.2 mm fabrication drill. */}

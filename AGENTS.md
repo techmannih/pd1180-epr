@@ -55,10 +55,10 @@ Keep `release/circuit.json` selectable as the final routed view. It preserves th
 ## Fabrication defaults
 
 - Record board size, layer count, thickness, copper weight, finish, mask colour, impedance needs and assembly side in the order settings.
-- Default routing via: 0.45 mm pad / 0.20 mm finished drill or larger.
+- Default routing via: 0.50 mm pad / 0.30 mm finished drill or larger. The user requires a minimum 0.30 mm finished via drill everywhere, including existing routes and export defaults; no smaller-drill exceptions.
 - Default power/thermal via: 0.60 mm pad / 0.30 mm finished drill or larger.
 - Maintain at least 0.10 mm annular ring. Prefer 0.15 mm for ordinary routing and power vias.
-- A smaller or via-in-pad geometry needs an explicit exception, exact count, fabricator capability and filled/capped treatment where solder wicking is possible.
+- Via-in-pad geometry needs an explicit review, exact count, fabricator capability and filled/capped treatment where solder wicking is possible. It must still meet the 0.30 mm minimum drill.
 - Use through vias across all copper layers unless the fabrication package explicitly calls for reviewed blind or buried vias.
 - Copper-to-edge, hole clearances, trace/space, solder-mask and silkscreen limits must be checked against the selected fabrication service, then encoded in the CAD rules.
 - Route changes must pass the routing fingerprint, native checks, final KiCad DRC and power-copper checks. Never copy or edit a fingerprint to make stale routing pass.

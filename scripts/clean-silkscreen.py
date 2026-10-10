@@ -106,8 +106,8 @@ def main() -> None:
     settings = board.GetDesignSettings()
     settings.m_AllowSoldermaskBridgesInFPs = True
     settings.m_TrackMinWidth = pcbnew.FromMM(0.09)
-    settings.m_ViasMinSize = pcbnew.FromMM(0.40)
-    settings.m_MinThroughDrill = pcbnew.FromMM(0.20)
+    settings.m_ViasMinSize = pcbnew.FromMM(0.50)
+    settings.m_MinThroughDrill = pcbnew.FromMM(0.30)
     settings.m_CopperEdgeClearance = pcbnew.FromMM(0.20)
     # USB4105's manufacturer footprint has 0.145 mm between the locating
     # NPTH and adjacent copper.  The value below covers that fixed geometry;
@@ -118,8 +118,8 @@ def main() -> None:
     netclass = settings.m_NetSettings.GetDefaultNetclass()
     netclass.SetClearance(pcbnew.FromMM(0.09))
     netclass.SetTrackWidth(pcbnew.FromMM(0.15))
-    netclass.SetViaDiameter(pcbnew.FromMM(0.45))
-    netclass.SetViaDrill(pcbnew.FromMM(0.20))
+    netclass.SetViaDiameter(pcbnew.FromMM(0.50))
+    netclass.SetViaDrill(pcbnew.FromMM(0.30))
     removed = []
     updated = []
     resized = []

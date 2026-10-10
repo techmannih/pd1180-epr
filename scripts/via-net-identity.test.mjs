@@ -83,3 +83,21 @@ test('the final KiCad board has four filled/capped drain thermal vias per power 
   }
   expect(total).toBe(policy.total_count)
 })
+
+
+test('every routed via and CAD default respects the required 0.30 mm minimum drill', () => {
+  const read = path => JSON.parse(readFileSync(new URL(path, import.meta.url)))
+  const standards = read('../board-standards.json')
+  const source = read('../dist/index/circuit.json').find(row => row.type === 'pcb_board')
+  const project = read('../dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pro')
+  expect(standards.fabrication.minimum_via_drill_mm).toBe(0.3)
+  expect(source.min_via_hole_diameter).toBeGreaterThanOrEqual(0.3)
+  expect(project.board.design_settings.rules.min_through_hole_diameter).toBeGreaterThanOrEqual(0.3)
+  expect(vias.length).toBeGreaterThan(0)
+  for (const via of vias) {
+    expect(via.drill).toBeGreaterThanOrEqual(0.3)
+    expect((via.size - via.drill) / 2).toBeGreaterThanOrEqual(0.1 - 1e-9)
+  }
+  for (const netclass of project.net_settings.classes) expect(netclass.via_drill).toBeGreaterThanOrEqual(0.3)
+  for (const pair of standards.fabrication.via_pairs_mm) expect(pair.drill).toBeGreaterThanOrEqual(0.3)
+})

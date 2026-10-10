@@ -38,7 +38,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Protection parts sit at the connector and high-current/charge-pump/bootstrap loops are compact.
 - [ ] Shunt sense connections are Kelvin-routed and cannot be bypassed by load copper.
 - [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
-- [ ] Ordinary vias follow the reviewed 0.60/0.30 or 0.45/0.20 mm pairs; only the documented sixteen 0.40/0.20 mm filled/capped dense-signal exceptions remain.
+- [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.

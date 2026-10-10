@@ -132,8 +132,8 @@ The source and regenerated release contain fifteen schematic sheets.
 | Power corridor | Nominal 2.4 mm with 0.16 mm zone clearance |
 | General/power via | 0.60 mm pad / 0.30 mm finished drill |
 | MOSFET drain-pad thermal vias | 40 total: four 0.60/0.30 mm through vias under each of ten CSD19534Q5A drain pads; epoxy filled and copper capped |
-| Dense signal via | 0.45 mm pad / 0.20 mm finished drill |
-| Dense signal exception | Historical route only; no new smaller vias are authorized |
+| Dense signal via | 0.50 mm pad / 0.30 mm finished drill |
+| Minimum via drill | 0.30 mm throughout the source, routed board and manufacturing exports; no smaller-drill exceptions |
 | Assembly side | Top only |
 | Solder mask / legend | Green / white |
 

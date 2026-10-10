@@ -98,8 +98,8 @@ class KelvinIsolationTest(unittest.TestCase):
     def test_same_ground_plane_via_before_terminal_fails(self):
         via = pcbnew.PCB_VIA(self.board)
         via.SetPosition(vector((2, 0)))
-        via.SetWidth(pcbnew.FromMM(0.45))
-        via.SetDrill(pcbnew.FromMM(0.2))
+        via.SetWidth(pcbnew.FromMM(0.5))
+        via.SetDrill(pcbnew.FromMM(0.3))
         via.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
         via.SetNet(self.net)
         self.board.Add(via)

@@ -39,12 +39,10 @@ projectData.board.design_settings.defaults.zones ??= {}
 Object.assign(projectData.board.design_settings.rules, {
   min_copper_edge_clearance: 0.2,
   min_hole_clearance: 0.13,
-  min_through_hole_diameter: 0.2,
+  min_through_hole_diameter: 0.3,
   min_track_width: 0.09,
   min_via_annular_width: 0.10,
-  // The routed release keeps a reviewed set of 0.40/0.20 mm filled-and-capped
-  // escape vias; newly generated routes use the 0.45/0.20 mm default below.
-  min_via_diameter: 0.4,
+  min_via_diameter: 0.5,
 })
 Object.assign(projectData.board.design_settings.defaults.zones, {
   min_clearance: 0.16,
@@ -57,8 +55,8 @@ if (!defaultNetclass) throw new Error('KiCad Default netclass was not generated'
 Object.assign(defaultNetclass, {
   clearance: 0.09,
   track_width: 0.15,
-  via_diameter: 0.45,
-  via_drill: 0.2,
+  via_diameter: 0.5,
+  via_drill: 0.3,
 })
 await writeFile(
   `${outputDirectory}/pd1180-epr-r0.3.kicad_pro`,

@@ -1,27 +1,27 @@
 {
-  "checked_at": "2026-10-10T04:22:42.597Z",
-  "entry_sha256": "ff1295170f9b6aed749701676bae024485558c16c17269833fbf00958648db5c",
+  "checked_at": "2026-10-10T05:22:38.459Z",
+  "entry_sha256": "6e50898195d918969405a1193b6c9f93bb65ad16fd7785ec36e58c44aa529e47",
   "verified_inputs": {
-    "AGENTS.md": "5ae6e9cddeefbe26ea3645a3727650c24fcedd3c204e14db9edf490ed245a37b",
-    "index.circuit.tsx": "ff1295170f9b6aed749701676bae024485558c16c17269833fbf00958648db5c",
+    "AGENTS.md": "1c445791203a001c9bd933837d3c6153f4e9f6fa77b2f00da3b5949f8879841d",
+    "index.circuit.tsx": "6e50898195d918969405a1193b6c9f93bb65ad16fd7785ec36e58c44aa529e47",
     "board-markings.tsx": "0497272de43cb742cc8d26e8749f1d12a6ebc98277cdf777b26da8ccbb9c6a36",
     "feature-parity.tsx": "e84358cfc82ace96c703a5a85507b9e2a5e8f32c7fc592d4664c77c449191426",
-    "mounting-template.svg": "d2941218bd23e19de48557144d1b78fe42b6433f893e6f478b60476430d2b854",
+    "mounting-template.svg": "17e99ff92920c6b5b62997c7a665d33b0b2b083b9628378b375455f6bbdd4bbb",
     "package.json": "bfe3efa58a73ae0bf717d4a57bb0198ee7dc6da1b9759cc72f109cef54d92a9c",
-    "hardware-contract.json": "472bcb0f24768433d073b9b433e4143e90ea04394d5504f6ddca864536c6b882",
-    "board-standards.json": "189c3c93a87b2b41faeb498dbd0139025e579217d642cfa517f5e0898ad6b9db",
-    "routing/requirements.json": "9010fb36f9792e1dbb74881fa999200164fef5a1d05f1310f1372bcfd94a3588",
+    "hardware-contract.json": "8c8a0db2f8a1327867a3f93d98adf8999dd6b7c0a0842dd763be78ca16c7f57b",
+    "board-standards.json": "02ce17ef24986d4802353b9a3c4b870b8eb62b67c346e03748421d6fd1ae4671",
+    "routing/requirements.json": "d137fc827206bffcb5bfcfce45bcbe6094d2a5a7d9ab496e7a656ab7fed06185",
     "routing/critical-paths.json": "f72cc36bb2551006cef6f84294c0bddbf7e5581931fa9eb2a029f1c087221ff0",
     "scripts/critical_copper.py": "adc201d20e762df2c6ec7bd2ee75b3525040f94343b8a869ecc1b8bd72c1570a",
     "scripts/check-critical-copper.mjs": "a31c8f934855b89df379d2e321c49266ef55d4c205c5c3f3d5bef70763c5c664",
     "tscircuit.config.json": "38019b42cad3a23b05a9a39172472c483363a90ab395f3ad2b750be7a5f70bc5",
     "tscircuit.config.ts": "bee25771e13cf671136a5d6648ba4a6786d2069afafaf9fbf0cecdbf8bc7e15e",
     "tsconfig.json": "c6b0f06cd6105f4134a97a4e1803f179839050d773da4e132ded70f44842f4d9",
-    "scripts/check-board-standards.mjs": "019be8c4ef12cc08eba1411c4d6365e7d9c944216f8d52866e50260aaf62bb1a",
+    "scripts/check-board-standards.mjs": "4e965fdfbc490bde4ba7a2b3b373b2331776b0ff8072820b1a5c5fc0d0bacbe2",
     "scripts/check-schematic-style.mjs": "90d11e6fdefafc0a846735018041993f4c5b94cf080b1d2b08b95e71604398d4",
-    "scripts/via-net-identity.test.mjs": "715c90aa23988577e0003798c6ec8c6729c1c180bccaf923552572a740f6edbf",
+    "scripts/via-net-identity.test.mjs": "28d57e3d6061c12857ea9a0ffd2540b7161ae9d83acf7de363f70cde6efb83ae",
     "checks/vendor/circuit-json-schematic-placement-analysis.browser.js": "598a25590702cbce18554dcd23a7516411975d8e2e0de9c0e3a0918574fd2729",
-    "routing/pin-escapes.json": "9891fd9a2552cc4508d3a1176ec39e7566e05da7266c0efeaa8b555df9cb8932",
+    "routing/pin-escapes.json": "8a5ab0389e27095df0fba24c0c9e96f0cf20be7680339dda9dc7a93874692cc9",
     "scripts/prepare-routing-seed.py": "862e7991c093988df2d68492ff2ca8e4867bf6bab12fba4b2e9986f7217c8a52",
     "scripts/check-routing-fingerprint.mjs": "1dd481680286a00968ed73681ef8adf93bd8e8b87b3c4bc6dda573d1d75ec652",
     "scripts/circuit-source-hash.mjs": "3217905bfb2fe9a3a0e70372c37a90160c57bdbfad1194a19a55c1efca02b238",
@@ -67,35 +67,35 @@
       "name": "toolchain",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.03,
+      "seconds": 0.021,
       "log": "docs/checks/toolchain.log"
     },
     {
       "name": "cloud-package",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.065,
+      "seconds": 0.076,
       "log": "docs/checks/cloud-package.log"
     },
     {
       "name": "mounting-template",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 1.567,
+      "seconds": 0.621,
       "log": "docs/checks/mounting-template.log"
     },
     {
       "name": "typecheck",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 6.339,
+      "seconds": 4.465,
       "log": "docs/checks/typecheck.log"
     },
     {
       "name": "import-previews",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 1.275,
+      "seconds": 0.946,
       "log": "docs/checks/import-previews.log"
     },
     {
@@ -109,56 +109,56 @@
       "name": "firmware",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 4.278,
+      "seconds": 2.165,
       "log": "docs/checks/firmware.log"
     },
     {
       "name": "firmware-target",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.088,
+      "seconds": 0.085,
       "log": "docs/checks/firmware-target.log"
     },
     {
       "name": "operating-mode",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.024,
+      "seconds": 0.017,
       "log": "docs/checks/operating-mode.log"
     },
     {
       "name": "preview",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 35.928,
+      "seconds": 28.212,
       "log": "docs/checks/preview.log"
     },
     {
       "name": "source-schematic",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.099,
+      "seconds": 0.156,
       "log": "docs/checks/source-schematic.log"
     },
     {
       "name": "schematic-style",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.628,
+      "seconds": 0.49,
       "log": "docs/checks/schematic-style.log"
     },
     {
       "name": "feature-parity",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.048,
+      "seconds": 0.036,
       "log": "docs/checks/feature-parity.log"
     },
     {
       "name": "normalize-svgs",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.051,
+      "seconds": 0.043,
       "log": "docs/checks/normalize-svgs.log"
     },
     {
@@ -172,105 +172,105 @@
       "name": "topology-tests",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 64.367,
+      "seconds": 54.426,
       "log": "docs/checks/topology-tests.log"
     },
     {
       "name": "netlist",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 47.372,
+      "seconds": 33.816,
       "log": "docs/checks/netlist.log"
     },
     {
       "name": "schematic",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 3.178,
+      "seconds": 2.54,
       "log": "docs/checks/schematic.log"
     },
     {
       "name": "placement",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 36.582,
+      "seconds": 38.274,
       "log": "docs/checks/placement.log"
     },
     {
       "name": "routing-difficulty",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 49.872,
+      "seconds": 32.897,
       "log": "docs/checks/routing-difficulty.log"
     },
     {
       "name": "decoupling",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.072,
+      "seconds": 0.043,
       "log": "docs/checks/decoupling.log"
     },
     {
       "name": "assembly",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.062,
+      "seconds": 0.053,
       "log": "docs/checks/assembly.log"
     },
     {
       "name": "board-standards",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.066,
+      "seconds": 0.051,
       "log": "docs/checks/board-standards.log"
     },
     {
       "name": "local-copper",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 2.142,
+      "seconds": 1.668,
       "log": "docs/checks/local-copper.log"
     },
     {
       "name": "shorts",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 10.74,
+      "seconds": 8.936,
       "log": "docs/checks/shorts.log"
     },
     {
       "name": "kicad-drc",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.031,
+      "seconds": 0.026,
       "log": "docs/checks/kicad-drc.log"
     },
     {
       "name": "critical-copper",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.054,
+      "seconds": 0.049,
       "log": "docs/checks/critical-copper.log"
     },
     {
       "name": "usb-reference",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.024,
+      "seconds": 0.027,
       "log": "docs/checks/usb-reference.log"
     },
     {
       "name": "power-routing",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.104,
+      "seconds": 0.083,
       "log": "docs/checks/power-routing.log"
     },
     {
       "name": "routing-fingerprint",
       "exit_code": 0,
       "status": "pass",
-      "seconds": 0.092,
+      "seconds": 0.074,
       "log": "docs/checks/routing-fingerprint.log"
     },
     {

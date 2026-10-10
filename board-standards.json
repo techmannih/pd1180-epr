@@ -30,17 +30,9 @@
       },
       {
         "name": "dense_signal",
-        "pad": 0.45,
-        "drill": 0.2,
-        "minimum_annular_ring": 0.125
-      },
-      {
-        "name": "dense_signal_filled_capped_exception",
-        "pad": 0.4,
-        "drill": 0.2,
-        "minimum_annular_ring": 0.1,
-        "maximum_count": 16,
-        "process": "filled and capped"
+        "pad": 0.5,
+        "drill": 0.3,
+        "minimum_annular_ring": 0.1
       }
     ],
     "via_pair_tolerance_mm": 0.011,
@@ -65,7 +57,8 @@
       "pad_mm": 0.6,
       "drill_mm": 0.3,
       "process": "epoxy filled and copper capped"
-    }
+    },
+    "minimum_via_drill_mm": 0.3
   },
   "project_geometry": {
     "board_width_mm": 85.9,
