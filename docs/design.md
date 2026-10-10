@@ -68,9 +68,9 @@ The [GCT USB4105 specification](https://gct.co/files/specs/usb4105-spec.pdf) rat
 
 ### Datasheet-based motor assumptions
 
-The [QSH8618-96-55-700 motor datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/qsh8618_datasheet_rev1.08.pdf) specifies 5.5 A phase current, 7.0 Nm holding torque, 1.8-degree steps and rotor inertia 2700 g·cm² = 0.00027 kg·m².
+The ordered [STEPPERONLINE 34HS31-6004S1](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) specifies 6 A/phase, 4.8 Nm holding torque, 1.8-degree steps, 0.48 Ω phase resistance (±10%) and 3.5 mH phase inductance (±20%). The manufacturer rating is not an approved TMC5160 RMS setting. The board's 5.5 A RMS design screen is retained without enabling motion; current waveform, hold current and thermal limits need qualification for this motor.
 
-Calculated rotor-only kinetic energy is 0.370 J at 500 RPM, 1.480 J at 1000 RPM and 5.922 J at 2000 RPM, using E = ½ J (2πn/60)². These are examples, not approved operating speeds. The 940 µF bulk bank absorbs only 0.237 J between 48 V and 53 V. Attached-load inertia, gearing, gravity and stopping time increase the braking requirement; the final speed limit and resistor pulse duty cannot be inferred from holding torque. The 10 Ω / 300 W external brake remains a starting specification. See `motor-data.json` for machine-readable inputs.
+Rotor inertia is not specified in the cited motor sheet. The previous QSH8618 inertia and kinetic-energy examples are withdrawn; the power audit records unknown energy as null, not zero. The 940 µF bulk bank absorbs only 0.237 J between 48 V and 53 V. Rotor and attached-load inertia, gearing, gravity and stopping time determine braking energy; speed and brake duty cannot be inferred from holding torque. The 10 Ω / 300 W external brake remains a starting specification. See `motor-data.json` for sourced inputs.
 
 The reference-board ECO adds independent USB logic power, board-temperature inhibition and phase-current diagnostics. See [USB and telemetry architecture](usb-pd-architecture.md) for the exact power paths, thresholds, transfer functions and unmeasured USB/thermal limits.
 

@@ -1,16 +1,17 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-10T21:28:54.962Z",
+  "checked_at": "2026-10-10T21:57:43.617Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "input_sha256": {
     "index.circuit.tsx": "7b08d01f23d4bd1bed5919d8d0cd7eb7fb5912e787b642f3c0e4f12873159434",
-    "dist/index/circuit.json": "4bfa3d9a10d8b6d027414e5f6d5b1322e8efbda8298895a5e8b9ae41715910fc",
+    "dist/index/circuit.json": "19f3d5a8d3170dde748a8f823504e340a095a98203e7c02eb19f1c3ccfd8f508",
     "docs/design-manifest.json": "bb875cdc64b6032a3cc2974ce7629bf0009a03ae6c9e42366805d8f769054b23",
-    "hardware-contract.json": "d32bcff1d0f35370c8731ebf5bb0144e38d2736e2f1af06bfe7de968d2615871",
+    "hardware-contract.json": "472f8b41d12dc936c978ab5cd8bbe3cce00d6a0d3e64f8d276614955404d9ade",
+    "docs/motor-data.json": "edc93b8adacfe813afc7cdd3201bd31c07ce9264c389edc5eb97e1e04927d4c9",
     "firmware/include/tmc5160_config.h": "923c88caad88d3c5c68c352419003d49d29742eb7e31c2743bda8ac1fbfccb27",
     "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "0c1dbe10d257462dc62c383588286ed5d06c9d1228f8f9cae0ef2c6974ffc430",
-    "scripts/power-audit.mjs": "ec0e8481f3d3dc794436d103e2ed4d2e768be44c797b8ceeb1c1d2466f11594c"
+    "scripts/power-audit.mjs": "d0da1a30c986842519a118e86d5de39c46af0dd3dcbb80f0ad88e861e2ba9de5"
   },
   "assumptions": {
     "resistor_initial_tolerance_fraction": 0.01,
@@ -27,10 +28,10 @@
     "bulk_capacitance_tolerance_fraction": 0.2,
     "slew_capacitance_initial_tolerance_fraction": 0.1,
     "capacitor_dc_bias_and_temperature_included": false,
-    "motor_model": "QSH8618-96-55-700",
-    "motor_phase_resistance_20c_ohm": 0.45,
-    "motor_phase_inductance_h": 0.0045,
-    "motor_rotor_inertia_kg_m2": 0.00027,
+    "motor_model": "34HS31-6004S1",
+    "motor_phase_resistance_20c_ohm": 0.48,
+    "motor_phase_inductance_h": 0.0035,
+    "motor_rotor_inertia_kg_m2": null,
     "external_load_inertia": null,
     "motor_rpm_and_stop_time": null,
     "mosfet_hot_resistance_multiplier": 2,
@@ -111,7 +112,10 @@
       "programmed_rms_a": 5.386164934819405,
       "sensitivity_min_rms_a": 5.066194740671717,
       "sensitivity_max_rms_a": 5.712599173293309,
-      "note": "TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance."
+      "motor_rated_phase_a": 6,
+      "motor_qualified_driver_rms_a": null,
+      "motor_rating_note": "Manufacturer states AMPS/PHASE, not an approved TMC5160 RMS setpoint. Resolve waveform, peak/hold current and thermal limits before motor-enabled firmware.",
+      "note": "Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance."
     },
     "dissipation_w": {
       "regulation_shunt_cycle_upper_bound_each": 0.9982500000000001,
@@ -121,7 +125,7 @@
       "eight_bridge_mosfets_conduction_25c_max_rds_total": 1.8271000000000002,
       "eight_bridge_mosfets_conduction_hot_sensitivity_total": 3.6542000000000003,
       "efuse_at_nominal_limit_and_125c_max_ron": 1.0625974604588997,
-      "two_motor_windings_20c": 27.225,
+      "two_motor_windings_20c": 29.04,
       "note": "Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep."
     },
     "inrush": {
@@ -144,12 +148,12 @@
     "regeneration": {
       "bulk_energy_48_to_53v_j": 0.23735,
       "bulk_energy_48_to_53v_min_cap_j": 0.18988000000000002,
-      "winding_energy_nominal_sine_quadrature_j": 0.136125,
+      "winding_energy_nominal_sine_quadrature_j": 0.105875,
       "rotor_only_energy_j": {
-        "100": 0.01480440660163404,
-        "500": 0.37011016504085087,
-        "1000": 1.4804406601634035,
-        "2000": 5.921762640653614
+        "100": null,
+        "500": null,
+        "1000": null,
+        "2000": null
       },
       "brake_nominal_at_53v": {
         "ohm": 10,
@@ -178,7 +182,7 @@
     "Measured VSA ripple and VS transient margin",
     "Measured brake/cutoff tolerance coordination",
     "PD source/cable 2x eFuse pulse coordination",
-    "Actual motor/load/speed/ambient/mechanics confirmation",
+    "Ordered motor current convention, rotor/load inertia, speed, ambient and mechanics qualification",
     "TI-generated EEPROM image and approved configuration identity",
     "Fabricator stack-up/impedance/filled-via approval",
     "Assembled-board current, thermal, USB, brake and fault measurements"
@@ -192,6 +196,6 @@
     "driver_inductor": "https://www.bourns.com/docs/product-datasheets/srp7050ta.pdf",
     "comparator": "https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=6",
     "brake": "https://www.vishay.com/docs/50052/lps300.pdf",
-    "motor": "https://www.analog.com/media/en/technical-documentation/data-sheets/qsh8618_datasheet_rev1.08.pdf"
+    "motor": "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
   }
 }

@@ -13,7 +13,7 @@ The audited native PCB SHA-256 is `c9007161c6b74a6dc9713a2e786b1761b4a3b42090f70
 | Filled-copper calculation | Re-exported the current native copper and solved MOTOR_A1 Q7:9 → R115:1 at 0.075/0.05 mm mesh: 3.2831/3.2946 mΩ, 0.349% difference; fine-mesh loss 0.0997 W at 5.5 A, excluding contacts/devices and thermal feedback. [Evidence](../engineering/filled-copper-review.json) |
 | Driver initialization | Fixed reliance on OTP short-detection and dead-time defaults. Explicit register writes, disabled-chopper sequencing and write-corruption regressions pass. The regression failed on the previous configuration. See [firmware details](../firmware/README.md#tmc5160-external-stepdir-service) |
 | TPS26631 current monitor | **Corrected:** removed C19 from source and native PCB; R26 and the ADC connection remain. The compiled-connectivity regression rejects an IMON-to-ground capacitor even after reference/net renaming. TI §8.3.9 prohibits this bypass because it delays current information; this is separate from the internal current limit. |
-| Programming and operation | The TPS26750 full-flash image and qualified motor-operation firmware are absent. The supplied STM32 image supports commissioning diagnostics and deliberately keeps motion locked. Exact motor/load, stop profile and adapter/cable are not confirmed. |
+| Programming and operation | The TPS26750 full-flash image and qualified motor-operation firmware are absent. The supplied STM32 image supports commissioning diagnostics and deliberately keeps motion locked. The ordered motor is now identified as 34HS31-6004S1; approved current settings, load, stop profile and adapter/cable qualification remain open. |
 
 The C19 correction removes only that component. Native footprint and route comparison verifies the remaining pads and existing tracks/vias are unchanged; matching schematic, BOM/CPL and manufacturing files are regenerated. See the `c19_correction` entry in [native placement evidence](../engineering/top-side-placement.json). The source connection was checked against [TI TPS2663 §8.3.9](https://www.ti.com/lit/ds/symlink/tps2663.pdf); generic CAD connectivity checks alone did not detect this component-specific rule.
 
@@ -48,7 +48,7 @@ At the 5.5 A RMS design target the sinusoidal phase peak is 7.78 A. The configur
 
 The eFuse limit is about 4.48 A nominal at the input, not a phase-current limit. The screened upper limit leaves only about 0.14 A from a 5 A PD contract for upstream logic. TPS26631 also permits overload pulses. Source/cable negotiation, logic consumption and overload behavior must be tested together.
 
-The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J between 48 V and 53 V. A nominal 10 Ω brake dissipates about 270 W at turn-on; 55 V across a −2% resistor would dissipate 309 W. The selected [Vishay LPS300](https://www.vishay.com/docs/50052/lps300.pdf) is rated 300 W only with its case at or below 85 °C. It needs a designed heatsink and a verified pulse-energy/repetition budget. Rotor-only examples do not include driven-load inertia or gravity.
+The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J between 48 V and 53 V. A nominal 10 Ω brake dissipates about 270 W at turn-on; 55 V across a −2% resistor would dissipate 309 W. The selected [Vishay LPS300](https://www.vishay.com/docs/50052/lps300.pdf) is rated 300 W only with its case at or below 85 °C. It needs a designed heatsink and a verified pulse-energy/repetition budget. The ordered motor’s rotor inertia is not specified, so no rotor kinetic-energy result is available. Driven-load inertia and gravity must also be included.
 
 ## Evidence required before submitting a prototype order
 
@@ -56,7 +56,7 @@ The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J betw
 - Top-only fitted BOM/CPL, local bypasses, preserved Kelvin paths, four-layer stack, at least 0.30 mm finished via drills, drain thermal vias and uninterrupted USB reference evidence.
 - Fresh Gerber/drill ZIP and matching BOM/CPL, with SHA-256 provenance. Reject older ZIPs and manually substituted files.
 - Exact stock/package checks for the actual order quantity, plus manufacturer confirmation of filled/capped via-in-pad processing and the chosen impedance stack-up.
-- Review of the exact motor, supply/cable, maximum speed, stop time, load inertia, ambient temperature, enclosure and brake heatsink. These operating details are still unconfirmed.
+- Review of the ordered 34HS31-6004S1 current waveform, supply/cable, maximum speed, stop time, rotor/load inertia, ambient temperature, enclosure and brake heatsink. These operating details remain unqualified.
 - A documented PD programming path. `docs/pd-configuration.json` contains requirements only; the TI-generated full-flash image is still missing. Do not substitute that JSON for an EEPROM binary.
 
 ## Staged powered test record — all results pending
@@ -86,7 +86,7 @@ Complete and approve this envelope **before** a motor-enabled test. Empty fields
 | Required input | Agreed value |
 |---|---|
 | Provider, responsible engineer and first-article serial | Not supplied |
-| Motor manufacturer/model, phase wiring and rated RMS current | Not confirmed; QSH8618-96-55-700 is the design reference only |
+| Motor manufacturer/model, phase wiring and driver current | STEPPERONLINE 34HS31-6004S1; A+ black, A− green, B+ red, B− blue. Manufacturer rating 6 A/phase; approved RMS/hold setting pending |
 | Driven load, inertia/gravity, maximum RPM and acceleration | Not supplied |
 | Worst stop/deceleration profile and repeat interval | Not supplied |
 | J1 source model and EPR cable model/rating | Not supplied |

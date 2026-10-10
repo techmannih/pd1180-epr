@@ -39,7 +39,7 @@ await writeFile(join(sourcing, 'alternatives.csv'), csv([
 await writeFile(join(sourcing, 'external-items.csv'), csv([
   ['Item', 'Selected part', 'Specification', 'Status'],
   ['brake resistor', external.brake_resistor.selected_part || '', `${external.brake_resistor.target_resistance_ohms} ohm / ${external.brake_resistor.starting_continuous_power_w} W`, external.brake_resistor.status],
-  ['motor', external.motor, '5.5 A RMS / 7 Nm', 'specified'],
+  ['motor', external.motor, external.motor_specification, 'ordered; current and mounting qualification pending'],
   ['magnet', external.magnet, 'AS5047P compatible', 'mechanical validation required'],
 ]))
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
@@ -117,7 +117,7 @@ await Promise.all([
   zipDirectory('dist/manufacturing/gerbers', join(release, 'pd1180-epr-r0.3-gerbers.zip')),
   zipDirectory('dist/manufacturing/kicad-project', join(release, 'pd1180-epr-r0.3-kicad.zip')),
   zipFile(routedGlb, 'pd1180-epr.glb', join(release, 'pd1180-epr-r0.3-glb.zip')),
-  zipFile(motorAssemblyGlb, 'qsh8618-assembly-proposal.glb', join(release, 'qsh8618-assembly-proposal.zip')),
+  zipFile(motorAssemblyGlb, '34hs31-6004s1-assembly-proposal.glb', join(release, '34hs31-6004s1-assembly-proposal.zip')),
 ])
 
 await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
@@ -128,7 +128,7 @@ ${releaseStatus.fabrication_orderable ? 'Prototype CAD gates passed; system vali
 
 The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: ${releaseStatus.status}. See \`engineering/reviewer-eco.json\` and \`docs/step-dir-hardware-review.md\`.
 
-The bare QSH8618-96 needs a custom adapter; the supplied motor CAD has no matching rear PCB threads. See \`motor-assembly.md\` for the proposed mount and encoder stack, nominal screw clearances and unresolved mechanical gates.
+The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Rear case fasteners are not approved accessory threads; a front-flange adapter is proposed and encoder attachment remains unresolved. See \`motor-assembly.md\` for the proposed mount and ordered-motor limitations, nominal screw clearances and unresolved mechanical gates.
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 

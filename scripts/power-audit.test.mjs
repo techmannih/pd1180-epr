@@ -1,5 +1,5 @@
 import { test, expect } from 'bun:test'
-import { rmsCurrent, dividerRange, operatingErrors, supplyIsolationErrors, inductanceHenries, imonBypassErrors } from './power-audit.mjs'
+import { rmsCurrent, rotorKineticEnergy, dividerRange, operatingErrors, supplyIsolationErrors, inductanceHenries, imonBypassErrors } from './power-audit.mjs'
 
 test('absolute maximum must not replace the operational supply limit', () => {
   expect(operatingErrors({vsaOnMotorBus:true, brakeOn:{nominal:52.894}, motorCutoff:{max:56}})).toHaveLength(2)
@@ -62,4 +62,11 @@ test('allows supply decoupling but fails closed when IMON connectivity is missin
   expect(imonBypassErrors(supply)).toHaveLength(1)
   supply[1].subcircuit_connectivity_map_key = 'ground'
   expect(imonBypassErrors(supply)).toHaveLength(1)
+})
+
+test('missing motor inertia stays unknown rather than becoming zero braking energy', () => {
+  expect(rotorKineticEnergy(null, 1000)).toBeNull()
+  expect(rotorKineticEnergy(0.00027, 1000)).toBeCloseTo(1.48044, 4)
+  expect(() => rotorKineticEnergy(undefined, 1000)).toThrow()
+  expect(() => rotorKineticEnergy(-1, 1000)).toThrow()
 })

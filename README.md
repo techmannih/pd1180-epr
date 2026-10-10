@@ -1,6 +1,6 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller designed around the QSH8618-96-55-700 NEMA 34 stepper motor target. The user selected the bare QSH8618-96; its purchased suffix and driven load still need confirmation. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
+PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
 
 **Revision:** r0.4 reference ECO · **Status:** CAD routing verified; powered validation pending · **Assembly:** top only · **Order status:** HOLD
 
@@ -73,7 +73,7 @@ To stop normally, decelerate the STEP train using the validated stop profile, re
 | USB protection | TPD4S480 on PD CC/SBU; USBLC6-4SC6 on DATA D+/D−/CC, independent 5.1 kΩ CC pulldowns and DATA VBUS sensing |
 | Input protection | TPS26631 eFuse, inrush control, voltage qualification, current limit and reverse-current blocking |
 | Motor stage | TMC5160A with eight 100 V CSD19534Q5A MOSFETs and two 33 mΩ phase shunts |
-| Motor target | QSH8618-96-55-700, 5.5 A RMS phase current, 7.0 Nm holding torque |
+| Ordered motor | STEPPERONLINE 34HS31-6004S1, 4.8 Nm, 6 A/phase; approved driver current setting pending |
 | Controller | STM32G0B1CBT6 with USB device, CAN, SPI, I²C and serial peripherals |
 | Position feedback | Top-side AS5047P magnetic encoder at the shaft axis, with ABI test access |
 | Temperature/current diagnostics | TMP102 hardware inhibit; two INA240 phase monitors; ADS1115 bus monitors |
@@ -112,7 +112,7 @@ Detailed calculations, tolerances and protection behavior are recorded in [docs/
 
 The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native ramp control selects the board's limit inputs. External STEP/DIR is the selected product mode. The former encoder/mode-pin conflict is corrected in the ECO source; motion stays inhibited until native and powered validation pass.
 
-The top-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The bare-motor assembly proposal defines an 8 × 6 mm diametric magnet below the PCB, a PEEK extension holder and a nominal 0.5 mm magnet-to-board gap. Supplier field, retention, runout and temperature qualification remain open; see [motor assembly](docs/motor-assembly.md).
+The top-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The ordered motor is single-shaft, and its CAD does not identify an accessible rotating rear shaft or an approved magnet attachment. The previous QSH-specific holder and magnet stack have been withdrawn; encoder attachment, field, retention and working gap remain unresolved; see [motor assembly](docs/motor-assembly.md).
 
 Firmware must configure current scaling, gate drive, dead time, chopper behavior, motion limits and encoder calibration for the actual motor. A register default is not approval for 5.5 A operation.
 
@@ -193,9 +193,9 @@ All fitted components, including the centered encoder, its local bypass parts, l
 
 The completed KiCad route passes all-severity DRC, connectivity, schematic parity, ERC and terminal-only Kelvin checks. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
-The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% to inspect the PCB pattern. **The selected bare QSH8618-96 has no matching rear mounting threads in its supplied CAD.** It needs the custom adapter described in [motor assembly](docs/motor-assembly.md); a pattern match to the PD86 reference is not a direct-fit approval.
+The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% to inspect the PCB pattern. **Direct rear mounting to the ordered 34HS31-6004S1 is not established.** Its documented mounting interface is the front flange; existing rear case screws are not approved accessory threads. [Motor assembly](docs/motor-assembly.md) describes a proposed front-supported adapter. A pattern match to the PD86 reference is not a direct-fit approval.
 
-The exact bare-motor CAD and proposed adapter/encoder stack are selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All parts remain on top. The adapter and magnet are not yet qualified for fabrication.
+The exact ordered-motor CAD and proposed adapter are selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All parts remain on top. The adapter is not qualified for fabrication, and no encoder holder or magnet is modeled for this motor.
 
 ![PD1180-EPR mounting template](previews/mounting-template.png)
 
@@ -208,7 +208,7 @@ The exact bare-motor CAD and proposed adapter/encoder stack are selectable in `m
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
 
-The EPR source, certified 5 A EPR cable, QSH8618 motor, shaft magnet, brake resistor/heatsink, mating housings, contacts, wire and external bus termination are system items outside the assembled PCB BOM. See [docs/procurement.md](docs/procurement.md) and [sourcing/](sourcing/).
+The EPR source, certified 5 A EPR cable, 34HS31-6004S1 motor, shaft magnet, brake resistor/heatsink, mating housings, contacts, wire and external bus termination are system items outside the assembled PCB BOM. See [docs/procurement.md](docs/procurement.md) and [sourcing/](sourcing/).
 
 ## Verification
 
@@ -289,7 +289,7 @@ The r0.4 ECO files become a prototype fabrication handoff only after the order h
 
 1. Generate and independently review the sink-only TPS26750 EPR configuration, then program U3.
 2. Qualify the integrated STM32 target on the bench, verify fault shutdown and produce the motor-enabled release with recorded configuration/hash evidence.
-3. Qualify the bare-QSH adapter, shared front-flange fastening, encoder holder, magnet field/gap and enclosure clearances.
+3. Qualify the ordered motor’s adapter and shared front-flange fastening; establish rotating-shaft access, encoder attachment, magnet field/gap and enclosure clearances.
 4. Select the brake resistor/heatsink from measured load inertia, speed and stopping duty.
 5. Perform current-limited rail bring-up before fitting the motor.
 6. Measure gate waveforms, phase current, bus overshoot, connector temperature and PCB temperature.

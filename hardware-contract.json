@@ -55,14 +55,14 @@
       "assembly_layer": "top",
       "centered_x_mm": 0,
       "centered_y_mm": 0,
-      "validation": "Top U18 retained. Candidate 8 x 6 mm diametric magnet below PCB: 0.5 mm board gap, estimated 2.894 mm die gap. See mechanical assembly definition; supplier field, retention and physical fit unqualified."
+      "validation": "Top U18 retained. Ordered 34HS31-6004S1 has no documented rear encoder shaft/interface. Previous QSH holder and gap are withdrawn; new shaft access, magnet and gap require approval."
     },
     "motor_assembly": {
-      "selected_motor": "Bare QSH8618-96; user confirmed 2026-10-11",
+      "selected_motor": "STEPPERONLINE 34HS31-6004S1; user confirmed Amazon ASIN B091C83HWF on 2026-10-11",
       "definition": "engineering/mechanical/assembly.json",
       "preview_entrypoint": "motor-assembly.circuit.tsx",
-      "direct_rear_mount_compatible": false,
-      "status": "Custom front-flange-supported adapter and encoder holder proposed; mechanical and magnetic qualification open"
+      "direct_rear_mount_compatible": null,
+      "status": "Exact ordered-motor CAD; front-flange adapter is a proposal. Rear case bolts are not approved accessory mounting points; encoder attachment unresolved."
     }
   },
   "fabrication": {
@@ -88,7 +88,9 @@
     "pd_contract_v": 48,
     "pd_contract_a": 5,
     "motor_phase_rms_a": 5.5,
-    "motor": "QSH8618-96-55-700"
+    "motor": "34HS31-6004S1",
+    "motor_rated_phase_a": 6,
+    "motor_current_note": "5.5 A RMS remains the existing board design screen only, not a qualified setting for this motor; motion firmware remains locked."
   },
   "reset_safe_outputs": {
     "POWER_PERMIT": 0,

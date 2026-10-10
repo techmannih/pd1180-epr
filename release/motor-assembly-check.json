@@ -1,27 +1,27 @@
 {
   "board_glb_sha256": "15c71907403611285251ebaa5c4548f2d995dda88da026083f41c192dd98274c",
-  "motor_glb_sha256": "ecc418f70e78d2eeda3b2882d510758988af1a904b5d8be7e5a8985ee73ff962",
-  "motor_step_sha256": "3884aa3811c2fac5b409e7dbb8d588325d0def3b163c96486b6738f05efa3986",
-  "spec_sha256": "225d5a079900e457d91ef925aafb6ea481428df65c5c86a840d300ad1884b210",
+  "motor_glb_sha256": "eec0b062b6c26976734a02875d35791f12e7442a425669e94afd6a522e39a93d",
+  "motor_step_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
+  "spec_sha256": "7ad36f0f56144201f35b1f25aa66eab9e8274ae801cc8c864fd01827d6b85522",
   "component_models_checked": 294,
   "assembly_alignment": {
-    "assembly_glb_sha256": "183ccdff574182c40516d61e63fcc225ef572c32916295f859dcb550c473e25f",
+    "assembly_glb_sha256": "49cceae22737b8c10e43c94e5713549f04f68ee5d235de629e06e60f41abd24c",
     "motor_bounds_display_mm": {
       "min": [
         -43,
-        -139.4999969482422,
-        -43
+        -122.3,
+        -114.49132537841797
       ],
       "max": [
         43,
-        -10.3,
+        -10.79999999995427,
         43
       ]
     },
     "fixture_bounds_display_mm": {
       "min": [
         -42.95000076293945,
-        -97.80000305175781,
+        -80.30000305175781,
         -42.95000076293945
       ],
       "max": [
@@ -30,25 +30,25 @@
         42.95000076293945
       ]
     },
-    "minimum_motor_to_pcb_bottom_mm": 9.5
+    "minimum_motor_to_pcb_bottom_mm": 9.99999999995427
   },
   "motor_cad_bounds_mm": {
     "min": [
       -43,
-      -43,
-      -129.1999969482422
+      -114.49132537841797,
+      -111.5
     ],
     "max": [
       43,
       43,
-      0
+      4.573053047352005e-11
     ]
   },
   "fixture_cad_bounds_mm": {
     "min": [
       -42.95000076293945,
       -42.95000076293945,
-      -97.80000305175781
+      -80.30000305175781
     ],
     "max": [
       42.95000076293945,
@@ -163,35 +163,37 @@
   "posts": [
     {
       "axis_mm": [
-        34.79,
-        34.79
+        34.75,
+        34.75
       ],
-      "minimum_motor_clearance_mm": 1.6668914534640118
+      "minimum_motor_clearance_mm": 1.2259306339823723
     },
     {
       "axis_mm": [
-        -34.79,
-        34.79
+        -34.75,
+        34.75
       ],
-      "minimum_motor_clearance_mm": 1.6668914534640118
+      "minimum_motor_clearance_mm": 1.2259306339823723
     },
     {
       "axis_mm": [
-        -34.79,
-        -34.79
+        -34.75,
+        -34.75
       ],
-      "minimum_motor_clearance_mm": 1.6668914534640118
+      "minimum_motor_clearance_mm": 1.2259306339823723
     },
     {
       "axis_mm": [
-        34.79,
-        -34.79
+        34.75,
+        -34.75
       ],
-      "minimum_motor_clearance_mm": 1.6668914534640118
+      "minimum_motor_clearance_mm": 1.2259306339823723
     }
   ],
-  "pcb_bottom_to_motor_rear_mm": 9.5,
-  "nominal_magnet_to_die_mm": 2.894,
+  "pcb_bottom_to_motor_rear_mm": 10,
+  "encoder_hardware_modeled": false,
+  "encoder_fit_verified": false,
+  "encoder_status": "Unresolved for ordered single-shaft motor",
   "errors": [],
-  "scope": "Nominal component-mesh and motor-post collision screen. Adapter/holder drawings are proposals; no strength, tolerance, physical-fit or magnetic-field qualification."
+  "scope": "Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification."
 }

@@ -5,6 +5,15 @@ import { readFile, writeFile } from 'node:fs/promises'
 export const rmsCurrent = (scaler, cs, shunt) =>
   (scaler === 0 ? 256 : scaler) / 256 * (cs + 1) / 32 * 0.325 / shunt / Math.SQRT2
 
+// Unknown rotor inertia must remain unknown; treating null as zero would
+// incorrectly remove kinetic energy from the braking review.
+export function rotorKineticEnergy(inertia, rpm) {
+  if (inertia === null) return null
+  if (!Number.isFinite(inertia) || inertia <= 0 || !Number.isFinite(rpm) || rpm < 0)
+    throw new Error('Invalid rotor inertia or speed')
+  return 0.5 * inertia * (2 * Math.PI * rpm / 60) ** 2
+}
+
 export function inductanceHenries(value) {
   if (typeof value === 'number' && Number.isFinite(value) && value > 0) return value
   const match = typeof value === 'string' && value.match(/^([\d.]+)\s*(n|u|µ|m)?H$/)
@@ -63,12 +72,17 @@ export function operatingErrors({ vsaOnMotorBus, brakeOn, motorCutoff, vsaMaximu
 
 export async function audit() {
   const paths = ['index.circuit.tsx', 'dist/index/circuit.json', 'docs/design-manifest.json',
-    'hardware-contract.json', 'firmware/include/tmc5160_config.h',
+    'hardware-contract.json', 'docs/motor-data.json', 'firmware/include/tmc5160_config.h',
     'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', 'scripts/power-audit.mjs']
   const bytes = Object.fromEntries(await Promise.all(paths.map(async p => [p, await readFile(p)])))
   const circuit = JSON.parse(bytes['dist/index/circuit.json'])
   const parts = Object.fromEntries(circuit.filter(p => p.type === 'source_component').map(p => [p.name, p]))
   const contract = JSON.parse(bytes['hardware-contract.json'])
+  const motor = JSON.parse(bytes['docs/motor-data.json'])
+  if (motor.motor !== contract.rated_targets.motor) throw new Error('Motor data does not match the selected motor')
+  for (const field of ['phase_resistance_20c_ohm', 'phase_inductance_h']) {
+    if (!Number.isFinite(motor[field]) || motor[field] <= 0) throw new Error(`Missing motor ${field}`)
+  }
   const part = name => {
     if (!parts[name]) throw new Error(`Missing source component ${name}`)
     return parts[name]
@@ -178,9 +192,9 @@ export async function audit() {
       slew_capacitance_initial_tolerance_fraction: 0.1,
       capacitor_dc_bias_and_temperature_included: false,
       motor_model: contract.rated_targets.motor,
-      motor_phase_resistance_20c_ohm: 0.45,
-      motor_phase_inductance_h: 0.0045,
-      motor_rotor_inertia_kg_m2: 0.00027,
+      motor_phase_resistance_20c_ohm: motor.phase_resistance_20c_ohm,
+      motor_phase_inductance_h: motor.phase_inductance_h,
+      motor_rotor_inertia_kg_m2: motor.rotor_inertia_kg_m2,
       external_load_inertia: null,
       motor_rpm_and_stop_time: null,
       mosfet_hot_resistance_multiplier: 2,
@@ -205,7 +219,9 @@ export async function audit() {
         note: 'Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions.' },
       current: { target_rms_a: target, sine_peak_a: target*Math.SQRT2, programmed_rms_a: programmed,
         sensitivity_min_rms_a: programmed*0.95/1.01, sensitivity_max_rms_a: programmed*1.05/0.99,
-        note: 'TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance.' },
+        motor_rated_phase_a: motor.phase_current_a, motor_qualified_driver_rms_a: motor.qualified_driver_rms_a,
+        motor_rating_note: motor.current_rating_basis,
+        note: 'Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance.' },
       dissipation_w: { regulation_shunt_cycle_upper_bound_each: target**2*rs,
         regulation_shunt_held_peak_upper_bound_each: 2*target**2*rs,
         phase_telemetry_shunt_cycle_each: target**2*telemetryShunt,
@@ -213,7 +229,7 @@ export async function audit() {
         eight_bridge_mosfets_conduction_25c_max_rds_total: 4*target**2*0.0151,
         eight_bridge_mosfets_conduction_hot_sensitivity_total: 4*target**2*0.0151*2,
         efuse_at_nominal_limit_and_125c_max_ron: ilim.formula_nominal_a**2*0.053,
-        two_motor_windings_20c: 2*target**2*0.45,
+        two_motor_windings_20c: 2*target**2*motor.phase_resistance_20c_ohm,
         note: 'Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep.' },
       inrush: { capacitance_f: bulk, stored_energy_at_48v_j: 0.5*bulk*48**2,
         charge_to_48v_c: bulk*48, nominal_ramp_ms: 48/slew.nominal*1000,
@@ -224,8 +240,8 @@ export async function audit() {
         note: 'No-load linear ramp model; thermally regulated startup, MLCC bias and additional loads alter the ramp. Verify eFuse SOA and PGOOD timing.' },
       regeneration: { bulk_energy_48_to_53v_j: 0.5*bulk*(53**2-48**2),
         bulk_energy_48_to_53v_min_cap_j: 0.5*bulk*0.8*(53**2-48**2),
-        winding_energy_nominal_sine_quadrature_j: 0.0045*target**2,
-        rotor_only_energy_j: Object.fromEntries([100,500,1000,2000].map(rpm => [rpm, 0.5*0.00027*(2*Math.PI*rpm/60)**2])),
+        winding_energy_nominal_sine_quadrature_j: motor.phase_inductance_h*target**2,
+        rotor_only_energy_j: Object.fromEntries([100,500,1000,2000].map(rpm => [rpm, rotorKineticEnergy(motor.rotor_inertia_kg_m2,rpm)])),
         brake_nominal_at_53v: { ohm:10,current_a:5.3,power_w:53**2/10 },
         brake_at_55v_and_minus_2_percent_resistance: { current_a:55/9.8,power_w:55**2/9.8 },
         continuous_281w_resistor_case_to_ambient_max_c_per_w_at_50c: (85-50)/(53**2/10),
@@ -237,7 +253,7 @@ export async function audit() {
     },
     errors,
     outstanding: ['Measured VSA ripple and VS transient margin', 'Measured brake/cutoff tolerance coordination',
-      'PD source/cable 2x eFuse pulse coordination', 'Actual motor/load/speed/ambient/mechanics confirmation',
+      'PD source/cable 2x eFuse pulse coordination', 'Ordered motor current convention, rotor/load inertia, speed, ambient and mechanics qualification',
       'TI-generated EEPROM image and approved configuration identity', 'Fabricator stack-up/impedance/filled-via approval',
       'Assembled-board current, thermal, USB, brake and fault measurements'],
     sources: {
@@ -249,7 +265,7 @@ export async function audit() {
       driver_inductor: 'https://www.bourns.com/docs/product-datasheets/srp7050ta.pdf',
       comparator: 'https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=6',
       brake: 'https://www.vishay.com/docs/50052/lps300.pdf',
-      motor: 'https://www.analog.com/media/en/technical-documentation/data-sheets/qsh8618_datasheet_rev1.08.pdf',
+      motor: motor.document,
     },
   }
   return report

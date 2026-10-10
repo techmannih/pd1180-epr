@@ -1,23 +1,23 @@
 import { assembly } from "@tscircuit/core"
 import { PD1180EPR } from "./index.circuit"
-import { QSH8618_MOTOR_GLB, MOTOR_FIXTURE_GLB, MOTOR_REAR_Z } from "./imports/MotorAssemblyCad"
+import { MOTOR_GLB, MOTOR_FIXTURE_GLB, MOTOR_REAR_Z } from "./imports/MotorAssemblyCad"
 
-/** Bare QSH8618-96 fit study; custom adapter and encoder parts remain proposals. */
+/** Ordered 34HS31-6004S1 fit study; adapter unqualified, encoder attachment unresolved. */
 export default () => (
-  <assembly.device name="QSH8618_controller_fit">
+  <assembly.device name="ordered_motor_controller_fit">
     <PD1180EPR />
     <assembly.subassembly
-      name="QSH8618_96_motor"
-      displayName="Exact bare QSH8618-96 STEP"
+      name="ordered_motor"
+      displayName="Ordered STEPPERONLINE 34HS31-6004S1 STEP"
       cadModel={{
-        glbUrl: QSH8618_MOTOR_GLB,
+        glbUrl: MOTOR_GLB,
         modelUnitToMmScale: 1,
         positionOffset: { x: 0, y: 0, z: MOTOR_REAR_Z },
       }}
     />
     <assembly.subassembly
-      name="adapter_and_encoder_proposal"
-      displayName="Adapter, fasteners and encoder — CAD proposal"
+      name="adapter_proposal"
+      displayName="Adapter and fasteners — CAD proposal; encoder unresolved"
       cadModel={{ glbUrl: MOTOR_FIXTURE_GLB, modelUnitToMmScale: 1 }}
     />
   </assembly.device>

@@ -73,7 +73,7 @@ Blank devices, a programmed-but-motion-locked image, a USB-only demo, or an asse
 
 The EPR charger, EPR cable, motor, shaft magnet, external braking resistor/heatsink and bus terminators are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 
-The exact bare QSH8618-96 CAD is available in `motor-assembly.circuit.tsx` through `assembly.subassembly`. The selected bare motor lacks matching rear PCB threads; use the proposed front-flange-supported adapter only after its mechanical review. [Motor assembly](motor-assembly.md) records screw clearances, the 9.5 mm rear stack, top-side encoder holder/magnet proposal and unresolved release gates. Do not treat the PD86 mounting-template match as proof of a direct bare-motor fit.
+The exact ordered STEPPERONLINE 34HS31-6004S1 CAD is available in `motor-assembly.circuit.tsx` through `assembly.subassembly`. Direct rear mounting and rotating-shaft access are not established. [Motor assembly](motor-assembly.md) records the proposed front-flange-supported adapter, 10 mm nominal motor-to-PCB gap, screw clearances and unresolved encoder attachment. Approve the shared front interface, tolerances and support strength before fabrication. The former QSH-specific magnet/holder proposal is withdrawn. Do not treat the PD86 mounting-template match as proof of fit to this motor.
 
 ## Imported-part corrections
 

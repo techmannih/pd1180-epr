@@ -49,6 +49,7 @@ for (const path of standards.release.zip_files) {
         if (createHash('sha256').update(await zip.file(name).async('nodebuffer')).digest('hex') !== hash) errors.push(`${path}: ${name} hash mismatch`)
       }
     }
+    if (path.endsWith('34hs31-6004s1-assembly-proposal.zip') && !zip.file('34hs31-6004s1-assembly-proposal.glb')) errors.push(`${path}: ordered motor assembly is missing`)
     if (path.endsWith('-glb.zip') && !zip.file('pd1180-epr.glb')) errors.push(`${path}: pd1180-epr.glb is missing`)
   } catch (error) {
     errors.push(`${path}: invalid ZIP (${error.message})`)

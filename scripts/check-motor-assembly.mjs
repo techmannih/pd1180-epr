@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
+import JSZip from 'jszip'
 
 // Nominal CAD collision screen; manufacturing tolerances and magnetic performance
 // remain separate qualification gates in engineering/mechanical/assembly.json.
@@ -59,7 +60,7 @@ function radialClearance(mesh,x,y,bottom,top,radius) {
   return best
 }
 const boardPath=process.argv[2]||'dist/release/3d.glb'
-const board=await glb(boardPath),motor=await glb('engineering/mechanical/qsh8618-96.glb')
+const board=await glb(boardPath),motor=await glb(spec.motor.glb)
 function meshBounds(meshes) {
   const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity]
   for(const mesh of meshes) for(const tri of mesh.triangles) for(const p of tri) for(let k=0;k<3;k++) {
@@ -74,8 +75,8 @@ if(Math.abs(fixtureCadBounds.max[2]-(contract.fabrication.finished_thickness_mm/
 let assemblyAlignment=null
 if(process.argv[3]) {
   const assembled=await glb(process.argv[3])
-  const motorNode=assembled.meshes.find(m=>m.name==='QSH8618_96_motor')
-  const fixtureNode=assembled.meshes.find(m=>m.name==='adapter_and_encoder_proposal')
+  const motorNode=assembled.meshes.find(m=>m.name==='ordered_motor')
+  const fixtureNode=assembled.meshes.find(m=>m.name==='adapter_proposal')
   if(!motorNode||!fixtureNode) throw new Error('Assembly export is missing the motor or fixture')
   const motorBounds=meshBounds([motorNode]),fixtureBounds=meshBounds([fixtureNode])
   const rear=-contract.fabrication.finished_thickness_mm/2-spec.mount.pcb_bottom_to_motor_rear_mm
@@ -85,7 +86,8 @@ if(process.argv[3]) {
 }
 // Runtime motor asset is in tscircuit CAD axes (Z height); display meshes are Y-up.
 for (const mesh of motor.meshes) mesh.triangles = mesh.triangles.map(tri => tri.map(([x,y,z]) => [x,z,y]))
-if(sha(await readFile(spec.motor.step))!==spec.motor.sha256) errors.push('Motor STEP hash changed')
+const sourceArchive=await JSZip.loadAsync(await readFile(spec.motor.step_archive),{checkCRC32:true})
+if(sha(await sourceArchive.file(spec.motor.step).async('nodebuffer'))!==spec.motor.sha256) errors.push('Motor STEP hash changed')
 const top=contract.fabrication.finished_thickness_mm/2
 const source=JSON.parse(await readFile('dist/index/circuit.json'))
 const refs=new Set(source.filter(r=>r.type==='source_component').map(r=>r.name))
@@ -97,15 +99,12 @@ const fasteners=contract.mechanical.mounting_holes.map(h=>{
   return {hole:h.name,nearest:nearest.map(v=>({...v,clearance_mm:Number(v.clearance_mm.toFixed(4))}))}
 })
 // Exclude only the intentional support-post contact at the flange back face.
-const posts=spec.motor.front_hole_xy_mm.map(([x,y])=>({axis_mm:[x,y],minimum_motor_clearance_mm:Math.min(...motor.meshes.map(m=>radialClearance(m,x,y,spec.motor.front_flange_back_step_x_mm-spec.motor.rear_face_step_x_mm+.001,spec.mount.motor_rear_to_adapter_bottom_mm,spec.mount.long_post_outer_diameter_mm/2)))}))
+const posts=spec.motor.front_hole_xy_mm.map(([x,y])=>({axis_mm:[x,y],minimum_motor_clearance_mm:Math.min(...motor.meshes.map(m=>radialClearance(m,x,y,spec.motor.front_flange_back_step_z_mm-spec.motor.rear_face_step_z_mm+.001,spec.mount.motor_rear_to_adapter_bottom_mm,spec.mount.long_post_outer_diameter_mm/2)))}))
 for(const p of posts) if(p.minimum_motor_clearance_mm<.5) errors.push('Front-flange support post collides with motor or has less than 0.5 mm nominal clearance')
-const calculatedPostLength=spec.motor.rear_face_step_x_mm-spec.motor.front_flange_back_step_x_mm+spec.mount.motor_rear_to_adapter_bottom_mm
+const calculatedPostLength=spec.motor.rear_face_step_z_mm-spec.motor.front_flange_back_step_z_mm+spec.mount.motor_rear_to_adapter_bottom_mm
 const stack=spec.mount.motor_rear_to_adapter_bottom_mm+spec.mount.adapter_thickness_mm+spec.mount.adapter_to_pcb_bottom_mm
-const dieGap=spec.encoder.magnet_top_to_pcb_bottom_mm+contract.fabrication.finished_thickness_mm+spec.encoder.nominal_package_height_mm-spec.encoder.estimated_package_top_to_die_mm
 if(Math.abs(calculatedPostLength-spec.mount.long_post_length_mm)>1e-6 || Math.abs(stack-spec.mount.pcb_bottom_to_motor_rear_mm)>1e-6) errors.push('Mechanical axial stack is inconsistent')
-if(Math.abs(dieGap-spec.encoder.nominal_magnet_to_die_mm)>1e-6) errors.push('Encoder die-gap calculation is inconsistent')
-if(spec.encoder.holder_retainer_thickness_mm>=spec.encoder.magnet_top_to_pcb_bottom_mm) errors.push('Encoder retainer touches PCB')
-const report={board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,nominal_magnet_to_die_mm:dieGap,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter/holder drawings are proposals; no strength, tolerance, physical-fit or magnetic-field qualification.'}
+const report={board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
 await writeFile('docs/motor-assembly-check.json',JSON.stringify(report,null,2)+'\n')
 console.log(JSON.stringify(report,null,2))
 if(errors.length) process.exitCode=1

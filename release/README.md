@@ -6,7 +6,7 @@
 
 The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: power-eco-cad-verified-order-held. See `engineering/reviewer-eco.json` and `docs/step-dir-hardware-review.md`.
 
-The bare QSH8618-96 needs a custom adapter; the supplied motor CAD has no matching rear PCB threads. See `motor-assembly.md` for the proposed mount and encoder stack, nominal screw clearances and unresolved mechanical gates.
+The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Rear case fasteners are not approved accessory threads; a front-flange adapter is proposed and encoder attachment remains unresolved. See `motor-assembly.md` for the proposed mount and ordered-motor limitations, nominal screw clearances and unresolved mechanical gates.
 
 The included `pd1180-commissioning-firmware.zip` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 

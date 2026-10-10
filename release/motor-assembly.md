@@ -1,22 +1,24 @@
-# Bare QSH8618-96 motor assembly
+# Ordered 34HS31-6004S1 motor assembly
 
-The user selected the **bare QSH8618-96** on 2026-10-11. The supplied `QSH8618-96_STEP.step` is preserved as `engineering/mechanical/QSH8618-96.step`, SHA-256 `3884aa3811c2fac5b409e7dbb8d588325d0def3b163c96486b6738f05efa3986`. The ordered motor suffix and rear geometry must match this file.
+The user confirmed the ordered motor on 2026-10-11: **STEPPERONLINE 34HS31-6004S1**, Amazon ASIN **B091C83HWF**. This supersedes the earlier QSH8618 selection. The manufacturer specifies 4.8 Nm holding torque, 6 A/phase, an 86 mm frame, 80 mm maximum body length and a single Ø14 × 32 mm front shaft. The phase-current rating is not an approved driver RMS setting.
 
-**This motor does not have the four rear PCB mounting threads shown in the PD86-1180 assembly.** The PCB holes still match the TMCM/PD86 reference pattern, but that does not establish a direct fit to this bare motor. Do not drill the motor, use its side grooves as screw holes, or remove its case tie bolts.
+The [manufacturer STEP](https://files.omc-stepperonline.com/34HS31-6004S1.STEP) is preserved inside `engineering/mechanical/34HS31-6004S1-manufacturer.zip` as `34HS31-6004S1.step`, SHA-256 `675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19`. The [datasheet](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) is preserved in the same archive; `motor-data.json` records its hash and electrical inputs. The superseded QSH files remain available in Git history. The archive preserves the original manufacturer bytes while keeping the cloud import within its payload limit.
 
-Open `motor-assembly.circuit.tsx` for the exact motor and PCB with an adapter/encoder proposal. It uses `assembly.subassembly` with the supplied STEP converted to GLB; it does not substitute a NEMA 23 primitive. Orange cylinders represent the maximum screw-head/washer envelopes. Custom adapter parts are **proposals, not fabrication-released hardware**.
+**Direct rear PCB mounting and rear encoder attachment are not established.** The documented mounting interface is the front flange. Existing rear case fasteners are not approved accessory threads; do not remove them or drill the motor based on this preview.
 
-![Bare motor assembly proposal](../previews/motor-assembly-corrected.png)
+Open `motor-assembly.circuit.tsx` for the exact motor and PCB component placement with an adapter proposal. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Orange cylinders represent maximum screw-head/washer envelopes. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. The separate `release/circuit.json` remains the authoritative routed PCB view; the assembly preview is a mechanical fit study.
 
-![Rear-face clearance, side view](../previews/motor-assembly-side.png)
+![Ordered motor assembly proposal](../previews/motor-assembly-corrected.png)
 
-The exported assembly is checked for the PCB/motor axis mapping and the 9.5 mm minimum axial gap. `release/qsh8618-assembly-proposal.zip` contains the same assembly as an offline GLB.
+![Motor-to-board spacing, side view](../previews/motor-assembly-side.png)
+
+The exported assembly is checked for the PCB/motor axis mapping and **10 mm nominal** rear-face-to-PCB-bottom gap. `release/34hs31-6004s1-assembly-proposal.zip` contains the same assembly as an offline GLB.
 
 ## PCB screw clearance
 
-Q12, Q13, R97, C5, R2 and SW1 were repositioned on top. Q13 moved with Q12 to preserve their courtyard clearance. The local gate traces and drain thermal vias moved with the MOSFETs; affected connections were rerouted. The four mounting holes, schematic and netlist remain unchanged.
+The earlier PCB clearance correction moved Q12, Q13, R97, C5, R2 and SW1 on top and repaired their affected copper. This motor-model update does not change the PCB, schematic, mounting-hole positions or routing.
 
-The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm height above the PCB, with at least 0.5 mm nominal component clearance. Latest exact results are in `docs/motor-assembly-check.json`.
+The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm height above the PCB, with at least 0.5 mm nominal component clearance. Latest exact results are in `motor-assembly-check.json`.
 
 | Hole | Nearest fitted component | Nominal head clearance |
 |---|---|---:|
@@ -25,48 +27,41 @@ The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm h
 | H3 | R2 | 0.88 mm |
 | H4 | SW1 | 1.38 mm |
 
-These are imported CAD-body clearances, not a tolerance study. Use M4 hardware whose **complete head and washer remain within Ø8 mm**. A larger washer is outside this check. Check assembly tolerances and tool access before mechanical release.
+These are imported CAD-body clearances, not a tolerance study. Use M4 hardware whose complete head and washer remain within Ø8 mm. A larger washer is outside this check. Assembly tolerances and tool access remain to be qualified.
 
 ## Proposed adapter
 
-The supplied motor CAD has four Ø5.5 mm holes at `(±34.79, ±34.79)` mm in its front flange. Four support posts run from the flange's rear face to a separate plate behind the motor. This avoids inventing rear threads or modifying the motor case.
+The drawing specifies four Ø6.5 mm front holes on a **69.6 ±0.2 mm square**. The STEP centers are `(±34.75, ±34.75)` mm, giving 69.5 mm pitch, within that tolerance. Front flange surfaces lie at STEP Z = 0 and 10 mm. The rear face lies at Z = 79.5 mm; the drawing permits an 80 mm maximum body. Four proposed supports run from the rear of the front flange to a separate plate behind the motor.
 
 | Item | Nominal proposal |
 |---|---|
-| Support posts | Four, Ø8 mm × 88 mm; M5 fastening interfaces |
+| Support posts | Four, Ø8 mm × 70.5 mm; M5 fastening interfaces |
 | Rear plate | 85.9 × 85.9 × 3 mm, 6061-T6 aluminum; Ø20 mm center aperture |
-| Motor-to-plate gap | 0.5 mm |
+| Motor-to-plate gap | 1 mm at the CAD body length |
 | PCB standoffs | Four, M4, Ø8 mm × 6 mm |
-| PCB bottom above motor rear | 0.5 + 3 + 6 = **9.5 mm** |
+| PCB bottom above motor rear | 1 + 3 + 6 = **10 mm** nominal |
 | PCB hole pattern carried by plate | H1 `(38.4,−24.5)`, H2 `(24.5,38.4)`, H3 `(−38.4,24.5)`, H4 `(−24.5,−38.4)` mm |
 | Plate clearance holes | Ø5.5 mm at motor posts; Ø4.5 mm at PCB standoffs |
 
-The mesh screen finds approximately **1.67 mm** minimum nominal clearance between the proposed long posts and the motor case. The exact transform is STEP shaft axis X → assembly vertical Z, STEP Y/Z → PCB X/Y, with the motor rear face at PCB Z = −10.3 mm. PCB mid-plane is Z = 0.
+The mesh screen finds approximately **1.23 mm** minimum nominal clearance between the proposed long posts and the motor case. STEP X/Y map to PCB X/Y; STEP Z is the shaft axis. The motor rear face is placed at PCB Z = −10.8 mm; PCB mid-plane is Z = 0 and its bottom is Z = −0.8 mm. The shaft points away from the board. The board lies parallel to the motor rear face.
 
-The posts share the motor's **front machine-mounting interface**. The machine bracket, bolt engagement, post-end design, tolerances, tightening torque, bending/vibration strength and heat transfer are not defined by the motor STEP. They require mechanical approval before fabrication. The GLB shows nominal envelopes, not detailed threads, an approved fastener kit or a load qualification.
+At the drawing's 80 mm maximum body length, the nominal 1 mm plate gap becomes 0.5 mm before any other tolerances. The full tolerance stack is unresolved. The posts also share the motor's **front machine-mounting interface**; this has not been approved for the intended machine. Bracket clearance, bolt engagement, post-end design, tolerances, tightening torque, stiffness/vibration, cable strain relief and heat transfer require mechanical review. The GLB shows nominal envelopes, not detailed threads or a qualified fastener kit.
 
-## Top-side encoder proposal
+## Encoder attachment unresolved
 
-U18 remains on top, centered on the shaft. In the supplied bare-motor CAD, the rear shaft end is recessed 3.5 mm from the rear case face. Its Ø3 mm × 5 mm central bore is visible; **the STEP does not establish an M3 thread**.
+U18 remains on top, centered on the motor axis. The ordered motor STEP is a single fused mesh. It shows a rear central recess, but does not identify a rotating shaft end, usable pilot bore/thread or approved magnet attachment. A visible rear recess is not proof that a holder can be attached to the rotor.
 
-A proposed nonmagnetic PEEK extension holder locates on that bore with a Ø2.8 × 3 mm pilot and seats on the shaft end. Its outer diameter is 10.5 mm, inside the motor's Ø17 mm rear opening. It carries a diametrically magnetized Ø8 × 6 mm magnet in a Ø8.1 mm pocket with a 0.2 mm retainer and Ø6 mm retainer aperture. The solid stem below the magnet is 6.5 mm long. Bonding, tolerance, retention and speed limits require engineering qualification; no adhesive or supplier part has been approved.
+The old QSH-specific pilot, PEEK holder, magnet dimensions and working-gap calculation are withdrawn. Manufacturer confirmation of rear rotating-shaft access is required before defining a new attachment. If there is no usable rear shaft, an alternative encoder coupling or motor variant must be agreed; the current preview does not resolve that choice.
 
-- Magnet top to PCB bottom: **0.5 mm** nominal.
-- Retainer to PCB bottom: **0.3 mm** nominal.
-- PCB thickness: **1.6 mm**.
-- Estimated magnet-to-sensor-die distance: `0.5 + 1.6 + 1.1 − 0.306 = 2.894 mm`, using nominal package dimensions. This is not a measured die position.
-- Candidate magnet grade: N48SH. Final supplier must guarantee the AS5047P's required **35–70 mT** perpendicular field at the die's 1.1 mm sensing radius over the complete gap/temperature tolerance range. Dimensions and grade alone do not establish this.
-- Preliminary concentricity target: ≤0.1 mm radial offset; axial runout target ≤0.05 mm. Validate field diagnostics and angular error at temperature and speed.
-
-The stock PD86 magnet is not automatically suitable: its reference arrangement has the sensor on the underside, whereas this PCB intentionally keeps U18 on top. Do not enable closed-loop operation based on this CAD preview.
+Any eventual magnet must meet the AS5047P field, alignment and temperature requirements through the top-side sensor stack. Retention, runout and magnetic performance need qualification. Closed-loop operation remains unqualified.
 
 ## Before mechanical release
 
-1. Confirm the purchased bare-motor variant against the supplied rear-shaft CAD.
-2. Approve use of the front machine-mount holes and finalize the bracket/post fasteners and tolerances.
-3. Select a stocked magnet with guaranteed field data for the proposed stack.
-4. Qualify holder retention, runout, spin/vibration, tool access and complete physical fit.
+1. Approve use of the front machine-mount holes and finalize bracket/post fasteners, tolerances and cable access.
+2. Establish rear rotating-shaft access and an appropriate encoder attachment, or agree an alternative arrangement.
+3. Select and qualify the magnet/holder, field and working gap if magnetic feedback is retained.
+4. Qualify physical fit, tool access, support strength, retention and vibration.
 
-These mechanical gates are in addition to the existing PD-image, firmware and powered-test holds. They are not cleared by zero PCB DRC.
+Motor identity is now confirmed. Driver current/hold settings, rotor/load inertia, speed and stopping duty remain unqualified. These mechanical and operating gates are additional to the existing PD-image, firmware and powered-test holds.
 
-References: [ADI QSH8618](https://www.analog.com/en/products/qsh8618.html), [PD-1180 reference assembly](https://www.analog.com/media/en/technical-documentation/user-guides/pd-1180_hardware_manual_hw1.10_rev1.05.pdf), [AS5047P datasheet](https://look.ams-osram.com/m/d05ee39221f9857/original/AS5047P-DS000324.pdf), [tscircuit subassembly](https://docs.tscircuit.com/elements/assembly-subassembly).
+References: [ordered Amazon listing](https://www.amazon.com/dp/B091C83HWF), [manufacturer product](https://www.omc-stepperonline.com/s-series-nema-34-stepper-motor-4-8nm-679-87oz-in-14mm-key-way-shaft-1m-cable-34hs31-6004s1), [AS5047P datasheet](https://look.ams-osram.com/m/d05ee39221f9857/original/AS5047P-DS000324.pdf), [tscircuit subassembly](https://docs.tscircuit.com/elements/assembly-subassembly).

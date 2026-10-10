@@ -1,19 +1,44 @@
 {
-  "motor": "QSH8618-96-55-700",
-  "document": "https://www.analog.com/media/en/technical-documentation/data-sheets/qsh8618_datasheet_rev1.08.pdf",
-  "phase_current_a": 5.5,
-  "holding_torque_nm": 7.0,
-  "rotor_inertia_g_cm2": 2700,
-  "rotor_inertia_kg_m2": 0.00027,
+  "motor": "34HS31-6004S1",
+  "manufacturer": "STEPPERONLINE",
+  "order_confirmed_by_user": "2026-10-11",
+  "asin": "B091C83HWF",
+  "ordered_url": "https://www.amazon.com/dp/B091C83HWF",
+  "product_url": "https://www.omc-stepperonline.com/s-series-nema-34-stepper-motor-4-8nm-679-87oz-in-14mm-key-way-shaft-1m-cable-34hs31-6004s1",
+  "document": "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf",
+  "document_local": "engineering/mechanical/34HS31-6004S1-manufacturer.zip#34HS31-6004S1-datasheet.pdf",
+  "document_sha256": "695575d44f4ba799b5ab5d27480b8f9c0afcda4269f716f5bee120dfc8d49fd7",
+  "phase_current_a": 6.0,
+  "current_rating_basis": "Manufacturer states AMPS/PHASE, not an approved TMC5160 RMS setpoint. Resolve waveform, peak/hold current and thermal limits before motor-enabled firmware.",
+  "qualified_driver_rms_a": null,
+  "holding_torque_nm": 4.8,
+  "phase_resistance_20c_ohm": 0.48,
+  "phase_resistance_tolerance_fraction": 0.1,
+  "phase_inductance_h": 0.0035,
+  "phase_inductance_tolerance_fraction": 0.2,
+  "rotor_inertia_g_cm2": null,
+  "rotor_inertia_kg_m2": null,
+  "rotor_inertia_note": "Not specified in the cited manufacturer sheet; QSH8618 inertia must not be reused.",
   "step_angle_degrees": 1.8,
+  "frame_mm": [
+    86,
+    86
+  ],
+  "body_length_max_mm": 80,
+  "shaft_diameter_mm": 14,
+  "shaft_length_mm": 32,
+  "shaft_type": "single shaft",
+  "front_hole_pitch_drawing_mm": 69.6,
+  "front_hole_pitch_tolerance_mm": 0.2,
+  "front_hole_diameter_mm": 6.5,
+  "wiring": {
+    "A+": "black",
+    "A-": "green",
+    "B+": "red",
+    "B-": "blue"
+  },
   "external_load_inertia_kg_m2": null,
   "operating_rpm_limit": null,
-  "note": "Illustrative RPM values are calculations, not a guaranteed torque/speed operating envelope. Rotor-only energy excludes the attached load and magnetic energy.",
-  "rotor_energy_examples": [
-    { "rpm": 100, "rotor_energy_j": 0.0148 },
-    { "rpm": 500, "rotor_energy_j": 0.3701 },
-    { "rpm": 1000, "rotor_energy_j": 1.4804 },
-    { "rpm": 2000, "rotor_energy_j": 5.9218 }
-  ],
-  "bulk_energy_48_to_53_v_j": 0.23735
+  "rotor_energy_examples": null,
+  "note": "Ordered motor supersedes the QSH8618 reference. No motor-operation, magnetic or mechanical qualification is implied."
 }
