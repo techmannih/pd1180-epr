@@ -3,7 +3,7 @@ C1850273,C1850281,TPS26631RGET,VQFN-24(4x4),23,available,"TPS26631RGET: same RGE
 C114200,C2876530,CSD19534Q5AT,VSONP-8(5x6),69,available,"CSD19534Q5AT: same MOSFET/package, alternate tape quantity."
 C2862245,,,,,no-drop-in-selected,"No verified drop-in replacement is approved for the TPS26750 POWER_PATH_EN buffer. CSD17484F4 is the exact TI EVM device; any substitute needs a guaranteed low RDS(on) at 2.5-3.6 V, the same PicoStar-3 pinout/land pattern, leakage review and a PCB recheck."
 C105188,C83561,TLV3201AIDBVT,SOT-23-5,43,available,"TLV3201AIDBVT: same DBV package, alternate reel quantity."
-C23892,C41283,TL431BIDBZR,SOT-23-3,240513,available,"TL431BIDBZR: tighter reference tolerance; same pinout/package, verify complete electrical limits."
+C187836,C60864,ADR3425ARJZ-R7,SOT-23-6,4592,available,"2.5 V reference with matching six-pin force/sense/enable pinout: 1 GND_FORCE, 2 GND_SENSE, 3 ENABLE, 4 VIN, 5 OUT_SENSE, 6 OUT_FORCE. Input range 2.7-5.5 V accommodates the 3.3 V rail. Initial accuracy 0.1% and drift 8 ppm/C are worse than REF3425; brake/OVP tolerance calculations, output-capacitor stability and startup must be requalified before substitution. No automatic substitution or current threshold approval."
 C15846,C143435,MAX3232ESE+,SOIC-16,3502,available,MAX3232ESE+: same device/package; shipping format differs.
 C79991,C7561,M24512-WMN6TP,SOIC-8,2567,available,"M24512-WMN6TP: higher minimum supply than R version; 3.3 V application is suitable, verify write timing and temperature grade."
 C2985721,C2903495,HoJLR2512-3W-33mR-1%,2512,4980,available,"HoJLR2512 33 mOhm 3 W 1%: compare pad geometry, pulse rating and TCR; not an automatic substitute."

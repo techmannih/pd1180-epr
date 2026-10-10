@@ -5,7 +5,8 @@ import { promisify } from 'node:util'
 // JLCSearch fuzzy results must never stand in for an exact LCSC part match.
 const run = promisify(execFile)
 const manifest = JSON.parse(await readFile(new URL('../docs/design-manifest.json', import.meta.url)))
-const quantity = Number(process.env.BOARD_QUANTITY || 1)
+const order = JSON.parse(await readFile(new URL('../release/order-settings.json', import.meta.url)))
+const quantity = Number(process.env.BOARD_QUANTITY || order.pcb.quantity)
 if (!Number.isInteger(quantity) || quantity < 1) throw new Error('BOARD_QUANTITY must be a positive integer')
 const grouped = new Map()
 for (const part of manifest.parts) {

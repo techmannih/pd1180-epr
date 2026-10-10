@@ -50,7 +50,7 @@ const available = stock.parts.filter(part => part.status === 'available').length
 const packageMatched = stock.parts.filter(part => part.package_match === true).length
 lines.push(
   '',
-  `All ${available} selected PCB part types (${manifest.parts.length} placements) had sufficient reported stock for one board at the timestamp above, and all ${packageMatched} supplier package names matched the pinned manifest expectation.`,
+  `All ${available} selected PCB part types (${manifest.parts.length} placements) had sufficient reported stock for ${stock.board_quantity} boards at the timestamp above, and all ${packageMatched} supplier package names matched the pinned manifest expectation.`,
   '',
   '## Substitution policy',
   '',

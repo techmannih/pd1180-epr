@@ -13,7 +13,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Schematic
 
 - [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
-- [ ] All 15 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
+- [ ] All 16 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
 - [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
 - [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 carries EPR CC/VBUS, J10 carries USB 2.0 D+/D− with independent CC pulldowns, and only J10 VBUS feeds the attach divider. U22 retains motor-bus brake backup.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
@@ -29,7 +29,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] TMP102 at 0x48 inhibits RUN_SAFE through U33. Verify ALERT polarity, 70 °C cutoff, 55 °C re-arm threshold, missing-sensor behavior and board-to-junction temperature correlation on hardware.
 - [ ] DATA USB alone powers MCU diagnostics through TPS2553, TLV755 and the second LM66100 OR. Verify board peripherals stay unpowered, chip-select/I²C pins do not backfeed, and suspend/resume invalidates old telemetry. Measure startup, pre-configuration, configured and suspend current; test both-source transitions and reverse current before claiming USB power compliance.
 - [ ] Phase-current programming, RMS/peak convention, shunt dissipation and current-sense polarity are consistent.
-- [ ] Regeneration energy, 60 V driver margin and external brake resistor/heatsink pulse/average ratings are reviewed for the actual load.
+- [ ] Regeneration energy, the 55 V VS operating limit and 10–13 V external VSA/12VOUT supply range and external brake resistor/heatsink pulse/average ratings are reviewed for the actual load.
 - [ ] Connector, cable, via and copper current ratings are checked at enclosure temperature.
 - [ ] USB detach, hard reset, cable fault, 3.3 V collapse and residual VMOTOR energy all lead to a safe state.
 
@@ -40,6 +40,8 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
+- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 69 via-in-pad locations with filled/capped processing.
+- [ ] All 46 final native top-layer IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.

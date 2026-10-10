@@ -185,7 +185,7 @@ test('ADS1115 receives independent input-current and motor-bus voltage telemetry
 })
 test('brake dissipates downstream energy without feeding the USB supply',()=>{
   on('J3',1,'VMOTOR');on('J3',2,'BRAKE_RETURN');on('Q16',5,'BRAKE_RETURN');on('Q16',1,'GND')
-  on('U13',3,'BRAKE_SENSE');on('U13',4,'VREF_2V495');on('U15',6,'BRAKE_ON')
+  on('U13',3,'BRAKE_SENSE');on('U13',4,'VREF_2V5');on('U15',6,'BRAKE_ON')
 })
 test('MCU pin mapping retains EPR-safe USB attach sense, data, FDCAN and SWD without sharing their pins',()=>{
   for(const [pin,net]of [[19,'USB_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK'],[38,'CAN_RX'],[39,'CAN_TX']])on('U16',pin,net)
@@ -195,8 +195,9 @@ test('analytical limits have margin below the 5-A USB input contract',()=>{
   const limit=18000/4020
   expect(limit).toBeCloseTo(4.4776,3)
   expect(limit*1.07/0.99+0.1).toBeLessThan(5)
-  const brakeOn=2.495*(1+200000/10000+200000/1e6)
-  const brakeOff=brakeOn-3.3*200000/1e6
+  const brakeTop=comp('R60').resistance+comp('R61').resistance
+  const brakeOn=2.5*(1+brakeTop/comp('R62').resistance+brakeTop/comp('R63').resistance)
+  const brakeOff=brakeOn-3.3*brakeTop/comp('R63').resistance
   expect(brakeOn).toBeGreaterThan(50.4)
   expect(brakeOn).toBeLessThan(54)
   expect(brakeOff).toBeLessThan(brakeOn)
@@ -209,7 +210,7 @@ test('LM66100 status interlock keeps the dual 3.3-V ORing output continuous',()=
   on('R111',1,'V3V3_PD');on('R111',2,'LOGIC_OR_PRIORITY')
   on('U24',3,'LOGIC_OR_PRIORITY');on('U24',5,'GND')
   for(const name of ['U23','U24']){on(name,6,'V3V3');on(name,2,'GND')}
-  on('U13',5,'V3V3');on('U14',5,'V3V3');on('R59',1,'V3V3')
+  on('U13',5,'V3V3');on('U14',5,'V3V3');on('U12',3,'V3V3');on('U12',4,'V3V3');on('C93',1,'V3V3')
 })
 
 test('USB DATA has independent CC, attach sense and ESD while VMOTOR retains brake backup',()=>{

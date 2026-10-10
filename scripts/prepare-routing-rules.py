@@ -23,6 +23,8 @@ POWER_NETS = (
     "SENSE_A",
     "SENSE_B",
     "BRAKE_RETURN",
+    "TMC_12V",
+    "DRIVER_BUCK_SW",
 )
 
 
@@ -65,11 +67,14 @@ def main() -> None:
     if not match:
         raise SystemExit("kicad_default class not found")
 
-    names = re.findall(r"[A-Za-z0-9_]+", match.group("names"))
-    missing = sorted(set(POWER_NETS) - set(names))
+    # Native parity boards include quoted names such as
+    # "unconnected-(U34-PG-Pad4)". Preserve each identifier as one DSN token.
+    names = re.findall(r'"(?:\\.|[^"\\])*"|[^\s]+', match.group("names"))
+    unquoted = lambda name: json.loads(name) if name.startswith('"') else name
+    missing = sorted(set(POWER_NETS) - {unquoted(name) for name in names})
     if missing:
         raise SystemExit(f"power nets missing from default class: {missing}")
-    default_names = [name for name in names if name not in POWER_NETS]
+    default_names = [name for name in names if unquoted(name) not in POWER_NETS]
     default_body = re.sub(r"\(width (?:150|200)\)", "(width 150)", match.group("body"))
     default_body = re.sub(r"\(clearance (?:90|100|200)\)", f"(clearance {clearance_um})", default_body)
     default_class = (

@@ -73,7 +73,8 @@
     "check:operating-mode": "bun scripts/check-operating-mode.mjs",
     "check:critical-copper": "bun scripts/check-critical-copper.mjs",
     "check:review": "bun scripts/check-release.mjs --review && bun run check:delivery",
-    "check:usb-reference": "bun scripts/check-usb-reference.mjs"
+    "check:usb-reference": "bun scripts/check-usb-reference.mjs",
+    "check:power-audit": "bun scripts/power-audit.mjs --check"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

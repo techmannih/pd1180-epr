@@ -2,12 +2,12 @@
   (version 20250114)
   (generator circuit-json-to-kicad)
   (generator_version 0.0.1)
-  (uuid c4caf5c4-41c9-418a-b2c4-d804eabe40fb)
+  (uuid b6c581fd-72eb-4007-bda9-61cf4350c1df)
   (paper
     A1
   )
   (lib_symbols
-    (symbol "Device:U_TL431AIDBZR"
+    (symbol "Device:U_REF3425IDBVR"
       (pin_numbers
         (hide no)
       )
@@ -35,7 +35,7 @@
           )
         )
       )
-      (property "Footprint" "tscircuit:TL431AIDBZR"
+      (property "Footprint" "tscircuit:REF3425IDBVR"
         (id 2)
         (at -1.778 0 90)
         (effects
@@ -85,14 +85,14 @@
           (hide yes)
         )
       )
-      (symbol "U_TL431AIDBZR_0_1"
+      (symbol "U_REF3425IDBVR_0_1"
         (polyline
           (pts
-            (xy -17.549999999999997 -4.500000000000001)
-            (xy 17.549999999999997 -4.500000000000001)
-            (xy 17.549999999999997 4.500000000000001)
-            (xy -17.549999999999997 4.500000000000001)
-            (xy -17.549999999999997 -4.500000000000001)
+            (xy -16.8 -6)
+            (xy 16.8 -6)
+            (xy 16.8 6)
+            (xy -16.8 6)
+            (xy -16.8 -6)
           )
           (stroke
             (width 0.254)
@@ -103,11 +103,11 @@
           )
         )
       )
-      (symbol "U_TL431AIDBZR_1_1"
+      (symbol "U_REF3425IDBVR_1_1"
         (pin passive line
-          (at -24.13 1.27 0)
+          (at -22.86 2.54 0)
           (length 6)
-          (name "CATHODE"
+          (name "GND_F"
             (effects
               (font
                 (size 1.27 1.27)
@@ -123,9 +123,9 @@
           )
         )
         (pin passive line
-          (at -24.13 -1.27 0)
+          (at -22.86 0 0)
           (length 6)
-          (name "REF"
+          (name "GND_S"
             (effects
               (font
                 (size 1.27 1.27)
@@ -141,9 +141,9 @@
           )
         )
         (pin passive line
-          (at 24.13 0 180)
+          (at -22.86 -2.54 0)
           (length 6)
-          (name "ANODE"
+          (name "ENABLE"
             (effects
               (font
                 (size 1.27 1.27)
@@ -158,10 +158,64 @@
             )
           )
         )
+        (pin passive line
+          (at 22.86 -2.54 180)
+          (length 6)
+          (name "IN"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "4"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 22.86 0 180)
+          (length 6)
+          (name "OUT_S"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 22.86 2.54 180)
+          (length 6)
+          (name "OUT_F"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "6"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
       )
       (embedded_fonts no)
     )
-    (symbol "Device:boxresistor_down"
+    (symbol "Device:capacitor_down"
       (pin_numbers
         (hide yes)
       )
@@ -171,7 +225,7 @@
       (exclude_from_sim no)
       (in_bom yes)
       (on_board yes)
-      (property "Reference" "R"
+      (property "Reference" "C"
         (id 0)
         (at 2.032 0 90)
         (effects
@@ -180,7 +234,7 @@
           )
         )
       )
-      (property "Value" "R"
+      (property "Value" "C"
         (id 1)
         (at 0 0 90)
         (effects
@@ -189,7 +243,7 @@
           )
         )
       )
-      (property "Footprint" "tscircuit:resistor_res0603"
+      (property "Footprint" "tscircuit:capacitor_cap0603"
         (id 2)
         (at -1.778 0 90)
         (effects
@@ -209,7 +263,7 @@
           (hide yes)
         )
       )
-      (property "Description" "Resistor"
+      (property "Description" "Capacitor"
         (id 4)
         (at 0 0 0)
         (effects
@@ -219,7 +273,7 @@
           (hide yes)
         )
       )
-      (property "ki_keywords" "R res resistor"
+      (property "ki_keywords" "C cap capacitor"
         (id 5)
         (at 0 0 0)
         (effects
@@ -229,7 +283,7 @@
           (hide yes)
         )
       )
-      (property "ki_fp_filters" "R_*"
+      (property "ki_fp_filters" "C_*"
         (id 6)
         (at 0 0 0)
         (effects
@@ -239,24 +293,11 @@
           (hide yes)
         )
       )
-      (symbol "boxresistor_down_0_1"
+      (symbol "capacitor_down_0_1"
         (polyline
           (pts
-            (xy -2.755455298081545e-16 4.5)
-            (xy -1.8367865017011576e-16 2.9997)
-          )
-          (stroke
-            (width 0.18)
-            (type default)
-          )
-          (fill
-            (type none)
-          )
-        )
-        (polyline
-          (pts
-            (xy 1.8367865017011576e-16 -2.9997)
             (xy 2.755455298081545e-16 -4.5)
+            (xy 5.510910596163089e-17 -0.8999999999999999)
           )
           (stroke
             (width 0.18)
@@ -268,11 +309,34 @@
         )
         (polyline
           (pts
-            (xy 1.1996999999999998 2.9997)
-            (xy 1.1997000000000002 -2.9997)
-            (xy -1.1996999999999998 -2.9997)
-            (xy -1.1997000000000002 2.9997)
-            (xy 1.1996999999999998 2.9997)
+            (xy -5.510910596163089e-17 0.8999999999999999)
+            (xy -2.755455298081545e-16 4.5)
+          )
+          (stroke
+            (width 0.18)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.4003 -0.8999999999999999)
+            (xy -2.4003 -0.9)
+          )
+          (stroke
+            (width 0.18)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.4003 0.9)
+            (xy -2.4003 0.8999999999999999)
           )
           (stroke
             (width 0.18)
@@ -283,7 +347,179 @@
           )
         )
       )
-      (symbol "boxresistor_down_1_1"
+      (symbol "capacitor_down_1_1"
+        (pin passive line
+          (at 0 5.08 270)
+          (length 0.01)
+          (name "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 0 -5.08 90)
+          (length 0.01)
+          (name "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "2"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Device:capacitor_down"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "C"
+        (id 0)
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "C"
+        (id 1)
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" "tscircuit:capacitor_cap0603"
+        (id 2)
+        (at -1.778 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Datasheet" "~"
+        (id 3)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Description" "Capacitor"
+        (id 4)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_keywords" "C cap capacitor"
+        (id 5)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_fp_filters" "C_*"
+        (id 6)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (symbol "capacitor_down_0_1"
+        (polyline
+          (pts
+            (xy 2.755455298081545e-16 -4.5)
+            (xy 5.510910596163089e-17 -0.8999999999999999)
+          )
+          (stroke
+            (width 0.18)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -5.510910596163089e-17 0.8999999999999999)
+            (xy -2.755455298081545e-16 4.5)
+          )
+          (stroke
+            (width 0.18)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.4003 -0.8999999999999999)
+            (xy -2.4003 -0.9)
+          )
+          (stroke
+            (width 0.18)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy 2.4003 0.9)
+            (xy -2.4003 0.8999999999999999)
+          )
+          (stroke
+            (width 0.18)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "capacitor_down_1_1"
         (pin passive line
           (at 0 5.08 270)
           (length 0.01)
@@ -5025,6 +5261,390 @@
       )
       (embedded_fonts no)
     )
+    (symbol "Custom:rail_down"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "r"
+        (id 0)
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "r"
+        (id 1)
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (id 2)
+        (at -1.778 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Datasheet" "~"
+        (id 3)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Description" "Ground net label"
+        (id 4)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_keywords" "ground net"
+        (id 5)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_fp_filters" ""
+        (id 6)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (symbol "rail_down_0_1"
+        (polyline
+          (pts
+            (xy -1.7999999999999998 -1.3499999999999996)
+            (xy 1.7999999999999998 -1.35)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -8.266365894244634e-17 -1.3499999999999999)
+            (xy 8.266365894244634e-17 1.3499999999999999)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "rail_down_1_1"
+        (pin passive line
+          (at 0 1.27 270)
+          (length 0.01)
+          (name "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Custom:rail_down"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "r"
+        (id 0)
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "r"
+        (id 1)
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (id 2)
+        (at -1.778 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Datasheet" "~"
+        (id 3)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Description" "Ground net label"
+        (id 4)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_keywords" "ground net"
+        (id 5)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_fp_filters" ""
+        (id 6)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (symbol "rail_down_0_1"
+        (polyline
+          (pts
+            (xy -1.7999999999999998 -1.3499999999999996)
+            (xy 1.7999999999999998 -1.35)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -8.266365894244634e-17 -1.3499999999999999)
+            (xy 8.266365894244634e-17 1.3499999999999999)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "rail_down_1_1"
+        (pin passive line
+          (at 0 1.27 270)
+          (length 0.01)
+          (name "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
+    (symbol "Custom:rail_up"
+      (pin_numbers
+        (hide yes)
+      )
+      (pin_names
+        (offset 0)
+      )
+      (exclude_from_sim no)
+      (in_bom yes)
+      (on_board yes)
+      (property "Reference" "r"
+        (id 0)
+        (at 2.032 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Value" "r"
+        (id 1)
+        (at 0 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+        )
+      )
+      (property "Footprint" ""
+        (id 2)
+        (at -1.778 0 90)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Datasheet" "~"
+        (id 3)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "Description" "Power net label"
+        (id 4)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_keywords" "power net"
+        (id 5)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (property "ki_fp_filters" ""
+        (id 6)
+        (at 0 0 0)
+        (effects
+          (font
+            (size 1.27 1.27)
+          )
+          (hide yes)
+        )
+      )
+      (symbol "rail_up_0_1"
+        (polyline
+          (pts
+            (xy 1.7999999999999998 1.35)
+            (xy -1.7999999999999998 1.3499999999999996)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+        (polyline
+          (pts
+            (xy -8.266365894244634e-17 1.3499999999999999)
+            (xy 8.266365894244634e-17 -1.3499999999999999)
+          )
+          (stroke
+            (width 0.254)
+            (type default)
+          )
+          (fill
+            (type none)
+          )
+        )
+      )
+      (symbol "rail_up_1_1"
+        (pin passive line
+          (at 0 -1.27 90)
+          (length 0.01)
+          (name "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "1"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+      )
+      (embedded_fonts no)
+    )
     (symbol "Custom:rail_up"
       (pin_numbers
         (hide yes)
@@ -6179,18 +6799,18 @@
     )
   )
   (symbol
-    (lib_id "Device:U_TL431AIDBZR")
-    (at 248.92000000000002 166.37 0)
+    (lib_id "Device:U_REF3425IDBVR")
+    (at 247.65 166.37 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 7eec5fe2-eb54-4346-9f96-0fe37a59ab0d)
+    (uuid 25d99cfa-0d65-4dae-8027-b1b599429613)
     (fields_autoplaced no)
     (property "Reference" "U12"
       (id 0)
-      (at 231.95 160.27500000000003 0)
+      (at 230.83249999999998 158.77500000000003 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -6198,9 +6818,9 @@
         (justify left)
       )
     )
-    (property "Value" "TL431AIDBZR"
+    (property "Value" "REF3425IDBVR"
       (id 1)
-      (at 231.95 173.175 0)
+      (at 230.83249999999998 174.675 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -6208,9 +6828,9 @@
         (justify left)
       )
     )
-    (property "Footprint" "TL431AIDBZR"
+    (property "Footprint" "REF3425IDBVR"
       (id 2)
-      (at 247.722 166.72500000000002 90)
+      (at 245.8545 166.72500000000002 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -6220,7 +6840,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 249.5 166.72500000000002 0)
+      (at 247.6325 166.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -6230,7 +6850,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 249.5 166.72500000000002 0)
+      (at 247.6325 166.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -6239,17 +6859,26 @@
       )
     )
     (pin "1"
-      (uuid d3003e15-a9fe-425d-877b-f9f1a7198176)
+      (uuid af0edd34-4ac5-42d8-95dc-cd30955afe6e)
     )
     (pin "2"
-      (uuid 2cab4e50-5f20-441b-8789-fb39aee266fe)
+      (uuid e3efab76-36d9-4a5d-87b0-a1b2630c233d)
     )
     (pin "3"
-      (uuid aa9f6f41-0cd2-4a15-84fd-4f81f0293e6f)
+      (uuid 2330b7dc-7da4-4ce8-a1f6-dfbcef758efc)
+    )
+    (pin "4"
+      (uuid b50e2c67-4308-4a12-ae72-126c440e24b1)
+    )
+    (pin "5"
+      (uuid 0f52c626-689b-4ffe-b9c6-d0eb4f7a15a9)
+    )
+    (pin "6"
+      (uuid dd22df21-b131-4dca-a632-e126eedf0919)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
           (reference "U12")
           (unit 1)
         )
@@ -6257,1098 +6886,18 @@
     )
   )
   (symbol
-    (lib_id "Device:boxresistor_down")
-    (at 294.64 137.16 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 2d31a9f2-d2ee-471d-a2f6-340a714c95bc)
-    (fields_autoplaced no)
-    (property "Reference" "R59"
-      (id 0)
-      (at 296.9 134.32500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "220Ω"
-      (id 1)
-      (at 296.9 139.12500000000003 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 292.722 136.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 294.5 136.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 294.5 136.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid b1fad4f4-24da-48ed-8c35-dbf409105efc)
-    )
-    (pin "2"
-      (uuid 7af8328b-c2fc-462f-ad25-7b68893b8db8)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R59")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:U_TLV3201AIDBVR")
-    (at 504.19 166.37 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid e2f52d92-f98f-41fa-bfa0-9f1fe11e4a76)
-    (fields_autoplaced no)
-    (property "Reference" "U13"
-      (id 0)
-      (at 494 158.77500000000003 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "TLV3201AIDBVR"
-      (id 1)
-      (at 494 174.675 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "TLV3201AIDBVR"
-      (id 2)
-      (at 502.722 166.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 504.5 166.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 504.5 166.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 518a8ce1-534b-4b5d-b097-df6818469eb6)
-    )
-    (pin "2"
-      (uuid 9edc7b38-0c88-42fc-b025-aa6f5101f550)
-    )
-    (pin "3"
-      (uuid 9774e2f5-620d-443e-833b-3fb8bf915a1b)
-    )
-    (pin "4"
-      (uuid f588909f-7091-43a4-bafc-66235b7a1ec4)
-    )
-    (pin "5"
-      (uuid d691473f-057d-4c38-bc8e-3b9e8177eb11)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "U13")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_down")
-    (at 574.04 106.68 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 6a4f75ca-40a5-4f40-bd30-11cfe26e94d7)
-    (fields_autoplaced no)
-    (property "Reference" "R60"
-      (id 0)
-      (at 576.95 104.32500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "180kΩ"
-      (id 1)
-      (at 576.95 109.12500000000003 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 572.7719999999999 106.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 574.55 106.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 574.55 106.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid f0636f45-e4b8-4146-920e-8347dc7d6afc)
-    )
-    (pin "2"
-      (uuid 91d68c23-d7f7-4bb6-8c17-48db607e44c1)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R60")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_right")
-    (at 607.0600000000001 106.68 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 718cf0b0-47dd-4219-892f-4bb3496290f0)
-    (fields_autoplaced no)
-    (property "Reference" "R61"
-      (id 0)
-      (at 606.95 104.32500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify bottom)
-      )
-    )
-    (property "Value" "20kΩ"
-      (id 1)
-      (at 606.95 109.12500000000003 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify top)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 605.172 106.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 606.95 106.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 606.95 106.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 4ad8dbf4-62c7-46d2-9284-5ede9c387a8f)
-    )
-    (pin "2"
-      (uuid 978c2096-17c8-4efb-9595-c3df4c09d264)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R61")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_down")
-    (at 624.84 106.68 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 0a04ddff-705c-43e8-86b9-d87d81768a30)
-    (fields_autoplaced no)
-    (property "Reference" "R62"
-      (id 0)
-      (at 626.9 104.32500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "10kΩ"
-      (id 1)
-      (at 626.9 109.12500000000003 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 622.722 106.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 624.5 106.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 624.5 106.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid e6f98dac-d760-4a0c-a4d7-5b4b5a33426c)
-    )
-    (pin "2"
-      (uuid 2f47bd03-f83f-40d8-a48b-5302805b5ada)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R62")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_right")
-    (at 579.12 133.35 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 7c98f4c2-957b-4bc5-a526-2eb99fd6d90e)
-    (fields_autoplaced no)
-    (property "Reference" "R63"
-      (id 0)
-      (at 579.5 131.32500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify bottom)
-      )
-    )
-    (property "Value" "1MΩ"
-      (id 1)
-      (at 579.5 136.12500000000003 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify top)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 577.722 133.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 579.5 133.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 579.5 133.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 3c8d5275-ef90-4366-8986-04b9fcdf0188)
-    )
-    (pin "2"
-      (uuid 8ead4964-85db-46f7-ba84-dd00b0b7fae9)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R63")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
     (lib_id "Device:capacitor_down")
-    (at 549.91 151.13 0)
+    (at 529.59 151.13 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 63362a84-8b32-4380-8213-397bfc92202a)
+    (uuid 6ad1cdc6-c81e-4dce-ac56-56ccedde31fa)
     (fields_autoplaced no)
-    (property "Reference" "C40"
+    (property "Reference" "C93"
       (id 0)
-      (at 551.2249999999999 148.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left bottom)
-      )
-    )
-    (property "Value" "100nF"
-      (id 1)
-      (at 551.2249999999999 154.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left top)
-      )
-    )
-    (property "Footprint" "capacitor_cap0603"
-      (id 2)
-      (at 547.722 151.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 549.5 151.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 549.5 151.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 6bfd800a-eb88-41b7-bcd6-0cbfccef1912)
-    )
-    (pin "2"
-      (uuid 43891eb9-35a2-4228-b61e-68f8b932b96d)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "C40")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:U_TLV3201AIDBVR")
-    (at 248.92000000000002 346.71 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 81a3d36f-8aa0-4bc8-b571-bc67d6adca87)
-    (fields_autoplaced no)
-    (property "Reference" "U14"
-      (id 0)
-      (at 239 338.775 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "TLV3201AIDBVR"
-      (id 1)
-      (at 239 354.67500000000007 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "TLV3201AIDBVR"
-      (id 2)
-      (at 247.722 346.725 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 249.5 346.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 249.5 346.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 5dbe9bff-041d-458b-9579-4a551a1d33b0)
-    )
-    (pin "2"
-      (uuid b8b77866-0e66-4afd-9ad0-5ab2797f2bfe)
-    )
-    (pin "3"
-      (uuid 212b077a-9df6-4894-a84b-ad51f66bf9a5)
-    )
-    (pin "4"
-      (uuid 71ca39a2-6954-4508-9290-41bf42d5fb9e)
-    )
-    (pin "5"
-      (uuid 0619990b-0729-4e11-93e7-f0bc49d3371a)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "U14")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_down")
-    (at 320.04 287.02 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 0c1c2ebb-9810-4e4d-ad78-041e73dd9386)
-    (fields_autoplaced no)
-    (property "Reference" "R64"
-      (id 0)
-      (at 322.1 284.32500000000005 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "430kΩ"
-      (id 1)
-      (at 322.1 289.125 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 317.92199999999997 286.725 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 319.7 286.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 319.7 286.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 88b178eb-3632-4b3c-91b6-f9926142b5b2)
-    )
-    (pin "2"
-      (uuid de88f07d-41fb-481a-81ea-ba242d55b4a6)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R64")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_right")
-    (at 369.57 287.02 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid df89d26e-73a9-434e-83ed-5cdb614644ad)
-    (fields_autoplaced no)
-    (property "Reference" "R65"
-      (id 0)
-      (at 369.5 284.32500000000005 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify bottom)
-      )
-    )
-    (property "Value" "20kΩ"
-      (id 1)
-      (at 369.5 289.125 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify top)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 367.722 286.725 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 369.5 286.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 369.5 286.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 0632a6a4-6836-4af7-bdd2-02946734f1ac)
-    )
-    (pin "2"
-      (uuid f8387106-ac6b-4f94-8c57-bb103495bdc2)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R65")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_down")
-    (at 414.02 287.02 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid d99a9ffd-febf-45f9-903c-43779a4534bd)
-    (fields_autoplaced no)
-    (property "Reference" "R66"
-      (id 0)
-      (at 416.9 284.32500000000005 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "1kΩ"
-      (id 1)
-      (at 416.9 289.125 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 412.722 286.725 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 414.5 286.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 414.5 286.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 016f9a58-0f7b-428c-b518-ef68e0da95db)
-    )
-    (pin "2"
-      (uuid 62b97b07-ecea-4557-ac90-d877e33c8784)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R66")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:boxresistor_down")
-    (at 328.93 313.69 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 0abac984-3ca6-4202-b648-b3e8d2298551)
-    (fields_autoplaced no)
-    (property "Reference" "R67"
-      (id 0)
-      (at 331.85 311.32500000000005 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "100kΩ"
-      (id 1)
-      (at 331.85 316.125 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "resistor_res0603"
-      (id 2)
-      (at 327.67199999999997 313.725 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 329.45 313.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 329.45 313.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid dacb9815-6661-427e-b562-b7b8059e691f)
-    )
-    (pin "2"
-      (uuid bb84fbe9-07f6-4158-8cb2-23d6a44fbfc2)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R67")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:capacitor_down")
-    (at 567.69 151.13 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid e7f7576b-9fe3-43c6-8c61-4052c31154e0)
-    (fields_autoplaced no)
-    (property "Reference" "C41"
-      (id 0)
-      (at 569.2249999999999 148.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left bottom)
-      )
-    )
-    (property "Value" "100nF"
-      (id 1)
-      (at 569.2249999999999 154.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left top)
-      )
-    )
-    (property "Footprint" "capacitor_cap0603"
-      (id 2)
-      (at 565.722 151.72500000000002 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 567.5 151.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 567.5 151.72500000000002 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 95c31da9-93b7-469c-8c4f-db8893117418)
-    )
-    (pin "2"
-      (uuid 8faa548d-c41b-4760-be82-c00a4809692e)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "C41")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:U_UCC27511DBVR")
-    (at 504.19 346.71 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid ad1ef478-83c3-468c-ab24-6cc165a8b0b6)
-    (fields_autoplaced no)
-    (property "Reference" "U15"
-      (id 0)
-      (at 495.5 338.775 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Value" "UCC27511DBVR"
-      (id 1)
-      (at 495.5 354.67500000000007 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (justify left)
-      )
-    )
-    (property "Footprint" "UCC27511DBVR"
-      (id 2)
-      (at 502.722 346.725 90)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Datasheet" "~"
-      (id 3)
-      (at 504.5 346.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (property "Description" ""
-      (id 4)
-      (at 504.5 346.725 0)
-      (effects
-        (font
-          (size 1.27 1.27)
-        )
-        (hide yes)
-      )
-    )
-    (pin "1"
-      (uuid 55650d9b-d615-4941-bf62-ead1a1f38059)
-    )
-    (pin "2"
-      (uuid 405619ba-fa63-460a-965a-858757716b22)
-    )
-    (pin "3"
-      (uuid b0d28378-05a8-45d4-ae53-70d7cc0e12a1)
-    )
-    (pin "4"
-      (uuid cd6a027d-d001-4637-921e-ed2975da72af)
-    )
-    (pin "5"
-      (uuid c78d31ab-9fd8-4c52-9c6d-1c349757a923)
-    )
-    (pin "6"
-      (uuid 5ea94287-6156-4618-8177-5c48f0b82864)
-    )
-    (instances
-      (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "U15")
-          (unit 1)
-        )
-      )
-    )
-  )
-  (symbol
-    (lib_id "Device:capacitor_down")
-    (at 579.12 287.02 0)
-    (unit 1)
-    (exclude_from_sim no)
-    (in_bom yes)
-    (on_board yes)
-    (dnp no)
-    (uuid 262ed549-64a6-497e-9ecc-a072a0430abf)
-    (fields_autoplaced no)
-    (property "Reference" "C42"
-      (id 0)
-      (at 581.2249999999999 283.725 0)
+      (at 531.3575 148.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7358,7 +6907,7 @@
     )
     (property "Value" "1uF"
       (id 1)
-      (at 581.2249999999999 289.725 0)
+      (at 531.3575 154.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7368,7 +6917,7 @@
     )
     (property "Footprint" "capacitor_cap0603"
       (id 2)
-      (at 577.722 286.725 90)
+      (at 527.8544999999999 151.72500000000002 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -7378,7 +6927,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 579.5 286.725 0)
+      (at 529.6324999999999 151.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7388,7 +6937,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 579.5 286.725 0)
+      (at 529.6324999999999 151.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7397,15 +6946,15 @@
       )
     )
     (pin "1"
-      (uuid ed68ee89-d78e-49ea-bdfd-3549c1032c7d)
+      (uuid 2e193bc2-09fc-4074-bf02-f2f3beb9d58d)
     )
     (pin "2"
-      (uuid bb1e19af-51d6-4e63-8cdb-50f9df87504e)
+      (uuid fe12c17e-5096-404f-86e5-2b2b672228a8)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "C42")
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "C93")
           (unit 1)
         )
       )
@@ -7413,17 +6962,17 @@
   )
   (symbol
     (lib_id "Device:capacitor_down")
-    (at 596.9 287.02 0)
+    (at 345.44 137.16 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 7a8cc3e9-bec6-4802-8155-a7bd3fb43a0d)
+    (uuid bd56b64c-b03c-4961-b7a9-614b180d6ce8)
     (fields_autoplaced no)
-    (property "Reference" "C43"
+    (property "Reference" "C94"
       (id 0)
-      (at 599.2249999999999 283.725 0)
+      (at 346.8575 133.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7433,7 +6982,7 @@
     )
     (property "Value" "100nF"
       (id 1)
-      (at 599.2249999999999 289.725 0)
+      (at 346.8575 139.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7443,7 +6992,7 @@
     )
     (property "Footprint" "capacitor_cap0603"
       (id 2)
-      (at 595.722 286.725 90)
+      (at 343.3545 136.72500000000002 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -7453,7 +7002,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 597.5 286.725 0)
+      (at 345.1325 136.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7463,7 +7012,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 597.5 286.725 0)
+      (at 345.1325 136.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7472,15 +7021,174 @@
       )
     )
     (pin "1"
-      (uuid e4584e21-5907-4daa-a575-9f125f3168ad)
+      (uuid 22d68b19-4d4f-4c17-a8fa-358b5905822f)
     )
     (pin "2"
-      (uuid 5cc8cfa2-06fa-4dd2-9154-395661a61659)
+      (uuid fc1b9ab6-855b-4179-a22d-31e685e91cf5)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "C43")
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "C94")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:U_TLV3201AIDBVR")
+    (at 502.92 166.37 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 489e8fa1-3c90-46aa-bac7-d1365eddf143)
+    (fields_autoplaced no)
+    (property "Reference" "U13"
+      (id 0)
+      (at 492.1325 158.77500000000003 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "TLV3201AIDBVR"
+      (id 1)
+      (at 492.1325 174.675 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "TLV3201AIDBVR"
+      (id 2)
+      (at 500.8545 166.72500000000002 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 502.6325 166.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 502.6325 166.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 1b413621-b6be-448a-9573-687752f24f2d)
+    )
+    (pin "2"
+      (uuid defc8fa8-e7fd-456d-b9a2-905b7f4602f7)
+    )
+    (pin "3"
+      (uuid dd077407-e5bb-4c27-b63d-b5173228c6bf)
+    )
+    (pin "4"
+      (uuid 748309c2-c1df-484b-acce-507d1978fcb8)
+    )
+    (pin "5"
+      (uuid 0d1581d1-a17d-4cc2-963d-a438120c433e)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "U13")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_down")
+    (at 572.77 106.68 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid a470e60c-059a-48b6-998f-f4f92aa9a8da)
+    (fields_autoplaced no)
+    (property "Reference" "R60"
+      (id 0)
+      (at 575.0825 104.32500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "180kΩ"
+      (id 1)
+      (at 575.0825 109.12500000000003 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 570.9045 106.72500000000002 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 572.6825 106.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 572.6825 106.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid ecfdca0b-9f6f-4eec-a027-efef9d9a27f2)
+    )
+    (pin "2"
+      (uuid 0897993a-6cf8-4f9a-b205-5d3307db510f)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R60")
           (unit 1)
         )
       )
@@ -7488,17 +7196,17 @@
   )
   (symbol
     (lib_id "Device:boxresistor_right")
-    (at 459.74 398.78000000000003 0)
+    (at 604.52 106.68 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid b8b6e9cf-c01b-4058-a731-36c5eb304f06)
+    (uuid 9c120c95-98c4-456b-bc74-25a3163b4f40)
     (fields_autoplaced no)
-    (property "Reference" "R68"
+    (property "Reference" "R61"
       (id 0)
-      (at 459.5 396.82500000000005 0)
+      (at 605.0825 104.32500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7506,9 +7214,9 @@
         (justify bottom)
       )
     )
-    (property "Value" "10Ω"
+    (property "Value" "16kΩ"
       (id 1)
-      (at 459.5 401.625 0)
+      (at 605.0825 109.12500000000003 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7518,7 +7226,7 @@
     )
     (property "Footprint" "resistor_res0603"
       (id 2)
-      (at 457.722 399.225 90)
+      (at 603.3045 106.72500000000002 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -7528,7 +7236,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 459.5 399.225 0)
+      (at 605.0825 106.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7538,7 +7246,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 459.5 399.225 0)
+      (at 605.0825 106.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7547,15 +7255,15 @@
       )
     )
     (pin "1"
-      (uuid 38d38e8a-0ba0-4f96-b2b0-c51fe46b4435)
+      (uuid 2a195afb-f119-448f-ab12-07ec0d47c380)
     )
     (pin "2"
-      (uuid 353b05d1-5e5e-4ce9-b42d-eb99b62066ee)
+      (uuid f34b04dc-c6c1-4927-83fa-bf1a7e513b99)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
-          (reference "R68")
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R61")
           (unit 1)
         )
       )
@@ -7563,17 +7271,17 @@
   )
   (symbol
     (lib_id "Device:boxresistor_down")
-    (at 527.05 398.78000000000003 0)
+    (at 622.3 106.68 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid da1ebfc9-86fc-427f-b7d6-c2e92468d83d)
+    (uuid b6b4b439-2313-4c86-86e9-de0f16c9b71d)
     (fields_autoplaced no)
-    (property "Reference" "R69"
+    (property "Reference" "R62"
       (id 0)
-      (at 529.4 396.82500000000005 0)
+      (at 625.0325 104.32500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7581,9 +7289,9 @@
         (justify left)
       )
     )
-    (property "Value" "100kΩ"
+    (property "Value" "10kΩ"
       (id 1)
-      (at 529.4 401.625 0)
+      (at 625.0325 109.12500000000003 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7593,7 +7301,7 @@
     )
     (property "Footprint" "resistor_res0603"
       (id 2)
-      (at 525.222 399.225 90)
+      (at 620.8544999999999 106.72500000000002 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -7603,7 +7311,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 527 399.225 0)
+      (at 622.6324999999999 106.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7613,7 +7321,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 527 399.225 0)
+      (at 622.6324999999999 106.72500000000002 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7622,14 +7330,1010 @@
       )
     )
     (pin "1"
-      (uuid a17c4709-b98b-425c-950e-b2774801782b)
+      (uuid f5753d17-8177-4d0e-af3b-22ab766497a9)
     )
     (pin "2"
-      (uuid 79706191-976e-40a2-9046-ef07826a6f69)
+      (uuid af0c932e-f82b-453d-b0c9-dee27acfccf7)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R62")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_right")
+    (at 577.85 133.35 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid ceccc14d-648f-403b-8d09-60d2dbc10063)
+    (fields_autoplaced no)
+    (property "Reference" "R63"
+      (id 0)
+      (at 577.6324999999999 131.32500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify bottom)
+      )
+    )
+    (property "Value" "1MΩ"
+      (id 1)
+      (at 577.6324999999999 136.12500000000003 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify top)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 575.8544999999999 133.72500000000002 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 577.6324999999999 133.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 577.6324999999999 133.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 452fce80-6a59-46bb-82bc-1bd58c5da0f1)
+    )
+    (pin "2"
+      (uuid 18d43ce4-85d2-4b8d-aa42-e8777bcd6c37)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R63")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:capacitor_down")
+    (at 547.37 151.13 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 69358ed9-e3c6-49e0-ad6b-8cdfb2c3621a)
+    (fields_autoplaced no)
+    (property "Reference" "C40"
+      (id 0)
+      (at 549.3575 148.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Value" "100nF"
+      (id 1)
+      (at 549.3575 154.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left top)
+      )
+    )
+    (property "Footprint" "capacitor_cap0603"
+      (id 2)
+      (at 545.8544999999999 151.72500000000002 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 547.6324999999999 151.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 547.6324999999999 151.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 6bcb55bd-b64c-4b92-bb78-0db1db39d011)
+    )
+    (pin "2"
+      (uuid 801012a7-ba13-4ba4-8ce9-40554e388387)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "C40")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:U_TLV3201AIDBVR")
+    (at 247.65 346.71 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 469b5050-8bc7-4572-a524-4ab0f6dee124)
+    (fields_autoplaced no)
+    (property "Reference" "U14"
+      (id 0)
+      (at 237.1325 338.775 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "TLV3201AIDBVR"
+      (id 1)
+      (at 237.1325 354.67500000000007 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "TLV3201AIDBVR"
+      (id 2)
+      (at 245.8545 346.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 247.6325 346.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 247.6325 346.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid b78dbc3c-04ed-4004-a8ed-d2024a7e1c7b)
+    )
+    (pin "2"
+      (uuid 3b0ecf91-30e9-4c01-8a56-fc2d7e419921)
+    )
+    (pin "3"
+      (uuid f69d7b73-091c-4d70-9d73-8b972912ebae)
+    )
+    (pin "4"
+      (uuid 9ea4a4b8-8512-42f6-8d6c-dca0a09c6ce4)
+    )
+    (pin "5"
+      (uuid c5d8f9d4-14cd-44ea-b567-52e6b6ff0cb0)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "U14")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_down")
+    (at 317.5 287.02 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 2f29cddb-385a-4ae9-979f-71ca8daaf7ab)
+    (fields_autoplaced no)
+    (property "Reference" "R64"
+      (id 0)
+      (at 320.23249999999996 284.32500000000005 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "430kΩ"
+      (id 1)
+      (at 320.23249999999996 289.125 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 316.05449999999996 286.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 317.8325 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 317.8325 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 367384f0-055b-4053-b26e-ed99f517c2b8)
+    )
+    (pin "2"
+      (uuid c8d19322-3f99-4922-83a3-a13060ee554f)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R64")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_right")
+    (at 367.03000000000003 287.02 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid f4815214-a9d9-45a8-9874-0dea581a59a7)
+    (fields_autoplaced no)
+    (property "Reference" "R65"
+      (id 0)
+      (at 367.6325 284.32500000000005 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify bottom)
+      )
+    )
+    (property "Value" "20kΩ"
+      (id 1)
+      (at 367.6325 289.125 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify top)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 365.8545 286.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 367.6325 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 367.6325 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 07a3f0f8-d5cc-4117-8cc7-0763ac756120)
+    )
+    (pin "2"
+      (uuid 21c880c2-2c3c-4e38-a188-ae42277bc6a0)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R65")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_down")
+    (at 412.75 287.02 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 436ec647-8f84-4586-9d22-d327e891408a)
+    (fields_autoplaced no)
+    (property "Reference" "R66"
+      (id 0)
+      (at 415.0325 284.32500000000005 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "1kΩ"
+      (id 1)
+      (at 415.0325 289.125 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 410.8545 286.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 412.6325 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 412.6325 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid eb41eb58-0030-4dc9-9874-86ce2767a246)
+    )
+    (pin "2"
+      (uuid 2e8ef553-f949-4126-9732-f456f9d42269)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R66")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_down")
+    (at 327.66 313.69 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid fd9e5b23-b9c1-4ed2-986c-a960704ed212)
+    (fields_autoplaced no)
+    (property "Reference" "R67"
+      (id 0)
+      (at 329.9825 311.32500000000005 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "100kΩ"
+      (id 1)
+      (at 329.9825 316.125 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 325.80449999999996 313.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 327.5825 313.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 327.5825 313.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid fcb0055e-353d-48bd-a2c5-a7575819ab3b)
+    )
+    (pin "2"
+      (uuid 1bde3266-efb8-459d-adca-910dcc7fe1a0)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R67")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:capacitor_down")
+    (at 565.15 151.13 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 288e0209-3d14-4012-927f-d0dc5fc64d0e)
+    (fields_autoplaced no)
+    (property "Reference" "C41"
+      (id 0)
+      (at 567.3575 148.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Value" "100nF"
+      (id 1)
+      (at 567.3575 154.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left top)
+      )
+    )
+    (property "Footprint" "capacitor_cap0603"
+      (id 2)
+      (at 563.8544999999999 151.72500000000002 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 565.6324999999999 151.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 565.6324999999999 151.72500000000002 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 260c268b-628f-40b9-a5b5-1692a86b09a5)
+    )
+    (pin "2"
+      (uuid 0d90a727-ee59-43eb-b718-a3f07a4175ec)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "C41")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:U_UCC27511DBVR")
+    (at 502.92 346.71 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 0c6c02b6-cd24-442f-b645-d9642af2b747)
+    (fields_autoplaced no)
+    (property "Reference" "U15"
+      (id 0)
+      (at 493.63249999999994 338.775 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "UCC27511DBVR"
+      (id 1)
+      (at 493.63249999999994 354.67500000000007 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "UCC27511DBVR"
+      (id 2)
+      (at 500.8545 346.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 502.6325 346.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 502.6325 346.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 0f9cde1a-8bfb-4679-9802-105abfbd648c)
+    )
+    (pin "2"
+      (uuid b2a89a5d-9b23-41c8-bbbd-561bebf693a2)
+    )
+    (pin "3"
+      (uuid 352d7b18-256e-4411-8acd-7f10efc4b71a)
+    )
+    (pin "4"
+      (uuid d8ce7e94-0987-4a1b-a3a2-cab1934d9a94)
+    )
+    (pin "5"
+      (uuid a13d25c1-11d1-4ecb-b6c5-732046c4aa24)
+    )
+    (pin "6"
+      (uuid d1f5cb8d-f63f-4143-bd64-93a841f95fe1)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "U15")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:capacitor_down")
+    (at 577.85 287.02 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 347be975-6d2b-4c95-8cb6-eb705086e29d)
+    (fields_autoplaced no)
+    (property "Reference" "C42"
+      (id 0)
+      (at 579.3575 283.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Value" "1uF"
+      (id 1)
+      (at 579.3575 289.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left top)
+      )
+    )
+    (property "Footprint" "capacitor_cap0603"
+      (id 2)
+      (at 575.8544999999999 286.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 577.6324999999999 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 577.6324999999999 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid ba686196-8098-4138-9c4c-c8a290308f39)
+    )
+    (pin "2"
+      (uuid 378cf08d-8bd0-4f6b-bab3-b261daaacd49)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "C42")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:capacitor_down")
+    (at 595.63 287.02 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 45dee9fd-c56e-48d0-baa8-f11d2bda7555)
+    (fields_autoplaced no)
+    (property "Reference" "C43"
+      (id 0)
+      (at 597.3575 283.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Value" "100nF"
+      (id 1)
+      (at 597.3575 289.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left top)
+      )
+    )
+    (property "Footprint" "capacitor_cap0603"
+      (id 2)
+      (at 593.8544999999999 286.725 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 595.6324999999999 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 595.6324999999999 286.725 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid f0a914ef-2b83-4629-98dd-508e88fe9a38)
+    )
+    (pin "2"
+      (uuid f27976b3-361d-4af2-89b5-94b85c625bd4)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "C43")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_right")
+    (at 457.2 398.78000000000003 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid 1b887bd9-1bac-4d17-9d39-682ed5847c09)
+    (fields_autoplaced no)
+    (property "Reference" "R68"
+      (id 0)
+      (at 457.6325 396.82500000000005 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify bottom)
+      )
+    )
+    (property "Value" "10Ω"
+      (id 1)
+      (at 457.6325 401.625 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify top)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 455.8545 399.225 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 457.6325 399.225 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 457.6325 399.225 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 4005bfa0-963e-4d32-81ac-775ff7a7d1cd)
+    )
+    (pin "2"
+      (uuid 6d2e9c06-8fe9-4471-b675-13a0d6f0925b)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
+          (reference "R68")
+          (unit 1)
+        )
+      )
+    )
+  )
+  (symbol
+    (lib_id "Device:boxresistor_down")
+    (at 524.51 398.78000000000003 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (uuid abc9d68b-b554-4835-a4c9-f978cf1f57b5)
+    (fields_autoplaced no)
+    (property "Reference" "R69"
+      (id 0)
+      (at 527.5325 396.82500000000005 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Value" "100kΩ"
+      (id 1)
+      (at 527.5325 401.625 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (justify left)
+      )
+    )
+    (property "Footprint" "resistor_res0603"
+      (id 2)
+      (at 523.3544999999999 399.225 90)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Datasheet" "~"
+      (id 3)
+      (at 525.1324999999999 399.225 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (property "Description" ""
+      (id 4)
+      (at 525.1324999999999 399.225 0)
+      (effects
+        (font
+          (size 1.27 1.27)
+        )
+        (hide yes)
+      )
+    )
+    (pin "1"
+      (uuid 098219bf-d6aa-4faf-93eb-2ea433128a8b)
+    )
+    (pin "2"
+      (uuid 802ff71e-50f5-4575-9abc-1c917e2f78f2)
+    )
+    (instances
+      (project ""
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
           (reference "R69")
           (unit 1)
         )
@@ -7638,17 +8342,17 @@
   )
   (symbol
     (lib_id "Device:U_CSD19534Q5A")
-    (at 429.26 436.88 0)
+    (at 427.99 436.88 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 9e4c8909-08b1-4d1b-8fb9-8a53bf9f22fa)
+    (uuid 7f2a8682-29d3-4ee9-a1cb-c229af5e16d5)
     (fields_autoplaced no)
     (property "Reference" "Q16"
       (id 0)
-      (at 419.75 425.77500000000003 0)
+      (at 417.8825 425.77500000000003 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7658,7 +8362,7 @@
     )
     (property "Value" "CSD19534Q5A"
       (id 1)
-      (at 419.75 447.675 0)
+      (at 417.8825 447.675 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7668,7 +8372,7 @@
     )
     (property "Footprint" "CSD19534Q5A"
       (id 2)
-      (at 427.722 436.725 90)
+      (at 425.8545 436.725 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -7678,7 +8382,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 429.5 436.725 0)
+      (at 427.6325 436.725 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7688,7 +8392,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 429.5 436.725 0)
+      (at 427.6325 436.725 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7697,35 +8401,35 @@
       )
     )
     (pin "1"
-      (uuid 543cc80d-a2e5-411c-b828-3867f245a2ad)
+      (uuid 613ee0b1-b0a8-443d-b96f-ed7592f80c04)
     )
     (pin "2"
-      (uuid db6a05ef-8b39-4333-824e-73371e00745e)
+      (uuid fe14bd94-f12d-46b5-bb96-893f831c5397)
     )
     (pin "3"
-      (uuid 1847bdb9-03a9-4557-8256-53c66c92ac4d)
+      (uuid cc1f0513-762b-4418-be66-30000779d800)
     )
     (pin "4"
-      (uuid 4dce6cb0-d2a1-4720-8b0f-b52e4beca24b)
+      (uuid a6a353ec-0949-44bd-91e6-f66c269427f0)
     )
     (pin "5"
-      (uuid 1398f8fc-e6f1-4ea1-a390-17d868f137eb)
+      (uuid 922f0ba5-e83e-4019-a240-b3ce240d7d84)
     )
     (pin "6"
-      (uuid b3ee5dc3-8549-408e-987a-5afede0c5721)
+      (uuid 3947909e-6dc2-409a-8d96-eab1ee2c644b)
     )
     (pin "7"
-      (uuid 56349f4c-bde8-4fd4-8a25-5c063d1a3145)
+      (uuid 23c35302-73f0-4fd4-9ec2-ae4dc0cf242e)
     )
     (pin "8"
-      (uuid fb00b725-fb52-4cbe-b5ed-8692081f0b8e)
+      (uuid 71b701a5-769e-425c-8e75-bb7344e1595e)
     )
     (pin "9"
-      (uuid 7192450e-07d3-4f69-8a96-32a41ea793a8)
+      (uuid 748caadd-b47d-4812-b584-945a80acc075)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
           (reference "Q16")
           (unit 1)
         )
@@ -7734,17 +8438,17 @@
   )
   (symbol
     (lib_id "Device:J_B2P-VH_LF_SN")
-    (at 534.67 467.36 0)
+    (at 532.13 467.36 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 65563cf7-d180-4cb2-9a41-635ff197eedc)
+    (uuid 02e81507-9a62-46eb-8ad4-6844bf6b5b70)
     (fields_autoplaced no)
     (property "Reference" "J3"
       (id 0)
-      (at 545 455.025 0)
+      (at 543.1325 455.025 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7754,7 +8458,7 @@
     )
     (property "Value" "J3"
       (id 1)
-      (at 545 458.025 0)
+      (at 543.1325 458.025 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7764,7 +8468,7 @@
     )
     (property "Footprint" "B2P-VH_LF_SN"
       (id 2)
-      (at 532.722 466.725 90)
+      (at 530.8544999999999 466.725 90)
       (effects
         (font
           (size 1.27 1.27)
@@ -7774,7 +8478,7 @@
     )
     (property "Datasheet" "~"
       (id 3)
-      (at 534.5 466.725 0)
+      (at 532.6324999999999 466.725 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7784,7 +8488,7 @@
     )
     (property "Description" ""
       (id 4)
-      (at 534.5 466.725 0)
+      (at 532.6324999999999 466.725 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -7793,14 +8497,14 @@
       )
     )
     (pin "1"
-      (uuid 8f6ab302-5dcd-48b3-946d-e43063a22e56)
+      (uuid a9001616-c897-43ea-ae54-1bacb055dbdf)
     )
     (pin "2"
-      (uuid b8397709-1c34-4c46-867b-5633a20da77b)
+      (uuid 70bd5a60-993e-4207-8cce-b2611ee1782a)
     )
     (instances
       (project ""
-        (path "/953e0ace-4c89-4879-a4e2-9aa73ffc3208/aeee3d4d-799d-4a5e-81ff-cd76cfc409a9"
+        (path "/c04facae-e812-4ae4-9853-e4e120a44c97/3071b11e-4297-43f6-8924-7ba80d766a51"
           (reference "J3")
           (unit 1)
         )
@@ -7808,70 +8512,37 @@
     )
   )
   (text "07 / Regeneration Brake and Overvoltage"
-    (at 192.8 46.72500000000002 0)
+    (at 190.9325 46.72500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
         (color 0 0 0 1)
       )
     )
-    (uuid eb049311-7716-4edc-b2be-c50f39347cad)
+    (uuid 77f0e1f7-bd00-48cb-a6d7-4cd194e57505)
   )
-  (text "Nominal brake threshold 52.9 V; external resistor sizing depends on total stored mechanical energy."
-    (at 192.8 67.72500000000002 0)
+  (text "Nominal brake threshold 52.0 V; motor inhibit 53.7 V; external resistor sizing depends on total stored mechanical energy."
+    (at 190.9325 67.72500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
         (color 0 0 0 1)
       )
     )
-    (uuid 4bd9bbbf-ec85-4221-a4c6-a519bd241741)
+    (uuid f9a59d12-8311-4444-8042-dabd59773e88)
   )
   (text "U12: precision threshold reference. U13/U14: overvoltage comparators. U15: MOSFET gate driver. Q16: brake switch."
-    (at 192.8 79.72500000000002 0)
+    (at 190.9325 79.72500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
         (color 0 0 0 1)
       )
     )
-    (uuid 1d098536-f12e-4dd8-904f-c2fb662f49aa)
+    (uuid b9e858d3-8cda-4fa5-9d20-5806de0e0a5c)
   )
-  (text "VREF_2V495"
-    (at 224.45 164.32500000000002 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid 26ac81dd-5abe-449e-bdf4-f8db418604ac)
-  )
-  (text "VREF_2V495"
-    (at 224.45 167.32500000000002 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid aeae3abe-009f-419e-8ec0-a2c98c13386a)
-  )
-  (text "VREF_2V495"
-    (at 293.6 142.72500000000002 -90)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid 4c20b97a-9066-46a5-8518-164f100b052b)
-  )
-  (text "VREF_2V495"
-    (at 522.5 167.32500000000002 0)
+  (text "VREF_2V5"
+    (at 271.9325 162.82500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -7879,43 +8550,10 @@
       )
       (justify left)
     )
-    (uuid a1f787e4-7327-4491-aec4-4422072d677e)
+    (uuid 641320ab-82d5-4315-a43a-12e4bdc91ee0)
   )
-  (text "VREF_2V495"
-    (at 231.5 348.82500000000005 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid 226a5f4d-f01b-4d1f-94d2-b85f1f4abd82)
-  )
-  (text "BRAKE_ON"
-    (at 486.5 162.82500000000002 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid 8b250f98-7aa3-4377-95e4-33ad6c3016a4)
-  )
-  (text "BRAKE_ON"
-    (at 573.5 132.82500000000002 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid e33fb14a-83b1-4afb-8555-872e2b277f0b)
-  )
-  (text "BRAKE_ON"
-    (at 521 342.82500000000005 0)
+  (text "VREF_2V5"
+    (at 271.9325 165.82500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -7923,10 +8561,76 @@
       )
       (justify left)
     )
-    (uuid d7788dcd-9a97-4ca5-9297-6fd0688073df)
+    (uuid 8c5b65f8-6f2f-4800-b678-db7b27feab3c)
+  )
+  (text "VREF_2V5"
+    (at 344.2325 130.72500000000002 -90)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (color 0 0 0 1)
+      )
+      (justify left)
+    )
+    (uuid 6c6144ab-e500-453a-9b90-e7f067b0b647)
+  )
+  (text "VREF_2V5"
+    (at 520.6325 167.32500000000002 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (color 0 0 0 1)
+      )
+      (justify left)
+    )
+    (uuid 986c1c7c-0ef7-4797-a08a-9eddda3728b7)
+  )
+  (text "VREF_2V5"
+    (at 229.6325 348.82500000000005 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (color 0 0 0 1)
+      )
+      (justify right)
+    )
+    (uuid 65c1ae3b-b87f-42e9-8c6a-270edc09a0e3)
+  )
+  (text "BRAKE_ON"
+    (at 484.63249999999994 162.82500000000002 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (color 0 0 0 1)
+      )
+      (justify right)
+    )
+    (uuid 26eb0ac5-ef00-450c-bacc-0c9c0b4b990d)
+  )
+  (text "BRAKE_ON"
+    (at 571.6324999999999 132.82500000000002 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (color 0 0 0 1)
+      )
+      (justify right)
+    )
+    (uuid b6b1d6fa-ce18-4e6f-a055-44b5ad45e807)
+  )
+  (text "BRAKE_ON"
+    (at 519.1324999999999 342.82500000000005 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+        (color 0 0 0 1)
+      )
+      (justify left)
+    )
+    (uuid 7b2f9ab1-4c69-43be-a028-54e12a37fe8e)
   )
   (text "BRAKE_SENSE"
-    (at 486.5 168.82500000000002 0)
+    (at 484.6325 168.82500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -7934,10 +8638,10 @@
       )
       (justify right)
     )
-    (uuid d6adea95-e5a3-4c0a-9a37-ab9ea628a43f)
+    (uuid 4a58ee1d-489b-4e13-951b-89b0f3572320)
   )
   (text "BRAKE_SENSE"
-    (at 585.5 132.82500000000002 0)
+    (at 583.6325 132.82500000000002 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -7945,20 +8649,20 @@
       )
       (justify left)
     )
-    (uuid 54a845e9-37a8-4013-b052-b32b98691934)
+    (uuid 44d36b81-f6dd-41cc-a680-e42542a5351f)
   )
   (text "MOTOR_OVP_SENSE"
-    (at 314 347.32500000000005 0)
+    (at 312.1325 347.32500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
         (color 0 0 0 1)
       )
     )
-    (uuid be53cfcf-53fa-420d-b9b9-d16d68987522)
+    (uuid a035be85-5854-40d8-ab02-a4607fa7b39e)
   )
   (text "MOTOR_OVP_SENSE"
-    (at 318.8 292.725 -90)
+    (at 316.9325 292.725 -90)
     (effects
       (font
         (size 1.27 1.27)
@@ -7966,30 +8670,30 @@
       )
       (justify right)
     )
-    (uuid 70d85e5d-32a9-4b24-8c26-775cc2fa2336)
+    (uuid 0bc5cfbd-656e-4b78-bc58-bb34ac385498)
   )
   (text "BRAKE_DRIVE"
-    (at 451.1 374.475 -90)
+    (at 449.23249999999996 374.475 -90)
     (effects
       (font
         (size 1.27 1.27)
         (color 0 0 0 1)
       )
     )
-    (uuid 6effaefc-d706-4f17-9424-ee07bcf56b10)
+    (uuid 308578f1-2ecb-474c-b797-3578aa548086)
   )
   (text "BRAKE_GATE"
-    (at 511.25 390.82500000000005 0)
+    (at 509.3825 390.82500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
         (color 0 0 0 1)
       )
     )
-    (uuid 4ff7a763-2f9f-4214-81c7-d30dfd99dbbb)
+    (uuid 77545887-3cb3-4e31-8b86-6b91a8fec638)
   )
   (text "BRAKE_GATE"
-    (at 412.25 438.82500000000005 0)
+    (at 410.3825 438.82500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -7997,10 +8701,10 @@
       )
       (justify right)
     )
-    (uuid a1d1b15a-fb2d-48e4-8e4f-132981d05022)
+    (uuid c1ba78d0-93a7-40c9-ae7b-c1197de10523)
   )
   (text "BRAKE_RETURN"
-    (at 412.25 441.82500000000005 0)
+    (at 410.38249999999994 441.82500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8008,10 +8712,10 @@
       )
       (justify right)
     )
-    (uuid 09dbadd1-13cb-4c7c-867d-7fa781abc307)
+    (uuid c9f81fb8-ee3c-4138-bb84-18e77d770113)
   )
   (text "BRAKE_RETURN"
-    (at 446.75 440.32500000000005 0)
+    (at 444.88250000000005 440.32500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8019,10 +8723,10 @@
       )
       (justify left)
     )
-    (uuid cb9111ad-1450-49c8-a119-ea1bfde4dde7)
+    (uuid f6f6d87a-cc51-479d-8661-1b94ac16c37b)
   )
   (text "BRAKE_RETURN"
-    (at 446.75 437.32500000000005 0)
+    (at 444.88250000000005 437.32500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8030,10 +8734,10 @@
       )
       (justify left)
     )
-    (uuid f7ad8423-2cc1-4c45-8360-9d6562a535fc)
+    (uuid b67716b2-a6df-4864-b8b0-1a4244efd33a)
   )
   (text "BRAKE_RETURN"
-    (at 446.75 434.32500000000005 0)
+    (at 444.88250000000005 434.32500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8041,10 +8745,10 @@
       )
       (justify left)
     )
-    (uuid 15539662-d657-43a1-bcca-7f4a4ce48c08)
+    (uuid 0846d5c2-4761-47e8-a691-33a6771e7f57)
   )
   (text "BRAKE_RETURN"
-    (at 446.75 431.32500000000005 0)
+    (at 444.88250000000005 431.32500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8052,10 +8756,10 @@
       )
       (justify left)
     )
-    (uuid c2ea7cb6-e9af-40cb-a3d0-29f2d0185267)
+    (uuid 55723371-26a2-43c8-964b-c52dbc0b0f69)
   )
   (text "BRAKE_RETURN"
-    (at 533.6 477.675 -90)
+    (at 531.7325000000001 477.675 -90)
     (effects
       (font
         (size 1.27 1.27)
@@ -8063,10 +8767,10 @@
       )
       (justify right)
     )
-    (uuid a3a9d683-e46a-4d7d-90f7-7b04d22c7852)
+    (uuid 6cfce892-7c4e-454d-8824-27f950fc13e5)
   )
   (text "BRAKE_MID"
-    (at 573.6500000000001 112.72500000000002 -90)
+    (at 571.7825 112.72500000000002 -90)
     (effects
       (font
         (size 1.27 1.27)
@@ -8074,10 +8778,10 @@
       )
       (justify right)
     )
-    (uuid 1dfca27e-7fcf-4788-bf06-31cefc03ea8b)
+    (uuid dc42991e-288e-425a-bba1-d4486e88b4b4)
   )
   (text "BRAKE_MID"
-    (at 600.9499999999999 105.82500000000003 0)
+    (at 599.0825 105.82500000000003 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8085,10 +8789,10 @@
       )
       (justify right)
     )
-    (uuid 6145a903-9d7f-4a85-90d7-d9df82a0b15a)
+    (uuid c3120555-3e36-4523-bcea-1ead7ba5a6eb)
   )
   (text "VMOTOR_OK"
-    (at 231.5 342.82500000000005 0)
+    (at 229.6325 342.82500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8096,10 +8800,10 @@
       )
       (justify right)
     )
-    (uuid 6e3e1390-2a4d-4060-91ae-8869f4f69f8d)
+    (uuid 381b9211-0a0d-4877-86d8-0e8e5f80f04b)
   )
   (text "VMOTOR_OK"
-    (at 328.55 307.725 -90)
+    (at 326.6825 307.725 -90)
     (effects
       (font
         (size 1.27 1.27)
@@ -8107,10 +8811,10 @@
       )
       (justify left)
     )
-    (uuid 572d88f0-8235-49d1-b841-ea79d2a0a272)
+    (uuid 659a4173-838d-478a-bc6b-68e7048f78e9)
   )
   (text "MOTOR_OVP_LOW"
-    (at 375.5 285.82500000000005 0)
+    (at 373.6325 285.82500000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8118,10 +8822,10 @@
       )
       (justify left)
     )
-    (uuid 3eb11210-eec6-4ed0-b917-e39456e739bd)
+    (uuid ce14f196-3466-4697-80f8-d9b2235a8707)
   )
   (text "MOTOR_OVP_LOW"
-    (at 413.6 280.725 -90)
+    (at 411.73249999999996 280.725 -90)
     (effects
       (font
         (size 1.27 1.27)
@@ -8129,11 +8833,11 @@
       )
       (justify left)
     )
-    (uuid 04013b09-e067-4ab2-a75b-6633c2161bdb)
+    (uuid f1ebba81-9fda-4401-af40-ea023354241f)
   )
-  (global_label "VREF_2V495"
+  (global_label "GND"
     (shape passive)
-    (at 224.79000000000002 165.1 0)
+    (at 224.79000000000002 163.83 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8143,9 +8847,9 @@
     (uuid 6f66c497-b510-48c9-91c2-7a0dfc71c690)
     (fields_autoplaced no)
   )
-  (global_label "VREF_2V495"
+  (global_label "GND"
     (shape passive)
-    (at 224.79000000000002 167.64000000000001 0)
+    (at 224.79000000000002 166.37 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8155,9 +8859,9 @@
     (uuid 0c84039e-7853-48d5-9041-bfe2e7693642)
     (fields_autoplaced no)
   )
-  (global_label "GND"
+  (global_label "V3V3"
     (shape passive)
-    (at 273.05 166.37 0)
+    (at 224.79000000000002 168.91 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8169,31 +8873,91 @@
   )
   (global_label "V3V3"
     (shape passive)
-    (at 294.64 132.07999999999998 0)
+    (at 270.51 168.91 0)
     (effects
       (font
         (size 1.27 1.27)
       )
       (hide yes)
     )
-    (uuid 28a041f0-26f7-40f1-bd28-e22f22415e0e)
+    (uuid 4090bb76-f0b8-4961-8d99-bab6be2815d8)
     (fields_autoplaced no)
   )
-  (global_label "VREF_2V495"
+  (global_label "VREF_2V5"
     (shape passive)
-    (at 294.64 142.24 0)
+    (at 270.51 166.37 0)
     (effects
       (font
         (size 1.27 1.27)
       )
       (hide yes)
     )
-    (uuid c5602b84-5a77-4840-b752-39529e7f33f9)
+    (uuid 45c52c21-a986-4f11-aa65-b38a8faa3e4c)
+    (fields_autoplaced no)
+  )
+  (global_label "VREF_2V5"
+    (shape passive)
+    (at 270.51 163.83 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid 05b62775-6ea7-44c6-942e-0a6e557e23f3)
+    (fields_autoplaced no)
+  )
+  (global_label "V3V3"
+    (shape passive)
+    (at 529.59 146.04999999999998 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid 1bd26962-7251-48d6-870d-c4351a7fdf10)
+    (fields_autoplaced no)
+  )
+  (global_label "GND"
+    (shape passive)
+    (at 529.59 156.21 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid e403ff56-d4ca-4b5c-8bcd-93928d37e025)
+    (fields_autoplaced no)
+  )
+  (global_label "VREF_2V5"
+    (shape passive)
+    (at 345.44 132.07999999999998 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid 0cc89b6e-9cae-42c4-ac73-cec562c83fb7)
+    (fields_autoplaced no)
+  )
+  (global_label "GND"
+    (shape passive)
+    (at 345.44 142.24 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid d2f75853-b8f6-4d29-a558-9117cdd4e138)
     (fields_autoplaced no)
   )
   (global_label "BRAKE_ON"
     (shape passive)
-    (at 487.68 163.83 0)
+    (at 486.41 163.83 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8205,7 +8969,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 487.68 166.37 0)
+    (at 486.41 166.37 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8217,7 +8981,7 @@
   )
   (global_label "BRAKE_SENSE"
     (shape passive)
-    (at 487.68 168.91 0)
+    (at 486.41 168.91 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8227,9 +8991,9 @@
     (uuid 5d6d73b2-ec80-4d38-8c7f-39ad9d46558c)
     (fields_autoplaced no)
   )
-  (global_label "VREF_2V495"
+  (global_label "VREF_2V5"
     (shape passive)
-    (at 520.7 167.64000000000001 0)
+    (at 519.4300000000001 167.64000000000001 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8241,7 +9005,7 @@
   )
   (global_label "V3V3"
     (shape passive)
-    (at 520.7 165.1 0)
+    (at 519.4300000000001 165.1 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8253,7 +9017,7 @@
   )
   (global_label "VMOTOR"
     (shape passive)
-    (at 574.04 101.60000000000001 0)
+    (at 572.77 101.60000000000001 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8265,7 +9029,7 @@
   )
   (global_label "BRAKE_MID"
     (shape passive)
-    (at 574.04 111.76 0)
+    (at 572.77 111.76 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8277,7 +9041,7 @@
   )
   (global_label "BRAKE_MID"
     (shape passive)
-    (at 601.98 106.68 0)
+    (at 599.4399999999999 106.68 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8289,7 +9053,7 @@
   )
   (global_label "BRAKE_SENSE"
     (shape passive)
-    (at 612.1400000000001 106.68 0)
+    (at 609.6 106.68 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8301,7 +9065,7 @@
   )
   (global_label "BRAKE_SENSE"
     (shape passive)
-    (at 624.84 101.60000000000001 0)
+    (at 622.3 101.60000000000001 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8313,7 +9077,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 624.84 111.76 0)
+    (at 622.3 111.76 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8325,7 +9089,7 @@
   )
   (global_label "BRAKE_ON"
     (shape passive)
-    (at 574.04 133.35 0)
+    (at 572.77 133.35 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8337,7 +9101,7 @@
   )
   (global_label "BRAKE_SENSE"
     (shape passive)
-    (at 584.2 133.35 0)
+    (at 582.9300000000001 133.35 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8349,7 +9113,7 @@
   )
   (global_label "V3V3"
     (shape passive)
-    (at 549.91 146.04999999999998 0)
+    (at 547.37 146.04999999999998 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8361,7 +9125,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 549.91 156.21 0)
+    (at 547.37 156.21 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8373,7 +9137,7 @@
   )
   (global_label "VMOTOR_OK"
     (shape passive)
-    (at 232.41000000000003 344.16999999999996 0)
+    (at 231.14000000000001 344.16999999999996 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8385,7 +9149,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 232.41000000000003 346.71 0)
+    (at 231.14000000000001 346.71 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8395,9 +9159,9 @@
     (uuid 03de1276-d871-4546-9739-7af8045fe61d)
     (fields_autoplaced no)
   )
-  (global_label "VREF_2V495"
+  (global_label "VREF_2V5"
     (shape passive)
-    (at 232.41000000000003 349.25 0)
+    (at 231.14000000000001 349.25 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8409,7 +9173,7 @@
   )
   (global_label "MOTOR_OVP_SENSE"
     (shape passive)
-    (at 265.43 347.97999999999996 0)
+    (at 264.16 347.97999999999996 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8421,7 +9185,7 @@
   )
   (global_label "V3V3"
     (shape passive)
-    (at 265.43 345.44 0)
+    (at 264.16 345.44 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8433,7 +9197,7 @@
   )
   (global_label "VMOTOR"
     (shape passive)
-    (at 320.04 281.94 0)
+    (at 317.5 281.94 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8445,7 +9209,7 @@
   )
   (global_label "MOTOR_OVP_SENSE"
     (shape passive)
-    (at 320.04 292.09999999999997 0)
+    (at 317.5 292.09999999999997 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8457,7 +9221,7 @@
   )
   (global_label "MOTOR_OVP_SENSE"
     (shape passive)
-    (at 364.49 287.02 0)
+    (at 361.95000000000005 287.02 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8469,7 +9233,7 @@
   )
   (global_label "MOTOR_OVP_LOW"
     (shape passive)
-    (at 374.65 287.02 0)
+    (at 372.11 287.02 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8481,7 +9245,7 @@
   )
   (global_label "MOTOR_OVP_LOW"
     (shape passive)
-    (at 414.02 281.94 0)
+    (at 412.75 281.94 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8493,7 +9257,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 414.02 292.09999999999997 0)
+    (at 412.75 292.09999999999997 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8505,7 +9269,7 @@
   )
   (global_label "VMOTOR_OK"
     (shape passive)
-    (at 328.93 308.61 0)
+    (at 327.66 308.61 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8517,7 +9281,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 328.93 318.77 0)
+    (at 327.66 318.77 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8529,7 +9293,7 @@
   )
   (global_label "V3V3"
     (shape passive)
-    (at 567.69 146.04999999999998 0)
+    (at 565.15 146.04999999999998 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8541,7 +9305,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 567.69 156.21 0)
+    (at 565.15 156.21 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8553,7 +9317,7 @@
   )
   (global_label "TMC_12V"
     (shape passive)
-    (at 488.95 344.16999999999996 0)
+    (at 487.68 344.16999999999996 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8565,7 +9329,7 @@
   )
   (global_label "BRAKE_DRIVE"
     (shape passive)
-    (at 488.95 346.71 0)
+    (at 487.68 346.71 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8577,7 +9341,7 @@
   )
   (global_label "BRAKE_DRIVE"
     (shape passive)
-    (at 488.95 349.25 0)
+    (at 487.68 349.25 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8589,7 +9353,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 519.43 349.25 0)
+    (at 518.16 349.25 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8601,7 +9365,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 519.43 346.71 0)
+    (at 518.16 346.71 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8613,7 +9377,7 @@
   )
   (global_label "BRAKE_ON"
     (shape passive)
-    (at 519.43 344.16999999999996 0)
+    (at 518.16 344.16999999999996 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8625,7 +9389,7 @@
   )
   (global_label "TMC_12V"
     (shape passive)
-    (at 579.12 281.94 0)
+    (at 577.85 281.94 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8637,7 +9401,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 579.12 292.09999999999997 0)
+    (at 577.85 292.09999999999997 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8649,7 +9413,7 @@
   )
   (global_label "TMC_12V"
     (shape passive)
-    (at 596.9 281.94 0)
+    (at 595.63 281.94 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8661,7 +9425,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 596.9 292.09999999999997 0)
+    (at 595.63 292.09999999999997 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8673,7 +9437,7 @@
   )
   (global_label "BRAKE_DRIVE"
     (shape passive)
-    (at 454.66 398.78000000000003 0)
+    (at 452.12 398.78000000000003 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8685,7 +9449,7 @@
   )
   (global_label "BRAKE_GATE"
     (shape passive)
-    (at 464.82 398.78000000000003 0)
+    (at 462.28 398.78000000000003 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8697,7 +9461,7 @@
   )
   (global_label "BRAKE_GATE"
     (shape passive)
-    (at 527.05 393.70000000000005 0)
+    (at 524.51 393.70000000000005 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8709,7 +9473,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 527.05 403.86 0)
+    (at 524.51 403.86 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8721,7 +9485,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 414.02 430.53 0)
+    (at 412.75 430.53 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8733,7 +9497,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 414.02 434.34 0)
+    (at 412.75 434.34 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8745,7 +9509,7 @@
   )
   (global_label "GND"
     (shape passive)
-    (at 414.02 436.88 0)
+    (at 412.75 436.88 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8757,7 +9521,7 @@
   )
   (global_label "BRAKE_GATE"
     (shape passive)
-    (at 414.02 439.42 0)
+    (at 412.75 439.42 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8769,7 +9533,7 @@
   )
   (global_label "BRAKE_RETURN"
     (shape passive)
-    (at 414.02 443.23 0)
+    (at 412.75 443.23 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8781,7 +9545,7 @@
   )
   (global_label "BRAKE_RETURN"
     (shape passive)
-    (at 444.5 441.96 0)
+    (at 443.23 441.96 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8793,7 +9557,7 @@
   )
   (global_label "BRAKE_RETURN"
     (shape passive)
-    (at 444.5 438.15 0)
+    (at 443.23 438.15 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8805,7 +9569,7 @@
   )
   (global_label "BRAKE_RETURN"
     (shape passive)
-    (at 444.5 435.61 0)
+    (at 443.23 435.61 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8817,7 +9581,7 @@
   )
   (global_label "BRAKE_RETURN"
     (shape passive)
-    (at 444.5 431.8 0)
+    (at 443.23 431.8 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8829,7 +9593,7 @@
   )
   (global_label "VMOTOR"
     (shape passive)
-    (at 534.67 458.47 0)
+    (at 532.13 458.47 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -8841,7 +9605,7 @@
   )
   (global_label "BRAKE_RETURN"
     (shape passive)
-    (at 534.67 476.25 0)
+    (at 532.13 476.25 0)
     (effects
       (font
         (size 1.27 1.27)

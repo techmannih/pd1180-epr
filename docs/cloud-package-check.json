@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-10T05:19:08.200Z",
+  "checked_at": "2026-10-10T07:14:31.408Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -9,9 +9,9 @@
     "release/circuit.json"
   ],
   "hosted_preview_output": "dist/release/circuit.json",
-  "verified_preview_records": null,
-  "selectable_source_files": 50,
-  "selectable_import_files": 47,
+  "verified_preview_records": 14352,
+  "selectable_source_files": 52,
+  "selectable_import_files": 49,
   "unavailable_viewer_files": [],
   "registry_dependencies": [],
   "ignored_files": [
@@ -34,6 +34,8 @@
     "release/order-settings.json",
     "release/power-routing-check.json",
     "release/critical-copper-check.json",
+    "release/power-audit.json",
+    "release/native-decoupling-check.json",
     "release/release-status.json",
     "release/schematic-style-check.json",
     "release/sha256.json",
@@ -50,18 +52,18 @@
     "*.log",
     ".cache/**"
   ],
-  "included_files": 66,
-  "included_bytes": 8153107,
-  "included_mebibytes": 7.78,
+  "included_files": 68,
+  "included_bytes": 8612610,
+  "included_mebibytes": 8.21,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7603353
+      "bytes": 8050498
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 175724
+      "bytes": 182800
     },
     {
       "path": "bun.lock",
@@ -69,11 +71,11 @@
     },
     {
       "path": "README.md",
-      "bytes": 22139
+      "bytes": 22175
     },
     {
       "path": "AGENTS.md",
-      "bytes": 15512
+      "bytes": 15866
     },
     {
       "path": "logs/freerouting.log",
@@ -96,35 +98,35 @@
       "bytes": 7865
     }
   ],
-  "github_import_files": 385,
-  "github_import_bytes": 20204492,
-  "github_import_mebibytes": 19.27,
+  "github_import_files": 405,
+  "github_import_bytes": 21043589,
+  "github_import_mebibytes": 20.07,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7603353
+      "bytes": 8050498
     },
     {
       "path": "previews/pd1180-epr-overview.png",
-      "bytes": 1464181
+      "bytes": 1484426
     },
     {
       "path": "previews/pd1180-epr-top.png",
-      "bytes": 1464181
+      "bytes": 1484426
     },
     {
       "path": "release/pcb-3d.png",
-      "bytes": 1456383
+      "bytes": 1484426
     },
     {
       "path": "previews/pd1180-epr-bottom.png",
-      "bytes": 1181830
+      "bytes": 1202306
     },
     {
       "path": "release/pcb-bottom.png",
-      "bytes": 1170482
+      "bytes": 1202306
     },
     {
       "path": "checks/vendor/circuit-json-schematic-placement-analysis.browser.js",
@@ -132,7 +134,7 @@
     },
     {
       "path": "release/schematics/motion.svg",
-      "bytes": 353455
+      "bytes": 353494
     },
     {
       "path": "release/schematics/usb-pd.svg",

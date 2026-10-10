@@ -2,6 +2,8 @@
 
 ## Bring-up plan
 
+Use the [power validation matrix](power-validation.md) for the approved power ECO, numeric limits, required evidence and pending test results. No powered tests have been performed.
+
 Complete routing, design review and assembly inspection before these steps. Use current-limited equipment and a PD protocol analyzer; do not begin with an unrestricted 48 V source and motor attached.
 
 1. Inspect supply-to-ground resistance, polarity, QFN solder joints, filled vias, connector pin numbering and shunt Kelvin paths. Leave hardware enable open.

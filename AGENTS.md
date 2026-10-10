@@ -17,6 +17,8 @@ The user approved and pushed the schematic in commit `8a21b01` and explicitly pr
 
 The user reopened the architecture scope on 2026-10-09: separate PD POWER / USB DATA, consolidate connectors, retain all industrial interfaces, and retain the TMC5160 external bridges. Changes to affected connectivity and schematic sections are authorized. Preserve unrelated approved schematic layout. The r0.3 route is historical until the ECO passes fresh routing and native checks.
 
+On 2026-10-10 the user explicitly reopened the affected driver-supply and brake/OVP sections after the power audit found U7 VSA connected above its 50 V operating limit. Correct those power sections and their PCB implementation; preserve unrelated schematic content. Existing manufacturing files are historical until this power ECO passes fresh checks.
+
 ## Required project structure
 
 Every board repository should contain:

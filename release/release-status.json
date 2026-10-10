@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.0-ECO",
-  "status": "cad-verified-order-hold",
+  "status": "power-eco-cad-verified-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -26,7 +26,8 @@
     "mounting_pattern_matches_tmcm1180": true,
     "selected_operating_mode_electrically_compatible": true,
     "kelvin_terminal_only_connections_verified": true,
-    "usb_suspend_power_management_implemented": true
+    "usb_suspend_power_management_implemented": true,
+    "driver_supply_and_protection_operating_limits_verified": true
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -39,6 +40,7 @@
   },
   "architecture_review": "engineering/reviewer-eco.json",
   "order_hold_reasons": [
+    "Exact motor/load, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
     "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
     "TI full-flash configuration and staged powered commissioning remain pending."

@@ -1,44 +1,44 @@
 {
-  "generated_at": "2026-10-10T05:19:44.879Z",
+  "generated_at": "2026-10-10T07:06:55.825Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "c920909e55d20786911ae428a0fddd2d4934014c583966c1bafab62d180a0585",
-    "bytes": 4783966
+    "sha256": "627a9f1e7f6cee751b1f02a01874cf314a43728e3e7fab88fd2b2825dd25621f",
+    "bytes": 4939898
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 10814,
-    "sheets": 15,
-    "source_components": 294,
-    "source_ports": 1034,
-    "connected_source_ports": 998,
-    "intentional_no_connect_ports": 36,
-    "source_nets": 195,
+    "elements": 11157,
+    "sheets": 16,
+    "source_components": 306,
+    "source_ports": 1068,
+    "connected_source_ports": 1031,
+    "intentional_no_connect_ports": 37,
+    "source_nets": 199,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 85,
+    "capacitors": 94,
     "test_points": 11,
-    "annotations": 46,
+    "annotations": 49,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 80,
-    "3": 65,
+    "2": 82,
+    "3": 67,
     "4": 25,
-    "5": 8,
+    "5": 7,
     "6": 1,
     "8": 1,
     "9": 2,
     "10": 3,
     "11": 1,
-    "12": 2,
+    "12": 3,
     "13": 2,
     "15": 1,
     "17": 1,
-    "42": 1,
-    "70": 1,
-    "236": 1
+    "44": 1,
+    "72": 1,
+    "248": 1
   },
   "usb_c": {
     "connectors": [
@@ -394,6 +394,7 @@
     "U30.2:ALERT",
     "U31.4:NC",
     "U32.4:NC",
+    "U34.4:PG",
     "U6.11:MODE",
     "U6.19:N_C6",
     "U6.20:N_C5",
@@ -419,8 +420,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 236,
-      "non_testpoint_peers": 234
+      "total_ports_on_net": 248,
+      "non_testpoint_peers": 246
     },
     {
       "ref": "TP_SWCLK",
@@ -443,8 +444,8 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 70,
-      "non_testpoint_peers": 69
+      "total_ports_on_net": 72,
+      "non_testpoint_peers": 71
     },
     {
       "ref": "TP_ENC_A",
@@ -467,8 +468,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 236,
-      "non_testpoint_peers": 234
+      "total_ports_on_net": 248,
+      "non_testpoint_peers": 246
     }
   ],
   "sheets": [
@@ -567,7 +568,7 @@
       ],
       "annotations": [
         "07 / Regeneration Brake and Overvoltage",
-        "Nominal brake threshold 52.9 V; external resistor sizing depends on total stored mechanical energy.",
+        "Nominal brake threshold 52.0 V; motor inhibit 53.7 V; external resistor sizing depends on total stored mechanical energy.",
         "U12: precision threshold reference. U13/U14: overvoltage comparators. U15: MOSFET gate driver. Q16: brake switch."
       ]
     },
@@ -682,6 +683,20 @@
         "U29: power-stage temperature, address 0x48. U33: temperature hardware inhibit. U30: bus-monitor ADC, address 0x49.",
         "U31/U32: bidirectional winding telemetry, 20 V/V across 5 mOhm = 100 mV/A, centered at 1.65 V. Not a short-circuit trip."
       ]
+    },
+    {
+      "index": 16,
+      "name": "driver-power",
+      "display_name": "Regulated Driver Supply",
+      "frame": [
+        320,
+        200
+      ],
+      "annotations": [
+        "16 / Regulated Driver Supply",
+        "U34: 65 V buck, nominal 12.0 V. Supplies U7 VSA + 12VOUT and U15; derived from protected VMOTOR.",
+        "TMC5160A external-regulator connection: 10-13 V operating range. Gate-supply ripple and startup need bench validation."
+      ]
     }
   ],
   "sheet_bounds": [
@@ -707,7 +722,7 @@
       "index": 4,
       "name": "motion",
       "elements": 401,
-      "coordinate_points_checked": 666
+      "coordinate_points_checked": 680
     },
     {
       "index": 5,
@@ -724,8 +739,8 @@
     {
       "index": 7,
       "name": "brake",
-      "elements": 188,
-      "coordinate_points_checked": 330
+      "elements": 200,
+      "coordinate_points_checked": 366
     },
     {
       "index": 8,
@@ -774,6 +789,12 @@
       "name": "telemetry",
       "elements": 182,
       "coordinate_points_checked": 320
+    },
+    {
+      "index": 16,
+      "name": "driver-power",
+      "elements": 80,
+      "coordinate_points_checked": 194
     }
   ],
   "checks": [
@@ -781,8 +802,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 294,
-        "schematic": 294
+        "source": 306,
+        "schematic": 306
       }
     },
     {
@@ -801,9 +822,9 @@
     },
     {
       "ok": true,
-      "message": "exactly 15 schematic sheets",
+      "message": "exactly 16 schematic sheets",
       "details": {
-        "actual": 15
+        "actual": 16
       }
     },
     {
@@ -1064,7 +1085,7 @@
         "actual": 3,
         "texts": [
           "07 / Regeneration Brake and Overvoltage",
-          "Nominal brake threshold 52.9 V; external resistor sizing depends on total stored mechanical energy.",
+          "Nominal brake threshold 52.0 V; motor inhibit 53.7 V; external resistor sizing depends on total stored mechanical energy.",
           "U12: precision threshold reference. U13/U14: overvoltage comparators. U15: MOSFET gate driver. Q16: brake switch."
         ]
       }
@@ -1383,9 +1404,47 @@
     },
     {
       "ok": true,
-      "message": "46 high-level sheet annotations are present",
+      "message": "known fixed geometry for sheet driver-power"
+    },
+    {
+      "ok": true,
+      "message": "driver-power keeps sheet index 16"
+    },
+    {
+      "ok": true,
+      "message": "driver-power keeps fixed 320 x 200 frame",
       "details": {
-        "actual": 46
+        "actual": [
+          320,
+          200
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "driver-power has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "16 / Regulated Driver Supply",
+          "U34: 65 V buck, nominal 12.0 V. Supplies U7 VSA + 12VOUT and U15; derived from protected VMOTOR.",
+          "TMC5160A external-regulator connection: 10-13 V operating range. Gate-supply ripple and startup need bench validation."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "driver-power has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "driver-power explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "49 high-level sheet annotations are present",
+      "details": {
+        "actual": 49
       }
     },
     {
@@ -1404,17 +1463,17 @@
     },
     {
       "ok": true,
-      "message": "195 named source nets are present",
+      "message": "199 named source nets are present",
       "details": {
-        "actual": 195
+        "actual": 199
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 195,
-        "source_nets": 195
+        "connected_groups": 199,
+        "source_nets": 199
       }
     },
     {
@@ -1480,9 +1539,9 @@
     },
     {
       "ok": true,
-      "message": "85 capacitors audited",
+      "message": "94 capacitors audited",
       "details": {
-        "actual": 85
+        "actual": 94
       }
     },
     {
@@ -1539,6 +1598,7 @@
           "U30.2:ALERT",
           "U31.4:NC",
           "U32.4:NC",
+          "U34.4:PG",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",
@@ -1577,6 +1637,7 @@
           "U30.2:ALERT",
           "U31.4:NC",
           "U32.4:NC",
+          "U34.4:PG",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",

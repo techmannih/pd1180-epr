@@ -24,21 +24,21 @@ PP5V is not connected in this sink-only implementation. Power-source operation, 
 | Logic rail | 1 V × (1 + 100 kΩ / 43.2 kΩ) | 3.315 V before ideal-diode loss; check load drop, reference and tolerance |
 | eFuse current limit | 18,000 / 4,020 Ω | 4.478 A nominal; approximately 215 W motor input at 48 V |
 | Input UVLO | 1.2 V × (1 + 360 kΩ / 10 kΩ) | 44.4 V nominal; prevents motor operation on SPR or 36 V EPR |
-| Input OVP | 1.2 V × (1 + 430.22 kΩ / 10 kΩ) | 52.83 V nominal; calculate full comparator/resistor tolerances |
+| Input OVP | 1.2 V × (1 + 426.7 kΩ / 10 kΩ) | 52.40 V nominal; calculate full comparator/resistor tolerances |
 | Motor ADC scale | (360 kΩ + 20 kΩ) / 20 kΩ | 19:1; 48 V gives 2.526 V |
 | Current monitor | approximately 27.9 µA/A × 20 kΩ | approximately 0.558 V/A; calibrate using the U6 datasheet limits |
 | Phase shunt | 5.5² × 0.033 Ω | approximately 1.0 W per shunt; selected 3 W parts need copper/thermal verification |
 | Bulk energy, 48→53 V | ½ × 940 µF × (53²−48²) | only 0.237 J; bulk capacitors cannot absorb sustained regeneration |
-| Brake switch on | 2.495 × (1 + 200 kΩ/10 kΩ + 200 kΩ/1 MΩ) | approximately 52.89 V |
-| Brake switch off | above − 3.3 × 200 kΩ/1 MΩ | approximately 52.23 V; nominal 0.66 V hysteresis |
-| Motor OVP shutdown | 2.495 × (1 + 430 kΩ/21 kΩ) | approximately 53.58 V; independent of MCU software |
+| Brake switch on | 2.5 × (1 + 196 kΩ/10 kΩ + 196 kΩ/1 MΩ) | approximately 51.99 V |
+| Brake switch off | above − 3.3 × 200 kΩ/1 MΩ | approximately 51.34 V; nominal 0.66 V hysteresis |
+| Motor OVP shutdown | 2.5 × (1 + 430 kΩ/21 kΩ) | approximately 53.69 V; independent of MCU software |
 | Initial brake load | 53² / 10 Ω | approximately 281 W while on, 5.3 A; external resistor/heatsink/pulse-energy rating required |
 
 The resistor tolerances, comparator offset, reference error, gate delay, wiring inductance, maximum regenerated power and maximum bus overshoot must be evaluated together. The 60 V motor-driver rating is not a usable transient clamp setting. A generic 51 V TVS can clamp far above 60 V and is not an adequate motor-bus braking strategy.
 
 ### Motion and shutdown
 
-U7 drives eight 100 V external MOSFETs and two 33 mΩ phase shunts. Four 220 nF bootstrap capacitors, the charge pump, local 12 V/5 V bypasses and the VCC filter are represented explicitly. Current scaling, gate drive, dead time and chopper settings must be determined from the actual motor and validated waveforms; default register values are not an approved 5.5 A setup.
+U7 drives eight 100 V external MOSFETs and two 33 mΩ phase shunts. Four 470 nF bootstrap capacitors, the charge pump, local 12 V/5 V bypasses and the VCC filter are represented explicitly. Current scaling, gate drive, dead time and chopper settings must be determined from the actual motor and validated waveforms; default register values are not an approved 5.5 A setup.
 
 U8/U9 select native left/right endstop signals in ramp mode or external Step/Dir signals in step mode. The transistor input stages invert their external signals. Open inputs read high; firmware and TMC switch polarity must account for this. The maximum Step/Dir rate has not been qualified.
 
@@ -73,3 +73,7 @@ The [QSH8618-96-55-700 motor datasheet](https://www.analog.com/media/en/technica
 Calculated rotor-only kinetic energy is 0.370 J at 500 RPM, 1.480 J at 1000 RPM and 5.922 J at 2000 RPM, using E = ½ J (2πn/60)². These are examples, not approved operating speeds. The 940 µF bulk bank absorbs only 0.237 J between 48 V and 53 V. Attached-load inertia, gearing, gravity and stopping time increase the braking requirement; the final speed limit and resistor pulse duty cannot be inferred from holding torque. The 10 Ω / 300 W external brake remains a starting specification. See `motor-data.json` for machine-readable inputs.
 
 The reference-board ECO adds independent USB logic power, board-temperature inhibition and phase-current diagnostics. See [USB and telemetry architecture](usb-pd-architecture.md) for the exact power paths, thresholds, transfer functions and unmeasured USB/thermal limits.
+
+### Driver supply and protection ECO
+
+U34 now regulates VMOTOR to 12 V for U7 VSA/12VOUT and U15. U12 is a REF3425 series reference; the brake and input/motor OVP dividers use reviewed precision resistors. See [power validation](power-validation.md) for tolerance envelopes, order holds and the unperformed bench test matrix. The regenerated ECO has fresh native routing and manufacturing checks; powered system qualification and the order hold remain open.

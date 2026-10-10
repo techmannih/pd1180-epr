@@ -89,7 +89,7 @@ dump(sys.argv[1],sys.argv[2]);dump(sys.argv[3],sys.argv[4])`
   }
   const extraPins = { J1: {'2':'5','3':'5','4':'5','6':'5','8':'7','17':'7','18':'7','19':'5','20':'5'}, J10: {'2':'5','3':'5','4':'5','6':'5','8':'7','11':'13','14':'12','17':'7','18':'7','19':'5','20':'5'}, U1: {'6':'5','7':'4'} }
   const allowedOmittedNoNetPins = new Set(['U6.11','U6.19','U6.20','U6.21','U6.22','U6.23','U6.24'])
-  const allowedNonPhysicalRefs = new Set(['GND','PD_VBUS','USB_DATA_VBUS','V3V3_PD','VMOTOR','V3V3_MOTOR','V3V3','PD_3V3','VBUS_LV','PD_1V5','TMC_12V','TMC_5V','TMC_VCC','EFUSE_IN','V3V3_MCU','V3V3_USB','USB_LOGIC_5V'])
+  const allowedNonPhysicalRefs = new Set(['GND','PD_VBUS','USB_DATA_VBUS','V3V3_PD','VMOTOR','V3V3_MOTOR','V3V3','PD_3V3','VBUS_LV','PD_1V5','TMC_12V','TMC_5V','TMC_VCC','EFUSE_IN','V3V3_MCU','V3V3_USB','USB_LOGIC_5V','DRIVER_BUCK_VCC'])
   const stats = { physicalSymbols: 0, removedNonPhysicalPowerSymbols: 0, snappedLibraryPinCoordinates: 0, labels: 0, noConnects: 0, addedDuplicatePins: [], explicitlyAllowedOmittedNoNetPins: [], ncAssignments: [] }
   const foundRefs = new Map()
   const sheets = (await readdir(stage)).filter((n) => n.endsWith('.kicad_sch') && n !== `${base}.kicad_sch`).sort()
@@ -142,7 +142,10 @@ dump(sys.argv[1],sys.argv[2]);dump(sys.argv[3],sys.argv[4])`
         const entry = byNumber.get(number)
         if (!entry) { const key = `${ref}.${number}`; if (!pad.net && allowedOmittedNoNetPins.has(key)) { stats.explicitlyAllowedOmittedNoNetPins.push(key); continue } fail(`${name}:${ref}: schematic pin ${number} missing for PCB pad net ${JSON.stringify(pad.net)}`) }
         const x = symbol.at.x + entry.pin.at.x, y = symbol.at.y - entry.pin.at.y
-        if (pad.net) {
+        // A previously normalized routed PCB already names its NC pads.
+        // The fresh source export decides whether a pin is actually connected;
+        // do not turn KiCad's generated NC names into one-pin global labels.
+        if (fm.pads.some((freshPad) => freshPad.number === number && freshPad.net)) {
           const font = new TextEffectsFont(); font.size = { height: 1.27, width: 1.27 }
           labels.push(new GlobalLabel({ value: pad.net, shape: 'passive', at: { x, y, angle: 0 }, effects: new TextEffects({ font, hiddenText: true }), uuid: deterministicUuid(`${name}:${ref}:label:${number}`), fieldsAutoplaced: false })); stats.labels++
         } else {
@@ -170,7 +173,7 @@ for item in json.load(open(map_path))['ncAssignments']:
  f=F[item['ref']];pads=[p for p in f.Pads() if p.GetNumber()==item['number']]
  if len(pads)!=1: raise SystemExit(f"{item['ref']}.{item['number']}: expected one pad, found {len(pads)}")
  p=pads[0]
- if p.GetNetname(): raise SystemExit(f"{item['ref']}.{item['number']}: expected blank net, found {p.GetNetname()}")
+ if p.GetNetname() not in ('',item['net']): raise SystemExit(f"{item['ref']}.{item['number']}: expected blank or matching NC net, found {p.GetNetname()}")
  net=b.FindNet(item['net'])
  if net is None: net=pcbnew.NETINFO_ITEM(b,item['net']);b.Add(net)
  p.SetNet(net)
