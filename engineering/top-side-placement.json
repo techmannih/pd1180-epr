@@ -796,13 +796,13 @@
         ]
       }
     ],
-    "board_sha256": "c9007161c6b74a6dc9713a2e786b1761b4a3b42090f70075ccfa8724ed1677fb"
+    "board_sha256": "8165e9b6237d0e2330f5513b83214b638e02ee9d98eb960bd934575025556f4f"
   },
   "assembly_model": {
-    "glb": "dist/index/3d.glb",
+    "glb": "dist/release/3d.glb",
     "input": "release/circuit.json",
-    "input_sha256": "dedb3eb3526161124c041954721968410cb01fea9dc61060126c020e12353251",
-    "glb_sha256": "afb4e9d0670c5151495601c996cc0c85285c31ce7e9bac5174bfe4e0df8a05a3",
+    "input_sha256": "8326efc6bd959bf2d9b2908c1281bcd9fc8e405d495ae0ee9644806110b27161",
+    "glb_sha256": "3340dad5f65c41df5dad99bb866de68620764ced010cbdf5404db5017cfbf883",
     "contains": "Current top-side source components and exact final KiCad routing"
   },
   "preview_advisory": {
@@ -866,5 +866,34 @@
     "via_in_pad_count": 69,
     "errors": [],
     "baseline_commit": "b38aa63c568504deec009184d52fd277ab1c7e7c"
+  },
+  "usb_label_update": {
+    "baseline_commit": "a8688e9488fce955834c7015a15bbd76ff149f5b",
+    "board_sha256": "8165e9b6237d0e2330f5513b83214b638e02ee9d98eb960bd934575025556f4f",
+    "recorded_at": "2026-10-10T09:43:07.767985+00:00",
+    "change": "Move PWR above J1 and DATA below J10, outside USB shell/courtyard; retain 0.8 mm text height.",
+    "native_comparison": "Board serialization is byte-identical after removing only the two modified gr_text objects. Pads, component placement, tracks, vias, zone outlines and filled polygons are unchanged.",
+    "labels": [
+      {
+        "text": "PWR",
+        "native_xy_mm": [
+          61.5,
+          78.8
+        ],
+        "courtyard_clearance_mm": 0.32375,
+        "shell_clearance_mm": 0.99875
+      },
+      {
+        "text": "DATA",
+        "native_xy_mm": [
+          64,
+          105.3
+        ],
+        "courtyard_clearance_mm": 0.42375,
+        "shell_clearance_mm": 1.09875
+      }
+    ],
+    "source_comparison": "Every compiled record except silkscreen text and the filesystem cache hash is unchanged; all 3275 schematic records match exactly.",
+    "model_evidence": "assembly_model: current routed GLB; native text bounding box compared with the fitted USB model bounds."
   }
 }
