@@ -1,5 +1,5 @@
 {
-  "status": "reference-eco-routing-in-progress",
+  "status": "cad-verified-order-hold",
   "baseline": "4698062",
   "user_decisions": {
     "separate_usb_ports": true,
@@ -10,7 +10,7 @@
   "changes": [
     "J1 is PD POWER only; J10 is USB DATA with independent regulated logic power and VBUS attach sense",
     "J10 CC1 and CC2 have independent 5.1k Rd and USBLC6-4SC6 ESD protection",
-    "U5 boots from PD VBUS before the eFuse; U22 retains VMOTOR brake backup; U23/U24 OR to V3V3_BOARD. U28/U25 derive V3V3_USB from DATA VBUS; U26/U27 combine the two logic rails without joining their VBUS inputs.",
+    "U5 boots from PD VBUS before the eFuse; U22 retains VMOTOR brake backup; U23/U24 OR to board V3V3. U28/U25 derive V3V3_USB from DATA VBUS; U26/U27 combine the two logic rails without joining their VBUS inputs.",
     "J7 20-pin JST PHD replaces J6/J7/J9 without deleting industrial features",
     "TMC5160 SD_MODE pin functions: pin23 DCEN grounded, pin24 DCIN grounded, pin25 DCO NC; encoder SPI and ABI test pads retained",
     "R105 and D12 PCB orientations corrected; only local copper rerouted, logical connections preserved",
@@ -40,7 +40,7 @@
     "C158017": "not selected: exact index query empty"
   },
   "driver_alternative": "DRV8462DDVR researched but not selected; user requested retaining the present bridges",
-  "usb_power_assumption": "DATA USB supplies setup/diagnostics independently; motor power remains PD-only. USB power-state compliance is an open qualification/design gate.",
+  "usb_power_assumption": "DATA USB supplies setup/diagnostics independently; motor power remains PD-only. MCU-only rail and suspend firmware implemented; USB power-state compliance needs hardware qualification.",
   "connector_relocation": {
     "baseline_commit": "3cb470b1edb3a1562233fa85b4c145d706f3ea6c",
     "J7_center_mm": [
@@ -102,24 +102,31 @@
       "TMP102 ALERT hardware inhibit with firmware validity and thermal derating request",
       "ADS1115 bus telemetry frees PA0/PA1 for INA240 per-phase diagnostics",
       "Independent DATA USB logic supply with reverse blocking",
-      "282 fitted components and 11 service pads on top; 42 constrained bypasses"
+      "283 fitted components and 11 service pads on top; 42 constrained bypasses",
+      "Separate V3V3_MCU, board-power sense, open-drain CS, power-qualified I2C/telemetry and USB STOP0 with watchdog wake"
     ],
-    "validation": "Source, placement, 42 bypasses, seven native Kelvin-check regressions and ARM commissioning build pass. Final routing and native DRC remain pending; motor outputs remain locked.",
+    "validation": "Completed native route: zero DRC violations, unconnected items, schematic parity issues and ERC violations. All 9 Kelvin/analog branches pass terminal-only isolation; 40 drain thermal vias retain correct nets, and 42 local bypass paths are constrained. Motor outputs remain locked and ordering remains on hold.",
     "fabrication_blockers": [
-      "Complete native routing and rerun DRC, schematic parity and power-copper checks.",
-      "Implement USB suspend power management; always-on peripherals can exceed the bus-powered suspend allowance.",
-      "Generate manufacturing outputs from the verified ECO, not the historical r0.4 board."
+      "Qualify USB startup/suspend current, resume timing and rail handovers on hardware.",
+      "Review clipped power-copper necks and validate target-current thermal performance.",
+      "Complete TI configuration and staged powered commissioning."
     ],
     "current_sense_paths_mm": {
       "A_LOW": 22.775,
       "A_HIGH": 12.564,
-      "B_LOW": 17.904,
-      "B_HIGH": 22.57,
+      "B_LOW": 19.2,
+      "B_HIGH": 22.765,
       "PHASE_A_PLUS": 3.099,
       "PHASE_A_MINUS": 3.099,
       "PHASE_B_PLUS": 3.099,
       "PHASE_B_MINUS": 3.099
     },
-    "reference_evidence": "engineering/reference-board-comparison.json"
+    "reference_evidence": "engineering/reference-board-comparison.json",
+    "routing_evidence": "docs/routing-report.json",
+    "validation_helper_corrections": [
+      "Use actual overlap outside the receiving pad for Kelvin joins; regression distinguishes in-pad from premature joins.",
+      "Use KiCad rotation in downward-positive file coordinates for thermal-pad checks.",
+      "Measure same-net/layer corridor coverage by geometric length, independent of segment and overlapping zone counts."
+    ]
   }
 }

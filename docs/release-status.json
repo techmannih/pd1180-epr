@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.0-ECO",
-  "status": "reference-eco-routing-in-progress",
+  "status": "cad-verified-order-hold",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -15,18 +15,18 @@
     "assembly_side": "top-only"
   },
   "prototype_order_gates": {
-    "kicad_drc_zero_violations": false,
-    "kicad_drc_zero_unconnected_items": false,
-    "gerber_and_drill_package_generated": false,
-    "bom_and_cpl_generated": false,
+    "kicad_drc_zero_violations": true,
+    "kicad_drc_zero_unconnected_items": true,
+    "gerber_and_drill_package_generated": true,
+    "bom_and_cpl_generated": true,
     "all_populated_parts_on_permitted_layers": true,
     "live_lcsc_stock_check": true,
     "alternative_parts_review": true,
-    "power_copper_analytical_check": false,
+    "power_copper_analytical_check": true,
     "mounting_pattern_matches_tmcm1180": true,
     "selected_operating_mode_electrically_compatible": true,
-    "kelvin_terminal_only_connections_verified": false,
-    "usb_suspend_power_management_implemented": false
+    "kelvin_terminal_only_connections_verified": true,
+    "usb_suspend_power_management_implemented": true
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -37,5 +37,10 @@
     "usb_data_startup_configured_suspend_current_and_reverse_blocking_validated": false,
     "temperature_threshold_and_phase_telemetry_calibrated": false
   },
-  "architecture_review": "engineering/reviewer-eco.json"
+  "architecture_review": "engineering/reviewer-eco.json",
+  "order_hold_reasons": [
+    "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
+    "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
+    "TI full-flash configuration and staged powered commissioning remain pending."
+  ]
 }

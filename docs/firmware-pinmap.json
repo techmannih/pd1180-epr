@@ -52,9 +52,9 @@
     "pin1": "STATUS_GPIO",
     "pin2": "DIN0",
     "pin3": "DIN1",
-    "pin4": "V3V3",
-    "pin5": "V3V3",
-    "pin6": "V3V3",
+    "pin4": "V3V3_MCU",
+    "pin5": "V3V3_MCU",
+    "pin6": "V3V3_MCU",
     "pin7": "GND",
     "pin8": "OSC_IN",
     "pin9": "OSC_OUT",
@@ -68,7 +68,7 @@
     "pin17": "SPI_MISO",
     "pin18": "SPI_MOSI",
     "pin19": "USB_VBUS_SENSE",
-    "pin20": "PD_IRQ_N",
+    "pin20": "BOARD_POWER_SENSE",
     "pin21": "EFUSE_FAULT_N",
     "pin22": "RS485_DE",
     "pin23": "ENC_CS_N",
@@ -141,5 +141,6 @@
       "shunt_milliohm": 5,
       "gain_v_per_v": 20
     }
-  }
+  },
+  "chip_select_mode": "Open-drain released; external pullups on board V3V3. Never drive high into unpowered peripherals."
 }

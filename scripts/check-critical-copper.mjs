@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
+import { circuitSourceHash } from './circuit-source-hash.mjs'
 
 const report = JSON.parse(await readFile('docs/critical-copper-check.json', 'utf8'))
 const hashes = {
@@ -7,9 +8,11 @@ const hashes = {
   source_sha256: 'dist/index/circuit.json',
   policy_sha256: 'routing/critical-paths.json',
   checker_sha256: 'scripts/critical_copper.py',
+  source_hasher_sha256: 'scripts/circuit-source-hash.mjs',
 }
 for (const [field, path] of Object.entries(hashes)) {
-  const actual = createHash('sha256').update(await readFile(path)).digest('hex')
+  const bytes = await readFile(path)
+  const actual = field === 'source_sha256' ? circuitSourceHash(JSON.parse(bytes)) : createHash('sha256').update(bytes).digest('hex')
   if (report[field] !== actual) throw new Error(`Stale native Kelvin evidence: ${path}; rerun critical_copper.py check`)
 }
 const policy = JSON.parse(await readFile(hashes.policy_sha256, 'utf8'))

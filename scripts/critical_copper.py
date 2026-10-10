@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 
 import pcbnew
@@ -88,18 +89,23 @@ def clip(poly, axis, boundary, less):
     return result
 
 
-def reservation_pieces(path):
+def reservation_pieces(path, margin=.04):
     # Subtract the receiving terminal's box so load copper can reach the shunt.
     box = path["end_pad"].GetBoundingBox()
     lo, hi = xy(box.GetPosition()), xy(box.GetEnd())
+    start_box = path["start_pad"].GetBoundingBox()
+    start_lo, start_hi = xy(start_box.GetPosition()), xy(start_box.GetEnd())
+    polygons = [[(start_lo[0]-margin, start_lo[1]-margin), (start_hi[0]+margin, start_lo[1]-margin),
+                 (start_hi[0]+margin, start_hi[1]+margin), (start_lo[0]-margin, start_hi[1]+margin)]]
     for a, b in path["segments"]:
         length = math.dist(a, b)
         ux, uy = (b[0]-a[0])/length, (b[1]-a[1])/length
-        radius = path["width"]/2 + 0.04
-        poly = [(a[0]-ux*radius-uy*radius,a[1]-uy*radius+ux*radius),
-                (b[0]+ux*radius-uy*radius,b[1]+uy*radius+ux*radius),
-                (b[0]+ux*radius+uy*radius,b[1]+uy*radius-ux*radius),
-                (a[0]-ux*radius+uy*radius,a[1]-uy*radius-ux*radius)]
+        radius = path["width"]/2 + margin
+        polygons.append([(a[0]-ux*radius-uy*radius,a[1]-uy*radius+ux*radius),
+                         (b[0]+ux*radius-uy*radius,b[1]+uy*radius+ux*radius),
+                         (b[0]+ux*radius+uy*radius,b[1]+uy*radius-ux*radius),
+                         (a[0]-ux*radius+uy*radius,a[1]-uy*radius-ux*radius)])
+    for poly in polygons:
         # Disjoint rectangles cover the complement of the terminal rectangle.
         for conditions in (((0,lo[0],True),), ((0,hi[0],False),),
                            ((0,lo[0],False),(0,hi[0],True),(1,lo[1],True)),
@@ -112,11 +118,11 @@ def reservation_pieces(path):
                 yield piece
 
 
-def reservation_polygons(path):
+def reservation_polygons(path, margin=.04):
     # Merge overlapping segment buffers into one continuous reservation. The
     # router otherwise treats each tiny overlap as another obstacle boundary.
     merged = pcbnew.SHAPE_POLY_SET()
-    for points in reservation_pieces(path):
+    for points in reservation_pieces(path, margin):
         piece = pcbnew.SHAPE_POLY_SET()
         piece.NewOutline()
         for point in points:
@@ -154,23 +160,40 @@ def check(board, paths):
     copper = list(board.GetTracks())
     pads = [p for fp in board.GetFootprints() for p in fp.Pads()]
     for path in paths:
-        terminal = path["end_pad"].GetEffectiveShape(pcbnew.F_Cu)
         own = [t for t in copper if is_branch_track(t, [path])]
         other = [t for t in copper if t.GetNetname() == path["net"] and t not in own and (isinstance(t, pcbnew.PCB_VIA) or t.GetLayer() == pcbnew.F_Cu)]
         others = [(t, t.GetEffectiveShape(pcbnew.F_Cu)) for t in other]
         others += [(p, p.GetEffectiveShape(pcbnew.F_Cu)) for p in pads if p.GetNetname() == path["net"] and p.IsOnLayer(pcbnew.F_Cu) and p.m_Uuid not in (path["start_pad"].m_Uuid, path["end_pad"].m_Uuid)]
         zones = [z.GetFilledPolysList(pcbnew.F_Cu) for z in board.Zones() if not z.GetIsRuleArea() and z.IsOnLayer(pcbnew.F_Cu) and z.GetNetname() == path["net"]]
         missing, joined = False, False
+        # Evaluate the actual overlap outside the receiving pad. Sampling a
+        # trace-radius disk just outside that pad falsely rejects a legitimate
+        # pour-to-trace junction whose overlap lies wholly inside the pad.
+        branch = pcbnew.SHAPE_POLY_SET()
+        for item in [path["start_pad"], *own]:
+            polygon = pcbnew.SHAPE_POLY_SET()
+            item.TransformShapeToPolygon(polygon, pcbnew.F_Cu, 0, 1, pcbnew.ERROR_INSIDE)
+            branch.BooleanAdd(polygon)
+        receiving_pad = pcbnew.SHAPE_POLY_SET()
+        path["end_pad"].TransformShapeToPolygon(receiving_pad, pcbnew.F_Cu, 0, 1, pcbnew.ERROR_INSIDE)
+        branch.BooleanSubtract(receiving_pad)
+        def overlaps_branch(polygon):
+            intersection = pcbnew.SHAPE_POLY_SET(branch)
+            intersection.BooleanIntersection(polygon)
+            return intersection.OutlineCount() > 0
+        for item, shape in others:
+            if not branch.Collide(shape, 0):
+                continue
+            polygon = pcbnew.SHAPE_POLY_SET()
+            item.TransformShapeToPolygon(polygon, pcbnew.F_Cu, 0, 1, pcbnew.ERROR_INSIDE)
+            if overlaps_branch(polygon):
+                joined = True
+        if any(overlaps_branch(zone) for zone in zones):
+            joined = True
         for a, b in path["segments"]:
             for p in samples(a, b):
-                q = vector(p)
                 if not any(distance_to_segment(p, xy(t.GetStart()), xy(t.GetEnd())) < 0.002 for t in own):
                     missing = True
-                if terminal.Collide(q, 0):
-                    continue
-                radius = pcbnew.FromMM(path["width"]/2 - 0.002)
-                if any(shape.Collide(q, radius) for _, shape in others) or any(zone.Collide(q, radius) for zone in zones):
-                    joined = True
         if missing:
             errors.append(f'{path["name"]}: source copper was removed or moved')
         if joined:
@@ -181,12 +204,111 @@ def check(board, paths):
     return {"paths": evidence, "errors": errors}
 
 
+def reserve_completed_branches(text, paths):
+    """Export completed sense branches as routing obstacles, not destinations.
+
+    Only the disposable DSN loses these already-connected IC pins/tracks.
+    The native board retains them; copper import explicitly restores them,
+    followed by full native connectivity/DRC and terminal-only join checks.
+    Keeping both a branch and its keepout in DSN makes the router input violate
+    its own obstacle rules and can prevent convergence.
+    """
+    removed = {path["name"]: 0 for path in paths}
+    wire = re.compile(r"\(wire \(path F\.Cu ([0-9.]+)\s+([^()]+)\)\(net ([^()]+)\)\(type (?:route|protect)\)\)")
+    def replace_wire(match):
+        width, coords, net = match.groups()
+        values = [float(v)/1000 for v in coords.split()]
+        points = list(zip(values[0::2], [-v for v in values[1::2]]))
+        if len(points) < 2 or len(values) % 2:
+            raise ValueError("Invalid DSN wire")
+        for path in paths:
+            if net != path["net"] or abs(float(width)/1000-path["width"]) > .001:
+                continue
+            if all(any(distance_to_segment(a,s,e)<.001 and distance_to_segment(b,s,e)<.001
+                       for s,e in path["segments"]) for a,b in zip(points,points[1:])):
+                removed[path["name"]] += 1
+                return ""
+        return match.group()
+    text = wire.sub(replace_wire, text)
+    references = {}
+    for path in paths:
+        if not removed[path["name"]]:
+            raise ValueError(f'{path["name"]}: no completed DSN copper found')
+        reference, number = path["from"]
+        references.setdefault(reference, set()).add(number)
+    for reference, numbers in references.items():
+        # KiCad may deduplicate identical footprint images, even with unique
+        # FPIDs. Clone this instance's image before editing its destinations.
+        component = next((m for m in re.finditer(r"    \(component (\S+)\n[\s\S]*?\n    \)", text)
+                          if re.search(r"\(place " + re.escape(reference) + r" ", m.group())), None)
+        if component is None:
+            raise ValueError(f"Missing routing placement: {reference}")
+        image_name = component.group(1)
+        image = re.search(r"    \(image " + re.escape(image_name) + r"\n[\s\S]*?\n    \)", text)
+        if not image:
+            raise ValueError(f"Missing routing image: {image_name}")
+        unique_name = reference + "_critical_reserved"
+        replacement = image.group().replace("(image " + image_name, "(image " + unique_name, 1)
+        for number in numbers:
+            pattern = r"      \(pin [^\n]+ (?:\(rotate [^()]+\) )?" + re.escape(number) + r" [-0-9.]+ [-0-9.]+\)\n"
+            replacement, count = re.subn(pattern, "", replacement)
+            if count != 1:
+                raise ValueError(f"Expected one routing pad for {reference}.{number}, got {count}")
+        text = text[:image.end()] + "\n" + replacement + text[image.end():]
+        # Image insertion is after placement, so component offsets remain valid.
+        placement = re.search(r"      \(place " + re.escape(reference) + r" [^\n]+", component.group()).group()
+        remainder = component.group().replace(placement + "\n", "")
+        if "(place " not in remainder:
+            remainder = ""
+        new_component = "    (component " + unique_name + "\n" + placement + "\n    )"
+        text = text[:component.start()] + remainder + "\n" + new_component + text[component.end():]
+        for number in numbers:
+            count = 0
+            def replace_pins(match):
+                nonlocal count
+                pins = match.group(1).split()
+                item = f"{reference}-{number}"
+                count += pins.count(item)
+                return "(pins " + " ".join(pin for pin in pins if pin != item) + ")"
+            text = re.sub(r"\(pins ([^()]*)\)", replace_pins, text)
+            if count != 1:
+                raise ValueError(f"Expected one connected destination for {reference}.{number}, got {count}")
+    return text, removed
+
+
+def protect_seed_copper(text, seed_board):
+    """Keep source constraints fixed while allowing an incomplete route to move."""
+    seed_tracks = list(seed_board.GetTracks())
+    wires = [t for t in seed_tracks if t.Type() == pcbnew.PCB_TRACE_T]
+    vias = [t for t in seed_tracks if t.Type() == pcbnew.PCB_VIA_T]
+    def wire(match):
+        layer, width, coordinates, net = match.groups()
+        values = [float(v)/1000 for v in coordinates.split()]
+        points = list(zip(values[0::2], [-v for v in values[1::2]]))
+        candidates = [t for t in wires if t.GetNetname() == net
+                      and pcbnew.LayerName(t.GetLayer()) == layer
+                      and abs(pcbnew.ToMM(t.GetWidth())-float(width)/1000) < .001]
+        fixed = all(any(distance_to_segment(a,xy(t.GetStart()),xy(t.GetEnd())) < .001
+                        and distance_to_segment(b,xy(t.GetStart()),xy(t.GetEnd())) < .001
+                        for t in candidates) for a,b in zip(points,points[1:]))
+        return match.group().replace('(type route)', '(type protect)') if fixed else match.group()
+    text = re.sub(r'\(wire \(path (\S+) ([0-9.]+)\s+([^()]+)\)\(net ([^()]+)\)\(type route\)\)', wire, text)
+    def via(match):
+        x, y, net = match.groups()
+        fixed = any(t.GetNetname() == net and math.dist(xy(t.GetPosition()),
+                    (float(x)/1000,-float(y)/1000)) < .001 for t in vias)
+        return match.group().replace('(type route)', '(type protect)') if fixed else match.group()
+    return re.sub(r'\(via "[^"]+"\s+([-0-9.]+) ([-0-9.]+) \(net ([^()]+)\)\(type route\)\)', via, text)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("keepouts", "dsn", "check"))
     parser.add_argument("board", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--dsn", type=Path)
+    parser.add_argument("--fixed-board", type=Path,
+                        help="During incremental routing, fix only copper from this seed PCB")
     args = parser.parse_args()
     import wx
     app = wx.App(False)
@@ -196,14 +318,21 @@ def main():
         add_pour_keepouts(board, paths)
         pcbnew.SaveBoard(str(args.output.resolve()), board)
     elif args.mode == "dsn":
-        text = args.dsn.read_text()
+        problems = check(board, paths)["errors"]
+        if problems:
+            raise ValueError(f"Cannot reserve incomplete or already-joined paths: {problems}")
+        text, removed = reserve_completed_branches(args.dsn.read_text(), paths)
         # Existing local traces are immutable routing constraints. The keepouts
         # reserve their branches against NEW connections, including same-net
         # ones. They do not replace electrical net identities or native DRC.
-        text = text.replace("(type route)", "(type protect)")
+        if args.fixed_board:
+            seed = pcbnew.LoadBoard(str(args.fixed_board.resolve()))
+            text = protect_seed_copper(text, seed)
+        else:
+            text = text.replace("(type route)", "(type protect)")
         polygons = []
         for path in paths:
-            for i, points in enumerate(reservation_polygons(path)):
+            for i, points in enumerate(reservation_polygons(path, margin=0)):
                 coordinates = " ".join(f"{x*1000:.3f} {-y*1000:.3f}" for x,y in points)
                 polygons.append(f'    (keepout "{path["name"]}_{i}" (polygon F.Cu 0 {coordinates}))')
         marker = "\n  )\n  (placement"
@@ -211,10 +340,19 @@ def main():
             raise ValueError("Expected exactly one DSN structure/placement boundary")
         text = text.replace(marker, "\n"+"\n".join(polygons)+marker)
         args.output.write_text(text)
+        args.output.with_suffix(".critical.json").write_text(json.dumps({
+            "native_board_sha256": hashlib.sha256(args.board.read_bytes()).hexdigest(),
+            "fixed_seed_sha256": hashlib.sha256(args.fixed_board.read_bytes()).hexdigest() if args.fixed_board else None,
+            "reserved_completed_segments": removed,
+            "import_requires_critical_branch_restoration": True,
+        }, indent=2)+"\n")
     else:
         report = check(board, paths)
         report["board_sha256"] = hashlib.sha256(args.board.read_bytes()).hexdigest()
-        report["source_sha256"] = hashlib.sha256(Path("dist/index/circuit.json").read_bytes()).hexdigest()
+        import subprocess
+        report["source_sha256"] = subprocess.check_output(
+            ["bun", "scripts/circuit-source-hash.mjs", "dist/index/circuit.json"], text=True).strip()
+        report["source_hasher_sha256"] = hashlib.sha256(Path("scripts/circuit-source-hash.mjs").read_bytes()).hexdigest()
         report["policy_sha256"] = hashlib.sha256(Path("routing/critical-paths.json").read_bytes()).hexdigest()
         report["checker_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
         args.output.write_text(json.dumps(report, indent=2)+"\n")

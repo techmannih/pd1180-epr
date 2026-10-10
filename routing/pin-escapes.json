@@ -1,0 +1,776 @@
+{
+  "coordinate_axes": "KiCad board axes; offsets from the named physical pad",
+  "purpose": "Reserve fine-pitch driver/supply escapes and common MOSFET pin banks before general routing; native DRC and Kelvin isolation remain mandatory.",
+  "pin_escapes": [
+    {
+      "reference": "U7",
+      "pin": "48",
+      "net": "MOTOR_B1",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          0.0,
+          -0.75
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.6,
+      "via_drill_mm": 0.3
+    },
+    {
+      "reference": "U7",
+      "pin": "47",
+      "net": "GL_B1_DRV",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          -1.25,
+          0.0
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "U7",
+      "pin": "45",
+      "net": "MOTOR_B2",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          -1.25,
+          0.0
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.6,
+      "via_drill_mm": 0.3
+    },
+    {
+      "reference": "U7",
+      "pin": "40",
+      "net": "MOTOR_A1",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          -1.25,
+          0.0
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.6,
+      "via_drill_mm": 0.3
+    },
+    {
+      "reference": "U7",
+      "pin": "39",
+      "net": "GL_A1_DRV",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          -1.009998,
+          0.0
+        ],
+        [
+          -1.363552,
+          0.353553
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "U7",
+      "pin": "37",
+      "net": "MOTOR_A2",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.6,
+      "via_drill_mm": 0.3
+    },
+    {
+      "reference": "U7",
+      "pin": "46",
+      "net": "GL_B2_DRV",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          1.009998,
+          0.0
+        ],
+        [
+          1.009998,
+          -1.5
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "U7",
+      "pin": "31",
+      "net": "TMC_CPO",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          0.0,
+          1.25
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "U26",
+      "pin": "6",
+      "net": "V3V3_MCU",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          0.0,
+          0.75
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "U7",
+      "pin": "11",
+      "net": "GND",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          -2e-06,
+          0.79989
+        ],
+        [
+          -0.750068,
+          1.14989
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "R47",
+      "pin": "1",
+      "net": "GL_B1_DRV",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          -0.9,
+          0.0
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    },
+    {
+      "reference": "U1",
+      "pin": "11",
+      "net": "CC2_PD",
+      "points_from_pad_mm": [
+        [
+          0,
+          0
+        ],
+        [
+          0.299773,
+          -0.900003
+        ]
+      ],
+      "trace_width_mm": 0.15,
+      "via_diameter_mm": 0.45,
+      "via_drill_mm": 0.2
+    }
+  ],
+  "mosfet_pad_links": [
+    {
+      "reference": "Q16",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "GND",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q16",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "GND",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q13",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "SENSE_B",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q11",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "SENSE_B",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q11",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "SENSE_B",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q13",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "SENSE_B",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q11",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "MOTOR_B1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q11",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "MOTOR_B1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q11",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "MOTOR_B1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q10",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "MOTOR_B1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q10",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "MOTOR_B1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q11",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "MOTOR_B1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q7",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "SENSE_A",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q7",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "SENSE_A",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q9",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "SENSE_A",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q9",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "SENSE_A",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q7",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "MOTOR_A1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q7",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "MOTOR_A1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q6",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "MOTOR_A1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q6",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "MOTOR_A1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q7",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "MOTOR_A1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q7",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "MOTOR_A1",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q4",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "PD_VBUS",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q4",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "PD_VBUS",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q10",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q8",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q6",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q6",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q10",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q8",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q6",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q12",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q10",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q12",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q10",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q8",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q12",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q8",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q6",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q12",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "VMOTOR",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q9",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "MOTOR_A2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q9",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "MOTOR_A2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q8",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "MOTOR_A2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q9",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "MOTOR_A2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q9",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "MOTOR_A2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q8",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "MOTOR_A2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q13",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "MOTOR_B2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q13",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "MOTOR_B2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q13",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "MOTOR_B2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q12",
+      "pins": [
+        "2",
+        "3"
+      ],
+      "net": "MOTOR_B2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q12",
+      "pins": [
+        "1",
+        "2"
+      ],
+      "net": "MOTOR_B2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q13",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "MOTOR_B2",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q16",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "BRAKE_RETURN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q16",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "BRAKE_RETURN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q16",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "BRAKE_RETURN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q16",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "BRAKE_RETURN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q4",
+      "pins": [
+        "9",
+        "6"
+      ],
+      "net": "EFUSE_IN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q4",
+      "pins": [
+        "5",
+        "6"
+      ],
+      "net": "EFUSE_IN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q4",
+      "pins": [
+        "7",
+        "8"
+      ],
+      "net": "EFUSE_IN",
+      "width_mm": 0.6
+    },
+    {
+      "reference": "Q4",
+      "pins": [
+        "6",
+        "7"
+      ],
+      "net": "EFUSE_IN",
+      "width_mm": 0.6
+    }
+  ]
+}

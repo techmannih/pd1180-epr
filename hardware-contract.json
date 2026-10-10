@@ -129,14 +129,17 @@
     "current_rating": "3 A/contact with AWG22 per JST; system output current remains limited by the original output circuitry."
   },
   "logic_power": {
-    "U5": "PD_VBUS -> V3V3_PD -> U23 -> V3V3_BOARD",
-    "U22": "VMOTOR -> V3V3_MOTOR -> U24 -> V3V3_BOARD (brake backup)",
+    "U5": "PD_VBUS -> V3V3_PD -> U23 -> board V3V3",
+    "U22": "VMOTOR -> V3V3_MOTOR -> U24 -> board V3V3 (brake backup)",
     "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
     "reverse_blocking": "Two cascaded status-interlocked LM66100 pairs; DATA and PD VBUS are never connected",
     "usb_default_budget": "Startup before enumeration and USB suspend current must be measured and qualified; the current limiter is overload protection, not a USB enumeration policy",
-    "usb_data_power": "USB DATA alone powers setup/diagnostics. Firmware advertises bus-powered, 500 mA configuration. VMOTOR remains PD-only.",
+    "usb_data_power": "USB DATA alone powers MCU setup/diagnostics. Industrial interfaces, flash, encoder and sensors require board V3V3. CDC advertises a bus-powered 500 mA configuration.",
     "U25": "USB_DATA_VBUS -> TPS2553 U28 -> TLV75533 U25 -> V3V3_USB",
-    "selection": "U26/U27 + R112: status-interlocked LM66100 OR of V3V3_BOARD and V3V3_USB into V3V3"
+    "selection": "U26/U27 + R112: status-interlocked OR of board V3V3 and V3V3_USB into V3V3_MCU",
+    "board_presence": "R119/R120 10k/10k divider into STM32 PB1; 2.9\u20133.6 V qualified for 20 ms before peripheral access. PD IRQ removed; status remains polled.",
+    "suspend": "USB suspend disarms, invalidates telemetry, ends I2C, turns status low and enters STOP0. RTC/LSI wakes main every nominal 50 ms to service the 250 ms IWDG and sample DATA VBUS; USB resume/reset wakes normally. Physical current/timing validation remains open.",
+    "gpio_backfeed": "Chip selects use open-drain release into board-domain pullups; no high drive into unpowered peripherals. Peripheral inputs and I2C pins become analog/high impedance when board power is absent or USB suspended."
   },
   "diagnostics": {
     "temperature": {

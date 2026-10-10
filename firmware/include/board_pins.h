@@ -21,7 +21,7 @@ typedef struct { char port; uint8_t bit; uint8_t package_pin; } board_pin_t;
 #define PD1180_PIN_SPI_MISO          BOARD_PIN('A', 6, 17)
 #define PD1180_PIN_SPI_MOSI          BOARD_PIN('A', 7, 18)
 #define PD1180_PIN_USB_VBUS_SENSE    BOARD_PIN('B', 0, 19)
-#define PD1180_PIN_PD_IRQ_N          BOARD_PIN('B', 1, 20)
+#define PD1180_PIN_BOARD_POWER_SENSE BOARD_PIN('B', 1, 20)
 #define PD1180_PIN_EFUSE_FAULT_N     BOARD_PIN('B', 2, 21)
 #define PD1180_PIN_RS485_DE          BOARD_PIN('B', 10, 22)
 #define PD1180_PIN_ENC_CS_N          BOARD_PIN('B', 11, 23)

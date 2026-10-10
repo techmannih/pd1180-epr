@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <IWatchdog.h>
+#include "usb_suspend.h"
 #include <stdio.h>
 #include <string.h>
 extern "C" {
@@ -8,6 +9,7 @@ extern "C" {
 #include "control.h"
 #include "pd_contract.h"
 #include "telemetry.h"
+#include "power_domain.h"
 }
 
 // Commissioning image: motor outputs stay locked until the new ECO has passed
@@ -18,6 +20,9 @@ static constexpr bool pdImageVerified = false;
 static TwoWire pdBus(PB7, PB6);
 static pd1180_control_t control;
 static pd1180_inputs_t inputs;
+static pd1180_board_power_t boardPower;
+static bool peripheralsStarted, wasSuspended;
+static uint32_t boardMv;
 static uint8_t pdMode[4], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
 static uint32_t lastPoll, lastTick, lastGoodSample, vbusMv, vmotorMv;
 static uint32_t lastTemperaturePoll, lastTemperatureSample, temperatureConfiguredAt;
@@ -46,6 +51,40 @@ static void output(board_pin_t p, bool high) {
   digitalWrite(pin(p), high ? HIGH : LOW); // Set latch before making pin an output.
   pinMode(pin(p), OUTPUT);
 }
+static const board_pin_t boardInputs[] = {PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,
+  PD1180_PIN_STOP_L,PD1180_PIN_STOP_R,PD1180_PIN_HOME_IN,PD1180_PIN_DIN0,PD1180_PIN_DIN1,
+  PD1180_PIN_STEP_IN,PD1180_PIN_DIR_IN,PD1180_PIN_RS485_RX,PD1180_PIN_RS232_RX,
+  PD1180_PIN_CAN_RX,PD1180_PIN_TMC_DIAG0,PD1180_PIN_TMC_DIAG1};
+static void releaseChipSelect(board_pin_t p) {
+  digitalWrite(pin(p), HIGH);
+  pinMode(pin(p), OUTPUT_OPEN_DRAIN); // Only external board-domain pullups drive high.
+}
+static void invalidateTelemetry() {
+  inputs = {};
+  temperatureConfigured = false;
+  adcPending = false;
+  adcValid[0] = adcValid[1] = phaseValid = pdReadOk = false;
+  adcMv[0] = adcMv[1] = 0;
+  phaseMa[0] = phaseMa[1] = 0;
+  vmotorMv = 0;
+  pd1180_control_disarm(&control);
+}
+static void stopPeripherals() {
+  safeOutputs();
+  if (peripheralsStarted) pdBus.end();
+  // No internal pullups or push-pull highs may energize the dead board rail.
+  pinMode(pin(PD1180_PIN_PD_SCL), INPUT_ANALOG);
+  pinMode(pin(PD1180_PIN_PD_SDA), INPUT_ANALOG);
+  for (auto p : boardInputs) pinMode(pin(p), INPUT_ANALOG);
+  peripheralsStarted = false;
+  invalidateTelemetry();
+}
+static void startPeripherals() {
+  for (auto p : boardInputs) pinMode(pin(p), INPUT);
+  pdBus.begin(); pdBus.setClock(100000);
+  peripheralsStarted = true;
+  temperatureConfiguredAt = millis();
+}
 static void reply(const char *text) {
   if (!usbStarted || responseSent < responseLength) return;
   responseLength = strnlen(text, sizeof(response)-1);
@@ -53,10 +92,11 @@ static void reply(const char *text) {
   responseSent = 0;
 }
 static bool pdRead(uint8_t reg, uint8_t *data, size_t len) {
+  if (usbStarted && usbIsSuspended()) return false;
   memset(data,0,len);
   pdBus.beginTransmission(0x20);
   pdBus.write(reg);
-  if (pdBus.endTransmission(false) != 0) return false;
+  if (pdBus.endTransmission(false) != 0 || (usbStarted && usbIsSuspended())) return false;
   if (pdBus.requestFrom(0x20, static_cast<int>(len+1), static_cast<int>(true)) != len+1) {
     while(pdBus.available()) pdBus.read();
     return false;
@@ -71,8 +111,9 @@ static bool pdRead(uint8_t reg, uint8_t *data, size_t len) {
 }
 // These devices use ordinary big-endian 16-bit registers, unlike the PD count-byte protocol.
 static bool readRegister(uint8_t address, uint8_t reg, uint16_t &value) {
+  if (usbStarted && usbIsSuspended()) return false;
   pdBus.beginTransmission(address); pdBus.write(reg);
-  if (pdBus.endTransmission(false) != 0) return false;
+  if (pdBus.endTransmission(false) != 0 || (usbStarted && usbIsSuspended())) return false;
   if (pdBus.requestFrom(address, 2, static_cast<int>(true)) != 2) {
     while (pdBus.available()) pdBus.read();
     return false;
@@ -81,6 +122,7 @@ static bool readRegister(uint8_t address, uint8_t reg, uint16_t &value) {
   return true;
 }
 static bool writeRegister(uint8_t address, uint8_t reg, uint16_t value) {
+  if (usbStarted && usbIsSuspended()) return false;
   pdBus.beginTransmission(address); pdBus.write(reg);
   pdBus.write(static_cast<uint8_t>(value >> 8)); pdBus.write(static_cast<uint8_t>(value));
   return pdBus.endTransmission() == 0;
@@ -173,8 +215,8 @@ static void executeCommand() {
     reply("BLOCKED: ECO hardware and TI configuration not verified\r\n");
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
-    snprintf(status,sizeof(status),"PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=0 BRINGUP_REQUIRED=1\r\n",
-      pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
+    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=0 BRINGUP_REQUIRED=1\r\n",
+      static_cast<unsigned long>(boardMv),peripheralsStarted,pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
       adcValid[0] && millis()-adcSampleAt[0]<=100u,adcMv[1],adcValid[1] && millis()-adcSampleAt[1]<=100u,
       inputs.temperature_deci_c,inputs.temperature_valid,static_cast<long>(phaseMa[0]),static_cast<long>(phaseMa[1]),phaseValid,
       inputs.motor_power_good,inputs.vmotor_in_range);
@@ -186,24 +228,41 @@ static void executeCommand() {
 void setup() {
   output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_SD_MODE,false);
   output(PD1180_PIN_RS485_DE,false); output(PD1180_PIN_OUT0_DRIVE,false); output(PD1180_PIN_OUT1_DRIVE,false);
-  output(PD1180_PIN_TMC_CS_N,true); output(PD1180_PIN_ENC_CS_N,true); output(PD1180_PIN_FLASH_CS_N,true);
+  releaseChipSelect(PD1180_PIN_TMC_CS_N); releaseChipSelect(PD1180_PIN_ENC_CS_N); releaseChipSelect(PD1180_PIN_FLASH_CS_N);
   output(PD1180_PIN_STATUS_GPIO,false);
-  const board_pin_t inputsToSet[] = {PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,
-    PD1180_PIN_STOP_L,PD1180_PIN_STOP_R,PD1180_PIN_STEP_IN,PD1180_PIN_DIR_IN,PD1180_PIN_PD_IRQ_N};
-  for(auto p:inputsToSet) pinMode(pin(p),INPUT);
   analogReadResolution(12);
   pd1180_control_reset(&control);
   IWatchdog.begin(250000); // 250 ms nominal; never serviced by interrupt handlers.
-  pdBus.begin(); pdBus.setClock(100000);
+  initializeSuspendTimer();
+  stopPeripherals();
   lastTick=lastPoll=millis();
 }
 void loop() {
   // Hard interlock is independent of the shared logic/command parser.
   safeOutputs();
   const uint32_t now=millis();
-  pollTemperature(now); pollBusAdc(now); samplePhaseCurrent(now);
-  if (!temperatureConfigured || now-lastTemperatureSample>500u) inputs.temperature_valid=false;
-  if(now-lastPoll >= 50u) { lastPoll=now; pollPower(); }
+  vbusMv = dividerMillivolts(PD1180_PIN_USB_VBUS_SENSE,1000,47);
+  if (usbStarted && usbIsSuspended() && vbusMv >= 3000u) {
+    if (!wasSuspended) {
+      stopPeripherals(); boardPower = {};
+      commandLength=0; commandOverflow=false; responseLength=responseSent=0;
+      digitalWrite(pin(PD1180_PIN_STATUS_GPIO),LOW);
+      wasSuspended=true;
+    }
+    IWatchdog.reload();
+    sleepWhileUsbSuspended();
+    return;
+  }
+  if (wasSuspended) { wasSuspended=false; lastTick=lastPoll=now; }
+  boardMv = dividerMillivolts(PD1180_PIN_BOARD_POWER_SENSE,10,10);
+  const bool boardReady=pd1180_board_power_update(&boardPower,boardMv,now);
+  if (peripheralsStarted && !boardReady) stopPeripherals();
+  if (!peripheralsStarted && boardReady) startPeripherals();
+  if (peripheralsStarted) {
+    pollTemperature(now); pollBusAdc(now); samplePhaseCurrent(now);
+    if (!temperatureConfigured || now-lastTemperatureSample>500u) inputs.temperature_valid=false;
+    if(now-lastPoll >= 50u) { lastPoll=now; pollPower(); }
+  }
   if(!usbStarted && vbusMv >= 4000u) { SerialUSB.begin(); usbStarted=true; }
   if(usbStarted && vbusMv < 3000u) {
     SerialUSB.end(); usbStarted=false; commandLength=0; commandOverflow=false;

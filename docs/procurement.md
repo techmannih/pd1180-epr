@@ -2,7 +2,7 @@
 
 Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-09T17:16:19.340Z.
+Last complete refresh: 2026-10-10T01:59:13.364Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|
@@ -26,12 +26,11 @@ Last complete refresh: 2026-10-09T17:16:19.340Z.
 | [C22939](https://jlcsearch.tscircuit.com/components/list.json?search=22939) | 0603WAF220KT5E | 1 | 11727 | R34 |
 | [C22962](https://jlcsearch.tscircuit.com/components/list.json?search=22962) | 0603WAF2200T5E | 2 | 1209105 | R22, R59 |
 | [C23146](https://jlcsearch.tscircuit.com/components/list.json?search=23146) | 0603WAF3603T5E | 1 | 5601 | R27 |
-| [C23162](https://jlcsearch.tscircuit.com/components/list.json?search=23162) | 0603WAF4701T5E | 13 | 7433362 | R3, R4, R5, R6, R7, R8, R79, R82, R85, R88, R91, R94, R97 |
+| [C23162](https://jlcsearch.tscircuit.com/components/list.json?search=23162) | 0603WAF4701T5E | 12 | 7433362 | R3, R4, R5, R6, R7, R79, R82, R85, R88, R91, R94, R97 |
 | [C23186](https://jlcsearch.tscircuit.com/components/list.json?search=23186) | 0603WAF5101T5E | 2 | 3775920 | R105, R106 |
 | [C23345](https://jlcsearch.tscircuit.com/components/list.json?search=23345) | 0603WAF220JT5E | 2 | 2657294 | R71, R72 |
 | [C23892](https://jlcsearch.tscircuit.com/components/list.json?search=23892) | TL431AIDBZR | 1 | 216018 | U12 |
 | [C25803](https://jlcsearch.tscircuit.com/components/list.json?search=25803) | 0603WAF1003T5E | 18 | 7990119 | R2, R11, R13, R15, R16, R102, R40, R41, R44, R45, R48, R49, R52, R53, R57, R67, R69, R113 |
-| [C25804](https://jlcsearch.tscircuit.com/components/list.json?search=25804) | 0603WAF1002T5E | 33 | 37165617 | R1, R14, R18, R104, R111, R21, R24, R28, R29, R30, R35, R36, R37, R54, R56, R58, R62, R70, R73, R74, R75, R76, R78, R81, R84, R87, R90, R93, R96, R99, R101, R112, R114 |
 | [C25819](https://jlcsearch.tscircuit.com/components/list.json?search=25819) | 0603WAF4702T5E | 8 | 1803082 | R77, R80, R83, R86, R89, R92, R95, R108 |
 | [C25969](https://jlcsearch.tscircuit.com/components/list.json?search=25969) | 0603WAF4303T5E | 2 | 26399 | R23, R64 |
 | [C32677](https://jlcsearch.tscircuit.com/components/list.json?search=32677) | PSM712-LF-T7 | 1 | 317834 | D3 |
@@ -69,6 +68,7 @@ Last complete refresh: 2026-10-09T17:16:19.340Z.
 | [C513710](https://jlcsearch.tscircuit.com/components/list.json?search=513710) | CC0805KKX7R0BB224 | 4 | 35814 | C32, C33, C34, C35 |
 | [C516354](https://jlcsearch.tscircuit.com/components/list.json?search=516354) | TMC5160A-TA-T | 1 | 9729 | U7 |
 | [C720477](https://jlcsearch.tscircuit.com/components/list.json?search=720477) | TS-1088-AR02016 | 1 | 877449 | SW1 |
+| [C844918](https://jlcsearch.tscircuit.com/components/list.json?search=844918) | CRCW060310K0FKEA | 35 | 150167 | R1, R14, R18, R104, R111, R21, R24, R28, R29, R30, R35, R36, R37, R54, R56, R58, R62, R70, R73, R74, R75, R76, R78, R81, R84, R87, R90, R93, R96, R99, R101, R112, R114, R119, R120 |
 | [C962063](https://jlcsearch.tscircuit.com/components/list.json?search=962063) | AS5047P-ATSM | 1 | 1749 | U18 |
 | [C1850273](https://jlcsearch.tscircuit.com/components/list.json?search=1850273) | TPS26631RGER | 1 | 63 | U6 |
 | [C1858393](https://jlcsearch.tscircuit.com/components/list.json?search=1858393) | LMR36510ADDAR | 2 | 1663 | U5, U22 |
@@ -82,7 +82,7 @@ Last complete refresh: 2026-10-09T17:16:19.340Z.
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 517 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 3323 | U1 |
 
-All 75 selected PCB part types (282 placements) had sufficient reported stock for one board at the timestamp above, and all 75 supplier package names matched the pinned manifest expectation.
+All 75 selected PCB part types (283 placements) had sufficient reported stock for one board at the timestamp above, and all 75 supplier package names matched the pinned manifest expectation.
 
 ## Substitution policy
 

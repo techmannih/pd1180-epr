@@ -1,4 +1,5 @@
 #include "control.h"
+#include "power_domain.h"
 #include "pd_contract.h"
 #include "board_pins.h"
 #include "telemetry.h"
@@ -24,7 +25,21 @@ static void running(pd1180_control_t *s, pd1180_inputs_t *i) {
 static void put32(uint8_t *p, uint32_t v) {
   for (unsigned n=0;n<4;++n) p[n]=(uint8_t)(v>>(8*n));
 }
+static void test_board_power_domain(void) {
+  pd1180_board_power_t power = {0};
+  assert(!pd1180_board_power_update(&power,0,0));
+  assert(!pd1180_board_power_update(&power,3300,10));
+  assert(!pd1180_board_power_update(&power,3300,29));
+  assert(pd1180_board_power_update(&power,3300,30));
+  assert(!pd1180_board_power_update(&power,2800,31));
+  assert(!pd1180_board_power_update(&power,3300,32));
+  assert(!pd1180_board_power_update(&power,3700,52));
+  assert(!pd1180_board_power_update(&power,3300,UINT32_MAX-10));
+  assert(pd1180_board_power_update(&power,3300,9));
+}
+
 int main(void) {
+  test_board_power_domain();
   pd1180_control_t s; pd1180_inputs_t i=valid_inputs();
   pd1180_control_reset(&s); ticks(&s,&i,100);
   assert(!s.power_permit && !s.mcu_run); /* never auto-arm */

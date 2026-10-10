@@ -418,7 +418,7 @@ check(testPointIssues.length === 0, "every test point probes a shared functional
 const expectedNoConnects = [
   "J1.11:DP2", "J1.12:DM", "J1.13:DP", "J1.14:DN2", "J10.10:SBU1", "J10.16:SBU2",
   "U1.14:SBU2", "U1.15:SBU1", "U7.25:ENCN_DCO_CFG6",
-  "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
+  "U2.10:N_I2Ct_IRQ", "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
   "U23.4:NC", "U24.4:NC", "U25.4:NC", "U26.4:NC", "U27.4:NC",
   "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",

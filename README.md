@@ -2,15 +2,15 @@
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the QSH8618-96-55-700 NEMA 34 stepper motor. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
 
-**Revision:** r0.4 reference ECO · **Status:** routing and USB suspend power management incomplete · **Assembly:** top only · **Fabrication:** blocked
+**Revision:** r0.4 reference ECO · **Status:** CAD routing verified; powered validation pending · **Assembly:** top only · **Order status:** HOLD
 
-**Reference-board changes:** Retain the separate PD POWER / USB DATA ports, industrial J7 harness and TMC5160 external bridges. Add TMP102 hardware temperature inhibit, INA240 phase-current diagnostics, ADS1115 bus telemetry and a DATA-powered logic supply. Place bootstrap/gate/bypass parts locally and preserve Kelvin connections to the shunt terminals. The source checks pass; full native routing and USB suspend power management remain open. The STM32 commissioning firmware is motion-locked. TI programming and powered tests are also pending.
+**Reference-board changes:** Retain the separate PD POWER / USB DATA ports, industrial J7 harness and TMC5160 external bridges. Add TMP102 hardware temperature inhibit, INA240 phase-current diagnostics, ADS1115 bus telemetry and a DATA-powered logic supply. Place bootstrap/gate/bypass parts locally and preserve Kelvin connections to the shunt terminals. Native routing, DRC, schematic parity, ERC and Kelvin isolation pass. Physical USB power validation remains open. The STM32 commissioning firmware is motion-locked. TI programming and powered tests are also pending.
 
 [View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
-The preview below shows current placement and local traces only. It is not a completed route. The existing manufacturing archives and hosted routed view belong to baseline commit `49c3ac7` and must not be used to fabricate this changed source.
+The preview shows the routed r0.4 ECO bare PCB. The release archives are regenerated for engineering review. Ordering remains on hold; the commissioning firmware keeps motion locked pending TI programming and powered validation.
 
-![Reference ECO placement; routing incomplete](previews/reference-eco-placement.png)
+![Routed r0.4 ECO PCB](previews/pd1180-epr-top.png)
 
 
 
@@ -32,7 +32,7 @@ The preview below shows current placement and local traces only. It is not a com
 | Outputs | Hardware enable plus two protected low-side outputs |
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
 | Programming | SWD for STM32 and configuration EEPROM for the PD controller |
-| Assembly | 282 JLC-sourced fitted parts plus 11 service test pads, all on top |
+| Assembly | 283 JLC-sourced fitted parts plus 11 service test pads, all on top |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, external hardware enable and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN`, `RS485_DE`, both protected outputs and standalone-mode selection inactive.
 
@@ -42,14 +42,14 @@ The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-g
 J1 PD POWER VBUS -> reverse blocking / eFuse -> VMOTOR -> TMC5160 + external bridges
         |                                       |       motor J2 / brake J3
         +-> U5 3.3 V startup supply              +-> U22 3.3 V brake-control backup
-                         U23 / U24 reverse-blocked OR -> V3V3_BOARD
+                         U23 / U24 reverse-blocked OR -> V3V3
 J1 CC1/2 -> U1 protection -> U2 TPS26750 EPR controller
 J10 USB DATA D+/D- -> D15 shunt ESD -> R71/R72 -> STM32 USB
 J10 VBUS -> U28 current limiter -> U25 LDO -> V3V3_USB
-V3V3_BOARD / V3V3_USB -> U26 / U27 reverse-blocked OR -> V3V3
+board V3V3 / V3V3_USB -> U26 / U27 reverse-blocked OR -> V3V3_MCU
 ```
 
-The added DATA supply is intended to power setup and diagnostics independently of J1. USB suspend power management is not implemented: always-on peripherals can exceed the allowed suspend current even if the MCU sleeps. Power-domain changes and matching firmware are required before fabrication. U22 retains VMOTOR-fed brake-control power after PD loss. Startup current, rail handover and regeneration also need qualification. The commissioning image keeps the motor locked.
+DATA alone powers MCU setup/diagnostics on V3V3_MCU. Industrial interfaces, flash, encoder and sensors remain on board V3V3 supplied by J1/VMOTOR. Open-drain chip selects and inactive peripheral pins prevent MCU-driven backfeed. Firmware now implements USB suspend with STOP0, watchdog wake and fresh power/sensor qualification after resume; measured current, inrush, wake timing and source handovers remain unverified. U22 retains VMOTOR-fed brake control. The commissioning image keeps the motor locked.
 
 The requested contract is 240 W. The nominal eFuse current limit is approximately 4.48 A, so the board-side motor input limit is about 215 W at 48 V before conversion and switching losses. USB input current and phase current are different quantities; the motor-stage target is 5.5 A RMS per phase.
 
@@ -88,7 +88,7 @@ The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmw
 | Motor SPI | `TMC_CS_N`, `SPI_SCK`, `SPI_MISO`, `SPI_MOSI`, `TMC_DIAG0`, `TMC_DIAG1` |
 | Encoder/flash | `ENC_CS_N`, `FLASH_CS_N` on the shared SPI bus |
 | USB | `USB_VBUS_SENSE`, `USB_DM`, `USB_DP` |
-| Power safety | `PD_IRQ_N`, `EFUSE_FAULT_N`, `MOTOR_PG`, `VMOTOR_OK`, `POWER_PERMIT`, `MCU_RUN` |
+| Power safety | `BOARD_POWER_SENSE`, `EFUSE_FAULT_N`, `MOTOR_PG`, `VMOTOR_OK`, `POWER_PERMIT`, `MCU_RUN` |
 | Motion inputs | `STEP_IN`, `DIR_IN`, `STOP_L`, `STOP_R`, `HOME_IN` |
 | Communications | CAN RX/TX, RS485 RX/TX/DE and RS232 RX/TX |
 | Monitoring | `PHASE_A_ADC` / `PHASE_B_ADC` on PA0/PA1; ADS1115 bus monitoring and TMP102 temperature on I²C |
@@ -118,7 +118,7 @@ The design is split into fifteen functional sheets:
 | Outputs | Protected low-side outputs and hardware enable chain |
 | Serial | CAN, RS485 and RS232 transceivers with ESD support |
 
-The current source has fifteen sheets. Rendered release sheets must be regenerated after the ECO passes routing and native checks.
+The source and regenerated release contain fifteen schematic sheets.
 
 ## PCB, mechanics and assembly
 
@@ -139,7 +139,7 @@ The current source has fifteen sheets. Rendered release sheets must be regenerat
 
 All fitted components, including the centered encoder, its local bypass parts, logic power and labelled service pads, are on top. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
-The changed source does not yet have a verified complete KiCad route. Its local copper passes clearance checks; final connections, filled planes, Kelvin isolation and actual power-copper necks still require inspection. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
+The completed KiCad route passes all-severity DRC, connectivity, schematic parity, ERC and terminal-only Kelvin checks. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
 The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% and confirm all four rear-face holes and the shaft axis against the actual motor before ordering.
 
@@ -147,7 +147,7 @@ The printable [mounting template](mounting-template.svg) is generated from `hard
 
 ## Parts and procurement
 
-- 282 populated components use exact JLCPCB/LCSC identities.
+- 283 populated components use exact JLCPCB/LCSC identities.
 - The fitted BOM contains 75 unique LCSC codes.
 - The latest committed live check reports 75/75 available at its recorded timestamp.
 - Eleven selected alternative candidates are currently available.
@@ -171,23 +171,23 @@ Current verification evidence:
 
 | Gate | Result |
 |---|---|
-| Native KiCad PCB DRC + schematic ERC | Pending for this ECO; existing final-route reports describe the baseline |
+| Native KiCad PCB DRC + schematic ERC | PASS — 0 PCB violations, unconnected nets, parity issues and ERC violations |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 22 tests, including source topology and via-net identity |
-| Kelvin-check regressions | PASS — 7 native tests; final-route evidence still required |
+| Topology regression | PASS — 28 tests covering topology, via identity and power-copper geometry |
+| Kelvin-check regressions | PASS — 11 native regressions and all 9 final-board paths |
 | Decoupling | PASS — 42/42 targets |
-| Assembly | PASS — 282 fitted parts plus 11 service test pads on top |
+| Assembly | PASS — 283 fitted parts plus 11 service test pads on top |
 | Stock | PASS — 75/75 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
-| Release delivery | Blocked; existing manufacturing archives are historical |
-| Route identity | Fails closed because the source differs from the saved route |
-| USB suspend power management | Not implemented; fabrication blocker |
+| Release delivery | Current ECO review artifacts; ordering remains on hold |
+| Route identity | Current source, local constraints and final PCB hash match |
+| USB suspend power management | MCU-only rail and STOP0 path implemented; hardware current/timing unverified |
 
 Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 
 ## Manufacturing release
 
-The `release/` manufacturing payload remains historical until the new ECO passes all gates. Do not order it for the current source. After verification it must be regenerated with:
+The `release/` payload contains current ECO review files. **Do not order yet:** powered USB, current/thermal and system qualification remain open. Legacy archive filenames retain the r0.3 suffix for tool compatibility; their hardware contract and board markings identify r0.4. The package contains:
 
 - PCB Gerber ZIP and the routed KiCad project ZIP;
 - complete manufacturing ZIP with drills, Gerbers, DRC, BOM, CPL and project files;

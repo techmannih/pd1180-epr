@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pcbnew
 import wx
+from critical_copper import load_paths, is_branch_track, check
 
 
 def pad_geometry(board):
@@ -24,6 +25,7 @@ def main():
     parser.add_argument("routing_base", type=Path)
     parser.add_argument("session", type=Path)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--restore-critical-branches", action="store_true")
     args = parser.parse_args()
     app = wx.App(False)
     board = pcbnew.LoadBoard(str(args.original_board.resolve()))
@@ -44,10 +46,20 @@ def main():
     if mismatches:
         print(json.dumps({"routing_pad_differences": mismatches[:8]}, indent=2))
         raise SystemExit("Router changed footprint placement or pin identity")
+    paths = load_paths(board) if args.restore_critical_branches else []
+    if paths and check(board, paths)["errors"]:
+        raise SystemExit("Original critical copper is incomplete or already has premature joins")
+    preserved = [t for t in board.GetTracks() if is_branch_track(t, paths)]
     held = list(board.GetTracks())
     for track in held:
         board.Remove(track)
     routed_tracks = list(routed.GetTracks())
+    if args.restore_critical_branches:
+        # SES contains routes around the reservations; native source provides
+        # the completed branches. Reject duplicates instead of overlapping them.
+        if any(is_branch_track(t, paths) for t in routed_tracks):
+            raise SystemExit("SES unexpectedly contains reserved critical copper")
+        routed_tracks.extend(preserved)
     held.extend(routed_tracks)
     for track in routed_tracks:
         net = board.FindNet(track.GetNetname())
@@ -74,6 +86,10 @@ def main():
         raise SystemExit("Copper import changed the original footprint geometry")
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
     board.BuildConnectivity()
+    if paths:
+        problems = check(board, paths)["errors"]
+        if problems:
+            raise SystemExit(f"Imported routing violated terminal-only joins: {problems}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     pcbnew.SaveBoard(str(args.output.resolve()), board)
     print(json.dumps({

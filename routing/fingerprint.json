@@ -1,16 +1,23 @@
 {
-  "schema_version": 1,
-  "algorithm": "sha256 of normalized topology, supplier identity, footprint geometry and placement; plus reviewed KiCad board hash",
-  "input_sha256": "9531ae2de7a89f75307dac5e96d57f27cc0d295e1da4bbed43d4c3a4f8d68a29",
-  "routed_board_sha256": "1991773e7d50a347f404909a997f2e30aa405acd9dab96f4cc8d028099569b7d",
+  "schema_version": 2,
+  "algorithm": "sha256 of normalized topology, supplier identity, footprint geometry, placement and local copper; routing policy/seed inputs; plus reviewed KiCad board hash",
+  "input_sha256": "16997902206a2239b892ff8e0da27b22047d6af50265a15c24dc83f98c578563",
+  "routing_inputs": {
+    "routing/requirements.json": "9010fb36f9792e1dbb74881fa999200164fef5a1d05f1310f1372bcfd94a3588",
+    "routing/critical-paths.json": "f72cc36bb2551006cef6f84294c0bddbf7e5581931fa9eb2a029f1c087221ff0",
+    "routing/pin-escapes.json": "9891fd9a2552cc4508d3a1176ec39e7566e05da7266c0efeaa8b555df9cb8932",
+    "scripts/prepare-routing-seed.py": "862e7991c093988df2d68492ff2ca8e4867bf6bab12fba4b2e9986f7217c8a52"
+  },
+  "routed_board_sha256": "ed81f2ec88d66d8bcc982ccb56d393fb08e92f256c9a55982854857234df7dad",
   "counts": {
     "board": 1,
-    "components": 265,
-    "ports": 934,
-    "nets": 938,
-    "placement": 265,
-    "pads": 934,
-    "holes": 8
+    "components": 294,
+    "ports": 1034,
+    "nets": 1061,
+    "placement": 294,
+    "pads": 1034,
+    "holes": 8,
+    "local_copper": 63
   },
-  "reviewed_at": "2026-10-09T13:33:12.799Z"
+  "reviewed_at": "2026-10-10T01:56:22.669Z"
 }

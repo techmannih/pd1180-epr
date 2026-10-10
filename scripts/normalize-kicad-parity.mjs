@@ -89,7 +89,7 @@ dump(sys.argv[1],sys.argv[2]);dump(sys.argv[3],sys.argv[4])`
   }
   const extraPins = { J1: {'2':'5','3':'5','4':'5','6':'5','8':'7','17':'7','18':'7','19':'5','20':'5'}, J10: {'2':'5','3':'5','4':'5','6':'5','8':'7','11':'13','14':'12','17':'7','18':'7','19':'5','20':'5'}, U1: {'6':'5','7':'4'} }
   const allowedOmittedNoNetPins = new Set(['U6.11','U6.19','U6.20','U6.21','U6.22','U6.23','U6.24'])
-  const allowedNonPhysicalRefs = new Set(['GND','PD_VBUS','USB_DATA_VBUS','V3V3_PD','VMOTOR','V3V3_MOTOR','V3V3','PD_3V3','VBUS_LV','PD_1V5','TMC_12V','TMC_5V','TMC_VCC','EFUSE_IN','V3V3_BOARD','V3V3_USB','USB_LOGIC_5V'])
+  const allowedNonPhysicalRefs = new Set(['GND','PD_VBUS','USB_DATA_VBUS','V3V3_PD','VMOTOR','V3V3_MOTOR','V3V3','PD_3V3','VBUS_LV','PD_1V5','TMC_12V','TMC_5V','TMC_VCC','EFUSE_IN','V3V3_MCU','V3V3_USB','USB_LOGIC_5V'])
   const stats = { physicalSymbols: 0, removedNonPhysicalPowerSymbols: 0, snappedLibraryPinCoordinates: 0, labels: 0, noConnects: 0, addedDuplicatePins: [], explicitlyAllowedOmittedNoNetPins: [], ncAssignments: [] }
   const foundRefs = new Map()
   const sheets = (await readdir(stage)).filter((n) => n.endsWith('.kicad_sch') && n !== `${base}.kicad_sch`).sort()

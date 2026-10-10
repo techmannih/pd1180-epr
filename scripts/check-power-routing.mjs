@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
+import { corridorCoverage, isDrainThermalTie, kicadPadPosition } from './power-copper-geometry.mjs'
 
 const boardPath = process.argv[2] || 'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb'
 const source = await readFile(boardPath, 'utf8')
@@ -57,12 +58,23 @@ const parsedVias = vias.map((form) => ({
   drill: Number(form.match(/\(drill ([0-9.]+)\)/)?.[1]),
   net: netName(form),
 }))
+const thermalPolicy = standards.fabrication.thermal_via_in_pad
+const drainPads = forms('footprint').filter(form => form.startsWith(`(footprint "${thermalPolicy.footprint}"`)).map(form => {
+  const placement = form.match(/\n\t\t\(at ([-0-9.]+) ([-0-9.]+)(?: ([-0-9.]+))?\)/)
+  const pad = form.slice(form.indexOf(`(pad "${thermalPolicy.pad_number}"`))
+  const local = pad.match(/\(at ([-0-9.]+) ([-0-9.]+)/)
+  if (!placement || !local) throw new Error('Unable to locate drain thermal pad')
+  const [x, y] = placement.slice(1, 3).map(Number)
+  const [px, py] = local.slice(1, 3).map(Number)
+  return { net: netName(pad), ...kicadPadPosition(x, y, px, py, Number(placement[3] || 0)) }
+})
 function isThermalTie(form, name) {
   if (form.match(/\(layer "([^"]+)"\)/)?.[1] !== 'B.Cu') return false
   if (Math.abs(Number(form.match(/\(width ([0-9.]+)\)/)?.[1]) - 0.25) > 0.001) return false
   const start = form.match(/\(start ([-0-9.]+) ([-0-9.]+)\)/)?.slice(1).map(Number)
   const end = form.match(/\(end ([-0-9.]+) ([-0-9.]+)\)/)?.slice(1).map(Number)
   if (!start || !end || Math.abs(Math.hypot(end[0] - start[0], end[1] - start[1]) - 1) > 0.002) return false
+  if (!isDrainThermalTie(start, end, name, drainPads)) return false
   return [start, end].every(([x, y]) => parsedVias.some((via) => via.net === name && Math.hypot(via.x - x, via.y - y) < 0.002 && Math.abs(via.size - 0.6) < 0.001 && Math.abs(via.drill - 0.3) < 0.001))
 }
 
@@ -80,7 +92,14 @@ for (const name of powerNets) {
   const netZones = zones.filter((form) => netName(form) === name)
   const corridors = netZones.filter((form) => Number(form.match(/\(priority (\d+)\)/)?.[1] || 0) >= 100)
   const layers = [...new Set(netSegments.map((form) => form.match(/\(layer "([^"]+)"\)/)?.[1]).filter(Boolean))]
-  const corridorRatio = corridorSegments.length ? corridors.length / corridorSegments.length : 0
+  const coverage = corridorCoverage(corridorSegments.map(form => ({
+    net: name, layer: form.match(/\(layer "([^"]+)"\)/)?.[1],
+    start: form.match(/\(start ([-0-9.]+) ([-0-9.]+)\)/).slice(1).map(Number),
+    end: form.match(/\(end ([-0-9.]+) ([-0-9.]+)\)/).slice(1).map(Number),
+  })), corridors.map(form => ({
+    net: name, layer: form.match(/\(layer "([^"]+)"\)/)?.[1],
+    points: [...form.split('(filled_polygon')[0].matchAll(/\(xy ([0-9.-]+) ([0-9.-]+)\)/g)].map(match => match.slice(1).map(Number)),
+  })))
   const badClearance = corridors.filter((form) => Number(form.match(/\(clearance ([0-9.]+)\)/)?.[1] || 0) < 0.16)
   const badWidth = corridors.filter((form) => {
     const points = [...form.matchAll(/\(xy ([0-9.-]+) ([0-9.-]+)\)/g)].map((match) => [Number(match[1]), Number(match[2])])
@@ -89,7 +108,7 @@ for (const name of powerNets) {
     const ys = points.map(([, y]) => y)
     return Math.min(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) < 2.39
   })
-  if (corridorRatio < 0.75) errors.push(`${name}: only ${(corridorRatio * 100).toFixed(1)}% of routed segments have power corridors`)
+  if (coverage.ratio < 0.75) errors.push(`${name}: only ${(coverage.ratio * 100).toFixed(1)}% of routed length lies in power corridors`)
   if (badClearance.length) errors.push(`${name}: ${badClearance.length} generated zones have less than 0.16 mm clearance`)
   if (badWidth.length) errors.push(`${name}: ${badWidth.length} generated zones are narrower than 2.4 mm`)
   if (layers.length > 1 && netVias.length < 4) errors.push(`${name}: multilayer route has only ${netVias.length} vias`)
@@ -100,7 +119,9 @@ for (const name of powerNets) {
     corridor_eligible_segments: corridorSegments.length,
     segment_layers: layers,
     reinforced_corridors: corridors.length,
-    corridor_coverage_ratio: Number(corridorRatio.toFixed(3)),
+    corridor_eligible_length_mm: Number(coverage.total.toFixed(3)),
+    corridor_covered_length_mm: Number(coverage.covered.toFixed(3)),
+    corridor_coverage_ratio: Number(coverage.ratio.toFixed(3)),
     vias: netVias.length,
   }
 }

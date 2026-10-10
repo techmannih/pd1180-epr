@@ -98,6 +98,8 @@ await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Moto
 
 ## r0.4 ECO review handoff — powered validation pending
 
+${releaseStatus.fabrication_orderable ? 'Prototype CAD gates passed; system validation remains open.' : '**ORDER HOLD.** These are engineering review files. Powered USB, current/thermal and system qualification remain open; do not submit a fabrication order from this package.'}
+
 The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: ${releaseStatus.status}. See \`engineering/reviewer-eco.json\` and \`docs/step-dir-hardware-review.md\`.
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.

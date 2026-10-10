@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pcbnew
 import wx
-from critical_copper import load_paths, is_branch_track
+from critical_copper import load_paths, is_branch_track, distance_to_segment, xy, reservation_polygons, vector
 
 
 POWER_NETS = {
@@ -117,6 +117,23 @@ def safe_for_via(candidate, net_code: int, blockers) -> bool:
 
 def add_parallel_vias(board: pcbnew.BOARD) -> tuple[int, int]:
     blockers = copper_blockers(board)
+    # A same-net via can bypass a Kelvin branch without causing a DRC short.
+    # Treat those branches as obstacles for transfer vias regardless of net.
+    for path in load_paths(board):
+        for points in reservation_polygons(path):
+            polygon = pcbnew.SHAPE_POLY_SET()
+            polygon.NewOutline()
+            for p in points:
+                q = vector(p)
+                polygon.Append(q.x, q.y)
+            blockers.append((None, polygon, None))
+    lands = [pad.GetEffectiveShape(layer) for fp in board.GetFootprints() for pad in fp.Pads()
+             for layer in (pcbnew.F_Cu, pcbnew.B_Cu) if pad.IsOnLayer(layer)]
+    outline = pcbnew.SHAPE_POLY_SET()
+    if not board.GetBoardPolygonOutlines(outline, False, None, False, False):
+        raise ValueError("Invalid board outline")
+    boundary = outline.Outline(0)
+    vertices = [xy(boundary.CPoint(i)) for i in range(boundary.PointCount())]
     originals = [
         item
         for item in board.GetTracks()
@@ -150,6 +167,15 @@ def add_parallel_vias(board: pcbnew.BOARD) -> tuple[int, int]:
             continue
         for dx, dy in offsets:
             candidate = point(mm(origin.x) + dx, mm(origin.y) + dy)
+            # Extra transfer vias must not create unreviewed via-in-pad sites
+            # or extend copper past the fabrication edge clearance.
+            if any(land.Collide(candidate, pcbnew.FromMM(VIA_DIAMETER_MM / 2 + 0.10)) for land in lands):
+                continue
+            if not outline.Contains(candidate) or any(
+                distance_to_segment(xy(candidate), a, z) < VIA_DIAMETER_MM / 2 + 0.20
+                for a, z in zip(vertices, vertices[1:] + vertices[:1])
+            ):
+                continue
             if not safe_for_via(candidate, original.GetNetCode(), blockers):
                 continue
             via = pcbnew.PCB_VIA(board)

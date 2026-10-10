@@ -7,14 +7,14 @@ export const FEATURE_PARITY = [
     id: "usb_pd_epr",
     feature: "Separate USB-C PD POWER and USB 2.0 DATA",
     components: ["J1", "J10", "R105", "R106", "D15", "U1", "U2", "U3", "U4", "R107", "R108", "C72"],
-    nets: ["PD_VBUS", "USB_DATA_VBUS", "USB_VBUS_SENSE", "USB_DP", "USB_DM", "PD_IRQ_N"],
+    nets: ["PD_VBUS", "USB_DATA_VBUS", "USB_VBUS_SENSE", "USB_DP", "USB_DM", "PD_SCL", "PD_SDA"],
     evidence: "docs/pd-configuration.json",
   },
   {
     id: "protected_power",
     feature: "eFuse, reverse blocking and independent USB DATA logic power",
     components: ["U5", "U6", "Q4", "Q5", "U22", "U23", "U24", "U25", "U26", "U27", "U28"],
-    nets: ["EFUSE_IN", "EFUSE_FAULT_N", "VMOTOR", "V3V3_BOARD", "V3V3_USB", "V3V3"],
+    nets: ["EFUSE_IN", "EFUSE_FAULT_N", "VMOTOR", "V3V3", "V3V3_USB", "V3V3_MCU", "BOARD_POWER_SENSE"],
     evidence: "docs/design.md",
   },
   {

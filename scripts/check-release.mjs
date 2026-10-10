@@ -10,6 +10,7 @@ for (const [path, expected] of Object.entries(verification.verified_inputs || {}
 }
 if (!status.fabrication_orderable || open.length || changed.length) {
   console.error('Prototype manufacturing export blocked. Open gates:\n'+open.map(x=>' - '+x).join('\n'))
+  if (!status.fabrication_orderable) console.error(`Order hold:\n${(status.order_hold_reasons || ['Release status does not authorize ordering']).map(reason=>' - '+reason).join('\n')}`)
   if (changed.length) console.error(`Verified design inputs changed after validation:\n${changed.map((path)=>` - ${path}`).join('\n')}`)
   process.exitCode=1
 } else {

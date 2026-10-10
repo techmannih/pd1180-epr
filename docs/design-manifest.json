@@ -117,7 +117,6 @@
         "pin7": "EPR_EN",
         "pin8": "PD_SDA",
         "pin9": "PD_SCL",
-        "pin10": "PD_IRQ_N",
         "pin11": "GND",
         "pin12": "GND",
         "pin13": "GND",
@@ -154,7 +153,8 @@
       "noConnect": [
         "pin21",
         "pin28",
-        "pin29"
+        "pin29",
+        "pin10"
       ],
       "section": "usb-pd_U2",
       "sch": [
@@ -457,7 +457,7 @@
       ],
       "owner": "U1",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -471,7 +471,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -716,36 +716,6 @@
         8,
         -11.6
       ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R8",
-      "connections": {
-        "pin1": "PD_3V3",
-        "pin2": "PD_IRQ_N"
-      },
-      "sheet": "usb-pd",
-      "xy": [
-        -20.5,
-        27.5
-      ],
-      "owner": "U2",
-      "value": "4.7k",
-      "lcsc": "C23162",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999957,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "usb-pd_U2",
-      "sch": [
-        10.93,
-        -11.6
-      ],
       "rotation": 180,
       "layer": "top",
       "mpn": null
@@ -976,7 +946,7 @@
       ],
       "owner": "U4",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -990,7 +960,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -1411,7 +1381,7 @@
       ],
       "owner": "U5",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999957,
@@ -1425,7 +1395,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "LMR36510ADDAR",
@@ -1784,7 +1754,7 @@
       ],
       "owner": "U22",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -1798,7 +1768,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "LM66100DCKR",
@@ -1808,7 +1778,7 @@
         "pin2": "GND",
         "pin3": "V3V3_MOTOR",
         "pin5": "LOGIC_OR_PRIORITY",
-        "pin6": "V3V3_BOARD"
+        "pin6": "V3V3"
       },
       "sheet": "logic-power",
       "xy": [
@@ -1842,7 +1812,7 @@
         "pin2": "GND",
         "pin3": "LOGIC_OR_PRIORITY",
         "pin5": "GND",
-        "pin6": "V3V3_BOARD"
+        "pin6": "V3V3"
       },
       "sheet": "logic-power",
       "xy": [
@@ -1882,7 +1852,7 @@
       ],
       "owner": "U23",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9500000000000028,
@@ -1896,7 +1866,7 @@
       ],
       "rotation": 90,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "capacitor",
@@ -2172,7 +2142,7 @@
       ],
       "owner": "U6",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4500000000000006,
@@ -2186,7 +2156,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -2262,7 +2232,7 @@
       ],
       "owner": "U6",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4500000000000006,
@@ -2276,7 +2246,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -2444,7 +2414,7 @@
       ],
       "owner": "U6",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -2458,7 +2428,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -2474,7 +2444,7 @@
       ],
       "owner": "U6",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -2488,7 +2458,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -2504,7 +2474,7 @@
       ],
       "owner": "U6",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -2518,7 +2488,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "capacitor",
@@ -3137,7 +3107,7 @@
       ],
       "owner": "U7",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.450000000000001,
@@ -3151,7 +3121,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -3167,7 +3137,7 @@
       ],
       "owner": "U7",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999975,
@@ -3181,7 +3151,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -3197,7 +3167,7 @@
       ],
       "owner": "U7",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -3211,7 +3181,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "CSD19534Q5A",
@@ -4386,7 +4356,7 @@
       ],
       "owner": "U10",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -4400,7 +4370,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -4446,7 +4416,7 @@
       ],
       "owner": "U11",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -4460,7 +4430,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "MMBT5551LT1G",
@@ -4558,7 +4528,7 @@
       ],
       "owner": "U11",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -4572,7 +4542,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "BAV21W_7_F",
@@ -4769,7 +4739,7 @@
       ],
       "owner": "U13",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9499999999999993,
@@ -4783,7 +4753,7 @@
       ],
       "rotation": 90,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -5249,9 +5219,9 @@
         "pin1": "STATUS_GPIO",
         "pin2": "DIN0",
         "pin3": "DIN1",
-        "pin4": "V3V3",
-        "pin5": "V3V3",
-        "pin6": "V3V3",
+        "pin4": "V3V3_MCU",
+        "pin5": "V3V3_MCU",
+        "pin6": "V3V3_MCU",
         "pin7": "GND",
         "pin8": "OSC_IN",
         "pin9": "OSC_OUT",
@@ -5265,7 +5235,7 @@
         "pin17": "SPI_MISO",
         "pin18": "SPI_MOSI",
         "pin19": "USB_VBUS_SENSE",
-        "pin20": "PD_IRQ_N",
+        "pin20": "BOARD_POWER_SENSE",
         "pin21": "EFUSE_FAULT_N",
         "pin22": "RS485_DE",
         "pin23": "ENC_CS_N",
@@ -5321,7 +5291,7 @@
       "tag": "capacitor",
       "name": "C44",
       "connections": {
-        "pin1": "V3V3",
+        "pin1": "V3V3_MCU",
         "pin2": "GND"
       },
       "sheet": "mcu",
@@ -5353,7 +5323,7 @@
       "tag": "capacitor",
       "name": "C45",
       "connections": {
-        "pin1": "V3V3",
+        "pin1": "V3V3_MCU",
         "pin2": "GND"
       },
       "sheet": "mcu",
@@ -5385,7 +5355,7 @@
       "tag": "capacitor",
       "name": "C46",
       "connections": {
-        "pin1": "V3V3",
+        "pin1": "V3V3_MCU",
         "pin2": "GND"
       },
       "sheet": "mcu",
@@ -5417,7 +5387,7 @@
       "tag": "capacitor",
       "name": "C47",
       "connections": {
-        "pin1": "V3V3",
+        "pin1": "V3V3_MCU",
         "pin2": "GND"
       },
       "sheet": "mcu",
@@ -5448,7 +5418,7 @@
       "tag": "resistor",
       "name": "R70",
       "connections": {
-        "pin1": "V3V3",
+        "pin1": "V3V3_MCU",
         "pin2": "NRST"
       },
       "sheet": "mcu",
@@ -5458,7 +5428,7 @@
       ],
       "owner": "U16",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -5472,7 +5442,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "capacitor",
@@ -5736,7 +5706,7 @@
       ],
       "owner": "U17",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -5750,7 +5720,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "capacitor",
@@ -5840,7 +5810,7 @@
       ],
       "owner": "U18",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "layer": "top",
       "size": [
@@ -5854,7 +5824,7 @@
         4
       ],
       "rotation": 90,
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "capacitor",
@@ -6001,7 +5971,7 @@
       ],
       "owner": "U19",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.450000000000003,
@@ -6015,7 +5985,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "SM24CANB_02HTG",
@@ -6128,7 +6098,7 @@
       ],
       "owner": "U20",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999957,
@@ -6142,7 +6112,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "PSM712_LF_T7",
@@ -6492,7 +6462,7 @@
       ],
       "owner": "Q17",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.45,
@@ -6506,7 +6476,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -6637,7 +6607,7 @@
       ],
       "owner": "Q18",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9499999999999993,
@@ -6651,7 +6621,7 @@
       ],
       "rotation": 90,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -6782,7 +6752,7 @@
       ],
       "owner": "Q19",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -6796,7 +6766,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -6927,7 +6897,7 @@
       ],
       "owner": "Q20",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999957,
@@ -6941,7 +6911,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -7072,7 +7042,7 @@
       ],
       "owner": "Q21",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         2.4499999999999957,
@@ -7086,7 +7056,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -7217,7 +7187,7 @@
       ],
       "owner": "Q22",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9500000000000028,
@@ -7231,7 +7201,7 @@
       ],
       "rotation": 90,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -7362,7 +7332,7 @@
       ],
       "owner": "Q23",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9500000000000028,
@@ -7376,7 +7346,7 @@
       ],
       "rotation": 270,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "resistor",
@@ -7507,7 +7477,7 @@
       ],
       "owner": "Q24",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9500000000000028,
@@ -7521,7 +7491,7 @@
       ],
       "rotation": 270,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "SS110",
@@ -7622,7 +7592,7 @@
       ],
       "owner": "Q25",
       "value": "10k",
-      "lcsc": "C25804",
+      "lcsc": "C844918",
       "footprint": "0603",
       "size": [
         0.9500000000000028,
@@ -7636,7 +7606,7 @@
       ],
       "rotation": 90,
       "layer": "top",
-      "mpn": null
+      "mpn": "CRCW060310K0FKEA"
     },
     {
       "tag": "SS110",
@@ -8002,11 +7972,11 @@
       "tag": "LM66100DCKR",
       "name": "U26",
       "connections": {
-        "pin1": "V3V3_BOARD",
+        "pin1": "V3V3",
         "pin2": "GND",
         "pin3": "V3V3_USB",
         "pin5": "USB_OR_SELECT",
-        "pin6": "V3V3"
+        "pin6": "V3V3_MCU"
       },
       "sheet": "usb-logic",
       "section": "usb-logic_U26",
@@ -8040,7 +8010,7 @@
         "pin2": "GND",
         "pin3": "USB_OR_SELECT",
         "pin5": "GND",
-        "pin6": "V3V3"
+        "pin6": "V3V3_MCU"
       },
       "sheet": "usb-logic",
       "section": "usb-logic_U27",
@@ -8070,7 +8040,7 @@
       "tag": "resistor",
       "name": "R112",
       "connections": {
-        "pin1": "V3V3_BOARD",
+        "pin1": "V3V3",
         "pin2": "USB_OR_SELECT"
       },
       "sheet": "usb-logic",
@@ -8089,8 +8059,8 @@
       ],
       "owner": null,
       "rotation": 0,
-      "lcsc": "C25804",
-      "mpn": null,
+      "lcsc": "C844918",
+      "mpn": "CRCW060310K0FKEA",
       "footprint": "0603",
       "noConnect": [],
       "layer": "top",
@@ -8223,7 +8193,7 @@
       "tag": "capacitor",
       "name": "C77",
       "connections": {
-        "pin1": "V3V3_BOARD",
+        "pin1": "V3V3",
         "pin2": "GND"
       },
       "sheet": "usb-logic",
@@ -8369,8 +8339,8 @@
       ],
       "owner": null,
       "rotation": 90,
-      "lcsc": "C25804",
-      "mpn": null,
+      "lcsc": "C844918",
+      "mpn": "CRCW060310K0FKEA",
       "footprint": "0603",
       "noConnect": [],
       "layer": "top",
@@ -8822,6 +8792,64 @@
       "layer": "top",
       "value": "100nF",
       "voltage": 50
+    },
+    {
+      "tag": "resistor",
+      "name": "R119",
+      "value": "10k",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "BOARD_POWER_SENSE"
+      },
+      "sheet": "usb-logic",
+      "section": "usb-logic_board-sense",
+      "xy": [
+        -28,
+        -7
+      ],
+      "sch": [
+        20,
+        -9
+      ],
+      "rotation": 180,
+      "layer": "top",
+      "lcsc": "C844918",
+      "mpn": "CRCW060310K0FKEA",
+      "footprint": "0603",
+      "size": [
+        2.4499999999999957,
+        0.9499999999999993
+      ],
+      "owner": null
+    },
+    {
+      "tag": "resistor",
+      "name": "R120",
+      "value": "10k",
+      "connections": {
+        "pin1": "BOARD_POWER_SENSE",
+        "pin2": "GND"
+      },
+      "sheet": "usb-logic",
+      "section": "usb-logic_board-sense",
+      "xy": [
+        -28,
+        -9
+      ],
+      "sch": [
+        20,
+        -12
+      ],
+      "rotation": 180,
+      "layer": "top",
+      "lcsc": "C844918",
+      "mpn": "CRCW060310K0FKEA",
+      "footprint": "0603",
+      "size": [
+        2.4499999999999957,
+        0.9499999999999993
+      ],
+      "owner": null
     }
   ]
 }

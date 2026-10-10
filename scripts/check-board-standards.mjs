@@ -1,4 +1,5 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises'
+import { kicadPadPosition } from './power-copper-geometry.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const circuit = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
@@ -118,11 +119,7 @@ for (const form of forms('footprint').filter((item) => item.startsWith(`(footpri
   const [fx, fy] = footprintAt.slice(1, 3).map(Number)
   const angle = Number(footprintAt[3] || 0)
   const [px, py] = padAt.slice(1, 3).map(Number)
-  const radians = angle * Math.PI / 180
-  const center = {
-    x: fx + px * Math.cos(radians) - py * Math.sin(radians),
-    y: fy + px * Math.sin(radians) + py * Math.cos(radians),
-  }
+  const center = kicadPadPosition(fx, fy, px, py, angle)
   const thermalVias = parsedVias.filter((via) => Math.abs(via.x - center.x) < 0.8 && Math.abs(via.y - center.y) < 0.8)
   if (thermalVias.length !== thermalPolicy.vias_per_pad) errors.push(`${reference}: expected ${thermalPolicy.vias_per_pad} drain-pad thermal vias, found ${thermalVias.length}`)
   for (const via of thermalVias) {

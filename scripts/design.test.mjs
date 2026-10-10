@@ -4,6 +4,20 @@ import { mkdtemp, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
+import { circuitSourceHash } from './circuit-source-hash.mjs'
+
+test('native evidence ignores only the CLI filesystem cache key', () => {
+  const circuit = [{ type: 'pcb_trace', route: [{ x: 1, y: 2, width: 0.15 }] },
+    { type: 'source_project_metadata', source_filesystem_md5_hash: 'first', project: 'motor' }]
+  const hash = circuitSourceHash(circuit)
+  circuit[1].source_filesystem_md5_hash = 'rebuilt reports'
+  expect(circuitSourceHash(circuit)).toBe(hash)
+  circuit[0].route[0].width = 0.2
+  expect(circuitSourceHash(circuit)).not.toBe(hash)
+  circuit[0].route[0].width = 0.15
+  circuit[1].project = 'different board'
+  expect(circuitSourceHash(circuit)).not.toBe(hash)
+})
 
 const data=JSON.parse(readFileSync(new URL('../dist/index/circuit.json',import.meta.url)))
 const manifest=JSON.parse(readFileSync(new URL('../docs/design-manifest.json',import.meta.url)))
@@ -181,7 +195,7 @@ test('LM66100 status interlock keeps the dual 3.3-V ORing output continuous',()=
   on('U23',3,'V3V3_MOTOR');on('U23',5,'LOGIC_OR_PRIORITY')
   on('R111',1,'V3V3_PD');on('R111',2,'LOGIC_OR_PRIORITY')
   on('U24',3,'LOGIC_OR_PRIORITY');on('U24',5,'GND')
-  for(const name of ['U23','U24']){on(name,6,'V3V3_BOARD');on(name,2,'GND')}
+  for(const name of ['U23','U24']){on(name,6,'V3V3');on(name,2,'GND')}
   on('U13',5,'V3V3');on('U14',5,'V3V3');on('R59',1,'V3V3')
 })
 
@@ -211,11 +225,11 @@ test('STEP/DIR multifunction pins cannot contend with encoder outputs',()=>{
 test('DATA powers only logic through a current limiter, regulator and reverse-blocking OR',()=>{
   on('U28',1,'USB_DATA_VBUS');on('U28',3,'USB_DATA_VBUS');on('U28',6,'USB_LOGIC_5V')
   on('U25',1,'USB_LOGIC_5V');on('U25',5,'V3V3_USB')
-  on('U26',1,'V3V3_BOARD');on('U26',3,'V3V3_USB');on('U26',5,'USB_OR_SELECT')
+  on('U26',1,'V3V3');on('U26',3,'V3V3_USB');on('U26',5,'USB_OR_SELECT')
   on('U27',1,'V3V3_USB');on('U27',3,'USB_OR_SELECT');on('U27',5,'GND')
-  on('R112',1,'V3V3_BOARD');on('R112',2,'USB_OR_SELECT')
-  for(const ref of ['U26','U27'])on(ref,6,'V3V3')
-  expect(new Set(['PD_VBUS','USB_DATA_VBUS','USB_LOGIC_5V','V3V3_USB','V3V3_BOARD','V3V3','VMOTOR'].map(netKey)).size).toBe(7)
+  on('R112',1,'V3V3');on('R112',2,'USB_OR_SELECT')
+  for(const ref of ['U26','U27'])on(ref,6,'V3V3_MCU')
+  expect(new Set(['PD_VBUS','USB_DATA_VBUS','USB_LOGIC_5V','V3V3_USB','V3V3','V3V3_MCU','VMOTOR'].map(netKey)).size).toBe(7)
 })
 test('both winding shunts are in series and feed bidirectional phase diagnostics',()=>{
   for(const [phase,shunt,amp,filter,adc,connectorPin] of [['A','R115','U31','R117',11,1],['B','R116','U32','R118',12,3]]){
@@ -240,4 +254,14 @@ test('TMP102 hardware alert inhibits the run chain independently of MCU_RUN',()=
   expect(netKey('RUN_WINDOW_OK')).not.toBe(netKey('RUN_SAFE'))
   on('U30',1,'V3V3') // 0x49, distinct from TMP102 ADD0=GND at 0x48.
   for(const [ref,sda,scl] of [['U29',6,1],['U30',9,10]]){on(ref,sda,'PD_SDA');on(ref,scl,'PD_SCL')}
+})
+
+test('USB-only power is confined to the MCU and its reset/decoupling network',()=>{
+  const mcuRail=netKey('V3V3_MCU')
+  const attached=new Set(ports.filter(p=>p.subcircuit_connectivity_map_key===mcuRail).map(p=>components.find(c=>c.source_component_id===p.source_component_id).name))
+  expect([...attached].sort()).toEqual(['U16','U26','U27','C44','C45','C46','C47','R70','TP_SWD_3V3'].sort())
+  for(const [ref,pin] of [['U19',3],['U20',8],['U21',16],['U31',6],['U32',6],['U18',11],['U17',8]])on(ref,pin,'V3V3')
+  on('U16',20,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
+  on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')
+  expect(key('U2',10)).toBeFalsy()
 })

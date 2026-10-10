@@ -13,6 +13,7 @@ const portName = new Map(circuit.filter((row) => row.type === 'source_port').map
 const round = (value) => typeof value === 'number' ? Number(value.toFixed(6)) : value
 const point = (value) => value ? { x: round(value.x), y: round(value.y) } : null
 const placedName = (row) => componentName.get(row.source_component_id) || row.source_component_id || row.pcb_component_id
+const sourceTrace = new Map(circuit.filter((row) => row.type === 'source_trace').map((row) => [row.source_trace_id, row]))
 
 const normalized = {
   board: circuit.filter((row) => row.type === 'pcb_board').map((row) => ({
@@ -51,15 +52,29 @@ const normalized = {
     layers: row.layers || (row.layer ? [row.layer] : []),
   })).sort((a, b) => (a.port || '').localeCompare(b.port || '', undefined, { numeric: true })),
   holes: circuit.filter((row) => row.type === 'pcb_hole').map((row) => ({ x: round(row.x), y: round(row.y), diameter: round(row.hole_diameter), shape: row.hole_shape })).sort((a, b) => a.x - b.x || a.y - b.y),
+  local_copper: circuit.filter((row) => row.type === 'pcb_trace').map((row) => ({
+    name: sourceTrace.get(row.source_trace_id)?.name || null,
+    ports: (sourceTrace.get(row.source_trace_id)?.connected_source_port_ids || []).map((id) => portName.get(id)).sort(),
+    route: row.route.map((p) => ({
+      ...point(p), type: p.route_type, layer: p.layer,
+      from_layer: p.from_layer, to_layer: p.to_layer,
+      width: round(p.width), via_diameter: round(p.via_diameter), hole_diameter: round(p.hole_diameter),
+    })),
+  })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
 }
 
+const routingInputs = ['routing/requirements.json', 'routing/critical-paths.json', 'routing/pin-escapes.json', 'scripts/prepare-routing-seed.py']
+const routingInputHashes = Object.fromEntries(await Promise.all(routingInputs.map(async (path) => [
+  path, createHash('sha256').update(await readFile(path)).digest('hex'),
+])))
 const canonical = JSON.stringify(normalized)
 const inputSha256 = createHash('sha256').update(canonical).digest('hex')
 const routedBoardSha256 = createHash('sha256').update(await readFile(boardPath)).digest('hex')
 const result = {
-  schema_version: 1,
-  algorithm: 'sha256 of normalized topology, supplier identity, footprint geometry and placement; plus reviewed KiCad board hash',
+  schema_version: 2,
+  algorithm: 'sha256 of normalized topology, supplier identity, footprint geometry, placement and local copper; routing policy/seed inputs; plus reviewed KiCad board hash',
   input_sha256: inputSha256,
+  routing_inputs: routingInputHashes,
   routed_board_sha256: routedBoardSha256,
   counts: Object.fromEntries(Object.entries(normalized).map(([name, rows]) => [name, rows.length])),
 }
@@ -70,7 +85,10 @@ if (update) {
 } else {
   const expected = JSON.parse(await readFile(fingerprintPath, 'utf8'))
   const errors = []
-  if (expected.input_sha256 !== inputSha256) errors.push('Topology/footprint/placement fingerprint changed; review and regenerate routing before updating the fingerprint')
+  if (expected.input_sha256 !== inputSha256) errors.push('Topology/footprint/placement/local-copper fingerprint changed; review and regenerate routing before updating the fingerprint')
+  for (const path of routingInputs) {
+    if (expected.routing_inputs?.[path] !== routingInputHashes[path]) errors.push(`Routing input changed: ${path}; regenerate and review routing before updating the fingerprint`)
+  }
   if (expected.routed_board_sha256 !== routedBoardSha256) errors.push('Final KiCad board changed after routing review; rerun DRC/power checks and update the fingerprint intentionally')
   console.log(JSON.stringify({ ...result, expected_input_sha256: expected.input_sha256, expected_routed_board_sha256: expected.routed_board_sha256, errors }, null, 2))
   if (errors.length) process.exitCode = 1
