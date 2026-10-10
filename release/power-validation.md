@@ -1,21 +1,21 @@
 # Power validation and prototype order review
 
-**Status: power ECO CAD verified; order hold remains. No PCB has been assembled or powered.** The user authorized changes to the driver-supply and brake/OVP sections on 2026-10-10. Unrelated schematic placement and symbols remain frozen. The regenerated native board has zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Use only the matching regenerated manufacturing package; this CAD result does not close the system-validation gates.
+**Status: power ECO CAD verified; order hold remains. No PCB has been assembled or powered.** The user authorized changes to the driver-supply and brake/OVP sections and removal of C19 from IMON on 2026-10-10. Unrelated schematic placement and symbols remain frozen. The regenerated native board has zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Use only the matching regenerated manufacturing package; this CAD result does not close the system-validation gates.
 
 ## Independent pre-order audit — 2026-10-10
 
-The audited native PCB SHA-256 is `e97ad49ce1460acea8b69487f246bf4806e632261c876f245a82a8a7a832a931`, from source commit `51d4abeef20cd5ba113ff5a20b78f97c0e055ef3`. A fresh KiCad invocation, independent of the cached check reports, found zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Raw reports: [PCB](checks/pre-order-native-drc.json), [schematic](checks/pre-order-native-erc.json). The complete automated review is recorded in [verification.json](verification.json); its passing results do not cover every manufacturer design instruction.
+The audited native PCB SHA-256 is `c9007161c6b74a6dc9713a2e786b1761b4a3b42090f70075ccfa8724ed1677fb`, after the authorized C19 correction on base commit `b38aa63c568504deec009184d52fd277ab1c7e7c`. A fresh KiCad invocation, independent of the cached check reports, found zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Raw reports: [PCB](checks/pre-order-native-drc.json), [schematic](checks/pre-order-native-erc.json). The complete automated review is recorded in [verification.json](verification.json); its passing results do not cover every manufacturer design instruction.
 
 | Review area | Finding |
 |---|---|
-| Assembly and geometry | 295 fitted parts plus 11 service pads on top; minimum via drill 0.30 mm; 69 filled/capped via-in-pad locations |
+| Assembly and geometry | 294 fitted parts plus 11 service pads on top; minimum via drill 0.30 mm; 69 filled/capped via-in-pad locations |
 | Local routing | All 46 specified bypass paths, nine Kelvin/analog branches, USB reference and power-routing checks passed |
 | Filled-copper calculation | Re-exported the current native copper and solved MOTOR_A1 Q7:9 → R115:1 at 0.075/0.05 mm mesh: 3.2831/3.2946 mΩ, 0.349% difference; fine-mesh loss 0.0997 W at 5.5 A, excluding contacts/devices and thermal feedback. [Evidence](../engineering/filled-copper-review.json) |
 | Driver initialization | Fixed reliance on OTP short-detection and dead-time defaults. Explicit register writes, disabled-chopper sequencing and write-corruption regressions pass. The regression failed on the previous configuration. See [firmware details](../firmware/README.md#tmc5160-external-stepdir-service) |
-| TPS26631 current monitor | **Open correction:** C19 places 100 nF directly from IMON to GND. TI §8.3.9 prohibits an IMON bypass capacitor because it delays current information. With R26=20 kΩ, the ideal RC time constant is 2 ms. C19 removal is proposed; the specific schematic-freeze approval and matching artifact regeneration are pending. This does not establish a fault in the eFuse's independent internal current limit. |
+| TPS26631 current monitor | **Corrected:** removed C19 from source and native PCB; R26 and the ADC connection remain. The compiled-connectivity regression rejects an IMON-to-ground capacitor even after reference/net renaming. TI §8.3.9 prohibits this bypass because it delays current information; this is separate from the internal current limit. |
 | Programming and operation | The TPS26750 full-flash image and qualified motor-operation firmware are absent. The supplied STM32 image supports commissioning diagnostics and deliberately keeps motion locked. Exact motor/load, stop profile and adapter/cable are not confirmed. |
 
-The [C19 source proposal](../engineering/proposed-remove-c19.patch) removes only that capacitor; it is **not applied** and is not a manufacturing ECO by itself. Approval must be followed by native schematic/PCB, BOM/CPL, checks and release regeneration. The source pin connection was compared against [TI TPS2663 §8.3.9](https://www.ti.com/lit/ds/symlink/tps2663.pdf); the existing generic CAD checks did not detect this component-specific rule.
+The C19 correction removes only that component. Native footprint and route comparison verifies the remaining pads and existing tracks/vias are unchanged; matching schematic, BOM/CPL and manufacturing files are regenerated. See the `c19_correction` entry in [native placement evidence](../engineering/top-side-placement.json). The source connection was checked against [TI TPS2663 §8.3.9](https://www.ti.com/lit/ds/symlink/tps2663.pdf); generic CAD connectivity checks alone did not detect this component-specific rule.
 
 **Disposition: keep the order hold.** Passing connectivity and design calculations does not mean the delivered assembly can currently run a motor. Programming and agreed functional acceptance must be completed before shipment for a ready-to-run delivery; provider acceptance and actual test records are not yet available. See [assembly requirements](assembly.md) and [order settings](../release/order-settings.json).
 
@@ -40,7 +40,7 @@ Reference data: [TI LMR36510 tables 8-1/8-4](https://www.ti.com/lit/ds/symlink/l
 
 C87 has a documented 3.3 mm pad-center placement limit: VIN is the second pin in U34's PowerPAD package, and the adjacent 0805 capacitor must clear the PGND land and package courtyard. Actual separation is approximately 3.166 mm, with a constrained top-layer path under 5 mm. All other bypass targets retain the 3 mm placement limit. This is not an exception to copper clearance, connectivity or the short ground-return requirement. L3 uses the manufacturer's recommended land pattern; its 3D object is a dimensioned body envelope, not a manufacturer STEP model.
 
-The final native PCB has 295 fitted parts and 11 service pads on top, a minimum 0.30 mm finished via drill, 40 MOSFET drain thermal vias and four U34 exposed-pad thermal vias. The drill-over-solder-land audit counts **69 via-in-pad locations**, all requiring the selected filled/capped process. Exact coordinates and the board hash are in `engineering/top-side-placement.json`; order settings carry the same count. Native routing checks verify all 46 specified IC-to-capacitor top-layer paths within 5 mm, all nine Kelvin/analog-return branches, USB reference continuity and the power-corridor policy. The native bypass regression rejects the earlier copper with five missing or excessive paths.
+The final native PCB has 294 fitted parts and 11 service pads on top, a minimum 0.30 mm finished via drill, 40 MOSFET drain thermal vias and four U34 exposed-pad thermal vias. The drill-over-solder-land audit counts **69 via-in-pad locations**, all requiring the selected filled/capped process. Exact coordinates and the board hash are in `engineering/top-side-placement.json`; order settings carry the same count. Native routing checks verify all 46 specified IC-to-capacitor top-layer paths within 5 mm, all nine Kelvin/analog-return branches, USB reference continuity and the power-corridor policy. The native bypass regression rejects the earlier copper with five missing or excessive paths.
 
 ## What the power numbers establish
 
@@ -78,3 +78,24 @@ Use a current-limited bench setup, rated differential probes, a current probe/el
 | Interfaces and compliance | USB during switching, STEP/DIR rate, industrial buses, cable faults, magnetic alignment, ESD/EMC | Meets the intended system requirements and applicable test limits; record failures | Not tested |
 
 Full-power operation is established only after these measurements on assembled hardware. A passing design calculation or CAD report cannot close the powered, thermal or EMC gates.
+
+## Qualification work sheet for the provider
+
+Complete and approve this envelope **before** a motor-enabled test. Empty fields mean the qualification is not ready to execute; the design target is not an acceptance value.
+
+| Required input | Agreed value |
+|---|---|
+| Provider, responsible engineer and first-article serial | Not supplied |
+| Motor manufacturer/model, phase wiring and rated RMS current | Not confirmed; QSH8618-96-55-700 is the design reference only |
+| Driven load, inertia/gravity, maximum RPM and acceleration | Not supplied |
+| Worst stop/deceleration profile and repeat interval | Not supplied |
+| J1 source model and EPR cable model/rating | Not supplied |
+| Brake resistor, heatsink, mounting and airflow | Not qualified |
+| Ambient range, enclosure, duty cycle and thermal limits | Not agreed |
+| Microsteps, current settings and STEP/DIR timing limits | Not qualified |
+| TI configuration/full-flash hashes and motor-test firmware hash | Not available |
+| Fixture revision, instrument list and calibration dates | Not supplied |
+
+For every matrix row, retain: board/release identity; procedure revision; operator/date; actual motor/load/ambient; instrument setup; programmed settings; numeric expected limits and their source; readings with units; waveform/photo/log filenames; PASS/FAIL; and the engineer's disposition. A record labelled “not tested” is not acceptable shipment evidence.
+
+First-article qualification covers operating corners and fault behavior. The provider must then approve a repeatable production acceptance procedure and duration. Every shipped board needs its own programming verification and both-direction motor/fault record; a single prototype video does not accept the batch. Neither that production procedure nor any powered result has been approved yet. See the [prepared provider request and programming sequence](assembly.md#request-to-send-to-the-assemblytest-provider).

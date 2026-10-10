@@ -62,6 +62,7 @@ const copies = [
   ['engineering/power-audit.json', 'power-audit.json'],
   ['docs/native-decoupling-check.json', 'native-decoupling-check.json'],
   ['docs/power-validation.md', 'power-validation.md'],
+  ['docs/assembly.md', 'assembly.md'],
   ['docs/release-status.json', 'release-status.json'],
   ['hardware-contract.json', 'hardware-contract.json'],
   ['dist/pd1180-epr-r0.3-manufacturing.zip', 'pd1180-epr-r0.3-manufacturing.zip'],
@@ -120,7 +121,7 @@ The ECO separates PD POWER and USB DATA, consolidates the industrial harness and
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and \`docs/assembly.md\` for the programming fixture and per-board acceptance requirements. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
+The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 
 For the checked prototype handoff, use the newly generated Gerbers together with \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for top-side assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for every via-in-pad listed in the order settings (including 40 MOSFET drain-pad and four U34 thermal vias), and top-side assembly.
 

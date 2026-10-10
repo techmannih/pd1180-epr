@@ -25,8 +25,8 @@ Every executable script is listed here so a reviewer can understand the release 
 | `circuit-source-hash.mjs` | Hashes every circuit element and metadata field except the CLI filesystem cache key, canonicalizing derived trace lengths to 1e-12 mm across platforms, so regenerated reports cannot invalidate unchanged native circuit evidence. Shared by the native checker and its evidence verifier. |
 | `test-critical-copper.py` | Native KiCad regressions: accept a load connection at the shunt terminal; reject missing sense copper, a same-net spur, a connection at the far edge of the IC land, or a plane via before that terminal; check that DSN reservations leave other destinations intact. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
-| `power-audit.mjs` | Reads compiled connectivity, fitted values and firmware to screen operating limits, supply isolation, protection tolerances and power losses; writes hash-bound calculations while retaining hardware qualification holds. |
-| `power-audit.test.mjs` | Rejects merged/missing supply nets and non-numeric inductance; regresses operating-limit and tolerance calculations. |
+| `power-audit.mjs` | Reads compiled connectivity, fitted values and firmware to screen operating limits, supply isolation, forbidden IMON bypass capacitors, protection tolerances and power losses; writes hash-bound calculations while retaining hardware qualification holds. |
+| `power-audit.test.mjs` | Rejects merged/missing supply nets, non-numeric inductance and IMON bypass capacitors including renamed references/net aliases; regresses operating-limit and tolerance calculations. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
 | `release-gates.test.mjs` | Proves held designs remain reviewable but not orderable, and both modes reject failed or stale evidence. |
 | `check-release.mjs` | Checks engineering evidence and unchanged inputs; default mode enforces the order hold. `--review` permits a verified review package with explicit hold reasons while never permitting failed CAD checks. |

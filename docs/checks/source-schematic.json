@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-10-10T08:55:35.408Z",
+  "generated_at": "2026-10-10T09:29:04.297Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "f5aae19e01c9ca1b79e28796920d59ef6c36a06ac0996a828b84f4e497c6a6af",
-    "bytes": 4939898
+    "sha256": "6107fcf866c004586377b280895692bdbfb60cf5bda6f92b5d0c5d833b434968",
+    "bytes": 4931869
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 11157,
+    "elements": 11136,
     "sheets": 16,
-    "source_components": 306,
-    "source_ports": 1068,
-    "connected_source_ports": 1031,
+    "source_components": 305,
+    "source_ports": 1066,
+    "connected_source_ports": 1029,
     "intentional_no_connect_ports": 37,
     "source_nets": 199,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 94,
+    "capacitors": 93,
     "test_points": 11,
     "annotations": 49,
     "frame_point_violations": 0,
@@ -24,8 +24,8 @@
   },
   "net_port_histogram": {
     "2": 82,
-    "3": 67,
-    "4": 25,
+    "3": 68,
+    "4": 24,
     "5": 7,
     "6": 1,
     "8": 1,
@@ -38,7 +38,7 @@
     "17": 1,
     "44": 1,
     "72": 1,
-    "248": 1
+    "247": 1
   },
   "usb_c": {
     "connectors": [
@@ -420,8 +420,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 248,
-      "non_testpoint_peers": 246
+      "total_ports_on_net": 247,
+      "non_testpoint_peers": 245
     },
     {
       "ref": "TP_SWCLK",
@@ -468,8 +468,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 248,
-      "non_testpoint_peers": 246
+      "total_ports_on_net": 247,
+      "non_testpoint_peers": 245
     }
   ],
   "sheets": [
@@ -715,8 +715,8 @@
     {
       "index": 3,
       "name": "motor-power",
-      "elements": 236,
-      "coordinate_points_checked": 431
+      "elements": 230,
+      "coordinate_points_checked": 428
     },
     {
       "index": 4,
@@ -802,8 +802,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 306,
-        "schematic": 306
+        "source": 305,
+        "schematic": 305
       }
     },
     {
@@ -1539,9 +1539,9 @@
     },
     {
       "ok": true,
-      "message": "94 capacitors audited",
+      "message": "93 capacitors audited after C19 removal",
       "details": {
-        "actual": 94
+        "actual": 93
       }
     },
     {

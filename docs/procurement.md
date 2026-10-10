@@ -2,7 +2,7 @@
 
 Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-10T06:34:26.361Z.
+Last complete refresh: 2026-10-10T09:28:15.891Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|
@@ -13,7 +13,7 @@ Last complete refresh: 2026-10-10T06:34:26.361Z.
 | [C9943](https://jlcsearch.tscircuit.com/components/list.json?search=9943) | MAX3485EESA+T | 1 | 27908 | U20 |
 | [C13738](https://jlcsearch.tscircuit.com/components/list.json?search=13738) | X322516MLB4SI | 1 | 172398 | Y1 |
 | [C13967](https://jlcsearch.tscircuit.com/components/list.json?search=13967) | CL21B474KBFNNNE | 5 | 211110 | C27, C32, C33, C34, C35 |
-| [C14663](https://jlcsearch.tscircuit.com/components/list.json?search=14663) | CC0603KRX7R9BB104 | 42 | 12618106 | C72, C9, C10, C14, C65, C69, C70, C18, C19, C24, C28, C36, C37, C38, C39, C89, C94, C40, C41, C43, C44, C45, C46, C48, C51, C52, C73, C54, C55, C56, C57, C58, C59, C60, C74, C77, C78, C79, C80, C81, C82, C85 |
+| [C14663](https://jlcsearch.tscircuit.com/components/list.json?search=14663) | CC0603KRX7R9BB104 | 41 | 12618106 | C72, C9, C10, C14, C65, C69, C70, C18, C24, C28, C36, C37, C38, C39, C89, C94, C40, C41, C43, C44, C45, C46, C48, C51, C52, C73, C54, C55, C56, C57, C58, C59, C60, C74, C77, C78, C79, C80, C81, C82, C85 |
 | [C15725](https://jlcsearch.tscircuit.com/components/list.json?search=15725) | CL10B104KC8NNNC | 7 | 1221863 | C1, C12, C63, C20, C29, C31, C61 |
 | [C15846](https://jlcsearch.tscircuit.com/components/list.json?search=15846) | MAX3232ESE+T | 1 | 25896 | U21 |
 | [C15849](https://jlcsearch.tscircuit.com/components/list.json?search=15849) | CL10A105KB8NNNC | 8 | 5979916 | C2, C13, C64, C88, C93, C42, C53, C75 |
@@ -90,7 +90,7 @@ Last complete refresh: 2026-10-10T06:34:26.361Z.
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 517 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 3323 | U1 |
 
-All 83 selected PCB part types (295 placements) had sufficient reported stock for 5 boards at the timestamp above, and all 83 supplier package names matched the pinned manifest expectation.
+All 83 selected PCB part types (294 placements) had sufficient reported stock for 5 boards at the timestamp above, and all 83 supplier package names matched the pinned manifest expectation.
 
 ## Substitution policy
 

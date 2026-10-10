@@ -22,13 +22,15 @@ The intended purchase is **PCB fabrication plus complete assembly, programming a
 
 | Deliverable | Required handoff / present status |
 |---|---|
-| Complete populated PCBA | Matching Gerbers, BOM and CPL; 295 fitted parts on top, including an agreed through-hole/tall-part assembly plan. CAD verified; assembly not ordered. |
+| Complete populated PCBA | Matching Gerbers, BOM and CPL; 294 fitted parts on top, including an agreed through-hole/tall-part assembly plan. CAD verified; assembly not ordered. |
 | U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Binary pending.** The requirements JSON is not flashable firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
 | External system | Confirmed motor, EPR source/cable, 24 V control source, mating harnesses, brake resistor/heatsink, magnet and mounting hardware; these are outside the populated-PCB BOM. |
 
 First articles need staged engineering qualification using [the power-validation test matrix](docs/power-validation.md), followed by an agreed per-board acceptance test for the assembled batch. If the assembler does not provide programming or motor testing, arrange a separate commissioning provider before calling the delivery ready to run. The manufacturing request and pending programming fields are in [order-settings.json](release/order-settings.json); detailed acceptance requirements are in [assembly.md](docs/assembly.md).
+
+The [provider request and first-article programming sequence](docs/assembly.md#request-to-send-to-the-assemblytest-provider) are ready for review. Provider acceptance and the [motor/load qualification inputs](docs/power-validation.md#qualification-work-sheet-for-the-provider) remain open. Programming and the accepted motor tests must finish before shipment.
 
 ## Connections and operation
 
@@ -80,7 +82,7 @@ To stop normally, decelerate the STEP train using the validated stop profile, re
 | Outputs | Hardware enable plus two protected low-side outputs |
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
 | Programming | SWD for STM32 and configuration EEPROM for the PD controller |
-| Assembly | 295 JLC-sourced fitted parts plus 11 service test pads, all on top |
+| Assembly | 294 JLC-sourced fitted parts plus 11 service test pads, all on top |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, external hardware enable and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN`, `RS485_DE`, both protected outputs and standalone-mode selection inactive.
 
@@ -197,7 +199,7 @@ The printable [mounting template](mounting-template.svg) is generated from `hard
 
 ## Parts and procurement
 
-- 295 populated components use exact JLCPCB/LCSC identities.
+- 294 populated components use exact JLCPCB/LCSC identities.
 - The fitted BOM contains 83 unique LCSC codes.
 - The latest committed live check reports 83/83 available at its recorded timestamp; refresh stock for the actual order before purchase.
 - Eleven selected alternative candidates are currently available.
@@ -226,7 +228,7 @@ Current verification evidence:
 | Topology regression | PASS — 37 tests covering topology, via identity and power-copper geometry |
 | Kelvin-check regressions | PASS — 11 native regressions and all 9 final-board paths |
 | Decoupling | PASS — 46/46 native IC-to-capacitor paths |
-| Assembly | PASS — 295 fitted parts plus 11 service test pads on top |
+| Assembly | PASS — 294 fitted parts plus 11 service test pads on top |
 | Stock | PASS — 83/83 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
 | Release delivery | Current ECO review artifacts; ordering remains on hold |

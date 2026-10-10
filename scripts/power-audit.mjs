@@ -24,6 +24,24 @@ export function supplyIsolationErrors(railKeys) {
   return errors
 }
 
+// TPS2663 section 8.3.9 forbids an IMON bypass capacitor. Compare compiled
+// connectivity, so renamed nets and direct trace connections are covered too.
+export function imonBypassErrors(circuit) {
+  const controller = circuit.find(p => p.type === 'source_component' && p.name === 'U6')
+  const ports = circuit.filter(p => p.type === 'source_port')
+  const pinKey = pin => controller && ports.find(p =>
+    p.source_component_id === controller.source_component_id && p.pin_number === pin,
+  )?.subcircuit_connectivity_map_key
+  const imon = pinKey(13), ground = pinKey(8)
+  if (!imon || !ground || imon === ground) return ['Cannot verify distinct U6 IMON and GND connectivity']
+  return circuit.filter(p => p.type === 'source_component' && p.ftype === 'simple_capacitor')
+    .filter(cap => {
+      const nets = new Set(ports.filter(p => p.source_component_id === cap.source_component_id)
+        .map(p => p.subcircuit_connectivity_map_key))
+      return nets.has(imon) && nets.has(ground)
+    }).map(cap => `${cap.name}: TPS26631 IMON must not have a bypass capacitor (TI section 8.3.9)`)
+}
+
 export function dividerRange(top, bottom, threshold, leakage = 0, tolerance = 0.01) {
   return {
     min: threshold.min * (1 + top * (1 - tolerance) / (bottom * (1 + tolerance))) - leakage * top * (1 + tolerance),
@@ -114,6 +132,7 @@ export async function audit() {
   const pinKey = (name, pin) => circuit.find(p => p.type === 'source_port' && p.source_component_id === part(name).source_component_id && p.pin_number === pin)?.subcircuit_connectivity_map_key
   const vsaOnMotorBus = pinKey('U7', 4) === netKey('VMOTOR')
   const errors = operatingErrors({ vsaOnMotorBus, brakeOn, motorCutoff })
+  errors.push(...imonBypassErrors(circuit))
   // Allow a 5% high 48 V source plus 0.3 V noise margin without nuisance OVP.
   if (ovp.min < 48*1.05 + 0.3) errors.push('Input OVP lacks margin above a 5% high 48 V source')
   if (ovp.max + 0.5 >= 55) errors.push('Input OVP plus transient allowance exceeds the VS operating limit')

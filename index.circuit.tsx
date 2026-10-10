@@ -814,12 +814,6 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="20k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C4184"] }}
       connections={{ pin1: "net.IIN_MON", pin2: "net.GND" }} />
-    <capacitor name="C19" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={14.5} schY={-3.5} pcbX={1.5} pcbY={19.25} pcbRotation={180}
-      schRotation={-90}
-      capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
-      maxDecouplingTraceLength="30mm"
-      maxVoltageRating="50V"
-      connections={{ pin1: "net.IIN_MON", pin2: "net.GND" }} />
     <resistor name="R27" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={16} schY={-1.4} pcbX={5.0} pcbY={18.5} pcbRotation={90}
       schRotation={-90}
       resistance="360k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23146"] }}

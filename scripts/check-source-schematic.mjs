@@ -383,7 +383,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 94, "94 capacitors audited", { actual: capacitors.length })
+check(capacitors.length === 93, "93 capacitors audited after C19 removal", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })

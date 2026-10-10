@@ -27,7 +27,8 @@
     "selected_operating_mode_electrically_compatible": true,
     "kelvin_terminal_only_connections_verified": true,
     "usb_suspend_power_management_implemented": true,
-    "driver_supply_and_protection_operating_limits_verified": true
+    "driver_supply_and_protection_operating_limits_verified": true,
+    "tps26631_imon_bypass_removed": true
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -40,7 +41,6 @@
   },
   "architecture_review": "engineering/reviewer-eco.json",
   "order_hold_reasons": [
-    "C19 places 100 nF directly on TPS26631 IMON, contrary to TI section 8.3.9. Remove it and refresh matching CAD/BOM/manufacturing evidence after the specific schematic-freeze approval.",
     "Exact motor/load, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
     "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",

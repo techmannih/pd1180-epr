@@ -19,6 +19,8 @@ The user reopened the architecture scope on 2026-10-09: separate PD POWER / USB 
 
 On 2026-10-10 the user explicitly reopened the affected driver-supply and brake/OVP sections after the power audit found U7 VSA connected above its 50 V operating limit. Correct those power sections and their PCB implementation; preserve unrelated schematic content. Existing manufacturing files are historical until this power ECO passes fresh checks.
 
+On 2026-10-10 the user also approved removing C19 from TPS26631 IMON, with matching native PCB, BOM and manufacturing updates. Preserve R26 and the IMON ADC connection; unrelated schematic content remains frozen.
+
 ## Required project structure
 
 Every board repository should contain:
