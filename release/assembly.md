@@ -73,7 +73,7 @@ Blank devices, a programmed-but-motion-locked image, a USB-only demo, or an asse
 
 The EPR charger, EPR cable, motor, shaft magnet, external braking resistor/heatsink and bus terminators are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 
-The hosted tscircuit 3D assembly does not currently include a motor primitive because `assembly.motor` does not support a `nema34` standard. Do not substitute `nema23` or invent an unsupported enum. Until native NEMA 34 support exists, verify the motor fit with `mounting-template.svg`, the motor drawing, standoff dimensions and an external mechanical assembly review.
+The exact bare QSH8618-96 CAD is available in `motor-assembly.circuit.tsx` through `assembly.subassembly`. The selected bare motor lacks matching rear PCB threads; use the proposed front-flange-supported adapter only after its mechanical review. [Motor assembly](motor-assembly.md) records screw clearances, the 9.5 mm rear stack, top-side encoder holder/magnet proposal and unresolved release gates. Do not treat the PD86 mounting-template match as proof of a direct bare-motor fit.
 
 ## Imported-part corrections
 

@@ -1,0 +1,97 @@
+{
+  "status": "CAD proposal; custom mechanical parts are not released for fabrication",
+  "motor": {
+    "name": "Bare QSH8618-96",
+    "step": "engineering/mechanical/QSH8618-96.step",
+    "sha256": "3884aa3811c2fac5b409e7dbb8d588325d0def3b163c96486b6738f05efa3986",
+    "rear_face_step_x_mm": 127.8,
+    "front_flange_front_step_x_mm": 31.8,
+    "front_flange_back_step_x_mm": 40.3,
+    "front_hole_xy_mm": [
+      [
+        34.79,
+        34.79
+      ],
+      [
+        -34.79,
+        34.79
+      ],
+      [
+        -34.79,
+        -34.79
+      ],
+      [
+        34.79,
+        -34.79
+      ]
+    ],
+    "front_hole_diameter_mm": 5.5,
+    "rear_shaft_end_step_x_mm": 124.3,
+    "rear_shaft_end_diameter_mm": 15,
+    "rear_shaft_bore_diameter_mm": 3,
+    "rear_shaft_bore_depth_mm": 5,
+    "rear_shaft_bore_thread": "Not established by STEP; do not assume an M3 thread",
+    "rear_opening_diameter_mm": 17,
+    "pcb_pattern_rear_threads": false
+  },
+  "mount": {
+    "concept": "Four removable support posts attached through the existing front flange; a rear adapter plate carries the original PCB hole pattern",
+    "motor_rear_to_adapter_bottom_mm": 0.5,
+    "adapter_thickness_mm": 3,
+    "adapter_width_mm": 85.9,
+    "adapter_center_aperture_diameter_mm": 20,
+    "adapter_material": "6061-T6 aluminum; bonding/isolation and fastener contact require mechanical/electrical review",
+    "long_post_length_mm": 88,
+    "long_post_outer_diameter_mm": 8,
+    "long_post_thread": "M5; thread engagement and shared machine-mount fastening require mechanical approval",
+    "adapter_to_pcb_bottom_mm": 6,
+    "pcb_standoff_outer_diameter_mm": 8,
+    "pcb_standoff_thread": "M4 male/female",
+    "pcb_top_head_maximum_diameter_mm": 8,
+    "pcb_top_head_and_washer_height_mm": 3.5,
+    "minimum_component_to_head_mm": 0.5,
+    "pcb_bottom_to_motor_rear_mm": 9.5,
+    "front_mounting_interface_shared": true,
+    "adapter_pcb_hole_diameter_mm": 4.5,
+    "long_post_bore_diameter_mm": 5
+  },
+  "encoder": {
+    "sensor": "U18 AS5047P, top side at PCB origin",
+    "magnet": "Custom diametrically magnetized NdFeB cylinder, diameter 8 mm by 6 mm; candidate grade N48SH",
+    "magnet_supplier_part": null,
+    "magnet_diameter_mm": 8,
+    "magnet_height_mm": 6,
+    "magnet_top_to_pcb_bottom_mm": 0.5,
+    "holder_material": "PEEK; nonmagnetic",
+    "holder_outer_diameter_mm": 10.5,
+    "holder_pocket_diameter_mm": 8.1,
+    "holder_pilot_diameter_mm": 2.8,
+    "holder_pilot_length_mm": 3,
+    "holder_retainer_thickness_mm": 0.2,
+    "holder_retainer_opening_diameter_mm": 6,
+    "holder_attachment": "Concentric locating pilot and bonded flat shaft-end joint; adhesive, tolerances, retention and overspeed qualification are unresolved",
+    "radial_eccentricity_target_mm": 0.1,
+    "axial_runout_target_mm": 0.05,
+    "estimated_package_top_to_die_mm": 0.306,
+    "nominal_package_height_mm": 1.1,
+    "nominal_magnet_to_die_mm": 2.894,
+    "required_bz_mt_at_die_radius_1_1_mm": [
+      35,
+      70
+    ],
+    "note": "Magnet size/grade is a candidate requiring supplier field-versus-gap and temperature data; the stock PD86 magnet is not assumed compatible. No measured magnetic qualification.",
+    "holder_solid_stem_height_mm": 6.5
+  },
+  "unresolved": [
+    "Manufacturer confirmation that the ordered QSH8618-96 variant matches the supplied STEP, including recessed rear shaft and bore",
+    "Approval of front-flange shared fastening, long-post strength/stiffness, adapter tolerances and fastener lengths",
+    "Stocked magnet selection and guaranteed field over the full tolerance/temperature range",
+    "Holder attachment, adhesive and mechanical retention/spin qualification"
+  ],
+  "sources": [
+    "https://www.analog.com/en/products/qsh8618.html",
+    "https://www.analog.com/media/en/technical-documentation/user-guides/pd-1180_hardware_manual_hw1.10_rev1.05.pdf",
+    "https://look.ams-osram.com/m/d05ee39221f9857/original/AS5047P-DS000324.pdf",
+    "https://docs.tscircuit.com/elements/assembly-subassembly"
+  ]
+}

@@ -1,6 +1,6 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller designed around the QSH8618-96-55-700 NEMA 34 stepper motor target. The actual motor and driven load still need confirmation. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
+PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller designed around the QSH8618-96-55-700 NEMA 34 stepper motor target. The user selected the bare QSH8618-96; its purchased suffix and driven load still need confirmation. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
 
 **Revision:** r0.4 reference ECO · **Status:** CAD routing verified; powered validation pending · **Assembly:** top only · **Order status:** HOLD
 
@@ -112,7 +112,7 @@ Detailed calculations, tolerances and protection behavior are recorded in [docs/
 
 The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native ramp control selects the board's limit inputs. External STEP/DIR is the selected product mode. The former encoder/mode-pin conflict is corrected in the ECO source; motion stays inhibited until native and powered validation pass.
 
-The top-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The board assumes a diametrically magnetized shaft magnet aligned to the sensor axis; magnet diameter, gap, runout and stray-field behavior remain mechanical validation items.
+The top-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The bare-motor assembly proposal defines an 8 × 6 mm diametric magnet below the PCB, a PEEK extension holder and a nominal 0.5 mm magnet-to-board gap. Supplier field, retention, runout and temperature qualification remain open; see [motor assembly](docs/motor-assembly.md).
 
 Firmware must configure current scaling, gate drive, dead time, chopper behavior, motion limits and encoder calibration for the actual motor. A register default is not approval for 5.5 A operation.
 
@@ -193,7 +193,9 @@ All fitted components, including the centered encoder, its local bypass parts, l
 
 The completed KiCad route passes all-severity DRC, connectivity, schematic parity, ERC and terminal-only Kelvin checks. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
-The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% and confirm all four rear-face holes and the shaft axis against the actual motor before ordering.
+The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% to inspect the PCB pattern. **The selected bare QSH8618-96 has no matching rear mounting threads in its supplied CAD.** It needs the custom adapter described in [motor assembly](docs/motor-assembly.md); a pattern match to the PD86 reference is not a direct-fit approval.
+
+The exact bare-motor CAD and proposed adapter/encoder stack are selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All parts remain on top. The adapter and magnet are not yet qualified for fabrication.
 
 ![PD1180-EPR mounting template](previews/mounting-template.png)
 
@@ -287,7 +289,7 @@ The r0.4 ECO files become a prototype fabrication handoff only after the order h
 
 1. Generate and independently review the sink-only TPS26750 EPR configuration, then program U3.
 2. Qualify the integrated STM32 target on the bench, verify fault shutdown and produce the motor-enabled release with recorded configuration/hash evidence.
-3. Confirm the motor rear-face pattern, shaft magnet alignment, air gap and enclosure clearances.
+3. Qualify the bare-QSH adapter, shared front-flange fastening, encoder holder, magnet field/gap and enclosure clearances.
 4. Select the brake resistor/heatsink from measured load inertia, speed and stopping duty.
 5. Perform current-limited rail bring-up before fitting the motor.
 6. Measure gate waveforms, phase current, bus overshoot, connector temperature and PCB temperature.

@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-10T14:05:12.837Z",
+  "checked_at": "2026-10-10T21:26:29.996Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -10,8 +10,8 @@
   ],
   "hosted_preview_output": "dist/release/circuit.json",
   "verified_preview_records": null,
-  "selectable_source_files": 52,
-  "selectable_import_files": 49,
+  "selectable_source_files": 54,
+  "selectable_import_files": 50,
   "unavailable_viewer_files": [],
   "registry_dependencies": [],
   "ignored_files": [
@@ -50,11 +50,12 @@
     "scripts/**",
     "sourcing/**",
     "*.log",
-    ".cache/**"
+    ".cache/**",
+    "release/motor-assembly-check.json"
   ],
-  "included_files": 68,
-  "included_bytes": 8755546,
-  "included_mebibytes": 8.35,
+  "included_files": 70,
+  "included_bytes": 10498345,
+  "included_mebibytes": 10.01,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
@@ -62,16 +63,20 @@
       "bytes": 8185592
     },
     {
+      "path": "imports/MotorAssemblyCad.ts",
+      "bytes": 1740647
+    },
+    {
       "path": "index.circuit.tsx",
-      "bytes": 182356
+      "bytes": 182351
     },
     {
       "path": "bun.lock",
-      "bytes": 94485
+      "bytes": 94558
     },
     {
       "path": "README.md",
-      "bytes": 30287
+      "bytes": 30853
     },
     {
       "path": "AGENTS.md",
@@ -92,15 +97,11 @@
     {
       "path": "imports/USBLC6_4SC6.tsx",
       "bytes": 8989
-    },
-    {
-      "path": "imports/TPS26750SRSMR.tsx",
-      "bytes": 7865
     }
   ],
-  "github_import_files": 409,
-  "github_import_bytes": 21300817,
-  "github_import_mebibytes": 20.31,
+  "github_import_files": 421,
+  "github_import_bytes": 24810239,
+  "github_import_mebibytes": 23.66,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
@@ -109,12 +110,16 @@
       "bytes": 8185592
     },
     {
+      "path": "imports/MotorAssemblyCad.ts",
+      "bytes": 1740647
+    },
+    {
       "path": "previews/pd1180-epr-overview.png",
-      "bytes": 1482645
+      "bytes": 1482774
     },
     {
       "path": "previews/pd1180-epr-top.png",
-      "bytes": 1482645
+      "bytes": 1482774
     },
     {
       "path": "release/pcb-3d.png",
@@ -122,7 +127,7 @@
     },
     {
       "path": "previews/pd1180-epr-bottom.png",
-      "bytes": 1201953
+      "bytes": 1204142
     },
     {
       "path": "release/pcb-bottom.png",
@@ -133,16 +138,12 @@
       "bytes": 725913
     },
     {
-      "path": "release/schematics/motion.svg",
-      "bytes": 353485
+      "path": "engineering/mechanical/qsh8618-96.glb",
+      "bytes": 701692
     },
     {
-      "path": "release/schematics/usb-pd.svg",
-      "bytes": 351146
-    },
-    {
-      "path": "release/schematics/inputs.svg",
-      "bytes": 265566
+      "path": "engineering/mechanical/adapter-proposal.glb",
+      "bytes": 603572
     }
   ],
   "errors": []

@@ -37,13 +37,15 @@
     "motor_magnet_alignment_validated": false,
     "powered_bringup_thermal_and_emc_validation": false,
     "usb_data_startup_configured_suspend_current_and_reverse_blocking_validated": false,
-    "temperature_threshold_and_phase_telemetry_calibrated": false
+    "temperature_threshold_and_phase_telemetry_calibrated": false,
+    "bare_qsh_adapter_and_encoder_qualified": false
   },
   "architecture_review": "engineering/reviewer-eco.json",
   "order_hold_reasons": [
     "Exact motor/load, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
     "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
-    "TI full-flash configuration and staged powered commissioning remain pending."
+    "TI full-flash configuration and staged powered commissioning remain pending.",
+    "Bare QSH8618-96 has no matching rear PCB mounting threads in the supplied CAD; custom adapter, shaft holder, magnet and mounting-interface approval are required."
   ]
 }

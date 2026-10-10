@@ -9,6 +9,7 @@ const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.ts
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
+verifiedInputPaths.push('motor-assembly.circuit.tsx', 'imports/MotorAssemblyCad.ts', 'engineering/mechanical/qsh8618-96.glb', 'engineering/mechanical/adapter-proposal.glb', 'engineering/mechanical/assembly.json', 'engineering/mechanical/QSH8618-96.step', 'scripts/generate-motor-assembly.mjs', 'scripts/check-motor-assembly.mjs')
 verifiedInputPaths.push('bun.lock', 'scripts/generate-cloud-viewer.mjs', 'scripts/check-cloud-viewer.mjs', 'scripts/cloud-viewer-net-names.test.mjs')
 for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
   for (const file of (await readdir(dir)).sort()) verifiedInputPaths.push(`${dir}/${file}`)

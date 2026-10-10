@@ -63,6 +63,7 @@ const copies = [
   ['docs/native-decoupling-check.json', 'native-decoupling-check.json'],
   ['docs/power-validation.md', 'power-validation.md'],
   ['docs/assembly.md', 'assembly.md'],
+  ['docs/motor-assembly.md', 'motor-assembly.md'],
   ['docs/release-status.json', 'release-status.json'],
   ['hardware-contract.json', 'hardware-contract.json'],
   ['dist/pd1180-epr-r0.3-manufacturing.zip', 'pd1180-epr-r0.3-manufacturing.zip'],
@@ -81,6 +82,13 @@ const glb = await readFile(routedGlb)
 if (glb.length < 12 || glb.toString('ascii', 0, 4) !== 'glTF' ||
     glb.readUInt32LE(4) !== 2 || glb.readUInt32LE(8) !== glb.length)
   throw new Error('Routed 3D export is missing or invalid')
+const motorAssemblyGlb = 'dist/motor-assembly/3d.glb'
+await rm(motorAssemblyGlb, { force: true })
+execFileSync('bunx', ['tsci', 'build', 'motor-assembly.circuit.tsx', '--glbs', '--routing-disabled', '--disable-parts-engine'], {
+  stdio: 'inherit', timeout: 600_000,
+})
+execFileSync('bun', ['scripts/check-motor-assembly.mjs', routedGlb, motorAssemblyGlb], { stdio: 'inherit' })
+await copyFile('docs/motor-assembly-check.json', join(release, 'motor-assembly-check.json'))
 for (const file of await readdir('dist/schematics')) {
   if (file.endsWith('.svg')) await copyFile(join('dist/schematics', file), join(release, 'schematics', file))
 }
@@ -109,6 +117,7 @@ await Promise.all([
   zipDirectory('dist/manufacturing/gerbers', join(release, 'pd1180-epr-r0.3-gerbers.zip')),
   zipDirectory('dist/manufacturing/kicad-project', join(release, 'pd1180-epr-r0.3-kicad.zip')),
   zipFile(routedGlb, 'pd1180-epr.glb', join(release, 'pd1180-epr-r0.3-glb.zip')),
+  zipFile(motorAssemblyGlb, 'qsh8618-assembly-proposal.glb', join(release, 'qsh8618-assembly-proposal.zip')),
 ])
 
 await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
@@ -118,6 +127,8 @@ await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Moto
 ${releaseStatus.fabrication_orderable ? 'Prototype CAD gates passed; system validation remains open.' : '**ORDER HOLD.** These are engineering review files. Powered USB, current/thermal and system qualification remain open; do not submit a fabrication order from this package.'}
 
 The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: ${releaseStatus.status}. See \`engineering/reviewer-eco.json\` and \`docs/step-dir-hardware-review.md\`.
+
+The bare QSH8618-96 needs a custom adapter; the supplied motor CAD has no matching rear PCB threads. See \`motor-assembly.md\` for the proposed mount and encoder stack, nominal screw clearances and unresolved mechanical gates.
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
