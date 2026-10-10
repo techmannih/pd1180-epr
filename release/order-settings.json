@@ -1,6 +1,15 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "service": "JLCPCB PCB + SMT assembly",
+  "requested_delivery": "Fully populated, programmed and functionally tested PCBA for the confirmed motor/load",
+  "additional_services": {
+    "order_type_requested": "Standard PCBA",
+    "programming_requested": true,
+    "functional_test_requested": true,
+    "assembler_scope_confirmed": false,
+    "shipment_acceptance": "HOLD: approved images, programming fixture/method, first-article qualification and per-board powered results are pending",
+    "instructions": "Request programming and Function Test explicitly; service availability for this board and its 48 V motor/brake test must be accepted by the provider. No order has been placed."
+  },
   "revision": "0.4.0-ECO",
   "pcb": {
     "dimensions_mm": [
@@ -56,10 +65,33 @@
     "side": "top",
     "bom": "jlc-bom.csv",
     "cpl": "jlc-cpl.csv",
-    "dnp": "Do not substitute electrical values or package variants without engineering review"
+    "dnp": "Do not substitute electrical values or package variants without engineering review",
+    "through_hole_and_tall_parts": "Include all fitted BOM headers and bulk capacitors in the agreed assembly scope; selective/hand assembly method requires provider confirmation"
   },
   "programming": {
-    "U3_eeprom": "Assemble blank unless a TI-generated full-flash binary is supplied to the programming service",
-    "U16_mcu": "Assemble blank; program and validate over SWD during bring-up"
+    "U3_eeprom": {
+      "part": "M24512-RMN6TP",
+      "requirement": "Program approved TI TPS26750 full-flash image and verify/read back after assembly",
+      "image": null,
+      "sha256": null,
+      "status": "blocked-image-and-demonstrated-programming-method-pending",
+      "interface": "EEP_SDA/EEP_SCL on TPS26750 I2Cc; separate from STM32 PD_SDA/PD_SCL. Fixture access, power and bus ownership require qualification."
+    },
+    "U16_mcu": {
+      "part": "STM32G0B1CBT6",
+      "requirement": "Program qualified motor-enabled firmware over SWD and verify/read back",
+      "raw_binary_flash_address": "0x08000000",
+      "image": null,
+      "sha256": null,
+      "status": "blocked-motor-qualified-image-pending",
+      "commissioning_only": "pd1180-commissioning-firmware.zip contains a diagnostics image with motor operation locked; it does not meet ready-to-run delivery acceptance"
+    }
+  },
+  "functional_test": {
+    "status": "not-performed",
+    "qualification_procedure": "power-validation.md",
+    "per_board_acceptance_procedure_approved": false,
+    "required_record": "Board serial/revision, both image hashes, programming verification, qualified motor/load/settings, measured rails/PD/current/temperature/brake response, inhibit tests, operator/date and PASS/FAIL",
+    "blank_or_motion_locked_delivery_acceptable_as_ready_to_run": false
   }
 }
