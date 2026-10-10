@@ -8,7 +8,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 [View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
-The preview shows the routed r0.4 ECO bare PCB. The release archives are regenerated for engineering review. Ordering remains on hold; the commissioning firmware keeps motion locked pending TI programming and powered validation.
+The main 3D tab shows the routed PCB with the ordered motor and proposed adapter. The image below shows the bare PCB. The release archives are regenerated for engineering review. Ordering remains on hold; the commissioning firmware keeps motion locked pending TI programming and powered validation.
 
 ![Routed r0.4 ECO PCB](previews/pd1180-epr-top.png)
 
@@ -195,7 +195,7 @@ The completed KiCad route passes all-severity DRC, connectivity, schematic parit
 
 The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` plus the hash-locked TMCM-1180 V1.1 STEP extraction in `engineering/tmcm-1180-v11-mechanical-reference.json`. It includes the exact stepped perimeter, asymmetric holes and a 20 mm calibration bar. Print it at 100% to inspect the PCB pattern. **Direct rear mounting to the ordered 34HS31-6004S1 is not established.** Its documented mounting interface is the front flange; existing rear case screws are not approved accessory threads. [Motor assembly](docs/motor-assembly.md) describes a proposed front-supported adapter. A pattern match to the PD86 reference is not a direct-fit approval.
 
-The exact ordered-motor CAD and proposed adapter are selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All parts remain on top. The adapter is not qualified for fabrication, and no encoder holder or magnet is modeled for this motor.
+The exact ordered-motor CAD and proposed adapter appear in the default 3D view and remain selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All parts remain on top. The adapter is not qualified for fabrication, and no encoder holder or magnet is modeled for this motor.
 
 ![PD1180-EPR mounting template](previews/mounting-template.png)
 
@@ -227,7 +227,7 @@ Current verification evidence:
 |---|---|
 | Native KiCad PCB DRC + schematic ERC | PASS — 0 PCB violations, unconnected nets, parity issues and ERC violations |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 37 tests covering topology, via identity and power-copper geometry |
+| Topology regression | PASS — 44 tests covering topology, motor-view preservation, via identity and power-copper geometry |
 | Kelvin-check regressions | PASS — 11 native regressions and all 9 final-board paths |
 | Decoupling | PASS — 46/46 native IC-to-capacitor paths |
 | Assembly | PASS — 294 fitted parts plus 11 service test pads on top |
@@ -253,11 +253,11 @@ The `release/` payload contains current ECO review files. **Do not order yet:** 
 
 After a new verified release exists, apply its order settings: four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-side assembly. Review orientation, polarity, connector direction and the through-hole assembly plan before ordering.
 
-The hosted tscircuit editor opens the complete routed PCB in `release/circuit.json` by default. The authoritative editable source remains `index.circuit.tsx`. Its file selector includes all source TSX files, all imported components under `imports/`, and `release/circuit.json`. The cloud build compiles/transpiles `index.circuit.tsx`, then builds `release/circuit.json` into `dist/release/circuit.json` for the hosted viewer and static site. Imported components remain selectable without each becoming a separate CI board build. Run `bun run check:cloud-package --built` after the cloud build to verify the selected preview exists and exactly matches the routed artifact. Cloud autorouting stays disabled for the source preview.
+The hosted tscircuit editor opens `release/circuit.json` by default: its 3D view includes the ordered motor and adapter proposal, and its PCB/schematic views retain the verified board. The authoritative editable source remains `index.circuit.tsx`. Its file selector includes all source TSX files, all imported components under `imports/`, and `release/circuit.json`. The cloud build compiles/transpiles `index.circuit.tsx`, then builds `release/circuit.json` into `dist/release/circuit.json` for the hosted viewer and static site. Imported components remain selectable without each becoming a separate CI board build. Run `bun run check:cloud-package --built` after the cloud build to verify the selected preview exists and exactly matches the routed artifact. Cloud autorouting stays disabled for the source preview.
 
 After pulling updates, run `bun install --frozen-lockfile` and restart `bun run dev`. The dev command checks the installed toolchain before starting. `tscircuit.config.ts` makes interactive previews use the pinned local component definitions and disables preview autorouting, just like the build. This prevents remote pin-metadata requests from holding the main-board render open while another component is selected. Live supplier stock checks still run in `bun run review`.
 
-Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it preserves the code-defined 16-sheet schematic and 3D model, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
+Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it verifies that the compiled motor assembly preserves every code-defined board record, including the 16-sheet schematic, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
 
 ## Repository map
 

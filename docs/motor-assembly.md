@@ -6,7 +6,7 @@ The [manufacturer STEP](https://files.omc-stepperonline.com/34HS31-6004S1.STEP) 
 
 **Direct rear PCB mounting and rear encoder attachment are not established.** The documented mounting interface is the front flange. Existing rear case fasteners are not approved accessory threads; do not remove them or drill the motor based on this preview.
 
-Open `motor-assembly.circuit.tsx` for the exact motor and PCB component placement with an adapter proposal. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Orange cylinders represent maximum screw-head/washer envelopes. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. The separate `release/circuit.json` remains the authoritative routed PCB view; the assembly preview is a mechanical fit study.
+The default hosted 3D view includes the exact motor, routed PCB and adapter proposal. Open `motor-assembly.circuit.tsx` for the source mechanical fit study. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Orange cylinders represent maximum screw-head/washer envelopes. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. `release/circuit.json` remains the authoritative routed PCB view and now also includes the two mechanical models. Its generator rejects any assembly change to the verified board records. Model URLs are pinned to an immutable Git commit and checked against the local CAD hashes; no moving branch URL is used.
 
 ![Ordered motor assembly proposal](../previews/motor-assembly-corrected.png)
 

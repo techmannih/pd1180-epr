@@ -44,6 +44,7 @@ const key=(name,pin)=>port(name,pin)?.subcircuit_connectivity_map_key
 const netKey=name=>nets.find(e=>e.name===name)?.subcircuit_connectivity_map_key
 const on=(name,pin,net)=>expect(key(name,pin)).toBe(netKey(net))
 
+// This integration test imports the complete routed KiCad board twice.
 test('hosted release ignores only the CLI cache key while preserving every source model record', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'pd1180-viewer-cache-'))
   try {
@@ -51,8 +52,12 @@ test('hosted release ignores only the CLI cache key while preserving every sourc
     changedCache.find(row => row.type === 'source_project_metadata').source_filesystem_md5_hash = 'different-local-build-cache'
     const alternateSource = join(directory, 'source.json')
     await writeFile(alternateSource, JSON.stringify(changedCache))
+    const changedAssemblyCache = JSON.parse(readFileSync('dist/motor-assembly/circuit.json'))
+    changedAssemblyCache.find(row => row.type === 'source_project_metadata').source_filesystem_md5_hash = 'different-assembly-build-cache'
+    const alternateAssembly = join(directory, 'assembly.json')
+    await writeFile(alternateAssembly, JSON.stringify(changedAssemblyCache))
     const original = (await createCloudViewerCircuit()).circuit
-    const rebuilt = (await createCloudViewerCircuit({ sourceCircuitPath: alternateSource })).circuit
+    const rebuilt = (await createCloudViewerCircuit({ sourceCircuitPath: alternateSource, assemblyCircuitPath: alternateAssembly })).circuit
     expect(rebuilt).toEqual(original)
     const copper = new Set(['pcb_trace', 'pcb_via', 'pcb_copper_pour'])
     const expectedModel = data.filter(row => !copper.has(row.type)).map(row => {
@@ -60,12 +65,14 @@ test('hosted release ignores only the CLI cache key while preserving every sourc
       if (expected.type === 'source_project_metadata') delete expected.source_filesystem_md5_hash
       return expected
     })
-    expect(original.filter(row => !copper.has(row.type))).toEqual(expectedModel)
+    const mechanicalIds = new Set(original.filter(row => row.type === 'source_component' && row.ftype === 'subassembly').map(row => row.source_component_id))
+    expect(mechanicalIds.size).toBe(2)
+    expect(original.filter(row => !copper.has(row.type) && !mechanicalIds.has(row.source_component_id))).toEqual(expectedModel)
     expect(original.some(row => row.type === 'pcb_trace')).toBe(true)
   } finally {
     await rm(directory, { recursive: true, force: true })
   }
-}, 120000)
+}, 300000)
 
 test('all physical parts are present and have their intended JLC code',()=>{
   const supplierBacked=components.filter(component=>component.supplier_part_numbers?.jlcpcb?.length)

@@ -3,6 +3,7 @@ import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const { circuit, report } = await createCloudViewerCircuit()
 const errors = []
+if (!report.board_records_preserved || report.mechanical_source_ids.length !== 2) errors.push('Hosted viewer is missing its verified motor assembly')
 const expected = `${JSON.stringify(circuit)}\n`
 const committed = await readFile('release/circuit.json', 'utf8').catch(() => '')
 if (committed !== expected) errors.push('release/circuit.json is stale; run bun run generate:cloud-viewer')

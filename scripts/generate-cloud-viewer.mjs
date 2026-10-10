@@ -1,8 +1,10 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { basename } from 'node:path'
+import { isDeepStrictEqual } from 'node:util'
 import { KicadToCircuitJsonConverter } from 'kicad-to-circuit-json'
 
 const DEFAULT_SOURCE = 'dist/index/circuit.json'
+const DEFAULT_ASSEMBLY = 'dist/motor-assembly/circuit.json'
 const DEFAULT_BOARD = 'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb'
 const DEFAULT_OUTPUT = 'release/circuit.json'
 
@@ -20,23 +22,52 @@ function portKey(componentName, pinNumber) {
 export async function createCloudViewerCircuit({
   sourceCircuitPath = DEFAULT_SOURCE,
   routedBoardPath = DEFAULT_BOARD,
+  assemblyCircuitPath = DEFAULT_ASSEMBLY,
 } = {}) {
   const sourceCircuit = JSON.parse(await readFile(sourceCircuitPath, 'utf8'))
+  const assemblyCircuit = JSON.parse(await readFile(assemblyCircuitPath, 'utf8'))
+  const mechanicalIds = assertAssemblyPreservesBoard(sourceCircuit, assemblyCircuit)
   const converter = new KicadToCircuitJsonConverter()
   converter.addFile(basename(routedBoardPath), await readFile(routedBoardPath, 'utf8'))
   converter.runUntilFinished()
   const routedCircuit = converter.getOutput()
 
-  const result = combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit)
+  const result = combineSourceAndRoutedCircuit(assemblyCircuit, routedCircuit)
   return {
     ...result,
     report: {
       ...result.report,
       source_circuit: sourceCircuitPath,
+      assembly_circuit: assemblyCircuitPath,
+      mechanical_source_ids: mechanicalIds,
+      board_records_preserved: true,
       routed_board: routedBoardPath,
       converter_warnings: converter.getWarnings(),
     },
   }
+}
+
+// The assembly entrypoint wraps the existing board. It may add only the two
+// mechanical source/CAD pairs; electrical, schematic and PCB records must match.
+export function assertAssemblyPreservesBoard(board, assembly) {
+  const mechanical = assembly.filter(row => row.type === 'source_component' && row.ftype === 'subassembly')
+  if (!isDeepStrictEqual(mechanical.map(row => row.name).sort(), ['adapter_proposal', 'ordered_motor']))
+    throw new Error('Hosted assembly must include the ordered motor and adapter proposal')
+  const ids = new Set(mechanical.map(row => row.source_component_id))
+  for (const id of ids) {
+    const models = assembly.filter(row => row.type === 'cad_component' && row.source_component_id === id)
+    if (models.length !== 1 || !models[0].model_glb_url)
+      throw new Error(`Missing mechanical CAD model for ${id}`)
+  }
+  const withoutCacheKey = rows => rows.map(row => {
+    if (row.type !== 'source_project_metadata') return row
+    const { source_filesystem_md5_hash, ...metadata } = row
+    return metadata
+  })
+  const boardOnly = assembly.filter(row => !(ids.has(row.source_component_id) && ['source_component', 'cad_component'].includes(row.type)))
+  if (!isDeepStrictEqual(withoutCacheKey(boardOnly), withoutCacheKey(board)))
+    throw new Error('Assembly changed the verified board records; rebuild both source entrypoints')
+  return [...ids]
 }
 
 export function combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit) {

@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test'
 import { KicadToCircuitJsonConverter } from 'kicad-to-circuit-json'
-import { combineSourceAndRoutedCircuit } from './generate-cloud-viewer.mjs'
+import { combineSourceAndRoutedCircuit, assertAssemblyPreservesBoard } from './generate-cloud-viewer.mjs'
 
 // KiCad 10 uses names on copper instead of a board-level numeric net table.
 // The routes intentionally have no pad endpoints: net identity must come from
@@ -74,4 +74,20 @@ test('export rejects conflicting net references', () => {
   const trace = routed.find((row) => row.type === 'pcb_trace')
   trace.net_name = 'DIFFERENT_NET'
   expect(() => combineSourceAndRoutedCircuit(source, routed)).toThrow('expected one named routed net')
+})
+
+test('hosted assembly requires both models and preserves every board record', () => {
+  const extras = ['ordered_motor', 'adapter_proposal'].flatMap(name => [
+    { type: 'source_component', ftype: 'subassembly', source_component_id: name, name },
+    { type: 'cad_component', source_component_id: name, cad_component_id: `cad_${name}`, model_glb_url: `https://example.com/${name}.glb` },
+  ])
+  const assembly = [...source, ...extras]
+  expect(assertAssemblyPreservesBoard(source, assembly)).toEqual(['ordered_motor', 'adapter_proposal'])
+  expect(() => assertAssemblyPreservesBoard(source, source)).toThrow('must include')
+  expect(() => assertAssemblyPreservesBoard(source, assembly.filter(row => row.cad_component_id !== 'cad_ordered_motor'))).toThrow('Missing mechanical CAD')
+  const changed = structuredClone(assembly)
+  changed.find(row => row.type === 'schematic_text').text = 'Moved schematic'
+  expect(() => assertAssemblyPreservesBoard(source, changed)).toThrow('changed the verified board')
+  expect(() => assertAssemblyPreservesBoard(source, [...assembly, { type: 'pcb_component', source_component_id: 'ordered_motor' }])).toThrow('changed the verified board')
+  expect(() => assertAssemblyPreservesBoard(source, [...assembly, { type: 'source_project_metadata', project: 'different' }])).toThrow('changed the verified board')
 })

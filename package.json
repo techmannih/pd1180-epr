@@ -23,7 +23,7 @@
     "check:routing": "tsci check routing-difficulty dist/index/circuit.json",
     "check:shorts": "tsci check shorts dist/index/circuit.json",
     "start": "bun run dev",
-    "build:preview": "tsci build index.circuit.tsx --svgs --routing-disabled --disable-parts-engine",
+    "build:preview": "tsci build index.circuit.tsx --svgs --routing-disabled --disable-parts-engine && tsci build motor-assembly.circuit.tsx --routing-disabled --disable-parts-engine",
     "check:stock": "bun scripts/check-stock.mjs",
     "check:alternatives": "bun scripts/check-alternatives.mjs",
     "sync:docs": "bun scripts/sync-generated-docs.mjs",
