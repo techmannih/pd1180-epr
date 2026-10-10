@@ -8,7 +8,7 @@ PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 
 
 ### Power sequence
 
-1. J1 VBUS initially supplies 5 V. U5, LMR36510, starts from this and provides V3V3_PD before any motor power is enabled. U23 passes that rail to V3V3. LM5164 was rejected for this position because its 6 V minimum input cannot bootstrap from default USB 5 V. J10 separately carries USB 2.0 D+/D− data and requires J1 startup power.
+1. J1 VBUS initially supplies 5 V. U5, LMR36510, starts from this and provides V3V3_PD before any motor power is enabled. U23 passes that rail to board V3V3; U26/U27 combine it with DATA-derived V3V3_USB into V3V3_MCU. DATA USB powers the MCU only; industrial interfaces, flash, encoder and telemetry sensors require board V3V3. LM5164 was rejected for this position because its 6 V minimum input cannot bootstrap from default USB 5 V. J10 carries USB 2.0 D+/D− and independently powers setup/diagnostics through U28/U25.
 2. U1, TPD4S480, protects J1's CC and SBU contacts. J1 data pins and the protected SBU outputs are unused. C2 is the required 1 µF local VPWR/LDO_3V3 bypass. U1's VBUS divider feeds U2's low-voltage VBUS sense pins. Q1 bypasses that divider in SPR with its source toward VBUS_LV and drain toward raw VBUS.
 3. U2, TPS26750, boots in SafeMode: ADCIN1 to LDO_3V3, ADCIN2 to ground, I2Ct address 0x20. The 64 KiB EEPROM is at 0x50 on the independent I2Cc bus. An appropriate TI configuration image is required; a blank EEPROM does not negotiate 48 V.
 4. PD POWER_PATH_EN is not a logic-level output. Q2/Q3 are the CSD17484F4 dual-NMOS non-inverting buffer used by the TPS26750 EVM: R9 and R12 are 0 Ω gate links, while R11 and R13 are 100 kΩ pull-ups to U2's own PD_3V3/LDO_3V3 rail. U4 then combines PD_PATH_OK with the MCU power permit. Firmware may assert that permit only after an active 48 V / 5 A EPR contract and valid fault status. Loss of the contract must remove the permit immediately.
@@ -42,9 +42,9 @@ U7 drives eight 100 V external MOSFETs and two 33 mΩ phase shunts. Four 220 nF 
 
 U8/U9 select native left/right endstop signals in ramp mode or external Step/Dir signals in step mode. The transistor input stages invert their external signals. Open inputs read high; firmware and TMC switch polarity must account for this. The maximum Step/Dir rate has not been qualified.
 
-DRV_EN_N has a pull-up. Its sink path requires two series transistors: MCU_RUN with motor power-good and voltage-good, plus the externally asserted hardware-enable input. Open or grounded hardware enable disables the bridge. This is a functional enable, not a certified safe-torque-off circuit. The motor-side buck sustains this logic while motor capacitors are charged; power-loss disable timing and comparator operation still need bench validation.
+DRV_EN_N has a pull-up. Its sink path requires two series transistors: MCU_RUN with motor power-good and voltage-good, plus the externally asserted hardware-enable input and U29/U33 temperature permit. Open or grounded hardware enable disables the bridge. This is a functional enable, not a certified safe-torque-off circuit. The motor-side buck sustains this logic while motor capacitors are charged; power-loss disable timing and comparator operation still need bench validation.
 
-The AS5047P is a bottom-side part at the board origin, facing the motor shaft magnet. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs remain on labelled service pads; U7 pins23/24 are grounded and pin25 is NC for the selected STEP/DIR mode.
+The AS5047P is a top-side part at the board origin. Magnet placement, gap and field orientation must be validated for the top-only assembly. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs remain on labelled service pads; U7 pins23/24 are grounded and pin25 is NC for the selected STEP/DIR mode.
 
 ### Interfaces
 
@@ -71,3 +71,5 @@ The [GCT USB4105 specification](https://gct.co/files/specs/usb4105-spec.pdf) rat
 The [QSH8618-96-55-700 motor datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/qsh8618_datasheet_rev1.08.pdf) specifies 5.5 A phase current, 7.0 Nm holding torque, 1.8-degree steps and rotor inertia 2700 g·cm² = 0.00027 kg·m².
 
 Calculated rotor-only kinetic energy is 0.370 J at 500 RPM, 1.480 J at 1000 RPM and 5.922 J at 2000 RPM, using E = ½ J (2πn/60)². These are examples, not approved operating speeds. The 940 µF bulk bank absorbs only 0.237 J between 48 V and 53 V. Attached-load inertia, gearing, gravity and stopping time increase the braking requirement; the final speed limit and resistor pulse duty cannot be inferred from holding torque. The 10 Ω / 300 W external brake remains a starting specification. See `motor-data.json` for machine-readable inputs.
+
+The reference-board ECO adds independent USB logic power, board-temperature inhibition and phase-current diagnostics. See [USB and telemetry architecture](usb-pd-architecture.md) for the exact power paths, thresholds, transfer functions and unmeasured USB/thermal limits.

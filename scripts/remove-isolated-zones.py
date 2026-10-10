@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 import pcbnew
+import wx
 
 
 def main() -> None:
@@ -24,9 +25,11 @@ def main() -> None:
         for item in violation.get("items", [])
         if item.get("uuid")
     }
+    app = wx.App(False)
     board = pcbnew.LoadBoard(str(args.board))
     removed = []
-    for zone in list(board.Zones()):
+    zones = list(board.Zones())
+    for zone in zones:
         uuid = zone.m_Uuid.AsString()
         if uuid in isolated:
             removed.append((zone.GetNetname(), pcbnew.LayerName(zone.GetLayer()), uuid))

@@ -18,138 +18,194 @@
   "thermal_via_tie_segments": 40,
   "nets": {
     "PD_VBUS": {
-      "routed_segments": 73,
+      "routed_segments": 84,
       "thermal_via_tie_segments": 0,
-      "corridor_eligible_segments": 73,
+      "verified_sense_branch_segments": 0,
+      "corridor_eligible_segments": 84,
       "segment_layers": [
         "F.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 71,
-      "corridor_coverage_ratio": 0.973,
-      "vias": 4
+      "reinforced_corridors": 74,
+      "corridor_eligible_length_mm": 140.932,
+      "corridor_covered_length_mm": 140.932,
+      "corridor_coverage_ratio": 1,
+      "vias": 12
     },
     "EFUSE_IN": {
-      "routed_segments": 29,
+      "routed_segments": 36,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 25,
+      "verified_sense_branch_segments": 0,
+      "corridor_eligible_segments": 32,
       "segment_layers": [
         "F.Cu",
         "B.Cu"
       ],
       "reinforced_corridors": 29,
-      "corridor_coverage_ratio": 1.16,
-      "vias": 6
+      "corridor_eligible_length_mm": 38.436,
+      "corridor_covered_length_mm": 38.436,
+      "corridor_coverage_ratio": 1,
+      "vias": 4
     },
     "VMOTOR": {
-      "routed_segments": 187,
+      "routed_segments": 235,
       "thermal_via_tie_segments": 16,
-      "corridor_eligible_segments": 171,
+      "verified_sense_branch_segments": 0,
+      "corridor_eligible_segments": 219,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In1.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 180,
-      "corridor_coverage_ratio": 1.053,
-      "vias": 40
+      "reinforced_corridors": 221,
+      "corridor_eligible_length_mm": 370.959,
+      "corridor_covered_length_mm": 370.959,
+      "corridor_coverage_ratio": 1,
+      "vias": 18
     },
     "MOTOR_A1": {
-      "routed_segments": 49,
+      "routed_segments": 76,
       "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 45,
-      "segment_layers": [
-        "F.Cu",
-        "B.Cu",
-        "In1.Cu",
-        "In2.Cu"
-      ],
-      "reinforced_corridors": 48,
-      "corridor_coverage_ratio": 1.067,
-      "vias": 10
-    },
-    "MOTOR_A2": {
-      "routed_segments": 48,
-      "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 44,
-      "segment_layers": [
-        "F.Cu",
-        "B.Cu",
-        "In1.Cu",
-        "In2.Cu"
-      ],
-      "reinforced_corridors": 47,
-      "corridor_coverage_ratio": 1.068,
-      "vias": 10
-    },
-    "MOTOR_B1": {
-      "routed_segments": 41,
-      "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 37,
-      "segment_layers": [
-        "F.Cu",
-        "B.Cu",
-        "In1.Cu",
-        "In2.Cu"
-      ],
-      "reinforced_corridors": 40,
-      "corridor_coverage_ratio": 1.081,
-      "vias": 8
-    },
-    "MOTOR_B2": {
-      "routed_segments": 46,
-      "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 42,
-      "segment_layers": [
-        "F.Cu",
-        "B.Cu",
-        "In1.Cu",
-        "In2.Cu"
-      ],
-      "reinforced_corridors": 44,
-      "corridor_coverage_ratio": 1.048,
-      "vias": 15
-    },
-    "SENSE_A": {
-      "routed_segments": 61,
-      "thermal_via_tie_segments": 0,
+      "verified_sense_branch_segments": 11,
       "corridor_eligible_segments": 61,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
-        "In1.Cu"
+        "In1.Cu",
+        "In2.Cu"
       ],
-      "reinforced_corridors": 61,
+      "reinforced_corridors": 64,
+      "corridor_eligible_length_mm": 83.089,
+      "corridor_covered_length_mm": 83.089,
       "corridor_coverage_ratio": 1,
-      "vias": 15
+      "vias": 9
     },
-    "SENSE_B": {
-      "routed_segments": 89,
-      "thermal_via_tie_segments": 0,
-      "corridor_eligible_segments": 89,
+    "MOTOR_A2": {
+      "routed_segments": 76,
+      "thermal_via_tie_segments": 4,
+      "verified_sense_branch_segments": 0,
+      "corridor_eligible_segments": 72,
+      "segment_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In1.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 65,
+      "corridor_eligible_length_mm": 103.162,
+      "corridor_covered_length_mm": 103.162,
+      "corridor_coverage_ratio": 1,
+      "vias": 9
+    },
+    "MOTOR_B1": {
+      "routed_segments": 41,
+      "thermal_via_tie_segments": 4,
+      "verified_sense_branch_segments": 11,
+      "corridor_eligible_segments": 26,
+      "segment_layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "reinforced_corridors": 30,
+      "corridor_eligible_length_mm": 60.099,
+      "corridor_covered_length_mm": 60.099,
+      "corridor_coverage_ratio": 1,
+      "vias": 11
+    },
+    "MOTOR_B2": {
+      "routed_segments": 27,
+      "thermal_via_tie_segments": 4,
+      "verified_sense_branch_segments": 0,
+      "corridor_eligible_segments": 23,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In1.Cu"
       ],
-      "reinforced_corridors": 87,
-      "corridor_coverage_ratio": 0.978,
-      "vias": 6
+      "reinforced_corridors": 25,
+      "corridor_eligible_length_mm": 64.747,
+      "corridor_covered_length_mm": 64.747,
+      "corridor_coverage_ratio": 1,
+      "vias": 12
     },
-    "BRAKE_RETURN": {
-      "routed_segments": 17,
-      "thermal_via_tie_segments": 4,
-      "corridor_eligible_segments": 13,
+    "MOTOR_A1_OUT": {
+      "routed_segments": 20,
+      "thermal_via_tie_segments": 0,
+      "verified_sense_branch_segments": 11,
+      "corridor_eligible_segments": 9,
+      "segment_layers": [
+        "F.Cu",
+        "B.Cu"
+      ],
+      "reinforced_corridors": 7,
+      "corridor_eligible_length_mm": 25.472,
+      "corridor_covered_length_mm": 25.472,
+      "corridor_coverage_ratio": 1,
+      "vias": 4
+    },
+    "MOTOR_B1_OUT": {
+      "routed_segments": 21,
+      "thermal_via_tie_segments": 0,
+      "verified_sense_branch_segments": 12,
+      "corridor_eligible_segments": 9,
+      "segment_layers": [
+        "F.Cu",
+        "In1.Cu"
+      ],
+      "reinforced_corridors": 5,
+      "corridor_eligible_length_mm": 19.819,
+      "corridor_covered_length_mm": 19.819,
+      "corridor_coverage_ratio": 1,
+      "vias": 4
+    },
+    "SENSE_A": {
+      "routed_segments": 53,
+      "thermal_via_tie_segments": 0,
+      "verified_sense_branch_segments": 17,
+      "corridor_eligible_segments": 36,
       "segment_layers": [
         "F.Cu",
         "B.Cu",
         "In2.Cu"
       ],
-      "reinforced_corridors": 17,
-      "corridor_coverage_ratio": 1.308,
+      "reinforced_corridors": 34,
+      "corridor_eligible_length_mm": 45.563,
+      "corridor_covered_length_mm": 45.563,
+      "corridor_coverage_ratio": 1,
       "vias": 6
+    },
+    "SENSE_B": {
+      "routed_segments": 50,
+      "thermal_via_tie_segments": 0,
+      "verified_sense_branch_segments": 10,
+      "corridor_eligible_segments": 40,
+      "segment_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 38,
+      "corridor_eligible_length_mm": 47.72,
+      "corridor_covered_length_mm": 47.72,
+      "corridor_coverage_ratio": 1,
+      "vias": 4
+    },
+    "BRAKE_RETURN": {
+      "routed_segments": 24,
+      "thermal_via_tie_segments": 4,
+      "verified_sense_branch_segments": 0,
+      "corridor_eligible_segments": 20,
+      "segment_layers": [
+        "F.Cu",
+        "B.Cu",
+        "In2.Cu"
+      ],
+      "reinforced_corridors": 21,
+      "corridor_eligible_length_mm": 23.219,
+      "corridor_covered_length_mm": 23.219,
+      "corridor_coverage_ratio": 1,
+      "vias": 4
     }
   },
   "errors": []

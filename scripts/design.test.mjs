@@ -4,6 +4,20 @@ import { mkdtemp, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
+import { circuitSourceHash } from './circuit-source-hash.mjs'
+
+test('native evidence ignores only the CLI filesystem cache key', () => {
+  const circuit = [{ type: 'pcb_trace', route: [{ x: 1, y: 2, width: 0.15 }] },
+    { type: 'source_project_metadata', source_filesystem_md5_hash: 'first', project: 'motor' }]
+  const hash = circuitSourceHash(circuit)
+  circuit[1].source_filesystem_md5_hash = 'rebuilt reports'
+  expect(circuitSourceHash(circuit)).toBe(hash)
+  circuit[0].route[0].width = 0.2
+  expect(circuitSourceHash(circuit)).not.toBe(hash)
+  circuit[0].route[0].width = 0.15
+  circuit[1].project = 'different board'
+  expect(circuitSourceHash(circuit)).not.toBe(hash)
+})
 
 const data=JSON.parse(readFileSync(new URL('../dist/index/circuit.json',import.meta.url)))
 const manifest=JSON.parse(readFileSync(new URL('../docs/design-manifest.json',import.meta.url)))
@@ -51,8 +65,8 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   const pcb=pcbComponents.find(item=>item.source_component_id===source.source_component_id)
   const cad=data.find(item=>item.type==='cad_component'&&item.pcb_component_id===pcb.pcb_component_id)
   const board=data.find(item=>item.type==='pcb_board')
-  expect(pcb.center).toEqual({x:30,y:22})
-  expect(cad.position.x).toBe(30);expect(cad.position.y).toBe(22)
+  expect(pcb.center).toEqual({x:20,y:28})
+  expect(cad.position.x).toBe(20);expect(cad.position.y).toBe(28)
   expect(cad.model_step_url).toContain('C407954.step')
   const distance=(point,start,end)=>{
     const dx=end.x-start.x,dy=end.y-start.y
@@ -151,9 +165,9 @@ test('both bridges have four external FETs and independent low-side shunts',()=>
   on('R109',1,'SENSE_A');on('R109',2,'GND');on('R110',1,'SENSE_B');on('R110',2,'GND')
   on('U7',8,'SENSE_A');on('U7',9,'SENSE_B')
 })
-test('MCU receives independent input-current and motor-bus voltage telemetry',()=>{
-  on('U6',13,'IIN_MON');on('R26',1,'IIN_MON');on('U16',12,'IIN_MON')
-  on('R31',1,'VMOTOR');on('R31',2,'VMON_MID');on('R32',1,'VMON_MID');on('R32',2,'VMON_ADC');on('U16',11,'VMON_ADC')
+test('ADS1115 receives independent input-current and motor-bus voltage telemetry',()=>{
+  on('U6',13,'IIN_MON');on('R26',1,'IIN_MON');on('U30',5,'IIN_MON')
+  on('R31',1,'VMOTOR');on('R31',2,'VMON_MID');on('R32',1,'VMON_MID');on('R32',2,'VMON_ADC');on('U30',4,'VMON_ADC')
   expect(netKey('IIN_MON')).not.toBe(netKey('VMON_ADC'))
 })
 test('brake dissipates downstream energy without feeding the USB supply',()=>{
@@ -205,4 +219,49 @@ test('one 20-pin harness retains all industrial interfaces',()=>{
 test('STEP/DIR multifunction pins cannot contend with encoder outputs',()=>{
   on('U7',23,'GND');on('U7',24,'GND');expect(key('U7',25)).toBeFalsy()
   on('U18',6,'ENC_B');on('U18',7,'ENC_A');on('U18',14,'ENC_I')
+})
+
+
+test('DATA powers only logic through a current limiter, regulator and reverse-blocking OR',()=>{
+  on('U28',1,'USB_DATA_VBUS');on('U28',3,'USB_DATA_VBUS');on('U28',6,'USB_LOGIC_5V')
+  on('U25',1,'USB_LOGIC_5V');on('U25',5,'V3V3_USB')
+  on('U26',1,'V3V3');on('U26',3,'V3V3_USB');on('U26',5,'USB_OR_SELECT')
+  on('U27',1,'V3V3_USB');on('U27',3,'USB_OR_SELECT');on('U27',5,'GND')
+  on('R112',1,'V3V3');on('R112',2,'USB_OR_SELECT')
+  for(const ref of ['U26','U27'])on(ref,6,'V3V3_MCU')
+  expect(new Set(['PD_VBUS','USB_DATA_VBUS','USB_LOGIC_5V','V3V3_USB','V3V3','V3V3_MCU','VMOTOR'].map(netKey)).size).toBe(7)
+})
+test('both winding shunts are in series and feed bidirectional phase diagnostics',()=>{
+  for(const [phase,shunt,amp,filter,adc,connectorPin] of [['A','R115','U31','R117',11,1],['B','R116','U32','R118',12,3]]){
+    on(shunt,1,`MOTOR_${phase}1`);on(shunt,2,`MOTOR_${phase}1_OUT`)
+    on('J2',connectorPin,`MOTOR_${phase}1_OUT`)
+    on(amp,8,`MOTOR_${phase}1`);on(amp,1,`MOTOR_${phase}1_OUT`)
+    on(amp,3,'GND');on(amp,7,'V3V3');on(amp,6,'V3V3')
+    on(amp,5,`PHASE_${phase}_RAW`);on(filter,1,`PHASE_${phase}_RAW`);on(filter,2,`PHASE_${phase}_ADC`)
+    on('U16',adc,`PHASE_${phase}_ADC`)
+    expect(netKey(`MOTOR_${phase}1`)).not.toBe(netKey(`MOTOR_${phase}1_OUT`))
+  }
+  const phasePeak=5.5*Math.SQRT2
+  expect(5.5**2*0.005).toBeLessThan(0.2)
+  expect(1.65+phasePeak*0.005*20).toBeLessThan(3.1)
+  expect(1.65-phasePeak*0.005*20).toBeGreaterThan(0.2)
+})
+test('TMP102 hardware alert inhibits the run chain independently of MCU_RUN',()=>{
+  on('U29',3,'TEMP_OK');on('U29',4,'GND')
+  on('R114',1,'V3V3');on('R114',2,'TEMP_OK')
+  on('U11',4,'RUN_WINDOW_OK');on('U33',1,'RUN_WINDOW_OK');on('U33',2,'TEMP_OK')
+  on('U33',4,'RUN_SAFE');on('R55',1,'RUN_SAFE')
+  expect(netKey('RUN_WINDOW_OK')).not.toBe(netKey('RUN_SAFE'))
+  on('U30',1,'V3V3') // 0x49, distinct from TMP102 ADD0=GND at 0x48.
+  for(const [ref,sda,scl] of [['U29',6,1],['U30',9,10]]){on(ref,sda,'PD_SDA');on(ref,scl,'PD_SCL')}
+})
+
+test('USB-only power is confined to the MCU and its reset/decoupling network',()=>{
+  const mcuRail=netKey('V3V3_MCU')
+  const attached=new Set(ports.filter(p=>p.subcircuit_connectivity_map_key===mcuRail).map(p=>components.find(c=>c.source_component_id===p.source_component_id).name))
+  expect([...attached].sort()).toEqual(['U16','U26','U27','C44','C45','C46','C47','R70','TP_SWD_3V3'].sort())
+  for(const [ref,pin] of [['U19',3],['U20',8],['U21',16],['U31',6],['U32',6],['U18',11],['U17',8]])on(ref,pin,'V3V3')
+  on('U16',20,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
+  on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')
+  expect(key('U2',10)).toBeFalsy()
 })

@@ -5,7 +5,9 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py')
+verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
 for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
   for (const file of (await readdir(dir)).sort()) verifiedInputPaths.push(`${dir}/${file}`)
 }
@@ -30,7 +32,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs']],
+  ['topology-tests', ['test', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['schematic', ['run', 'check:schematic']],
   ['placement', ['run', 'check:placement']],
@@ -41,6 +43,7 @@ const checks = [
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
   ...(routed ? [['kicad-drc', ['run', 'check:kicad-drc']]] : []),
+  ...(routed ? [['critical-copper', ['run', 'check:critical-copper']]] : []),
   ...(routed ? [['power-routing', ['run', 'check:power-routing']]] : []),
   ...(routed ? [['routing-fingerprint', ['run', 'check:routing-fingerprint']]] : []),
 ]
@@ -60,6 +63,7 @@ for (const [name,args] of checks) {
   console.log(`${name}: ${exit_code===0?'PASS':'FAIL'} (${log})`)
 }
 const data=JSON.parse(await readFile('dist/index/circuit.json'))
+const releaseStatus=JSON.parse(await readFile('docs/release-status.json'))
 const inputsAfter = await hashInputs()
 const changedInputs = verifiedInputPaths.filter((path) => inputsBefore[path] !== inputsAfter[path])
 await writeFile('docs/checks/input-stability.log', changedInputs.length ? `Changed during validation:\n${changedInputs.join('\n')}\n` : 'Verified inputs remained unchanged during validation.\n')
@@ -76,7 +80,7 @@ const report={
   checks:results,
   circuit_messages:counts,
   routed_board_verified:routed && results.every(r=>r.exit_code===0),
-  prototype_fabrication_orderable:routed && results.every(r=>r.exit_code===0),
+  prototype_fabrication_orderable:routed && results.every(r=>r.exit_code===0) && releaseStatus.fabrication_orderable === true && Object.values(releaseStatus.prototype_order_gates).every(passed=>passed===true),
   production_released:false,
   limitations:[
     'The KiCad DRC proves geometric connectivity under the committed project rules; it does not replace physical validation.',

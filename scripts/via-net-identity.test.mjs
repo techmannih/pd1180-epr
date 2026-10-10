@@ -1,5 +1,6 @@
 import { test, expect } from 'bun:test'
 import { readFileSync } from 'node:fs'
+import { kicadPadPosition } from './power-copper-geometry.mjs'
 
 const board = readFileSync(new URL('../dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', import.meta.url), 'utf8')
 const standards = JSON.parse(readFileSync(new URL('../board-standards.json', import.meta.url), 'utf8'))
@@ -45,12 +46,10 @@ function footprintPad(footprint, padNumber) {
   const [fx, fy] = footprintAt.slice(1, 3).map(Number)
   const angle = Number(footprintAt[3] || 0)
   const [px, py] = padAt.slice(1, 3).map(Number)
-  const radians = angle * Math.PI / 180
   return {
     reference,
     net,
-    x: fx + px * Math.cos(radians) - py * Math.sin(radians),
-    y: fy + px * Math.sin(radians) + py * Math.cos(radians),
+    ...kicadPadPosition(fx, fy, px, py, angle),
   }
 }
 

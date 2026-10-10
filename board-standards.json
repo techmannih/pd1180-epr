@@ -71,7 +71,7 @@
     "board_width_mm": 85.9,
     "board_height_mm": 85.9,
     "schematic_sheet_size": "a4",
-    "schematic_sheet_count": 13,
+    "schematic_sheet_count": 15,
     "mounting_hole_count": 4,
     "mounting_hole_diameter_mm": 4.2,
     "mounting_holes_centered_mm": [
@@ -121,7 +121,9 @@
       "MOTOR_B2",
       "SENSE_A",
       "SENSE_B",
-      "BRAKE_RETURN"
+      "BRAKE_RETURN",
+      "MOTOR_A1_OUT",
+      "MOTOR_B1_OUT"
     ],
     "nominal_power_corridor_width_mm": 2.4,
     "power_zone_clearance_mm": 0.16,
@@ -166,7 +168,10 @@
       "release/schematics/outputs.svg",
       "release/schematics/serial.svg",
       "release/pd1180-commissioning-firmware.zip",
-      "release/schematics/usb-data.svg"
+      "release/schematics/usb-data.svg",
+      "release/schematics/usb-logic.svg",
+      "release/schematics/telemetry.svg",
+      "release/critical-copper-check.json"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",

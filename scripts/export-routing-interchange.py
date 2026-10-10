@@ -53,6 +53,16 @@ def main():
             pad.SetLayerSet(layers)
     if pad_geometry(board) != before:
         raise SystemExit("Routing normalization changed pad geometry or net identity")
+    # DSN has no equivalent of a fill-only rule area. Exporting one as a
+    # general keepout incorrectly forbids signal tracks as well. Preserve it
+    # on the original PCB; explicit Kelvin routing guards are added separately.
+    pour_only = [z for z in board.Zones() if z.GetIsRuleArea()
+                 and z.GetDoNotAllowZoneFills() and not z.GetDoNotAllowTracks()
+                 and not z.GetDoNotAllowVias() and not z.GetDoNotAllowPads()
+                 and not z.GetDoNotAllowFootprints()]
+    held.extend(pour_only)
+    for zone in pour_only:
+        board.Remove(zone)
     pcb_path = args.output_directory / "routing-base.kicad_pcb"
     dsn_path = args.output_directory / "routing-input.dsn"
     pcbnew.SaveBoard(str(pcb_path.resolve()), board)
@@ -63,6 +73,7 @@ def main():
         "source_sha256": hashlib.sha256(args.board.read_bytes()).hexdigest(),
         "pads_verified": len(before),
         "pad_geometry_unchanged": True,
+        "pour_only_rules_retained_on_original_pcb": len(pour_only),
         "bottom_rotation_compensation_required": False,
         "import_method": "import-routing-copper.py; never import routing-copy placement",
     }

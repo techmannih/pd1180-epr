@@ -1,43 +1,44 @@
 {
-  "generated_at": "2026-10-09T13:45:17.302Z",
+  "generated_at": "2026-10-10T02:05:37.918Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "baad136a823be6be350fc03cd728d41c1792a51b8f820fd9d63135f7eec86363",
-    "bytes": 4253534
+    "sha256": "3215136738f8048c1230bd0edd11a1344ae798e69efa4c94f948a19c408dea41",
+    "bytes": 4783945
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9768,
-    "sheets": 13,
-    "source_components": 265,
-    "source_ports": 934,
-    "connected_source_ports": 906,
-    "intentional_no_connect_ports": 28,
-    "source_nets": 182,
+    "elements": 10814,
+    "sheets": 15,
+    "source_components": 294,
+    "source_ports": 1034,
+    "connected_source_ports": 998,
+    "intentional_no_connect_ports": 36,
+    "source_nets": 195,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 73,
+    "capacitors": 85,
     "test_points": 11,
-    "annotations": 40,
+    "annotations": 46,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 76,
-    "3": 61,
-    "4": 24,
-    "5": 5,
+    "2": 80,
+    "3": 65,
+    "4": 25,
+    "5": 8,
     "6": 1,
-    "7": 1,
     "8": 1,
     "9": 2,
-    "10": 2,
-    "12": 4,
-    "16": 1,
+    "10": 3,
+    "11": 1,
+    "12": 2,
+    "13": 2,
+    "15": 1,
     "17": 1,
     "42": 1,
-    "61": 1,
-    "207": 1
+    "70": 1,
+    "236": 1
   },
   "usb_c": {
     "connectors": [
@@ -378,6 +379,7 @@
     "U18.9:V",
     "U19.5:NC1",
     "U19.8:NC2",
+    "U2.10:N_I2Ct_IRQ",
     "U2.21:NC",
     "U2.28:PP5V1",
     "U2.29:PP5V2",
@@ -385,6 +387,13 @@
     "U21.9:R2OUT",
     "U23.4:NC",
     "U24.4:NC",
+    "U25.4:NC",
+    "U26.4:NC",
+    "U27.4:NC",
+    "U28.4:FAULT",
+    "U30.2:ALERT",
+    "U31.4:NC",
+    "U32.4:NC",
     "U6.11:MODE",
     "U6.19:N_C6",
     "U6.20:N_C5",
@@ -397,9 +406,9 @@
   "test_points": [
     {
       "ref": "TP_SWD_3V3",
-      "net": "V3V3",
-      "total_ports_on_net": 61,
-      "non_testpoint_peers": 59
+      "net": "V3V3_MCU",
+      "total_ports_on_net": 11,
+      "non_testpoint_peers": 10
     },
     {
       "ref": "TP_SWDIO",
@@ -410,8 +419,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 207,
-      "non_testpoint_peers": 205
+      "total_ports_on_net": 236,
+      "non_testpoint_peers": 234
     },
     {
       "ref": "TP_SWCLK",
@@ -434,8 +443,8 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 61,
-      "non_testpoint_peers": 59
+      "total_ports_on_net": 70,
+      "non_testpoint_peers": 69
     },
     {
       "ref": "TP_ENC_A",
@@ -458,8 +467,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 207,
-      "non_testpoint_peers": 205
+      "total_ports_on_net": 236,
+      "non_testpoint_peers": 234
     }
   ],
   "sheets": [
@@ -488,8 +497,8 @@
       ],
       "annotations": [
         "02 / PD and Motor Backup Supplies",
-        "PD VBUS starts the 3.3 V rail; the motor-bus buck retains brake-control backup after PD loss.",
-        "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked ideal-diode OR into the shared 3.3 V rail."
+        "PD VBUS or DATA USB starts logic; the motor-bus buck retains brake-control backup after PD loss.",
+        "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked OR into board V3V3; U26/U27 power the separate MCU rail."
       ]
     },
     {
@@ -600,7 +609,7 @@
       ],
       "annotations": [
         "10 / USB DATA and Attach Sense",
-        "J10: self-powered USB 2.0 device. Connect PD POWER for setup; independent CC pulldowns, no PD negotiation.",
+        "J10: USB 2.0 DATA plus independent logic power. Separate CC pulldowns; no PD negotiation on this port.",
         "D15: D+/D-/CC ESD. R107/R108/C72: DATA VBUS attach sense. USB DATA cannot feed VMOTOR."
       ]
     },
@@ -645,14 +654,42 @@
         "J7: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
         "Q24/Q25: open-collector 24 V output drivers; base pulldowns keep outputs off during reset."
       ]
+    },
+    {
+      "index": 14,
+      "name": "usb-logic",
+      "display_name": "USB Logic Power",
+      "frame": [
+        320,
+        240
+      ],
+      "annotations": [
+        "14 / USB Logic Power",
+        "U28: DATA current limiter. U25: 3.3 V LDO. DATA powers MCU only; peripherals require board power.",
+        "U26/U27: reverse-blocked V3V3_MCU. R119/R120 sense board power on PB1; PD status is polled."
+      ]
+    },
+    {
+      "index": 15,
+      "name": "telemetry",
+      "display_name": "Temperature and Current Diagnostics",
+      "frame": [
+        370,
+        420
+      ],
+      "annotations": [
+        "15 / Temperature and Current Diagnostics",
+        "U29: power-stage temperature, address 0x48. U33: temperature hardware inhibit. U30: bus-monitor ADC, address 0x49.",
+        "U31/U32: bidirectional winding telemetry, 20 V/V across 5 mOhm = 100 mV/A, centered at 1.65 V. Not a short-circuit trip."
+      ]
     }
   ],
   "sheet_bounds": [
     {
       "index": 1,
       "name": "usb-pd",
-      "elements": 390,
-      "coordinate_points_checked": 796
+      "elements": 380,
+      "coordinate_points_checked": 768
     },
     {
       "index": 2,
@@ -669,8 +706,8 @@
     {
       "index": 4,
       "name": "motion",
-      "elements": 398,
-      "coordinate_points_checked": 703
+      "elements": 401,
+      "coordinate_points_checked": 666
     },
     {
       "index": 5,
@@ -693,8 +730,8 @@
     {
       "index": 8,
       "name": "mcu",
-      "elements": 273,
-      "coordinate_points_checked": 459
+      "elements": 272,
+      "coordinate_points_checked": 455
     },
     {
       "index": 9,
@@ -725,6 +762,18 @@
       "name": "outputs",
       "elements": 73,
       "coordinate_points_checked": 118
+    },
+    {
+      "index": 14,
+      "name": "usb-logic",
+      "elements": 114,
+      "coordinate_points_checked": 235
+    },
+    {
+      "index": 15,
+      "name": "telemetry",
+      "elements": 182,
+      "coordinate_points_checked": 320
     }
   ],
   "checks": [
@@ -732,8 +781,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 265,
-        "schematic": 265
+        "source": 294,
+        "schematic": 294
       }
     },
     {
@@ -752,9 +801,9 @@
     },
     {
       "ok": true,
-      "message": "exactly 13 schematic sheets",
+      "message": "exactly 15 schematic sheets",
       "details": {
-        "actual": 13
+        "actual": 15
       }
     },
     {
@@ -825,8 +874,8 @@
         "actual": 3,
         "texts": [
           "02 / PD and Motor Backup Supplies",
-          "PD VBUS starts the 3.3 V rail; the motor-bus buck retains brake-control backup after PD loss.",
-          "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked ideal-diode OR into the shared 3.3 V rail."
+          "PD VBUS or DATA USB starts logic; the motor-bus buck retains brake-control backup after PD loss.",
+          "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked OR into board V3V3; U26/U27 power the separate MCU rail."
         ]
       }
     },
@@ -1129,7 +1178,7 @@
         "actual": 3,
         "texts": [
           "10 / USB DATA and Attach Sense",
-          "J10: self-powered USB 2.0 device. Connect PD POWER for setup; independent CC pulldowns, no PD negotiation.",
+          "J10: USB 2.0 DATA plus independent logic power. Separate CC pulldowns; no PD negotiation on this port.",
           "D15: D+/D-/CC ESD. R107/R108/C72: DATA VBUS attach sense. USB DATA cannot feed VMOTOR."
         ]
       }
@@ -1258,9 +1307,85 @@
     },
     {
       "ok": true,
-      "message": "40 high-level sheet annotations are present",
+      "message": "known fixed geometry for sheet usb-logic"
+    },
+    {
+      "ok": true,
+      "message": "usb-logic keeps sheet index 14"
+    },
+    {
+      "ok": true,
+      "message": "usb-logic keeps fixed 320 x 240 frame",
       "details": {
-        "actual": 40
+        "actual": [
+          320,
+          240
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "usb-logic has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "14 / USB Logic Power",
+          "U28: DATA current limiter. U25: 3.3 V LDO. DATA powers MCU only; peripherals require board power.",
+          "U26/U27: reverse-blocked V3V3_MCU. R119/R120 sense board power on PB1; PD status is polled."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "usb-logic has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "usb-logic explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "known fixed geometry for sheet telemetry"
+    },
+    {
+      "ok": true,
+      "message": "telemetry keeps sheet index 15"
+    },
+    {
+      "ok": true,
+      "message": "telemetry keeps fixed 370 x 420 frame",
+      "details": {
+        "actual": [
+          370,
+          420
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "telemetry has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "15 / Temperature and Current Diagnostics",
+          "U29: power-stage temperature, address 0x48. U33: temperature hardware inhibit. U30: bus-monitor ADC, address 0x49.",
+          "U31/U32: bidirectional winding telemetry, 20 V/V across 5 mOhm = 100 mV/A, centered at 1.65 V. Not a short-circuit trip."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "telemetry has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "telemetry explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "46 high-level sheet annotations are present",
+      "details": {
+        "actual": 46
       }
     },
     {
@@ -1279,17 +1404,17 @@
     },
     {
       "ok": true,
-      "message": "182 named source nets are present",
+      "message": "195 named source nets are present",
       "details": {
-        "actual": 182
+        "actual": 195
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 182,
-        "source_nets": 182
+        "connected_groups": 195,
+        "source_nets": 195
       }
     },
     {
@@ -1355,9 +1480,9 @@
     },
     {
       "ok": true,
-      "message": "73 capacitors audited",
+      "message": "85 capacitors audited",
       "details": {
-        "actual": 73
+        "actual": 85
       }
     },
     {
@@ -1399,6 +1524,7 @@
           "U18.9:V",
           "U19.5:NC1",
           "U19.8:NC2",
+          "U2.10:N_I2Ct_IRQ",
           "U2.21:NC",
           "U2.28:PP5V1",
           "U2.29:PP5V2",
@@ -1406,6 +1532,13 @@
           "U21.9:R2OUT",
           "U23.4:NC",
           "U24.4:NC",
+          "U25.4:NC",
+          "U26.4:NC",
+          "U27.4:NC",
+          "U28.4:FAULT",
+          "U30.2:ALERT",
+          "U31.4:NC",
+          "U32.4:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",
@@ -1429,6 +1562,7 @@
           "U18.9:V",
           "U19.5:NC1",
           "U19.8:NC2",
+          "U2.10:N_I2Ct_IRQ",
           "U2.21:NC",
           "U2.28:PP5V1",
           "U2.29:PP5V2",
@@ -1436,6 +1570,13 @@
           "U21.9:R2OUT",
           "U23.4:NC",
           "U24.4:NC",
+          "U25.4:NC",
+          "U26.4:NC",
+          "U27.4:NC",
+          "U28.4:FAULT",
+          "U30.2:ALERT",
+          "U31.4:NC",
+          "U32.4:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",

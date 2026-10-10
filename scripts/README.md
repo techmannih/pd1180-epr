@@ -19,11 +19,15 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-import-previews.mjs` | Executes every imported TSX as a standalone viewer entrypoint and requires both PCB and schematic component output without component-creation failures. |
 | `check-kicad-drc.mjs` | Fails on any final KiCad PCB DRC violation, unconnected item, schematic-parity issue or nested schematic ERC violation. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
+| `critical_copper.py` | Reads Kelvin/analog-return paths from compiled source. `keepouts` reserves their top-layer pours, `dsn --dsn INPUT` protects them from new router branches and replaces completed branch destinations/copper with obstacles in the disposable DSN. Optional `--fixed-board SEED` fixes source copper while allowing the remaining incomplete route to move. `check` proves final native copper remains intact and joins other same-net copper only at the designated receiving terminal. Inputs: critical-path policy, source circuit JSON and native PCB; output: PCB, DSN or hash-bound report. |
+| `check-critical-copper.mjs` | Requires passing native Kelvin evidence for every policy path and exact hashes of the final PCB, compiled source, policy and native checker; rejects stale or incomplete reports. |
+| `circuit-source-hash.mjs` | Hashes every circuit element and metadata field except the CLI filesystem cache key, so regenerated reports cannot invalidate unchanged native circuit evidence. Shared by the native checker and its evidence verifier. |
+| `test-critical-copper.py` | Native KiCad regressions: accept a load connection at the shunt terminal; reject missing sense copper, a same-net spur, a connection at the far edge of the IC land, or a plane via before that terminal; check that DSN reservations leave other destinations intact. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
 | `check-release.mjs` | Enforces prototype-order gates while reporting remaining physical system gates separately. |
 | `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
-| `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint or placement changes. |
+| `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
 | `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
 | `check-source-schematic.mjs` | Audits all fixed-size schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
@@ -41,14 +45,18 @@ Every executable script is listed here so a reviewer can understand the release 
 | `generate-cloud-viewer.mjs` | Combines the verified source schematic/3D model with routed KiCad traces, vias and pours for deterministic hosted PCB viewing. Omits only the CLI's filesystem cache key, which includes generated release/report files; source and copper provenance remain enforced by SHA-256 inputs, routing fingerprint and delivery hashes. |
 | `generate-mounting-template.mjs` | Generates the 100%-scale SVG/PNG mounting template from the hardware contract and hash-locked STEP perimeter evidence, then detects stale copies. |
 | `generate-routing-report.py` | Generates route counts and completion state from the final KiCad board, DRC JSON and manufacturing report. |
-| `import-routing-copper.py` | Imports SES copper from the normalized routing copy, rejects placement changes, and preserves the original board footprints; native DRC remains mandatory. |
+| `import-routing-copper.py` | Imports SES copper from the normalized routing copy, rejects placement changes, and preserves the original board footprints; `--restore-critical-branches` restores source Kelvin branches reserved as DSN obstacles and rejects premature joins before saving. Native DRC remains mandatory. |
 | `import-routed-kicad.mjs` | Imports externally routed KiCad copper into reviewable Circuit JSON artifacts. |
 | `import-specctra-route.py` | Imports a Freerouting Specctra SES result into its matching KiCad PCB, reverses the temporary bottom-placement routing compensation, and records connectivity counts. |
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
 | `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, and publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. |
 | `normalize-generated-svgs.mjs` | Removes generator-only trailing whitespace so previews remain deterministic in review. |
-| `prepare-routing-seed.py` | Adds the exact 40 drain-pad thermal vias and bottom ties, plus 34 short capacitor ground-return escapes, to a fresh top-side export; native DRC and plane connectivity remain mandatory. |
+| `prepare-plane-escapes.py` | Adds short 0.20 mm ground/board-supply escapes to 0.60/0.30 mm vias before internal-plane routing. Preserves Kelvin isolation and leaves inaccessible pads in the router netlist; native DRC and filled-plane connectivity remain mandatory. |
+| `test-plane-escapes.py` | Native connectivity regression: existing capacitor-return vias and plated connector pads must not receive redundant plane fanouts; isolated SMD lands still need an escape. |
+| `prepare-routing-seed.py` | Adds the exact 40 drain-pad thermal vias, capacitor ground returns, and the pad-relative driver/supply escapes and common MOSFET pin links from `routing/pin-escapes.json` to a fresh export. Rejects altered pin identities and Kelvin shortcuts; native DRC and plane connectivity remain mandatory. |
 | `prepare-routing-rules.py` | Applies 0.15 mm signal / 0.50 mm power escape rules and power via selection to the world-aligned routing export, without changing placement. Final power paths require corridor reinforcement and native DRC. |
+| `power-copper-geometry.mjs` | Measures routed length inside same-net/same-layer nominal corridor outlines without depending on trace segmentation; identifies ties within actual MOSFET drain-pad locations. Does not certify clipped-fill ampacity. |
+| `power-copper-geometry.test.mjs` | Regressions for split traces, overlapping or unrelated pours and false thermal-tie classification. |
 | `prepare-r03-dsn.py` | Applies r0.3 routing classes and compensates the KiCad/Specctra bottom-footprint rotation convention before autorouting. |
 | `reinforce-power-copper.py` | Adds clearance-aware power corridors and parallel transfer vias to the final KiCad route. |
 | `refresh-routed-preview.mjs` | Builds the latest source, checks local route continuity and the saved PCB fingerprint/DRC, refreshes the routed viewer without changing schematic records, and updates only its delivery hashes. Does not approve a new manufacturing release. |

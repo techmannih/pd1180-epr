@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pcbnew
 import wx
+from critical_copper import check, load_paths
 
 
 def point(x, y):
@@ -18,11 +19,11 @@ def coordinates(position):
     return pcbnew.ToMM(position.x), pcbnew.ToMM(position.y)
 
 
-def add_via(board, position, net):
+def add_via(board, position, net, diameter=0.6, drill=0.3):
     via = pcbnew.PCB_VIA(board)
     via.SetPosition(position)
-    via.SetWidth(pcbnew.FromMM(0.6))
-    via.SetDrill(pcbnew.FromMM(0.3))
+    via.SetWidth(pcbnew.FromMM(diameter))
+    via.SetDrill(pcbnew.FromMM(drill))
     via.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
     via.SetNet(net)
     board.Add(via)
@@ -114,6 +115,30 @@ def main():
         add_track(board, pad.GetPosition(), candidate, pad.GetNet(), pcbnew.F_Cu, 0.2)
         returns.append({"reference": reference, "via": coordinates(candidate), "length_mm": math.dist((x, y), coordinates(candidate))})
 
+    # These checked escapes reserve the narrow corridors around the TMC5160
+    # before general routing can block them. Positions remain pad-relative.
+    routing = json.loads(Path("routing/pin-escapes.json").read_text())
+    pads = {(fp.GetReference(), p.GetNumber()): p for fp in footprints.values() for p in fp.Pads()}
+    for escape in routing["pin_escapes"]:
+        pad = pads[escape["reference"], escape["pin"]]
+        if pad.GetNetname() != escape["net"]:
+            raise SystemExit(f"Pin-escape net changed: {escape['reference']}.{escape['pin']}")
+        x, y = coordinates(pad.GetPosition())
+        points = [point(x + dx, y + dy) for dx, dy in escape["points_from_pad_mm"]]
+        if points[0] != pad.GetPosition():
+            raise SystemExit("Pin escape must start at its physical pad")
+        for start, end in zip(points, points[1:]):
+            add_track(board, start, end, pad.GetNet(), pcbnew.F_Cu, escape["trace_width_mm"])
+        add_via(board, points[-1], pad.GetNet(), escape["via_diameter_mm"], escape["via_drill_mm"])
+    for link in routing["mosfet_pad_links"]:
+        start, end = [pads[link["reference"], pin] for pin in link["pins"]]
+        if start.GetNetname() != link["net"] or end.GetNetname() != link["net"]:
+            raise SystemExit(f"MOSFET common-pin net changed: {link['reference']}")
+        add_track(board, start.GetPosition(), end.GetPosition(), start.GetNet(), pcbnew.F_Cu, link["width_mm"])
+    problems = check(board, load_paths(board))["errors"]
+    if problems:
+        raise SystemExit(f"Routing seed violates Kelvin isolation: {problems}")
+
     # Full-board planes are regenerated on the final routed board. Native DRC
     # must check every short escape and the completed connections to the planes.
     for zone in list(board.Zones()):
@@ -121,7 +146,9 @@ def main():
     board.BuildConnectivity()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     pcbnew.SaveBoard(str(args.output.resolve()), board)
-    report = {"thermal_vias": thermal, "capacitor_ground_returns": returns, "native_drc_still_required": True}
+    report = {"thermal_vias": thermal, "capacitor_ground_returns": returns,
+              "pin_escapes": routing["pin_escapes"], "mosfet_pad_links": routing["mosfet_pad_links"],
+              "native_drc_still_required": True}
     args.output.with_suffix(".seed.json").write_text(json.dumps(report, indent=2) + "\n")
     print(f"Added {len(thermal)} thermal vias and {len(returns)} local capacitor ground returns")
 

@@ -15,6 +15,8 @@ POWER_NETS = (
     "EFUSE_IN",
     "VMOTOR",
     "MOTOR_A1",
+    "MOTOR_A1_OUT",
+    "MOTOR_B1_OUT",
     "MOTOR_A2",
     "MOTOR_B1",
     "MOTOR_B2",

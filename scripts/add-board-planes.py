@@ -7,6 +7,7 @@ import argparse
 from pathlib import Path
 
 import pcbnew
+import wx
 
 
 PLANES = (("GND", pcbnew.In1_Cu), ("V3V3", pcbnew.In2_Cu))
@@ -17,7 +18,7 @@ def main() -> None:
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
     args = parser.parse_args()
-
+    app = wx.App(False)
     board = pcbnew.LoadBoard(str(args.input))
     outline = pcbnew.SHAPE_POLY_SET()
     if not board.GetBoardPolygonOutlines(outline, False, None, False, False):

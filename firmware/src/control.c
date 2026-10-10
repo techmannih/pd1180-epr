@@ -1,4 +1,5 @@
 #include "control.h"
+#include "telemetry.h"
 
 #define CONTRACT_STABLE_REQUIRED_MS 100u
 #define MOTOR_STABLE_REQUIRED_MS 200u
@@ -22,11 +23,12 @@ static bool safe_contract(const pd1180_inputs_t *in) {
   return in->pd_app_mode && in->epr_contract && in->contract_mv == REQUIRED_CONTRACT_MV &&
     in->contract_ma == REQUIRED_CONTRACT_MA && in->configuration_verified && in->sample_fresh &&
     in->motion_wiring_verified && !in->pd_fault && !in->efuse_fault &&
-    in->watchdog_healthy && !in->stop_active;
+    in->watchdog_healthy && !in->stop_active && in->temperature_valid &&
+    in->temperature_deci_c >= -400 && in->temperature_deci_c < 700;
 }
 
 bool pd1180_control_arm(pd1180_control_t *state, const pd1180_inputs_t *inputs) {
-  if (!safe_contract(inputs) || state->fault_latched) return false;
+  if (!safe_contract(inputs) || inputs->temperature_deci_c > 550 || state->fault_latched) return false;
   state->armed = true;
   return true;
 }
@@ -43,10 +45,12 @@ void pd1180_control_tick(pd1180_control_t *state, const pd1180_inputs_t *inputs,
     state->power_permit = false;
     state->mcu_run = false;
     state->motor_commands_enabled = false;
+    state->current_limit_permille = 0;
     return;
   }
 
   state->contract_stable_ms = saturating_add(state->contract_stable_ms, elapsed_ms, CONTRACT_STABLE_REQUIRED_MS);
+  state->current_limit_permille = pd1180_thermal_limit_permille(inputs->temperature_deci_c);
   state->power_permit = state->contract_stable_ms >= CONTRACT_STABLE_REQUIRED_MS;
   if (state->power_permit && !state->mcu_run) {
     state->power_start_ms = saturating_add(state->power_start_ms, elapsed_ms, 1000u);

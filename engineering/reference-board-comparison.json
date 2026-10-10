@@ -1,0 +1,211 @@
+{
+  "reviewed_at_utc": "2026-10-09T15:17:38.861936+00:00",
+  "current_board_commit": "49c3ac7836e0595798955490af49c769ca056bc6",
+  "scope": "Reference source/documentation comparison and targeted measurements of current final KiCad PCB; no circuit modifications.",
+  "references": [
+    {
+      "package": "imrishabh18/rp2040-motor-controller",
+      "version": "1.0.42",
+      "release_id": "e8d285f7-c3d8-46f5-9a54-344fdde0124e",
+      "url": "https://tscircuit.com/imrishabh18/rp2040-motor-controller",
+      "reviewed_file_sha256": {
+        "README.md": "88b05a6b8b9aaef9c2e7de6fc66305f0da271d848710434b3df651a401a34222",
+        "package.json": "7a1a044cc79e425f539b6cd22b16631926ed7a99709660fb2dbcf3bd248be199",
+        "index.circuit.tsx": "65391e3e5525c4b3968983c23327385fb903f9ab716d3b6c0b7d144472ee17b6",
+        "reports/routing-refresh-review.md": "159e965f54d94d925d3cfd6f31c73bd2b7976796b3f65e8632d50f78a3300dfe"
+      }
+    },
+    {
+      "package": "imrishabh18/nema-23-stepper-controller",
+      "version": "1.3.2",
+      "release_id": "ce2edb82-bc7a-4eb3-9cbd-280f173e6dcd",
+      "url": "https://tscircuit.com/imrishabh18/nema-23-stepper-controller",
+      "reviewed_file_sha256": {
+        "README.md": "ef0e74239e4d940161187105c3d7a9c906366edc5e17b3d87770e31d4c78930c",
+        "package.json": "615b569228278d06130bde2495a1d635dba5c9739b57c2bf9a03d938526513a6",
+        "index.circuit.tsx": "5c2e528de893e435b0b52491b9de0c8eeed371b22e63ddaf5db29884f564b73c",
+        "checks/ground-copper-connectivity.json": "b93515b375e5c80d76de810cfbe11455a281db7cedc86c1a98aaa4b425811bc4",
+        "checks/kelvin-connectivity.json": "c9cbd43206fc0a84c54f38184444fd79de6e9e9898b029dea152d0057ac64681",
+        "routing/power-layer-policy.json": "badbd03f1da397187bca584f9d927ec9aea5f94bbb10124fafffc344e2e7fea2",
+        "engineering/motor-profile.json": "b0d257204e7585c7f984e3c318ab80c181dea60340e17e6afc5038d14d2d91c7"
+      }
+    }
+  ],
+  "limitations": [
+    "Exact revisions ordered by the reviewer are unknown.",
+    "Reference compiled circuit JSON downloads timed out; reference DRC/thermal/DFM statements are author-reported, not independently reproduced.",
+    "NEMA23 latest README explicitly retains a fabricator DFM hold for 2 oz outer copper versus 0.10 mm tracks.",
+    "No physical motor, thermal, power-sequencing or EMI tests were performed."
+  ],
+  "current_native_measurements": {
+    "pad_distances": [
+      {
+        "from": "C32:1",
+        "to": "U7:42",
+        "from_net": "BOOT_A1",
+        "to_net": "BOOT_A1",
+        "pad_center_distance_mm": 11.185
+      },
+      {
+        "from": "C33:1",
+        "to": "U7:35",
+        "from_net": "BOOT_A2",
+        "to_net": "BOOT_A2",
+        "pad_center_distance_mm": 6.887
+      },
+      {
+        "from": "C34:1",
+        "to": "U7:2",
+        "from_net": "BOOT_B1",
+        "to_net": "BOOT_B1",
+        "pad_center_distance_mm": 11.056
+      },
+      {
+        "from": "C35:1",
+        "to": "U7:43",
+        "from_net": "BOOT_B2",
+        "to_net": "BOOT_B2",
+        "pad_center_distance_mm": 10.533
+      },
+      {
+        "from": "R43:2",
+        "to": "Q9:4",
+        "from_net": "GL_A2",
+        "to_net": "GL_A2",
+        "pad_center_distance_mm": 7.552
+      },
+      {
+        "from": "U7:8",
+        "to": "R109:1",
+        "from_net": "SENSE_A",
+        "to_net": "SENSE_A",
+        "pad_center_distance_mm": 26.038
+      },
+      {
+        "from": "U7:9",
+        "to": "R110:1",
+        "from_net": "SENSE_B",
+        "to_net": "SENSE_B",
+        "pad_center_distance_mm": 30.901
+      }
+    ],
+    "total_track_length_by_net_not_point_to_point": {
+      "BOOT_A2": {
+        "length_mm": 8.309,
+        "segments": 10,
+        "vias": 3,
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu"
+        ]
+      },
+      "GL_A2": {
+        "length_mm": 11.962,
+        "segments": 13,
+        "vias": 2,
+        "layers": [
+          "F.Cu",
+          "In1.Cu"
+        ]
+      },
+      "SENSE_A": {
+        "length_mm": 65.602,
+        "segments": 61,
+        "vias": 15,
+        "layers": [
+          "B.Cu",
+          "F.Cu",
+          "In1.Cu"
+        ]
+      },
+      "SENSE_B": {
+        "length_mm": 61.326,
+        "segments": 89,
+        "vias": 6,
+        "layers": [
+          "B.Cu",
+          "F.Cu",
+          "In1.Cu"
+        ]
+      },
+      "BOOT_B2": {
+        "length_mm": 15.451,
+        "segments": 12,
+        "vias": 4,
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu"
+        ]
+      },
+      "BOOT_B1": {
+        "length_mm": 15.114,
+        "segments": 11,
+        "vias": 3,
+        "layers": [
+          "F.Cu",
+          "In1.Cu",
+          "In2.Cu"
+        ]
+      },
+      "BOOT_A1": {
+        "length_mm": 14.857,
+        "segments": 10,
+        "vias": 2,
+        "layers": [
+          "F.Cu",
+          "In2.Cu"
+        ]
+      }
+    }
+  },
+  "findings": [
+    {
+      "priority": 1,
+      "topic": "Motor-stage placement and routing",
+      "evidence": "Bootstrap positive nets total 8.309–15.451 mm of planar track and 2–4 vias each. U7 sense-input to shunt pad straight distances are 26.038 and 30.901 mm. Gate resistor R43 output is 7.552 mm straight from Q9 gate.",
+      "assessment": "These are layout-review concerns, not measured failures or manufacturer-specified distance-limit violations.",
+      "next_action": "Compact the driver/bridges/shunts; shorten bootstrap and gate loops; verify dedicated Kelvin sense branches on both sides of each shunt. Netlist connectivity alone does not establish Kelvin routing.",
+      "manufacturer_source": "https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf"
+    },
+    {
+      "priority": 2,
+      "topic": "Power-stage temperature monitoring",
+      "reference": "Both reference designs include TMP102 board-temperature sensing.",
+      "current": "No separate PCB temperature sensor is present in the fitted IC list; TMC on-chip temperature does not directly measure external MOSFET temperatures.",
+      "next_action": "Evaluate temperature sensing near the external power stage plus a validated thermal derating/shutdown policy."
+    },
+    {
+      "priority": 3,
+      "topic": "Independent logic USB power",
+      "reference": "Both references power the logic independently from DATA USB.",
+      "current": "J10 is a self-powered USB device; its VBUS feeds only attach sensing and protection, requiring J1 for startup logic.",
+      "assessment": "Valid self-powered architecture, but a user-experience difference from the references.",
+      "next_action": "If matching their single-cable setup behavior, add a protected logic-only DATA supply path with reverse-current isolation and verify all power sequences."
+    },
+    {
+      "priority": 4,
+      "topic": "Phase-current telemetry",
+      "reference": "Both references include two INA240 amplifiers for bidirectional winding-current ADC measurements.",
+      "current": "MCU IIN_MON measures bus input current. R109/R110 serve TMC current regulation; there are no separate phase-current ADC amplifiers.",
+      "assessment": "A diagnostics feature difference, not proof that current regulation is absent.",
+      "next_action": "Decide whether measured per-phase current is required; if added, size shunts/amplifiers and ADC filters for this motor and validate PWM rejection."
+    },
+    {
+      "priority": 5,
+      "topic": "Integrated driver alternative",
+      "reference": "RP2040 reference uses DRV8825 around 20 V and 1 A peak; NEMA23 uses DRV8452DDWR around 28 V and 2.804 A RMS.",
+      "current": "TMC5160A external MOSFET architecture targets 48 V / 5.5 A RMS. User previously chose to retain it.",
+      "assessment": "The reference drivers do not directly meet this target. External MOSFETs are required by TMC5160A, but not the only possible architecture.",
+      "candidate": "TI DRV8462 in DDV package is rated 65 V operating and 7 A RMS; DDW is only 3.5 A RMS. DDV needs a new footprint/pinout, thermal design/heatsink, firmware and sourcing review; it is not a validated drop-in replacement.",
+      "manufacturer_source": "https://www.ti.com/product/DRV8462"
+    },
+    {
+      "priority": 6,
+      "topic": "Mechanical and retained interfaces",
+      "current": "All fitted components are top-side, including central AS5047P; industrial interfaces remain on consolidated J7.",
+      "next_action": "Verify magnet location/gap, shaft access, mounting and heatsink clearance on exact NEMA34 hardware. Preserve user-required industrial interfaces; do not copy reference connector/copper/motor ratings."
+    }
+  ]
+}
