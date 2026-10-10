@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import JSZip from 'jszip'
@@ -64,6 +65,18 @@ const copies = [
 ]
 for (const [from, to] of copies) await copyFile(from, join(release, to))
 await writeCloudViewerCircuit()
+// Build from this exact routed circuit, never from a previous preview's GLB.
+// The CLI may report conversion errors without failing the build, so remove
+// its old output and require a complete GLB before packaging it.
+const routedGlb = 'dist/release/3d.glb'
+await rm(routedGlb, { force: true })
+execFileSync('bunx', ['tsci', 'build', 'release/circuit.json', '--glbs', '--routing-disabled', '--disable-parts-engine'], {
+  stdio: 'inherit', timeout: 600_000,
+})
+const glb = await readFile(routedGlb)
+if (glb.length < 12 || glb.toString('ascii', 0, 4) !== 'glTF' ||
+    glb.readUInt32LE(4) !== 2 || glb.readUInt32LE(8) !== glb.length)
+  throw new Error('Routed 3D export is missing or invalid')
 for (const file of await readdir('dist/schematics')) {
   if (file.endsWith('.svg')) await copyFile(join('dist/schematics', file), join(release, 'schematics', file))
 }
@@ -91,7 +104,7 @@ await rm(join(release, 'pd1180-epr.glb'), { force: true })
 await Promise.all([
   zipDirectory('dist/manufacturing/gerbers', join(release, 'pd1180-epr-r0.3-gerbers.zip')),
   zipDirectory('dist/manufacturing/kicad-project', join(release, 'pd1180-epr-r0.3-kicad.zip')),
-  zipFile('dist/index/3d.glb', 'pd1180-epr.glb', join(release, 'pd1180-epr-r0.3-glb.zip')),
+  zipFile(routedGlb, 'pd1180-epr.glb', join(release, 'pd1180-epr-r0.3-glb.zip')),
 ])
 
 await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR

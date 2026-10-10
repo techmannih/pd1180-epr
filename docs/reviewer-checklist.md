@@ -64,3 +64,5 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Production status remains blocked until mechanical fit, programmed operation, thermal, fault, EMC/ESD and load testing have recorded evidence.
 
 Reviewer sign-off should record board revision, commit, release hashes, open risks and the exact evidence used. Do not sign off from screenshots alone.
+
+Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.

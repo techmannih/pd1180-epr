@@ -1222,7 +1222,7 @@ export const PD1180EPR = () => (
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.NRST", pin2: "net.GND" }} />
-    <resistor name="R71" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={4.84} schY={0} pcbX={-12.5} pcbY={-10.0}
+    <resistor name="R71" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={4.84} schY={0} pcbX={-27.5} pcbY={-11.5}
       resistance="22" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23345"] }}
       connections={{ pin1: "net.USB_DP_CONN", pin2: "net.USB_DP" }} />
     <resistor name="R72" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={8.39} schY={0} pcbX={-27.5} pcbY={-13.75}

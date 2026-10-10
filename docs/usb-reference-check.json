@@ -1,0 +1,51 @@
+{
+  "board_sha256": "61bad79e8f07e963e17933d183a309a91dc449ff143098563ce739ee1f07138d",
+  "checker_sha256": "d39d1097e97c569909397bb226787c247091813efbe169a044fcdf09876f3e8c",
+  "sample_pitch_mm": 0.05,
+  "signal_via_antipad_exclusion_radius_mm": 0.45,
+  "maximum_ground_stitch_distance_mm": 2,
+  "nets": [
+    {
+      "net": "USB_DP",
+      "length_mm": {
+        "F.Cu": 2.878,
+        "B.Cu": 14.048
+      },
+      "checked_samples": 269,
+      "uncovered_samples": [],
+      "maximum_ground_stitch_distance_mm": 1.226
+    },
+    {
+      "net": "USB_DM",
+      "length_mm": {
+        "F.Cu": 5.763,
+        "B.Cu": 8.054
+      },
+      "checked_samples": 152,
+      "uncovered_samples": [],
+      "maximum_ground_stitch_distance_mm": 0.587
+    },
+    {
+      "net": "USB_DP_CONN",
+      "length_mm": {
+        "F.Cu": 7.575,
+        "B.Cu": 11.036
+      },
+      "checked_samples": 204,
+      "uncovered_samples": [],
+      "maximum_ground_stitch_distance_mm": 1.174
+    },
+    {
+      "net": "USB_DM_CONN",
+      "length_mm": {
+        "F.Cu": 12.092,
+        "B.Cu": 11.181
+      },
+      "checked_samples": 208,
+      "uncovered_samples": [],
+      "maximum_ground_stitch_distance_mm": 1.9
+    }
+  ],
+  "errors": [],
+  "limitation": "Geometric return-path check for the full-speed interface; not an impedance, eye-diagram or USB compliance measurement."
+}

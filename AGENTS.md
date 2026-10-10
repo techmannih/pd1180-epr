@@ -118,3 +118,5 @@ Never suppress, filter or waive a failing check without documenting the physical
 - Do not describe a board as production-ready until programmed hardware has passed staged electrical, thermal, mechanical and EMC validation.
 
 When adding or removing a script, update `scripts/README.md`; the script-catalog check enforces this. When adding a release artifact, update `board-standards.json` and the delivery checker.
+
+Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.

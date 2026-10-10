@@ -128,5 +128,27 @@
       "Use KiCad rotation in downward-positive file coordinates for thermal-pad checks.",
       "Measure same-net/layer corridor coverage by geometric length, independent of segment and overlapping zone counts."
     ]
+  },
+  "completion_work": {
+    "status": "cad-and-software-completed-hardware-qualification-pending",
+    "firmware": "Integrated and host-tested TMC5160A pipelined SPI, write acknowledgement, disabled startup, mode/fault checks and thermally scaled low-current STEP/DIR service; released ARM image stays locked until hardware/configuration qualification.",
+    "ci": "Canonicalized only derived trace_length at 1e-12 mm to prevent cross-platform floating-point evidence mismatch. Review validates CAD with the order hold visible; ordering remains separately blocked.",
+    "motor_phase_copper": "Parallel bottom corridor from Q7 drain stitching to R115 input, four new 0.60/0.30 mm transfer vias and 2.4 mm top landing. No Kelvin branch shortcut.",
+    "pd_configuration": "Official TI tool v2.0.1 reached; export pending explicit user approval of its application license. No TI binary invented.",
+    "physical_evidence": "Assembled-board availability, actual load/RPM/stop time and brake/heatsink data requested, not yet supplied.",
+    "usb_routing": "R71 grouped with R72 on top; USB trunks rerouted on B.Cu over a stitched local In2 GND region. Five low-speed signals moved out of the reference layer. Native DRC/parity zero; all four USB reference checks pass, and the previous routing fails the same checker.",
+    "schematic_records_unchanged": 3189,
+    "pad_comparison": {
+      "pad_geometries_checked": 1042,
+      "unchanged_except_R71_translation_mm": [
+        -15,
+        1.5
+      ],
+      "all_other_pad_geometry_layer_net_unchanged": true,
+      "board_sha256": "61bad79e8f07e963e17933d183a309a91dc449ff143098563ce739ee1f07138d"
+    },
+    "motor_phase_copper_evidence": "engineering/filled-copper-review.json",
+    "usb_reference_evidence": "docs/usb-reference-check.json",
+    "release_3d": "Release export regenerates GLB from the exact final routed circuit, deletes previous output first and requires a valid complete GLB before packaging."
   }
 }

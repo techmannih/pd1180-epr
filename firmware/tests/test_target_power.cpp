@@ -31,6 +31,12 @@ int main() {
   advance(1);assert(!peripheralsStarted);
   advance(19);assert(!peripheralsStarted);
   advance(1);assert(peripheralsStarted && pdBus.started);
+  assert(!spiStarted && motorSpi.transactions==0);
+  inputs.motor_power_good=inputs.vmotor_in_range=true;
+  pollDriver(fakeNow+20);
+  assert(spiStarted && !tmcStatus.valid && !inputs.driver_ready);
+  inputs.motor_power_good=false; pollDriver(fakeNow+21);
+  assert(!spiStarted && fakeModes[pin(PD1180_PIN_SPI_MOSI)]==INPUT_ANALOG);
   adcValid[0]=phaseValid=inputs.temperature_valid=true;
   fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=0;
   advance(1);

@@ -1,0 +1,117 @@
+{
+  "status": "analytical-screen-only-hardware-qualification-pending",
+  "baseline_commit": "d28bcf61d0d0479ad3a44b3ad14bfbf5b858c435",
+  "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
+  "board_sha256": "61bad79e8f07e963e17933d183a309a91dc449ff143098563ce739ee1f07138d",
+  "change": "Parallel B.Cu corridor from Q7 drain stitching to R115 input, four 0.60/0.30 mm vias and a 2.4 mm F.Cu landing. All nine Kelvin/analog branches remain isolated until their terminal pads.",
+  "before": [
+    {
+      "net": "MOTOR_A1",
+      "from": "Q7:9",
+      "to": "R115:1",
+      "grid_mm": 0.075,
+      "nodes": 24480,
+      "resistance_mohm_20c": 20.9415,
+      "voltage_drop_mv_at_5_5a": 115.178,
+      "loss_w_at_5_5a": 0.6335,
+      "source_nodes": 2928,
+      "destination_nodes": 368,
+      "components": 1,
+      "board_sha256": "ed81f2ec88d66d8bcc982ccb56d393fb08e92f256c9a55982854857234df7dad",
+      "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
+      "limitations": [
+        "Grid approximation; validate mesh convergence and native connectivity separately",
+        "Ideal terminal contacts; via contacts approximate, copper thickness and barrel plating are assumptions",
+        "Excludes connector/contact, shunt and transistor resistance, AC/PWM/proximity effects and temperature feedback",
+        "DC 5.5 A comparison is not a duty-cycle, temperature-rise or current-rating qualification"
+      ]
+    },
+    {
+      "net": "MOTOR_A1",
+      "from": "Q7:9",
+      "to": "R115:1",
+      "grid_mm": 0.05,
+      "nodes": 55196,
+      "resistance_mohm_20c": 21.2778,
+      "voltage_drop_mv_at_5_5a": 117.028,
+      "loss_w_at_5_5a": 0.6437,
+      "source_nodes": 6552,
+      "destination_nodes": 840,
+      "components": 1,
+      "board_sha256": "ed81f2ec88d66d8bcc982ccb56d393fb08e92f256c9a55982854857234df7dad",
+      "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
+      "limitations": [
+        "Grid approximation; validate mesh convergence and native connectivity separately",
+        "Ideal terminal contacts; via contacts approximate, copper thickness and barrel plating are assumptions",
+        "Excludes connector/contact, shunt and transistor resistance, AC/PWM/proximity effects and temperature feedback",
+        "DC 5.5 A comparison is not a duty-cycle, temperature-rise or current-rating qualification"
+      ]
+    }
+  ],
+  "after": [
+    {
+      "net": "MOTOR_A1",
+      "from": "Q7:9",
+      "to": "R115:1",
+      "grid_mm": 0.075,
+      "nodes": 43106,
+      "resistance_mohm_20c": 3.2769,
+      "voltage_drop_mv_at_5_5a": 18.023,
+      "loss_w_at_5_5a": 0.0991,
+      "source_nodes": 2928,
+      "destination_nodes": 368,
+      "components": 1,
+      "board_sha256": "61bad79e8f07e963e17933d183a309a91dc449ff143098563ce739ee1f07138d",
+      "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
+      "limitations": [
+        "Grid approximation; validate mesh convergence and native connectivity separately",
+        "Ideal terminal contacts; via contacts approximate, copper thickness and barrel plating are assumptions",
+        "Excludes connector/contact, shunt and transistor resistance, AC/PWM/proximity effects and temperature feedback",
+        "DC 5.5 A comparison is not a duty-cycle, temperature-rise or current-rating qualification"
+      ]
+    },
+    {
+      "net": "MOTOR_A1",
+      "from": "Q7:9",
+      "to": "R115:1",
+      "grid_mm": 0.05,
+      "nodes": 97029,
+      "resistance_mohm_20c": 3.2882,
+      "voltage_drop_mv_at_5_5a": 18.085,
+      "loss_w_at_5_5a": 0.0995,
+      "source_nodes": 6552,
+      "destination_nodes": 840,
+      "components": 1,
+      "board_sha256": "61bad79e8f07e963e17933d183a309a91dc449ff143098563ce739ee1f07138d",
+      "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
+      "limitations": [
+        "Grid approximation; validate mesh convergence and native connectivity separately",
+        "Ideal terminal contacts; via contacts approximate, copper thickness and barrel plating are assumptions",
+        "Excludes connector/contact, shunt and transistor resistance, AC/PWM/proximity effects and temperature feedback",
+        "DC 5.5 A comparison is not a duty-cycle, temperature-rise or current-rating qualification"
+      ]
+    }
+  ],
+  "final_mesh_difference_percent": 0.344,
+  "analytical_model_tests": {
+    "rectangular_sheet_expected_mohm": 4.860038095238096,
+    "coarse_mohm": 5.0446,
+    "fine_mohm": 4.9873,
+    "barrel_expected_mohm": 1.371915609452138,
+    "barrel_mohm": 1.3719,
+    "passed": true
+  },
+  "model_source_sha256": {
+    "scripts/export-filled-power-copper.py": "293474ca65798cf99077d80e26a465e90792d0f5127b459e1aaeb5a2c474c76b",
+    "scripts/screen-filled-power-copper.py": "3f6adf115d9f99cdaada7050a539459491608d11b3c011e6ebba54791c8a750b",
+    "scripts/test-filled-power-copper.py": "2be758ad54dabc7013fef0f844a65a991c01af8df011103a5231dc8e282212ef"
+  },
+  "reproduction": {
+    "dependencies": "numpy==2.0.2 scipy==1.13.1 shapely==2.0.7",
+    "export": "KiCad Python: scripts/export-filled-power-copper.py <board.kicad_pcb> <filled-copper.json>",
+    "solve": "python scripts/screen-filled-power-copper.py <filled-copper.json> MOTOR_A1 0.05 Q7:9 R115:1",
+    "model_tests": "python scripts/test-filled-power-copper.py",
+    "baseline_board": "git show d28bcf61d0d0479ad3a44b3ad14bfbf5b858c435:dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb"
+  },
+  "qualification": "No temperature-rise, PWM-current or 5.5 A continuous-current qualification is claimed."
+}

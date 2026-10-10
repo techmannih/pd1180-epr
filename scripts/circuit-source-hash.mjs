@@ -3,6 +3,12 @@ import { readFile } from 'node:fs/promises'
 
 export function circuitSourceHash(circuit) {
   const source = circuit.map((element) => {
+    // macOS and Linux can differ by one floating-point ULP when summing
+    // segment lengths. Canonicalize only this derived value to 1e-12 mm;
+    // coordinates, widths, connectivity and all other fields remain exact.
+    if (element.type === 'pcb_trace' && Number.isFinite(element.trace_length)) {
+      return { ...element, trace_length: Number(element.trace_length.toFixed(12)) }
+    }
     if (element.type !== 'source_project_metadata') return element
     // This CLI cache key includes generated reports and release artifacts.
     // Retain all circuit data and other metadata in the verification hash.

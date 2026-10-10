@@ -242,3 +242,5 @@ The r0.4 ECO files are a prototype fabrication handoff after the committed relea
 7. Complete USB PD, cable-fault, regeneration, ESD, EMC and representative-load testing.
 
 The staged procedure and sign-off points are in [docs/bring-up.md](docs/bring-up.md). Prototype-order gates and physical system-validation gates remain separate in [docs/release-status.json](docs/release-status.json).
+
+Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.

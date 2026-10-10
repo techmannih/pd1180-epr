@@ -19,6 +19,19 @@ test('native evidence ignores only the CLI filesystem cache key', () => {
   expect(circuitSourceHash(circuit)).not.toBe(hash)
 })
 
+test('native evidence tolerates derived length rounding but detects copper changes', () => {
+  const trace = { type: 'pcb_trace', trace_length: 1.9498573488665445,
+    route: [{ x: 1, y: 2, width: 0.15 }, { x: 2, y: 3, width: 0.15 }] }
+  const hash = circuitSourceHash([trace])
+  trace.trace_length = 1.9498573488665447 // Actual Linux CI result for the same route.
+  expect(circuitSourceHash([trace])).toBe(hash)
+  trace.trace_length += 0.000001
+  expect(circuitSourceHash([trace])).not.toBe(hash)
+  trace.trace_length = 1.9498573488665445
+  trace.route[0].x += 0.000001
+  expect(circuitSourceHash([trace])).not.toBe(hash)
+})
+
 const data=JSON.parse(readFileSync(new URL('../dist/index/circuit.json',import.meta.url)))
 const manifest=JSON.parse(readFileSync(new URL('../docs/design-manifest.json',import.meta.url)))
 const components=data.filter(e=>e.type==='source_component')

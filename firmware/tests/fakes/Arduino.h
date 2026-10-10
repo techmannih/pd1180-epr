@@ -5,7 +5,7 @@
 #include <map>
 using pin_size_t = unsigned;
 using PinName = unsigned;
-constexpr unsigned PB6=22, PB7=23;
+constexpr unsigned PA5=5, PA6=6, PA7=7, PB6=22, PB7=23;
 constexpr unsigned LOW=0, HIGH=1, INPUT=0, OUTPUT=1, OUTPUT_OPEN_DRAIN=2, INPUT_ANALOG=3;
 using std::min;
 inline uint32_t fakeNow;
@@ -16,6 +16,7 @@ inline void pinMode(unsigned p,unsigned mode) { fakeModes[p]=mode; }
 inline int digitalRead(unsigned p) { return fakeLevels[p]; }
 inline int analogRead(unsigned p) { return fakeAdc[p]; }
 inline void analogReadResolution(int) {}
+inline void delayMicroseconds(unsigned) {}
 inline uint32_t millis() { return fakeNow; }
 struct FakeSerial {
   bool started=false;

@@ -13,3 +13,6 @@ extern const size_t pd1180_tmc5160_boot_config_count;
 #define PD1180_GLOBALSCALER 198u
 #define PD1180_IRUN 31u
 #define PD1180_IHOLD 8u
+
+#define PD1180_TMC_STEP_GCONF 0x00000068u
+#define PD1180_TMC_STEP_CHOPCONF 0x144100C5u

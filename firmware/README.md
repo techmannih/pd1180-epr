@@ -8,7 +8,7 @@ The source ECO corrects the STEP/DIR conflict on U7 pins 23–25; the rebuilt ha
 
 Implemented target functions: ST USB CDC, PB6/PB7 I2C1 status reads from TPS26750 address 0x20 with count-byte validation, TMP102 threshold programming/readback, ADS1115 bus readings, nominal ADC readings of DATA VBUS and both phase currents, safe GPIO initialization, and a 250 ms independent watchdog. USB attach/detach follows the PB0 VBUS divider. ADC values assume 3.3 V VDDA and require calibration. Hardware enumeration and timing remain untested.
 
-USB commands are newline-terminated: `HELP`, `STATUS`, `DISARM`, `ARM`. ARM returns the blocking reason. Oversized lines are discarded. No command bypasses the hardware interlock. No CANopen, TMCL, RS485/RS232 motion or closed-loop encoder operation is claimed.
+USB commands are newline-terminated: `HELP`, `STATUS`, `DRIVER`, `DISARM`, `ARM`. ARM returns the blocking reason. Oversized lines are discarded. No command bypasses the hardware interlock. No CANopen, TMCL, RS485/RS232 motion or closed-loop encoder operation is claimed.
 
 ## Rebuild
 
@@ -48,3 +48,13 @@ USB suspend disarms, clears pending commands/telemetry, ends I²C and holds STAT
 The CDC descriptor declares bus power and requests a 500 mA configuration. Firmware and the MCU-only rail now implement suspend handling, but the 2.5 mA USB suspend ceiling, wake latency, pre-enumeration current, inrush, reverse current and source handovers still need instrumented hardware qualification. The TPS2553 is overload protection, not proof of USB compliance. No USB power state enables the motor.
 
 Power-mode implementation references: [ST RM0444](https://www.st.com/resource/en/reference_manual/rm0444-stm32g0x1-advanced-armbased-32bit-mcus-stmicroelectronics.pdf), the pinned ST G0 HAL PCD/PWR/RTC drivers and [USB-IF suspend-current ECN](https://compliance.usb.org/index.asp?UpdateFile=Electrical).
+
+## TMC5160 external STEP/DIR service
+
+The SPI transport implements the TMC5160A two-datagram read pipeline at 1 MHz, mode 3, validates the write echo, and checks IOIN version/mode pins, GSTAT and DRV_STATUS. `DRIVER` reports these registers without configuring or clearing faults in the locked image. SPI becomes high impedance whenever VMOTOR or the board domain is unavailable.
+
+The separately tested motor service initializes with DRV_ENN high and TOFF zero, verifies SD_MODE and disabled dcStep pins, programs the current and 16-microstep setting, then lets the safety state machine qualify driver readiness before MCU_RUN. The first tuning setting is IRUN=4, GLOBALSCALER=198 and 33 mΩ sense resistance: approximately 0.86 A RMS. Thermal reduction scales this requested current and rounds downward. Reset, transport failure or driver fault invalidates configuration; automatic reinitialization while armed is prohibited. DISARM is required before another attempt.
+
+These paths are integrated but not enabled in the archived commissioning image. Enabling them requires recorded PD-image/readback and powered hardware qualification; no USB command can bypass that decision. Gate timing, switching overshoot, short-circuit detection and chopper parameters remain starting values requiring oscilloscope and current-probe checks before increasing toward 5.5 A RMS. No OTP is programmed.
+
+Protocol and register reference: [ADI TMC5160A datasheet, rev. 1.18](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf), sections 4 and 6. Host regressions cover pipelined reads, write corruption, invalid device responses, mode-pin mismatches, driver resets/faults, current derating and explicit rearm.

@@ -21,11 +21,12 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
 | `critical_copper.py` | Reads Kelvin/analog-return paths from compiled source. `keepouts` reserves their top-layer pours, `dsn --dsn INPUT` protects them from new router branches and replaces completed branch destinations/copper with obstacles in the disposable DSN. Optional `--fixed-board SEED` fixes source copper while allowing the remaining incomplete route to move. `check` proves final native copper remains intact and joins other same-net copper only at the designated receiving terminal. Inputs: critical-path policy, source circuit JSON and native PCB; output: PCB, DSN or hash-bound report. |
 | `check-critical-copper.mjs` | Requires passing native Kelvin evidence for every policy path and exact hashes of the final PCB, compiled source, policy and native checker; rejects stale or incomplete reports. |
-| `circuit-source-hash.mjs` | Hashes every circuit element and metadata field except the CLI filesystem cache key, so regenerated reports cannot invalidate unchanged native circuit evidence. Shared by the native checker and its evidence verifier. |
+| `circuit-source-hash.mjs` | Hashes every circuit element and metadata field except the CLI filesystem cache key, canonicalizing derived trace lengths to 1e-12 mm across platforms, so regenerated reports cannot invalidate unchanged native circuit evidence. Shared by the native checker and its evidence verifier. |
 | `test-critical-copper.py` | Native KiCad regressions: accept a load connection at the shunt terminal; reject missing sense copper, a same-net spur, a connection at the far edge of the IC land, or a plane via before that terminal; check that DSN reservations leave other destinations intact. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
-| `check-release.mjs` | Enforces prototype-order gates while reporting remaining physical system gates separately. |
+| `release-gates.test.mjs` | Proves held designs remain reviewable but not orderable, and both modes reject failed or stale evidence. |
+| `check-release.mjs` | Checks engineering evidence and unchanged inputs; default mode enforces the order hold. `--review` permits a verified review package with explicit hold reasons while never permitting failed CAD checks. |
 | `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
@@ -39,7 +40,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `export-kicad-route.mjs` | Exports the current Circuit JSON to a fresh KiCad PCB/project and hierarchical schematics for external routing. |
 | `export-manufacturing.mjs` | Uses KiCad CLI to export Gerbers, drills, positions, PCB DRC, schematic ERC, top/bottom renders and the manufacturing ZIP. |
 | `export-previews.mjs` | Renders top PCB and all functional schematic sheets. |
-| `export-release.mjs` | Builds the versioned release, synchronized root/release delivery manifests, sourcing tables and recursive hashes. |
+| `export-release.mjs` | Regenerates the GLB from the final routed circuit, requires a fresh valid output, then builds the release, synchronized delivery manifests, sourcing tables and hashes. |
 | `export-silkscreen-evidence.py` | Records every visible final KiCad top/bottom silkscreen label and its physical text size. |
 | `generate-firmware-pins.mjs` | Generates the STM32 pin header from the hardware pin contract or checks it for drift. |
 | `generate-cloud-viewer.mjs` | Combines the verified source schematic/3D model with routed KiCad traces, vias and pours for deterministic hosted PCB viewing. Omits only the CLI's filesystem cache key, which includes generated release/report files; source and copper provenance remain enforced by SHA-256 inputs, routing fingerprint and delivery hashes. |
@@ -66,3 +67,13 @@ Every executable script is listed here so a reviewer can understand the release 
 | `via-net-identity.test.mjs` | Verifies the exact final KiCad drain-pad thermal-via count, dimensions, layers and net identity for every CSD19534Q5A. |
 
 The Python routing helpers are board-specific. Do not reuse their geometry on another board. The check patterns, failure behavior and documentation structure are reusable.
+
+### Filled-copper investigation
+
+- `export-filled-power-copper.py`: accepts `<board> <output.json>`. native KiCad/wx export of actual filled polygons, pads, tracks and plated transitions for critical power nets. Preserve the board SHA-256 in the output. Use KiCad's Python runtime after filling and passing DRC.
+- `screen-filled-power-copper.py`: accepts `<copper.json> <NET> <grid_mm> <REF:pins> <REF:pins>`. offline DC sheet-conductance estimate, printed as JSON. Requires NumPy 2.0.2, SciPy 1.13.1 and Shapely 2.0.7 in an isolated environment. Run at two mesh sizes; native DRC remains authoritative for connectivity. The 35 µm copper, 20 µm barrel plating and evenly spaced four-layer model are assumptions. This is an exploratory resistance comparison, not a thermal/current-rating or order gate.
+
+- `test-filled-power-copper.py`: analytic rectangular-sheet convergence and single-barrel identity checks for the optional offline screen. Run with the same isolated scientific Python environment.
+
+- `check-usb-reference.py`: native filled-copper check of all four USB bottom-layer trunks, excluding only 0.45 mm signal-via antipads; requires local ground stitching within 2 mm. Arguments: board path and output report. Writes hash-bound geometric evidence, not USB electrical-compliance certification.
+- `check-usb-reference.mjs`: rejects missing, failed or stale native USB reference-plane evidence during portable CI/review.

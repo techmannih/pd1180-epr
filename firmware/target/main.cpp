@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
 #include <IWatchdog.h>
 #include "usb_suspend.h"
 #include <stdio.h>
@@ -10,6 +11,8 @@ extern "C" {
 #include "pd_contract.h"
 #include "telemetry.h"
 #include "power_domain.h"
+#include "tmc5160.h"
+#include "motor_service.h"
 }
 
 // Commissioning image: motor outputs stay locked until the new ECO has passed
@@ -18,6 +21,14 @@ extern "C" {
 static constexpr bool motionWiringVerified = false;
 static constexpr bool pdImageVerified = false;
 static TwoWire pdBus(PB7, PB6);
+static SPIClass motorSpi(PA7, PA6, PA5);
+static bool spiStarted;
+static bool motorFrame(void *, const uint8_t tx[5], uint8_t rx[5]);
+static pd1180_motor_service_t motor = {};
+static auto &tmc = motor.driver;
+static auto &tmcStatus = motor.status;
+static constexpr uint16_t commissioningCurrentPermille = 180; // Start below 1 A RMS; tune on the bench.
+static uint32_t lastDriverPoll;
 static pd1180_control_t control;
 static pd1180_inputs_t inputs;
 static pd1180_board_power_t boardPower;
@@ -67,11 +78,17 @@ static void invalidateTelemetry() {
   adcMv[0] = adcMv[1] = 0;
   phaseMa[0] = phaseMa[1] = 0;
   vmotorMv = 0;
+  pd1180_motor_service_reset(&motor);
   pd1180_control_disarm(&control);
 }
 static void stopPeripherals() {
   safeOutputs();
   if (peripheralsStarted) pdBus.end();
+  if (spiStarted) motorSpi.end();
+  spiStarted=false;
+  releaseChipSelect(PD1180_PIN_TMC_CS_N);
+  for (auto p : {PD1180_PIN_SPI_SCK, PD1180_PIN_SPI_MOSI, PD1180_PIN_SPI_MISO})
+    pinMode(pin(p), INPUT_ANALOG);
   // No internal pullups or push-pull highs may energize the dead board rail.
   pinMode(pin(PD1180_PIN_PD_SCL), INPUT_ANALOG);
   pinMode(pin(PD1180_PIN_PD_SDA), INPUT_ANALOG);
@@ -84,6 +101,40 @@ static void startPeripherals() {
   pdBus.begin(); pdBus.setClock(100000);
   peripheralsStarted = true;
   temperatureConfiguredAt = millis();
+}
+// U7 needs VMOTOR as well as VCC_IO. Do not clock or drive its inputs when
+// the motor domain is absent, even if the encoder/board logic is powered.
+static bool motorFrame(void *, const uint8_t tx[5], uint8_t rx[5]) {
+  if (!spiStarted || !peripheralsStarted || !inputs.motor_power_good ||
+      !inputs.vmotor_in_range || (usbStarted && usbIsSuspended())) return false;
+  motorSpi.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
+  digitalWrite(pin(PD1180_PIN_TMC_CS_N), LOW);
+  for (unsigned i=0;i<5;++i) rx[i]=motorSpi.transfer(tx[i]);
+  digitalWrite(pin(PD1180_PIN_TMC_CS_N), HIGH);
+  motorSpi.endTransaction();
+  delayMicroseconds(2); // Explicit CS-high gap; ADI requires >=2 system clocks.
+  return true;
+}
+static void pollDriver(uint32_t now) {
+  if (!inputs.motor_power_good || !inputs.vmotor_in_range) {
+    if (spiStarted) motorSpi.end();
+    spiStarted=false; pd1180_motor_service_reset(&motor);
+    inputs.driver_ready=false;
+    for (auto p : {PD1180_PIN_SPI_SCK,PD1180_PIN_SPI_MOSI,PD1180_PIN_SPI_MISO})
+      pinMode(pin(p),INPUT_ANALOG);
+    return;
+  }
+  if (!spiStarted) { motorSpi.begin(); spiStarted=true; }
+  if (now-lastDriverPoll<20u) return;
+  lastDriverPoll=now;
+  // Read-only in the unqualified commissioning image. Faults are not cleared
+  // automatically; every reset/power loss invalidates the configured state.
+  if (motionWiringVerified && pdImageVerified) {
+    pd1180_motor_service(&motor,&control,&inputs,commissioningCurrentPermille);
+  } else {
+    pd1180_tmc_status(&tmc,&tmcStatus);
+    inputs.driver_ready=false;
+  }
 }
 static void reply(const char *text) {
   if (!usbStarted || responseSent < responseLength) return;
@@ -203,29 +254,41 @@ static void pollPower() {
   inputs.vmotor_in_range = digitalRead(pin(PD1180_PIN_VMOTOR_OK)) == HIGH && adcValid[0] &&
     millis()-adcSampleAt[0]<=100u && vmotorMv >= 44000 && vmotorMv <= 51000;
   inputs.watchdog_healthy = true;
-  inputs.driver_ready = false; // U7 is intentionally unpowered in this commissioning image.
+  inputs.driver_ready = motionWiringVerified && pdImageVerified && tmc.configured &&
+    tmcStatus.valid && !tmcStatus.fault && millis()-lastDriverPoll<=40u;
   inputs.stop_active = digitalRead(pin(PD1180_PIN_STOP_L)) == LOW || digitalRead(pin(PD1180_PIN_STOP_R)) == LOW;
 }
 static void executeCommand() {
   command[commandLength]=0;
   if(!strcmp(command,"DISARM")) {
-    safeOutputs(); pd1180_control_disarm(&control); reply("OK DISARM\r\n");
+    safeOutputs(); pd1180_control_disarm(&control); pd1180_motor_service_reset(&motor); reply("OK DISARM\r\n");
   } else if(!strcmp(command,"ARM")) {
-    safeOutputs();
-    reply("BLOCKED: ECO hardware and TI configuration not verified\r\n");
+    if (!motionWiringVerified || !pdImageVerified)
+      reply("BLOCKED: ECO hardware and TI configuration not verified\r\n");
+    else if (control.armed) reply("ERR already armed\r\n");
+    else if (pd1180_control_arm(&control,&inputs)) reply("OK ARM; awaiting stable power and driver checks\r\n");
+    else reply("BLOCKED: protection or fresh sensor/contract requirements not satisfied\r\n");
+  } else if(!strcmp(command,"DRIVER")) {
+    char status[160];
+    snprintf(status,sizeof(status),"TMC_VALID=%u IOIN=%08lX GSTAT=%08lX DRV_STATUS=%08lX CONFIGURED=%u FAULT=%u\r\n",
+      tmcStatus.valid,static_cast<unsigned long>(tmcStatus.ioin),static_cast<unsigned long>(tmcStatus.gstat),
+      static_cast<unsigned long>(tmcStatus.drv_status),tmc.configured,tmcStatus.fault);
+    reply(status);
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
-    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=0 BRINGUP_REQUIRED=1\r\n",
+    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u BRINGUP_REQUIRED=%u\r\n",
       static_cast<unsigned long>(boardMv),peripheralsStarted,pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
       adcValid[0] && millis()-adcSampleAt[0]<=100u,adcMv[1],adcValid[1] && millis()-adcSampleAt[1]<=100u,
       inputs.temperature_deci_c,inputs.temperature_valid,static_cast<long>(phaseMa[0]),static_cast<long>(phaseMa[1]),phaseValid,
-      inputs.motor_power_good,inputs.vmotor_in_range);
+      inputs.motor_power_good,inputs.vmotor_in_range,control.mcu_run && inputs.driver_ready,
+      !motionWiringVerified || !pdImageVerified);
     reply(status);
   } else if(!strcmp(command,"HELP")) {
-    reply("PD1180 commissioning: STATUS, DISARM, ARM (blocked), HELP. No motion enabled.\r\n");
+    reply("PD1180 commissioning: STATUS, DRIVER, DISARM, ARM (blocked), HELP. No motion enabled.\r\n");
   } else reply("ERR unknown command\r\n");
 }
 void setup() {
+  tmc.frame=motorFrame;
   output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_SD_MODE,false);
   output(PD1180_PIN_RS485_DE,false); output(PD1180_PIN_OUT0_DRIVE,false); output(PD1180_PIN_OUT1_DRIVE,false);
   releaseChipSelect(PD1180_PIN_TMC_CS_N); releaseChipSelect(PD1180_PIN_ENC_CS_N); releaseChipSelect(PD1180_PIN_FLASH_CS_N);
@@ -238,8 +301,8 @@ void setup() {
   lastTick=lastPoll=millis();
 }
 void loop() {
-  // Hard interlock is independent of the shared logic/command parser.
-  safeOutputs();
+  // Qualification is a firmware build decision, never a USB command override.
+  if (!motionWiringVerified || !pdImageVerified) safeOutputs();
   const uint32_t now=millis();
   vbusMv = dividerMillivolts(PD1180_PIN_USB_VBUS_SENSE,1000,47);
   if (usbStarted && usbIsSuspended() && vbusMv >= 3000u) {
@@ -262,6 +325,7 @@ void loop() {
     pollTemperature(now); pollBusAdc(now); samplePhaseCurrent(now);
     if (!temperatureConfigured || now-lastTemperatureSample>500u) inputs.temperature_valid=false;
     if(now-lastPoll >= 50u) { lastPoll=now; pollPower(); }
+    pollDriver(now);
   }
   if(!usbStarted && vbusMv >= 4000u) { SerialUSB.begin(); usbStarted=true; }
   if(usbStarted && vbusMv < 3000u) {
@@ -294,6 +358,10 @@ void loop() {
     pd1180_control_tick(&control,&inputs,tick-lastTick); lastTick=tick;
     digitalWrite(pin(PD1180_PIN_STATUS_GPIO),(tick/500u)&1u);
   }
-  safeOutputs();
+  if (motionWiringVerified && pdImageVerified) {
+    digitalWrite(pin(PD1180_PIN_POWER_PERMIT),control.power_permit?HIGH:LOW);
+    digitalWrite(pin(PD1180_PIN_SD_MODE),control.power_permit?HIGH:LOW);
+    digitalWrite(pin(PD1180_PIN_MCU_RUN),control.mcu_run && inputs.driver_ready?HIGH:LOW);
+  } else safeOutputs();
   IWatchdog.reload();
 }
