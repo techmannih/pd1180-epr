@@ -27,7 +27,7 @@ export const CSD17484F4 = (props: ChipProps<typeof pinLabels>) => {
           <port name="pin3" pinNumber={3} aliases={["D", "drain"]} direction="up" schX={0.2} schY={0.4} schStemLength={0.2} />
           <port name="pin1" pinNumber={1} aliases={["G", "gate"]} direction="left" schX={-0.4} schY={0} schStemLength={0.2} />
           <port name="pin2" pinNumber={2} aliases={["S", "source"]} direction="down" schX={0.2} schY={-0.4} schStemLength={0.2} />
-          <schematictext schX={0.03} schY={0.62} text="{NAME}" fontSize={0.2} anchor="bottom_center" />
+          <schematictext schX={0.03} schY={0.32} text="{NAME}" fontSize={0.2} anchor="bottom_center" />
         </symbol>
       }
       supplierPartNumbers={{
