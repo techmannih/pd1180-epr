@@ -40,7 +40,7 @@ export const FEATURE_PARITY = [
   },
   {
     id: "encoder",
-    feature: "Centered top-side AS5047P shaft encoder with ABI test access",
+    feature: "Centered optional bottom-side AS5047P (DNP) with top ABI test access",
     components: ["U18", "TP_ENC_A", "TP_ENC_B", "TP_ENC_I"],
     nets: ["ENC_A", "ENC_B", "ENC_I", "ENC_CS_N"],
     evidence: "docs/design.md",

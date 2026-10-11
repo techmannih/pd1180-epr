@@ -49,7 +49,7 @@ Keep `release/circuit.json` selectable as the final routed view. Include the mec
 
 ## Assembly and part sourcing
 
-- The user requested top-only component assembly on 2026-10-09. All fitted components and service pads, including the centered U18 encoder, must be on top. Preserve the four-layer copper stack and keep bypass capacitors beside their IC power pins. Encoder magnet gap/orientation need renewed physical validation.
+- The user requested top-only component assembly on 2026-10-09. All fitted components and service pads must be on top. On 2026-10-11 the user adopted the review request for a centered bottom-side optional encoder: U18, C52 and C53 are the only permitted bottom components, all explicitly doNotPlace and omitted from fitted BOM/CPL and paste. Preserve the four-layer copper stack and keep bypass capacitors beside their IC power pins. Encoder magnet gap/orientation need renewed physical validation.
 - No fitted components or solder paste belong on the bottom. The CPL and order settings must identify top-side assembly.
 - Every fitted part needs an exact JLCPCB/LCSC code, package match and timestamped stock result. A fuzzy search or similar package name is not an acceptable match.
 - Before placement, routing, review or release work, query every fitted LCSC code against `https://jlcsearch.tscircuit.com/components/list.json?search=<numeric-id>` with the leading `C` removed (for example, query `492401` for `C492401`). Require an exact returned LCSC id, a package match and stock greater than the build quantity. Missing, zero-stock or insufficient-stock parts block the work until a reviewed stocked alternative is selected and the source import/BOM is updated.

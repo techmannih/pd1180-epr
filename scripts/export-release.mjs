@@ -20,6 +20,7 @@ function csv(rows) { return rows.map((row) => row.map(csvCell).join(',')).join('
 const stock = JSON.parse(await readFile('docs/stock-report.json', 'utf8'))
 const alternatives = JSON.parse(await readFile('docs/alternatives.json', 'utf8'))
 const external = JSON.parse(await readFile('docs/external-parts.json', 'utf8'))
+const harness = JSON.parse(await readFile('engineering/motor-harness.json', 'utf8'))
 const releaseStatus = JSON.parse(await readFile('docs/release-status.json', 'utf8'))
 const schematicStyle = JSON.parse(await readFile('docs/checks/schematic-style.json', 'utf8'))
 const kicadErc = JSON.parse(await readFile('dist/manufacturing/kicad-erc.json', 'utf8'))
@@ -42,6 +43,7 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
   ['brake resistor', external.brake_resistor.selected_part || '', `${external.brake_resistor.target_resistance_ohms} ohm / ${external.brake_resistor.starting_continuous_power_w} W`, external.brake_resistor.status],
   ['motor', external.motor, external.motor_specification, 'ordered; current and mounting qualification pending'],
   ['magnet', external.magnet, 'AS5047P compatible', 'mechanical validation required'],
+  ['motor cable assembly', `${harness.motor_connector.mate}; ${harness.motor_connector.contacts}`, 'Four 16 AWG pigtails, four TE 320559 splices to factory cable; see motor-harness.md', harness.motor_connector.connection_status],
 ]))
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
@@ -65,11 +67,15 @@ const copies = [
   ['docs/power-validation.md', 'power-validation.md'],
   ['docs/assembly.md', 'assembly.md'],
   ['docs/motor-assembly.md', 'motor-assembly.md'],
+  ['engineering/motor-harness.json', 'motor-harness.json'],
   ['docs/release-status.json', 'release-status.json'],
   ['hardware-contract.json', 'hardware-contract.json'],
   ['dist/pd1180-epr-r0.3-manufacturing.zip', 'pd1180-epr-r0.3-manufacturing.zip'],
 ]
 for (const [from, to] of copies) await copyFile(from, join(release, to))
+await writeFile(join(release, 'motor-harness.md'), (await readFile('docs/motor-harness.md', 'utf8'))
+  .replace('../engineering/motor-harness.json', 'motor-harness.json')
+  .replace('../hardware-contract.json', 'hardware-contract.json'))
 await writeCloudViewerCircuit()
 execFileSync('bun', ['scripts/check-cloud-package.mjs'], { stdio: 'inherit' })
 // Build from this exact routed circuit, never from a previous preview's GLB.
@@ -133,6 +139,8 @@ The ECO separates PD POWER and USB DATA, consolidates the industrial harness and
 The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Rear case fasteners are not approved accessory threads; a front-flange adapter is proposed and encoder attachment remains unresolved. See \`motor-assembly.md\` for the proposed mount and ordered-motor limitations, nominal screw clearances and unresolved mechanical gates.
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
+
+J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 retains the required industrial interfaces. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All 291 fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
 
 The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 

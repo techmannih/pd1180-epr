@@ -7,7 +7,8 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
 - [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the ordered 34HS31-6004S1 rear CAD axes in the mechanical reference; native drills, adapter and screw-head clearances agree.
 - [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
-- [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and the encoder remains centered. Validate the revised encoder-to-magnet gap.
+- [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and U18/C52/C53 are bottom-side DNP. Verify fitted BOM/CPL and paste exclude them; encoder magnetic fit remains unqualified.
+- [ ] J2 has the specified VHR-4N mating harness, correct winding colours/cavities and cable strain relief; inspect the insertion-envelope evidence and `docs/motor-harness.md`.
 - [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.
 
 ## Schematic
@@ -41,7 +42,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
 - [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 58 via-in-pad locations with filled/capped processing.
-- [ ] All 46 final native top-layer IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] All 46 final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.

@@ -9,7 +9,7 @@
 | Motor stage | TMC5160A with external MOSFET bridges; 5.5 A RMS phase-current design target |
 | USB | J1 PD POWER plus J10 USB DATA; DATA alone powers setup; PD is required for motion, no need for the EPR charger to provide host data |
 | Step/Dir | 24 V transistor-conditioned Step and Direction inputs |
-| Encoder | Top-side AS5047P aligned at board center, plus labelled ABI service pads |
+| Encoder | Optional bottom-side AS5047P at board center (DNP), plus labelled top ABI service pads |
 | Field buses | CAN, RS485 and RS232; bus termination is fitted in the external harness |
 | Outputs | Hardware enable and two protected low-side outputs on consolidated J7; pin17 exposes VMOTOR |
 | Programming | Top-side SWD service pads for the STM32 and an I2C configuration EEPROM for the PD controller |

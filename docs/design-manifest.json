@@ -6230,48 +6230,6 @@
       "mpn": null
     },
     {
-      "tag": "AS5047P_ATSM",
-      "name": "U18",
-      "connections": {
-        "pin1": "ENC_CS_N",
-        "pin2": "SPI_SCK",
-        "pin3": "SPI_MISO",
-        "pin4": "SPI_MOSI",
-        "pin5": "GND",
-        "pin6": "ENC_B",
-        "pin7": "ENC_A",
-        "pin11": "V3V3",
-        "pin12": "V3V3",
-        "pin13": "GND",
-        "pin14": "ENC_I"
-      },
-      "sheet": "encoder",
-      "xy": [
-        0,
-        0
-      ],
-      "owner": null,
-      "layer": "top",
-      "lcsc": "C962063",
-      "mpn": "AS5047P-ATSM",
-      "size": [
-        4.299915200000001,
-        7.3001886
-      ],
-      "noConnect": [
-        "pin8",
-        "pin9",
-        "pin10"
-      ],
-      "section": "encoder_U18",
-      "sch": [
-        0,
-        0
-      ],
-      "rotation": 180,
-      "footprint": "TSSOP-14"
-    },
-    {
       "tag": "resistor",
       "name": "R74",
       "connections": {
@@ -6300,69 +6258,6 @@
       ],
       "rotation": 90,
       "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "capacitor",
-      "name": "C52",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "GND"
-      },
-      "sheet": "encoder",
-      "xy": [
-        0,
-        -5.55
-      ],
-      "owner": "U18",
-      "value": "100nF",
-      "lcsc": "C14663",
-      "footprint": "0603",
-      "voltage": 50,
-      "layer": "top",
-      "size": [
-        0.9500000000000004,
-        2.450000000000001
-      ],
-      "noConnect": [],
-      "rotation": 270,
-      "decoupling_straight_line_mm": 2.374904000000001,
-      "section": "encoder_U18",
-      "sch": [
-        8,
-        4
-      ],
-      "mpn": null
-    },
-    {
-      "tag": "capacitor",
-      "name": "C53",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "GND"
-      },
-      "sheet": "encoder",
-      "xy": [
-        3.3,
-        -5.3
-      ],
-      "owner": "U18",
-      "value": "1uF",
-      "lcsc": "C15849",
-      "footprint": "0603",
-      "voltage": 25,
-      "layer": "top",
-      "size": [
-        2.4500000000000006,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "encoder_U18",
-      "sch": [
-        9.2,
-        4
-      ],
-      "rotation": 180,
-      "mpn": null
     },
     {
       "tag": "B20B_PHDSS_LF__SN_",
@@ -9272,6 +9167,116 @@
       "layer": "top",
       "value": "100nF",
       "voltage": 50
+    }
+  ],
+  "optional_parts": [
+    {
+      "tag": "AS5047P_ATSM",
+      "name": "U18",
+      "connections": {
+        "pin1": "ENC_CS_N",
+        "pin2": "SPI_SCK",
+        "pin3": "SPI_MISO",
+        "pin4": "SPI_MOSI",
+        "pin5": "GND",
+        "pin6": "ENC_B",
+        "pin7": "ENC_A",
+        "pin11": "V3V3",
+        "pin12": "V3V3",
+        "pin13": "GND",
+        "pin14": "ENC_I"
+      },
+      "sheet": "encoder",
+      "xy": [
+        0,
+        0
+      ],
+      "owner": null,
+      "layer": "bottom",
+      "lcsc": "C962063",
+      "mpn": "AS5047P-ATSM",
+      "size": [
+        4.299915200000001,
+        7.3001886
+      ],
+      "noConnect": [
+        "pin8",
+        "pin9",
+        "pin10"
+      ],
+      "section": "encoder_U18",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 180,
+      "footprint": "TSSOP-14",
+      "do_not_place": true
+    },
+    {
+      "tag": "capacitor",
+      "name": "C52",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "encoder",
+      "xy": [
+        0,
+        -5.55
+      ],
+      "owner": "U18",
+      "value": "100nF",
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "voltage": 50,
+      "layer": "bottom",
+      "size": [
+        0.9500000000000001,
+        2.450000000000001
+      ],
+      "noConnect": [],
+      "rotation": 90,
+      "decoupling_straight_line_mm": 2.374904000000001,
+      "section": "encoder_U18",
+      "sch": [
+        8,
+        4
+      ],
+      "mpn": null,
+      "do_not_place": true
+    },
+    {
+      "tag": "capacitor",
+      "name": "C53",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "encoder",
+      "xy": [
+        3.3,
+        -5.3
+      ],
+      "owner": "U18",
+      "value": "1uF",
+      "lcsc": "C15849",
+      "footprint": "0603",
+      "voltage": 25,
+      "layer": "bottom",
+      "size": [
+        2.4500000000000006,
+        0.9499999999999993
+      ],
+      "noConnect": [],
+      "section": "encoder_U18",
+      "sch": [
+        9.2,
+        4
+      ],
+      "rotation": 180,
+      "mpn": null,
+      "do_not_place": true
     }
   ]
 }

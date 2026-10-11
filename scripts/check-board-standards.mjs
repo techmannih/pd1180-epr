@@ -1,6 +1,7 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { kicadPadPosition } from './power-copper-geometry.mjs'
 import { mountingAlignment } from './motor-mounting-geometry.mjs'
+import { assemblyPolicyErrors } from './assembly-policy.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const circuit = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
@@ -44,8 +45,8 @@ else {
 }
 
 const components = circuit.filter((row) => row.type === 'pcb_component')
-const badLayers = components.filter((row) => !standards.assembly.populated_layers.includes(row.layer))
-if (badLayers.length) errors.push(`${badLayers.length} PCB components are outside the allowed assembly layers`)
+const manifest = JSON.parse(await readFile('docs/design-manifest.json', 'utf8'))
+errors.push(...assemblyPolicyErrors(circuit, standards, new Set(manifest.parts.map(part => part.name))))
 
 const sheets = circuit.filter((row) => row.type === 'schematic_sheet')
 if (sheets.length !== standards.project_geometry.schematic_sheet_count) errors.push(`Expected ${standards.project_geometry.schematic_sheet_count} schematic sheets, found ${sheets.length}`)
@@ -107,6 +108,14 @@ const nativeMountingHoles = forms('footprint').filter(form => form.startsWith('(
 })
 mountingAlignment(contract.mechanical.mounting_holes.map(h => [h.centered_x_mm,h.centered_y_mm]), nativeMountingHoles)
 const viaSummary = new Map()
+const nativeFootprints = forms('footprint')
+for (const [name, layer] of Object.entries(standards.assembly.optional_unpopulated_parts ?? {})) {
+  const footprint = nativeFootprints.find(form => form.includes(`(property "Reference" "${name}"`))
+  if (!footprint || !/\(attr[^)]*\bdnp\b/.test(footprint)) errors.push(`${name}: native PCB lost its DNP flag`)
+  if (footprint && !/\(attr[^)]*\bexclude_from_bom\b/.test(footprint)) errors.push(`${name}: native DNP footprint must be excluded from BOM`)
+  if (footprint && /\(layers[^)]*\b[FB]\.Paste\b/.test(footprint)) errors.push(`${name}: DNP footprint must not emit solder paste`)
+  if (layer === 'bottom' && footprint && !/\(layer "B\.Cu"\)/.test(footprint)) errors.push(`${name}: native optional footprint must remain on bottom`)
+}
 const viaForms = forms('via')
 for (const form of viaForms) {
   const pad = Number(form.match(/\(size ([0-9.]+)\)/)?.[1])
@@ -175,8 +184,9 @@ if ((drc.unconnected_items || []).length) errors.push(`Final KiCad DRC contains 
 
 const assembly = JSON.parse(await readFile('docs/assembly-check.json', 'utf8'))
 if (assembly.errors?.length) errors.push(...assembly.errors.map((error) => `Assembly: ${error}`))
-const supplierBackedSources = circuit.filter((row) => row.type === 'source_component' && row.supplier_part_numbers?.jlcpcb?.length)
-if (supplierBackedSources.length !== assembly.parts) errors.push(`Circuit has ${supplierBackedSources.length} supplier-backed source parts but the assembly manifest has ${assembly.parts}`)
+const unpopulatedIds = new Set(components.filter(row => row.do_not_place).map(row => row.source_component_id))
+const supplierBackedSources = circuit.filter((row) => row.type === 'source_component' && row.supplier_part_numbers?.jlcpcb?.length && !unpopulatedIds.has(row.source_component_id))
+if (supplierBackedSources.length !== assembly.parts) errors.push(`Circuit has ${supplierBackedSources.length} fitted supplier-backed source parts but the assembly manifest has ${assembly.parts}`)
 
 const report = {
   checked_at: new Date().toISOString(),

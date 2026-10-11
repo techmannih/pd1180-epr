@@ -1,7 +1,7 @@
 {
   "manufacturing_drills": {
     "path": "dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH.drl",
-    "sha256": "76b18f121ad89374cbfe582589795eb06336f24e2a097c45168c069bb3f9e6af",
+    "sha256": "38541da525ca1a3d3cb41e00a8f78fa6e751101591b96c1eac1c48e5dc8b5d04",
     "holes": [
       {
         "name": "H1",
@@ -99,6 +99,50 @@
       ]
     }
   ],
+  "motor_connector_mating_access": {
+    "reference": "J2",
+    "half_width_mm": 8.39,
+    "half_depth_mm": 10.5,
+    "bottom_above_pcb_mm": 3.2,
+    "top_above_pcb_mm": 40,
+    "minimum_gap_mm": 0.1,
+    "basis": "Conservative vertical insertion prism: 15.78 mm housing width plus 0.5 mm per side, full 10.5 mm housing depth reserved on both sides of pin row, and 40 mm height allowance. Nominal mated height is 16.5 mm. Final wire bend/tool clearance requires physical approval.",
+    "bounds_display_mm": {
+      "min": [
+        -20.19,
+        4,
+        -48.1
+      ],
+      "max": [
+        -3.41,
+        40.8,
+        -27.1
+      ]
+    },
+    "nearest": [
+      {
+        "reference": "H1 fastener",
+        "gap_mm": 0.2571319999999986
+      },
+      {
+        "reference": "U31",
+        "gap_mm": 1.4999999523162844
+      },
+      {
+        "reference": "U12",
+        "gap_mm": 1.9309310245131535
+      },
+      {
+        "reference": "U14",
+        "gap_mm": 1.9509169578552248
+      },
+      {
+        "reference": "D6",
+        "gap_mm": 1.9799999713897707
+      }
+    ],
+    "scope": "Conservative insertion envelope; final cable bend, crimp tooling and strain relief require physical approval."
+  },
   "hole_alignment": [
     {
       "name": "H1",
@@ -149,17 +193,17 @@
       "axis_offset_mm": 2.806551131218832e-7
     }
   ],
-  "board_glb_sha256": "a978d1cfd2c7bb2e40a342c0615664bc7eb30181b23957a8cefc8bea0f4276b6",
+  "board_glb_sha256": "3c81985a6b21cc9916a35f683994b918061b57ce6b8456ad8340629a96212b25",
   "motor_glb_sha256": "eec0b062b6c26976734a02875d35791f12e7442a425669e94afd6a522e39a93d",
   "motor_step_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
-  "spec_sha256": "f1ba9da08b77c7b56c1192fda2b97a03e9bf51b36bc5b8f687f69d115bfb59f5",
-  "component_models_checked": 294,
+  "spec_sha256": "db731a0561b533d6a9bd0b9111728147c421c62f20dcb3dee88c3357c6f802be",
+  "component_models_checked": 291,
   "assembly_alignment": {
     "maximum_vertex_offset_mm": {
       "motor": 0,
       "fixture": 0
     },
-    "assembly_glb_sha256": "ba275fa3fda631aa83bf3428823821ad90d00812c65edd63d8c97e91644c85ae",
+    "assembly_glb_sha256": "5ccc90a59765995404599432516dd26e5619d06cad5b2f5716e404b9feae4569",
     "motor_bounds_display_mm": {
       "min": [
         -43,

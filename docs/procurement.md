@@ -2,7 +2,7 @@
 
 Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-11T01:18:29.281Z.
+Last complete refresh: 2026-10-11T03:12:31.744Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|
@@ -13,10 +13,10 @@ Last complete refresh: 2026-10-11T01:18:29.281Z.
 | [C9943](https://jlcsearch.tscircuit.com/components/list.json?search=9943) | MAX3485EESA+T | 1 | 27908 | U20 |
 | [C13738](https://jlcsearch.tscircuit.com/components/list.json?search=13738) | X322516MLB4SI | 1 | 172398 | Y1 |
 | [C13967](https://jlcsearch.tscircuit.com/components/list.json?search=13967) | CL21B474KBFNNNE | 5 | 211110 | C27, C32, C33, C34, C35 |
-| [C14663](https://jlcsearch.tscircuit.com/components/list.json?search=14663) | CC0603KRX7R9BB104 | 41 | 12618106 | C72, C9, C10, C14, C65, C69, C70, C18, C24, C28, C36, C37, C38, C39, C89, C94, C40, C41, C43, C44, C45, C46, C48, C51, C52, C73, C54, C55, C56, C57, C58, C59, C60, C74, C77, C78, C79, C80, C81, C82, C85 |
+| [C14663](https://jlcsearch.tscircuit.com/components/list.json?search=14663) | CC0603KRX7R9BB104 | 40 | 12618106 | C72, C9, C10, C14, C65, C69, C70, C18, C24, C28, C36, C37, C38, C39, C89, C94, C40, C41, C43, C44, C45, C46, C48, C51, C73, C54, C55, C56, C57, C58, C59, C60, C74, C77, C78, C79, C80, C81, C82, C85 |
 | [C15725](https://jlcsearch.tscircuit.com/components/list.json?search=15725) | CL10B104KC8NNNC | 7 | 1221863 | C1, C12, C63, C20, C29, C31, C61 |
 | [C15846](https://jlcsearch.tscircuit.com/components/list.json?search=15846) | MAX3232ESE+T | 1 | 25896 | U21 |
-| [C15849](https://jlcsearch.tscircuit.com/components/list.json?search=15849) | CL10A105KB8NNNC | 8 | 5979916 | C2, C13, C64, C88, C93, C42, C53, C75 |
+| [C15849](https://jlcsearch.tscircuit.com/components/list.json?search=15849) | CL10A105KB8NNNC | 7 | 5979916 | C2, C13, C64, C88, C93, C42, C75 |
 | [C19666](https://jlcsearch.tscircuit.com/components/list.json?search=19666) | CL10A475KO8NNNC | 1 | 1373603 | C26 |
 | [C21189](https://jlcsearch.tscircuit.com/components/list.json?search=21189) | 0603WAF0000T5E | 2 | 6153233 | R9, R12 |
 | [C21190](https://jlcsearch.tscircuit.com/components/list.json?search=21190) | 0603WAF1001T5E | 5 | 8013731 | R55, R98, R100, R117, R118 |
@@ -76,7 +76,6 @@ Last complete refresh: 2026-10-11T01:18:29.281Z.
 | [C860148](https://jlcsearch.tscircuit.com/components/list.json?search=860148) | RT0603BRB0716KL | 1 | 3400 | R61 |
 | [C861400](https://jlcsearch.tscircuit.com/components/list.json?search=861400) | RT0603BRD07430KL | 1 | 4170 | R64 |
 | [C861611](https://jlcsearch.tscircuit.com/components/list.json?search=861611) | RT0603BRD079K09L | 1 | 649 | R122 |
-| [C962063](https://jlcsearch.tscircuit.com/components/list.json?search=962063) | AS5047P-ATSM | 1 | 1749 | U18 |
 | [C1850273](https://jlcsearch.tscircuit.com/components/list.json?search=1850273) | TPS26631RGER | 1 | 63 | U6 |
 | [C1858393](https://jlcsearch.tscircuit.com/components/list.json?search=1858393) | LMR36510ADDAR | 3 | 1663 | U5, U22, U34 |
 | [C2047110](https://jlcsearch.tscircuit.com/components/list.json?search=2047110) | SRP7050TA-470M | 1 | 801 | L3 |
@@ -90,7 +89,7 @@ Last complete refresh: 2026-10-11T01:18:29.281Z.
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 517 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 3323 | U1 |
 
-All 83 selected PCB part types (294 placements) had sufficient reported stock for 5 boards at the timestamp above, and all 83 supplier package names matched the pinned manifest expectation.
+All 82 selected PCB part types (291 placements) had sufficient reported stock for 5 boards at the timestamp above, and all 82 supplier package names matched the pinned manifest expectation.
 
 ## Substitution policy
 

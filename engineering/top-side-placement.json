@@ -686,7 +686,7 @@
         ]
       }
     ],
-    "board_sha256": "96b726582de590c283d432b00b81381c254a4e2a04d2e00b6c6c8f81188a35c3"
+    "board_sha256": "8f4d566f3ba7dd8e475757fed7817659918fe7655db8f5643861b7bd488cb1a7"
   },
   "assembly_model": {
     "glb": "dist/release/3d.glb",
@@ -933,5 +933,62 @@
       }
     },
     "scope": "Relocated complete connector and adjacent passives; preserved supplier CAD origin, pin map, board outline and all mounting holes. Rerouted displaced local signals without altering critical Kelvin branches or USB reference copper."
+  },
+  "optional_bottom_encoder_update": {
+    "date": "2026-10-11T03:10:56.932064+00:00",
+    "base_commit": "509c650224688afd320fab2e4b82ea0ee98fbe2c",
+    "board_sha256": "8f4d566f3ba7dd8e475757fed7817659918fe7655db8f5643861b7bd488cb1a7",
+    "bottom_unpopulated": [
+      "U18",
+      "C52",
+      "C53"
+    ],
+    "fitted_top": 291,
+    "service_pads_top": 11,
+    "encoder_axis_mm": [
+      0,
+      0
+    ],
+    "minimum_via_drill_mm": 0.3,
+    "via_in_pad_count": 58,
+    "schematic_records_unchanged": 3274,
+    "schematic_note_change": {
+      "before": "AS5047P is centered on the PCB underside; shaft magnet alignment must be verified.",
+      "after": "Optional AS5047P at the shaft axis: U18/C52/C53 are bottom-side DNP; magnet interface is not qualified."
+    },
+    "logical_records": {
+      "source_component": {
+        "count": 305,
+        "unchanged": true
+      },
+      "source_port": {
+        "count": 1066,
+        "unchanged": true
+      },
+      "source_net": {
+        "count": 199,
+        "unchanged": true
+      },
+      "source_trace": {
+        "count": 1096,
+        "unchanged": true
+      },
+      "source_component_internal_connection": {
+        "count": 3,
+        "unchanged": true
+      }
+    },
+    "source_native_pad_positions": {
+      "matched_source_pad_positions": 1066,
+      "tolerance_mm": 0.001,
+      "errors": []
+    },
+    "native_drc_violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0,
+    "erc_violations": 0,
+    "bypass_paths_passed": 46,
+    "critical_branches_passed": 9,
+    "scope": "Flipped U18/C52/C53 to bottom DNP and rerouted their affected local connections. Fitted components, motor connector, mounting holes, outline and critical branches remain in place. No paste or fitted BOM/CPL entries for the optional footprints."
   }
 }

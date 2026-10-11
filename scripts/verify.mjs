@@ -19,6 +19,7 @@ verifiedInputPaths.push('firmware/platformio.ini', 'docs/firmware-pinmap.json', 
 async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
+verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -36,7 +37,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['power-audit', ['run', 'check:power-audit']],
   ['schematic', ['run', 'check:schematic']],

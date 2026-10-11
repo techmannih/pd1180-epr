@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { parseKicadPcb, parseKicadSch } from 'kicadts'
 import {
   CircuitJsonToKicadPcbConverter,
   CircuitJsonToKicadProConverter,
@@ -15,13 +16,28 @@ const circuitJson = JSON.parse(await readFile('dist/index/circuit.json', 'utf8')
 
 const pcb = new CircuitJsonToKicadPcbConverter(circuitJson)
 pcb.runUntilFinished()
-await writeFile(`${outputDirectory}/pd1180-epr-r0.3.kicad_pcb`, pcb.getOutputString())
+const nativeBoard = parseKicadPcb(pcb.getOutputString())
+for (const footprint of nativeBoard.footprints) {
+  if (!footprint.attr?.dnp) continue
+  footprint.attr.excludeFromBom = true
+  for (const pad of footprint.fpPads) pad.layers.layers = pad.layers.layers.filter(layer => !['F.Paste', 'B.Paste'].includes(layer))
+}
+await writeFile(`${outputDirectory}/pd1180-epr-r0.3.kicad_pcb`, nativeBoard.getString())
 
 const schematic = new CircuitJsonToKicadSchConverter(circuitJson)
 schematic.runUntilFinished()
 const schematicFiles = schematic.getOutputFiles({ schematicFilename: 'index.kicad_sch' })
+const sourceNames = new Map(circuitJson.filter(row => row.type === 'source_component').map(row => [row.source_component_id, row.name]))
+const unpopulated = new Set(circuitJson.filter(row => row.type === 'pcb_component' && row.do_not_place).map(row => sourceNames.get(row.source_component_id)))
 for (const file of schematicFiles) {
-  await writeFile(`${outputDirectory}/${file.filename}`, file.content)
+  const sheet = parseKicadSch(file.content)
+  for (const symbol of sheet.symbols) {
+    if (unpopulated.has(symbol.properties.find(property => property.key === 'Reference')?.value)) {
+      symbol.dnp = true
+      symbol.inBom = false
+    }
+  }
+  await writeFile(`${outputDirectory}/${file.filename}`, sheet.getString())
 }
 
 const project = new CircuitJsonToKicadProConverter(circuitJson, {

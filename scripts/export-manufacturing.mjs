@@ -63,8 +63,8 @@ await run(kicad, [
 ])
 await run(kicad, ['pcb', 'export', 'gerbers', '--output', `${gerbers}/`, '--layers', gerberLayers, '--subtract-soldermask', '--check-zones', finalBoard])
 await run(kicad, ['pcb', 'export', 'drill', '--output', `${gerbers}/`, '--excellon-units', 'mm', '--excellon-separate-th', '--generate-map', '--map-format', 'gerberx2', '--generate-report', '--report-path', join(out, 'drill-report.txt'), finalBoard])
-await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-positions.csv'), '--side', 'front', '--format', 'csv', '--units', 'mm', finalBoard])
-await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-back-positions.csv'), '--side', 'back', '--format', 'csv', '--units', 'mm', finalBoard])
+await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-positions.csv'), '--side', 'front', '--format', 'csv', '--units', 'mm', '--exclude-dnp', finalBoard])
+await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-back-positions.csv'), '--side', 'back', '--format', 'csv', '--units', 'mm', '--exclude-dnp', finalBoard])
 await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board.png'), '--width', '1800', '--height', '1800', '--side', 'top', '--background', 'opaque', '--quality', 'high', '--perspective', '--zoom', '0.68', '--rotate', '325,0,35', finalBoard])
 await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board-bottom.png'), '--width', '1800', '--height', '1800', '--side', 'bottom', '--background', 'opaque', '--quality', 'high', '--perspective', '--zoom', '0.68', '--rotate', '325,0,35', finalBoard])
 await Promise.all([

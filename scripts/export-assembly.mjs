@@ -1,4 +1,5 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises'
+import {assemblyPolicyErrors} from './assembly-policy.mjs'
 const manifest=JSON.parse(await readFile('docs/design-manifest.json'))
 const data=JSON.parse(await readFile('dist/index/circuit.json'))
 const stock=JSON.parse(await readFile('docs/stock-report.json'))
@@ -7,6 +8,9 @@ const row=cells=>cells.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join('
 const grouped=new Map()
 for(const p of manifest.parts){const g=grouped.get(p.lcsc)||[];g.push(p);grouped.set(p.lcsc,g)}
 const fittedNames=new Set(manifest.parts.map(p=>p.name))
+const standards=JSON.parse(await readFile('board-standards.json'))
+const policyErrors=assemblyPolicyErrors(data,standards,fittedNames)
+if(policyErrors.length)throw new Error(policyErrors.join('\n'))
 const bom=[row(['Comment','Designator','Footprint','LCSC Part #','Quantity'])]
 for(const [code,parts]of grouped){const s=stock.parts.find(p=>p.lcsc===code);bom.push(row([s?.mpn,parts.map(p=>p.name).join(','),s?.package,code,parts.length]))}
 const cpl=[row(['Designator','Mid X','Mid Y','Layer','Rotation'])]

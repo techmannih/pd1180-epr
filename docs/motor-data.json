@@ -16,9 +16,9 @@
   "phase_resistance_tolerance_fraction": 0.1,
   "phase_inductance_h": 0.0035,
   "phase_inductance_tolerance_fraction": 0.2,
-  "rotor_inertia_g_cm2": null,
-  "rotor_inertia_kg_m2": null,
-  "rotor_inertia_note": "Not specified in the cited manufacturer sheet; QSH8618 inertia must not be reused.",
+  "rotor_inertia_g_cm2": 1400,
+  "rotor_inertia_kg_m2": 0.00014,
+  "rotor_inertia_note": "Manufacturer drawing A1510 rev 0 specifies 1400 g cm\u00b2. Load inertia and speed/stopping profile remain unqualified.",
   "step_angle_degrees": 1.8,
   "frame_mm": [
     86,
@@ -40,5 +40,12 @@
   "external_load_inertia_kg_m2": null,
   "operating_rpm_limit": null,
   "rotor_energy_examples": null,
-  "note": "Ordered motor supersedes the QSH8618 reference. No motor-operation, magnetic or mechanical qualification is implied."
+  "note": "Ordered motor supersedes the QSH8618 reference. No motor-operation, magnetic or mechanical qualification is implied.",
+  "factory_cable": {
+    "conductors": 4,
+    "conductor_area_mm2": 0.75,
+    "length_mm": 1000,
+    "termination": "bare leads",
+    "source": "Manufacturer drawing A1510 rev 0"
+  }
 }

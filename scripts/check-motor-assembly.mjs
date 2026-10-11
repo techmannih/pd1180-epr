@@ -7,6 +7,7 @@ import { rearHoleAxes, mountingAlignment, readMetricDrills, verifyMountingDrills
 // remain separate qualification gates in engineering/mechanical/assembly.json.
 const spec = JSON.parse(await readFile('engineering/mechanical/assembly.json'))
 const contract = JSON.parse(await readFile('hardware-contract.json'))
+const harness = JSON.parse(await readFile('engineering/motor-harness.json'))
 const errors = []
 const sha = bytes => createHash('sha256').update(bytes).digest('hex')
 async function glb(path) {
@@ -141,7 +142,7 @@ const holeAlignment=mountingAlignment(motorAxes, contract.mechanical.mounting_ho
 mountingAlignment(motorAxes, source.filter(r => r.type==='pcb_hole' && !r.pcb_component_id).map((h,i) => ({name:`compiled H${i+1}`,x:h.x,y:h.y,diameter:h.hole_diameter})))
 const refs=new Set(source.filter(r=>r.type==='source_component').map(r=>r.name))
 const parts=board.meshes.filter(m=>refs.has(m.name))
-for(const ref of ['Q12','Q13','R97','C5','R2','SW1','U18']) if(!parts.some(m=>m.name===ref)) errors.push(`Missing component CAD: ${ref}`)
+for(const ref of ['Q12','Q13','R97','C5','R2','SW1']) if(!parts.some(m=>m.name===ref)) errors.push(`Missing component CAD: ${ref}`)
 // A top-entry header must fit as a complete body, not just its solder lands.
 // Check the projected exported mesh envelope, including any CAD offsets.
 function segmentDistance(a,b,c,d) {
@@ -176,6 +177,25 @@ const connectorClearances=spec.connector_body_clearances.map(requirement=>{
   if(nearby[0]?.projected_envelope_gap_mm<requirement.minimum_component_gap_mm) errors.push(`${requirement.reference}: CAD body has insufficient clearance to ${nearby[0].reference}`)
   return {reference:requirement.reference,body_bounds_pcb_mm:{min:[-bounds.max[0],bounds.min[2]],max:[-bounds.min[0],bounds.max[2]]},minimum_board_edge_mm:edge,minimum_required_board_edge_mm:requirement.minimum_board_edge_mm,minimum_required_component_gap_mm:requirement.minimum_component_gap_mm,nearest_components:nearby}
 })
+// Reserve the insertion sweep as well as the unmated header body. The depth
+// bound covers either housing offset about the pin row; it is conservative.
+const access = harness.mating_access
+const j2Source = source.find(row => row.type === 'source_component' && row.name === access.reference)
+const j2 = source.find(row => row.type === 'pcb_component' && row.source_component_id === j2Source?.source_component_id)
+if (!j2 || j2.layer !== 'top' || Math.abs(j2.rotation || 0) > 1e-6) throw new Error('Update mating-access geometry for the changed J2 orientation')
+const insertion = {
+  min: [-j2.center.x-access.half_width_mm, top+access.bottom_above_pcb_mm, j2.center.y-access.half_depth_mm],
+  max: [-j2.center.x+access.half_width_mm, top+access.top_above_pcb_mm, j2.center.y+access.half_depth_mm],
+}
+const boxGap = (a,b) => Math.hypot(...[0,1,2].map(k => Math.max(0,a.min[k]-b.max[k],b.min[k]-a.max[k])))
+const insertionObstacles = parts.filter(mesh => mesh.name !== access.reference).map(mesh => ({reference:mesh.name,bounds:meshBounds([mesh])}))
+for (const hole of contract.mechanical.mounting_holes) {
+  const r=spec.mount.pcb_top_head_maximum_diameter_mm/2,x=-hole.centered_x_mm,y=hole.centered_y_mm
+  insertionObstacles.push({reference:`${hole.name} fastener`,bounds:{min:[x-r,top,y-r],max:[x+r,top+spec.mount.pcb_top_head_and_washer_height_mm,y+r]}})
+}
+const insertionNearest=insertionObstacles.map(item=>({reference:item.reference,gap_mm:boxGap(insertion,item.bounds)})).sort((a,b)=>a.gap_mm-b.gap_mm).slice(0,5)
+if (insertionNearest[0]?.gap_mm < access.minimum_gap_mm) errors.push(`J2 mating sweep has insufficient clearance to ${insertionNearest[0].reference}`)
+const matingAccess={...access,bounds_display_mm:insertion,nearest:insertionNearest,scope:'Conservative insertion envelope; final cable bend, crimp tooling and strain relief require physical approval.'}
 const fasteners=contract.mechanical.mounting_holes.map(h=>{
   const nearest=parts.map(m=>({reference:m.name,clearance_mm:radialClearance(m,-h.centered_x_mm,h.centered_y_mm,top,top+spec.mount.pcb_top_head_and_washer_height_mm,spec.mount.pcb_top_head_maximum_diameter_mm/2)})).filter(v=>Number.isFinite(v.clearance_mm)).sort((a,b)=>a.clearance_mm-b.clearance_mm).slice(0,5)
   if(!nearest.length || nearest[0].clearance_mm<spec.mount.minimum_component_to_head_mm) errors.push(`${h.name}: component clearance below ${spec.mount.minimum_component_to_head_mm} mm`)
@@ -187,7 +207,7 @@ for(const p of posts) if(p.minimum_motor_clearance_mm<.5) errors.push('Front-fla
 const calculatedPostLength=spec.motor.rear_face_step_z_mm-spec.motor.front_flange_back_step_z_mm+spec.mount.motor_rear_to_adapter_bottom_mm
 const stack=spec.mount.motor_rear_to_adapter_bottom_mm+spec.mount.adapter_thickness_mm+spec.mount.adapter_to_pcb_bottom_mm
 if(Math.abs(calculatedPostLength-spec.mount.long_post_length_mm)>1e-6 || Math.abs(stack-spec.mount.pcb_bottom_to_motor_rear_mm)>1e-6) errors.push('Mechanical axial stack is inconsistent')
-const report={manufacturing_drills:{path:drillPath,sha256:sha(drillBytes),holes:manufacturingDrills},substrate_drills:meshDrills,connector_body_clearances:connectorClearances,hole_alignment:holeAlignment,board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
+const report={manufacturing_drills:{path:drillPath,sha256:sha(drillBytes),holes:manufacturingDrills},substrate_drills:meshDrills,connector_body_clearances:connectorClearances,motor_connector_mating_access:matingAccess,hole_alignment:holeAlignment,board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
 await writeFile('docs/motor-assembly-check.json',JSON.stringify(report,null,2)+'\n')
 console.log(JSON.stringify(report,null,2))
 if(errors.length) process.exitCode=1

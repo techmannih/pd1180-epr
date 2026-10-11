@@ -22,7 +22,7 @@ The intended purchase is **PCB fabrication plus complete assembly, programming a
 
 | Deliverable | Required handoff / present status |
 |---|---|
-| Complete populated PCBA | Matching Gerbers, BOM and CPL; 294 fitted parts on top, including an agreed through-hole/tall-part assembly plan. CAD verified; assembly not ordered. |
+| Complete populated PCBA | Matching Gerbers, BOM and CPL; 291 fitted parts on top, including an agreed through-hole/tall-part assembly plan. CAD verified; assembly not ordered. |
 | U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Binary pending.** The requirements JSON is not flashable firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
@@ -75,14 +75,14 @@ To stop normally, decelerate the STEP train using the validated stop profile, re
 | Motor stage | TMC5160A with eight 100 V CSD19534Q5A MOSFETs and two 33 mΩ phase shunts |
 | Ordered motor | STEPPERONLINE 34HS31-6004S1, 4.8 Nm, 6 A/phase; approved driver current setting pending |
 | Controller | STM32G0B1CBT6 with USB device, CAN, SPI, I²C and serial peripherals |
-| Position feedback | Top-side AS5047P magnetic encoder at the shaft axis, with ABI test access |
+| Position feedback | Optional bottom-side AS5047P at the shaft axis (DNP), with top ABI test access |
 | Temperature/current diagnostics | TMP102 hardware inhibit; two INA240 phase monitors; ADS1115 bus monitors |
 | Motion inputs | 24 V Step/Dir plus HOME, left stop and right stop inputs |
 | Communications | USB 2.0, CAN, RS485 and RS232 |
 | Outputs | Hardware enable plus two protected low-side outputs |
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
 | Programming | SWD for STM32 and configuration EEPROM for the PD controller |
-| Assembly | 294 JLC-sourced fitted parts plus 11 service test pads, all on top |
+| Assembly | 291 JLC-sourced fitted parts plus 11 service test pads, all on top |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, external hardware enable and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN`, `RS485_DE`, both protected outputs and standalone-mode selection inactive.
 
@@ -112,7 +112,7 @@ Detailed calculations, tolerances and protection behavior are recorded in [docs/
 
 The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native ramp control selects the board's limit inputs. External STEP/DIR is the selected product mode. The former encoder/mode-pin conflict is corrected in the ECO source; motion stays inhibited until native and powered validation pass.
 
-The top-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The ordered motor is single-shaft, and its CAD does not identify an accessible rotating rear shaft or an approved magnet attachment. The previous QSH-specific holder and magnet stack have been withdrawn; encoder attachment, field, retention and working gap remain unresolved; see [motor assembly](docs/motor-assembly.md).
+The optional bottom-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The ordered motor is single-shaft, and its CAD does not identify an accessible rotating rear shaft or an approved magnet attachment. The previous QSH-specific holder and magnet stack have been withdrawn; encoder attachment, field, retention and working gap remain unresolved; see [motor assembly](docs/motor-assembly.md).
 
 Firmware must configure current scaling, gate drive, dead time, chopper behavior, motion limits and encoder calibration for the actual motor. A register default is not approval for 5.5 A operation.
 
@@ -163,7 +163,7 @@ The design is split into sixteen functional sheets:
 | Bridge A / Bridge B | External MOSFET half-bridges, bootstrap networks and phase shunts |
 | Brake | Bus-voltage comparators, brake MOSFET drive and external resistor connector |
 | MCU | STM32G0B1, clock, reset, SWD, flash and shared control buses |
-| Encoder | Top-side AS5047P supply, SPI/ABI signals and service test pads |
+| Encoder | Optional bottom AS5047P supply/SPI/ABI footprints (DNP) and top service pads |
 | USB logic | DATA current limiter, 3.3 V LDO and reverse-blocking source selection |
 | Telemetry | Temperature inhibit, phase-current amplifiers and bus-monitor ADC |
 | Inputs | 24 V Step/Dir, stop, home and digital input conditioning |
@@ -189,21 +189,21 @@ The source and regenerated release contain sixteen schematic sheets.
 | Assembly side | Top only |
 | Solder mask / legend | Green / white |
 
-All fitted components, including the centered encoder, its local bypass parts, logic power and labelled service pads, are on top. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
+All fitted components and labelled service pads are on top. U18 is centered on the motor axis on the bottom, with C52/C53 nearby; all three footprints are DNP and excluded from assembly. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
 The completed KiCad route passes all-severity DRC, connectivity, schematic parity, ERC and terminal-only Kelvin checks. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
 The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` and `engineering/mechanical/ordered-motor-pcb-reference.json`. It retains the TMCM-1180 stepped perimeter and places all four Ø4.2 mm PCB holes on the ordered **34HS31-6004S1 rear CAD axes**. The reference records both sources and their coordinate systems. Print it at 100% and check its 20 mm calibration bar. **Matching the rear axes does not approve rear case screws for accessory mounting.** The documented motor mounting interface is the front flange; [motor assembly](docs/motor-assembly.md) describes the front-supported adapter proposal and current screw clearances.
 
-The exact ordered-motor CAD and proposed adapter appear in the default 3D view and remain selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All parts remain on top. The adapter is not qualified for fabrication, and no encoder holder or magnet is modeled for this motor.
+The exact ordered-motor CAD and proposed adapter appear in the default 3D view and remain selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All populated parts remain on top; only the three unpopulated encoder footprints are on the bottom. The adapter is not qualified for fabrication, and no encoder holder or magnet is modeled for this motor.
 
 ![PD1180-EPR mounting template](previews/mounting-template.png)
 
 ## Parts and procurement
 
-- 294 populated components use exact JLCPCB/LCSC identities.
-- The fitted BOM contains 83 unique LCSC codes.
-- The latest committed live check reports 83/83 available at its recorded timestamp; refresh stock for the actual order before purchase.
+- 291 populated components use exact JLCPCB/LCSC identities.
+- The fitted BOM contains 82 unique LCSC codes.
+- The latest committed live check reports 82/82 available at its recorded timestamp; refresh stock for the actual order before purchase.
 - Eleven selected alternative candidates are currently available.
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
@@ -227,11 +227,11 @@ Current verification evidence:
 |---|---|
 | Native KiCad PCB DRC + schematic ERC | PASS — 0 PCB violations, unconnected nets, parity issues and ERC violations |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 44 tests covering topology, motor-view preservation, via identity and power-copper geometry |
+| Topology regression | PASS — 53 tests covering topology, optional assembly, motor-view preservation, via identity and power-copper geometry |
 | Kelvin-check regressions | PASS — 11 native regressions and all 9 final-board paths |
 | Decoupling | PASS — 46/46 native IC-to-capacitor paths |
-| Assembly | PASS — 294 fitted parts plus 11 service test pads on top |
-| Stock | PASS — 83/83 unique fitted LCSC codes available at the recorded timestamp |
+| Assembly | PASS — 291 fitted parts plus 11 service test pads on top |
+| Stock | PASS — 82/82 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
 | Release delivery | Current ECO review artifacts; ordering remains on hold |
 | Route identity | Current source, local constraints and final PCB hash match |
@@ -300,3 +300,7 @@ The r0.4 ECO files become a prototype fabrication handoff only after the order h
 The staged procedure and sign-off points are in [docs/bring-up.md](docs/bring-up.md). Prototype-order gates and physical system-validation gates remain separate in [docs/release-status.json](docs/release-status.json).
 
 Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
+
+## Motor connector and optional encoder review
+
+J2 is already JST VH (3.96 mm), selected for the NEMA34 current target. The NEMA17 reference uses JST PH and NEMA23 uses JST XH; those smaller connector choices are not copied into this higher-current stage. [Motor harness and review closure](docs/motor-harness.md) lists the matching VHR-4N housing, contacts, wire colours, cable construction, connector purposes and open mechanical checks. U18 is centered on the motor axis, with C52/C53 nearby; all three are bottom-side DNP footprints and are excluded from fitted BOM/CPL and paste.

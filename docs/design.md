@@ -44,7 +44,7 @@ U8/U9 select native left/right endstop signals in ramp mode or external Step/Dir
 
 DRV_EN_N has a pull-up. Its sink path requires two series transistors: MCU_RUN with motor power-good and voltage-good, plus the externally asserted hardware-enable input and U29/U33 temperature permit. Open or grounded hardware enable disables the bridge. This is a functional enable, not a certified safe-torque-off circuit. The motor-side buck sustains this logic while motor capacitors are charged; power-loss disable timing and comparator operation still need bench validation.
 
-The AS5047P is a top-side part at the board origin. Magnet placement, gap and field orientation must be validated for the top-only assembly. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs remain on labelled service pads; U7 pins23/24 are grounded and pin25 is NC for the selected STEP/DIR mode.
+The AS5047P and its two bypass capacitors are optional bottom-side DNP footprints at the motor axis. All populated parts remain top-side. A compatible rear magnet interface, gap and field orientation are not yet qualified. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs remain on labelled service pads; U7 pins23/24 are grounded and pin25 is NC for the selected STEP/DIR mode.
 
 ### Interfaces
 

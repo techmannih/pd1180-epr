@@ -1,0 +1,102 @@
+{
+  "reviewed_at": "2026-10-11T03:02:30.665901+00:00",
+  "reference_boards": [
+    {
+      "package": "imrishabh18/rp2040-motor-controller",
+      "version": "1.0.42",
+      "release_id": "e8d285f7-c3d8-46f5-9a54-344fdde0124e",
+      "source_sha256": {
+        "ref17-motor": "a2b35e2b424d0c9cb37382f64d5655a68db2561c8d2d18c2c308c5c3f6e5ecef",
+        "ref17-encoder": "f7ec7a64be118c1fabd410887751bef18d9171d8e34c1105ba0c31a055181f71"
+      }
+    },
+    {
+      "package": "imrishabh18/nema-23-stepper-controller",
+      "version": "1.3.2",
+      "release_id": "ce2edb82-bc7a-4eb3-9cbd-280f173e6dcd",
+      "source_sha256": {
+        "ref23-features": "18280e2035b824b5d87b46d869c0be97425f84370a51996cb9295a8e1539b848"
+      }
+    }
+  ],
+  "reference_connector_families": {
+    "NEMA17": "JST PH B4B-PH-K-S(LF)(SN), PHR-4 mate",
+    "NEMA23": "JST XH B4B-XH-A(LF)(SN)"
+  },
+  "motor_connector": {
+    "reference": "J2",
+    "header": "B4P-VH(LF)(SN)",
+    "pitch_mm": 3.96,
+    "mate": "VHR-4N",
+    "contacts": "SVH-41T-P1.1",
+    "contact_quantity": 4,
+    "termination_wire_awg": 16,
+    "wire_insulation_diameter_mm": [
+      1.7,
+      3.0
+    ],
+    "rating_a_at_specified_wire": 10,
+    "rating_v": 250,
+    "wire_colours": [
+      "black",
+      "green",
+      "red",
+      "blue"
+    ],
+    "pin_to_net": {
+      "1": "MOTOR_A1_OUT",
+      "2": "MOTOR_A2",
+      "3": "MOTOR_B1_OUT",
+      "4": "MOTOR_B2"
+    },
+    "motor_leads_mm2": 0.75,
+    "splice": "TE 320559, one 0.75 mm\u00b2 motor conductor to one 16 AWG pigtail per splice; four splices",
+    "splice_supported_wire_mm2": [
+      0.3,
+      1.42
+    ],
+    "connection_status": "Defined harness; not supplied with PCB assembly. Harness maker must confirm crimp/insulation dimensions and provide continuity/pull-test records.",
+    "current_note": "JST 10 A applies to the standard header with 16 AWG termination, not directly to the motor factory 0.75 mm\u00b2 wire. Motor current is still governed by its qualification; no 10 A motor rating is implied."
+  },
+  "mating_access": {
+    "reference": "J2",
+    "half_width_mm": 8.39,
+    "half_depth_mm": 10.5,
+    "bottom_above_pcb_mm": 3.2,
+    "top_above_pcb_mm": 40,
+    "minimum_gap_mm": 0.1,
+    "basis": "Conservative vertical insertion prism: 15.78 mm housing width plus 0.5 mm per side, full 10.5 mm housing depth reserved on both sides of pin row, and 40 mm height allowance. Nominal mated height is 16.5 mm. Final wire bend/tool clearance requires physical approval."
+  },
+  "required_connectors": {
+    "J1": "USB-C EPR motor power; requested separate POWER input",
+    "J10": "USB DATA/setup/diagnostics; separate from EPR input",
+    "J2": "Four motor winding leads; JST VH high-current keyed harness",
+    "J3": "External braking resistor required by the retained regenerative brake stage",
+    "J7": "User-required STEP/DIR/ENABLE, home/limits, DIN, CAN, RS485, RS232 and existing OUT0/OUT1; one consolidated JST PHD harness"
+  },
+  "optional_encoder": {
+    "references": [
+      "U18",
+      "C52",
+      "C53"
+    ],
+    "layer": "bottom",
+    "do_not_place": true,
+    "axis_mm": [
+      0,
+      0
+    ],
+    "sensor": "AS5047P-ATSM; retained SPI/ABI wiring",
+    "blocked_by": "Ordered single-shaft motor has no documented rear magnet interface; sensor fitting requires a qualified magnet/holder/air gap."
+  },
+  "sources": [
+    "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf",
+    "https://www.te.com/en/product-320559.html",
+    "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
+  ],
+  "limitations": [
+    "No physical assembly, crimp or motor test was performed.",
+    "The proposed adapter shares the motor front flange and still needs mechanical approval.",
+    "External harness parts are separate procurement items; PCB supplier stock checks do not reserve or certify them."
+  ]
+}

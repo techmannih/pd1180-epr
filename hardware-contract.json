@@ -52,10 +52,15 @@
     "assembly": "top-side only",
     "encoder": {
       "reference": "U18",
-      "assembly_layer": "top",
+      "assembly_layer": "bottom",
       "centered_x_mm": 0,
       "centered_y_mm": 0,
-      "validation": "Top U18 retained. Ordered 34HS31-6004S1 has no documented rear encoder shaft/interface. Previous QSH holder and gap are withdrawn; new shaft access, magnet and gap require approval."
+      "validation": "Optional bottom-side U18 and both bypass capacitors are DNP. Sensor center matches the ordered motor axis at (0,0). The single-shaft motor has no documented rear rotating-shaft interface; no magnet/holder or working gap is qualified.",
+      "do_not_place": true,
+      "local_bypass_references": [
+        "C52",
+        "C53"
+      ]
     },
     "motor_assembly": {
       "selected_motor": "STEPPERONLINE 34HS31-6004S1; user confirmed Amazon ASIN B091C83HWF on 2026-10-11",
@@ -186,5 +191,41 @@
       "reference_range_v": 4.096,
       "sample_rate_sps": 128
     }
+  },
+  "motor_harness": {
+    "definition": "engineering/motor-harness.json",
+    "reference": "J2",
+    "header": "B4P-VH(LF)(SN)",
+    "pitch_mm": 3.96,
+    "mate": "VHR-4N",
+    "contacts": "SVH-41T-P1.1",
+    "contact_quantity": 4,
+    "termination_wire_awg": 16,
+    "wire_insulation_diameter_mm": [
+      1.7,
+      3.0
+    ],
+    "rating_a_at_specified_wire": 10,
+    "rating_v": 250,
+    "wire_colours": [
+      "black",
+      "green",
+      "red",
+      "blue"
+    ],
+    "pin_to_net": {
+      "1": "MOTOR_A1_OUT",
+      "2": "MOTOR_A2",
+      "3": "MOTOR_B1_OUT",
+      "4": "MOTOR_B2"
+    },
+    "motor_leads_mm2": 0.75,
+    "splice": "TE 320559, one 0.75 mm\u00b2 motor conductor to one 16 AWG pigtail per splice; four splices",
+    "splice_supported_wire_mm2": [
+      0.3,
+      1.42
+    ],
+    "connection_status": "Defined harness; not supplied with PCB assembly. Harness maker must confirm crimp/insulation dimensions and provide continuity/pull-test records.",
+    "current_note": "JST 10 A applies to the standard header with 16 AWG termination, not directly to the motor factory 0.75 mm\u00b2 wire. Motor current is still governed by its qualification; no 10 A motor rating is implied."
   }
 }

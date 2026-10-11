@@ -1,4 +1,5 @@
 import {readFile,writeFile} from 'node:fs/promises'
+import {assemblyPolicyErrors} from './assembly-policy.mjs'
 const manifest=JSON.parse(await readFile('docs/design-manifest.json'))
 const json=JSON.parse(await readFile('dist/index/circuit.json'))
 const stock=JSON.parse(await readFile('docs/stock-report.json'))
@@ -18,7 +19,7 @@ for(const part of manifest.parts){
  if(!json.some(x=>x.type==='pcb_component'&&x.source_component_id===source?.source_component_id))errors.push(`${part.name}: no PCB component`)
 }
 for(const component of components){
- if(!fittedNames.has(component.name)&&!component.name.startsWith('TP_'))errors.push(`${component.name}: neither a supplier-backed fitted part nor an approved service pad`)
+ if(!fittedNames.has(component.name)&&!component.name.startsWith('TP_')&&!Object.hasOwn(standards.assembly.optional_unpopulated_parts,component.name))errors.push(`${component.name}: neither a fitted part, approved optional footprint nor service pad`)
 }
 for(const pad of serviceTestpoints){
  if(fittedNames.has(pad.name))errors.push(`${pad.name}: bare service pad must not appear in the fitted BOM/CPL`)
@@ -27,11 +28,9 @@ for(const pad of serviceTestpoints){
 if(serviceTestpoints.length!==11)errors.push(`Expected 11 bare service pads, found ${serviceTestpoints.length}`)
 const sourceIds=new Set(components.map(component=>component.source_component_id))
 const positions=json.filter(x=>x.type==='pcb_component'&&sourceIds.has(x.source_component_id))
-const encoder=positions.find(x=>x.source_component_id===components.find(x=>x.name==='U18')?.source_component_id)
-if(encoder?.layer!=='top'||encoder.center.x!==0||encoder.center.y!==0)errors.push('Encoder must be on the top at the intended shaft origin')
-for(const position of positions)if(!standards.assembly.populated_layers.includes(position.layer))errors.push(`${components.find(x=>x.source_component_id===position.source_component_id)?.name??position.pcb_component_id}: layer ${position.layer} is not permitted`)
+errors.push(...assemblyPolicyErrors(json,standards,fittedNames))
 const layers=Object.fromEntries(standards.assembly.populated_layers.map(layer=>[layer,positions.filter(position=>position.layer===layer).length]))
-const report={checked_at:new Date().toISOString(),parts:manifest.parts.length,service_testpoints:serviceTestpoints.length,unique_supplier_parts:new Set(manifest.parts.map(p=>p.lcsc)).size,layers,errors}
+const report={checked_at:new Date().toISOString(),parts:manifest.parts.length,optional_unpopulated:standards.assembly.optional_unpopulated_parts,service_testpoints:serviceTestpoints.length,unique_supplier_parts:new Set(manifest.parts.map(p=>p.lcsc)).size,layers,errors}
 await writeFile('docs/assembly-check.json',JSON.stringify(report,null,2))
 console.log(JSON.stringify(report,null,2))
 if(errors.length)process.exitCode=1

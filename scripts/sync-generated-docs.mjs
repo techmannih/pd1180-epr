@@ -19,10 +19,10 @@ for (const row of circuit.filter(row => row.type === 'pcb_component')) {
   const name = names.get(row.source_component_id)
   if (name) placements.set(name, row)
 }
-for (const part of manifest.parts) {
+for (const part of [...manifest.parts, ...(manifest.optional_parts ?? [])]) {
   const position = placements.get(part.name)
   if (!position) throw new Error(`Missing PCB placement for ${part.name}`)
-  if (!standards.assembly.populated_layers.includes(position.layer)) throw new Error(`${part.name}: assembly layer ${position.layer} is not permitted`)
+  if (!standards.assembly.populated_layers.includes(position.layer) && !(position.do_not_place && standards.assembly.optional_unpopulated_parts?.[part.name] === position.layer)) throw new Error(`${part.name}: assembly layer ${position.layer} is not permitted`)
   part.xy = [position.center.x, position.center.y]
   part.size = [position.width, position.height]
   const schematic = circuit.find(row => row.type === 'schematic_component' && row.source_component_id === position.source_component_id)

@@ -70,11 +70,11 @@ At the drawing's 80 mm maximum body length, the nominal 1 mm plate gap becomes 0
 
 ## Encoder attachment unresolved
 
-U18 remains on top, centered on the motor axis. The ordered motor STEP is a single fused mesh. It shows a rear central recess, but does not identify a rotating shaft end, usable pilot bore/thread or approved magnet attachment. A visible rear recess is not proof that a holder can be attached to the rotor.
+U18, C52 and C53 are optional bottom-side footprints marked `doNotPlace`. U18 is centered on the motor axis; all three are excluded from the fitted BOM/CPL and solder paste. R74 remains fitted on top so the absent SPI device stays deselected. The ordered motor STEP is a single fused mesh. It shows a rear central recess, but does not identify a rotating shaft end, usable pilot bore/thread or approved magnet attachment. A visible rear recess is not proof that a holder can be attached to the rotor.
 
 The old QSH-specific pilot, PEEK holder, magnet dimensions and working-gap calculation are withdrawn. Manufacturer confirmation of rear rotating-shaft access is required before defining a new attachment. If there is no usable rear shaft, an alternative encoder coupling or motor variant must be agreed; the current preview does not resolve that choice.
 
-Any eventual magnet must meet the AS5047P field, alignment and temperature requirements through the top-side sensor stack. Retention, runout and magnetic performance need qualification. Closed-loop operation remains unqualified.
+Any eventual magnet must meet the AS5047P field, alignment and temperature requirements at the bottom-side sensor. Retention, runout and magnetic performance need qualification. Closed-loop operation remains unqualified.
 
 ## Before mechanical release
 
@@ -83,7 +83,7 @@ Any eventual magnet must meet the AS5047P field, alignment and temperature requi
 3. Select and qualify the magnet/holder, field and working gap if magnetic feedback is retained.
 4. Qualify physical fit, tool access, support strength, retention and vibration.
 
-Motor identity is now confirmed. Driver current/hold settings, rotor/load inertia, speed and stopping duty remain unqualified. These mechanical and operating gates are additional to the existing PD-image, firmware and powered-test holds.
+Motor identity is now confirmed. The manufacturer specifies 1400 g cm² rotor inertia. Driver current/hold settings, external load inertia, speed and stopping duty remain unqualified. These mechanical and operating gates are additional to the existing PD-image, firmware and powered-test holds.
 
 References: [ordered Amazon listing](https://www.amazon.com/dp/B091C83HWF), [manufacturer product](https://www.omc-stepperonline.com/s-series-nema-34-stepper-motor-4-8nm-679-87oz-in-14mm-key-way-shaft-1m-cable-34hs31-6004s1), [AS5047P datasheet](https://look.ams-osram.com/m/d05ee39221f9857/original/AS5047P-DS000324.pdf), [tscircuit subassembly](https://docs.tscircuit.com/elements/assembly-subassembly).
 

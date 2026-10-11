@@ -66,7 +66,15 @@
     "bom": "jlc-bom.csv",
     "cpl": "jlc-cpl.csv",
     "dnp": "Do not substitute electrical values or package variants without engineering review",
-    "through_hole_and_tall_parts": "Include all fitted BOM headers and bulk capacitors in the agreed assembly scope; selective/hand assembly method requires provider confirmation"
+    "through_hole_and_tall_parts": "Include all fitted BOM headers and bulk capacitors in the agreed assembly scope; selective/hand assembly method requires provider confirmation",
+    "optional_unpopulated_parts": [
+      "U18",
+      "C52",
+      "C53"
+    ],
+    "optional_unpopulated_policy": "Bottom footprints only; omit from fitted BOM/CPL and paste. No magnet interface is qualified on the ordered single-shaft motor.",
+    "fitted_component_count": 291,
+    "external_motor_harness": "Separate VHR-4N / SVH-41T-P1.1 / 16 AWG cable assembly; see motor-harness.md. Not included automatically in PCB assembly."
   },
   "programming": {
     "U3_eeprom": {

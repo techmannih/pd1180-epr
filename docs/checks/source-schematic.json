@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-11T02:30:23.578Z",
+  "generated_at": "2026-10-11T03:15:40.655Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "40532e35c09b3daab3bb378b3612ae4e44a7d46cc9fa7ab45145e8a80d847c6f",
-    "bytes": 4933232
+    "sha256": "4f2175398f2b945569cc358d4d110f478231d63e120aaf833ae2792eeec4638b",
+    "bytes": 4931828
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 11136,
+    "elements": 11133,
     "sheets": 16,
     "source_components": 305,
     "source_ports": 1066,
@@ -596,7 +596,7 @@
       ],
       "annotations": [
         "09 / Shaft Encoder and Monitor",
-        "AS5047P is centered on the PCB underside; shaft magnet alignment must be verified.",
+        "Optional AS5047P at the shaft axis: U18/C52/C53 are bottom-side DNP; magnet interface is not qualified.",
         "U18: 14-bit magnetic shaft encoder; SPI readout plus ABI incremental outputs and local 3.3 V filtering."
       ]
     },
@@ -1161,7 +1161,7 @@
         "actual": 3,
         "texts": [
           "09 / Shaft Encoder and Monitor",
-          "AS5047P is centered on the PCB underside; shaft magnet alignment must be verified.",
+          "Optional AS5047P at the shaft axis: U18/C52/C53 are bottom-side DNP; magnet interface is not qualified.",
           "U18: 14-bit magnetic shaft encoder; SPI readout plus ABI incremental outputs and local 3.3 V filtering."
         ]
       }

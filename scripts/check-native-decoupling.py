@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Measure short IC-to-capacitor paths in the final native top-layer copper.
+"""Measure short IC-to-capacitor paths in the final native component-side copper.
 
 Planes and vias are deliberately excluded: each specified bypass must retain
-a short top-layer connection. Native DRC remains the connectivity authority.
+a short connection on the IC/capacitor side. Native DRC remains the connectivity authority.
 """
 import argparse
 from collections import defaultdict
@@ -24,10 +24,10 @@ def vector(point):
     return pcbnew.VECTOR2I(*(pcbnew.FromMM(v) for v in point))
 
 
-def route_length(start, end, tracks, pads):
+def route_length(start, end, tracks, pads, layer):
     net = start.GetNetCode()
     segments = [(xy(t.GetStart()), xy(t.GetEnd()), pcbnew.ToMM(t.GetWidth()) / 2)
-                for t in tracks if t.GetNetCode() == net and t.GetLayer() == pcbnew.F_Cu]
+                for t in tracks if t.GetNetCode() == net and t.GetLayer() == layer]
     points = sorted({point for a, b, _ in segments for point in (a, b)})
     points.extend([xy(start.GetPosition()), xy(end.GetPosition())])
     first, last = len(points) - 2, len(points) - 1
@@ -53,9 +53,9 @@ def route_length(start, end, tracks, pads):
             connect(i, j)
 
     for pad in pads:
-        if pad.GetNetCode() != net or not pad.IsOnLayer(pcbnew.F_Cu):
+        if pad.GetNetCode() != net or not pad.IsOnLayer(layer):
             continue
-        shape = pad.GetEffectiveShape(pcbnew.F_Cu)
+        shape = pad.GetEffectiveShape(layer)
         indices = [i for i, point in enumerate(points) if shape.Collide(vector(point), 0)]
         for offset, i in enumerate(indices):
             for j in indices[offset + 1:]:
@@ -93,12 +93,14 @@ def main():
     for ic, pin, capacitor, *_ in targets:
         start = next(p for p in footprints[ic].Pads() if p.GetNumber() == str(pin))
         end = next(p for p in footprints[capacitor].Pads() if p.GetNumber() == '1')
-        length = route_length(start, end, tracks, pads) if start.GetNetCode() == end.GetNetCode() else None
+        layer = footprints[ic].GetLayer()
+        same_side = layer in (pcbnew.F_Cu, pcbnew.B_Cu) and footprints[capacitor].GetLayer() == layer
+        length = route_length(start, end, tracks, pads, layer) if same_side and start.GetNetCode() == end.GetNetCode() else None
         passed = length is not None and length <= 5
         results.append(dict(ic=ic, pin=pin, capacitor=capacitor,
-                            top_route_length_mm=length, maximum_mm=5, passed=passed))
+                            layer=board.GetLayerName(layer), route_length_mm=length, maximum_mm=5, passed=passed))
         if not passed:
-            errors.append(f'{ic}.{pin} to {capacitor}.1: no top-layer path within 5 mm ({length})')
+            errors.append(f'{ic}.{pin} to {capacitor}.1: no same-side path within 5 mm ({length})')
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     report = dict(board_sha256=digest(args.board), targets_sha256=digest(target_path),
                   checker_sha256=digest(Path(__file__)), results=results, errors=errors,

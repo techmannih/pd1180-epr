@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-11T02:33:02.797Z",
+  "checked_at": "2026-10-11T03:19:14.967Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "input_sha256": {
-    "index.circuit.tsx": "352d134f362bfa144130e2cf612497790e473eb6c57fce5961fbde7bcc1fbfdb",
-    "dist/index/circuit.json": "40532e35c09b3daab3bb378b3612ae4e44a7d46cc9fa7ab45145e8a80d847c6f",
-    "docs/design-manifest.json": "6aeabef720de92e04ac41d94801e997cc824ffb40e535ba7051a0bab76e8431d",
-    "hardware-contract.json": "8957503def6a26a8f859bd5d1df598d5a7e8a17b22ff8d9dbbda5e2507e9f89c",
-    "docs/motor-data.json": "edc93b8adacfe813afc7cdd3201bd31c07ce9264c389edc5eb97e1e04927d4c9",
+    "index.circuit.tsx": "330984850baf6feb1428dd80bc185beab4e226e6e9a00232b31917763459de9a",
+    "dist/index/circuit.json": "4f2175398f2b945569cc358d4d110f478231d63e120aaf833ae2792eeec4638b",
+    "docs/design-manifest.json": "105e9dd058bf6e4e6980d2c0f21f5ba9c117919fe0a00eb6174dde047f2ec73c",
+    "hardware-contract.json": "3d13372a9f0c053fe1df6f3c6632e97439fc84de71fc66972949581fd5240b4c",
+    "docs/motor-data.json": "58d63310c6132f00f87447790176b7ddc43bd76c7d8e37e5c6665866495a4c24",
     "firmware/include/tmc5160_config.h": "923c88caad88d3c5c68c352419003d49d29742eb7e31c2743bda8ac1fbfccb27",
-    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "96b726582de590c283d432b00b81381c254a4e2a04d2e00b6c6c8f81188a35c3",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "8f4d566f3ba7dd8e475757fed7817659918fe7655db8f5643861b7bd488cb1a7",
     "scripts/power-audit.mjs": "d0da1a30c986842519a118e86d5de39c46af0dd3dcbb80f0ad88e861e2ba9de5"
   },
   "assumptions": {
@@ -31,7 +31,7 @@
     "motor_model": "34HS31-6004S1",
     "motor_phase_resistance_20c_ohm": 0.48,
     "motor_phase_inductance_h": 0.0035,
-    "motor_rotor_inertia_kg_m2": null,
+    "motor_rotor_inertia_kg_m2": 0.00014,
     "external_load_inertia": null,
     "motor_rpm_and_stop_time": null,
     "mosfet_hot_resistance_multiplier": 2,
@@ -150,10 +150,10 @@
       "bulk_energy_48_to_53v_min_cap_j": 0.18988000000000002,
       "winding_energy_nominal_sine_quadrature_j": 0.105875,
       "rotor_only_energy_j": {
-        "100": null,
-        "500": null,
-        "1000": null,
-        "2000": null
+        "100": 0.007676358978625057,
+        "500": 0.19190897446562635,
+        "1000": 0.7676358978625054,
+        "2000": 3.0705435914500216
       },
       "brake_nominal_at_53v": {
         "ohm": 10,

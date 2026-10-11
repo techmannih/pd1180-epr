@@ -76,8 +76,9 @@ test('hosted release ignores only the CLI cache key while preserving every sourc
 
 test('all physical parts are present and have their intended JLC code',()=>{
   const supplierBacked=components.filter(component=>component.supplier_part_numbers?.jlcpcb?.length)
-  expect(supplierBacked.length).toBe(manifest.parts.length)
-  for(const p of manifest.parts) expect(comp(p.name)?.supplier_part_numbers?.jlcpcb).toContain(p.lcsc)
+  const declaredParts=[...manifest.parts,...manifest.optional_parts]
+  expect(supplierBacked.map(part=>part.name).sort()).toEqual(declaredParts.map(part=>part.name).sort())
+  for(const p of declaredParts) expect(comp(p.name)?.supplier_part_numbers?.jlcpcb).toContain(p.lcsc)
   expect(components.filter(component=>!component.supplier_part_numbers?.jlcpcb?.length).every(component=>component.name.startsWith('TP_'))).toBe(true)
 })
 test('C22 bulk capacitor body and CAD model stay inside the stepped board outline',()=>{

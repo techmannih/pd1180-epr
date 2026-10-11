@@ -11,7 +11,12 @@
     "bottom_paste_allowed": false,
     "exact_supplier_code_required": true,
     "stock_evidence_required": true,
-    "reviewed_alternatives_required": true
+    "reviewed_alternatives_required": true,
+    "optional_unpopulated_parts": {
+      "U18": "bottom",
+      "C52": "bottom",
+      "C53": "bottom"
+    }
   },
   "fabrication": {
     "layers": 4,
@@ -172,7 +177,9 @@
       "release/assembly.md",
       "release/motor-assembly.md",
       "release/motor-assembly-check.json",
-      "release/34hs31-6004s1-assembly-proposal.zip"
+      "release/34hs31-6004s1-assembly-proposal.zip",
+      "release/motor-harness.md",
+      "release/motor-harness.json"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",

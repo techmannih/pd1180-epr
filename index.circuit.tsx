@@ -143,7 +143,7 @@ export const PD1180EPR = () => (
     </schematicsheet>
     <schematicsheet name="encoder" displayName="Shaft Encoder and Monitor" sheetIndex={9} sheetWidth="335mm" sheetHeight="140mm">
       <schematictext schX={-4} schY={8} fontSize={0.6} anchor="top_left" text="09 / Shaft Encoder and Monitor" />
-      <schematictext schX={-4} schY={6.6} fontSize={0.26} anchor="top_left" text="AS5047P is centered on the PCB underside; shaft magnet alignment must be verified." />
+      <schematictext schX={-4} schY={6.6} fontSize={0.26} anchor="top_left" text="Optional AS5047P at the shaft axis: U18/C52/C53 are bottom-side DNP; magnet interface is not qualified." />
       <schematictext schX={-4} schY={5.8} fontSize={0.23} anchor="top_left" text="U18: 14-bit magnetic shaft encoder; SPI readout plus ABI incremental outputs and local 3.3 V filtering." />
     </schematicsheet>
     <schematicsheet name="usb-data" displayName="USB DATA and Attach Sense" sheetIndex={10} sheetWidth="380mm" sheetHeight="230mm">
@@ -1310,22 +1310,22 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
 
     {/* ENCODER */}
-    <AS5047P_ATSM name="U18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={0} schY={0} pcbX={0} pcbY={0} pcbRotation={180} layer="top"
+    <AS5047P_ATSM name="U18" kicadFootprintMetadata={{ footprintName: "AS5047P-ATSM" }} pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={0} schY={0} pcbX={0} pcbY={0} pcbRotation={180} layer="bottom" doNotPlace
       noConnect={["pin8", "pin9", "pin10"]}
       connections={{ pin1: "net.ENC_CS_N", pin2: "net.SPI_SCK", pin3: "net.SPI_MISO", pin4: "net.SPI_MOSI", pin5: "net.GND", pin6: "net.ENC_B", pin7: "net.ENC_A", pin11: "net.V3V3", pin12: "net.V3V3", pin13: "net.GND", pin14: "net.ENC_I" }} />
     <resistor name="R74" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={5} schY={4} pcbX={0.0} pcbY={5.5} layer="top"
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.ENC_CS_N" }} pcbRotation={90} />
-    <capacitor name="C52" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={8} schY={4} pcbX={0.0} pcbY={-5.55} layer="top"
+    <capacitor name="C52" kicadFootprintMetadata={{ footprintName: "capacitor_cap0603" }} pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={8} schY={4} pcbX={0.0} pcbY={-5.55} layer="bottom" doNotPlace
       schRotation={-90}
-      pcbRotation={270}
+      pcbRotation={90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
       decouplingFor=".U18 > .pin11"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
-    <capacitor name="C53" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={9.2} schY={4} pcbX={3.3} pcbY={-5.3} pcbRotation={180} layer="top"
+    <capacitor name="C53" kicadFootprintMetadata={{ footprintName: "capacitor_cap0603" }} pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="encoder" schSectionName="encoder_U18" schX={9.2} schY={4} pcbX={3.3} pcbY={-5.3} pcbRotation={180} layer="bottom" doNotPlace
       schRotation={-90}
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }}
       maxDecouplingTraceLength="30mm"
@@ -1838,7 +1838,7 @@ export const PD1180EPR = () => (
     <silkscreentext text="U17" pcbX={-16.2500} pcbY={-26.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U5" pcbX={-31.5} pcbY={8} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U22" pcbX={-11.0} pcbY={16.25} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U18" pcbX={-2.5} pcbY={-4.6} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="ENC DNP" pcbX={0} pcbY={-8} fontSize={0.8} anchorAlignment="center" layer="bottom" />
     <silkscreentext text="SWD TEST" pcbX={-17.5} pcbY={-32} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="ENC TEST" pcbX={-6} pcbY={-33.4} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U3" pcbX={-21.7500} pcbY={34.0000} fontSize={0.8} anchorAlignment="center" layer="top" />

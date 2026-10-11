@@ -83,10 +83,15 @@
     ]
   },
   "encoder": {
-    "sensor": "U18 AS5047P, top side at PCB origin",
+    "sensor": "Optional U18 AS5047P, bottom side at PCB origin; U18/C52/C53 doNotPlace",
     "preview_included": false,
     "status": "Unresolved for ordered single-shaft motor",
-    "reason": "QSH-specific pilot, shaft holder and magnet stack withdrawn. Manufacturer confirmation of rotating rear-shaft access is required before a new attachment and working gap can be defined."
+    "reason": "QSH-specific pilot, shaft holder and magnet stack withdrawn. Manufacturer confirmation of rotating rear-shaft access is required before a new attachment and working gap can be defined.",
+    "do_not_place_references": [
+      "U18",
+      "C52",
+      "C53"
+    ]
   },
   "unresolved": [
     "Shared front mounting interface, post end design, fasteners, tolerances, stiffness and tool access require approval",
