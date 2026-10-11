@@ -1,7 +1,8 @@
 import { test, expect } from 'bun:test'
 import { readFile } from 'node:fs/promises'
 import JSZip from 'jszip'
-import { rearHoleAxes, mountingAlignment } from './motor-mounting-geometry.mjs'
+import { rearHoleAxes, mountingAlignment, readMetricDrills, verifyMountingDrills, meshDrillRadius } from './motor-mounting-geometry.mjs'
+import { convertCircuitJsonTo3D } from 'circuit-json-to-gltf'
 const spec=JSON.parse(await readFile('engineering/mechanical/assembly.json'))
 const archive=await JSZip.loadAsync(await readFile(spec.motor.step_archive))
 const axes=rearHoleAxes(await archive.file(spec.motor.step).async('string'))
@@ -20,4 +21,30 @@ test('four records cannot reuse one axis or conceal an incorrect drill',()=>{
   expect(()=>mountingAlignment(axes,holes.map(h=>({...h,diameter:3.2})))).toThrow()
   expect(()=>mountingAlignment(axes,holes.map(h=>({...h,diameter:NaN})))).toThrow('finite')
   expect(()=>rearHoleAxes('ISO-10303-21;END-ISO-10303-21;')).toThrow('found 0')
+})
+
+test('manufacturing drill export rejects missing, shifted, duplicated and wrong-size holes',()=>{
+  const text='M48\nMETRIC\nT1C4.200\n%\nG90\nT1\n'+holes.map(h=>`X${(100+h.x).toFixed(3)}Y${(h.y-100).toFixed(3)}`).join('\n')+'\nM30\n'
+  const drills=readMetricDrills(text)
+  expect(verifyMountingDrills(drills,holes)).toHaveLength(4)
+  expect(()=>verifyMountingDrills(drills.slice(1),holes)).toThrow('manufacturing drill')
+  expect(()=>verifyMountingDrills(drills.map(d=>({...d,x:d.x+1})),holes)).toThrow('manufacturing drill')
+  expect(()=>verifyMountingDrills([...drills,drills[0]],holes)).toThrow('duplicated')
+  expect(()=>verifyMountingDrills(readMetricDrills(text.replace('C4.200','C3.200')),holes)).toThrow('manufacturing drill')
+  expect(()=>readMetricDrills(text.replace('METRIC','INCH'))).toThrow('metric')
+})
+
+test('3D substrate has physical apertures; capped and mirrored holes are detected',async()=>{
+  const board={type:'pcb_board',pcb_board_id:'board',center:{x:0,y:0},width:85.9,height:85.9,thickness:1.6,num_layers:4}
+  const mesh=async(hs)=>{
+    const scene=await convertCircuitJsonTo3D([board,...hs.map((h,i)=>({type:'pcb_hole',pcb_hole_id:`hole${i}`,hole_shape:'circle',hole_diameter:h.diameter,x:h.x,y:h.y}))],{renderBoardTextures:false})
+    // The scene is before the GLTF builder's X reflection.
+    return scene.boxes[0].mesh.triangles.map(t=>t.vertices.map(p=>[-p.x,p.y,p.z]))
+  }
+  const drilled=await mesh(holes),solid=await mesh([]),mirrored=await mesh(holes.map(h=>({...h,y:-h.y})))
+  for(const hole of holes) {
+    expect(Math.abs(meshDrillRadius(drilled,hole)-hole.diameter/2)).toBeLessThan(.05)
+    expect(meshDrillRadius(solid,hole)).toBe(0)
+    expect(meshDrillRadius(mirrored,hole)).toBe(0)
+  }
 })

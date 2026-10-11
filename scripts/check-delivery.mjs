@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { access, readFile, stat, writeFile } from 'node:fs/promises'
 import JSZip from 'jszip'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
@@ -7,6 +8,11 @@ const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const hashes = JSON.parse(await readFile('release/sha256.json', 'utf8'))
 const manifest = JSON.parse(await readFile('release/delivery-manifest.json', 'utf8'))
 const errors = []
+try {
+  execFileSync('bun', ['scripts/export-assembly.mjs', '--check', 'release'], { stdio: 'pipe' })
+} catch {
+  errors.push('Release BOM or component placements do not match the current source')
+}
 const checked = []
 
 const rootManifest = await readFile('delivery-manifest.json', 'utf8').catch(() => '')
@@ -39,6 +45,13 @@ for (const path of standards.release.zip_files) {
     const zip = await JSZip.loadAsync(await readFile(path), { checkCRC32: true })
     const entries = Object.values(zip.files).filter((entry) => !entry.dir)
     if (!entries.length) errors.push(`${path}: archive is empty`)
+    if (path.endsWith('-manufacturing.zip')) {
+      for (const [name, releaseName] of [['assembly-bom.csv', 'jlc-bom.csv'], ['assembly-cpl.csv', 'jlc-cpl.csv']]) {
+        const archived = zip.file(name)
+        if (!archived || await archived.async('string') !== await readFile(`release/${releaseName}`, 'utf8'))
+          errors.push(`${path}: ${name} differs from the current release assembly data`)
+      }
+    }
     if (path.endsWith('-commissioning-firmware.zip')) {
       for (const name of ['firmware.bin', 'firmware.elf', 'manifest.json', 'README.md']) {
         if (!zip.file(name)) errors.push(`${path}: ${name} missing`)

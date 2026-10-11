@@ -37,3 +37,55 @@ export function mountingAlignment(axes, holes, tolerance = 0.01) {
     return { name: hole.name, motor_xy_mm: axes[index], pcb_xy_mm: [hole.x, hole.y], axis_offset_mm: offset }
   })
 }
+
+// KiCad's committed drill export uses absolute, decimal millimetres. Reject
+// other formats instead of interpreting implied-decimal coordinates.
+export function readMetricDrills(text) {
+  if (!/^METRIC\s*$/m.test(text) || !/^G90\s*$/m.test(text))
+    throw new Error('Expected absolute decimal metric drill export')
+  const tools = new Map(), drills = []
+  let selected
+  for (const line of text.split(/\r?\n/)) {
+    const tool = line.match(/^T(\d+)C([\d.]+)$/)
+    if (tool) tools.set(tool[1], Number(tool[2]))
+    const selection = line.match(/^T(\d+)$/)
+    if (selection) selected = tools.get(selection[1])
+    if (!line.startsWith('X')) continue
+    const point = line.match(/^X(-?\d+\.\d+)Y(-?\d+\.\d+)$/)
+    if (!point || !Number.isFinite(selected)) throw new Error('Unsupported drill coordinate or missing tool')
+    drills.push({ x: Number(point[1]), y: Number(point[2]), diameter: selected })
+  }
+  return drills
+}
+
+export function verifyMountingDrills(drills, holes) {
+  return holes.map(hole => {
+    // Same (100,100) mm native-board origin used by check-board-standards.
+    // Excellon has positive Y upward, unlike KiCad's screen coordinates.
+    const expected = { x: 100 + hole.x, y: hole.y - 100 }
+    const matches = drills.filter(d => Math.hypot(d.x - expected.x, d.y - expected.y) < .001 && Math.abs(d.diameter - hole.diameter) < .001)
+    if (matches.length !== 1) throw new Error(`${hole.name}: missing or duplicated ${hole.diameter} mm manufacturing drill`)
+    return { name: hole.name, excellon_xy_mm: [matches[0].x, matches[0].y], diameter_mm: matches[0].diameter }
+  })
+}
+
+// Inspect the physical substrate triangles, not the rendered hole colour.
+// Display coordinates are [-PCB X, height, PCB Y]. A capped or displaced
+// opening has a face over its axis and therefore zero radial clearance.
+export function meshDrillRadius(triangles, hole) {
+  const x = -hole.x, y = hole.y
+  let nearest = Infinity
+  for (const triangle of triangles) {
+    const points = triangle.map(p => [p[0], p[2]])
+    let inside = false
+    for (let i = 0; i < points.length; i++) {
+      const a = points[i], b = points[(i + 1) % points.length]
+      const dx = b[0] - a[0], dy = b[1] - a[1], length = dx * dx + dy * dy
+      const t = length ? Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / length)) : 0
+      nearest = Math.min(nearest, Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy))
+      if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) inside = !inside
+    }
+    if (inside) return 0
+  }
+  return nearest
+}

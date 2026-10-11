@@ -40,6 +40,14 @@ Both outer copper layers have a 4.25 mm radius keepout around each screw axis fo
 
 These are imported CAD-body clearances, not a tolerance study. Use M4 hardware whose complete head and washer remain within Ø8 mm. A larger washer is outside this check. Assembly tolerances and tool access remain to be qualified.
 
+## Motor connector body clearance
+
+J2 is a top-entry JST B4P-VH connector. Its pads fitted on the previous layout, but the imported body overhung the bottom edge by **1.95 mm**. The connector is now shifted **2.50 mm inward** to PCB `(11.8, -37.6)` mm; its pin map, footprint and CAD origin are unchanged. The full body envelope leaves **0.55 mm nominal board-edge clearance**.
+
+R65, R84, R85, R86, C41 and R78 have local placement adjustments to keep the connector body and component courtyards clear. C41 remains beside U14, with its final native bypass path checked. The motor connector label is beside the body between J7 and J2. Routing and fabrication data are regenerated from this placement; the schematic and mounting-hole coordinates are unchanged.
+
+The release geometry check measures the complete exported J2 mesh envelope against the board perimeter and neighboring component envelopes, requiring at least **0.50 mm** in each case. It rejects the previous overhanging model. This check does not replace connector/mating-harness tolerance or physical assembly validation. The [JST VH drawing](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) is the manufacturer reference.
+
 ## Proposed adapter
 
 The drawing specifies four Ø6.5 mm front holes on a **69.6 ±0.2 mm square**. The STEP centers are `(±34.75, ±34.75)` mm, giving 69.5 mm pitch, within that tolerance. Front flange surfaces lie at STEP Z = 0 and 10 mm. The rear face lies at Z = 79.5 mm; the drawing permits an 80 mm maximum body. Four proposed supports run from the rear of the front flange to a separate plate behind the motor.
@@ -78,3 +86,24 @@ Any eventual magnet must meet the AS5047P field, alignment and temperature requi
 Motor identity is now confirmed. Driver current/hold settings, rotor/load inertia, speed and stopping duty remain unqualified. These mechanical and operating gates are additional to the existing PD-image, firmware and powered-test holds.
 
 References: [ordered Amazon listing](https://www.amazon.com/dp/B091C83HWF), [manufacturer product](https://www.omc-stepperonline.com/s-series-nema-34-stepper-motor-4-8nm-679-87oz-in-14mm-key-way-shaft-1m-cable-34hs31-6004s1), [AS5047P datasheet](https://look.ams-osram.com/m/d05ee39221f9857/original/AS5047P-DS000324.pdf), [tscircuit subassembly](https://docs.tscircuit.com/elements/assembly-subassembly).
+
+## Drill visibility and export verification
+
+The four mounting apertures are Ø4.2 mm NPTH through holes. Their coordinates
+are checked independently in the compiled source, native board, actual metric
+Excellon drill file and exported PCB substrate mesh. The 3D check measures the
+open radius through the substrate, so a green surface covering a hole cannot
+pass merely because a `pcb_hole` record exists. Missing, shifted, duplicated,
+wrong-diameter and capped-hole regressions are covered by the mounting tests.
+
+The assembly proposal includes solid orange screw-head clearance envelopes.
+These intentionally cover the holes when the adapter/fastener model is visible;
+they are mechanical fit envelopes, not copper or plugged PCB holes. Use the
+bare-board view to inspect the apertures. Manufacturing drilling is supplied in
+`pd1180-epr-r0.3-NPTH.drl` inside the Gerber ZIP, separate from the copper layers.
+
+For a current-source inspection without waiting for a hosted release, run
+`bunx tsci dev motor-assembly.circuit.tsx`, select 3D, right-click a screw-head
+envelope and choose **Hide "adapter_proposal"**. This changes only viewer
+visibility. The [local source screenshot](../previews/current-source-mounting-holes.jpg)
+shows all four PCB openings with the ordered motor still visible.

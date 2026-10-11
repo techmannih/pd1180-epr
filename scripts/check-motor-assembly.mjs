@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import JSZip from 'jszip'
-import { rearHoleAxes, mountingAlignment } from './motor-mounting-geometry.mjs'
+import { rearHoleAxes, mountingAlignment, readMetricDrills, verifyMountingDrills, meshDrillRadius } from './motor-mounting-geometry.mjs'
 
 // Nominal CAD collision screen; manufacturing tolerances and magnetic performance
 // remain separate qualification gates in engineering/mechanical/assembly.json.
@@ -42,7 +42,7 @@ function clip(points, axis, level, above) {
   }
   return result
 }
-function polygonDistance(points,x,y) {
+function signedPolygonClearance(points,x,y) {
   let inside=false, best=Infinity
   for(let i=0;i<points.length;i++) {
     const a=points[i],b=points[(i+1)%points.length],dx=b[0]-a[0],dy=b[1]-a[1]
@@ -50,13 +50,13 @@ function polygonDistance(points,x,y) {
     best=Math.min(best,Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy))
     if((a[1]>y)!==(b[1]>y) && x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]) inside=!inside
   }
-  return inside?0:best
+  return inside?best:-best
 }
 function radialClearance(mesh,x,y,bottom,top,radius) {
   let best=Infinity
   for(const tri of mesh.triangles) {
     const polygon=clip(clip(tri,1,bottom,true),1,top,false)
-    if(polygon.length>=3) best=Math.min(best,polygonDistance(polygon.map(p=>[p[0],p[2]]),x,y)-radius)
+    if(polygon.length>=3) best=Math.min(best,Math.max(0,-signedPolygonClearance(polygon.map(p=>[p[0],p[2]]),x,y))-radius)
   }
   return best
 }
@@ -118,12 +118,64 @@ const sourceArchive=await JSZip.loadAsync(await readFile(spec.motor.step_archive
 if(sha(await sourceArchive.file(spec.motor.step).async('nodebuffer'))!==spec.motor.sha256) errors.push('Motor STEP hash changed')
 const top=contract.fabrication.finished_thickness_mm/2
 const source=JSON.parse(await readFile('dist/index/circuit.json'))
+const mountingHoles=contract.mechanical.mounting_holes.map(h=>({name:h.name,x:h.centered_x_mm,y:h.centered_y_mm,diameter:h.diameter_mm}))
+const drillPath='dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH.drl'
+const drillBytes=await readFile(drillPath)
+const manufacturingDrills=verifyMountingDrills(readMetricDrills(drillBytes.toString()),mountingHoles)
+const substrate=board.meshes.filter(m=>{
+  const b=meshBounds([m])
+  return Math.abs(b.min[1]+top)<.001 && Math.abs(b.max[1]-top)<.001 &&
+    Math.abs(b.max[0]-b.min[0]-contract.mechanical.board_mm[0])<.001 &&
+    Math.abs(b.max[2]-b.min[2]-contract.mechanical.board_mm[1])<.001
+})
+if(substrate.length!==1) throw new Error('Expected one physical PCB substrate mesh for drill verification')
+const meshDrills=mountingHoles.map(h=>{
+  const radius=meshDrillRadius(substrate[0].triangles,h)
+  // A 16-sided 4.2 mm hole has a 2.060 mm inscribed radius. The 0.05 mm
+  // allowance covers this tessellation sagitta, not a manufacturing tolerance.
+  if(Math.abs(radius-h.diameter/2)>.05 || !Number.isFinite(radius)) errors.push(`${h.name}: 3D substrate has a capped, missing or incorrectly sized drill`)
+  return {name:h.name,minimum_open_radius_mm:radius,nominal_diameter_mm:h.diameter}
+})
 const motorAxes=rearHoleAxes(await sourceArchive.file(spec.motor.step).async('string'))
 const holeAlignment=mountingAlignment(motorAxes, contract.mechanical.mounting_holes.map(h => ({name:h.name,x:h.centered_x_mm,y:h.centered_y_mm,diameter:h.diameter_mm})))
 mountingAlignment(motorAxes, source.filter(r => r.type==='pcb_hole' && !r.pcb_component_id).map((h,i) => ({name:`compiled H${i+1}`,x:h.x,y:h.y,diameter:h.hole_diameter})))
 const refs=new Set(source.filter(r=>r.type==='source_component').map(r=>r.name))
 const parts=board.meshes.filter(m=>refs.has(m.name))
 for(const ref of ['Q12','Q13','R97','C5','R2','SW1','U18']) if(!parts.some(m=>m.name===ref)) errors.push(`Missing component CAD: ${ref}`)
+// A top-entry header must fit as a complete body, not just its solder lands.
+// Check the projected exported mesh envelope, including any CAD offsets.
+function segmentDistance(a,b,c,d) {
+  const cross=(u,v)=>u[0]*v[1]-u[1]*v[0],sub=(u,v)=>u.map((x,k)=>x-v[k])
+  const ab=sub(b,a),cd=sub(d,c),ac=sub(c,a),den=cross(ab,cd)
+  if(Math.abs(den)>1e-12) {
+    const t=cross(ac,cd)/den,u=cross(ac,ab)/den
+    if(t>=0&&t<=1&&u>=0&&u<=1) return 0
+  }
+  const pointDistance=(p,q,r)=>{
+    const v=sub(r,q),w=sub(p,q),length=v[0]**2+v[1]**2
+    const t=length?Math.max(0,Math.min(1,(w[0]*v[0]+w[1]*v[1])/length)):0
+    return Math.hypot(w[0]-t*v[0],w[1]-t*v[1])
+  }
+  return Math.min(pointDistance(a,c,d),pointDistance(b,c,d),pointDistance(c,a,b),pointDistance(d,a,b))
+}
+const outline=source.find(r=>r.type==='pcb_board').outline.map(p=>[p.x,p.y])
+const connectorClearances=spec.connector_body_clearances.map(requirement=>{
+  const mesh=parts.find(m=>m.name===requirement.reference)
+  if(!mesh) throw new Error(`Missing connector CAD: ${requirement.reference}`)
+  const bounds=meshBounds([mesh])
+  const corners=[[-bounds.max[0],bounds.min[2]],[-bounds.min[0],bounds.min[2]],[-bounds.min[0],bounds.max[2]],[-bounds.max[0],bounds.max[2]]]
+  let edge=Math.min(...corners.map(([x,y])=>signedPolygonClearance(outline,x,y)))
+  for(let i=0;i<corners.length;i++) for(let j=0;j<outline.length;j++)
+    edge=Math.min(edge,segmentDistance(corners[i],corners[(i+1)%corners.length],outline[j],outline[(j+1)%outline.length]))
+  const nearby=parts.filter(m=>m!==mesh).map(m=>{
+    const other=meshBounds([m])
+    const gaps=[0,2].map(k=>Math.max(0,other.min[k]-bounds.max[k],bounds.min[k]-other.max[k]))
+    return {reference:m.name,projected_envelope_gap_mm:Math.hypot(...gaps)}
+  }).sort((a,b)=>a.projected_envelope_gap_mm-b.projected_envelope_gap_mm).slice(0,5)
+  if(edge<requirement.minimum_board_edge_mm) errors.push(`${requirement.reference}: CAD body is outside the board or below its required edge clearance`)
+  if(nearby[0]?.projected_envelope_gap_mm<requirement.minimum_component_gap_mm) errors.push(`${requirement.reference}: CAD body has insufficient clearance to ${nearby[0].reference}`)
+  return {reference:requirement.reference,body_bounds_pcb_mm:{min:[-bounds.max[0],bounds.min[2]],max:[-bounds.min[0],bounds.max[2]]},minimum_board_edge_mm:edge,minimum_required_board_edge_mm:requirement.minimum_board_edge_mm,minimum_required_component_gap_mm:requirement.minimum_component_gap_mm,nearest_components:nearby}
+})
 const fasteners=contract.mechanical.mounting_holes.map(h=>{
   const nearest=parts.map(m=>({reference:m.name,clearance_mm:radialClearance(m,-h.centered_x_mm,h.centered_y_mm,top,top+spec.mount.pcb_top_head_and_washer_height_mm,spec.mount.pcb_top_head_maximum_diameter_mm/2)})).filter(v=>Number.isFinite(v.clearance_mm)).sort((a,b)=>a.clearance_mm-b.clearance_mm).slice(0,5)
   if(!nearest.length || nearest[0].clearance_mm<spec.mount.minimum_component_to_head_mm) errors.push(`${h.name}: component clearance below ${spec.mount.minimum_component_to_head_mm} mm`)
@@ -135,7 +187,7 @@ for(const p of posts) if(p.minimum_motor_clearance_mm<.5) errors.push('Front-fla
 const calculatedPostLength=spec.motor.rear_face_step_z_mm-spec.motor.front_flange_back_step_z_mm+spec.mount.motor_rear_to_adapter_bottom_mm
 const stack=spec.mount.motor_rear_to_adapter_bottom_mm+spec.mount.adapter_thickness_mm+spec.mount.adapter_to_pcb_bottom_mm
 if(Math.abs(calculatedPostLength-spec.mount.long_post_length_mm)>1e-6 || Math.abs(stack-spec.mount.pcb_bottom_to_motor_rear_mm)>1e-6) errors.push('Mechanical axial stack is inconsistent')
-const report={hole_alignment:holeAlignment,board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
+const report={manufacturing_drills:{path:drillPath,sha256:sha(drillBytes),holes:manufacturingDrills},substrate_drills:meshDrills,connector_body_clearances:connectorClearances,hole_alignment:holeAlignment,board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
 await writeFile('docs/motor-assembly-check.json',JSON.stringify(report,null,2)+'\n')
 console.log(JSON.stringify(report,null,2))
 if(errors.length) process.exitCode=1

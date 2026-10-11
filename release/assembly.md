@@ -8,7 +8,7 @@ The requested deliverable is a fabricated, fully populated, programmed and funct
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes and 1 oz copper on all layers. The fabricator must confirm the USB impedance stack-up; current/thermal qualification remains pending.
 - Assembly is top-side only. All fitted components, the AS5047P, its local bypass parts and service pads are on top. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
-- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total), and U34 has four exposed-pad thermal vias. The final top-side route has 69 via drills overlapping top solder lands; exact locations are recorded in `engineering/top-side-placement.json`. Order epoxy-filled and copper-capped processing for every via-in-pad, with no finished via drill below 0.30 mm.
+- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total), and U34 has four exposed-pad thermal vias. The final top-side route has 58 via drills overlapping top solder lands; exact locations are recorded in `engineering/top-side-placement.json`. Order epoxy-filled and copper-capped processing for every via-in-pad, with no finished via drill below 0.30 mm.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
@@ -34,7 +34,7 @@ JLCPCB currently offers [programming](https://jlcpcb.com/help/article/pcba-progr
 
 Supply the following before approving a ready-to-run batch:
 
-1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 69 filled/capped via-in-pad locations and the agreed stack-up.
+1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 58 filled/capped via-in-pad locations and the agreed stack-up.
 2. U3 **M24512-RMN6TP**: approved full-flash BIN, hash, reviewed EEPROM programming method and readback verification. [TI's EVM guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf) describes generating the full-flash binary. This board's U3 uses EEP_SDA/EEP_SCL on U2's I2Cc bus, separate from the STM32's PD_SDA/PD_SCL host bus. Post-assembly access, power sequencing and bus ownership still need a demonstrated fixture method; do not assume SWD or J10 directly programs this EEPROM.
 3. U16 **STM32G0B1CBT6**: qualified motor-enabled BIN/HEX, hash, SWD pad drawing, flash address `0x08000000` for a raw BIN, supply arrangement and readback procedure. The existing commissioning archive is suitable only for initial diagnostic testing. Do not substitute it as the final motor-operating image.
 4. Exact motor and brake load, qualified current/microstep settings, STEP pulse/ direction timing and maximum rate, supply/cable, external 24 V controls, heatsink, enclosure and ambient limits. These operating limits must come from first-article qualification, not the 5.5 A target alone.

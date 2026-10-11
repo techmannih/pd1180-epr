@@ -1033,7 +1033,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.SENSE_A", pin2: "net.GND" }} pcbRotation={180} />
     <HoLLR2512_3W_33mR_1_ name="R110" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-b" schSectionName="bridge-b_R110" schX={6.5} schY={-14} schRotation={-90} pcbX={35.6} pcbY={-6.5}
       connections={{ pin1: "net.SENSE_B", pin2: "net.GND" }} pcbRotation={180} />
-    <B4P_VH_LF__SN_ name="J2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_J2" schX={15} schY={-14} pcbX={11.8} pcbY={-40.1} allowOffBoard
+    <B4P_VH_LF__SN_ name="J2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="bridge-a" schSectionName="bridge-a_J2" schX={15} schY={-14} pcbX={11.8} pcbY={-37.6}
       connections={{ pin1: "net.MOTOR_A1_OUT", pin2: "net.MOTOR_A2", pin3: "net.MOTOR_B1_OUT", pin4: "net.MOTOR_B2" }} />
     <A_74LVC1G157GW_125 name="U8" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motion" schSectionName="motion_U8" schX={15} schY={0} pcbX={4} pcbY={-8}
       connections={{ pin1: "net.STEP_IN", pin2: "net.GND", pin3: "net.STOP_L", pin4: "net.REFL_STEP", pin5: "net.V3V3", pin6: "net.SD_MODE" }} />
@@ -1174,7 +1174,7 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="430k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C861400"] }}
       connections={{ pin1: "net.VMOTOR", pin2: "net.MOTOR_OVP_SENSE" }} />
-    <resistor name="R65" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={8} schY={-8} pcbX={6.0} pcbY={-34.0}
+    <resistor name="R65" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={8} schY={-8} pcbX={4.55} pcbY={-32.6}
       resistance="20k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C723637"] }}
       connections={{ pin1: "net.MOTOR_OVP_SENSE", pin2: "net.MOTOR_OVP_LOW" }} />
     <resistor name="R66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={11} schY={-8} pcbX={-12.5} pcbY={-34.25} pcbRotation={180}
@@ -1185,7 +1185,7 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }}
       connections={{ pin1: "net.VMOTOR_OK", pin2: "net.GND" }} />
-    <capacitor name="C41" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={21.2} schY={1} pcbX={2.5} pcbY={-33.0}
+    <capacitor name="C41" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_U14" schX={21.2} schY={1} pcbX={1.5} pcbY={-33.0}
       schRotation={-90}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
@@ -1348,11 +1348,11 @@ export const PD1180EPR = () => (
     <resistor name="R83" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={5} schY={-7} pcbX={16.5} pcbY={-31.0}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.STOPL_24V", pin2: "net.STOP_L_BASE" }} />
-    <resistor name="R84" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={8} schY={-7} pcbX={12.25} pcbY={-34.0}
+    <resistor name="R84" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={8} schY={-7} pcbX={12.25} pcbY={-32.6}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }}
       connections={{ pin1: "net.STOP_L_BASE", pin2: "net.GND" }} />
-    <resistor name="R85" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={11} schY={-7} pcbX={15.5} pcbY={-33.5}
+    <resistor name="R85" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q19" schX={11} schY={-7} pcbX={15.5} pcbY={-32.6}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.STOP_L" }} pcbRotation={180} />
@@ -1361,7 +1361,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.STOP_L_BASE", pin2: "net.GND" }} pcbRotation={180} />
     <MMBT5551LT1G name="Q20" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={17} schY={-9} pcbX={8.0} pcbY={-26.5}
       connections={{ base: "net.STOP_R_BASE", emitter: "net.GND", collector: "net.STOP_R" }} />
-    <resistor name="R86" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={22} schY={-7} pcbX={18.75} pcbY={-34.0}
+    <resistor name="R86" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={22} schY={-7} pcbX={18.75} pcbY={-32.6}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.STOPR_24V", pin2: "net.STOP_R_BASE" }} />
     <resistor name="R87" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q20" schX={25} schY={-7} pcbX={22} pcbY={-33.4}
@@ -1509,7 +1509,7 @@ export const PD1180EPR = () => (
     <resistor name="R77" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={5} schY={2} pcbX={-4.75} pcbY={-28.0}
       resistance="47k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25819"] }}
       connections={{ pin1: "net.DIN0_24V", pin2: "net.DIN0_BASE" }} pcbRotation={180} />
-    <resistor name="R78" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={8} schY={2} pcbX={2.5} pcbY={-34.75}
+    <resistor name="R78" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="inputs" schSectionName="inputs_Q17" schX={8} schY={2} pcbX={2.2} pcbY={-35.5} pcbRotation={90}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }}
       connections={{ pin1: "net.DIN0_BASE", pin2: "net.GND" }} />
@@ -1830,7 +1830,7 @@ export const PD1180EPR = () => (
     {/* Readable component references, placed clear of pads and adjacent labels. */}
     <silkscreentext text="Y1" pcbX={-11.0000} pcbY={-15.7500} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="SW1" pcbX={-16.8} pcbY={-38.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="J2 MOTOR" pcbX={20.0} pcbY={-36.0} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text={"J2\nMOTOR"} pcbX={2.2} pcbY={-39.7} pcbRotation={90} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="J3" pcbX={0.0000} pcbY={38.5000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U16" pcbX={-20.0000} pcbY={-6.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U7" pcbX={20.0} pcbY={4.0} fontSize={0.8} anchorAlignment="center" layer="top" />
@@ -1850,7 +1850,7 @@ export const PD1180EPR = () => (
     <silkscreentext text="U4" pcbX={-9.2500} pcbY={24.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U11" pcbX={-4.0000} pcbY={-12.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U13" pcbX={10.0000} pcbY={-20.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
-    <silkscreentext text="U14" pcbX={5.0000} pcbY={-32.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
+    <silkscreentext text="U14" pcbX={5.6} pcbY={-30.0} pcbRotation={90} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U10" pcbX={-4.0000} pcbY={-7.0000} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U12" pcbX={2.5000} pcbY={-22.2500} fontSize={0.8} anchorAlignment="center" layer="top" />
     <silkscreentext text="U15" pcbX={12.0} pcbY={34.55} fontSize={0.8} anchorAlignment="center" layer="top" />

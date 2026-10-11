@@ -27,6 +27,9 @@ const project = join(out, 'kicad-project')
 const boardBase = basename(boardPath, extname(boardPath))
 const sourceProject = join(dirname(boardPath), `${boardBase}.kicad_pro`)
 await Promise.all([access(boardPath), access(sourceProject), access(projectPath)])
+// Regenerate placement data before packaging; a previous assembly export may
+// still describe the board before a PCB placement change.
+await run('bun', ['scripts/export-assembly.mjs'])
 await rm(out, { recursive: true, force: true })
 await Promise.all([mkdir(gerbers, { recursive: true }), mkdir(project, { recursive: true }), mkdir('previews', { recursive: true })])
 

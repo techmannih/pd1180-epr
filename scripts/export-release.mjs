@@ -6,6 +6,7 @@ import JSZip from 'jszip'
 import { writeCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const release = 'release'
+execFileSync('bun', ['scripts/export-assembly.mjs', '--check', 'dist/manufacturing'], { stdio: 'inherit' })
 const sourcing = 'sourcing'
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 await Promise.all([mkdir(release, { recursive: true }), mkdir(sourcing, { recursive: true }), mkdir(join(release, 'schematics'), { recursive: true })])

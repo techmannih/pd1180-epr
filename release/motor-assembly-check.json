@@ -1,4 +1,104 @@
 {
+  "manufacturing_drills": {
+    "path": "dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH.drl",
+    "sha256": "76b18f121ad89374cbfe582589795eb06336f24e2a097c45168c069bb3f9e6af",
+    "holes": [
+      {
+        "name": "H1",
+        "excellon_xy_mm": [
+          124.447,
+          -138.374
+        ],
+        "diameter_mm": 4.2
+      },
+      {
+        "name": "H2",
+        "excellon_xy_mm": [
+          138.374,
+          -75.553
+        ],
+        "diameter_mm": 4.2
+      },
+      {
+        "name": "H3",
+        "excellon_xy_mm": [
+          75.553,
+          -61.626
+        ],
+        "diameter_mm": 4.2
+      },
+      {
+        "name": "H4",
+        "excellon_xy_mm": [
+          61.626,
+          -124.447
+        ],
+        "diameter_mm": 4.2
+      }
+    ]
+  },
+  "substrate_drills": [
+    {
+      "name": "H1",
+      "minimum_open_radius_mm": 2.082032708392208,
+      "nominal_diameter_mm": 4.2
+    },
+    {
+      "name": "H2",
+      "minimum_open_radius_mm": 2.082032708392208,
+      "nominal_diameter_mm": 4.2
+    },
+    {
+      "name": "H3",
+      "minimum_open_radius_mm": 2.082032708392208,
+      "nominal_diameter_mm": 4.2
+    },
+    {
+      "name": "H4",
+      "minimum_open_radius_mm": 2.082032708392208,
+      "nominal_diameter_mm": 4.2
+    }
+  ],
+  "connector_body_clearances": [
+    {
+      "reference": "J2",
+      "body_bounds_pcb_mm": {
+        "min": [
+          3.879999446868897,
+          -42.400000190734865
+        ],
+        "max": [
+          19.720000553131104,
+          -33.69999990463257
+        ]
+      },
+      "minimum_board_edge_mm": 0.5499998092651381,
+      "minimum_required_board_edge_mm": 0.5,
+      "minimum_required_component_gap_mm": 0.5,
+      "nearest_components": [
+        {
+          "reference": "R65",
+          "projected_envelope_gap_mm": 0.6749998927116394
+        },
+        {
+          "reference": "R84",
+          "projected_envelope_gap_mm": 0.6749998927116394
+        },
+        {
+          "reference": "R85",
+          "projected_envelope_gap_mm": 0.6749998927116394
+        },
+        {
+          "reference": "R86",
+          "projected_envelope_gap_mm": 0.6749998927116394
+        },
+        {
+          "reference": "Q19",
+          "projected_envelope_gap_mm": 1.2499872207641616
+        }
+      ]
+    }
+  ],
   "hole_alignment": [
     {
       "name": "H1",
@@ -49,17 +149,17 @@
       "axis_offset_mm": 2.806551131218832e-7
     }
   ],
-  "board_glb_sha256": "a38a29f797f085b8996716e2454b092ffdc6226913f4185a1ba27561a064889f",
+  "board_glb_sha256": "a978d1cfd2c7bb2e40a342c0615664bc7eb30181b23957a8cefc8bea0f4276b6",
   "motor_glb_sha256": "eec0b062b6c26976734a02875d35791f12e7442a425669e94afd6a522e39a93d",
   "motor_step_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
-  "spec_sha256": "250a7cccbe9f70ba7b1293426c2207e23ca4aa06c8c9a7a1dc6dde0eaf567fe3",
+  "spec_sha256": "f1ba9da08b77c7b56c1192fda2b97a03e9bf51b36bc5b8f687f69d115bfb59f5",
   "component_models_checked": 294,
   "assembly_alignment": {
     "maximum_vertex_offset_mm": {
       "motor": 0,
       "fixture": 0
     },
-    "assembly_glb_sha256": "12132abcc717ab793b26f3212a1f0e15cef4209722bc9b239fcf1f47098af28a",
+    "assembly_glb_sha256": "ba275fa3fda631aa83bf3428823821ad90d00812c65edd63d8c97e91644c85ae",
     "motor_bounds_display_mm": {
       "min": [
         -43,
@@ -129,12 +229,12 @@
           "clearance_mm": 0.8383
         },
         {
-          "reference": "R86",
-          "clearance_mm": 2.2912
-        },
-        {
           "reference": "R90",
           "clearance_mm": 3.167
+        },
+        {
+          "reference": "R86",
+          "clearance_mm": 3.2524
         }
       ]
     },

@@ -103,7 +103,7 @@
   "via_in_pad": {
     "criterion": "Through-via finished-drill circle overlaps an F.Paste-enabled solder land",
     "required_process": "epoxy filled and copper capped, per release/order-settings.json",
-    "count": 57,
+    "count": 58,
     "vias": [
       {
         "x_mm": 66.800077,
@@ -486,6 +486,16 @@
         ]
       },
       {
+        "x_mm": 116.4847,
+        "y_mm": 132.6986,
+        "net": "V3V3",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "R85:1"
+        ]
+      },
+      {
         "x_mm": 118.4478,
         "y_mm": 82.4249,
         "net": "OUT0_BASE",
@@ -676,7 +686,7 @@
         ]
       }
     ],
-    "board_sha256": "aabcf940d274bf8d7ff9a39c8c2f891a71b2b03341c86619f439a98be283f456"
+    "board_sha256": "96b726582de590c283d432b00b81381c254a4e2a04d2e00b6c6c8f81188a35c3"
   },
   "assembly_model": {
     "glb": "dist/release/3d.glb",
@@ -882,5 +892,46 @@
       "tolerance_mm": 0.001,
       "errors": []
     }
+  },
+  "motor_connector_edge_update": {
+    "date": "2026-10-11T01:29:36.090310+00:00",
+    "base_commit": "61d2d66f19d42bdcb0541ae2fd6934e2f135d173",
+    "board_sha256": "96b726582de590c283d432b00b81381c254a4e2a04d2e00b6c6c8f81188a35c3",
+    "moved_components": [
+      "J2",
+      "R65",
+      "R84",
+      "R85",
+      "R86",
+      "C41",
+      "R78"
+    ],
+    "j2_inward_shift_mm": 2.5,
+    "minimum_via_drill_mm": 0.3,
+    "via_in_pad_count": 58,
+    "schematic_records_unchanged": 3275,
+    "logical_records": {
+      "source_component": {
+        "count": 305,
+        "unchanged": true
+      },
+      "source_port": {
+        "count": 1066,
+        "unchanged": true
+      },
+      "source_net": {
+        "count": 199,
+        "unchanged": true
+      },
+      "source_trace": {
+        "count": 1096,
+        "unchanged": true
+      },
+      "source_component_internal_connection": {
+        "count": 3,
+        "unchanged": true
+      }
+    },
+    "scope": "Relocated complete connector and adjacent passives; preserved supplier CAD origin, pin map, board outline and all mounting holes. Rerouted displaced local signals without altering critical Kelvin branches or USB reference copper."
   }
 }
