@@ -6,7 +6,7 @@ const expectedBun = packageJson.packageManager?.match(/^bun@(.+)$/)?.[1]
 if (!expectedBun) errors.push('package.json must pin packageManager as bun@<exact-version>')
 else if (Bun.version !== expectedBun) errors.push(`Bun ${Bun.version} does not match pinned ${expectedBun}`)
 
-for (const [group, dependencies] of Object.entries({ dependencies: packageJson.dependencies || {}, devDependencies: packageJson.devDependencies || {} })) {
+for (const [group, dependencies] of Object.entries({ dependencies: packageJson.dependencies || {}, devDependencies: packageJson.devDependencies || {}, overrides: packageJson.overrides || {} })) {
   for (const [name, version] of Object.entries(dependencies)) {
     if (!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version)) errors.push(`${group}.${name} is not pinned to an exact version: ${version}`)
   }
@@ -21,10 +21,18 @@ try {
   errors.push('Installed tscircuit package metadata is unavailable; run bun install --frozen-lockfile')
 }
 
+const compatibilityOverrides = {}
+for (const [name, expected] of Object.entries(packageJson.overrides || {})) {
+  const actual = JSON.parse(await readFile(`node_modules/${name}/package.json`, 'utf8')).version
+  compatibilityOverrides[name] = { expected, actual }
+  if (actual !== expected) errors.push(`Installed ${name} ${actual} does not match compatibility pin ${expected}`)
+}
+
 const report = {
   checked_at: new Date().toISOString(),
   bun: { expected: expectedBun, actual: Bun.version },
   tscircuit: { expected: packageJson.devDependencies.tscircuit, actual: installedTscircuit },
+  compatibility_overrides: compatibilityOverrides,
   exact_dependency_versions: errors.filter((error) => error.includes('is not pinned')).length === 0,
   lockfile: 'bun.lock',
   errors,
