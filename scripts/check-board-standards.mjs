@@ -50,7 +50,7 @@ errors.push(...assemblyPolicyErrors(circuit, standards, new Set(manifest.parts.m
 
 const sheets = circuit.filter((row) => row.type === 'schematic_sheet')
 if (sheets.length !== standards.project_geometry.schematic_sheet_count) errors.push(`Expected ${standards.project_geometry.schematic_sheet_count} schematic sheets, found ${sheets.length}`)
-for (const sheet of sheets) if (sheet.sheet_size?.toLowerCase() !== standards.project_geometry.schematic_sheet_size) errors.push(`${sheet.name}: expected A4 sheet`)
+for (const sheet of sheets) if (sheet.sheet_size?.toLowerCase() !== standards.project_geometry.schematic_sheet_size || sheet.sheet_width !== 297 || sheet.sheet_height !== 210) errors.push(`${sheet.name}: expected A4 sheet`)
 
 const mountingHoles = circuit.filter((row) => row.type === 'pcb_hole' && close(row.hole_diameter, standards.project_geometry.mounting_hole_diameter_mm, 0.01))
 if (mountingHoles.length !== standards.project_geometry.mounting_hole_count) errors.push(`Expected ${standards.project_geometry.mounting_hole_count} mounting holes, found ${mountingHoles.length}`)

@@ -3,6 +3,8 @@ import { readFile } from 'node:fs/promises'
 
 export function releaseErrors(status, verification, changed = [], reviewOnly = false) {
   const errors = []
+  if (!verification.circuit_messages || Object.values(verification.circuit_messages).some(count => count !== 0))
+    errors.push('Source errors/warnings must be recorded and zero')
   if (!verification.routed_board_verified || !verification.checks?.length ||
       verification.checks.some(check => check.exit_code !== 0 || check.status !== 'pass'))
     errors.push('Engineering verification has not passed')

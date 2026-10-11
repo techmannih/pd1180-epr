@@ -17,10 +17,10 @@ run('build:preview')
 run('check:routing-fingerprint')
 run('check:kicad-drc')
 const source = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
-const sourceErrors = source.filter((row) => row.type.endsWith('_error'))
+const sourceMessages = source.filter((row) => row.type.endsWith('_error') || row.type.endsWith('_warning'))
 const pathErrors = checkTracesAreContiguous(source)
-if (sourceErrors.length || pathErrors.length) {
-  throw new Error(`Source PCB path errors: ${JSON.stringify([...sourceErrors, ...pathErrors])}`)
+if (sourceMessages.length || pathErrors.length) {
+  throw new Error(`Source errors/warnings or PCB path errors: ${JSON.stringify([...sourceMessages, ...pathErrors])}`)
 }
 if (sha(await readFile('index.circuit.tsx')) !== sourceBefore) {
   throw new Error('Source changed during build; rerun build:pcb')

@@ -277,10 +277,10 @@
     }
   },
   "head": {
-    "created": "2026-10-11T06:13:22.127Z",
+    "created": "2026-10-11T07:29:57.136Z",
     "generator": "circuit-json-to-kicad",
     "generator_version": "0.0.1",
-    "modified": "2026-10-11T06:13:22.127Z",
+    "modified": "2026-10-11T07:29:57.136Z",
     "project_name": "pd1180-epr-r0.3"
   },
   "libraries": {
@@ -345,79 +345,115 @@
   },
   "sheets": [
     [
-      "ef5b7d38-813a-4fa7-a4cf-52f4bdc037af",
+      "75f16ba3-0dc4-4dbe-8315-431746e38560",
       "Root"
     ],
     [
-      "40217e66-7c7c-4bde-bb04-03d1ad79667c",
+      "293f6769-bd16-40a1-ade9-07337d7f5588",
       "USB-C PD POWER"
     ],
     [
-      "4615d41a-379d-43ed-9526-4a2af8c6de5e",
-      "PD and Motor Backup Supplies"
+      "0ceebce0-57ba-436b-8692-f2230dd75d8d",
+      "PD Controller and EEPROM"
     ],
     [
-      "1bc4ad24-7de1-4039-a9c2-89b7a30bfa7d",
+      "791e49b3-e04d-4ac2-9a96-dd9203199a60",
+      "PD Backup Supply"
+    ],
+    [
+      "d7ec1994-0557-4fa3-a37d-e61f4b1764bd",
+      "Motor Backup Supply"
+    ],
+    [
+      "18e790b3-4615-4f66-a74b-6388fad4e3e1",
+      "Logic Supply Selection and Power Permit"
+    ],
+    [
+      "0934a7f1-bd42-45b8-bb10-aa1ebad3c018",
       "Protected 48 V Motor Bus"
     ],
     [
-      "2cdb9cb2-a720-4080-b6d4-b9bfc506df2b",
-      "Motion Controller and Enable Chain"
+      "3a041bb9-643e-49e1-9e49-6ed32a438774",
+      "Motion Controller"
     ],
     [
-      "0d4940f0-c9a7-4cee-aefb-3f4c18b911e0",
+      "284e81d1-436d-46d1-ae0d-e349ab343bbd",
+      "Step Direction and Hardware Enable"
+    ],
+    [
+      "27462d9e-e228-4675-bf6a-48f7dcb0cb2f",
       "Motor Phase A Power Bridge"
     ],
     [
-      "cced9c98-fe9b-4e0e-922d-b909bcef5c89",
+      "9beea07c-f91c-4353-a94d-7cc6e479c16e",
       "Motor Phase B Power Bridge"
     ],
     [
-      "30ffa9b0-2752-40fe-84c0-9f3975a04833",
-      "Regeneration Brake and Overvoltage"
+      "093136c7-0164-4462-975b-245b9de824ba",
+      "Brake Reference and Turn-on Threshold"
     ],
     [
-      "7431b185-0300-4aa2-8d3f-f78502690069",
-      "MCU, Clock, Memory and Debug"
+      "5800a202-8a8f-44e0-8300-8bb3e0b50d0f",
+      "Overvoltage Inhibit and Brake Driver"
     ],
     [
-      "02f0a1fa-61f1-434a-8495-f49538d5bbc8",
-      "Shaft Encoder and Monitor"
+      "0a769dad-a70b-4169-a0db-15c8673d473d",
+      "MCU Clock Memory and Debug"
     ],
     [
-      "9baaf1f5-2f17-4de3-a84d-419b34f08100",
+      "31bd8ae4-2e02-4c21-9bd3-efcafab7e3ca",
+      "Optional Shaft Encoder"
+    ],
+    [
+      "2167efb6-9687-434b-8c1e-ae010765229a",
       "USB DATA and Attach Sense"
     ],
     [
-      "f204a4d5-d7dc-4698-8d9a-380dbccbcb1f",
-      "24 V Inputs and Step/Direction"
+      "4968a125-1f06-4d21-bad8-465452185986",
+      "Home Limits and Digital Input 0"
     ],
     [
-      "ee624198-b084-4940-a4f8-b9d8ff464ccb",
-      "CAN, RS485 and RS232"
+      "a5be6885-f95d-4688-91de-dda364e40180",
+      "Step Direction and Industrial Harness"
     ],
     [
-      "e5560bd7-3ec5-4a7c-a530-3389b7067787",
-      "Hardware Enable and Outputs"
+      "31d0791f-fe9f-4fe2-826e-f8e4d8f67329",
+      "CAN and RS485"
     ],
     [
-      "dd0c59de-4aa2-4e52-a949-3796242755c9",
+      "906a3161-f7c6-40c6-aef6-23f2611a0da3",
+      "RS232 Interface"
+    ],
+    [
+      "8a913ee2-f526-4a32-8c3f-30cddee9dcd5",
+      "Hardware Outputs"
+    ],
+    [
+      "64f64a74-f216-44b1-a23e-7d4b91e335eb",
       "USB Logic Power"
     ],
     [
-      "ecaad1aa-517a-45bf-b354-ddb989cf9e67",
-      "Temperature and Current Diagnostics"
+      "5d9b4b16-9071-4a06-a59e-6f2b2fea1830",
+      "Temperature and Bus Diagnostics"
     ],
     [
-      "31669ac9-f0d4-4209-8a29-98716362d9f1",
+      "bf1d3151-86d9-4afe-a4db-a7cdb99bbd34",
+      "Phase Current Diagnostics"
+    ],
+    [
+      "c11ea867-cb98-4051-9ce5-a53c9257ac09",
       "Regulated Driver Supply"
     ],
     [
-      "d905ca14-d186-4142-ac49-2641eecedbec",
-      "Status Indicators and Audible Alarm"
+      "8a700936-d490-4d12-9e31-34e61e5be047",
+      "Status and Independent Power Indication"
     ],
     [
-      "60114382-ddf7-4354-880e-070e95eb160d",
+      "f7a7a632-ada8-4ff7-86f2-d8a81e336870",
+      "Audible Fault Alarm"
+    ],
+    [
+      "9eb6f41a-b1fd-4488-8b05-94b26a5c57b5",
       "PD Programming and Power Probes"
     ]
   ],

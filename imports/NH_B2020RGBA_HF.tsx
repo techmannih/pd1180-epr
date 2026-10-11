@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
@@ -7,10 +8,28 @@ const pinLabels = {
   pin4: ["G_K"]
 } as const
 
-export const NH_B2020RGBA_HF = (props: ChipProps<typeof pinLabels>) => {
+export const NH_B2020RGBA_HF = ({ connections, ...props }: ChipProps<typeof pinLabels>) => {
   return (
-    <chip
-      pinLabels={pinLabels}
+    <>
+    <led
+      pinLabels={{ pin1: ["R_K"], pin2: ["B_K"] }}
+      symbol={
+        <symbol>
+          <port name="pin3" pinNumber={3} aliases={["A"]} direction="up" schX={0.7} schY={1.2} schStemLength={0.4} />
+          <schematicpath points={[{x: 0.7, y: 0.8}, {x: 0.7, y: -0.6}]} />
+          {[{pin: 1, label: "R_K", y: 0.6}, {pin: 4, label: "G_K", y: 0}, {pin: 2, label: "B_K", y: -0.6}].map(({pin, label, y}) => (
+            <Fragment key={pin}>
+              <port name={`pin${pin}`} pinNumber={pin} aliases={[label]} direction="left" schX={-0.7} schY={y} schStemLength={0.3} />
+              <schematicpath points={[{x: -0.4, y}, {x: 0, y}]} />
+              <schematicpath points={[{x: 0, y: y - 0.17}, {x: 0, y: y + 0.17}]} />
+              <schematicpath points={[{x: 0, y}, {x: 0.35, y: y + 0.17}, {x: 0.35, y: y - 0.17}, {x: 0, y}]} isFilled fillColor="#ffffc2" />
+              <schematicpath points={[{x: 0.35, y}, {x: 0.7, y}]} />
+              <schematicpath points={[{x: 0.15, y: y + 0.23}, {x: -0.05, y: y + 0.4}, {x: 0.06, y: y + 0.37}]} />
+            </Fragment>
+          ))}
+          <schematictext text="{NAME}" schX={-0.7} schY={1.2} fontSize={0.2} anchor="bottom_left" />
+        </symbol>
+      }
       supplierPartNumbers={{
   "jlcpcb": [
     "C2874116"
@@ -42,5 +61,11 @@ export const NH_B2020RGBA_HF = (props: ChipProps<typeof pinLabels>) => {
       }}
       {...props}
     />
+    {Object.entries(connections ?? {}).flatMap(([pin, targets]) =>
+      (typeof targets === "string" ? [targets] : targets).map((target) =>
+        <Fragment key={`${pin}:${target}`}><trace from={`.${props.name} > .${pin}`} to={target} /></Fragment>
+      )
+    )}
+    </>
   )
 }

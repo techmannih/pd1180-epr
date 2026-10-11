@@ -9,6 +9,10 @@ export const FUET_9650B_3V = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{
+        pin1: { requiresPower: true },
+        pin2: { requiresGround: true },
+      }}
       symbol={
         <symbol>
           <port name="pin1" pinNumber={1} aliases={["POS"]} direction="left" schX={-0.2} schY={0.2} schStemLength={0.2} />

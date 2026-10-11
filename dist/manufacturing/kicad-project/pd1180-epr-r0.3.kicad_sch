@@ -2,7 +2,7 @@
   (version 20250114)
   (generator circuit-json-to-kicad)
   (generator_version 0.0.1)
-  (uuid 888afcaf-aca0-4ec5-ab90-6fb77de6f3f5)
+  (uuid 9ce6d0ce-044d-4e77-ac59-1290d960b5b5)
   (paper
     A3
   )
@@ -28,7 +28,7 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid b75811a0-a21f-4b66-b397-2a3bb9e5ce63)
+    (uuid 8d823418-de92-458e-ac67-2401a2afb5d2)
     (property "Sheetname" "USB-C PD POWER"
       (id 0)
       (at 25.4 24.7 0)
@@ -51,7 +51,7 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
           (page "2")
         )
       )
@@ -72,8 +72,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 08a8482d-da17-4718-b192-166861c95218)
-    (property "Sheetname" "PD and Motor Backup Supplies"
+    (uuid 308febe8-36fc-41ee-ba25-36739b15b59f)
+    (property "Sheetname" "PD Controller and EEPROM"
       (id 0)
       (at 85.4 24.7 0)
       (effects
@@ -83,7 +83,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "logic_power.kicad_sch"
+    (property "Sheetfile" "usb_pd_policy.kicad_sch"
       (id 1)
       (at 85.4 51.1 0)
       (effects
@@ -95,7 +95,7 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
           (page "3")
         )
       )
@@ -116,8 +116,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 98058f27-818c-441f-8a4b-d1a3c658faa6)
-    (property "Sheetname" "Protected 48 V Motor Bus"
+    (uuid 07c54bc2-7b47-499e-9baf-1320e0b49d82)
+    (property "Sheetname" "PD Backup Supply"
       (id 0)
       (at 145.4 24.7 0)
       (effects
@@ -127,7 +127,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "motor_power.kicad_sch"
+    (property "Sheetfile" "logic_power.kicad_sch"
       (id 1)
       (at 145.4 51.1 0)
       (effects
@@ -139,7 +139,7 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
           (page "4")
         )
       )
@@ -160,8 +160,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 175f8d5d-2f5f-46dc-84c2-66d1ac69904b)
-    (property "Sheetname" "Motion Controller and Enable Chain"
+    (uuid 7aaf2fa7-6abe-4690-9b7f-d7647e50f088)
+    (property "Sheetname" "Motor Backup Supply"
       (id 0)
       (at 205.4 24.7 0)
       (effects
@@ -171,7 +171,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "motion.kicad_sch"
+    (property "Sheetfile" "logic_backup.kicad_sch"
       (id 1)
       (at 205.4 51.1 0)
       (effects
@@ -183,7 +183,7 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
           (page "5")
         )
       )
@@ -204,8 +204,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid b09bdadc-d4e2-41c5-ab74-e3e504789cff)
-    (property "Sheetname" "Motor Phase A Power Bridge"
+    (uuid 810f88ad-c717-4d31-acdf-c95bcda98a24)
+    (property "Sheetname" "Logic Supply Selection and Power Permit"
       (id 0)
       (at 265.4 24.7 0)
       (effects
@@ -215,7 +215,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "bridge_a.kicad_sch"
+    (property "Sheetfile" "logic_selection.kicad_sch"
       (id 1)
       (at 265.4 51.1 0)
       (effects
@@ -227,8 +227,52 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
           (page "6")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 325.4 25.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid 2dd08c6c-db0f-43c7-aedc-a833e8b1fba0)
+    (property "Sheetname" "Protected 48 V Motor Bus"
+      (id 0)
+      (at 325.4 24.7 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "motor_power.kicad_sch"
+      (id 1)
+      (at 325.4 51.1 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "7")
         )
       )
     )
@@ -248,8 +292,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid d708b1f7-be15-4b04-8ad6-483c43ecc009)
-    (property "Sheetname" "Motor Phase B Power Bridge"
+    (uuid 7ed7b0a5-1350-4bab-b612-57260f07f433)
+    (property "Sheetname" "Motion Controller"
       (id 0)
       (at 25.4 79.7 0)
       (effects
@@ -259,7 +303,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "bridge_b.kicad_sch"
+    (property "Sheetfile" "motion.kicad_sch"
       (id 1)
       (at 25.4 106.10000000000001 0)
       (effects
@@ -271,8 +315,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "7")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "8")
         )
       )
     )
@@ -292,8 +336,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid f7a6df3a-eeec-4398-9803-0956cd805026)
-    (property "Sheetname" "Regeneration Brake and Overvoltage"
+    (uuid d3d3fbf8-2557-49ff-8100-618fb56f96c1)
+    (property "Sheetname" "Step Direction and Hardware Enable"
       (id 0)
       (at 85.4 79.7 0)
       (effects
@@ -303,7 +347,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "brake.kicad_sch"
+    (property "Sheetfile" "motion_enable.kicad_sch"
       (id 1)
       (at 85.4 106.10000000000001 0)
       (effects
@@ -315,8 +359,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "8")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "9")
         )
       )
     )
@@ -336,8 +380,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 92446a21-cec6-467f-ac3a-0f96a6a28c85)
-    (property "Sheetname" "MCU, Clock, Memory and Debug"
+    (uuid 4093fb53-4b72-490e-9de1-acd8fb153814)
+    (property "Sheetname" "Motor Phase A Power Bridge"
       (id 0)
       (at 145.4 79.7 0)
       (effects
@@ -347,7 +391,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "mcu.kicad_sch"
+    (property "Sheetfile" "bridge_a.kicad_sch"
       (id 1)
       (at 145.4 106.10000000000001 0)
       (effects
@@ -359,8 +403,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "9")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "10")
         )
       )
     )
@@ -380,8 +424,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid dc6eeaa8-f19c-4360-a56c-d8a9ce4cb79d)
-    (property "Sheetname" "Shaft Encoder and Monitor"
+    (uuid f3410669-d4c2-47cc-aa06-0b119290b9d8)
+    (property "Sheetname" "Motor Phase B Power Bridge"
       (id 0)
       (at 205.4 79.7 0)
       (effects
@@ -391,7 +435,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "encoder.kicad_sch"
+    (property "Sheetfile" "bridge_b.kicad_sch"
       (id 1)
       (at 205.4 106.10000000000001 0)
       (effects
@@ -403,8 +447,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "10")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "11")
         )
       )
     )
@@ -424,8 +468,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid cfffb7b0-1ff2-4762-80b4-dcbac5e46278)
-    (property "Sheetname" "USB DATA and Attach Sense"
+    (uuid c74d2061-6918-4ca8-93d1-4e200506a10f)
+    (property "Sheetname" "Brake Reference and Turn-on Threshold"
       (id 0)
       (at 265.4 79.7 0)
       (effects
@@ -435,7 +479,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "usb_data.kicad_sch"
+    (property "Sheetfile" "brake.kicad_sch"
       (id 1)
       (at 265.4 106.10000000000001 0)
       (effects
@@ -447,8 +491,52 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "11")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "12")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 325.4 80.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid a8c1c8f6-400d-48f6-8955-e93d0e90c711)
+    (property "Sheetname" "Overvoltage Inhibit and Brake Driver"
+      (id 0)
+      (at 325.4 79.7 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "brake_ovp.kicad_sch"
+      (id 1)
+      (at 325.4 106.10000000000001 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "13")
         )
       )
     )
@@ -468,8 +556,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 391d5195-6bd8-481f-93de-d2eee258464d)
-    (property "Sheetname" "24 V Inputs and Step/Direction"
+    (uuid 3ac5bc2e-d056-4608-918f-d2f27d3174d7)
+    (property "Sheetname" "MCU Clock Memory and Debug"
       (id 0)
       (at 25.4 134.70000000000002 0)
       (effects
@@ -479,7 +567,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "inputs.kicad_sch"
+    (property "Sheetfile" "mcu.kicad_sch"
       (id 1)
       (at 25.4 161.1 0)
       (effects
@@ -491,8 +579,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "12")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "14")
         )
       )
     )
@@ -512,8 +600,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 5315e887-af38-42d3-9090-11dd101b49be)
-    (property "Sheetname" "CAN, RS485 and RS232"
+    (uuid 1c5e474b-d84b-4f5b-b328-942a63906b28)
+    (property "Sheetname" "Optional Shaft Encoder"
       (id 0)
       (at 85.4 134.70000000000002 0)
       (effects
@@ -523,7 +611,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "serial.kicad_sch"
+    (property "Sheetfile" "encoder.kicad_sch"
       (id 1)
       (at 85.4 161.1 0)
       (effects
@@ -535,8 +623,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "13")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "15")
         )
       )
     )
@@ -556,8 +644,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid bf747cd2-f085-4953-aa3c-cf8d4192d869)
-    (property "Sheetname" "Hardware Enable and Outputs"
+    (uuid 21298698-61e1-4418-833d-65d23cdd67ba)
+    (property "Sheetname" "USB DATA and Attach Sense"
       (id 0)
       (at 145.4 134.70000000000002 0)
       (effects
@@ -567,7 +655,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "outputs.kicad_sch"
+    (property "Sheetfile" "usb_data.kicad_sch"
       (id 1)
       (at 145.4 161.1 0)
       (effects
@@ -579,8 +667,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "14")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "16")
         )
       )
     )
@@ -600,8 +688,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid 35c2f16b-f1d9-41db-a93f-09df2b940dc0)
-    (property "Sheetname" "USB Logic Power"
+    (uuid cb259669-24c6-4a4e-8fdc-4a4a1e24d6fa)
+    (property "Sheetname" "Home Limits and Digital Input 0"
       (id 0)
       (at 205.4 134.70000000000002 0)
       (effects
@@ -611,7 +699,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "usb_logic.kicad_sch"
+    (property "Sheetfile" "inputs.kicad_sch"
       (id 1)
       (at 205.4 161.1 0)
       (effects
@@ -623,8 +711,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "15")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "17")
         )
       )
     )
@@ -644,8 +732,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid c8bc03fa-3442-4b16-898f-9c6cd4d36e44)
-    (property "Sheetname" "Temperature and Current Diagnostics"
+    (uuid ad029dcf-134c-4e43-b7f1-4286de52dabd)
+    (property "Sheetname" "Step Direction and Industrial Harness"
       (id 0)
       (at 265.4 134.70000000000002 0)
       (effects
@@ -655,7 +743,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "telemetry.kicad_sch"
+    (property "Sheetfile" "inputs_aux.kicad_sch"
       (id 1)
       (at 265.4 161.1 0)
       (effects
@@ -667,8 +755,52 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "16")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "18")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 325.4 135.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid 44c4eed3-4263-4048-9451-584e26e8cb9a)
+    (property "Sheetname" "CAN and RS485"
+      (id 0)
+      (at 325.4 134.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "serial.kicad_sch"
+      (id 1)
+      (at 325.4 161.1 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "19")
         )
       )
     )
@@ -688,8 +820,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid c9ef7975-aa04-4d94-8716-8e93ae7b17ff)
-    (property "Sheetname" "Regulated Driver Supply"
+    (uuid a6bdf33f-4b6d-47f7-a7ff-c62d9ca73714)
+    (property "Sheetname" "RS232 Interface"
       (id 0)
       (at 25.4 189.70000000000002 0)
       (effects
@@ -699,7 +831,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "driver_power.kicad_sch"
+    (property "Sheetfile" "serial_rs232.kicad_sch"
       (id 1)
       (at 25.4 216.1 0)
       (effects
@@ -711,8 +843,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "17")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "20")
         )
       )
     )
@@ -732,8 +864,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid e9a90ab6-8ba5-405b-9c85-18b9a1a3a81d)
-    (property "Sheetname" "Status Indicators and Audible Alarm"
+    (uuid 957b127e-e625-4eb1-986b-191490207d6c)
+    (property "Sheetname" "Hardware Outputs"
       (id 0)
       (at 85.4 189.70000000000002 0)
       (effects
@@ -743,7 +875,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "indicators.kicad_sch"
+    (property "Sheetfile" "outputs.kicad_sch"
       (id 1)
       (at 85.4 216.1 0)
       (effects
@@ -755,8 +887,8 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "18")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "21")
         )
       )
     )
@@ -776,8 +908,8 @@
     (fill
       (color 0 0 0 0)
     )
-    (uuid cea3bd3a-d3d8-4150-99ae-fbc141291660)
-    (property "Sheetname" "PD Programming and Power Probes"
+    (uuid bf8caeae-395c-49c9-b2df-cf64e11599d7)
+    (property "Sheetname" "USB Logic Power"
       (id 0)
       (at 145.4 189.70000000000002 0)
       (effects
@@ -787,7 +919,7 @@
         (justify left bottom)
       )
     )
-    (property "Sheetfile" "pd_programming.kicad_sch"
+    (property "Sheetfile" "usb_logic.kicad_sch"
       (id 1)
       (at 145.4 216.1 0)
       (effects
@@ -799,8 +931,272 @@
     )
     (instances
       (project ""
-        (path "/888afcaf-aca0-4ec5-ab90-6fb77de6f3f5"
-          (page "19")
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "22")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 205.4 190.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid c17fc4cf-882a-4994-8450-6d1981e54f16)
+    (property "Sheetname" "Temperature and Bus Diagnostics"
+      (id 0)
+      (at 205.4 189.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "telemetry.kicad_sch"
+      (id 1)
+      (at 205.4 216.1 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "23")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 265.4 190.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid e96de45d-7319-4cbd-addf-5e09fe8a62f6)
+    (property "Sheetname" "Phase Current Diagnostics"
+      (id 0)
+      (at 265.4 189.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "phase_current.kicad_sch"
+      (id 1)
+      (at 265.4 216.1 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "24")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 325.4 190.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid 0488b5cd-34db-46c3-becf-34fb615b4d27)
+    (property "Sheetname" "Regulated Driver Supply"
+      (id 0)
+      (at 325.4 189.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "driver_power.kicad_sch"
+      (id 1)
+      (at 325.4 216.1 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "25")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 25.4 245.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid a5dea3dd-9855-4ae8-87b4-68ead9ce4cff)
+    (property "Sheetname" "Status and Independent Power Indication"
+      (id 0)
+      (at 25.4 244.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "indicators.kicad_sch"
+      (id 1)
+      (at 25.4 271.09999999999997 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "26")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 85.4 245.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid 5c506900-585c-47da-839b-8e751cf5f74b)
+    (property "Sheetname" "Audible Fault Alarm"
+      (id 0)
+      (at 85.4 244.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "alarm.kicad_sch"
+      (id 1)
+      (at 85.4 271.09999999999997 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "27")
+        )
+      )
+    )
+  )
+  (sheet
+    (at 145.4 245.4)
+    (size 40 25)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+    )
+    (fill
+      (color 0 0 0 0)
+    )
+    (uuid 60463e84-7863-4c0d-909f-5b8d3f1ce18f)
+    (property "Sheetname" "PD Programming and Power Probes"
+      (id 0)
+      (at 145.4 244.70000000000002 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left bottom)
+      )
+    )
+    (property "Sheetfile" "pd_programming.kicad_sch"
+      (id 1)
+      (at 145.4 271.09999999999997 0)
+      (effects
+        (font
+          (size 1.524 1.524)
+        )
+        (justify left top)
+      )
+    )
+    (instances
+      (project ""
+        (path "/9ce6d0ce-044d-4e77-ac59-1290d960b5b5"
+          (page "28")
         )
       )
     )

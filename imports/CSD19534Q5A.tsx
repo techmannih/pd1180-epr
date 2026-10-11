@@ -27,8 +27,25 @@ type PowerMosfetProps = Omit<
 export const CSD19534Q5A = ({ connections, ...props }: PowerMosfetProps) => {
   return (
     <>
-    <chip
-      pinLabels={pinLabels}
+    <mosfet
+      channelType="n"
+      mosfetMode="enhancement"
+      symbol={
+        <symbol>
+          <schematicpath points={[{ x: -0.65, y: -0.6 }, { x: 0.65, y: -0.6 }, { x: 0.65, y: 0.6 }, { x: -0.65, y: 0.6 }, { x: -0.65, y: -0.6 }]} fillColor="#ffffc2" isFilled />
+          <port name="pin1" pinNumber={1} aliases={["S1", "source"]} direction="left" schX={-1.05} schY={0.4} schStemLength={0.4} />
+          <port name="pin2" pinNumber={2} aliases={["S2"]} direction="left" schX={-1.05} schY={0.2} schStemLength={0.4} />
+          <port name="pin3" pinNumber={3} aliases={["S3"]} direction="left" schX={-1.05} schY={0} schStemLength={0.4} />
+          <port name="pin4" pinNumber={4} aliases={["G", "gate"]} direction="left" schX={-1.05} schY={-0.2} schStemLength={0.4} />
+          <port name="pin5" pinNumber={5} aliases={["D1", "drain"]} direction="left" schX={-1.05} schY={-0.4} schStemLength={0.4} />
+          <port name="pin6" pinNumber={6} aliases={["D2"]} direction="right" schX={1.05} schY={-0.3} schStemLength={0.4} />
+          <port name="pin7" pinNumber={7} aliases={["D3"]} direction="right" schX={1.05} schY={-0.1} schStemLength={0.4} />
+          <port name="pin8" pinNumber={8} aliases={["D4"]} direction="right" schX={1.05} schY={0.1} schStemLength={0.4} />
+          <port name="pin9" pinNumber={9} aliases={["D5"]} direction="right" schX={1.05} schY={0.3} schStemLength={0.4} />
+          <schematictext text="{NAME}" schX={0} schY={0.8} fontSize={0.2} anchor="bottom_center" />
+          <schematictext text="CSD19534Q5A" schX={0} schY={-0.8} fontSize={0.2} anchor="top_center" />
+        </symbol>
+      }
       supplierPartNumbers={{
   "jlcpcb": [
     "C114200"

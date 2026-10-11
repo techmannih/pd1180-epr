@@ -8,8 +8,9 @@ const pinLabels = {
 
 export const AO3400A = (props: ChipProps<typeof pinLabels>) => {
   return (
-    <chip
-      pinLabels={pinLabels}
+    <mosfet
+      channelType="n"
+      mosfetMode="enhancement"
       symbol={
         <symbol>
           <schematicpath points={[{"x":0,"y":0},{"x":0.12,"y":-0.04},{"x":0.12,"y":0.04},{"x":0,"y":0}]} strokeColor="#880000" isFilled fillColor="#FEFEFE" />

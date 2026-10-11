@@ -17,8 +17,16 @@ const circuitJson = JSON.parse(await readFile('dist/index/circuit.json', 'utf8')
 const pcb = new CircuitJsonToKicadPcbConverter(circuitJson)
 pcb.runUntilFinished()
 const nativeBoard = parseKicadPcb(pcb.getOutputString())
+const partNumbers = new Map(circuitJson.filter(row => row.type === 'source_component' && row.manufacturer_part_number).map(row => [row.name, row.manufacturer_part_number]))
+function retainPartNumber(properties) {
+  const reference = properties.find(property => property.key === 'Reference')?.value
+  const value = properties.find(property => property.key === 'Value')
+  // The converter falls back to the reference for non-chip imported parts.
+  if (value?.value === reference && partNumbers.has(reference)) value.value = partNumbers.get(reference)
+}
 const servicePads = new Set(circuitJson.filter(row => row.type === 'source_component' && row.name.startsWith('TP_')).map(row => row.name))
 for (const footprint of nativeBoard.footprints) {
+  retainPartNumber(footprint.properties)
   const reference = footprint.properties.find(property => property.key === 'Reference')?.value
   if (!footprint.attr?.dnp && !servicePads.has(reference)) continue
   if (footprint.attr?.dnp) footprint.attr.excludeFromBom = true
@@ -35,6 +43,7 @@ const unpopulated = new Set(circuitJson.filter(row => row.type === 'pcb_componen
 for (const file of schematicFiles) {
   const sheet = parseKicadSch(file.content)
   for (const symbol of sheet.symbols) {
+    retainPartNumber(symbol.properties)
     if (unpopulated.has(symbol.properties.find(property => property.key === 'Reference')?.value)) {
       symbol.dnp = true
       symbol.inBom = false

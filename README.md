@@ -153,27 +153,41 @@ U16 remains STM32G0B1 because this board uses its native USB device, FDCAN, ADC,
 
 ## Schematic organization
 
-The design is split into sixteen functional sheets:
+The design uses 27 default A4 sheets. Dense power, input and telemetry sections are split into smaller functional pages; PCB placement and net connectivity are unchanged.
 
 | Sheet | Scope |
 |---|---|
-| USB PD | Dedicated J1 power receptacle, CC/SBU protection, PD controller and EEPROM |
-| USB DATA | J10 USB 2.0, CC pulldowns, ESD and VBUS attach sensing |
-| Logic power | USB-side and motor-side buck supplies with reverse-blocked rail ORing |
-| Motor power | eFuse, reverse blocking, bulk capacitance and motor-bus qualification |
-| Driver power | U34 regulated 12 V supply for TMC5160 VSA/12VOUT and brake-gate drive |
-| Motion | TMC5160A control, mode selection, limit inputs and encoder interface |
-| Bridge A / Bridge B | External MOSFET half-bridges, bootstrap networks and phase shunts |
-| Brake | Bus-voltage comparators, brake MOSFET drive and external resistor connector |
-| MCU | STM32G0B1, clock, reset, SWD, flash and shared control buses |
-| Encoder | Optional bottom AS5047P supply/SPI/ABI footprints (DNP) and top service pads |
-| USB logic | DATA current limiter, 3.3 V LDO and reverse-blocking source selection |
-| Telemetry | Temperature inhibit, phase-current amplifiers and bus-monitor ADC |
-| Inputs | 24 V Step/Dir, stop, home and digital input conditioning |
-| Outputs | Protected low-side outputs and hardware enable chain |
-| Serial | CAN, RS485 and RS232 transceivers with ESD support |
+| 1. USB-C PD POWER | J1: 48 V / 5 A EPR power only; USB DATA is on J10. |
+| 2. PD Controller and EEPROM | U2 TPS26750 negotiates EPR; U3 stores the board-specific TI configuration. |
+| 3. PD Backup Supply | U5 converts PD VBUS to V3V3_PD; L1 and its feedback/bypass network are shown here. |
+| 4. Motor Backup Supply | U22 converts VMOTOR to V3V3_MOTOR for brake-control backup after PD loss. |
+| 5. Logic Supply Selection and Power Permit | U23/U24 and R111 form the status-interlocked reverse-blocked board supply. |
+| 6. Protected 48 V Motor Bus | Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor. |
+| 7. Motion Controller | U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V. |
+| 8. Step Direction and Hardware Enable | U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock. |
+| 9. Motor Phase A Power Bridge | Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt. |
+| 10. Motor Phase B Power Bridge | Q10/Q12 high-side and Q11/Q13 low-side switches form phase B. |
+| 11. Brake Reference and Turn-on Threshold | U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V. |
+| 12. Overvoltage Inhibit and Brake Driver | U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load. |
+| 13. MCU Clock Memory and Debug | U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and industrial buses. |
+| 14. Optional Shaft Encoder | U18 AS5047P and C52/C53 are centered bottom-side DNP footprints. |
+| 15. USB DATA and Attach Sense | J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port. |
+| 16. Home Limits and Digital Input 0 | Non-isolated 24 V HOME, left/right STOP and DIN0 conditioning. |
+| 17. Step Direction and Industrial Harness | 24 V DIN1, STEP and DIR conditioning; J7 carries the required industrial interfaces. |
+| 18. CAN and RS485 | U19 is the 3.3 V CAN transceiver; U20 is RS485. D2/D3 provide line protection. |
+| 19. RS232 Interface | U21 provides RS232 translation and charge-pump generation. |
+| 20. Hardware Outputs | Q24/Q25 provide the two open-collector outputs; base pulldowns keep reset inactive. |
+| 21. USB Logic Power | U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail. |
+| 22. Temperature and Bus Diagnostics | U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus. |
+| 23. Phase Current Diagnostics | U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V. |
+| 24. Regulated Driver Supply | U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15. |
+| 25. Status and Independent Power Indication | U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown. |
+| 26. Audible Fault Alarm | BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp. |
+| 27. PD Programming and Power Probes | U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded. |
 
-The source and regenerated release contain sixteen schematic sheets.
+The 106 reported source warnings were corrected through component typing, explicit pin roles, bare-pad metadata and A4 page layout. [Source/native comparison](docs/checks/warning-fix-parity.json) verifies that PCB geometry, routing and pin connectivity are unchanged.
+
+Source errors and warnings both fail verification and block the release checks. Bare service pads are marked `doNotPlace`: their copper remains present, but they are not purchased or assembled parts.
 
 ## PCB, mechanics and assembly
 
@@ -250,7 +264,7 @@ The `release/` payload contains current ECO review files. **Do not order yet:** 
 - complete manufacturing ZIP with drills, Gerbers, DRC, BOM, CPL and project files;
 - JLCPCB BOM and top-side placement CSV;
 - ZIP-packaged 3D GLB plus top and bottom renders;
-- sixteen schematic-sheet SVGs;
+- 27 schematic-sheet SVGs;
 - order settings, hardware contract, schematic-style evidence, power-routing evidence and release status;
 - delivery manifest and recursive SHA-256 hashes.
 
@@ -260,9 +274,9 @@ The hosted tscircuit editor opens `release/circuit.json` by default: its 3D view
 
 After pulling updates, run `bun install --frozen-lockfile` and restart `bun run dev`. The dev command checks the installed toolchain before starting. `tscircuit.config.ts` makes interactive previews use the pinned local component definitions and disables preview autorouting, just like the build. This prevents remote pin-metadata requests from holding the main-board render open while another component is selected. Live supplier stock checks still run in `bun run review`.
 
-The toolchain uses tscircuit `0.0.2821` and circuit-to-svg `0.0.445`. Core is explicitly pinned to `0.0.2112`: core `0.0.2125` resets explicitly sized schematic sheets to the origin, moving their frames around the frozen layout. Remove this compatibility pin only after all 16 sheet centres and the approved schematic pass the upgrade comparison. The package's JavaScript entry is `dist/index.js`; the editable circuit entry remains `index.circuit.tsx` in the tscircuit configuration.
+The toolchain uses tscircuit `0.0.2821` and circuit-to-svg `0.0.445`. Core is explicitly pinned to `0.0.2112`: core `0.0.2125` resets explicitly sized schematic sheets to the origin, moving their frames around the frozen layout. Remove this compatibility pin only after all 27 sheet centres and the approved schematic pass the upgrade comparison. The package's JavaScript entry is `dist/index.js`; the editable circuit entry remains `index.circuit.tsx` in the tscircuit configuration.
 
-Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it verifies that the compiled motor assembly preserves every code-defined board record, including the 16-sheet schematic, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
+Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it verifies that the compiled motor assembly preserves every code-defined board record, including the 27-sheet schematic, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
 
 ## Repository map
 

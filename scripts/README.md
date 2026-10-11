@@ -35,7 +35,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
 | `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
-| `check-source-schematic.mjs` | Audits all fixed-size schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
+| `check-source-schematic.mjs` | Audits all 27 default A4 schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
 | `clean-silkscreen.py` | Removes dense passive references and applies reviewed markings. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings while retaining references and polarity marks; native DRC remains mandatory. |
 | `design.test.mjs` | Regression tests electrical topology, fixed parts and safety behavior. |
@@ -56,7 +56,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `import-routed-kicad.mjs` | Imports externally routed KiCad copper into reviewable Circuit JSON artifacts. |
 | `import-specctra-route.py` | Imports a Freerouting Specctra SES result into its matching KiCad PCB, reverses the temporary bottom-placement routing compensation, and records connectivity counts. |
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
-| `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, and publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. |
+| `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, synchronizes DNP/BOM flags, and publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. |
 | `normalize-generated-svgs.mjs` | Removes generator-only trailing whitespace so previews remain deterministic in review. |
 | `prepare-plane-escapes.py` | Adds short 0.20 mm ground/board-supply escapes to 0.60/0.30 mm vias before internal-plane routing. Preserves Kelvin isolation and leaves inaccessible pads in the router netlist; native DRC and filled-plane connectivity remain mandatory. |
 | `test-plane-escapes.py` | Native connectivity regression: existing capacitor-return vias and plated connector pads must not receive redundant plane fanouts; isolated SMD lands still need an escape. |
@@ -69,7 +69,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `refresh-routed-preview.mjs` | Builds the latest source, checks local route continuity and the saved PCB fingerprint/DRC, refreshes the routed viewer without changing schematic records, and updates only its delivery hashes. Does not approve a new manufacturing release. |
 | `remove-isolated-zones.py` | Removes generated copper islands that do not connect to the intended net. |
 | `sync-generated-docs.mjs` | Synchronizes generated manifest and pin/placement documentation. |
-| `verify.mjs` | Runs independent checks, preserves logs and writes root Markdown plus machine-readable verification summaries. |
+| `verify.mjs` | Fails on any generated source error or warning, hashes source imports and schematic-page definitions, runs independent checks, preserves logs and writes root Markdown plus machine-readable verification summaries. |
 | `via-net-identity.test.mjs` | Verifies the exact final KiCad drain-pad thermal-via count, dimensions, layers and net identity for every CSD19534Q5A, and enforces the user-required 0.30 mm minimum via drill in the native board, compiled source and KiCad rules. |
 
 The Python routing helpers are board-specific. Do not reuse their geometry on another board. The check patterns, failure behavior and documentation structure are reusable.
@@ -87,5 +87,5 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `motor-mounting-geometry.mjs`: extracts rear cylindrical axes from the pinned motor STEP, checks PCB-hole alignment, parses metric Excellon drills and measures physical substrate apertures. Used by the assembly check.
 - `motor-mounting-geometry.test.mjs`: rejects mirrored axes, missing/duplicate/incorrect manufacturing drills, and capped or displaced 3D holes; checks the contract against the manufacturer STEP. Run with `bun test scripts/motor-mounting-geometry.test.mjs`.
 
-- `assembly-policy.mjs`: shared fitted/DNP placement policy; permits only U18/C52/C53 as unpopulated bottom footprints and requires shaft-axis centering.
+- `assembly-policy.mjs`: shared fitted/DNP placement policy; requires bare service pads to be top-side and unpopulated, permits only U18/C52/C53 as unpopulated bottom footprints, and requires shaft-axis centering.
 - `assembly-policy.test.mjs`: rejects populated bottom encoders, off-axis sensors, unapproved DNP parts and optional parts leaking into the fitted BOM.

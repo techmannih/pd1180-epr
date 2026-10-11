@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-11T06:17:59.305Z",
+  "generated_at": "2026-10-11T07:34:58.205Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "5ef668a02bb96d06f33e4715395af33aec1db906aa730d4fbb59493c397479b1",
-    "bytes": 5293028
+    "sha256": "ce86832e336eceb986c58066c7c6cc36ebde61806a0276f4ef04f15d2518f04a",
+    "bytes": 5312192
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 11983,
-    "sheets": 18,
+    "elements": 12040,
+    "sheets": 27,
     "source_components": 333,
     "source_ports": 1137,
     "connected_source_ports": 1099,
@@ -18,7 +18,7 @@
     "minimum_ports_per_connected_net": 2,
     "capacitors": 96,
     "test_points": 19,
-    "annotations": 55,
+    "annotations": 81,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
@@ -527,252 +527,377 @@
       "name": "usb-pd",
       "display_name": "USB-C PD POWER",
       "frame": [
-        400,
-        400
+        297,
+        210
       ],
       "annotations": [
         "01 / USB-C PD POWER",
-        "J1: dedicated 48 V / 5 A EPR sink. USB DATA is on J10; the two VBUS rails are separate.",
-        "U1: 48 V CC/VBUS and unused SBU protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate.",
-        "J1 D+/D-: not connected. Q1: protected VBUS control. Q2/Q3: PD-path level translation."
+        "J1: 48 V / 5 A EPR power only; USB DATA is on J10.",
+        "U1 protects CC/VBUS. Q1 controls protected VBUS; C1/C2 provide local bypass."
       ]
     },
     {
       "index": 2,
-      "name": "logic-power",
-      "display_name": "PD and Motor Backup Supplies",
+      "name": "usb-pd-policy",
+      "display_name": "PD Controller and EEPROM",
       "frame": [
-        330,
-        335
+        297,
+        210
       ],
       "annotations": [
-        "02 / PD and Motor Backup Supplies",
-        "PD VBUS or DATA USB starts logic; the motor-bus buck retains brake-control backup after PD loss.",
-        "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked OR into board V3V3; U26/U27 power the separate MCU rail."
+        "02 / PD Controller and EEPROM",
+        "U2 TPS26750 negotiates EPR; U3 stores the board-specific TI configuration.",
+        "Q2/Q3 translate PD path control. TI image and powered qualification remain required."
       ]
     },
     {
       "index": 3,
-      "name": "motor-power",
-      "display_name": "Protected 48 V Motor Bus",
+      "name": "logic-power",
+      "display_name": "PD Backup Supply",
       "frame": [
-        385,
-        185
+        297,
+        210
       ],
       "annotations": [
-        "03 / Protected 48 V Motor Bus",
-        "Nominal eFuse limit 4.48 A. No reverse energy into the USB source.",
-        "Q4: reverse-blocking power MOSFET. Q5: fast gate clamp. U6: TPS26631 48 V eFuse, current monitor and fault output."
+        "03 / PD Backup Supply",
+        "U5 converts PD VBUS to V3V3_PD; L1 and its feedback/bypass network are shown here.",
+        "Input spans default USB 5 V through the specified 48 V EPR operating target."
       ]
     },
     {
       "index": 4,
-      "name": "motion",
-      "display_name": "Motion Controller and Enable Chain",
+      "name": "logic-backup",
+      "display_name": "Motor Backup Supply",
       "frame": [
-        340,
-        325
+        297,
+        210
       ],
       "annotations": [
-        "04 / Motion Controller and Enable Chain",
-        "SPI-controlled TMC5160A. Driver remains disabled until the hardware enable chain is valid.",
-        "U7: motion controller and gate driver. U8/U9: Step/Dir limit multiplexers. U10/U11 + Q14/Q15: hardwired enable interlock."
+        "04 / Motor Backup Supply",
+        "U22 converts VMOTOR to V3V3_MOTOR for brake-control backup after PD loss.",
+        "L2, feedback and local bypass remain on the motor supply domain."
       ]
     },
     {
       "index": 5,
-      "name": "bridge-a",
-      "display_name": "Motor Phase A Power Bridge",
+      "name": "logic-selection",
+      "display_name": "Logic Supply Selection and Power Permit",
       "frame": [
-        315,
-        325
+        297,
+        210
       ],
       "annotations": [
-        "05 / Motor Phase A Power Bridge",
-        "Phase A target 5.5 A RMS; Kelvin sense routing and high-current copper require review.",
-        "Q6/Q8: high-side MOSFETs. Q7/Q9: low-side MOSFETs. R109: 33 mOhm, 3 W phase-current shunt."
+        "05 / Logic Supply Selection and Power Permit",
+        "U23/U24 and R111 form the status-interlocked reverse-blocked board supply.",
+        "U4 combines PD path status with POWER_PERMIT to control the eFuse enable."
       ]
     },
     {
       "index": 6,
-      "name": "bridge-b",
-      "display_name": "Motor Phase B Power Bridge",
+      "name": "motor-power",
+      "display_name": "Protected 48 V Motor Bus",
       "frame": [
-        315,
-        330
+        297,
+        210
       ],
       "annotations": [
-        "06 / Motor Phase B Power Bridge",
-        "Phase B target 5.5 A RMS; independent 33 milliohm sense resistor.",
-        "Q10/Q12: high-side MOSFETs. Q11/Q13: low-side MOSFETs. R110: 33 mOhm, 3 W phase-current shunt."
+        "06 / Protected 48 V Motor Bus",
+        "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
+        "Nominal current limit 4.48 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
       ]
     },
     {
       "index": 7,
-      "name": "brake",
-      "display_name": "Regeneration Brake and Overvoltage",
+      "name": "motion",
+      "display_name": "Motion Controller",
       "frame": [
-        370,
-        345
+        297,
+        210
       ],
       "annotations": [
-        "07 / Regeneration Brake and Overvoltage",
-        "Nominal brake threshold 52.0 V; motor inhibit 53.7 V; external resistor sizing depends on total stored mechanical energy.",
-        "U12: precision threshold reference. U13/U14: overvoltage comparators. U15: MOSFET gate driver. Q16: brake switch."
+        "07 / Motion Controller",
+        "U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V.",
+        "Bootstrap, charge-pump and local bypass parts are shown with the controller."
       ]
     },
     {
       "index": 8,
-      "name": "mcu",
-      "display_name": "MCU, Clock, Memory and Debug",
+      "name": "motion-enable",
+      "display_name": "Step Direction and Hardware Enable",
       "frame": [
-        295,
-        190
+        297,
+        210
       ],
       "annotations": [
-        "08 / MCU, Clock, Memory and Debug",
-        "3.3 V STM32G0B1; USB diagnostics, SWD, SPI motion control and external STEP/DIR.",
-        "U16: system MCU with native USB, FDCAN and ADC monitoring. U17: 32 Mbit external SPI configuration/telemetry flash."
+        "08 / Step Direction and Hardware Enable",
+        "U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock.",
+        "The driver remains inhibited until the hardware safety conditions permit motion."
       ]
     },
     {
       "index": 9,
-      "name": "encoder",
-      "display_name": "Shaft Encoder and Monitor",
+      "name": "bridge-a",
+      "display_name": "Motor Phase A Power Bridge",
       "frame": [
-        335,
-        140
+        297,
+        210
       ],
       "annotations": [
-        "09 / Shaft Encoder and Monitor",
-        "Optional AS5047P at the shaft axis: U18/C52/C53 are bottom-side DNP; magnet interface is not qualified.",
-        "U18: 14-bit magnetic shaft encoder; SPI readout plus ABI incremental outputs and local 3.3 V filtering."
+        "09 / Motor Phase A Power Bridge",
+        "Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt.",
+        "J2 connects both motor windings. The 5.5 A RMS design target is not a qualified setting."
       ]
     },
     {
       "index": 10,
-      "name": "usb-data",
-      "display_name": "USB DATA and Attach Sense",
+      "name": "bridge-b",
+      "display_name": "Motor Phase B Power Bridge",
       "frame": [
-        380,
-        230
+        297,
+        210
       ],
       "annotations": [
-        "10 / USB DATA and Attach Sense",
-        "J10: USB 2.0 DATA plus independent logic power. Separate CC pulldowns; no PD negotiation on this port.",
-        "D15: D+/D-/CC ESD. R107/R108/C72: DATA VBUS attach sense. USB DATA cannot feed VMOTOR."
+        "10 / Motor Phase B Power Bridge",
+        "Q10/Q12 high-side and Q11/Q13 low-side switches form phase B.",
+        "R110 is the independent 33 mOhm shunt; preserve the Kelvin sense connections."
       ]
     },
     {
       "index": 11,
-      "name": "inputs",
-      "display_name": "24 V Inputs and Step/Direction",
+      "name": "brake",
+      "display_name": "Brake Reference and Turn-on Threshold",
       "frame": [
-        380,
-        435
+        297,
+        210
       ],
       "annotations": [
-        "11 / 24 V Inputs and Step/Direction",
-        "Non-isolated 24 V inputs. J7: keyed 20-pin harness combines all control I/O and industrial buses; pinout is in hardware-contract.json.",
-        "Q17-Q23: HOME, limits, DIN0/1 and Step/Direction conditioners. Q14: hardware enable on the motion sheet."
+        "11 / Brake Reference and Turn-on Threshold",
+        "U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V.",
+        "External braking resistor and heatsink sizing depends on stored mechanical energy."
       ]
     },
     {
       "index": 12,
-      "name": "serial",
-      "display_name": "CAN, RS485 and RS232",
+      "name": "brake-ovp",
+      "display_name": "Overvoltage Inhibit and Brake Driver",
       "frame": [
-        380,
-        230
+        297,
+        210
       ],
       "annotations": [
-        "12 / CAN, RS485 and RS232",
-        "External CAN/RS485 termination; J7 carries RS232, CAN and RS485.",
-        "U19: 3.3 V CAN transceiver; D2: CAN TVS. U20: RS485 transceiver; D3: RS485 TVS. U21: RS232 transceiver."
+        "12 / Overvoltage Inhibit and Brake Driver",
+        "U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load.",
+        "Brake control remains powered from the protected motor bus through the backup supply."
       ]
     },
     {
       "index": 13,
-      "name": "outputs",
-      "display_name": "Hardware Enable and Outputs",
+      "name": "mcu",
+      "display_name": "MCU Clock Memory and Debug",
       "frame": [
-        360,
-        205
+        297,
+        210
       ],
       "annotations": [
-        "13 / Hardware Enable and Outputs",
-        "J7: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
-        "Q24/Q25: open-collector 24 V output drivers; base pulldowns keep outputs off during reset."
+        "13 / MCU Clock Memory and Debug",
+        "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and industrial buses.",
+        "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
       ]
     },
     {
       "index": 14,
-      "name": "usb-logic",
-      "display_name": "USB Logic Power",
+      "name": "encoder",
+      "display_name": "Optional Shaft Encoder",
       "frame": [
-        320,
-        240
+        297,
+        210
       ],
       "annotations": [
-        "14 / USB Logic Power",
-        "U28: DATA current limiter. U25: 3.3 V LDO. DATA powers MCU only; peripherals require board power.",
-        "U26/U27: reverse-blocked V3V3_MCU. R119/R120 sense board power on PB1; PD status is polled."
+        "14 / Optional Shaft Encoder",
+        "U18 AS5047P and C52/C53 are centered bottom-side DNP footprints.",
+        "SPI plus ABI test access; magnet interface for the ordered single-shaft motor is unqualified."
       ]
     },
     {
       "index": 15,
-      "name": "telemetry",
-      "display_name": "Temperature and Current Diagnostics",
+      "name": "usb-data",
+      "display_name": "USB DATA and Attach Sense",
       "frame": [
-        370,
-        420
+        297,
+        210
       ],
       "annotations": [
-        "15 / Temperature and Current Diagnostics",
-        "U29: power-stage temperature, address 0x48. U33: temperature hardware inhibit. U30: bus-monitor ADC, address 0x49.",
-        "U31/U32: bidirectional winding telemetry, 20 V/V across 5 mOhm = 100 mV/A, centered at 1.65 V. Not a short-circuit trip."
+        "15 / USB DATA and Attach Sense",
+        "J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port.",
+        "D15 protects D+/D-/CC. R107/R108/C72 sense DATA VBUS; DATA cannot feed VMOTOR."
       ]
     },
     {
       "index": 16,
-      "name": "driver-power",
-      "display_name": "Regulated Driver Supply",
+      "name": "inputs",
+      "display_name": "Home Limits and Digital Input 0",
       "frame": [
-        320,
-        200
+        297,
+        210
       ],
       "annotations": [
-        "16 / Regulated Driver Supply",
-        "U34: 65 V buck, nominal 12.0 V. Supplies U7 VSA + 12VOUT and U15; derived from protected VMOTOR.",
-        "TMC5160A external-regulator connection: 10-13 V operating range. Gate-supply ripple and startup need bench validation."
+        "16 / Home Limits and Digital Input 0",
+        "Non-isolated 24 V HOME, left/right STOP and DIN0 conditioning.",
+        "The consolidated J7 harness is shown on the Step Direction and Industrial Harness sheet."
       ]
     },
     {
       "index": 17,
-      "name": "indicators",
-      "display_name": "Status Indicators and Audible Alarm",
+      "name": "inputs-aux",
+      "display_name": "Step Direction and Industrial Harness",
       "frame": [
-        450,
-        400
+        297,
+        210
       ],
       "annotations": [
-        "17 / Status Indicators and Audible Alarm",
-        "U35: 3.3 V I2C GPIO at 0x70. Active-low RGB sinks; PC13 holds RESET low until board power is ready.",
-        "BZ1: active 3 V alarm. Q26 + R127 keep it off at reset; D18 clamps the switched lead."
+        "17 / Step Direction and Industrial Harness",
+        "24 V DIN1, STEP and DIR conditioning; J7 carries the required industrial interfaces.",
+        "J7 pin 17 is VMOTOR, not 24 V. Numbered cable mapping is in hardware-contract.json."
       ]
     },
     {
       "index": 18,
+      "name": "serial",
+      "display_name": "CAN and RS485",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "18 / CAN and RS485",
+        "U19 is the 3.3 V CAN transceiver; U20 is RS485. D2/D3 provide line protection.",
+        "J7 carries both buses; termination and RS485 bias are defined at the system level."
+      ]
+    },
+    {
+      "index": 19,
+      "name": "serial-rs232",
+      "display_name": "RS232 Interface",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "19 / RS232 Interface",
+        "U21 provides RS232 translation and charge-pump generation.",
+        "J7 carries RS232 TX/RX and ground; local bypass remains at the transceiver."
+      ]
+    },
+    {
+      "index": 20,
+      "name": "outputs",
+      "display_name": "Hardware Outputs",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "20 / Hardware Outputs",
+        "Q24/Q25 provide the two open-collector outputs; base pulldowns keep reset inactive.",
+        "J7 carries OUT0/OUT1. External load and duty ratings still require system qualification."
+      ]
+    },
+    {
+      "index": 21,
+      "name": "usb-logic",
+      "display_name": "USB Logic Power",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "21 / USB Logic Power",
+        "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
+        "R119/R120 sense board supply on PB1. Industrial peripherals require board power."
+      ]
+    },
+    {
+      "index": 22,
+      "name": "telemetry",
+      "display_name": "Temperature and Bus Diagnostics",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "22 / Temperature and Bus Diagnostics",
+        "U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus.",
+        "Sensor addresses are 0x48 and 0x49. Temperature correlation requires load testing."
+      ]
+    },
+    {
+      "index": 23,
+      "name": "phase-current",
+      "display_name": "Phase Current Diagnostics",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "23 / Phase Current Diagnostics",
+        "U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V.",
+        "Nominal 100 mV/A about 1.65 V; instantaneous diagnostics, not a short-circuit trip."
+      ]
+    },
+    {
+      "index": 24,
+      "name": "driver-power",
+      "display_name": "Regulated Driver Supply",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "24 / Regulated Driver Supply",
+        "U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15.",
+        "TMC5160 external supply range is 10-13 V; ripple and startup require bench validation."
+      ]
+    },
+    {
+      "index": 25,
+      "name": "indicators",
+      "display_name": "Status and Independent Power Indication",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "25 / Status and Independent Power Indication",
+        "U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown.",
+        "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
+      ]
+    },
+    {
+      "index": 26,
+      "name": "alarm",
+      "display_name": "Audible Fault Alarm",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "26 / Audible Fault Alarm",
+        "BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp.",
+        "The alarm defaults off. Motor protection remains independent of the audible indication."
+      ]
+    },
+    {
+      "index": 27,
       "name": "pd-programming",
       "display_name": "PD Programming and Power Probes",
       "frame": [
-        450,
-        400
+        297,
+        210
       ],
       "annotations": [
-        "18 / PD Programming and Power Probes",
-        "U36 isolates both I2Cc wires when TP_PD_ISO is grounded. Normal boot: pad released.",
-        "Program with fixed 5 V on J1, 3.3 V open-drain I2C and programmer VCC output OFF."
+        "27 / PD Programming and Power Probes",
+        "U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded.",
+        "Use fixed 5 V fixture power and a 3.3 V open-drain programmer; VREF is sense-only."
       ]
     }
   ],
@@ -780,110 +905,164 @@
     {
       "index": 1,
       "name": "usb-pd",
-      "elements": 380,
-      "coordinate_points_checked": 768
+      "elements": 134,
+      "coordinate_points_checked": 280
     },
     {
       "index": 2,
-      "name": "logic-power",
-      "elements": 229,
-      "coordinate_points_checked": 528
+      "name": "usb-pd-policy",
+      "elements": 243,
+      "coordinate_points_checked": 523
     },
     {
       "index": 3,
-      "name": "motor-power",
-      "elements": 230,
-      "coordinate_points_checked": 428
+      "name": "logic-power",
+      "elements": 89,
+      "coordinate_points_checked": 203
     },
     {
       "index": 4,
-      "name": "motion",
-      "elements": 401,
-      "coordinate_points_checked": 680
+      "name": "logic-backup",
+      "elements": 89,
+      "coordinate_points_checked": 213
     },
     {
       "index": 5,
-      "name": "bridge-a",
-      "elements": 188,
-      "coordinate_points_checked": 277
+      "name": "logic-selection",
+      "elements": 91,
+      "coordinate_points_checked": 185
     },
     {
       "index": 6,
-      "name": "bridge-b",
-      "elements": 173,
-      "coordinate_points_checked": 258
+      "name": "motor-power",
+      "elements": 237,
+      "coordinate_points_checked": 448
     },
     {
       "index": 7,
-      "name": "brake",
-      "elements": 200,
-      "coordinate_points_checked": 366
+      "name": "motion",
+      "elements": 238,
+      "coordinate_points_checked": 419
     },
     {
       "index": 8,
-      "name": "mcu",
-      "elements": 272,
-      "coordinate_points_checked": 455
+      "name": "motion-enable",
+      "elements": 169,
+      "coordinate_points_checked": 289
     },
     {
       "index": 9,
-      "name": "encoder",
-      "elements": 76,
-      "coordinate_points_checked": 139
+      "name": "bridge-a",
+      "elements": 222,
+      "coordinate_points_checked": 384
     },
     {
       "index": 10,
-      "name": "usb-data",
-      "elements": 144,
-      "coordinate_points_checked": 323
+      "name": "bridge-b",
+      "elements": 207,
+      "coordinate_points_checked": 365
     },
     {
       "index": 11,
-      "name": "inputs",
-      "elements": 346,
-      "coordinate_points_checked": 568
+      "name": "brake",
+      "elements": 80,
+      "coordinate_points_checked": 152
     },
     {
       "index": 12,
-      "name": "serial",
-      "elements": 172,
-      "coordinate_points_checked": 272
+      "name": "brake-ovp",
+      "elements": 129,
+      "coordinate_points_checked": 271
     },
     {
       "index": 13,
-      "name": "outputs",
-      "elements": 73,
-      "coordinate_points_checked": 118
+      "name": "mcu",
+      "elements": 272,
+      "coordinate_points_checked": 456
     },
     {
       "index": 14,
+      "name": "encoder",
+      "elements": 75,
+      "coordinate_points_checked": 139
+    },
+    {
+      "index": 15,
+      "name": "usb-data",
+      "elements": 143,
+      "coordinate_points_checked": 323
+    },
+    {
+      "index": 16,
+      "name": "inputs",
+      "elements": 164,
+      "coordinate_points_checked": 272
+    },
+    {
+      "index": 17,
+      "name": "inputs-aux",
+      "elements": 186,
+      "coordinate_points_checked": 308
+    },
+    {
+      "index": 18,
+      "name": "serial",
+      "elements": 97,
+      "coordinate_points_checked": 154
+    },
+    {
+      "index": 19,
+      "name": "serial-rs232",
+      "elements": 79,
+      "coordinate_points_checked": 123
+    },
+    {
+      "index": 20,
+      "name": "outputs",
+      "elements": 72,
+      "coordinate_points_checked": 118
+    },
+    {
+      "index": 21,
       "name": "usb-logic",
       "elements": 114,
       "coordinate_points_checked": 235
     },
     {
-      "index": 15,
+      "index": 22,
       "name": "telemetry",
-      "elements": 182,
-      "coordinate_points_checked": 320
+      "elements": 85,
+      "coordinate_points_checked": 160
     },
     {
-      "index": 16,
+      "index": 23,
+      "name": "phase-current",
+      "elements": 98,
+      "coordinate_points_checked": 158
+    },
+    {
+      "index": 24,
       "name": "driver-power",
-      "elements": 80,
+      "elements": 79,
       "coordinate_points_checked": 194
     },
     {
-      "index": 17,
+      "index": 25,
       "name": "indicators",
-      "elements": 162,
-      "coordinate_points_checked": 287
+      "elements": 120,
+      "coordinate_points_checked": 211
     },
     {
-      "index": 18,
+      "index": 26,
+      "name": "alarm",
+      "elements": 64,
+      "coordinate_points_checked": 126
+    },
+    {
+      "index": 27,
       "name": "pd-programming",
-      "elements": 80,
-      "coordinate_points_checked": 142
+      "elements": 76,
+      "coordinate_points_checked": 143
     }
   ],
   "checks": [
@@ -911,9 +1090,9 @@
     },
     {
       "ok": true,
-      "message": "exactly 18 schematic sheets",
+      "message": "exactly 27 A4 schematic sheets",
       "details": {
-        "actual": 18
+        "actual": 27
       }
     },
     {
@@ -930,24 +1109,23 @@
     },
     {
       "ok": true,
-      "message": "usb-pd keeps fixed 400 x 400 frame",
+      "message": "usb-pd keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          400,
-          400
+          297,
+          210
         ]
       }
     },
     {
       "ok": true,
-      "message": "usb-pd has 4 explanatory annotations",
+      "message": "usb-pd has 3 explanatory annotations",
       "details": {
-        "actual": 4,
+        "actual": 3,
         "texts": [
           "01 / USB-C PD POWER",
-          "J1: dedicated 48 V / 5 A EPR sink. USB DATA is on J10; the two VBUS rails are separate.",
-          "U1: 48 V CC/VBUS and unused SBU protection. U2: TPS26750 EPR sink controller. U3: PD policy EEPROM. U4: hardware power-permit gate.",
-          "J1 D+/D-: not connected. Q1: protected VBUS control. Q2/Q3: PD-path level translation."
+          "J1: 48 V / 5 A EPR power only; USB DATA is on J10.",
+          "U1 protects CC/VBUS. Q1 controls protected VBUS; C1/C2 provide local bypass."
         ]
       }
     },
@@ -961,19 +1139,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet usb-pd-policy"
+    },
+    {
+      "ok": true,
+      "message": "usb-pd-policy keeps sheet index 2"
+    },
+    {
+      "ok": true,
+      "message": "usb-pd-policy keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "usb-pd-policy has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "02 / PD Controller and EEPROM",
+          "U2 TPS26750 negotiates EPR; U3 stores the board-specific TI configuration.",
+          "Q2/Q3 translate PD path control. TI image and powered qualification remain required."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "usb-pd-policy has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "usb-pd-policy explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet logic-power"
     },
     {
       "ok": true,
-      "message": "logic-power keeps sheet index 2"
+      "message": "logic-power keeps sheet index 3"
     },
     {
       "ok": true,
-      "message": "logic-power keeps fixed 330 x 335 frame",
+      "message": "logic-power keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          330,
-          335
+          297,
+          210
         ]
       }
     },
@@ -983,9 +1199,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "02 / PD and Motor Backup Supplies",
-          "PD VBUS or DATA USB starts logic; the motor-bus buck retains brake-control backup after PD loss.",
-          "U5: PD 5-48 V buck. U22: VMOTOR backup buck. U23/U24 + R111: status-interlocked OR into board V3V3; U26/U27 power the separate MCU rail."
+          "03 / PD Backup Supply",
+          "U5 converts PD VBUS to V3V3_PD; L1 and its feedback/bypass network are shown here.",
+          "Input spans default USB 5 V through the specified 48 V EPR operating target."
         ]
       }
     },
@@ -999,19 +1215,95 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet logic-backup"
+    },
+    {
+      "ok": true,
+      "message": "logic-backup keeps sheet index 4"
+    },
+    {
+      "ok": true,
+      "message": "logic-backup keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "logic-backup has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "04 / Motor Backup Supply",
+          "U22 converts VMOTOR to V3V3_MOTOR for brake-control backup after PD loss.",
+          "L2, feedback and local bypass remain on the motor supply domain."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "logic-backup has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "logic-backup explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "known fixed geometry for sheet logic-selection"
+    },
+    {
+      "ok": true,
+      "message": "logic-selection keeps sheet index 5"
+    },
+    {
+      "ok": true,
+      "message": "logic-selection keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "logic-selection has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "05 / Logic Supply Selection and Power Permit",
+          "U23/U24 and R111 form the status-interlocked reverse-blocked board supply.",
+          "U4 combines PD path status with POWER_PERMIT to control the eFuse enable."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "logic-selection has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "logic-selection explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet motor-power"
     },
     {
       "ok": true,
-      "message": "motor-power keeps sheet index 3"
+      "message": "motor-power keeps sheet index 6"
     },
     {
       "ok": true,
-      "message": "motor-power keeps fixed 385 x 185 frame",
+      "message": "motor-power keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          385,
-          185
+          297,
+          210
         ]
       }
     },
@@ -1021,9 +1313,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "03 / Protected 48 V Motor Bus",
-          "Nominal eFuse limit 4.48 A. No reverse energy into the USB source.",
-          "Q4: reverse-blocking power MOSFET. Q5: fast gate clamp. U6: TPS26631 48 V eFuse, current monitor and fault output."
+          "06 / Protected 48 V Motor Bus",
+          "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
+          "Nominal current limit 4.48 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
         ]
       }
     },
@@ -1041,15 +1333,15 @@
     },
     {
       "ok": true,
-      "message": "motion keeps sheet index 4"
+      "message": "motion keeps sheet index 7"
     },
     {
       "ok": true,
-      "message": "motion keeps fixed 340 x 325 frame",
+      "message": "motion keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          340,
-          325
+          297,
+          210
         ]
       }
     },
@@ -1059,9 +1351,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "04 / Motion Controller and Enable Chain",
-          "SPI-controlled TMC5160A. Driver remains disabled until the hardware enable chain is valid.",
-          "U7: motion controller and gate driver. U8/U9: Step/Dir limit multiplexers. U10/U11 + Q14/Q15: hardwired enable interlock."
+          "07 / Motion Controller",
+          "U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V.",
+          "Bootstrap, charge-pump and local bypass parts are shown with the controller."
         ]
       }
     },
@@ -1075,19 +1367,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet motion-enable"
+    },
+    {
+      "ok": true,
+      "message": "motion-enable keeps sheet index 8"
+    },
+    {
+      "ok": true,
+      "message": "motion-enable keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "motion-enable has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "08 / Step Direction and Hardware Enable",
+          "U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock.",
+          "The driver remains inhibited until the hardware safety conditions permit motion."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "motion-enable has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "motion-enable explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet bridge-a"
     },
     {
       "ok": true,
-      "message": "bridge-a keeps sheet index 5"
+      "message": "bridge-a keeps sheet index 9"
     },
     {
       "ok": true,
-      "message": "bridge-a keeps fixed 315 x 325 frame",
+      "message": "bridge-a keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          315,
-          325
+          297,
+          210
         ]
       }
     },
@@ -1097,9 +1427,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "05 / Motor Phase A Power Bridge",
-          "Phase A target 5.5 A RMS; Kelvin sense routing and high-current copper require review.",
-          "Q6/Q8: high-side MOSFETs. Q7/Q9: low-side MOSFETs. R109: 33 mOhm, 3 W phase-current shunt."
+          "09 / Motor Phase A Power Bridge",
+          "Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt.",
+          "J2 connects both motor windings. The 5.5 A RMS design target is not a qualified setting."
         ]
       }
     },
@@ -1117,15 +1447,15 @@
     },
     {
       "ok": true,
-      "message": "bridge-b keeps sheet index 6"
+      "message": "bridge-b keeps sheet index 10"
     },
     {
       "ok": true,
-      "message": "bridge-b keeps fixed 315 x 330 frame",
+      "message": "bridge-b keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          315,
-          330
+          297,
+          210
         ]
       }
     },
@@ -1135,9 +1465,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "06 / Motor Phase B Power Bridge",
-          "Phase B target 5.5 A RMS; independent 33 milliohm sense resistor.",
-          "Q10/Q12: high-side MOSFETs. Q11/Q13: low-side MOSFETs. R110: 33 mOhm, 3 W phase-current shunt."
+          "10 / Motor Phase B Power Bridge",
+          "Q10/Q12 high-side and Q11/Q13 low-side switches form phase B.",
+          "R110 is the independent 33 mOhm shunt; preserve the Kelvin sense connections."
         ]
       }
     },
@@ -1155,15 +1485,15 @@
     },
     {
       "ok": true,
-      "message": "brake keeps sheet index 7"
+      "message": "brake keeps sheet index 11"
     },
     {
       "ok": true,
-      "message": "brake keeps fixed 370 x 345 frame",
+      "message": "brake keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          370,
-          345
+          297,
+          210
         ]
       }
     },
@@ -1173,9 +1503,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "07 / Regeneration Brake and Overvoltage",
-          "Nominal brake threshold 52.0 V; motor inhibit 53.7 V; external resistor sizing depends on total stored mechanical energy.",
-          "U12: precision threshold reference. U13/U14: overvoltage comparators. U15: MOSFET gate driver. Q16: brake switch."
+          "11 / Brake Reference and Turn-on Threshold",
+          "U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V.",
+          "External braking resistor and heatsink sizing depends on stored mechanical energy."
         ]
       }
     },
@@ -1189,19 +1519,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet brake-ovp"
+    },
+    {
+      "ok": true,
+      "message": "brake-ovp keeps sheet index 12"
+    },
+    {
+      "ok": true,
+      "message": "brake-ovp keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "brake-ovp has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "12 / Overvoltage Inhibit and Brake Driver",
+          "U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load.",
+          "Brake control remains powered from the protected motor bus through the backup supply."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "brake-ovp has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "brake-ovp explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet mcu"
     },
     {
       "ok": true,
-      "message": "mcu keeps sheet index 8"
+      "message": "mcu keeps sheet index 13"
     },
     {
       "ok": true,
-      "message": "mcu keeps fixed 295 x 190 frame",
+      "message": "mcu keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          295,
-          190
+          297,
+          210
         ]
       }
     },
@@ -1211,9 +1579,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "08 / MCU, Clock, Memory and Debug",
-          "3.3 V STM32G0B1; USB diagnostics, SWD, SPI motion control and external STEP/DIR.",
-          "U16: system MCU with native USB, FDCAN and ADC monitoring. U17: 32 Mbit external SPI configuration/telemetry flash."
+          "13 / MCU Clock Memory and Debug",
+          "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and industrial buses.",
+          "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
         ]
       }
     },
@@ -1231,15 +1599,15 @@
     },
     {
       "ok": true,
-      "message": "encoder keeps sheet index 9"
+      "message": "encoder keeps sheet index 14"
     },
     {
       "ok": true,
-      "message": "encoder keeps fixed 335 x 140 frame",
+      "message": "encoder keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          335,
-          140
+          297,
+          210
         ]
       }
     },
@@ -1249,9 +1617,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "09 / Shaft Encoder and Monitor",
-          "Optional AS5047P at the shaft axis: U18/C52/C53 are bottom-side DNP; magnet interface is not qualified.",
-          "U18: 14-bit magnetic shaft encoder; SPI readout plus ABI incremental outputs and local 3.3 V filtering."
+          "14 / Optional Shaft Encoder",
+          "U18 AS5047P and C52/C53 are centered bottom-side DNP footprints.",
+          "SPI plus ABI test access; magnet interface for the ordered single-shaft motor is unqualified."
         ]
       }
     },
@@ -1269,15 +1637,15 @@
     },
     {
       "ok": true,
-      "message": "usb-data keeps sheet index 10"
+      "message": "usb-data keeps sheet index 15"
     },
     {
       "ok": true,
-      "message": "usb-data keeps fixed 380 x 230 frame",
+      "message": "usb-data keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          380,
-          230
+          297,
+          210
         ]
       }
     },
@@ -1287,9 +1655,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "10 / USB DATA and Attach Sense",
-          "J10: USB 2.0 DATA plus independent logic power. Separate CC pulldowns; no PD negotiation on this port.",
-          "D15: D+/D-/CC ESD. R107/R108/C72: DATA VBUS attach sense. USB DATA cannot feed VMOTOR."
+          "15 / USB DATA and Attach Sense",
+          "J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port.",
+          "D15 protects D+/D-/CC. R107/R108/C72 sense DATA VBUS; DATA cannot feed VMOTOR."
         ]
       }
     },
@@ -1307,15 +1675,15 @@
     },
     {
       "ok": true,
-      "message": "inputs keeps sheet index 11"
+      "message": "inputs keeps sheet index 16"
     },
     {
       "ok": true,
-      "message": "inputs keeps fixed 380 x 435 frame",
+      "message": "inputs keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          380,
-          435
+          297,
+          210
         ]
       }
     },
@@ -1325,9 +1693,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "11 / 24 V Inputs and Step/Direction",
-          "Non-isolated 24 V inputs. J7: keyed 20-pin harness combines all control I/O and industrial buses; pinout is in hardware-contract.json.",
-          "Q17-Q23: HOME, limits, DIN0/1 and Step/Direction conditioners. Q14: hardware enable on the motion sheet."
+          "16 / Home Limits and Digital Input 0",
+          "Non-isolated 24 V HOME, left/right STOP and DIN0 conditioning.",
+          "The consolidated J7 harness is shown on the Step Direction and Industrial Harness sheet."
         ]
       }
     },
@@ -1341,19 +1709,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet inputs-aux"
+    },
+    {
+      "ok": true,
+      "message": "inputs-aux keeps sheet index 17"
+    },
+    {
+      "ok": true,
+      "message": "inputs-aux keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "inputs-aux has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "17 / Step Direction and Industrial Harness",
+          "24 V DIN1, STEP and DIR conditioning; J7 carries the required industrial interfaces.",
+          "J7 pin 17 is VMOTOR, not 24 V. Numbered cable mapping is in hardware-contract.json."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "inputs-aux has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "inputs-aux explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet serial"
     },
     {
       "ok": true,
-      "message": "serial keeps sheet index 12"
+      "message": "serial keeps sheet index 18"
     },
     {
       "ok": true,
-      "message": "serial keeps fixed 380 x 230 frame",
+      "message": "serial keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          380,
-          230
+          297,
+          210
         ]
       }
     },
@@ -1363,9 +1769,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "12 / CAN, RS485 and RS232",
-          "External CAN/RS485 termination; J7 carries RS232, CAN and RS485.",
-          "U19: 3.3 V CAN transceiver; D2: CAN TVS. U20: RS485 transceiver; D3: RS485 TVS. U21: RS232 transceiver."
+          "18 / CAN and RS485",
+          "U19 is the 3.3 V CAN transceiver; U20 is RS485. D2/D3 provide line protection.",
+          "J7 carries both buses; termination and RS485 bias are defined at the system level."
         ]
       }
     },
@@ -1379,19 +1785,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet serial-rs232"
+    },
+    {
+      "ok": true,
+      "message": "serial-rs232 keeps sheet index 19"
+    },
+    {
+      "ok": true,
+      "message": "serial-rs232 keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "serial-rs232 has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "19 / RS232 Interface",
+          "U21 provides RS232 translation and charge-pump generation.",
+          "J7 carries RS232 TX/RX and ground; local bypass remains at the transceiver."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "serial-rs232 has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "serial-rs232 explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet outputs"
     },
     {
       "ok": true,
-      "message": "outputs keeps sheet index 13"
+      "message": "outputs keeps sheet index 20"
     },
     {
       "ok": true,
-      "message": "outputs keeps fixed 360 x 205 frame",
+      "message": "outputs keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          360,
-          205
+          297,
+          210
         ]
       }
     },
@@ -1401,9 +1845,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "13 / Hardware Enable and Outputs",
-          "J7: motor rail, 24 V hardware enable, OUT0 and OUT1. External loads need rating review.",
-          "Q24/Q25: open-collector 24 V output drivers; base pulldowns keep outputs off during reset."
+          "20 / Hardware Outputs",
+          "Q24/Q25 provide the two open-collector outputs; base pulldowns keep reset inactive.",
+          "J7 carries OUT0/OUT1. External load and duty ratings still require system qualification."
         ]
       }
     },
@@ -1421,15 +1865,15 @@
     },
     {
       "ok": true,
-      "message": "usb-logic keeps sheet index 14"
+      "message": "usb-logic keeps sheet index 21"
     },
     {
       "ok": true,
-      "message": "usb-logic keeps fixed 320 x 240 frame",
+      "message": "usb-logic keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          320,
-          240
+          297,
+          210
         ]
       }
     },
@@ -1439,9 +1883,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "14 / USB Logic Power",
-          "U28: DATA current limiter. U25: 3.3 V LDO. DATA powers MCU only; peripherals require board power.",
-          "U26/U27: reverse-blocked V3V3_MCU. R119/R120 sense board power on PB1; PD status is polled."
+          "21 / USB Logic Power",
+          "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
+          "R119/R120 sense board supply on PB1. Industrial peripherals require board power."
         ]
       }
     },
@@ -1459,15 +1903,15 @@
     },
     {
       "ok": true,
-      "message": "telemetry keeps sheet index 15"
+      "message": "telemetry keeps sheet index 22"
     },
     {
       "ok": true,
-      "message": "telemetry keeps fixed 370 x 420 frame",
+      "message": "telemetry keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          370,
-          420
+          297,
+          210
         ]
       }
     },
@@ -1477,9 +1921,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "15 / Temperature and Current Diagnostics",
-          "U29: power-stage temperature, address 0x48. U33: temperature hardware inhibit. U30: bus-monitor ADC, address 0x49.",
-          "U31/U32: bidirectional winding telemetry, 20 V/V across 5 mOhm = 100 mV/A, centered at 1.65 V. Not a short-circuit trip."
+          "22 / Temperature and Bus Diagnostics",
+          "U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus.",
+          "Sensor addresses are 0x48 and 0x49. Temperature correlation requires load testing."
         ]
       }
     },
@@ -1493,19 +1937,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet phase-current"
+    },
+    {
+      "ok": true,
+      "message": "phase-current keeps sheet index 23"
+    },
+    {
+      "ok": true,
+      "message": "phase-current keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "phase-current has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "23 / Phase Current Diagnostics",
+          "U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V.",
+          "Nominal 100 mV/A about 1.65 V; instantaneous diagnostics, not a short-circuit trip."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "phase-current has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "phase-current explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet driver-power"
     },
     {
       "ok": true,
-      "message": "driver-power keeps sheet index 16"
+      "message": "driver-power keeps sheet index 24"
     },
     {
       "ok": true,
-      "message": "driver-power keeps fixed 320 x 200 frame",
+      "message": "driver-power keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          320,
-          200
+          297,
+          210
         ]
       }
     },
@@ -1515,9 +1997,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "16 / Regulated Driver Supply",
-          "U34: 65 V buck, nominal 12.0 V. Supplies U7 VSA + 12VOUT and U15; derived from protected VMOTOR.",
-          "TMC5160A external-regulator connection: 10-13 V operating range. Gate-supply ripple and startup need bench validation."
+          "24 / Regulated Driver Supply",
+          "U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15.",
+          "TMC5160 external supply range is 10-13 V; ripple and startup require bench validation."
         ]
       }
     },
@@ -1535,15 +2017,15 @@
     },
     {
       "ok": true,
-      "message": "indicators keeps sheet index 17"
+      "message": "indicators keeps sheet index 25"
     },
     {
       "ok": true,
-      "message": "indicators keeps fixed 450 x 400 frame",
+      "message": "indicators keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          450,
-          400
+          297,
+          210
         ]
       }
     },
@@ -1553,9 +2035,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "17 / Status Indicators and Audible Alarm",
-          "U35: 3.3 V I2C GPIO at 0x70. Active-low RGB sinks; PC13 holds RESET low until board power is ready.",
-          "BZ1: active 3 V alarm. Q26 + R127 keep it off at reset; D18 clamps the switched lead."
+          "25 / Status and Independent Power Indication",
+          "U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown.",
+          "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
         ]
       }
     },
@@ -1569,19 +2051,57 @@
     },
     {
       "ok": true,
+      "message": "known fixed geometry for sheet alarm"
+    },
+    {
+      "ok": true,
+      "message": "alarm keeps sheet index 26"
+    },
+    {
+      "ok": true,
+      "message": "alarm keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "alarm has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "26 / Audible Fault Alarm",
+          "BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp.",
+          "The alarm defaults off. Motor protection remains independent of the audible indication."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "alarm has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "alarm explains component roles"
+    },
+    {
+      "ok": true,
       "message": "known fixed geometry for sheet pd-programming"
     },
     {
       "ok": true,
-      "message": "pd-programming keeps sheet index 18"
+      "message": "pd-programming keeps sheet index 27"
     },
     {
       "ok": true,
-      "message": "pd-programming keeps fixed 450 x 400 frame",
+      "message": "pd-programming keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
-          450,
-          400
+          297,
+          210
         ]
       }
     },
@@ -1591,9 +2111,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "18 / PD Programming and Power Probes",
-          "U36 isolates both I2Cc wires when TP_PD_ISO is grounded. Normal boot: pad released.",
-          "Program with fixed 5 V on J1, 3.3 V open-drain I2C and programmer VCC output OFF."
+          "27 / PD Programming and Power Probes",
+          "U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded.",
+          "Use fixed 5 V fixture power and a 3.3 V open-drain programmer; VREF is sense-only."
         ]
       }
     },
@@ -1607,9 +2127,9 @@
     },
     {
       "ok": true,
-      "message": "55 high-level sheet annotations are present",
+      "message": "81 high-level sheet annotations are present",
       "details": {
-        "actual": 55
+        "actual": 81
       }
     },
     {

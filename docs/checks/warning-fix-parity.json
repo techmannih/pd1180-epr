@@ -1,0 +1,97 @@
+{
+  "checked_at": "2026-10-11T07:32:46.035681+00:00",
+  "baseline_commit": "36deebd",
+  "baseline_native_sha256": "0181e5b4c89659b3f502aa19fb4344057770f8a1cd0d9da20caf6518244016ce",
+  "current_native_sha256": "7e46297f0bf288c2a8add54f65b2da0cff8255a7ed4c24951f7746c24f01f1d6",
+  "source_comparison": {
+    "counts": {
+      "connectivity": 1137,
+      "identities": 333,
+      "placement": 333,
+      "pcb_smtpad": 1099,
+      "pcb_plated_hole": 38,
+      "pcb_hole": 8,
+      "pcb_board": 1
+    },
+    "errors": {}
+  },
+  "native_comparison": {
+    "passed": true,
+    "method": "Exact full-board text comparison after normalizing only Value property strings and the added bare-pad exclude_from_bom/dnp metadata. No tracks, vias, zones, pads, holes, footprint positions or board geometry were removed from the comparison.",
+    "geometry_and_routing_unchanged": true,
+    "assembly_metadata_changes": 19
+  },
+  "source_warning_count": 0,
+  "manufacturing_comparison": {
+    "passed": true,
+    "method": "Exact Gerber/drill comparison with the baseline commit after removing generation-date comment lines only.",
+    "files": [
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-B_Cu.gbl",
+        "geometry_sha256": "4936203b9e458e8b8a66f471069880bcef9dee901d16c99b19a2f9d1b24439f7"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-B_Mask.gbs",
+        "geometry_sha256": "e3da808d7d297f50fd128ff8ee9574c4636ed0dabcb9cc957c7e5e88f79256ff"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-B_Silkscreen.gbo",
+        "geometry_sha256": "83153ae8cef12bdf0fa8b16d1a1f2cb8a2eb6880c1fd29ccb9656c1aa49e66b8"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-Edge_Cuts.gm1",
+        "geometry_sha256": "677e49344a2e41164b02127a1db5bfc1aac4598ee64dc88805318e826a34d4c9"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-F_Cu.gtl",
+        "geometry_sha256": "1c3c5933159e2a3441bfe198b09d3eb37d04ac37ee8b05f1e4b8eb545dc5abb7"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-F_Mask.gts",
+        "geometry_sha256": "dab00ef9316fd727e0c9346f1f61d1c34b66bcdcff5ba07ac51c2aa4de920191"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-F_Paste.gtp",
+        "geometry_sha256": "a99263442b2c33373fef3e16de753c6236f5bb0e323c49c037e427159f70628a"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-F_Silkscreen.gto",
+        "geometry_sha256": "9f190be2f918a1b6839697b59d276e4ec44cf0ca969ea7b741461f4232568d79"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-In1_Cu.g1",
+        "geometry_sha256": "b459618fc6afc92392d9f921dd0f8dbbb63f49f09cae091d563801ab9035e2a3"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-In2_Cu.g2",
+        "geometry_sha256": "e051c464f184987e621652d9d1ec14298a5f70baf74add6299c9f555c2bf871f"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH-drl_map.gbr",
+        "geometry_sha256": "5f5529ac1b2c0d945c98006b748f1de86797dc0925110ca647bdd04d51d07bfe"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH.drl",
+        "geometry_sha256": "c671c607805922537570c6e4d432a13eab58697fef42f525aa870a4d15b80e3b"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-PTH-drl_map.gbr",
+        "geometry_sha256": "aa5105314e91cc940c1ce29e80acdcf8322ba67b98d5a632cea02a1736081433"
+      },
+      {
+        "file": "dist/manufacturing/gerbers/pd1180-epr-r0.3-PTH.drl",
+        "geometry_sha256": "87b5cd1919b2242d42ded0ed83da6619fb88a11525cde5a7c040cb9b8dd341e4"
+      }
+    ]
+  },
+  "component_value_comparison": {
+    "passed": true,
+    "components": 333,
+    "fields": [
+      "resistance",
+      "capacitance",
+      "inductance",
+      "is_polarized"
+    ]
+  }
+}

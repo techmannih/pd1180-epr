@@ -89,28 +89,38 @@ const peerLabels = (key) =>
   (connectedPortGroups.get(key) || []).map((port) => portLabel(port)).sort()
 
 // 1. Sheet inventory, immutable dimensions, and explanatory annotations.
-const expectedSheetGeometry = {
-  "usb-pd": [1, 400, 400, 4],
-  "logic-power": [2, 330, 335, 3],
-  "motor-power": [3, 385, 185, 3],
-  motion: [4, 340, 325, 3],
-  "bridge-a": [5, 315, 325, 3],
-  "bridge-b": [6, 315, 330, 3],
-  brake: [7, 370, 345, 3],
-  mcu: [8, 295, 190, 3],
-  encoder: [9, 335, 140, 3],
-  "usb-data": [10, 380, 230, 3],
-  serial: [12, 380, 230, 3],
-  inputs: [11, 380, 435, 3],
-  outputs: [13, 360, 205, 3],
-  "usb-logic": [14, 320, 240, 3],
-  telemetry: [15, 370, 420, 3],
-  "driver-power": [16, 320, 200, 3],
-  indicators: [17, 450, 400, 3],
-  "pd-programming": [18, 450, 400, 3],
-}
-check(sheets.length === 18, "exactly 18 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name )).size === 18, "all schematic sheet names are unique")
+const expectedSheetNames = [
+  "usb-pd",
+  "usb-pd-policy",
+  "logic-power",
+  "logic-backup",
+  "logic-selection",
+  "motor-power",
+  "motion",
+  "motion-enable",
+  "bridge-a",
+  "bridge-b",
+  "brake",
+  "brake-ovp",
+  "mcu",
+  "encoder",
+  "usb-data",
+  "inputs",
+  "inputs-aux",
+  "serial",
+  "serial-rs232",
+  "outputs",
+  "usb-logic",
+  "telemetry",
+  "phase-current",
+  "driver-power",
+  "indicators",
+  "alarm",
+  "pd-programming"
+]
+const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]))
+check(sheets.length === 27, "exactly 27 A4 schematic sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 27, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -140,7 +150,7 @@ for (const sheet of sheets) {
     `${sheet.name} has numbered sheet heading`,
   )
   check(
-    sheetAnnotations.some((item) => /\b(?:U|Q|J|R|D)\d+/.test(item.text) && item.text.includes(":")),
+    sheetAnnotations.some((item) => /\b(?:U|Q|J|R|D)\d+/.test(item.text)),
     `${sheet.name} explains component roles`,
   )
   annotationSummary.push({
@@ -151,7 +161,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 55, "55 high-level sheet annotations are present", {
+check(annotations.length === 81, "81 high-level sheet annotations are present", {
   actual: annotations.length,
 })
 

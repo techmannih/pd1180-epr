@@ -1029,5 +1029,12 @@
     ],
     "critical_branches_passed": 9,
     "scope": "Added the authorized diagnostic and isolated EEPROM programming circuits; moved adjacent components to clear their bodies and preserve local bypass paths. No change to the board outline, mounting holes, motor connector, industrial functions or optional encoder policy. Four existing vias overlapping the relocated/new solder lands were moved clear. The U33 pin 5 supply-via overlap at native (105.659005, 96.613042) mm is retained because the adjacent top and inner signal routes block a short escape; its 0.50/0.30 mm pad/drill uses the same specified epoxy-filled, copper-capped process as the other recorded locations. No via-drill exception or DRC waiver is used."
+  },
+  "warning_cleanup": {
+    "checked_at": "2026-10-11T07:32:46.035681+00:00",
+    "board_sha256": "7e46297f0bf288c2a8add54f65b2da0cff8255a7ed4c24951f7746c24f01f1d6",
+    "baseline_board_sha256": "0181e5b4c89659b3f502aa19fb4344057770f8a1cd0d9da20caf6518244016ce",
+    "geometry_and_routing_unchanged": true,
+    "evidence": "docs/checks/warning-fix-parity.json"
   }
 }

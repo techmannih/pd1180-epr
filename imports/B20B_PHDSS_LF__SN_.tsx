@@ -25,7 +25,7 @@ const pinLabels = {
 
 export const B20B_PHDSS_LF__SN_ = (props: ChipProps<typeof pinLabels>) => {
   return (
-    <chip
+    <connector
       pinLabels={pinLabels}
       supplierPartNumbers={{
   "jlcpcb": [

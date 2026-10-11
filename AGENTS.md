@@ -23,6 +23,8 @@ On 2026-10-10 the user also approved removing C19 from TPS26631 IMON, with match
 
 On 2026-10-11 the user approved adding all missing reference-board diagnostics: RGB and independent power indication, driven buzzer, PD EEPROM programming isolation/access, and PD/VMOTOR/GND probes. Changes to these circuits, the affected EEPROM nets, firmware and PCB placement/routing are authorized; preserve unrelated schematic content. Existing release files remain historical until this ECO passes fresh review.
 
+On 2026-10-11 the user authorized correcting all 106 reported source warnings: use accurate component types and pin metadata, mark bare service pads as not assembled, and arrange the schematic on default A4 sheets with all elements inside the drawing area. Preserve electrical connectivity, component identities and PCB geometry during this schematic/metadata correction. Source warnings must fail verification rather than silently accompany a passing summary.
+
 ## Required project structure
 
 Every board repository should contain:

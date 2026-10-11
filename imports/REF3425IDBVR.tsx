@@ -13,6 +13,14 @@ export const REF3425IDBVR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{
+        pin1: { requiresGround: true },
+        pin2: { requiresGround: true, isInput: true },
+        pin3: { isInput: true },
+        pin4: { requiresPower: true },
+        pin5: { isInput: true },
+        pin6: { isOutput: true, providesVoltage: 2.5 },
+      }}
       supplierPartNumbers={{
   "jlcpcb": [
     "C187836"

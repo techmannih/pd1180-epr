@@ -5,21 +5,21 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['AGENTS.md', 'board-diagnostics.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+const verifiedInputPaths = ['AGENTS.md', 'board-diagnostics.tsx', 'schematic-pages.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
 verifiedInputPaths.push('motor-assembly.circuit.tsx', 'imports/MotorAssemblyCad.ts', 'engineering/mechanical/34hs31-6004s1.glb', 'engineering/mechanical/adapter-proposal.glb', 'engineering/mechanical/assembly.json', 'engineering/mechanical/34HS31-6004S1-manufacturer.zip', 'docs/motor-data.json', 'scripts/generate-motor-assembly.mjs', 'scripts/check-motor-assembly.mjs')
 verifiedInputPaths.push('engineering/mechanical/ordered-motor-pcb-reference.json', 'scripts/motor-mounting-geometry.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs')
-verifiedInputPaths.push('bun.lock', 'scripts/generate-cloud-viewer.mjs', 'scripts/check-cloud-viewer.mjs', 'scripts/cloud-viewer-net-names.test.mjs')
-for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
+verifiedInputPaths.push('bun.lock', 'scripts/generate-cloud-viewer.mjs', 'scripts/refresh-routed-preview.mjs', 'scripts/check-cloud-viewer.mjs', 'scripts/cloud-viewer-net-names.test.mjs')
+for (const dir of ['imports', 'firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
   for (const file of (await readdir(dir)).sort()) verifiedInputPaths.push(`${dir}/${file}`)
 }
 verifiedInputPaths.push('firmware/platformio.ini', 'docs/firmware-pinmap.json', 'docs/pd-configuration.json', 'docs/release-status.json', 'scripts/build-firmware.mjs', 'scripts/check-operating-mode.mjs')
 async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
-verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
+verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/normalize-kicad-parity.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
 verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 const inputsBefore = await hashInputs()
@@ -80,6 +80,10 @@ results.push({name:'input-stability',exit_code:changedInputs.length?1:0,status:c
 console.log(`input-stability: ${changedInputs.length?'FAIL':'PASS'} (docs/checks/input-stability.log)`)
 const counts={}
 for(const row of data) if(row.type.endsWith('_error')||row.type.endsWith('_warning')) counts[row.type]=(counts[row.type]||0)+1
+const messageCount = Object.values(counts).reduce((total, count) => total + count, 0)
+await writeFile('docs/checks/source-messages.log', `${JSON.stringify(counts, null, 2)}\n`)
+results.push({name:'source-messages',exit_code:messageCount ? 1 : 0,status:messageCount ? 'fail' : 'pass',seconds:0,log:'docs/checks/source-messages.log'})
+console.log(`source-messages: ${messageCount ? 'FAIL' : 'PASS'} (${messageCount} errors/warnings)`)
 const report={
   checked_at:new Date().toISOString(),
   entry_sha256:inputsBefore['index.circuit.tsx'],
@@ -104,9 +108,10 @@ const verificationMarkdown = `# PD1180-EPR verification\n\n` +
   `| Check | Result | Time | Evidence |\n|---|---:|---:|---|\n` +
   results.map((result) => `| ${result.name} | ${result.status.toUpperCase()} | ${result.seconds.toFixed(1)} s | \`${result.log}\` |`).join('\n') +
   `\n\n- Routed KiCad board verified: **${report.routed_board_verified ? 'yes' : 'no'}**\n` +
+  `- Source errors/warnings: **${messageCount}**\n` +
   `- Prototype fabrication orderable: **${report.prototype_fabrication_orderable ? 'yes' : 'no'}**\n` +
   `- Production released: **no**\n` +
   `- Verified entry SHA-256: \`${report.entry_sha256}\`\n\n` +
   `Production remains gated by the TI PD image, STM32 target firmware, brake/load sizing, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
 await writeFile('verification.md', verificationMarkdown)
-if(results.some(r=>r.exit_code!==0)||Object.keys(counts).some(k=>k.endsWith('_error')))process.exitCode=1
+if(results.some(r=>r.exit_code!==0))process.exitCode=1

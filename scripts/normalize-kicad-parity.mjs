@@ -165,7 +165,10 @@ app=wx.App(False)
 board_path,fresh_path,map_path=sys.argv[1:4];b=pcbnew.LoadBoard(board_path);fresh=pcbnew.LoadBoard(fresh_path)
 F={f.GetReference():f for f in b.GetFootprints() if f.GetReference()};S={f.GetReference():f for f in fresh.GetFootprints() if f.GetReference()}
 if set(F)!=set(S): raise SystemExit('reference set changed before board preparation')
-for ref,f in F.items(): f.SetValue(S[ref].GetValue())
+for ref,f in F.items():
+ f.SetValue(S[ref].GetValue())
+ f.SetDNP(S[ref].IsDNP())
+ f.SetExcludedFromBOM(S[ref].IsExcludedFromBOM())
 holes=[f for f in b.GetFootprints() if not f.GetReference()]
 if len(holes)!=4: raise SystemExit(f'expected exactly 4 empty-reference mounting holes, found {len(holes)}')
 for f in holes: f.SetBoardOnly(True)

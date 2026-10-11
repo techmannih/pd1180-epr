@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "purpose": "Reusable tscircuit board rules with explicit PD1180-EPR project overrides",
-  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.0-ECO",
   "assembly": {
     "populated_layers": [
@@ -69,7 +69,7 @@
     "board_width_mm": 85.9,
     "board_height_mm": 85.9,
     "schematic_sheet_size": "a4",
-    "schematic_sheet_count": 18,
+    "schematic_sheet_count": 27,
     "mounting_hole_count": 4,
     "mounting_hole_diameter_mm": 4.2,
     "mounting_holes_centered_mm": [
@@ -98,13 +98,13 @@
   },
   "markings": {
     "required_source_text": [
-      "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
-      "Stepper Controller with USB-C PD 3.1 EPR · r0.4 ECO",
+      "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted",
+      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.4 ECO",
       "Made with tscircuit"
     ],
     "required_kicad_text": [
-      "PD1180-EPR — NEMA 34 Smart Motor-Mounted",
-      "Stepper Controller with USB-C PD 3.1 EPR · r0.4 ECO",
+      "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted",
+      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.4 ECO",
       "Made with tscircuit"
     ]
   },
@@ -186,7 +186,16 @@
       "release/schematics/indicators.svg",
       "release/schematics/pd-programming.svg",
       "release/indicators.md",
-      "release/pd-programming.md"
+      "release/pd-programming.md",
+      "release/schematics/usb-pd-policy.svg",
+      "release/schematics/logic-backup.svg",
+      "release/schematics/logic-selection.svg",
+      "release/schematics/motion-enable.svg",
+      "release/schematics/brake-ovp.svg",
+      "release/schematics/inputs-aux.svg",
+      "release/schematics/serial-rs232.svg",
+      "release/schematics/phase-current.svg",
+      "release/schematics/alarm.svg"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",

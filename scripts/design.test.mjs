@@ -44,6 +44,16 @@ const key=(name,pin)=>port(name,pin)?.subcircuit_connectivity_map_key
 const netKey=name=>nets.find(e=>e.name===name)?.subcircuit_connectivity_map_key
 const on=(name,pin,net)=>expect(key(name,pin)).toBe(netKey(net))
 
+test('source model has no errors or warnings and uses physical component types', () => {
+  expect(data.filter(row => row.type.endsWith('_error') || row.type.endsWith('_warning'))).toEqual([])
+  for (const name of ['Q2', 'Q3', 'Q4', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q16', 'Q26']) {
+    expect(comp(name).ftype).toBe('simple_mosfet')
+  }
+  expect(comp('J7').ftype).toBe('simple_connector')
+  expect(comp('D16').ftype).toBe('simple_led')
+  expect(ports.filter(row => row.source_component_id === comp('D16').source_component_id).map(row => row.pin_number).sort()).toEqual([1, 2, 3, 4])
+})
+
 // This integration test imports the complete routed KiCad board twice.
 test('hosted release ignores only the CLI cache key while preserving every source model record', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'pd1180-viewer-cache-'))

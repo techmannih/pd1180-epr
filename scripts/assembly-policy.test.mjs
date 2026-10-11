@@ -28,6 +28,13 @@ test('optional encoder cannot leak into fitted BOM/CPL', () => {
   }
 })
 
+test('bare service pads remain on the PCB but require no placed part', () => {
+  expect(check(circuit)).toEqual([])
+  expect(check(changed('TP_PD_GND', row => row.do_not_place = false)).length).toBeGreaterThan(0)
+  expect(check(changed('TP_PD_GND', row => row.layer = 'bottom')).length).toBeGreaterThan(0)
+  expect(assemblyPolicyErrors(circuit, standards, new Set([...fitted, 'TP_PD_GND'])).length).toBeGreaterThan(0)
+})
+
 test('motor harness uses the rated VH family and preserves manufacturer winding pairs', () => {
   const harness = JSON.parse(readFileSync('engineering/motor-harness.json'))
   const motor = JSON.parse(readFileSync('docs/motor-data.json'))

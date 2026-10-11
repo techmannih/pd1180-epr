@@ -2,11 +2,15 @@
 export function assemblyPolicyErrors(circuit, standards, fittedNames) {
   const errors = []
   const names = new Map(circuit.filter(row => row.type === 'source_component').map(row => [row.source_component_id, row.name]))
+  const barePads = new Set(circuit.filter(row => row.type === 'source_component' && row.ftype === 'simple_test_point' && !Object.values(row.supplier_part_numbers ?? {}).some(parts => parts.length)).map(row => row.source_component_id))
   const optional = standards.assembly.optional_unpopulated_parts ?? {}
   const seen = new Set()
   for (const row of circuit.filter(row => row.type === 'pcb_component')) {
     const name = names.get(row.source_component_id)
-    if (Object.hasOwn(optional, name)) {
+    if (barePads.has(row.source_component_id)) {
+      if (!row.do_not_place || row.layer !== 'top') errors.push(`${name}: bare service pad must be unpopulated on top`)
+      if (fittedNames.has(name)) errors.push(`${name}: bare service pad must be absent from the fitted manifest`)
+    } else if (Object.hasOwn(optional, name)) {
       seen.add(name)
       if (!row.do_not_place || row.layer !== optional[name]) errors.push(`${name}: must be unpopulated on ${optional[name]}`)
       if (fittedNames.has(name)) errors.push(`${name}: optional footprint must be absent from the fitted manifest`)

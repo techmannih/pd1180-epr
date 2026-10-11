@@ -13,6 +13,14 @@ export const USBLC6_4SC6 = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{
+        pin1: { isPassive: true },
+        pin2: { requiresGround: true },
+        pin3: { isPassive: true },
+        pin4: { isPassive: true },
+        pin5: { requiresPower: true },
+        pin6: { isPassive: true },
+      }}
       symbol={
         <symbol>
           <port name="pin1" pinNumber={1} aliases={["1"]} direction="left" schX={-1.2} schY={0.7} schStemLength={0.4} />
