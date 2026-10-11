@@ -39,7 +39,7 @@ Keep probe barrels and cable strain relief clear of adjacent parts. The 48 V pad
 1. Disconnect the motor, brake load and other externally driven interfaces. Discharge VMOTOR and verify it before attaching the fixture. Keep MCU reset asserted through TP_NRST so no application activity starts.
 2. With the board unpowered, connect grounds, pull TP_PD_ISO low and keep programmer SDA/SCL high impedance. Disable the programmer's VCC output. U36 is not specified as power-off isolation; do not drive an unpowered board.
 3. Apply a current-limited **fixed 5 V source to J1**. Do not negotiate EPR during programming. Verify PD_3V3 at TP_PD_VREF is within the EEPROM/controller operating range and verify isolation stays asserted before enabling the programmer.
-4. Use a 3.3 V open-drain programmer at 100 kHz. Do not add 5 V pullups. U3 address pins E0/E1/E2 are grounded and WC is grounded; its 7-bit address is 0x50. Respect the M24512 page-write size, write-cycle completion and ACK polling from its datasheet; do not wrap writes across page boundaries.
+4. Use a 3.3 V open-drain programmer at 100 kHz. Do not add 5 V pullups. U3 address pins E0/E1/E2 are grounded and WC is grounded; its 7-bit address is 0x50 (wire address bytes 0xA0 write / 0xA1 read). The [ST M24512 datasheet](https://www.st.com/resource/en/datasheet/m24512-r.pdf) specifies 65,536 bytes, a two-byte memory address sent high byte first, 128-byte pages and up to 5 ms per write cycle. End each write before the next 128-byte boundary, then ACK-poll for completion with a bounded timeout; abort on timeout rather than continuing to the next page. This EEPROM uses ordinary I2C memory transactions, not the TPS26750 register byte-count protocol.
 5. Write the approved **full** TI flash image, read back the programmed address range and compare it byte-for-byte. Record board serial number, binary SHA-256, programmer settings and readback SHA-256. Never substitute the requirements JSON or a register dump.
 6. Return programmer SDA/SCL to high impedance, remove board power, verify discharge, then release TP_PD_ISO. Remove the fixture or leave only high-impedance probes attached. Release MCU reset.
 7. Cold boot on fixed 5 V first. Verify the TPS26750 enters APP mode and boots the intended configuration. Only then run the staged EPR/power tests. Keep motor outputs locked until the approved PD image and hardware qualification records are in place.
@@ -51,3 +51,21 @@ The fixture must stop I2C immediately if target VREF falls, and must not release
 TI's [SN74LVC2G66 datasheet](https://www.ti.com/lit/ds/symlink/sn74lvc2g66.pdf) specifies two normally open bilateral channels controlled independently. Pins 3 and 7 are joined so the fixture opens both together. The switch is powered from PD_3V3; its analog ports must remain inside the allowed supply range. There is no separate programmer power input to backfeed that rail.
 
 With both sides joined, the paired 4.7 kΩ pullups give about 2.35 kΩ per line (approximately 1.4 mA at 3.3 V). With isolation asserted, each side retains its own 4.7 kΩ pullup. Bus rise time/capacitance, low-level voltage through the switch and cold boot must be measured on the first article. TI image generation follows the [TPS26750 application customization guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf).
+
+## Save and verify programming readback
+
+The provider must save the programmer's log and complete raw memory dump: U3 has 65,536 bytes starting at 0x0000; U16 has 131,072 bytes starting at 0x08000000. Keep the board serial, fixture/programmer identity, operator and programming timestamp with those files. A copied input binary is not a device readback.
+
+From the repository root, compare a U16 dump with the current commissioning archive:
+
+```sh
+bun scripts/verify-programming.mjs --kind stm32 --serial FIRST-ARTICLE-001 \
+  --operator 'provider engineer' --programmer 'ST-LINK serial / tool version' \
+  --readback /path/to/u16-readback.bin --output /path/to/u16-verification.json
+```
+
+For U3, use the same command with `--kind pd` and the EEPROM dump. It currently refuses to run because the TI image is absent. After the actual TI tool **full-flash** export has been independently reviewed, register its `path`, `sha256`, `bytes`, `format: "ti-full-flash"` and `start_address: 0` under `eeprom.image` in `pd-configuration.json`. Never relabel a low-region export or requirements JSON to bypass that check. Archive the matching TI project export and tool version with the image. The file comparator checks identity and content; it cannot determine whether the TI settings are electrically correct.
+
+The command checks every image byte, rejects stale STM32 source identities, and refuses to overwrite an earlier report. Bytes beyond the image are recorded in the full dump hash but not accepted against an invented padding pattern. A successful comparison proves neither cold APP boot nor motor operation. Keep the separate cold-boot, EPR negotiation, safety-inhibit and motor test records required in `power-validation.md`.
+
+The [unused-SBU finding in the repository](https://github.com/techmannih/pd1180-epr/blob/main/docs/pd-configuration-review.md) remains a hardware review hold even after a successful memory comparison.

@@ -10,7 +10,7 @@ verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-see
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
 verifiedInputPaths.push('motor-assembly.circuit.tsx', 'imports/MotorAssemblyCad.ts', 'engineering/mechanical/34hs31-6004s1.glb', 'engineering/mechanical/adapter-proposal.glb', 'engineering/mechanical/assembly.json', 'engineering/mechanical/34HS31-6004S1-manufacturer.zip', 'docs/motor-data.json', 'scripts/generate-motor-assembly.mjs', 'scripts/check-motor-assembly.mjs')
-verifiedInputPaths.push('engineering/mechanical/harness-layout.json', 'engineering/mechanical/harness-proposal.glb', 'scripts/assembly-glb.mjs', 'scripts/generate-harness-assembly.mjs', 'scripts/check-harness-assembly.mjs', 'scripts/harness-geometry.mjs', 'scripts/harness-geometry.test.mjs', 'docs/complete-assembly.md')
+verifiedInputPaths.push('engineering/mechanical/harness-layout.json', 'engineering/mechanical/harness-proposal.glb', 'scripts/assembly-glb.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/generate-harness-assembly.mjs', 'scripts/check-harness-assembly.mjs', 'scripts/harness-geometry.mjs', 'scripts/harness-geometry.test.mjs', 'docs/complete-assembly.md')
 verifiedInputPaths.push('engineering/mechanical/ordered-motor-pcb-reference.json', 'scripts/motor-mounting-geometry.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs')
 verifiedInputPaths.push('bun.lock', 'scripts/generate-cloud-viewer.mjs', 'scripts/refresh-routed-preview.mjs', 'scripts/check-cloud-viewer.mjs', 'scripts/cloud-viewer-net-names.test.mjs')
 for (const dir of ['imports', 'firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
@@ -22,6 +22,7 @@ async function hashInputs() {
 }
 verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/normalize-kicad-parity.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
 verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
+verifiedInputPaths.push('scripts/verify-programming.mjs', 'scripts/verify-programming.test.mjs', 'docs/pd-configuration-review.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
@@ -33,6 +34,7 @@ const checks = [
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['firmware-target', ['run', 'check:firmware-target']],
+  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs']],
   ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
   ['source-schematic', ['run', 'check:source-schematic']],
@@ -40,7 +42,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['power-audit', ['run', 'check:power-audit']],
   ['schematic', ['run', 'check:schematic']],

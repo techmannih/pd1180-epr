@@ -22,7 +22,7 @@
     "gerber_and_drill_package_generated": true,
     "bom_and_cpl_generated": true,
     "all_populated_parts_on_permitted_layers": true,
-    "live_lcsc_stock_check": true,
+    "live_lcsc_stock_check": false,
     "alternative_parts_review": true,
     "power_copper_analytical_check": true,
     "mounting_pattern_matches_ordered_motor_cad_axes": true,
@@ -51,6 +51,8 @@
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
     "TI full-flash configuration and staged powered commissioning remain pending.",
     "34HS31-6004S1 adapter/front-mount interface and rear encoder attachment are unqualified; QSH CAD, holder and inertia assumptions are superseded.",
-    "Diagnostics and isolated EEPROM programming access are implemented and CAD-verified. TI image, assembled-fixture qualification, full cable/adapter fit and powered indicator/alarm validation remain unresolved. See docs/reference-review.md."
+    "Diagnostics and isolated EEPROM programming access are implemented and CAD-verified. TI image, assembled-fixture qualification, full cable/adapter fit and powered indicator/alarm validation remain unresolved. See docs/reference-review.md.",
+    "U1 unused SBU channels match a TI-reported false-fault arrangement; the proposed narrow hardware correction awaits schematic-freeze approval. See docs/pd-configuration-review.md.",
+    "Latest live sourcing check could not verify 85 of 89 codes (58 no exact result, 25 insufficient reported stock, 2 server failures); resolve docs/stock-report.json before regenerating the manufacturing release."
   ]
 }

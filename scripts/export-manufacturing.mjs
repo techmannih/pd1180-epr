@@ -67,11 +67,8 @@ await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-front-pos
 await run(kicad, ['pcb', 'export', 'pos', '--output', join(out, 'kicad-back-positions.csv'), '--side', 'back', '--format', 'csv', '--units', 'mm', '--exclude-dnp', finalBoard])
 await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board.png'), '--width', '1800', '--height', '1800', '--side', 'top', '--background', 'opaque', '--quality', 'high', '--perspective', '--zoom', '0.68', '--rotate', '325,0,35', finalBoard])
 await run(kicad, ['pcb', 'render', '--output', join(out, 'kicad-board-bottom.png'), '--width', '1800', '--height', '1800', '--side', 'bottom', '--background', 'opaque', '--quality', 'high', '--perspective', '--zoom', '0.68', '--rotate', '325,0,35', finalBoard])
-await Promise.all([
-  copyFile(join(out, 'kicad-board.png'), 'previews/pd1180-epr-top.png'),
-  copyFile(join(out, 'kicad-board-bottom.png'), 'previews/pd1180-epr-bottom.png'),
-  copyFile(join(out, 'kicad-board.png'), 'previews/pd1180-epr-overview.png'),
-])
+// export-release.mjs publishes these images once under release/. Additional
+// tracked preview copies inflate the initial GitHub import before ignore rules.
 for (const file of await readdir(project)) {
   if (file.endsWith('.kicad_prl')) await rm(join(project, file), { force: true })
 }

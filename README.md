@@ -6,13 +6,15 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 **Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
 
+**2026-10-11 programming review:** the latest live sourcing check verifies only 4 of 89 supplier codes; 58 return no exact catalog entry, 25 report insufficient stock, and two requests fail at the service. See [current stock evidence](docs/stock-report.json). The CAD/firmware checks and new readback tests do not clear this gate. Manufacturing archives and the routed release preview remain the previous review snapshot; no new manufacturing release or shipment approval is issued by these software changes. The [SBU correction](docs/pd-configuration-review.md) awaits a narrow exception to the user's schematic freeze.
+
 **Reference-board changes:** Retain the separate PD POWER / USB DATA ports, industrial J7 harness and TMC5160 external bridges. Add TMP102 hardware temperature inhibit, INA240 phase-current diagnostics, ADS1115 bus telemetry and a DATA-powered logic supply. Place bootstrap/gate/bypass parts locally and preserve Kelvin connections to the shunt terminals. Native routing, DRC, schematic parity, ERC and Kelvin isolation pass. Physical USB power validation remains open. The STM32 commissioning firmware is motion-locked. TI programming and powered tests are also pending.
 
 [View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
 The main 3D tab shows the routed PCB with the ordered motor and proposed adapter. The image below shows the bare PCB. The release archives are regenerated for engineering review. Ordering remains on hold; the commissioning firmware keeps motion locked pending TI programming and powered validation.
 
-![Routed r0.4 ECO PCB](previews/pd1180-epr-top.png)
+![Routed r0.4 ECO PCB](release/pcb-3d.png)
 
 
 
@@ -33,6 +35,8 @@ The intended purchase is **PCB fabrication plus complete assembly, programming a
 First articles need staged engineering qualification using [the power-validation test matrix](docs/power-validation.md), followed by an agreed per-board acceptance test for the assembled batch. If the assembler does not provide programming or motor testing, arrange a separate commissioning provider before calling the delivery ready to run. The manufacturing request and pending programming fields are in [order-settings.json](release/order-settings.json); detailed acceptance requirements are in [assembly.md](docs/assembly.md).
 
 The [provider request and first-article programming sequence](docs/assembly.md#request-to-send-to-the-assemblytest-provider) are ready for review. Provider acceptance and the [motor/load qualification inputs](docs/power-validation.md#qualification-work-sheet-for-the-provider) remain open. Programming and the accepted motor tests must finish before shipment.
+
+The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU review finding](docs/pd-configuration-review.md) needs a narrowly approved hardware correction; the frozen schematic has not been changed.
 
 ## Connections and operation
 

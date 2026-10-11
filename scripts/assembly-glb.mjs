@@ -9,8 +9,10 @@ export const encodeGlb = (meshes, generator = 'Mechanical assembly; dimensions i
     j.bufferViews.push({ buffer: 0, byteOffset: length, byteLength: bytes.length }); chunks.push(bytes); length += bytes.length
     const entry = { bufferView: view, componentType, count: values.length / (type === 'VEC3' ? 3 : 1), type }
     if (type === 'VEC3') {
-      entry.min = [0,1,2].map(k => Math.min(...values.filter((_,i) => i%3 === k)))
-      entry.max = [0,1,2].map(k => Math.max(...values.filter((_,i) => i%3 === k)))
+      // Bounds describe the stored float32 vertices, not intermediate doubles
+      // whose last bits can differ between JavaScript runtimes/platforms.
+      entry.min = [0,1,2].map(k => Math.min(...a.filter((_,i) => i%3 === k)))
+      entry.max = [0,1,2].map(k => Math.max(...a.filter((_,i) => i%3 === k)))
     }
     j.accessors.push(entry); return j.accessors.length - 1
   }

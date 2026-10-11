@@ -8,7 +8,8 @@ const cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1
 export function bezier(control, steps = 32) {
   return Array.from({ length: steps + 1 }, (_, i) => {
     const t = i / steps, s = 1 - t
-    return control[0].map((_, k) => s**3*control[0][k] + 3*s*s*t*control[1][k] + 3*s*t*t*control[2][k] + t**3*control[3][k])
+    // Fixed cubic products avoid platform-dependent pow rounding in saved paths.
+    return control[0].map((_, k) => s*s*s*control[0][k] + 3*s*s*t*control[1][k] + 3*s*t*t*control[2][k] + t*t*t*control[3][k])
   })
 }
 

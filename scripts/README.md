@@ -90,7 +90,10 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `assembly-policy.mjs`: shared fitted/DNP placement policy; requires bare service pads to be top-side and unpopulated, permits only U18/C52/C53 as unpopulated bottom footprints, and requires shaft-axis centering.
 - `assembly-policy.test.mjs`: rejects populated bottom encoders, off-axis sensors, unapproved DNP parts and optional parts leaking into the fitted BOM.
 
-- `assembly-glb.mjs`: shared indexed mesh encoder and strict GLB reader; retains the existing locked motor/adapter export bytes.
+- `assembly-glb.mjs`: shared indexed mesh encoder and strict GLB reader; accessor bounds use the encoded float32 vertices so runtime rounding cannot change metadata for identical meshes.
+- `assembly-glb.test.mjs`: checks bounds against encoded vertices, distinguishes floating-point noise from actual geometry changes, and compares cable paths/GLB hashes across Bun and Node.
+- `verify-programming.mjs`: compares complete operator-supplied U3/U16 memory dumps against the registered TI full-flash image or current STM32 commissioning archive. Requires device serial, operator and programmer identity; saves a new JSON file without overwriting evidence. Rejects absent/unregistered TI images, stale STM32 sources, incomplete dumps and byte mismatches. Does not operate a programmer, validate the provenance of a dump or authorize shipment.
+- `verify-programming.test.mjs`: covers corrupted end bytes, displaced/truncated dumps, image hash/size, erased images, missing/low-region TI exports and stale STM32 source identities.
 - `harness-geometry.mjs`: swept wire meshes, Bezier cable paths and exact segment-to-box clearance including insulation radius.
 - `harness-geometry.test.mjs`: regressions for crossings between sampled points, insulation clearance and finite endpoint-preserving wire meshes.
 - `generate-harness-assembly.mjs`: creates the separate J2/J3/J7 mating harness and generic USB access GLB from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
