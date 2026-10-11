@@ -75,6 +75,8 @@ const copies = [
   ['docs/indicators.md', 'indicators.md'],
   ['docs/pd-programming.md', 'pd-programming.md'],
   ['docs/connector-harnesses.md', 'connector-harnesses.md'],
+  ['docs/complete-assembly.md', 'complete-assembly.md'],
+  ['engineering/mechanical/harness-layout.json', 'harness-layout.json'],
   ['docs/release-status.json', 'release-status.json'],
   ['hardware-contract.json', 'hardware-contract.json'],
   ['dist/pd1180-epr-r0.3-manufacturing.zip', 'pd1180-epr-r0.3-manufacturing.zip'],
@@ -103,6 +105,8 @@ execFileSync('bunx', ['tsci', 'build', 'motor-assembly.circuit.tsx', '--glbs', '
   stdio: 'inherit', timeout: 600_000,
 })
 execFileSync('bun', ['scripts/check-motor-assembly.mjs', routedGlb, motorAssemblyGlb], { stdio: 'inherit' })
+execFileSync('bun', ['scripts/check-harness-assembly.mjs', routedGlb], { stdio: 'inherit' })
+await copyFile('docs/harness-assembly-check.json', join(release, 'harness-assembly-check.json'))
 await copyFile('docs/motor-assembly-check.json', join(release, 'motor-assembly-check.json'))
 for (const file of await readdir('dist/schematics')) {
   if (file.endsWith('.svg')) await copyFile(join('dist/schematics', file), join(release, 'schematics', file))

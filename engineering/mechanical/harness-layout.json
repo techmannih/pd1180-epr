@@ -1,0 +1,100 @@
+{
+  "status": "Nominal assembly proposal; not a cut-length drawing or qualified cable/fixture kit",
+  "coordinate_system": "PCB X/Y; Z height; millimetres",
+  "sources": {
+    "VH": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf",
+    "PHD": "https://www.jst-mfg.com/product/pdf/eng/ePHD.pdf",
+    "motor": "engineering/mechanical/34HS31-6004S1-manufacturer.zip"
+  },
+  "mates": [
+    {
+      "reference": "J2",
+      "part": "VHR-4N",
+      "width_mm": 15.78,
+      "depth_mm": 10.6,
+      "height_mm": 13.3,
+      "mated_height_mm": 16.5,
+      "wire_od_mm": 3.0,
+      "wire_exit_direction_y": -1,
+      "wire_free_height_mm": 30,
+      "description": "Four motor phase pigtails, black/green/red/blue; connect to factory leads via four insulated splices"
+    },
+    {
+      "reference": "J3",
+      "part": "VHR-2N",
+      "width_mm": 7.86,
+      "depth_mm": 10.6,
+      "height_mm": 13.3,
+      "mated_height_mm": 16.5,
+      "wire_od_mm": 3.0,
+      "wire_exit_direction_y": 1,
+      "wire_free_height_mm": 30,
+      "description": "External brake pair; open end is outside the assembly, resistor/heatsink selection remains unqualified"
+    },
+    {
+      "reference": "J7",
+      "part": "PHDR-20VS",
+      "width_mm": 21.9,
+      "depth_mm": 5.0,
+      "height_mm": 7.3,
+      "mated_height_mm": 11.8,
+      "wire_od_mm": 1.5,
+      "wire_exit_direction_y": -1,
+      "wire_free_height_mm": 26,
+      "description": "20 industrial conductors; numbered cavities, external equipment is outside this assembly"
+    }
+  ],
+  "motor_cable": {
+    "cad_tip_plane_y_mm": -114.491325,
+    "cad_tip_x_mm": [
+      -1.25,
+      -1.25,
+      1.25,
+      1.25
+    ],
+    "cad_tip_z_from_rear_mm": [
+      -67.425797,
+      -64.925797,
+      -67.425797,
+      -64.925797
+    ],
+    "tip_identity_note": "Four end-face centres measured from the locked motor mesh. STEP is uncoloured: their colour assignment is illustrative, not evidence of factory conductor ordering. Use manufacturer winding colours and continuity checks.",
+    "splice_y_mm": -155,
+    "splice_length_envelope_mm": 28,
+    "splice_diameter_envelope_mm": 5,
+    "splice_note": "Conservative insulated splice allowance, not TE production CAD; selected splice/tooling/insulation dimensions require confirmation",
+    "splice_x_mm": [
+      -9,
+      -3,
+      3,
+      9
+    ],
+    "splice_z_mm": -77,
+    "loop_y_mm": -190,
+    "length_note": "Vendor STEP shows a shortened lead representation. Rendered lengths are illustrative; the motor has a 1 m factory cable. Harness maker sets routing, excess-cable retention, cut lengths and bend radii."
+  },
+  "usb_envelopes": {
+    "references": [
+      "J1",
+      "J10"
+    ],
+    "body_length_mm": 18,
+    "body_width_mm": 12,
+    "body_height_mm": 6,
+    "body_start_x_mm": -44,
+    "plug_center_z_mm": 2.6,
+    "cable_od_mm": 5,
+    "note": "Generic straight-plug access gauges, not supplier CAD or evidence of EPR/data capability; final cables must fit these envelopes."
+  },
+  "minimum_nominal_clearance_mm": 0.2,
+  "not_modeled": [
+    "Unapproved rear encoder magnet/holder",
+    "Unspecified external brake heatsink and industrial equipment",
+    "Final cable clamp and strain-relief fixture"
+  ],
+  "limitations": [
+    "Molded cavities/latches and contacts are simplified catalogue envelopes, not production STEP",
+    "Plug insertion and removal, tooling, cable bend/strain relief and tolerances need final part and physical review",
+    "Existing adapter and screw-head envelopes remain proposals"
+  ]
+}

@@ -47,6 +47,6 @@ OUT0/OUT1 use MMBT5551 stages with flyback diodes returning to VMOTOR. No approv
 
 ## Remaining assembly evidence
 
-J2 has a conservative vertical insertion-envelope check. J3 and J7 still need complete mated-body, release/tool access, wire-bend and enclosure-envelope checks, followed by physical approval. A wire clamp, its attachment, strain-relief path, connector removal procedure and pin-1 harness labels are not yet fabrication-released. Do not close the reviewer's assembly comment from bare headers alone.
+J2 retains its conservative vertical insertion-envelope check. J2/J3/J7 mated catalogue envelopes and outgoing wires now appear in the assembly, with component/fastener/fixture collision checks in `harness-assembly-check.json`. Final latch/release-tool access, wire-bend limits, enclosure fit and physical approval remain open. A wire clamp, its attachment, strain-relief path, connector removal procedure and pin-1 harness labels are not yet fabrication-released. Do not close the reviewer's assembly comment from bare headers alone.
 
 No extra diagnostic cable headers are added: STM32 SWD/NRST and optional encoder ABI remain bare top-side service pads. Industrial functions remain because the user explicitly required them; any subsequent removal requires a requirements change.

@@ -89,3 +89,9 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 
 - `assembly-policy.mjs`: shared fitted/DNP placement policy; requires bare service pads to be top-side and unpopulated, permits only U18/C52/C53 as unpopulated bottom footprints, and requires shaft-axis centering.
 - `assembly-policy.test.mjs`: rejects populated bottom encoders, off-axis sensors, unapproved DNP parts and optional parts leaking into the fitted BOM.
+
+- `assembly-glb.mjs`: shared indexed mesh encoder and strict GLB reader; retains the existing locked motor/adapter export bytes.
+- `harness-geometry.mjs`: swept wire meshes, Bezier cable paths and exact segment-to-box clearance including insulation radius.
+- `harness-geometry.test.mjs`: regressions for crossings between sampled points, insulation clearance and finite endpoint-preserving wire meshes.
+- `generate-harness-assembly.mjs`: creates the separate J2/J3/J7 mating harness and generic USB access GLB from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
+- `check-harness-assembly.mjs`: regenerates and verifies harness geometry, screens mated bodies/cable segments against component, motor-body, adapter, post and screw-head envelopes, checks cavity alignment, and writes hash-bound `docs/harness-assembly-check.json`. Runs during release export; no physical/crimp/strain-relief qualification is implied.

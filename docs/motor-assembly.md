@@ -6,7 +6,7 @@ The [manufacturer STEP](https://files.omc-stepperonline.com/34HS31-6004S1.STEP) 
 
 **Direct rear PCB mounting and rear encoder attachment are not established.** The documented mounting interface is the front flange. Existing rear case fasteners are not approved accessory threads; do not remove them or drill the motor based on this preview.
 
-The default hosted 3D view includes the exact motor, routed PCB and adapter proposal. Open `motor-assembly.circuit.tsx` for the source mechanical fit study. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Orange cylinders represent maximum screw-head/washer envelopes. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. `release/circuit.json` remains the authoritative routed PCB view and now also includes the two mechanical models. Its generator rejects any assembly change to the verified board records. Model URLs are pinned to an immutable Git commit and checked against the local CAD hashes; no moving branch URL is used.
+The default hosted 3D view includes the exact motor, routed PCB, adapter proposal and mating harness. Open `motor-assembly.circuit.tsx` for the source mechanical fit study. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Orange cylinders represent maximum screw-head/washer envelopes. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. `release/circuit.json` remains the authoritative routed PCB view and now also includes the motor, adapter and harness mechanical models. Its generator rejects any assembly change to the verified board records. Model URLs are pinned to an immutable Git commit and checked against the local CAD hashes; no moving branch URL is used.
 
 ![Ordered motor assembly proposal](../previews/motor-assembly-corrected.png)
 
@@ -107,3 +107,7 @@ For a current-source inspection without waiting for a hosted release, run
 envelope and choose **Hide "adapter_proposal"**. This changes only viewer
 visibility. The [local source screenshot](../previews/current-source-mounting-holes.jpg)
 shows all four PCB openings with the ordered motor still visible.
+
+## Mating cables
+
+The assembly now includes a separate `harness_proposal` model: the J2 motor loop and splices, J3/J7 mates with outgoing leads, and two generic USB access gauges. See [complete-assembly.md](complete-assembly.md) for the model boundaries, cavity mapping, installation order and remaining physical checks.

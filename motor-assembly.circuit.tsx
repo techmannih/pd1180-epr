@@ -1,6 +1,6 @@
 import { assembly } from "@tscircuit/core"
 import { PD1180EPR } from "./index.circuit"
-import { MOTOR_GLB, MOTOR_FIXTURE_GLB, MOTOR_REAR_Z } from "./imports/MotorAssemblyCad"
+import { MOTOR_GLB, MOTOR_FIXTURE_GLB, MOTOR_HARNESS_GLB, MOTOR_REAR_Z } from "./imports/MotorAssemblyCad"
 
 /** Ordered 34HS31-6004S1 fit study; adapter unqualified, encoder attachment unresolved. */
 export default () => (
@@ -19,6 +19,11 @@ export default () => (
       name="adapter_proposal"
       displayName="Adapter and fasteners — CAD proposal; encoder unresolved"
       cadModel={{ glbUrl: MOTOR_FIXTURE_GLB, modelUnitToMmScale: 1 }}
+    />
+    <assembly.subassembly
+      name="harness_proposal"
+      displayName="J2 motor harness, J3/J7 mates and USB access — nominal proposal"
+      cadModel={{ glbUrl: MOTOR_HARNESS_GLB, modelUnitToMmScale: 1 }}
     />
   </assembly.device>
 )

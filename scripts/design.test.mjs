@@ -76,7 +76,8 @@ test('hosted release ignores only the CLI cache key while preserving every sourc
       return expected
     })
     const mechanicalIds = new Set(original.filter(row => row.type === 'source_component' && row.ftype === 'subassembly').map(row => row.source_component_id))
-    expect(mechanicalIds.size).toBe(2)
+    expect(original.filter(row => row.type === 'source_component' && row.ftype === 'subassembly').map(row => row.name).sort())
+      .toEqual(['adapter_proposal', 'harness_proposal', 'ordered_motor'])
     expect(original.filter(row => !copper.has(row.type) && !mechanicalIds.has(row.source_component_id))).toEqual(expectedModel)
     expect(original.some(row => row.type === 'pcb_trace')).toBe(true)
   } finally {

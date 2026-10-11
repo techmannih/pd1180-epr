@@ -1,3 +1,4 @@
+import { readGlb as glb } from './assembly-glb.mjs'
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import JSZip from 'jszip'
@@ -10,30 +11,6 @@ const contract = JSON.parse(await readFile('hardware-contract.json'))
 const harness = JSON.parse(await readFile('engineering/motor-harness.json'))
 const errors = []
 const sha = bytes => createHash('sha256').update(bytes).digest('hex')
-async function glb(path) {
-  const bytes = await readFile(path)
-  if (bytes.toString('ascii',0,4) !== 'glTF' || bytes.readUInt32LE(8) !== bytes.length) throw new Error(`Invalid GLB: ${path}`)
-  const size = bytes.readUInt32LE(12), json = JSON.parse(bytes.toString('utf8',20,20+size))
-  const bin = bytes.subarray(28+size)
-  const accessor = id => {
-    const a=json.accessors[id], v=json.bufferViews[a.bufferView], width={SCALAR:1,VEC3:3}[a.type]
-    const read={5126:['readFloatLE',4],5125:['readUInt32LE',4],5123:['readUInt16LE',2],5121:['readUInt8',1]}[a.componentType]
-    if (!width || !read || a.sparse) throw new Error('Unsupported mesh accessor')
-    return Array.from({length:a.count},(_,i)=>Array.from({length:width},(_,k)=>bin[read[0]]((v.byteOffset||0)+(a.byteOffset||0)+i*(v.byteStride||width*read[1])+k*read[1])))
-  }
-  const meshes=[]
-  for(const node of json.nodes) {
-    if(node.mesh===undefined) continue
-    if(node.matrix || node.rotation || node.scale || node.children) throw new Error('Unexpected transformed CAD node; update the screen before accepting this model')
-    const offset=node.translation||[0,0,0], triangles=[]
-    for(const p of json.meshes[node.mesh].primitives) {
-      const points=accessor(p.attributes.POSITION).map(v=>v.map((x,k)=>x+offset[k])), indices=accessor(p.indices).flat()
-      for(let i=0;i<indices.length;i+=3) triangles.push(indices.slice(i,i+3).map(k=>points[k]))
-    }
-    meshes.push({name:node.name,triangles})
-  }
-  return {meshes,sha256:sha(bytes)}
-}
 function clip(points, axis, level, above) {
   const result=[]
   for(let i=0;i<points.length;i++) {
@@ -100,13 +77,15 @@ if(process.argv[3]) {
   const assembled=await glb(process.argv[3])
   const motorNode=assembled.meshes.find(m=>m.name==='ordered_motor')
   const fixtureNode=assembled.meshes.find(m=>m.name==='adapter_proposal')
-  if(!motorNode||!fixtureNode) throw new Error('Assembly export is missing the motor or fixture')
+  const harnessNode=assembled.meshes.find(m=>m.name==='harness_proposal')
+  const harnessCad=await glb('engineering/mechanical/harness-proposal.glb')
+  if(!motorNode||!fixtureNode||!harnessNode) throw new Error('Assembly export is missing the motor, fixture or harness')
   const motorBounds=meshBounds([motorNode]),fixtureBounds=meshBounds([fixtureNode])
   const rear=-contract.fabrication.finished_thickness_mm/2-spec.mount.pcb_bottom_to_motor_rear_mm
   const gap=-contract.fabrication.finished_thickness_mm/2-motorBounds.max[1]
   if(Math.abs(motorBounds.max[1]-rear)>.001 || Math.abs(fixtureBounds.max[1]-(contract.fabrication.finished_thickness_mm/2+spec.mount.pcb_top_head_and_washer_height_mm))>.001) errors.push('Exported assembly axes/offsets are wrong: motor and fixture must align with the PCB normal')
   const offsets={}
-  for(const [name,cad,rendered,height] of [['motor',motor.meshes,motorNode,rear],['fixture',fixture.meshes,fixtureNode,0]]) {
+  for(const [name,cad,rendered,height] of [['motor',motor.meshes,motorNode,rear],['fixture',fixture.meshes,fixtureNode,0],['harness',harnessCad.meshes,harnessNode,0]]) {
     const expected=vertices(cad).map(([x,y,z])=>[-x,z+height,y]), actual=vertices([rendered])
     offsets[name]=Math.max(maximumVertexOffset(expected,actual),maximumVertexOffset(actual,expected))
     if(offsets[name]>.001) errors.push(`Exported ${name} geometry is reflected, rotated or displaced from the specified CAD transform`)

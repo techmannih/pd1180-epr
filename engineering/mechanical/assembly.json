@@ -97,7 +97,7 @@
     "Shared front mounting interface, post end design, fasteners, tolerances, stiffness and tool access require approval",
     "Motor body is 79.5 mm in STEP but 80 mm maximum in drawing; full tolerance stack remains to be reviewed",
     "Rear rotating-shaft access and magnet attachment are not established; no encoder hardware is modeled",
-    "6 A/phase must be translated to an approved driver current/hold waveform; external load inertia and stop profile remain unknown; manufacturer rotor inertia is 1400 g cm²"
+    "6 A/phase must be translated to an approved driver current/hold waveform; external load inertia and stop profile remain unknown; manufacturer rotor inertia is 1400 g cm\u00b2"
   ],
   "sources": [
     "https://www.amazon.com/dp/B091C83HWF",
@@ -114,6 +114,10 @@
     "fixture": {
       "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/9aa7f0494c21b1bf80172229be5dc479cb161da7/engineering/mechanical/adapter-proposal.glb",
       "sha256": "1697421b9ac3f674805f0ed064d9f7683e55738de05b71f7e89f3b6d3e266ed1"
+    },
+    "harness": {
+      "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/f543137dfe915c06098bbaa614b18797ec6c3773/engineering/mechanical/harness-proposal.glb",
+      "sha256": "0b6166f7ce3087bb0cd4233305b06da62e5d7ae19f5ae85dc57d9281c9c92140"
     }
   },
   "connector_body_clearances": [

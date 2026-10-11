@@ -61,12 +61,12 @@ export async function createCloudViewerCircuit({
   }
 }
 
-// The assembly entrypoint wraps the existing board. It may add only the two
+// The assembly entrypoint wraps the existing board. It may add only these three
 // mechanical source/CAD pairs; electrical, schematic and PCB records must match.
 export function assertAssemblyPreservesBoard(board, assembly) {
   const mechanical = assembly.filter(row => row.type === 'source_component' && row.ftype === 'subassembly')
-  if (!isDeepStrictEqual(mechanical.map(row => row.name).sort(), ['adapter_proposal', 'ordered_motor']))
-    throw new Error('Hosted assembly must include the ordered motor and adapter proposal')
+  if (!isDeepStrictEqual(mechanical.map(row => row.name).sort(), ['adapter_proposal', 'harness_proposal', 'ordered_motor']))
+    throw new Error('Hosted assembly must include the ordered motor, adapter and harness proposals')
   const ids = new Set(mechanical.map(row => row.source_component_id))
   for (const id of ids) {
     const models = assembly.filter(row => row.type === 'cad_component' && row.source_component_id === id)
