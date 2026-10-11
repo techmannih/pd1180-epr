@@ -287,3 +287,45 @@ test('USB-only power is confined to the MCU and its reset/decoupling network',()
   on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')
   expect(key('U2',10)).toBeFalsy()
 })
+
+test('indicator reset silences the alarm without relying on I2C or stealing industrial GPIO',()=>{
+  on('U35',3,'STATUS_GPIO'); on('R132',1,'STATUS_GPIO'); on('R132',2,'GND')
+  on('U35',16,'PD_3V3'); on('C95',1,'PD_3V3'); on('C95',2,'GND')
+  for(const pin of [1,2,8,9,10,11,12])on('U35',pin,'GND')
+  on('U35',14,'PD_SCL');on('U35',15,'PD_SDA')
+  // TCA9538 SCL/SDA must not exceed VCC, including supply sequencing.
+  for(const [signalPin,pullup]of[[14,'R7'],[15,'R6']]){
+    expect(key(pullup,2)).toBe(key('U35',signalPin))
+    expect(key(pullup,1)).toBe(key('U35',16))
+  }
+  expect(key('U35',13)).toBeUndefined()
+  on('U35',7,'BUZZER_EN');on('R126',1,'BUZZER_EN');on('R126',2,'BUZZER_GATE')
+  on('R127',1,'BUZZER_GATE');on('R127',2,'GND');on('Q26',1,'BUZZER_GATE')
+  on('Q26',2,'GND');on('Q26',3,'BUZZER_LOW')
+  on('BZ1',1,'V3V3');on('BZ1',2,'BUZZER_LOW')
+  on('D18',1,'V3V3');on('D18',2,'BUZZER_LOW') // Flyback cathode faces the positive rail.
+  for(const [pin,res,drive,ledPin,ledNet]of[[4,'R123','RGB_R_DRV',1,'RGB_R_K'],[5,'R124','RGB_G_DRV',4,'RGB_G_K'],[6,'R125','RGB_B_DRV',2,'RGB_B_K']]){
+    on('U35',pin,drive);on(res,2,drive);on(res,1,ledNet);on('D16',ledPin,ledNet)
+  }
+  on('D16',3,'V3V3');on('R128',1,'V3V3');on('R128',2,'POWER_LED_A')
+  on('D17',2,'POWER_LED_A');on('D17',1,'GND')
+  expect(manifest.parts.find(p=>p.name==='R127').value).toBe('100k')
+  expect(comp('R126').resistance).toBe(1000)
+  expect(3.6/(comp('R126').resistance*0.99)).toBeLessThan(0.010)
+  expect(manifest.parts.find(p=>p.name==='R132').value).toBe('10k')
+})
+test('EEPROM programming isolates both controller wires and never merges the power rails',()=>{
+  const separate=['EEP_SDA','EEP_SCL','EEP_PROG_SDA','EEP_PROG_SCL','EEP_LINK_EN']
+  expect(separate.map(netKey).every(Boolean)).toBe(true)
+  expect(new Set(separate.map(netKey)).size).toBe(separate.length)
+  for(const [pin,net]of[[1,'EEP_SDA'],[2,'EEP_PROG_SDA'],[3,'EEP_LINK_EN'],[4,'GND'],[5,'EEP_SCL'],[6,'EEP_PROG_SCL'],[7,'EEP_LINK_EN'],[8,'PD_3V3']])on('U36',pin,net)
+  on('U3',5,'EEP_PROG_SDA');on('U3',6,'EEP_PROG_SCL')
+  on('R129',1,'PD_3V3');on('R129',2,'EEP_PROG_SDA')
+  on('R130',1,'PD_3V3');on('R130',2,'EEP_PROG_SCL')
+  on('R131',1,'PD_3V3');on('R131',2,'EEP_LINK_EN')
+  for(const [ref,net]of[['TP_PD_VREF','PD_3V3'],['TP_PD_GND','GND'],['TP_EEP_SDA','EEP_PROG_SDA'],['TP_EEP_SCL','EEP_PROG_SCL'],['TP_PD_ISO','EEP_LINK_EN'],['TP_PD_VBUS','PD_VBUS'],['TP_VMOTOR','VMOTOR'],['TP_PWR_GND','GND']]){
+    on(ref,1,net)
+    expect(pcbComponents.find(p=>p.source_component_id===comp(ref).source_component_id)?.layer).toBe('top')
+    expect(manifest.parts.some(p=>p.name===ref)).toBe(false)
+  }
+})

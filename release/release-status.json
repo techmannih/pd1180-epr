@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.0-ECO",
-  "status": "power-eco-cad-verified-order-held",
+  "status": "diagnostics-eco-cad-verified-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -40,7 +40,9 @@
     "powered_bringup_thermal_and_emc_validation": false,
     "usb_data_startup_configured_suspend_current_and_reverse_blocking_validated": false,
     "temperature_threshold_and_phase_telemetry_calibrated": false,
-    "ordered_motor_mount_and_encoder_qualified": false
+    "ordered_motor_mount_and_encoder_qualified": false,
+    "pd_programming_fixture_and_readback_qualified": false,
+    "indicators_alarm_and_supply_budget_qualified": false
   },
   "architecture_review": "engineering/reviewer-eco.json",
   "order_hold_reasons": [
@@ -49,6 +51,6 @@
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
     "TI full-flash configuration and staged powered commissioning remain pending.",
     "34HS31-6004S1 adapter/front-mount interface and rear encoder attachment are unqualified; QSH CAD, holder and inertia assumptions are superseded.",
-    "Reference review remains incomplete: RGB/buzzer/power indication and dedicated rail test pads are missing; PD EEPROM programming access and full cable/fixture fit remain unresolved. See docs/reference-review.md."
+    "Diagnostics and isolated EEPROM programming access are implemented and CAD-verified. TI image, assembled-fixture qualification, full cable/adapter fit and powered indicator/alarm validation remain unresolved. See docs/reference-review.md."
   ]
 }

@@ -4,30 +4,6 @@
   "reference_comparison": "engineering/reference-comparison.json",
   "reference_open_items": [
     {
-      "id": "rgb",
-      "feature": "Visible multicolor status",
-      "status": "missing",
-      "evidence": "index.circuit.tsx"
-    },
-    {
-      "id": "buzzer",
-      "feature": "Audible fault alert",
-      "status": "missing",
-      "evidence": "index.circuit.tsx"
-    },
-    {
-      "id": "power_indicator",
-      "feature": "Independent logic-power indication",
-      "status": "missing",
-      "evidence": "index.circuit.tsx"
-    },
-    {
-      "id": "power_probes",
-      "feature": "Dedicated PD / VMOTOR / GND measurement pads",
-      "status": "missing",
-      "evidence": "index.circuit.tsx"
-    },
-    {
       "id": "encoder_mechanics",
       "feature": "Shaft magnet / holder / working gap",
       "status": "open",
@@ -37,7 +13,7 @@
       "id": "pd_programming",
       "feature": "Blank PD EEPROM programming and approved image",
       "status": "open",
-      "evidence": "docs/assembly.md"
+      "evidence": "docs/pd-programming.md"
     },
     {
       "id": "mechanics",
@@ -58,11 +34,11 @@
       "evidence": "firmware/README.md"
     }
   ],
-  "checked_at": "2026-10-11T03:42:43.985Z",
-  "features": 10,
-  "passing": 10,
+  "checked_at": "2026-10-11T06:17:59.844Z",
+  "features": 12,
+  "passing": 12,
   "assembly_layers": {
-    "top": 302
+    "top": 330
   },
   "usb_c_standard_connectors": [
     "J1",
@@ -147,6 +123,22 @@
       "components": 5,
       "nets": 4,
       "evidence": "hardware-contract.json",
+      "pass": true
+    },
+    {
+      "id": "indicators",
+      "feature": "RGB status, independent power LED and reset-safe audible alarm",
+      "components": 15,
+      "nets": 7,
+      "evidence": "docs/indicators.md",
+      "pass": true
+    },
+    {
+      "id": "pd_fixture",
+      "feature": "Isolated EEPROM programming and power-probe access",
+      "components": 13,
+      "nets": 5,
+      "evidence": "docs/pd-programming.md",
       "pass": true
     }
   ],

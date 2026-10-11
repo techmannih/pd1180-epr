@@ -36,5 +36,24 @@
   ],
   "missing_image_behavior": "POWER_PERMIT and MCU_RUN remain low",
   "tool_version": "2.0.1",
-  "tool_access_status": "awaiting-user-acceptance-of-TI-Application-Configuration-Tool-License"
+  "tool_access_status": "awaiting-user-acceptance-of-TI-Application-Configuration-Tool-License",
+  "programming_access": {
+    "document": "docs/pd-programming.md",
+    "isolation_switch": "U36 SN74LVC2G66DCUR",
+    "isolation_control": "TP_PD_ISO grounded opens both I2Cc wires",
+    "eeprom_side_nets": [
+      "EEP_PROG_SDA",
+      "EEP_PROG_SCL"
+    ],
+    "pads": [
+      "TP_PD_GND",
+      "TP_PD_VREF",
+      "TP_PD_ISO",
+      "TP_EEP_SDA",
+      "TP_EEP_SCL"
+    ],
+    "supply": "fixed 5 V at J1; programmer VCC output off; VREF sense only",
+    "programmer": "3.3 V open-drain I2C, 100 kHz, address 0x50",
+    "qualification": "fixture implementation, image readback and cold APP boot pending"
+  }
 }

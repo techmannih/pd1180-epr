@@ -109,6 +109,13 @@ const nativeMountingHoles = forms('footprint').filter(form => form.startsWith('(
 mountingAlignment(contract.mechanical.mounting_holes.map(h => [h.centered_x_mm,h.centered_y_mm]), nativeMountingHoles)
 const viaSummary = new Map()
 const nativeFootprints = forms('footprint')
+const servicePads = circuit.filter(row => row.type === 'source_component' && row.name.startsWith('TP_'))
+for (const { name } of servicePads) {
+  const footprint = nativeFootprints.find(form => form.includes(`(property "Reference" "${name}"`))
+  if (!footprint) errors.push(`${name}: bare service pad missing from native PCB`)
+  else if (/\(layers[^)]*\b[FB]\.Paste\b/.test(footprint)) errors.push(`${name}: bare service pad must not emit solder paste`)
+  if (footprint && !/\(layers(?=[^)]*"F\.Cu")(?=[^)]*"F\.Mask")[^)]*\)/.test(footprint)) errors.push(`${name}: bare service pad must retain top copper and a mask opening`)
+}
 for (const [name, layer] of Object.entries(standards.assembly.optional_unpopulated_parts ?? {})) {
   const footprint = nativeFootprints.find(form => form.includes(`(property "Reference" "${name}"`))
   if (!footprint || !/\(attr[^)]*\bdnp\b/.test(footprint)) errors.push(`${name}: native PCB lost its DNP flag`)
@@ -202,7 +209,7 @@ const report = {
     outline_points: pcbBoard?.outline?.length ?? 0,
     mechanical_reference: standards.project_geometry.mechanical_reference,
   },
-  assembly: { pcb_component_records: components.length, allowed_layers: standards.assembly.populated_layers, bottom_paste_present: gerberFiles.some((name) => /B[_-]Paste/i.test(name)) },
+  assembly: { pcb_component_records: components.length, allowed_layers: standards.assembly.populated_layers, bare_service_pads_checked: servicePads.length, bottom_paste_present: gerberFiles.some((name) => /B[_-]Paste/i.test(name)) },
   minimum_via_drill_mm: minimumViaDrill,
   smallest_finished_via_drill_mm: Math.min(...parsedVias.map((via) => via.drill)),
   via_counts: Object.fromEntries(viaSummary),

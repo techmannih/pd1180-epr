@@ -26,8 +26,10 @@ for (const name of ['power_domain','control','telemetry','pd_contract','tmc5160_
   await run(compiler,['-std=c11','-Wall','-Wextra','-Werror','-Ifirmware/include','-c',`firmware/src/${name}.c`,'-o',object])
   objects.push(object)
 }
-await run(process.env.CXX || 'c++',['-std=gnu++17','-Wall','-Wextra','-Werror',
-  '-Ifirmware/tests/fakes','-Ifirmware/include','firmware/tests/test_target_power.cpp',...objects,
-  '-o','firmware/build/target_power_tests'])
-await run('firmware/build/target_power_tests',[])
+for (const test of ['target_power', 'indicators']) {
+  await run(process.env.CXX || 'c++',['-std=gnu++17','-Wall','-Wextra','-Werror',
+    '-Ifirmware/tests/fakes','-Ifirmware/include',`firmware/tests/test_${test}.cpp`,...objects,
+    '-o',`firmware/build/${test}_tests`])
+  await run(`firmware/build/${test}_tests`,[])
+}
 console.log('Firmware safety logic and pin contract compiled and passed.')

@@ -1,16 +1,16 @@
 {
-  "built_at": "2026-10-10T08:54:26.873Z",
+  "built_at": "2026-10-11T04:50:19.876Z",
   "target": "STM32G0B1CBT6",
   "image_type": "commissioning-diagnostics-only",
   "motor_operation_enabled": false,
   "flash_address": "0x08000000",
   "initial_sp": "0x20024000",
-  "reset_vector": "0x800b14d",
+  "reset_vector": "0x800b3c1",
   "max_flash_bytes": 131072,
-  "image_bytes": 56432,
+  "image_bytes": 57080,
   "inputs": {
     "firmware/platformio.ini": "5df4514a0cf5d63153892206e96558c79e36929af6b26c969d5b130b51d22642",
-    "firmware/README.md": "dfe5d16c17ed351755402a8b74bbce15a65ca336726cd50d48c563e44fdf0b6b",
+    "firmware/README.md": "22e9366a7b9cea4ccdcc63bcf6391e0f2ed49ac49c76858aacb4ef2cea40d470",
     "docs/firmware-pinmap.json": "66bf07d5e39e476786a83c976eab13337014c1ddfff263f4b962557e80dabb62",
     "scripts/build-firmware.mjs": "7563bc0f322cfe78d27010978131b8f856e601382c53ef01272d29f65db2bd07",
     "firmware/src/control.c": "eeb34233188208b67d7a0910caaf37a62a85f8a24c2abcd91005fe13c2293118",
@@ -29,14 +29,14 @@
     "firmware/include/telemetry.h": "5b78411c0d1d8675561b58875f426f4c4e8fdff7db67b5b6b75990bab0eb1303",
     "firmware/include/tmc5160.h": "77354e6d81c735f0360838a6a6bb7ec2e6d9a459e3853a8659f4453708b76caf",
     "firmware/include/tmc5160_config.h": "923c88caad88d3c5c68c352419003d49d29742eb7e31c2743bda8ac1fbfccb27",
-    "firmware/target/main.cpp": "c61596bf38af8701d9e8886f40a97f1918f0de76d08eeb69c8f7fdbc66872dac",
+    "firmware/target/main.cpp": "11c546056bac5a9ca6746ae9e6732323a8658855a3726f8e27b37bc2ca6cfbc6",
     "firmware/target/usb_suspend.cpp": "adc4976790187046d1054223cf740c80b64e5c72c507dab04351b02c7f53a42f",
     "firmware/target/usb_suspend.h": "15822f65fd0691f4340ed026f94b5adea98d3f7cadd42f9f948017fac0d6945d",
     "firmware/boards/pd1180.json": "bf96ddf2d976e26caed4ab68d285cf0372f9f332aae4cb8824f425951788489c"
   },
   "artifacts": {
-    "firmware.bin": "7f6466683ecccc193159b92523d7232dc52e15b9a3c9886d4db9fae84aed307c",
-    "firmware.elf": "026edb1fe1113a86639e29d1e620f0ce00c9815d47bbe5776937800e074fdeea"
+    "firmware.bin": "b531d621355e606accb366e6d739801aabbba25816500b43f9d2e8a904b17e74",
+    "firmware.elf": "1d94ae03ece208938fe9431611a302414c7fd12481df91545c1a0ff28694f30e"
   },
   "unverified": [
     "USB enumeration and measured GPIO levels on hardware",

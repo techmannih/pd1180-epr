@@ -1,44 +1,44 @@
 {
-  "generated_at": "2026-10-11T03:42:43.403Z",
+  "generated_at": "2026-10-11T06:17:59.305Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "784b49d62db6fb43b8c17ec62d3f915efcb79805e0305a3fba598cd24169ce09",
-    "bytes": 4931828
+    "sha256": "5ef668a02bb96d06f33e4715395af33aec1db906aa730d4fbb59493c397479b1",
+    "bytes": 5293028
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 11133,
-    "sheets": 16,
-    "source_components": 305,
-    "source_ports": 1066,
-    "connected_source_ports": 1029,
-    "intentional_no_connect_ports": 37,
-    "source_nets": 199,
+    "elements": 11983,
+    "sheets": 18,
+    "source_components": 333,
+    "source_ports": 1137,
+    "connected_source_ports": 1099,
+    "intentional_no_connect_ports": 38,
+    "source_nets": 212,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 93,
-    "test_points": 11,
-    "annotations": 49,
+    "capacitors": 96,
+    "test_points": 19,
+    "annotations": 55,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 82,
-    "3": 68,
-    "4": 24,
-    "5": 7,
-    "6": 1,
+    "2": 89,
+    "3": 70,
+    "4": 28,
+    "5": 5,
+    "6": 3,
     "8": 1,
     "9": 2,
     "10": 3,
     "11": 1,
     "12": 3,
     "13": 2,
-    "15": 1,
-    "17": 1,
-    "44": 1,
-    "72": 1,
-    "247": 1
+    "18": 1,
+    "23": 1,
+    "45": 1,
+    "77": 1,
+    "264": 1
   },
   "usb_c": {
     "connectors": [
@@ -395,6 +395,7 @@
     "U31.4:NC",
     "U32.4:NC",
     "U34.4:PG",
+    "U35.13:N_INT",
     "U6.11:MODE",
     "U6.19:N_C6",
     "U6.20:N_C5",
@@ -420,8 +421,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 247,
-      "non_testpoint_peers": 245
+      "total_ports_on_net": 264,
+      "non_testpoint_peers": 260
     },
     {
       "ref": "TP_SWCLK",
@@ -438,14 +439,14 @@
     {
       "ref": "TP_STATUS",
       "net": "STATUS_GPIO",
-      "total_ports_on_net": 2,
-      "non_testpoint_peers": 1
+      "total_ports_on_net": 4,
+      "non_testpoint_peers": 3
     },
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 72,
-      "non_testpoint_peers": 71
+      "total_ports_on_net": 77,
+      "non_testpoint_peers": 76
     },
     {
       "ref": "TP_ENC_A",
@@ -468,8 +469,56 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 247,
-      "non_testpoint_peers": 245
+      "total_ports_on_net": 264,
+      "non_testpoint_peers": 260
+    },
+    {
+      "ref": "TP_PD_VREF",
+      "net": "PD_3V3",
+      "total_ports_on_net": 23,
+      "non_testpoint_peers": 22
+    },
+    {
+      "ref": "TP_PD_GND",
+      "net": "GND",
+      "total_ports_on_net": 264,
+      "non_testpoint_peers": 260
+    },
+    {
+      "ref": "TP_EEP_SDA",
+      "net": "EEP_PROG_SDA",
+      "total_ports_on_net": 4,
+      "non_testpoint_peers": 3
+    },
+    {
+      "ref": "TP_EEP_SCL",
+      "net": "EEP_PROG_SCL",
+      "total_ports_on_net": 4,
+      "non_testpoint_peers": 3
+    },
+    {
+      "ref": "TP_PD_ISO",
+      "net": "EEP_LINK_EN",
+      "total_ports_on_net": 4,
+      "non_testpoint_peers": 3
+    },
+    {
+      "ref": "TP_PD_VBUS",
+      "net": "PD_VBUS",
+      "total_ports_on_net": 18,
+      "non_testpoint_peers": 17
+    },
+    {
+      "ref": "TP_VMOTOR",
+      "net": "VMOTOR",
+      "total_ports_on_net": 45,
+      "non_testpoint_peers": 44
+    },
+    {
+      "ref": "TP_PWR_GND",
+      "net": "GND",
+      "total_ports_on_net": 264,
+      "non_testpoint_peers": 260
     }
   ],
   "sheets": [
@@ -697,6 +746,34 @@
         "U34: 65 V buck, nominal 12.0 V. Supplies U7 VSA + 12VOUT and U15; derived from protected VMOTOR.",
         "TMC5160A external-regulator connection: 10-13 V operating range. Gate-supply ripple and startup need bench validation."
       ]
+    },
+    {
+      "index": 17,
+      "name": "indicators",
+      "display_name": "Status Indicators and Audible Alarm",
+      "frame": [
+        450,
+        400
+      ],
+      "annotations": [
+        "17 / Status Indicators and Audible Alarm",
+        "U35: 3.3 V I2C GPIO at 0x70. Active-low RGB sinks; PC13 holds RESET low until board power is ready.",
+        "BZ1: active 3 V alarm. Q26 + R127 keep it off at reset; D18 clamps the switched lead."
+      ]
+    },
+    {
+      "index": 18,
+      "name": "pd-programming",
+      "display_name": "PD Programming and Power Probes",
+      "frame": [
+        450,
+        400
+      ],
+      "annotations": [
+        "18 / PD Programming and Power Probes",
+        "U36 isolates both I2Cc wires when TP_PD_ISO is grounded. Normal boot: pad released.",
+        "Program with fixed 5 V on J1, 3.3 V open-drain I2C and programmer VCC output OFF."
+      ]
     }
   ],
   "sheet_bounds": [
@@ -795,6 +872,18 @@
       "name": "driver-power",
       "elements": 80,
       "coordinate_points_checked": 194
+    },
+    {
+      "index": 17,
+      "name": "indicators",
+      "elements": 162,
+      "coordinate_points_checked": 287
+    },
+    {
+      "index": 18,
+      "name": "pd-programming",
+      "elements": 80,
+      "coordinate_points_checked": 142
     }
   ],
   "checks": [
@@ -802,8 +891,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 305,
-        "schematic": 305
+        "source": 333,
+        "schematic": 333
       }
     },
     {
@@ -822,9 +911,9 @@
     },
     {
       "ok": true,
-      "message": "exactly 16 schematic sheets",
+      "message": "exactly 18 schematic sheets",
       "details": {
-        "actual": 16
+        "actual": 18
       }
     },
     {
@@ -1442,9 +1531,85 @@
     },
     {
       "ok": true,
-      "message": "49 high-level sheet annotations are present",
+      "message": "known fixed geometry for sheet indicators"
+    },
+    {
+      "ok": true,
+      "message": "indicators keeps sheet index 17"
+    },
+    {
+      "ok": true,
+      "message": "indicators keeps fixed 450 x 400 frame",
       "details": {
-        "actual": 49
+        "actual": [
+          450,
+          400
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "indicators has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "17 / Status Indicators and Audible Alarm",
+          "U35: 3.3 V I2C GPIO at 0x70. Active-low RGB sinks; PC13 holds RESET low until board power is ready.",
+          "BZ1: active 3 V alarm. Q26 + R127 keep it off at reset; D18 clamps the switched lead."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "indicators has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "indicators explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "known fixed geometry for sheet pd-programming"
+    },
+    {
+      "ok": true,
+      "message": "pd-programming keeps sheet index 18"
+    },
+    {
+      "ok": true,
+      "message": "pd-programming keeps fixed 450 x 400 frame",
+      "details": {
+        "actual": [
+          450,
+          400
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "pd-programming has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "18 / PD Programming and Power Probes",
+          "U36 isolates both I2Cc wires when TP_PD_ISO is grounded. Normal boot: pad released.",
+          "Program with fixed 5 V on J1, 3.3 V open-drain I2C and programmer VCC output OFF."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "pd-programming has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "pd-programming explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "55 high-level sheet annotations are present",
+      "details": {
+        "actual": 55
       }
     },
     {
@@ -1463,17 +1628,17 @@
     },
     {
       "ok": true,
-      "message": "199 named source nets are present",
+      "message": "212 named source nets are present",
       "details": {
-        "actual": 199
+        "actual": 212
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 199,
-        "source_nets": 199
+        "connected_groups": 212,
+        "source_nets": 212
       }
     },
     {
@@ -1539,9 +1704,9 @@
     },
     {
       "ok": true,
-      "message": "93 capacitors audited after C19 removal",
+      "message": "96 capacitors audited after C19 removal and diagnostics ECO",
       "details": {
-        "actual": 93
+        "actual": 96
       }
     },
     {
@@ -1553,9 +1718,9 @@
     },
     {
       "ok": true,
-      "message": "11 test points audited",
+      "message": "19 test points audited",
       "details": {
-        "actual": 11
+        "actual": 19
       }
     },
     {
@@ -1599,6 +1764,7 @@
           "U31.4:NC",
           "U32.4:NC",
           "U34.4:PG",
+          "U35.13:N_INT",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",
@@ -1638,6 +1804,7 @@
           "U31.4:NC",
           "U32.4:NC",
           "U34.4:PG",
+          "U35.13:N_INT",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",

@@ -17,9 +17,12 @@ const circuitJson = JSON.parse(await readFile('dist/index/circuit.json', 'utf8')
 const pcb = new CircuitJsonToKicadPcbConverter(circuitJson)
 pcb.runUntilFinished()
 const nativeBoard = parseKicadPcb(pcb.getOutputString())
+const servicePads = new Set(circuitJson.filter(row => row.type === 'source_component' && row.name.startsWith('TP_')).map(row => row.name))
 for (const footprint of nativeBoard.footprints) {
-  if (!footprint.attr?.dnp) continue
-  footprint.attr.excludeFromBom = true
+  const reference = footprint.properties.find(property => property.key === 'Reference')?.value
+  if (!footprint.attr?.dnp && !servicePads.has(reference)) continue
+  if (footprint.attr?.dnp) footprint.attr.excludeFromBom = true
+  // Bare probe contacts and unpopulated footprints need mask openings, but no stencil paste.
   for (const pad of footprint.fpPads) pad.layers.layers = pad.layers.layers.filter(layer => !['F.Paste', 'B.Paste'].includes(layer))
 }
 await writeFile(`${outputDirectory}/pd1180-epr-r0.3.kicad_pcb`, nativeBoard.getString())

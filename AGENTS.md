@@ -21,6 +21,8 @@ On 2026-10-10 the user explicitly reopened the affected driver-supply and brake/
 
 On 2026-10-10 the user also approved removing C19 from TPS26631 IMON, with matching native PCB, BOM and manufacturing updates. Preserve R26 and the IMON ADC connection; unrelated schematic content remains frozen.
 
+On 2026-10-11 the user approved adding all missing reference-board diagnostics: RGB and independent power indication, driven buzzer, PD EEPROM programming isolation/access, and PD/VMOTOR/GND probes. Changes to these circuits, the affected EEPROM nets, firmware and PCB placement/routing are authorized; preserve unrelated schematic content. Existing release files remain historical until this ECO passes fresh review.
+
 ## Required project structure
 
 Every board repository should contain:
@@ -51,6 +53,7 @@ Keep `release/circuit.json` selectable as the final routed view. Include the mec
 
 - The user requested top-only component assembly on 2026-10-09. All fitted components and service pads must be on top. On 2026-10-11 the user adopted the review request for a centered bottom-side optional encoder: U18, C52 and C53 are the only permitted bottom components, all explicitly doNotPlace and omitted from fitted BOM/CPL and paste. Preserve the four-layer copper stack and keep bypass capacitors beside their IC power pins. Encoder magnet gap/orientation need renewed physical validation.
 - No fitted components or solder paste belong on the bottom. The CPL and order settings must identify top-side assembly.
+- Bare service probe pads must have copper and solder-mask openings, with no solder-paste apertures in the manufacturing export.
 - Every fitted part needs an exact JLCPCB/LCSC code, package match and timestamped stock result. A fuzzy search or similar package name is not an acceptable match.
 - Before placement, routing, review or release work, query every fitted LCSC code against `https://jlcsearch.tscircuit.com/components/list.json?search=<numeric-id>` with the leading `C` removed (for example, query `492401` for `C492401`). Require an exact returned LCSC id, a package match and stock greater than the build quantity. Missing, zero-stock or insufficient-stock parts block the work until a reviewed stocked alternative is selected and the source import/BOM is updated.
 - Never rely on a previous stock snapshot for an order decision. Regenerate `docs/stock-report.json` and the per-part evidence immediately before release; the timestamp is evidence only and does not reserve inventory.

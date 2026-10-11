@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure short IC-to-capacitor paths in the final native component-side copper.
+"""Measure local bypass and buzzer bulk paths in final component-side copper.
 
 Planes and vias are deliberately excluded: each specified bypass must retain
 a short connection on the IC/capacitor side. Native DRC remains the connectivity authority.
@@ -101,9 +101,20 @@ def main():
                             layer=board.GetLayerName(layer), route_length_mm=length, maximum_mm=5, passed=passed))
         if not passed:
             errors.append(f'{ic}.{pin} to {capacitor}.1: no same-side path within 5 mm ({length})')
+    # The buzzer bulk branch has a separate 7 mm body-clearance budget. Do not
+    # relax the 5 mm IC bypass limit to accommodate the larger buzzer package.
+    buzzer = next(p for p in footprints['BZ1'].Pads() if p.GetNumber() == '1')
+    bulk = next(p for p in footprints['C96'].Pads() if p.GetNumber() == '1')
+    same_top = footprints['BZ1'].GetLayer() == footprints['C96'].GetLayer() == pcbnew.F_Cu
+    bulk_length = route_length(buzzer, bulk, tracks, pads, pcbnew.F_Cu) if same_top and buzzer.GetNetCode() == bulk.GetNetCode() else None
+    bulk_result = dict(component='BZ1', pin=1, capacitor='C96', layer='F.Cu',
+                       route_length_mm=bulk_length, maximum_mm=7,
+                       passed=bulk_length is not None and bulk_length <= 7)
+    if not bulk_result['passed']:
+        errors.append(f'BZ1.1 to C96.1: no top-layer bulk path within 7 mm ({bulk_length})')
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     report = dict(board_sha256=digest(args.board), targets_sha256=digest(target_path),
-                  checker_sha256=digest(Path(__file__)), results=results, errors=errors,
+                  checker_sha256=digest(Path(__file__)), results=results, bulk_results=[bulk_result], errors=errors,
                   limitation='Copper-path geometry only; ground-loop inductance and powered ripple require measurement.')
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(dict(checked=len(results), errors=errors)))

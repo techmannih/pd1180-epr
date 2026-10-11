@@ -33,6 +33,8 @@ static pd1180_control_t control;
 static pd1180_inputs_t inputs;
 static pd1180_board_power_t boardPower;
 static bool peripheralsStarted, wasSuspended;
+static bool indicatorsReady, indicatorResetReleased;
+static uint32_t indicatorAttemptAt, lastIndicatorPoll;
 static uint32_t boardMv;
 static uint8_t pdMode[4], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
 static uint32_t lastPoll, lastTick, lastGoodSample, vbusMv, vmotorMv;
@@ -83,6 +85,9 @@ static void invalidateTelemetry() {
 }
 static void stopPeripherals() {
   safeOutputs();
+  // U35 RESET is hardware-gated: no I2C transaction is needed to silence BZ1.
+  digitalWrite(pin(PD1180_PIN_STATUS_GPIO), LOW);
+  indicatorsReady = indicatorResetReleased = false;
   if (peripheralsStarted) pdBus.end();
   if (spiStarted) motorSpi.end();
   spiStarted=false;
@@ -101,6 +106,9 @@ static void startPeripherals() {
   pdBus.begin(); pdBus.setClock(100000);
   peripheralsStarted = true;
   temperatureConfiguredAt = millis();
+  indicatorAttemptAt = millis();
+  digitalWrite(pin(PD1180_PIN_STATUS_GPIO), HIGH);
+  indicatorResetReleased = true;
 }
 // U7 needs VMOTOR as well as VCC_IO. Do not clock or drive its inputs when
 // the motor domain is absent, even if the encoder/board logic is powered.
@@ -177,6 +185,63 @@ static bool writeRegister(uint8_t address, uint8_t reg, uint16_t value) {
   pdBus.beginTransmission(address); pdBus.write(reg);
   pdBus.write(static_cast<uint8_t>(value >> 8)); pdBus.write(static_cast<uint8_t>(value));
   return pdBus.endTransmission() == 0;
+}
+// TCA9538: A1/A0 grounded (0x70); P0/P1/P2 sink RGB, P3 drives the alarm MOSFET.
+// R132 holds RESET low during MCU reset. R127 keeps the buzzer gate low while
+// expander ports are inputs. The output latch is initialized before direction.
+static bool indicatorWrite(uint8_t reg, uint8_t value) {
+  if (!peripheralsStarted || (usbStarted && usbIsSuspended())) return false;
+  pdBus.beginTransmission(0x70); pdBus.write(reg); pdBus.write(value);
+  return pdBus.endTransmission() == 0;
+}
+static bool indicatorRead(uint8_t reg, uint8_t &value) {
+  if (!peripheralsStarted || (usbStarted && usbIsSuspended())) return false;
+  pdBus.beginTransmission(0x70); pdBus.write(reg);
+  if (pdBus.endTransmission(false) != 0 || (usbStarted && usbIsSuspended())) return false;
+  if (pdBus.requestFrom(0x70, 1, static_cast<int>(true)) != 1) {
+    while (pdBus.available()) pdBus.read();
+    return false;
+  }
+  value = static_cast<uint8_t>(pdBus.read());
+  return true;
+}
+static void resetIndicators(uint32_t now) {
+  digitalWrite(pin(PD1180_PIN_STATUS_GPIO), LOW);
+  indicatorsReady = indicatorResetReleased = false;
+  indicatorAttemptAt = now;
+}
+static void pollIndicators(uint32_t now) {
+  if (!peripheralsStarted) return;
+  if (usbStarted && usbIsSuspended()) { resetIndicators(now); return; }
+  if (!indicatorResetReleased) {
+    if (now - indicatorAttemptAt < 1000u) return;
+    digitalWrite(pin(PD1180_PIN_STATUS_GPIO), HIGH);
+    indicatorResetReleased = true;
+    indicatorAttemptAt = now;
+    return;
+  }
+  if (now - indicatorAttemptAt < 1u || now - lastIndicatorPoll < 50u) return;
+  lastIndicatorPoll = now;
+  if (!indicatorsReady) {
+    if (!indicatorWrite(1, 0x07) || !indicatorWrite(2, 0) || !indicatorWrite(3, 0xF0)) {
+      resetIndicators(now); return;
+    }
+  }
+  const bool fault = control.fault_latched || (tmcStatus.valid && tmcStatus.fault) ||
+    (inputs.temperature_valid && inputs.temperature_deci_c >= 700);
+  uint8_t value;
+  if (fault) value = 0x06 | ((now % 2000u < 200u) ? 0x08 : 0); // Red; bounded chirp.
+  else if (!motionWiringVerified || !pdImageVerified) value = 0x03; // Blue: commissioning lock.
+  else if (!inputs.sample_fresh || !inputs.temperature_valid || !inputs.epr_contract)
+    value = 0x04; // Amber: waiting for qualified power/telemetry.
+  else value = 0x05; // Green: qualified, with RUN reported separately over USB.
+  uint8_t config, actual;
+  // Detect a reset/brownout or failed write instead of leaving a stale alert latched.
+  if (!indicatorRead(3, config) || config != 0xF0 || !indicatorWrite(1, value) ||
+      !indicatorRead(1, actual) || actual != value) {
+    resetIndicators(now); return;
+  }
+  indicatorsReady = true;
 }
 static void pollTemperature(uint32_t now) {
   if (now-lastTemperaturePoll < 125u) return;
@@ -276,11 +341,11 @@ static void executeCommand() {
     reply(status);
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
-    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u BRINGUP_REQUIRED=%u\r\n",
+    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u INDICATORS_OK=%u BRINGUP_REQUIRED=%u\r\n",
       static_cast<unsigned long>(boardMv),peripheralsStarted,pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
       adcValid[0] && millis()-adcSampleAt[0]<=100u,adcMv[1],adcValid[1] && millis()-adcSampleAt[1]<=100u,
       inputs.temperature_deci_c,inputs.temperature_valid,static_cast<long>(phaseMa[0]),static_cast<long>(phaseMa[1]),phaseValid,
-      inputs.motor_power_good,inputs.vmotor_in_range,control.mcu_run && inputs.driver_ready,
+      inputs.motor_power_good,inputs.vmotor_in_range,control.mcu_run && inputs.driver_ready,indicatorsReady,
       !motionWiringVerified || !pdImageVerified);
     reply(status);
   } else if(!strcmp(command,"HELP")) {
@@ -356,12 +421,12 @@ void loop() {
   if(tick-lastTick >= 10u) {
     inputs.sample_fresh=pdReadOk && tick-lastGoodSample<=100u;
     pd1180_control_tick(&control,&inputs,tick-lastTick); lastTick=tick;
-    digitalWrite(pin(PD1180_PIN_STATUS_GPIO),(tick/500u)&1u);
   }
   if (motionWiringVerified && pdImageVerified) {
     digitalWrite(pin(PD1180_PIN_POWER_PERMIT),control.power_permit?HIGH:LOW);
     digitalWrite(pin(PD1180_PIN_SD_MODE),control.power_permit?HIGH:LOW);
     digitalWrite(pin(PD1180_PIN_MCU_RUN),control.mcu_run && inputs.driver_ready?HIGH:LOW);
   } else safeOutputs();
+  pollIndicators(tick);
   IWatchdog.reload();
 }

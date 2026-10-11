@@ -103,14 +103,14 @@
       "feature": "Software-selectable PD voltage",
       "status": "intentional_difference",
       "evidence": "docs/pd-configuration.json",
-      "detail": "References select 5\u201320 V / 5\u201328 V. This motor design is fixed 48 V / 5 A EPR; firmware rejects other contracts. No arbitrary-voltage UI is promised. TI image remains missing."
+      "detail": "References select 5–20 V / 5–28 V. This motor design is fixed 48 V / 5 A EPR; firmware rejects other contracts. No arbitrary-voltage UI is promised. TI image remains missing."
     },
     {
       "id": "power_protection",
       "feature": "Input protection and reverse blocking",
       "status": "implemented",
       "evidence": "engineering/power-audit.json",
-      "detail": "eFuse, independent power permit, reverse-blocked logic supplies and motor-side brake backup. Limits use this board\u2019s own ratings."
+      "detail": "eFuse, independent power permit, reverse-blocked logic supplies and motor-side brake backup. Limits use this board’s own ratings."
     },
     {
       "id": "driver",
@@ -138,35 +138,35 @@
       "feature": "Actual signed winding-current readings",
       "status": "implemented",
       "evidence": "docs/critical-copper-check.json",
-      "detail": "INA240A1 \u00d72, 5 m\u03a9 telemetry shunts, 100 mV/A nominal. Independent 33 m\u03a9 regulation shunts. Calibration and PWM sampling remain open."
+      "detail": "INA240A1 ×2, 5 mΩ telemetry shunts, 100 mV/A nominal. Independent 33 mΩ regulation shunts. Calibration and PWM sampling remain open."
     },
     {
       "id": "rgb",
       "feature": "Visible multicolor status",
-      "status": "missing",
-      "evidence": "index.circuit.tsx",
-      "detail": "No onboard LED; PC13 only reaches TP_STATUS. RGB and its drive/current budget need an ECO. All MCU GPIO assignments are occupied."
+      "status": "implemented",
+      "evidence": "docs/indicators.md",
+      "detail": "D16 common-anode RGB, U35 reset-controlled TCA9538 sinks and current limiting. PC13 controls reset without consuming industrial pins; host-tested fault/power/suspend behavior. Optical and powered qualification remain open."
     },
     {
       "id": "buzzer",
       "feature": "Audible fault alert",
-      "status": "missing",
-      "evidence": "index.circuit.tsx",
-      "detail": "No buzzer or alarm driver. Requires a default-off drive circuit, supply budget and firmware. Do not repurpose required industrial outputs."
+      "status": "implemented",
+      "evidence": "docs/indicators.md",
+      "detail": "BZ1 active buzzer, Q26 low-side driver, gate pulldown, clamp and local bulk supply. Reset or communication failure silences the driver. Audible/current qualification remains open."
     },
     {
       "id": "power_indicator",
       "feature": "Independent logic-power indication",
-      "status": "missing",
-      "evidence": "index.circuit.tsx",
-      "detail": "No independent power LED. Include a current-limited indicator in the diagnostics ECO and reassess USB current."
+      "status": "implemented",
+      "evidence": "docs/indicators.md",
+      "detail": "D17 and R128 independently indicate board V3V3; USB-only MCU power does not light it. Included in the additional 75 mA logic-rail allocation."
     },
     {
       "id": "power_probes",
       "feature": "Dedicated PD / VMOTOR / GND measurement pads",
-      "status": "missing",
-      "evidence": "index.circuit.tsx",
-      "detail": "Current 11 service pads expose SWD/status and optional encoder only. Add accessible labeled rail pads; motor connector pins are not equivalent guarded probe access."
+      "status": "implemented",
+      "evidence": "docs/pd-programming.md",
+      "detail": "Top TP_PD_VBUS, TP_VMOTOR and TP_PWR_GND added with five EEPROM fixture pads; total 19 service pads. Fixture construction and physical probe access remain to be qualified."
     },
     {
       "id": "encoder",
@@ -193,8 +193,8 @@
       "id": "pd_programming",
       "feature": "Blank PD EEPROM programming and approved image",
       "status": "open",
-      "evidence": "docs/assembly.md",
-      "detail": "U3 EEPROM image absent. No dedicated I2Cc fixture pads or demonstrated assembled-board access; resolve preprogrammed U3 or a bus-isolated programming fixture."
+      "evidence": "docs/pd-programming.md",
+      "detail": "U36 isolates both controller I2Cc wires. EEPROM-side SDA/SCL, VREF, GND and isolation pads plus a fixed-5 V blank-board procedure are implemented. TI full-flash image, built fixture and readback/APP-boot evidence remain missing."
     },
     {
       "id": "industrial",
@@ -215,7 +215,7 @@
       "feature": "Heatsink, enclosure and brake load",
       "status": "open",
       "evidence": "docs/power-validation.md",
-      "detail": "References\u2019 thermal vias/clearance method applies; their motor current, bulk capacitor and heatsink assumptions do not. Qualified thermal envelope and external brake cooling are missing."
+      "detail": "References’ thermal vias/clearance method applies; their motor current, bulk capacitor and heatsink assumptions do not. Qualified thermal envelope and external brake cooling are missing."
     },
     {
       "id": "firmware",
@@ -249,7 +249,7 @@
     },
     {
       "id": "reference_boards",
-      "request": "Use Rishabh\u2019s reference boards",
+      "request": "Use Rishabh’s reference boards",
       "features": [
         "separate_usb",
         "pd_voltage",

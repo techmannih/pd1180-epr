@@ -103,7 +103,8 @@
     "RS485_DE": 0,
     "OUT0_DRIVE": 0,
     "OUT1_DRIVE": 0,
-    "SD_MODE": 0
+    "SD_MODE": 0,
+    "STATUS_GPIO": 0
   },
   "connectors": {
     "J1": "USB PD POWER",
@@ -190,6 +191,31 @@
       "ain1": "IIN_MON",
       "reference_range_v": 4.096,
       "sample_rate_sps": 128
+    },
+    "indicators": {
+      "gpio_expander": "TCA9538PWR",
+      "i2c_address": 112,
+      "supply": "PD_3V3, shared with the PD_SCL/PD_SDA pull-ups; TCA9538 SCL/SDA may not exceed VCC",
+      "reset": "STATUS_GPIO (PC13), 10k pulldown; assert low on reset, rail loss, USB suspend or indicator bus failure",
+      "ports": {
+        "P0": "RGB red cathode through 1k",
+        "P1": "RGB green cathode through 330 ohm",
+        "P2": "RGB blue cathode through 330 ohm",
+        "P3": "Buzzer MOSFET gate through 1k; 100k gate pulldown",
+        "P4-P7": "grounded inputs"
+      },
+      "power_indicator": "D17 red LED + 4.7k from board V3V3; does not indicate USB-only MCU power",
+      "alarm": "FUET-9650B-3V active buzzer; AO3400A low-side switch; BAV21W flyback diode",
+      "firmware_states": {
+        "blue": "commissioning lock",
+        "amber": "waiting for qualified telemetry/power after qualification",
+        "green": "qualified supply/telemetry; RUN reported separately over USB",
+        "red": "latched motor fault, reported driver fault or overtemperature; 200 ms alarm every 2 s"
+      },
+      "budget_status": "design allocation, not measured; buzzer max 30 mA specified at 3 V only, allow 60 mA at board-rail extremes pending qualification",
+      "gate_drive": "R126 1k limits charging to <3.7 mA at 3.6 V; R127 100k pulls Q26 gate low when expander is reset",
+      "qualification": "Current, sound, brightness, reset silence and source transitions require first-article measurements",
+      "incremental_logic_rail_budget_ma": 75
     }
   },
   "motor_harness": {
@@ -227,5 +253,12 @@
     ],
     "connection_status": "Defined harness; not supplied with PCB assembly. Harness maker must confirm crimp/insulation dimensions and provide continuity/pull-test records.",
     "current_note": "JST 10 A applies to the standard header with 16 AWG termination, not directly to the motor factory 0.75 mm\u00b2 wire. Motor current is still governed by its qualification; no 10 A motor rating is implied."
+  },
+  "pd_programming": {
+    "definition": "docs/pd-programming.md",
+    "switch": "U36 SN74LVC2G66DCUR opens both I2Cc wires when TP_PD_ISO is grounded",
+    "target_power": "fixed 5 V supplied through J1; no EPR negotiation during fixture programming",
+    "programmer": "3.3 V open-drain, ground first, VCC output disabled; TP_PD_VREF is sense only",
+    "programming_status": "fixture access designed; TI image, fixture acceptance and readback/boot qualification pending"
   }
 }

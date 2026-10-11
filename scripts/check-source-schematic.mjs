@@ -106,9 +106,11 @@ const expectedSheetGeometry = {
   "usb-logic": [14, 320, 240, 3],
   telemetry: [15, 370, 420, 3],
   "driver-power": [16, 320, 200, 3],
+  indicators: [17, 450, 400, 3],
+  "pd-programming": [18, 450, 400, 3],
 }
-check(sheets.length === 16, "exactly 16 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name )).size === 16, "all schematic sheet names are unique")
+check(sheets.length === 18, "exactly 18 schematic sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name )).size === 18, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -149,7 +151,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 49, "49 high-level sheet annotations are present", {
+check(annotations.length === 55, "55 high-level sheet annotations are present", {
   actual: annotations.length,
 })
 
@@ -309,7 +311,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 199, "199 named source nets are present", { actual: sourceNets.length })
+check(sourceNets.length === 212, "212 named source nets are present", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -383,7 +385,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 93, "93 capacitors audited after C19 removal", { actual: capacitors.length })
+check(capacitors.length === 96, "96 capacitors audited after C19 removal and diagnostics ECO", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -409,7 +411,7 @@ for (const testPoint of testPoints) {
     non_testpoint_peers: nonTestPointPeers.length,
   })
 }
-check(testPoints.length === 11, "11 test points audited", { actual: testPoints.length })
+check(testPoints.length === 19, "19 test points audited", { actual: testPoints.length })
 check(testPointIssues.length === 0, "every test point probes a shared functional net", {
   violations: testPointIssues,
 })
@@ -425,7 +427,7 @@ const expectedNoConnects = [
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
   "U18.8:W", "U18.9:V", "U18.10:U",
   "U19.5:NC1", "U19.8:NC2",
-  "U21.7:T2OUT", "U21.9:R2OUT",
+  "U21.7:T2OUT", "U21.9:R2OUT", "U35.13:N_INT",
 ].sort()
 const actualNoConnectPorts = sourcePorts.filter((port) => !port.subcircuit_connectivity_map_key)
 const actualNoConnects = actualNoConnectPorts.map(portLabel).sort()

@@ -30,5 +30,11 @@ if (process.argv.includes('--native')) {
       native.results.some(r => !r.passed || !Number.isFinite(r.route_length_mm) || r.route_length_mm > 5)) {
     throw new Error('Native IC-to-capacitor paths are missing, too long, or incompletely checked')
   }
+  const bulk = native.bulk_results
+  if (bulk?.length !== 1 || bulk[0].component !== 'BZ1' || bulk[0].capacitor !== 'C96' ||
+      bulk[0].pin !== 1 || bulk[0].layer !== 'F.Cu' || !bulk[0].passed ||
+      !Number.isFinite(bulk[0].route_length_mm) || bulk[0].route_length_mm > 7) {
+    throw new Error('Native buzzer bulk path is missing or exceeds 7 mm')
+  }
   console.log(`Verified ${native.results.length} native same-layer bypass paths.`)
 }

@@ -72,6 +72,8 @@ const copies = [
   ['engineering/motor-harness.json', 'motor-harness.json'],
   ['engineering/reference-comparison.json', 'reference-comparison.json'],
   ['docs/reference-review.md', 'reference-review.md'],
+  ['docs/indicators.md', 'indicators.md'],
+  ['docs/pd-programming.md', 'pd-programming.md'],
   ['docs/connector-harnesses.md', 'connector-harnesses.md'],
   ['docs/release-status.json', 'release-status.json'],
   ['hardware-contract.json', 'hardware-contract.json'],
@@ -143,9 +145,11 @@ The ECO separates PD POWER and USB DATA, consolidates the industrial harness and
 
 The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Rear case fasteners are not approved accessory threads; a front-flange adapter is proposed and encoder attachment remains unresolved. See \`motor-assembly.md\` for the proposed mount and ordered-motor limitations, nominal screw clearances and unresolved mechanical gates.
 
+RGB, independent board-power indication, a reset-safe buzzer and eight new power/programming pads are included. See \`indicators.md\` and \`pd-programming.md\` for states, supply allocation and isolated EEPROM programming. The fixture and TI image still require qualification.
+
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 retains the required industrial interfaces. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All 291 fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
+J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 retains the required industrial interfaces. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All 311 fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
 
 The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 

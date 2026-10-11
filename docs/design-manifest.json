@@ -606,8 +606,8 @@
         "pin2": "GND",
         "pin3": "GND",
         "pin4": "GND",
-        "pin5": "EEP_SDA",
-        "pin6": "EEP_SCL",
+        "pin5": "EEP_PROG_SDA",
+        "pin6": "EEP_PROG_SCL",
         "pin7": "GND",
         "pin8": "PD_3V3"
       },
@@ -1566,7 +1566,7 @@
       },
       "sheet": "logic-power",
       "xy": [
-        -6,
+        -6.4,
         0.5
       ],
       "owner": "U22",
@@ -1845,7 +1845,7 @@
       "sheet": "logic-power",
       "xy": [
         -2.5,
-        5
+        5.3
       ],
       "owner": "U22",
       "value": "10k",
@@ -4264,7 +4264,7 @@
       "sheet": "motion",
       "xy": [
         0.25,
-        -8
+        -8.3
       ],
       "owner": "U8",
       "value": "100nF",
@@ -6239,7 +6239,7 @@
       "sheet": "encoder",
       "xy": [
         0,
-        5.5
+        6
       ],
       "owner": "U18",
       "value": "10k",
@@ -7501,15 +7501,15 @@
       },
       "sheet": "serial",
       "xy": [
-        -35.5,
-        -10.5
+        0,
+        -0.7999999999999996
       ],
       "owner": null,
       "lcsc": "C15846",
       "mpn": "MAX3232ESE+T",
       "size": [
-        9.4920054,
-        7.442149200000002
+        7.442149200000001,
+        9.4920054
       ],
       "noConnect": [
         "pin7",
@@ -7520,7 +7520,7 @@
         0,
         -12
       ],
-      "rotation": 0,
+      "rotation": 90,
       "layer": "top",
       "footprint": "SO-Narrow-16"
     },
@@ -7533,8 +7533,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -35.5,
-        -16
+        6.5,
+        -7.25
       ],
       "owner": "U21",
       "value": "100nF",
@@ -7542,8 +7542,8 @@
       "footprint": "0603",
       "voltage": 50,
       "size": [
-        2.450000000000003,
-        0.9500000000000011
+        0.9499999999999993,
+        2.45
       ],
       "noConnect": [],
       "section": "serial_U21",
@@ -7551,7 +7551,7 @@
         -4,
         -10.8
       ],
-      "rotation": 0,
+      "rotation": 90,
       "layer": "top",
       "mpn": null
     },
@@ -7564,8 +7564,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -39,
-        -16
+        8,
+        -7.25
       ],
       "owner": "U21",
       "value": "100nF",
@@ -7573,8 +7573,8 @@
       "footprint": "0603",
       "voltage": 50,
       "size": [
-        2.450000000000003,
-        0.9500000000000011
+        0.9499999999999993,
+        2.45
       ],
       "noConnect": [],
       "section": "serial_U21",
@@ -7582,7 +7582,7 @@
         -4,
         -12.2
       ],
-      "rotation": 0,
+      "rotation": 90,
       "layer": "top",
       "mpn": null
     },
@@ -7595,8 +7595,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -35.5,
-        -18
+        1.5,
+        6
       ],
       "owner": "U21",
       "value": "100nF",
@@ -7604,8 +7604,8 @@
       "footprint": "0603",
       "voltage": 50,
       "size": [
-        2.450000000000003,
-        0.9500000000000028
+        0.9500000000000002,
+        2.450000000000001
       ],
       "noConnect": [],
       "section": "serial_U21",
@@ -7613,7 +7613,7 @@
         3,
         -8.5
       ],
-      "rotation": 0,
+      "rotation": 90,
       "layer": "top",
       "mpn": null
     },
@@ -7626,8 +7626,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -39,
-        -18
+        5.25,
+        7
       ],
       "owner": "U21",
       "value": "100nF",
@@ -7635,8 +7635,8 @@
       "footprint": "0603",
       "voltage": 50,
       "size": [
-        2.450000000000003,
-        0.9500000000000028
+        2.450000000000001,
+        0.9499999999999993
       ],
       "noConnect": [],
       "section": "serial_U21",
@@ -7657,8 +7657,8 @@
       },
       "sheet": "serial",
       "xy": [
-        -39.5,
-        -5.2
+        -0.3,
+        -6.8
       ],
       "owner": "U21",
       "value": "100nF",
@@ -7666,7 +7666,7 @@
       "footprint": "0603",
       "voltage": 50,
       "size": [
-        2.450000000000003,
+        2.4499999999999997,
         0.9499999999999993
       ],
       "noConnect": [],
@@ -8609,15 +8609,15 @@
         -4
       ],
       "xy": [
-        -5,
+        -7.5,
         -6
       ],
       "size": [
-        2.4500000000000006,
+        2.45,
         0.9499999999999993
       ],
       "owner": "U27",
-      "rotation": 0,
+      "rotation": 180,
       "lcsc": "C14663",
       "mpn": null,
       "footprint": "0603",
@@ -8676,11 +8676,11 @@
         0
       ],
       "xy": [
-        6,
+        6.3,
         4.5
       ],
       "size": [
-        3.7001957999999995,
+        3.7001958000000013,
         2.4999187999999997
       ],
       "owner": null,
@@ -9152,7 +9152,7 @@
       ],
       "xy": [
         3,
-        5.5
+        6.1
       ],
       "size": [
         0.9500000000000002,
@@ -9167,6 +9167,634 @@
       "layer": "top",
       "value": "100nF",
       "voltage": 50
+    },
+    {
+      "tag": "TCA9538PWR",
+      "name": "U35",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "GND",
+        "pin3": "STATUS_GPIO",
+        "pin4": "RGB_R_DRV",
+        "pin5": "RGB_G_DRV",
+        "pin6": "RGB_B_DRV",
+        "pin7": "BUZZER_EN",
+        "pin8": "GND",
+        "pin9": "GND",
+        "pin10": "GND",
+        "pin11": "GND",
+        "pin12": "GND",
+        "pin14": "PD_SCL",
+        "pin15": "PD_SDA",
+        "pin16": "PD_3V3"
+      },
+      "sheet": "indicators",
+      "xy": [
+        35.5,
+        -24.25
+      ],
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [
+        "pin13"
+      ],
+      "lcsc": "C2652286",
+      "footprint": "TSSOP-16",
+      "mpn": "TCA9538PWR",
+      "size": [
+        4.893157599999995,
+        7.463002600000003
+      ]
+    },
+    {
+      "tag": "NH_B2020RGBA_HF",
+      "name": "D16",
+      "connections": {
+        "pin1": "RGB_R_K",
+        "pin2": "RGB_B_K",
+        "pin3": "V3V3",
+        "pin4": "RGB_G_K"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -40.25,
+        -18
+      ],
+      "sch": [
+        8,
+        1
+      ],
+      "rotation": 90,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C2874116",
+      "footprint": "SMD,2.1x2.1mm",
+      "mpn": "NH_B2020RGBA_HF",
+      "size": [
+        1.7998185999999947,
+        2.4997663999999986
+      ]
+    },
+    {
+      "tag": "FUET_9650B_3V",
+      "name": "BZ1",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "BUZZER_LOW"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -36.5,
+        -10.8
+      ],
+      "sch": [
+        14.190000000000001,
+        -9.899999999999999
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C391032",
+      "footprint": "SMD,9.6x9.6mm",
+      "mpn": "FUET_9650B_3V",
+      "size": [
+        11.500738999999996,
+        1.7999964000000013
+      ]
+    },
+    {
+      "tag": "AO3400A",
+      "name": "Q26",
+      "connections": {
+        "pin1": "BUZZER_GATE",
+        "pin2": "GND",
+        "pin3": "BUZZER_LOW"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -32.25,
+        -18
+      ],
+      "sch": [
+        11.14,
+        -15
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C20917",
+      "footprint": "SOT-23",
+      "mpn": "AO3400A",
+      "size": [
+        2.999994000000001,
+        2.5499313999999984
+      ]
+    },
+    {
+      "tag": "XL_1608SURC_06",
+      "name": "D17",
+      "connections": {
+        "pin1": "GND",
+        "pin2": "POWER_LED_A"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -37.5,
+        -19.5
+      ],
+      "sch": [
+        25,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C965799",
+      "footprint": "0603",
+      "mpn": "XL_1608SURC_06",
+      "schRotation": 270,
+      "size": [
+        2.297988800000013,
+        0.8068564000000009
+      ]
+    },
+    {
+      "tag": "BAV21W_7_F",
+      "name": "D18",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "BUZZER_LOW"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -36.5,
+        -17
+      ],
+      "sch": [
+        20,
+        -10
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C155214",
+      "footprint": "SOD-123",
+      "mpn": "BAV21W_7_F",
+      "schRotation": 90,
+      "size": [
+        4.334814800000004,
+        1.1500103999999993
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R123",
+      "connections": {
+        "pin1": "RGB_R_K",
+        "pin2": "RGB_R_DRV"
+      },
+      "sheet": "indicators",
+      "xy": [
+        39.25,
+        -24.25
+      ],
+      "sch": [
+        5,
+        3
+      ],
+      "rotation": 270,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C21190",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "1k",
+      "size": [
+        0.9500000000000028,
+        2.4499999999999957
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R124",
+      "connections": {
+        "pin1": "RGB_G_K",
+        "pin2": "RGB_G_DRV"
+      },
+      "sheet": "indicators",
+      "xy": [
+        39.25,
+        -27.25
+      ],
+      "sch": [
+        5,
+        0
+      ],
+      "rotation": 90,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C23138",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "330",
+      "size": [
+        0.9500000000000028,
+        2.4499999999999957
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R125",
+      "connections": {
+        "pin1": "RGB_B_K",
+        "pin2": "RGB_B_DRV"
+      },
+      "sheet": "indicators",
+      "xy": [
+        40,
+        -22
+      ],
+      "sch": [
+        5,
+        -3
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C23138",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "330",
+      "size": [
+        2.450000000000003,
+        0.9500000000000028
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R126",
+      "connections": {
+        "pin1": "BUZZER_EN",
+        "pin2": "BUZZER_GATE"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -28.75,
+        -18
+      ],
+      "sch": [
+        6.5,
+        -15
+      ],
+      "rotation": 180,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C21190",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "1k",
+      "size": [
+        2.4499999999999957,
+        0.9500000000000028
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R127",
+      "connections": {
+        "pin1": "BUZZER_GATE",
+        "pin2": "GND"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -35,
+        -19.75
+      ],
+      "sch": [
+        8,
+        -18
+      ],
+      "rotation": 90,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C25803",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "100k",
+      "schRotation": 270,
+      "size": [
+        0.9500000000000028,
+        2.4499999999999957
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R128",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "POWER_LED_A"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -27.5,
+        -25.75
+      ],
+      "sch": [
+        25,
+        4
+      ],
+      "rotation": 90,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "4.7k",
+      "schRotation": 270,
+      "size": [
+        0.9500000000000028,
+        2.4499999999999957
+      ]
+    },
+    {
+      "tag": "capacitor",
+      "name": "C95",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "GND"
+      },
+      "sheet": "indicators",
+      "xy": [
+        31.9,
+        -22.8
+      ],
+      "sch": [
+        -5,
+        4
+      ],
+      "rotation": 270,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "100nF",
+      "schRotation": 270,
+      "size": [
+        0.9500000000000028,
+        2.4499999999999957
+      ]
+    },
+    {
+      "tag": "capacitor",
+      "name": "C96",
+      "connections": {
+        "pin1": "V3V3",
+        "pin2": "GND"
+      },
+      "sheet": "indicators",
+      "xy": [
+        -33,
+        -4.9
+      ],
+      "sch": [
+        10.5,
+        4
+      ],
+      "rotation": 180,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "BZ1",
+      "noConnect": [],
+      "lcsc": "C96446",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "10uF",
+      "schRotation": 270,
+      "size": [
+        2.450000000000003,
+        0.9499999999999993
+      ]
+    },
+    {
+      "tag": "SN74LVC2G66DCUR",
+      "name": "U36",
+      "connections": {
+        "pin1": "EEP_SDA",
+        "pin2": "EEP_PROG_SDA",
+        "pin3": "EEP_LINK_EN",
+        "pin4": "GND",
+        "pin5": "EEP_SCL",
+        "pin6": "EEP_PROG_SCL",
+        "pin7": "EEP_LINK_EN",
+        "pin8": "PD_3V3"
+      },
+      "sheet": "pd-programming",
+      "xy": [
+        -9,
+        20
+      ],
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 90,
+      "layer": "top",
+      "section": "pd-programming_U36",
+      "owner": "U36",
+      "noConnect": [],
+      "lcsc": "C181970",
+      "footprint": "VSSOP-8-0.5mm",
+      "mpn": "SN74LVC2G66DCUR",
+      "size": [
+        1.7501362,
+        3.8498272
+      ]
+    },
+    {
+      "tag": "capacitor",
+      "name": "C97",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "GND"
+      },
+      "sheet": "pd-programming",
+      "xy": [
+        -9.1,
+        16.5
+      ],
+      "sch": [
+        -5,
+        -7
+      ],
+      "rotation": 180,
+      "layer": "top",
+      "section": "pd-programming_U36",
+      "owner": "U36",
+      "noConnect": [],
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "100nF",
+      "schRotation": 270,
+      "size": [
+        2.4499999999999993,
+        0.9500000000000028
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R129",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "EEP_PROG_SDA"
+      },
+      "sheet": "pd-programming",
+      "xy": [
+        -12,
+        19.5
+      ],
+      "sch": [
+        7,
+        3
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "pd-programming_U36",
+      "owner": "U36",
+      "noConnect": [],
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "4.7k",
+      "schRotation": 270,
+      "size": [
+        2.4499999999999993,
+        0.9500000000000028
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R130",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "EEP_PROG_SCL"
+      },
+      "sheet": "pd-programming",
+      "xy": [
+        -12.25,
+        16.5
+      ],
+      "sch": [
+        12,
+        3
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "pd-programming_U36",
+      "owner": "U36",
+      "noConnect": [],
+      "lcsc": "C23162",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "4.7k",
+      "schRotation": 270,
+      "size": [
+        2.4499999999999993,
+        0.9500000000000028
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R131",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "EEP_LINK_EN"
+      },
+      "sheet": "pd-programming",
+      "xy": [
+        -15,
+        20
+      ],
+      "sch": [
+        -7,
+        3
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "pd-programming_U36",
+      "owner": "U36",
+      "noConnect": [],
+      "lcsc": "C844918",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "10k",
+      "schRotation": 270,
+      "size": [
+        2.4499999999999975,
+        0.9500000000000028
+      ]
+    },
+    {
+      "tag": "resistor",
+      "name": "R132",
+      "connections": {
+        "pin1": "STATUS_GPIO",
+        "pin2": "GND"
+      },
+      "sheet": "indicators",
+      "xy": [
+        40.75,
+        -24.25
+      ],
+      "sch": [
+        -7,
+        -3
+      ],
+      "rotation": 90,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U35",
+      "noConnect": [],
+      "lcsc": "C844918",
+      "footprint": "0603",
+      "mpn": null,
+      "value": "10k",
+      "schRotation": 270,
+      "size": [
+        0.9500000000000028,
+        2.4499999999999957
+      ]
     }
   ],
   "optional_parts": [

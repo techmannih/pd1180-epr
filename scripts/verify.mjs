@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['AGENTS.md', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+const verifiedInputPaths = ['AGENTS.md', 'board-diagnostics.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
@@ -20,6 +20,7 @@ async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
 verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
+verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 const inputsBefore = await hashInputs()
 const checks = [

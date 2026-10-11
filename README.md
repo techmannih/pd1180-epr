@@ -4,7 +4,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 **Revision:** r0.4 reference ECO · **Status:** CAD routing verified; powered validation pending · **Assembly:** top only · **Order status:** HOLD
 
-**Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) identifies missing RGB/buzzer/power indication, dedicated power probes, and unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
+**Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
 
 **Reference-board changes:** Retain the separate PD POWER / USB DATA ports, industrial J7 harness and TMC5160 external bridges. Add TMP102 hardware temperature inhibit, INA240 phase-current diagnostics, ADS1115 bus telemetry and a DATA-powered logic supply. Place bootstrap/gate/bypass parts locally and preserve Kelvin connections to the shunt terminals. Native routing, DRC, schematic parity, ERC and Kelvin isolation pass. Physical USB power validation remains open. The STM32 commissioning firmware is motion-locked. TI programming and powered tests are also pending.
 
@@ -24,7 +24,7 @@ The intended purchase is **PCB fabrication plus complete assembly, programming a
 
 | Deliverable | Required handoff / present status |
 |---|---|
-| Complete populated PCBA | Matching Gerbers, BOM and CPL; 291 fitted parts on top, including an agreed through-hole/tall-part assembly plan. CAD verified; assembly not ordered. |
+| Complete populated PCBA | Matching Gerbers, BOM and CPL; 311 fitted parts on top, including an agreed through-hole/tall-part assembly plan. CAD verified; assembly not ordered. |
 | U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Binary pending.** The requirements JSON is not flashable firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
@@ -83,8 +83,9 @@ To stop normally, decelerate the STEP train using the validated stop profile, re
 | Communications | USB 2.0, CAN, RS485 and RS232 |
 | Outputs | Hardware enable plus two protected low-side outputs |
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
-| Programming | SWD for STM32 and configuration EEPROM for the PD controller |
-| Assembly | 291 JLC-sourced fitted parts plus 11 service test pads, all on top |
+| Programming | STM32 SWD; isolated U3 EEPROM I2Cc fixture access |
+| Indicators | RGB status, independent board-power LED and reset-safe driven buzzer |
+| Assembly | 311 JLC-sourced fitted parts plus 19 service test pads, all on top |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, external hardware enable and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN`, `RS485_DE`, both protected outputs and standalone-mode selection inactive.
 
@@ -203,9 +204,9 @@ The exact ordered-motor CAD and proposed adapter appear in the default 3D view a
 
 ## Parts and procurement
 
-- 291 populated components use exact JLCPCB/LCSC identities.
-- The fitted BOM contains 82 unique LCSC codes.
-- The latest committed live check reports 82/82 available at its recorded timestamp; refresh stock for the actual order before purchase.
+- 311 populated components use exact JLCPCB/LCSC identities.
+- The fitted BOM contains 89 unique LCSC codes.
+- The latest committed live check reports 89/89 available at its recorded timestamp; refresh stock for the actual order before purchase.
 - Eleven selected alternative candidates are currently available.
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
@@ -229,11 +230,11 @@ Current verification evidence:
 |---|---|
 | Native KiCad PCB DRC + schematic ERC | PASS — 0 PCB violations, unconnected nets, parity issues and ERC violations |
 | Schematic style | PASS — 0 issues across all viewer analysis categories |
-| Topology regression | PASS — 53 tests covering topology, optional assembly, motor-view preservation, via identity and power-copper geometry |
+| Topology regression | PASS — 55 tests covering topology, optional assembly, motor-view preservation, via identity and power-copper geometry |
 | Kelvin-check regressions | PASS — 11 native regressions and all 9 final-board paths |
-| Decoupling | PASS — 46/46 native IC-to-capacitor paths |
-| Assembly | PASS — 291 fitted parts plus 11 service test pads on top |
-| Stock | PASS — 82/82 unique fitted LCSC codes available at the recorded timestamp |
+| Decoupling | PASS — 48/48 native IC-to-capacitor paths |
+| Assembly | PASS — 311 fitted parts plus 19 service test pads on top |
+| Stock | PASS — 89/89 unique fitted LCSC codes available at the recorded timestamp |
 | Alternatives | PASS — 11/11 selected candidates available |
 | Release delivery | Current ECO review artifacts; ordering remains on hold |
 | Route identity | Current source, local constraints and final PCB hash match |
@@ -306,3 +307,9 @@ Engineering review and ordering are separate gates: `bun run review` validates t
 ## Motor connector and optional encoder review
 
 J2 is already JST VH (3.96 mm), selected for the NEMA34 current target. The NEMA17 reference uses JST PH and NEMA23 uses JST XH; those smaller connector choices are not copied into this higher-current stage. [Motor harness and review closure](docs/motor-harness.md) lists the matching VHR-4N housing, contacts, wire colours, cable construction, connector purposes and open mechanical checks. U18 is centered on the motor axis, with C52/C53 nearby; all three are bottom-side DNP footprints and are excluded from fitted BOM/CPL and paste.
+
+## Status, alarm and PD programming access
+
+D16 RGB is blue while the commissioning image keeps motion locked. Red with a short periodic chirp indicates a detected fault. D17 lights from board V3V3 independently of firmware; USB DATA alone powers the MCU and does not light this LED. PC13/TP_STATUS now controls the indicator expander reset. See [indicator states and power allocation](docs/indicators.md).
+
+U36 disconnects both controller-to-EEPROM wires when TP_PD_ISO is grounded. The new pads expose EEPROM-side SDA/SCL, target-voltage sense and ground; separate PD_VBUS/VMOTOR/GND pads support rated voltage probes. Follow [the fixed-5 V fixture sequence](docs/pd-programming.md). A TI full-flash image, readback verification and cold APP boot are still required; the current commissioning firmware cannot deliver motor operation.

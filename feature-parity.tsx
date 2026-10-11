@@ -75,4 +75,18 @@ export const FEATURE_PARITY = [
     nets: ["STEP_24V", "DIR_24V", "OUT0", "OUT1"],
     evidence: "hardware-contract.json",
   },
+  {
+    id: "indicators",
+    feature: "RGB status, independent power LED and reset-safe audible alarm",
+    components: ["U35", "D16", "D17", "BZ1", "Q26", "D18", "R123", "R124", "R125", "R126", "R127", "R128", "R132", "C95", "C96"],
+    nets: ["STATUS_GPIO", "RGB_R_DRV", "RGB_G_DRV", "RGB_B_DRV", "BUZZER_GATE", "BUZZER_LOW", "POWER_LED_A"],
+    evidence: "docs/indicators.md",
+  },
+  {
+    id: "pd_fixture",
+    feature: "Isolated EEPROM programming and power-probe access",
+    components: ["U36", "R129", "R130", "R131", "C97", "TP_PD_VREF", "TP_PD_GND", "TP_EEP_SDA", "TP_EEP_SCL", "TP_PD_ISO", "TP_PD_VBUS", "TP_VMOTOR", "TP_PWR_GND"],
+    nets: ["EEP_PROG_SDA", "EEP_PROG_SCL", "EEP_LINK_EN", "PD_VBUS", "VMOTOR"],
+    evidence: "docs/pd-programming.md",
+  },
 ] as const
