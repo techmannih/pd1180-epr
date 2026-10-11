@@ -35,10 +35,28 @@
     "front_hole_note": "STEP centers give 69.5 mm pitch, within the drawing 69.6 +/- 0.2 mm. Use drawing tolerances for fabrication.",
     "rear_rotating_shaft_access": "Unconfirmed: single fused STEP envelope shows a central recess, not an identified rotating shaft end or an approved attachment bore.",
     "rear_case_screws": "Existing case fasteners are not approved accessory threads. Do not remove/replace them without manufacturer confirmation.",
-    "step_archive": "engineering/mechanical/34HS31-6004S1-manufacturer.zip"
+    "step_archive": "engineering/mechanical/34HS31-6004S1-manufacturer.zip",
+    "rear_hole_xy_mm": [
+      [
+        24.447132,
+        -38.374311
+      ],
+      [
+        38.374311,
+        24.447132
+      ],
+      [
+        -24.447132,
+        38.374311
+      ],
+      [
+        -38.374311,
+        -24.447132
+      ]
+    ]
   },
   "mount": {
-    "concept": "Proposed front-flange support posts and separate rear plate; original PCB hole pattern retained",
+    "concept": "Front-flange support posts and separate rear adapter plate; PCB and plate holes now share the ordered motor rear CAD axes. Rear threads are not used by this proposal.",
     "motor_rear_to_adapter_bottom_mm": 1,
     "adapter_thickness_mm": 3,
     "adapter_width_mm": 85.9,
@@ -57,7 +75,12 @@
     "front_mounting_interface_shared": true,
     "adapter_pcb_hole_diameter_mm": 4.5,
     "long_post_bore_diameter_mm": 5,
-    "front_mounting_interface_approval": null
+    "front_mounting_interface_approval": null,
+    "copper_keepout_radius_mm": 4.25,
+    "copper_keepout_layers": [
+      "F.Cu",
+      "B.Cu"
+    ]
   },
   "encoder": {
     "sensor": "U18 AS5047P, top side at PCB origin",
@@ -84,8 +107,8 @@
       "sha256": "eec0b062b6c26976734a02875d35791f12e7442a425669e94afd6a522e39a93d"
     },
     "fixture": {
-      "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/f7d74d3f20d73caa22ff136048b776b680c9abc1/engineering/mechanical/adapter-proposal.glb",
-      "sha256": "9fd1b497b0ed17e41ddf4a0a8e4c2a960430f852fef9993a769e45d5a76d319c"
+      "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/9aa7f0494c21b1bf80172229be5dc479cb161da7/engineering/mechanical/adapter-proposal.glb",
+      "sha256": "1697421b9ac3f674805f0ed064d9f7683e55738de05b71f7e89f3b6d3e266ed1"
     }
   }
 }

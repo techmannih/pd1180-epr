@@ -103,7 +103,7 @@
   "via_in_pad": {
     "criterion": "Through-via finished-drill circle overlaps an F.Paste-enabled solder land",
     "required_process": "epoxy filled and copper capped, per release/order-settings.json",
-    "count": 69,
+    "count": 57,
     "vias": [
       {
         "x_mm": 66.800077,
@@ -116,6 +116,16 @@
         ]
       },
       {
+        "x_mm": 70.5183,
+        "y_mm": 126.0999,
+        "net": "CAN_RX",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "U19:4"
+        ]
+      },
+      {
         "x_mm": 70.6,
         "y_mm": 72.5003,
         "net": "PD_3V3",
@@ -123,46 +133,6 @@
         "drill_mm": 0.3,
         "lands": [
           "C2:1"
-        ]
-      },
-      {
-        "x_mm": 72.25,
-        "y_mm": 60.824999,
-        "net": "EEP_IRQ_N",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "R5:2"
-        ]
-      },
-      {
-        "x_mm": 72.4,
-        "y_mm": 63.824999,
-        "net": "DRIVER_BUCK_SW",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "C89:2"
-        ]
-      },
-      {
-        "x_mm": 72.4,
-        "y_mm": 65.325,
-        "net": "DRIVER_BUCK_BOOT",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "C89:1"
-        ]
-      },
-      {
-        "x_mm": 72.5,
-        "y_mm": 66.675,
-        "net": "EEP_SDA",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "R3:2"
         ]
       },
       {
@@ -177,7 +147,7 @@
       },
       {
         "x_mm": 74.55,
-        "y_mm": 73.975,
+        "y_mm": 74.624999,
         "net": "CC1_PD",
         "pad_mm": 0.5,
         "drill_mm": 0.3,
@@ -186,58 +156,8 @@
         ]
       },
       {
-        "x_mm": 75.1,
-        "y_mm": 66.075,
-        "net": "DRIVER_BUCK_BOOT",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "U34:7"
-        ]
-      },
-      {
-        "x_mm": 75.1,
-        "y_mm": 71.962499,
-        "net": "VMOTOR",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "U34:2"
-        ]
-      },
-      {
         "x_mm": 75.4,
-        "y_mm": 68.5,
-        "net": "GND",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "U34:9"
-        ]
-      },
-      {
-        "x_mm": 75.4,
-        "y_mm": 69.5,
-        "net": "GND",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "U34:9"
-        ]
-      },
-      {
-        "x_mm": 76.515,
-        "y_mm": 71.449999,
-        "net": "VMOTOR",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "U34:3"
-        ]
-      },
-      {
-        "x_mm": 76.6,
-        "y_mm": 68.5,
+        "y_mm": 69.4,
         "net": "GND",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -247,7 +167,7 @@
       },
       {
         "x_mm": 76.6,
-        "y_mm": 69.5,
+        "y_mm": 69.4,
         "net": "GND",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -256,13 +176,13 @@
         ]
       },
       {
-        "x_mm": 79.8,
-        "y_mm": 70.325,
-        "net": "DRIVER_BUCK_FB",
-        "pad_mm": 0.5,
+        "x_mm": 76.6,
+        "y_mm": 70.4,
+        "net": "GND",
+        "pad_mm": 0.6,
         "drill_mm": 0.3,
         "lands": [
-          "R122:1"
+          "U34:9"
         ]
       },
       {
@@ -286,36 +206,6 @@
         ]
       },
       {
-        "x_mm": 81.0,
-        "y_mm": 69.325,
-        "net": "DRIVER_BUCK_FB",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "R121:2"
-        ]
-      },
-      {
-        "x_mm": 81.3,
-        "y_mm": 67.975,
-        "net": "TMC_12V",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "R121:1"
-        ]
-      },
-      {
-        "x_mm": 82.845,
-        "y_mm": 67.700056,
-        "net": "PD_3V3",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "C9:1"
-        ]
-      },
-      {
         "x_mm": 84.195,
         "y_mm": 67.400056,
         "net": "PD_3V3",
@@ -326,26 +216,6 @@
         ]
       },
       {
-        "x_mm": 85.8744,
-        "y_mm": 60.9985,
-        "net": "EPR_BLK_GATE",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "Q1:1"
-        ]
-      },
-      {
-        "x_mm": 87.875578,
-        "y_mm": 64.9975,
-        "net": "TMC_12V",
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "lands": [
-          "C92:1"
-        ]
-      },
-      {
         "x_mm": 87.8925,
         "y_mm": 67.531,
         "net": "EEP_SDA",
@@ -353,16 +223,6 @@
         "drill_mm": 0.3,
         "lands": [
           "U3:5"
-        ]
-      },
-      {
-        "x_mm": 89.475,
-        "y_mm": 61.65,
-        "net": "CC_FAULT_N",
-        "pad_mm": 0.5,
-        "drill_mm": 0.3,
-        "lands": [
-          "R1:2"
         ]
       },
       {
@@ -626,6 +486,26 @@
         ]
       },
       {
+        "x_mm": 118.4478,
+        "y_mm": 82.4249,
+        "net": "OUT0_BASE",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "R98:2"
+        ]
+      },
+      {
+        "x_mm": 118.459545,
+        "y_mm": 83.829747,
+        "net": "OUT0_DRIVE",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "R98:1"
+        ]
+      },
+      {
         "x_mm": 119.8473,
         "y_mm": 103.7029,
         "net": "GND",
@@ -657,7 +537,7 @@
       },
       {
         "x_mm": 134.45,
-        "y_mm": 111.5,
+        "y_mm": 110.900001,
         "net": "MOTOR_B2",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -667,7 +547,7 @@
       },
       {
         "x_mm": 134.45,
-        "y_mm": 112.5,
+        "y_mm": 111.900001,
         "net": "MOTOR_B2",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -697,7 +577,7 @@
       },
       {
         "x_mm": 135.45,
-        "y_mm": 111.5,
+        "y_mm": 110.900001,
         "net": "MOTOR_B2",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -707,7 +587,7 @@
       },
       {
         "x_mm": 135.45,
-        "y_mm": 112.5,
+        "y_mm": 111.900001,
         "net": "MOTOR_B2",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -737,7 +617,7 @@
       },
       {
         "x_mm": 135.749986,
-        "y_mm": 118.1,
+        "y_mm": 116.700001,
         "net": "VMOTOR",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -747,7 +627,7 @@
       },
       {
         "x_mm": 135.749986,
-        "y_mm": 119.1,
+        "y_mm": 117.700001,
         "net": "VMOTOR",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -777,7 +657,7 @@
       },
       {
         "x_mm": 136.75,
-        "y_mm": 118.1,
+        "y_mm": 116.700001,
         "net": "VMOTOR",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -787,7 +667,7 @@
       },
       {
         "x_mm": 136.75,
-        "y_mm": 119.1,
+        "y_mm": 117.700001,
         "net": "VMOTOR",
         "pad_mm": 0.6,
         "drill_mm": 0.3,
@@ -796,7 +676,7 @@
         ]
       }
     ],
-    "board_sha256": "b57a97de0d59069538bb80063f72260d76a59fa89e2b122e46a7fe6417fd6c0a"
+    "board_sha256": "aabcf940d274bf8d7ff9a39c8c2f891a71b2b03341c86619f439a98be283f456"
   },
   "assembly_model": {
     "glb": "dist/release/3d.glb",
@@ -914,5 +794,93 @@
     "assembled_preview": "previews/usb-port-labels.png",
     "assembled_preview_sha256": "20568bc3443adafddbcfab785722bc80f6a6a8cea08165f7119ff1d2e41ababc",
     "visual_review": "Both vertical knockout labels are readable in the actual assembled GLB and sit in the requested edge spaces outside the connector bodies."
+  },
+  "ordered_motor_mounting_update": {
+    "date": "2026-10-11T00:32:50.363216+00:00",
+    "baseline_commit": "b131a20",
+    "board_sha256": "aabcf940d274bf8d7ff9a39c8c2f891a71b2b03341c86619f439a98be283f456",
+    "hole_reference": "engineering/mechanical/ordered-motor-pcb-reference.json",
+    "mounting_holes": [
+      {
+        "name": "H1",
+        "diameter_mm": 4.2,
+        "x_mm": 67.397132,
+        "y_mm": 4.575689,
+        "centered_x_mm": 24.447132,
+        "centered_y_mm": -38.374311
+      },
+      {
+        "name": "H2",
+        "diameter_mm": 4.2,
+        "x_mm": 81.324311,
+        "y_mm": 67.397132,
+        "centered_x_mm": 38.374311,
+        "centered_y_mm": 24.447132
+      },
+      {
+        "name": "H3",
+        "diameter_mm": 4.2,
+        "x_mm": 18.502868,
+        "y_mm": 81.324311,
+        "centered_x_mm": -24.447132,
+        "centered_y_mm": 38.374311
+      },
+      {
+        "name": "H4",
+        "diameter_mm": 4.2,
+        "x_mm": 4.575689,
+        "y_mm": 18.502868,
+        "centered_x_mm": -38.374311,
+        "centered_y_mm": -24.447132
+      }
+    ],
+    "schematic_records_unchanged": 3275,
+    "logical_records": {
+      "source_component": {
+        "count": 305,
+        "unchanged": true
+      },
+      "source_port": {
+        "count": 1066,
+        "unchanged": true
+      },
+      "source_net": {
+        "count": 199,
+        "unchanged": true
+      },
+      "source_trace": {
+        "count": 1096,
+        "unchanged": true
+      },
+      "source_component_internal_connection": {
+        "count": 3,
+        "unchanged": true
+      }
+    },
+    "fitted_top": 294,
+    "service_pads_top": 11,
+    "bottom_components": 0,
+    "minimum_via_drill_mm": 0.3,
+    "via_in_pad_count": 57,
+    "native_drc_violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0,
+    "erc_violations": 0,
+    "bypass_paths_passed": 46,
+    "critical_branches_passed": 9,
+    "usb_reference_check": "pass",
+    "power_routing_check": "pass",
+    "screw_copper_keepout_radius_mm": 4.25,
+    "screw_copper_keepout_layers": [
+      "F.Cu",
+      "B.Cu"
+    ],
+    "copper_cleanup": "Rounded four acute pour tips and removed disconnected islands. Restored the original In2 USB ground reference and local return vias, plus the reviewed A1 B.Cu power corridor, F.Cu landing and four parallel vias. OUT0 is routed outside the A1 back-layer corridor. Native checks rerun without DRC exclusions.",
+    "mechanical_scope": "Nominal CAD alignment and screw-envelope clearance only; front-supported adapter and encoder remain unqualified.",
+    "source_native_pad_positions": {
+      "matched_source_pad_positions": 1066,
+      "tolerance_mm": 0.001,
+      "errors": []
+    }
   }
 }

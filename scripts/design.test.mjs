@@ -85,8 +85,8 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   const pcb=pcbComponents.find(item=>item.source_component_id===source.source_component_id)
   const cad=data.find(item=>item.type==='cad_component'&&item.pcb_component_id===pcb.pcb_component_id)
   const board=data.find(item=>item.type==='pcb_board')
-  expect(pcb.center).toEqual({x:20,y:28})
-  expect(cad.position.x).toBe(20);expect(cad.position.y).toBe(28)
+  expect(cad.position.x).toBeCloseTo(pcb.center.x,6)
+  expect(cad.position.y).toBeCloseTo(pcb.center.y,6)
   expect(cad.model_step_url).toContain('C407954.step')
   const distance=(point,start,end)=>{
     const dx=end.x-start.x,dy=end.y-start.y

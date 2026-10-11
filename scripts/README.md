@@ -83,3 +83,6 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 
 - `check-usb-reference.py`: native filled-copper check of all four USB bottom-layer trunks, excluding only 0.45 mm signal-via antipads; requires local ground stitching within 2 mm. Arguments: board path and output report. Writes hash-bound geometric evidence, not USB electrical-compliance certification.
 - `check-usb-reference.mjs`: rejects missing, failed or stale native USB reference-plane evidence during portable CI/review.
+
+- `motor-mounting-geometry.mjs`: extracts the four rear cylindrical feature axes from the pinned ordered-motor STEP and checks unique PCB-hole alignment and drill diameter. Used by the assembly check.
+- `motor-mounting-geometry.test.mjs`: rejects the old mirrored pattern, duplicate axes, and incorrect drills; checks the contract against the manufacturer STEP. Run with `bun test scripts/motor-mounting-geometry.test.mjs`.

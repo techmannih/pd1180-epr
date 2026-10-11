@@ -5,7 +5,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Requirements and mechanics
 
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
-- [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the documented asymmetric coordinates.
+- [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the ordered 34HS31-6004S1 rear CAD axes in the mechanical reference; native drills, adapter and screw-head clearances agree.
 - [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
 - [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and the encoder remains centered. Validate the revised encoder-to-magnet gap.
 - [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.

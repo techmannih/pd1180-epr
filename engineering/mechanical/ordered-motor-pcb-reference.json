@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "reference_file": "34HS31-6004S1.step",
+  "reference_archive": "engineering/mechanical/34HS31-6004S1-manufacturer.zip",
+  "reference_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
+  "source_product": "STEPPERONLINE 34HS31-6004S1",
+  "coordinate_system": {
+    "units": "mm",
+    "tscircuit_transform": "PCB X = STEP X; PCB Y = STEP Y. STEP rear face Z=79.5 is below the PCB; no reflection or in-plane rotation.",
+    "template_transform": "lower-left X/Y = PCB X/Y + 42.95"
+  },
+  "board": {
+    "envelope": {
+      "width": 85.9,
+      "height": 85.9
+    },
+    "step_solid_thickness": 1.47574,
+    "fabrication_thickness": 1.6,
+    "corner_arc_radius": 5.9,
+    "perimeter": [
+      {
+        "type": "line",
+        "from": [
+          13.9,
+          2.0
+        ],
+        "to": [
+          13.9,
+          8.0
+        ]
+      },
+      {
+        "type": "arc",
+        "center": [
+          8.0,
+          8.0
+        ],
+        "radius": 5.9,
+        "start_deg": 0,
+        "end_deg": 90
+      },
+      {
+        "type": "polyline",
+        "points": [
+          [
+            8.0,
+            13.9
+          ],
+          [
+            2.0,
+            13.9
+          ],
+          [
+            0.0,
+            15.9
+          ],
+          [
+            0.0,
+            70.0
+          ],
+          [
+            2.0,
+            72.0
+          ],
+          [
+            8.0,
+            72.0
+          ]
+        ]
+      },
+      {
+        "type": "arc",
+        "center": [
+          8.0,
+          77.9
+        ],
+        "radius": 5.9,
+        "start_deg": -90,
+        "end_deg": 0
+      },
+      {
+        "type": "polyline",
+        "points": [
+          [
+            13.9,
+            77.9
+          ],
+          [
+            13.9,
+            83.9
+          ],
+          [
+            15.9,
+            85.9
+          ],
+          [
+            70.0,
+            85.9
+          ],
+          [
+            72.0,
+            83.9
+          ],
+          [
+            72.0,
+            77.9
+          ]
+        ]
+      },
+      {
+        "type": "arc",
+        "center": [
+          77.9,
+          77.9
+        ],
+        "radius": 5.9,
+        "start_deg": 180,
+        "end_deg": 270
+      },
+      {
+        "type": "polyline",
+        "points": [
+          [
+            77.9,
+            72.0
+          ],
+          [
+            83.9,
+            72.0
+          ],
+          [
+            85.9,
+            70.0
+          ],
+          [
+            85.9,
+            15.9
+          ],
+          [
+            83.9,
+            13.9
+          ],
+          [
+            77.9,
+            13.9
+          ]
+        ]
+      },
+      {
+        "type": "arc",
+        "center": [
+          77.9,
+          8.0
+        ],
+        "radius": 5.9,
+        "start_deg": 90,
+        "end_deg": 180
+      },
+      {
+        "type": "polyline",
+        "points": [
+          [
+            72.0,
+            8.0
+          ],
+          [
+            72.0,
+            2.0
+          ],
+          [
+            70.0,
+            0.0
+          ],
+          [
+            15.9,
+            0.0
+          ],
+          [
+            13.9,
+            2.0
+          ]
+        ]
+      }
+    ]
+  },
+  "outline_source": "engineering/tmcm-1180-v11-mechanical-reference.json",
+  "mounting_holes": [
+    {
+      "name": "H1",
+      "step_center": [
+        24.447132,
+        -38.374311
+      ],
+      "tscircuit_center": [
+        24.447132,
+        -38.374311
+      ],
+      "fabrication_diameter": 4.2
+    },
+    {
+      "name": "H2",
+      "step_center": [
+        38.374311,
+        24.447132
+      ],
+      "tscircuit_center": [
+        38.374311,
+        24.447132
+      ],
+      "fabrication_diameter": 4.2
+    },
+    {
+      "name": "H3",
+      "step_center": [
+        -24.447132,
+        38.374311
+      ],
+      "tscircuit_center": [
+        -24.447132,
+        38.374311
+      ],
+      "fabrication_diameter": 4.2
+    },
+    {
+      "name": "H4",
+      "step_center": [
+        -38.374311,
+        -24.447132
+      ],
+      "tscircuit_center": [
+        -38.374311,
+        -24.447132
+      ],
+      "fabrication_diameter": 4.2
+    }
+  ],
+  "validation": "Rear threaded-feature axes measured from the pinned manufacturer STEP BREP. Board holes round the axes to 0.000001 mm. The outline is retained from the separate TMCM-1180 reference. CAD alignment does not establish rear-thread strength, engagement, or permission to disturb motor case fasteners."
+}

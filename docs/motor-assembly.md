@@ -16,16 +16,27 @@ The exported assembly is checked for the PCB/motor axis mapping and **10 mm nomi
 
 ## PCB screw clearance
 
-The earlier PCB clearance correction moved Q12, Q13, R97, C5, R2 and SW1 on top and repaired their affected copper. This motor-model update does not change the PCB, schematic, mounting-hole positions or routing.
+The PCB hole pattern now follows the **ordered motor's rear CAD axes**, not the mirrored TMCM-1180 pattern. `engineering/mechanical/ordered-motor-pcb-reference.json` records the source STEP hash, coordinate system and exact centers. `scripts/motor-mounting-geometry.mjs` resolves the cylindrical axes directly from the BREP; the regression rejects the previous pattern. The PCB source and native manufacturing drill positions are checked against this pattern.
 
-The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm height above the PCB, with at least 0.5 mm nominal component clearance. Latest exact results are in `motor-assembly-check.json`.
+| Hole | PCB X (mm) | PCB Y (mm) |
+|---|---:|---:|
+| H1 | 24.447132 | -38.374311 |
+| H2 | 38.374311 | 24.447132 |
+| H3 | -24.447132 | 38.374311 |
+| H4 | -38.374311 | -24.447132 |
 
-| Hole | Nearest fitted component | Nominal head clearance |
+All four drills remain Ø4.2 mm. Motor and board XY coordinates share the same orientation; no model reflection disguises the pattern. Connector and nearby component placement, local routing and the adapter's PCB holes are updated to provide clearance. The electrical schematic remains unchanged.
+
+The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm height above the PCB, with at least 0.5 mm nominal component clearance.
+
+| Hole | Nearest component | Nominal head clearance (mm) |
 |---|---|---:|
-| H1 | Q12 | 0.79 mm |
-| H2 | C22 | 1.09 mm |
-| H3 | R2 | 0.88 mm |
-| H4 | SW1 | 1.38 mm |
+| H1 | R89 | 0.5563 |
+| H2 | D10 | 0.6471 |
+| H3 | C89 | 0.8562 |
+| H4 | U19 | 0.7743 |
+
+Both outer copper layers have a 4.25 mm radius keepout around each screw axis for the metal head and standoff. The latest measured component clearances and motor/PCB axis offsets are recorded in `motor-assembly-check.json`.
 
 These are imported CAD-body clearances, not a tolerance study. Use M4 hardware whose complete head and washer remain within Ø8 mm. A larger washer is outside this check. Assembly tolerances and tool access remain to be qualified.
 
@@ -40,8 +51,10 @@ The drawing specifies four Ø6.5 mm front holes on a **69.6 ±0.2 mm square**. T
 | Motor-to-plate gap | 1 mm at the CAD body length |
 | PCB standoffs | Four, M4, Ø8 mm × 6 mm |
 | PCB bottom above motor rear | 1 + 3 + 6 = **10 mm** nominal |
-| PCB hole pattern carried by plate | H1 `(38.4,−24.5)`, H2 `(24.5,38.4)`, H3 `(−38.4,24.5)`, H4 `(−24.5,−38.4)` mm |
+| PCB hole pattern carried by plate | Ordered-motor rear CAD axes in the table above |
 | Plate clearance holes | Ø5.5 mm at motor posts; Ø4.5 mm at PCB standoffs |
+
+The plate carries the PCB on its own standoffs at those axes; this front-supported proposal does **not** use the motor rear threads. Matching the rear axes is a geometric fact, not approval to replace motor case screws.
 
 The mesh screen finds approximately **1.23 mm** minimum nominal clearance between the proposed long posts and the motor case. STEP X/Y map to PCB X/Y; STEP Z is the shaft axis. The motor rear face is placed at PCB Z = −10.8 mm; PCB mid-plane is Z = 0 and its bottom is Z = −0.8 mm. The shaft points away from the board. The board lies parallel to the motor rear face.
 

@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import JSZip from 'jszip'
+import { rearHoleAxes, mountingAlignment } from './motor-mounting-geometry.mjs'
 
 // Nominal CAD collision screen; manufacturing tolerances and magnetic performance
 // remain separate qualification gates in engineering/mechanical/assembly.json.
@@ -68,6 +69,27 @@ function meshBounds(meshes) {
   }
   return {min,max}
 }
+// Validate all three exported axes, including XY handedness. Bounds alone
+// cannot detect a reflected four-fold motor/adapter hole pattern.
+function maximumVertexOffset(expected, actual, tolerance=.001) {
+  const buckets=new Map(), cell=p=>p.map(v=>Math.floor(v/tolerance))
+  for(const p of expected) {
+    const key=cell(p).join(',')
+    if(!buckets.has(key)) buckets.set(key,[])
+    buckets.get(key).push(p)
+  }
+  let maximum=0
+  for(const p of actual) {
+    const c=cell(p); let nearest=Infinity
+    for(let x=-1;x<=1;x++) for(let y=-1;y<=1;y++) for(let z=-1;z<=1;z++)
+      for(const q of buckets.get([c[0]+x,c[1]+y,c[2]+z].join(','))||[])
+        nearest=Math.min(nearest,Math.hypot(...p.map((v,k)=>v-q[k])))
+    maximum=Math.max(maximum,nearest)
+    if(maximum>tolerance) return maximum
+  }
+  return maximum
+}
+const vertices=meshes=>meshes.flatMap(m=>m.triangles.flat())
 const fixture=await glb('engineering/mechanical/adapter-proposal.glb')
 const motorCadBounds=meshBounds(motor.meshes),fixtureCadBounds=meshBounds(fixture.meshes)
 if(Math.abs(motorCadBounds.max[2])>.001) errors.push('Motor CAD rear face is not Z=0; check the STEP-to-CAD axis mapping')
@@ -82,7 +104,13 @@ if(process.argv[3]) {
   const rear=-contract.fabrication.finished_thickness_mm/2-spec.mount.pcb_bottom_to_motor_rear_mm
   const gap=-contract.fabrication.finished_thickness_mm/2-motorBounds.max[1]
   if(Math.abs(motorBounds.max[1]-rear)>.001 || Math.abs(fixtureBounds.max[1]-(contract.fabrication.finished_thickness_mm/2+spec.mount.pcb_top_head_and_washer_height_mm))>.001) errors.push('Exported assembly axes/offsets are wrong: motor and fixture must align with the PCB normal')
-  assemblyAlignment={assembly_glb_sha256:assembled.sha256,motor_bounds_display_mm:motorBounds,fixture_bounds_display_mm:fixtureBounds,minimum_motor_to_pcb_bottom_mm:gap}
+  const offsets={}
+  for(const [name,cad,rendered,height] of [['motor',motor.meshes,motorNode,rear],['fixture',fixture.meshes,fixtureNode,0]]) {
+    const expected=vertices(cad).map(([x,y,z])=>[-x,z+height,y]), actual=vertices([rendered])
+    offsets[name]=Math.max(maximumVertexOffset(expected,actual),maximumVertexOffset(actual,expected))
+    if(offsets[name]>.001) errors.push(`Exported ${name} geometry is reflected, rotated or displaced from the specified CAD transform`)
+  }
+  assemblyAlignment={maximum_vertex_offset_mm:offsets,assembly_glb_sha256:assembled.sha256,motor_bounds_display_mm:motorBounds,fixture_bounds_display_mm:fixtureBounds,minimum_motor_to_pcb_bottom_mm:gap}
 }
 // Runtime motor asset is in tscircuit CAD axes (Z height); display meshes are Y-up.
 for (const mesh of motor.meshes) mesh.triangles = mesh.triangles.map(tri => tri.map(([x,y,z]) => [x,z,y]))
@@ -90,6 +118,9 @@ const sourceArchive=await JSZip.loadAsync(await readFile(spec.motor.step_archive
 if(sha(await sourceArchive.file(spec.motor.step).async('nodebuffer'))!==spec.motor.sha256) errors.push('Motor STEP hash changed')
 const top=contract.fabrication.finished_thickness_mm/2
 const source=JSON.parse(await readFile('dist/index/circuit.json'))
+const motorAxes=rearHoleAxes(await sourceArchive.file(spec.motor.step).async('string'))
+const holeAlignment=mountingAlignment(motorAxes, contract.mechanical.mounting_holes.map(h => ({name:h.name,x:h.centered_x_mm,y:h.centered_y_mm,diameter:h.diameter_mm})))
+mountingAlignment(motorAxes, source.filter(r => r.type==='pcb_hole' && !r.pcb_component_id).map((h,i) => ({name:`compiled H${i+1}`,x:h.x,y:h.y,diameter:h.hole_diameter})))
 const refs=new Set(source.filter(r=>r.type==='source_component').map(r=>r.name))
 const parts=board.meshes.filter(m=>refs.has(m.name))
 for(const ref of ['Q12','Q13','R97','C5','R2','SW1','U18']) if(!parts.some(m=>m.name===ref)) errors.push(`Missing component CAD: ${ref}`)
@@ -104,7 +135,7 @@ for(const p of posts) if(p.minimum_motor_clearance_mm<.5) errors.push('Front-fla
 const calculatedPostLength=spec.motor.rear_face_step_z_mm-spec.motor.front_flange_back_step_z_mm+spec.mount.motor_rear_to_adapter_bottom_mm
 const stack=spec.mount.motor_rear_to_adapter_bottom_mm+spec.mount.adapter_thickness_mm+spec.mount.adapter_to_pcb_bottom_mm
 if(Math.abs(calculatedPostLength-spec.mount.long_post_length_mm)>1e-6 || Math.abs(stack-spec.mount.pcb_bottom_to_motor_rear_mm)>1e-6) errors.push('Mechanical axial stack is inconsistent')
-const report={board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
+const report={hole_alignment:holeAlignment,board_glb_sha256:board.sha256,motor_glb_sha256:motor.sha256,motor_step_sha256:spec.motor.sha256,spec_sha256:sha(await readFile('engineering/mechanical/assembly.json')),component_models_checked:parts.length,assembly_alignment:assemblyAlignment,motor_cad_bounds_mm:motorCadBounds,fixture_cad_bounds_mm:fixtureCadBounds,head_diameter_mm:spec.mount.pcb_top_head_maximum_diameter_mm,minimum_required_head_clearance_mm:spec.mount.minimum_component_to_head_mm,fasteners,posts,pcb_bottom_to_motor_rear_mm:stack,encoder_hardware_modeled:false,encoder_fit_verified:false,encoder_status:spec.encoder.status,errors,scope:'Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification.'}
 await writeFile('docs/motor-assembly-check.json',JSON.stringify(report,null,2)+'\n')
 console.log(JSON.stringify(report,null,2))
 if(errors.length) process.exitCode=1

@@ -1,5 +1,6 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { kicadPadPosition } from './power-copper-geometry.mjs'
+import { mountingAlignment } from './motor-mounting-geometry.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const circuit = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
@@ -95,6 +96,16 @@ function forms(name) {
 }
 
 const tolerance = standards.fabrication.via_pair_tolerance_mm
+// Check the manufacturing drill positions as well as the compiled source.
+const nativeMountingHoles = forms('footprint').filter(form => form.startsWith('(footprint "hole_circle_holeDiameter4.2mm"')).map((form, index) => {
+  const at = form.match(/\n\t\t\(at ([-0-9.]+) ([-0-9.]+)(?: ([-0-9.]+))?\)/)
+  const pad = form.slice(form.indexOf('(pad "" np_thru_hole'))
+  const padAt = pad.match(/\(at ([-0-9.]+) ([-0-9.]+)\)/)
+  if (!at || !padAt) throw new Error('Unparseable manufacturing mounting hole')
+  const center = kicadPadPosition(Number(at[1]), Number(at[2]), Number(padAt[1]), Number(padAt[2]), Number(at[3] || 0))
+  return {name:`native H${index+1}`, x:center.x-100, y:100-center.y, diameter:Number(pad.match(/\(drill ([-0-9.]+)\)/)?.[1])}
+})
+mountingAlignment(contract.mechanical.mounting_holes.map(h => [h.centered_x_mm,h.centered_y_mm]), nativeMountingHoles)
 const viaSummary = new Map()
 const viaForms = forms('via')
 for (const form of viaForms) {

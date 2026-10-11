@@ -117,6 +117,9 @@ def safe_for_via(candidate, net_code: int, blockers) -> bool:
 
 def add_parallel_vias(board: pcbnew.BOARD) -> tuple[int, int]:
     blockers = copper_blockers(board)
+    for zone in board.Zones():
+        if zone.GetIsRuleArea() and zone.GetDoNotAllowVias():
+            blockers.append((None, zone.Outline(), None))
     # A same-net via can bypass a Kelvin branch without causing a DRC short.
     # Treat those branches as obstacles for transfer vias regardless of net.
     for path in load_paths(board):
