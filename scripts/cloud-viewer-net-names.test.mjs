@@ -69,6 +69,27 @@ test('export rejects missing or unknown net identity instead of publishing unnam
   expect(() => combineSourceAndRoutedCircuit(source, routed)).toThrow('absent from the source circuit')
 })
 
+test('viewer removes only floating-point coordinate noise and preserves inputs', () => {
+  const routed = convert()
+  const trace = routed.find(row => row.type === 'pcb_trace')
+  trace.route[0].x = 16.174999999999997
+  trace.route[0].y = -18.459545000000006
+  trace.route[1].x = 1.1234567
+  const original = structuredClone(routed)
+  const originalSource = structuredClone(source)
+  const { circuit } = combineSourceAndRoutedCircuit(source, routed)
+  const output = circuit.find(row => row.type === 'pcb_trace')
+  expect(output.route[0].x).toBe(16.175)
+  expect(output.route[0].y).toBe(-18.459545)
+  expect(output.route[1].x).toBe(1.1234567)
+  for (const [index, point] of output.route.entries()) {
+    for (const axis of ['x', 'y'])
+      expect(Math.round(point[axis] * 1e6)).toBe(Math.round(trace.route[index][axis] * 1e6))
+  }
+  expect(routed).toEqual(original)
+  expect(source).toEqual(originalSource)
+})
+
 test('export rejects conflicting net references', () => {
   const routed = convert()
   const trace = routed.find((row) => row.type === 'pcb_trace')

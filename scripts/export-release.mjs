@@ -70,6 +70,7 @@ const copies = [
 ]
 for (const [from, to] of copies) await copyFile(from, join(release, to))
 await writeCloudViewerCircuit()
+execFileSync('bun', ['scripts/check-cloud-package.mjs'], { stdio: 'inherit' })
 // Build from this exact routed circuit, never from a previous preview's GLB.
 // The CLI may report conversion errors without failing the build, so remove
 // its old output and require a complete GLB before packaging it.

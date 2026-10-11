@@ -1,11 +1,65 @@
 {
-  "board_glb_sha256": "7738b3d81373424201d9176efc3b89494909151a2bead85586d37a0c6d99539c",
+  "hole_alignment": [
+    {
+      "name": "H1",
+      "motor_xy_mm": [
+        24.447132179780265,
+        -38.37431078448644
+      ],
+      "pcb_xy_mm": [
+        24.447132,
+        -38.374311
+      ],
+      "axis_offset_mm": 2.806546595346643e-7
+    },
+    {
+      "name": "H2",
+      "motor_xy_mm": [
+        38.37431078448636,
+        24.4471321797804
+      ],
+      "pcb_xy_mm": [
+        38.374311,
+        24.447132
+      ],
+      "axis_offset_mm": 2.80654806032761e-7
+    },
+    {
+      "name": "H3",
+      "motor_xy_mm": [
+        -24.447132179780265,
+        38.37431078448644
+      ],
+      "pcb_xy_mm": [
+        -24.447132,
+        38.374311
+      ],
+      "axis_offset_mm": 2.806546595346643e-7
+    },
+    {
+      "name": "H4",
+      "motor_xy_mm": [
+        -38.374310784486184,
+        -24.447132179780667
+      ],
+      "pcb_xy_mm": [
+        -38.374311,
+        -24.447132
+      ],
+      "axis_offset_mm": 2.806551131218832e-7
+    }
+  ],
+  "board_glb_sha256": "a38a29f797f085b8996716e2454b092ffdc6226913f4185a1ba27561a064889f",
   "motor_glb_sha256": "eec0b062b6c26976734a02875d35791f12e7442a425669e94afd6a522e39a93d",
   "motor_step_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
-  "spec_sha256": "44f6a61efd4aec3b0ccb1526b817070af9c1336802211cacce8f03555badc088",
+  "spec_sha256": "250a7cccbe9f70ba7b1293426c2207e23ca4aa06c8c9a7a1dc6dde0eaf567fe3",
   "component_models_checked": 294,
   "assembly_alignment": {
-    "assembly_glb_sha256": "49cceae22737b8c10e43c94e5713549f04f68ee5d235de629e06e60f41abd24c",
+    "maximum_vertex_offset_mm": {
+      "motor": 0,
+      "fixture": 0
+    },
+    "assembly_glb_sha256": "12132abcc717ab793b26f3212a1f0e15cef4209722bc9b239fcf1f47098af28a",
     "motor_bounds_display_mm": {
       "min": [
         -43,
@@ -63,24 +117,24 @@
       "hole": "H1",
       "nearest": [
         {
-          "reference": "Q12",
-          "clearance_mm": 0.7941
+          "reference": "R89",
+          "clearance_mm": 0.5563
         },
         {
-          "reference": "R97",
-          "clearance_mm": 0.8616
+          "reference": "J2",
+          "clearance_mm": 0.7271
         },
         {
-          "reference": "R96",
-          "clearance_mm": 2.6898
+          "reference": "R87",
+          "clearance_mm": 0.8383
         },
         {
-          "reference": "D8",
-          "clearance_mm": 3.0443
+          "reference": "R86",
+          "clearance_mm": 2.2912
         },
         {
-          "reference": "C82",
-          "clearance_mm": 3.975
+          "reference": "R90",
+          "clearance_mm": 3.167
         }
       ]
     },
@@ -88,24 +142,24 @@
       "hole": "H2",
       "nearest": [
         {
+          "reference": "D10",
+          "clearance_mm": 0.6471
+        },
+        {
+          "reference": "C23",
+          "clearance_mm": 0.9459
+        },
+        {
+          "reference": "Q25",
+          "clearance_mm": 4.4971
+        },
+        {
+          "reference": "R101",
+          "clearance_mm": 7.5182
+        },
+        {
           "reference": "C22",
-          "clearance_mm": 1.0858
-        },
-        {
-          "reference": "D11",
-          "clearance_mm": 3.2128
-        },
-        {
-          "reference": "C42",
-          "clearance_mm": 5.0452
-        },
-        {
-          "reference": "R69",
-          "clearance_mm": 8.7274
-        },
-        {
-          "reference": "Q16",
-          "clearance_mm": 10.1984
+          "clearance_mm": 9.3211
         }
       ]
     },
@@ -113,24 +167,24 @@
       "hole": "H3",
       "nearest": [
         {
-          "reference": "R2",
-          "clearance_mm": 0.8791
+          "reference": "C89",
+          "clearance_mm": 0.8562
         },
         {
-          "reference": "J1",
-          "clearance_mm": 1.03
+          "reference": "U34",
+          "clearance_mm": 1.1713
         },
         {
-          "reference": "R9",
-          "clearance_mm": 2.7289
+          "reference": "L3",
+          "clearance_mm": 1.1971
         },
         {
-          "reference": "R6",
-          "clearance_mm": 2.8522
+          "reference": "C88",
+          "clearance_mm": 2.5116
         },
         {
-          "reference": "U1",
-          "clearance_mm": 2.9002
+          "reference": "R121",
+          "clearance_mm": 3.4459
         }
       ]
     },
@@ -138,24 +192,24 @@
       "hole": "H4",
       "nearest": [
         {
-          "reference": "SW1",
-          "clearance_mm": 1.3759
+          "reference": "U19",
+          "clearance_mm": 0.7743
         },
         {
-          "reference": "D3",
-          "clearance_mm": 2.6071
+          "reference": "C59",
+          "clearance_mm": 2.0221
         },
         {
-          "reference": "R76",
-          "clearance_mm": 2.6944
+          "reference": "C58",
+          "clearance_mm": 2.3694
         },
         {
-          "reference": "U20",
-          "clearance_mm": 5.4081
+          "reference": "C54",
+          "clearance_mm": 3.1613
         },
         {
-          "reference": "D2",
-          "clearance_mm": 6.6207
+          "reference": "C57",
+          "clearance_mm": 4.0221
         }
       ]
     }

@@ -19,6 +19,20 @@ function portKey(componentName, pinNumber) {
   return `${componentName}:${String(pinNumber)}`
 }
 
+// KiCad coordinates use nanometres. Remove subtraction noise introduced when
+// the converter recentres them, without rounding genuinely finer coordinates.
+function copyCopperCoordinates(value, key) {
+  if (typeof value === 'number' && (key === 'x' || key === 'y')) {
+    const native = Math.round(value * 1e6) / 1e6
+    const noise = Number.EPSILON * Math.max(1, Math.abs(value)) * 8
+    return Math.abs(native - value) <= noise ? native : value
+  }
+  if (Array.isArray(value)) return value.map(item => copyCopperCoordinates(item))
+  if (value && typeof value === 'object')
+    return Object.fromEntries(Object.entries(value).map(([name, item]) => [name, copyCopperCoordinates(item, name)]))
+  return value
+}
+
 export async function createCloudViewerCircuit({
   sourceCircuitPath = DEFAULT_SOURCE,
   routedBoardPath = DEFAULT_BOARD,
@@ -163,7 +177,7 @@ export function combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit) {
   const attributedSourceTraces = new Set()
 
   for (const [index, imported] of routedCircuit.filter((element) => element.type === 'pcb_trace').entries()) {
-    const trace = structuredClone(imported)
+    const trace = copyCopperCoordinates(imported)
     trace.pcb_trace_id = `pcb_trace_cloud_routed_${index}`
     trace.subcircuit_id = 'subcircuit_source_group_0'
     const sourceNet = resolveSourceNet(imported)
@@ -187,7 +201,7 @@ export function combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit) {
   }
 
   for (const [index, imported] of routedCircuit.filter((element) => element.type === 'pcb_via').entries()) {
-    const via = structuredClone(imported)
+    const via = copyCopperCoordinates(imported)
     via.pcb_via_id = `pcb_via_cloud_routed_${index}`
     via.subcircuit_id = 'subcircuit_source_group_0'
     via.source_net_id = resolveSourceNet(imported).source_net_id
@@ -196,7 +210,7 @@ export function combineSourceAndRoutedCircuit(sourceCircuit, routedCircuit) {
     circuit.push(via)
   }
   for (const [index, imported] of routedCircuit.filter((element) => element.type === 'pcb_copper_pour').entries()) {
-    const pour = structuredClone(imported)
+    const pour = copyCopperCoordinates(imported)
     pour.pcb_copper_pour_id = `pcb_copper_pour_cloud_routed_${index}`
     pour.subcircuit_id = 'subcircuit_source_group_0'
     pour.source_net_id = resolveSourceNet(imported).source_net_id
