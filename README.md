@@ -125,7 +125,7 @@ Firmware must configure current scaling, gate drive, dead time, chopper behavior
 |---|---|---|
 | J1 | PD POWER | 48 V / 5 A requested EPR contract; CC/SBU protection; no data connection |
 | J10 | USB DATA | USB 2.0 D+/D−, independent CC pulldowns, ESD and VBUS attach sense |
-| J2 | Motor | A1, A2, B1, B2 |
+| J2 | Motor | A1, A2, B1, B2; [JST VH selection and mating harness](#motor-connector-and-optional-encoder-review) |
 | J3 | External brake | VMOTOR and switched resistor return |
 | J7 | Industrial harness | 20-pin keyed JST PHD carrying all former J6/J7/J9 signals |
 
@@ -306,7 +306,19 @@ Engineering review and ordering are separate gates: `bun run review` validates t
 
 ## Motor connector and optional encoder review
 
-J2 is already JST VH (3.96 mm), selected for the NEMA34 current target. The NEMA17 reference uses JST PH and NEMA23 uses JST XH; those smaller connector choices are not copied into this higher-current stage. [Motor harness and review closure](docs/motor-harness.md) lists the matching VHR-4N housing, contacts, wire colours, cable construction, connector purposes and open mechanical checks. U18 is centered on the motor axis, with C52/C53 nearby; all three are bottom-side DNP footprints and are excluded from fitted BOM/CPL and paste.
+**J2 retains the four-pin JST VH B4P-VH(LF)(SN), 3.96 mm pitch.** The NEMA17 reference uses JST PH and the NEMA23 reference uses JST XH. Their connector families were compared against the current requirements of this board:
+
+| Connector family | Manufacturer current rating and wire condition | Decision for J2 |
+|---|---|---|
+| [JST PH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf) | 2 A with AWG24 wire | Below the existing motor-stage current target |
+| [JST XH](https://www.jst-mfg.com/product/pdf/eng/eXH.pdf) | 3 A with AWG22 wire | Below the existing motor-stage current target |
+| [JST VH](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) | 10 A with the standard header and AWG16 wire | Retained with the specified mating harness |
+
+The ordered [STEPPERONLINE 34HS31-6004S1](https://www.omc-stepperonline.com/download/34HS31-6004S1.pdf) is rated **6 A/phase**. The board's **5.5 A RMS/phase** figure is a design target, not a qualified driver setting for that motor; the manufacturer's current convention and motor thermal limits still require qualification. PH and XH are not suitable drop-in replacements for J2 at this target. The VH rating does not establish motor operation or connector temperature in the finished assembly.
+
+The motor has bare wire ends and needs a mating cable: **motor's 0.75 mm² leads → four TE 320559 splices → 16 AWG pigtails → four JST SVH-41T-P1.1 contacts in a VHR-4N housing → J2**. The 10 A catalogue rating applies to the specified header/16 AWG termination; it must not be claimed for a direct crimp onto the factory motor wires. This harness must be supplied separately from PCB assembly. [Motor harness and review closure](docs/motor-harness.md) gives the cavity map, wire colours, crimp requirements and remaining cable/assembly checks.
+
+U18 is centered on the motor axis, with C52/C53 nearby; all three are bottom-side DNP footprints and are excluded from fitted BOM/CPL and paste.
 
 ## Status, alarm and PD programming access
 
