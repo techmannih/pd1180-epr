@@ -20,6 +20,7 @@ async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
 verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
+verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],

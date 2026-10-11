@@ -1,5 +1,7 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
+See [the reference comparison and reviewer response](reference-review.md) for missing functions and unresolved gates. This table describes hardware intent; industrial protocols and motor operation are not implemented in the commissioning image.
+
 ## System compatibility and integration
 
 | Area | PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR, r0.4 ECO |
@@ -17,3 +19,7 @@
 | Assembly | All fitted parts and service pads on top; no bottom paste. Through-hole headers and bulk capacitors may require selective or hand soldering. Revalidate the encoder magnet gap and orientation. |
 
 Verify connector polarity, voltage, wire gauge, mating housings and cable keying against [assembly.md](assembly.md) before building a harness.
+
+## Related application reference
+
+The separate [tscircuit motor-driver-firmware repository](https://github.com/tscircuit/motor-driver-firmware) provides MicroPython control and a Web Serial dashboard for an RP2040/DRV8847 profile. It is distinct from the two PCB source releases inspected here. Its controller/protocol organization is a useful software reference; the supplied image, wiring and coil-sequencing driver are not compatible with this STM32/TMC5160 board. A port needs the correct SPI/current-control adapter, platform services, USB protocol, safe external STEP/DIR ownership and hardware validation. Existing `HELP`/`STATUS`/`DRIVER` CDC commands do not establish dashboard compatibility. No firmware port or dashboard support is claimed by this comparison.

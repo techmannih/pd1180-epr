@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-11T03:19:14.967Z",
+  "checked_at": "2026-10-11T03:45:20.987Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "input_sha256": {
     "index.circuit.tsx": "330984850baf6feb1428dd80bc185beab4e226e6e9a00232b31917763459de9a",
-    "dist/index/circuit.json": "4f2175398f2b945569cc358d4d110f478231d63e120aaf833ae2792eeec4638b",
+    "dist/index/circuit.json": "784b49d62db6fb43b8c17ec62d3f915efcb79805e0305a3fba598cd24169ce09",
     "docs/design-manifest.json": "105e9dd058bf6e4e6980d2c0f21f5ba9c117919fe0a00eb6174dde047f2ec73c",
     "hardware-contract.json": "3d13372a9f0c053fe1df6f3c6632e97439fc84de71fc66972949581fd5240b4c",
-    "docs/motor-data.json": "58d63310c6132f00f87447790176b7ddc43bd76c7d8e37e5c6665866495a4c24",
+    "docs/motor-data.json": "4579b126fccbfcd4d7620f2dec90dfd7fe9c5cd299be555aea5053a673f86103",
     "firmware/include/tmc5160_config.h": "923c88caad88d3c5c68c352419003d49d29742eb7e31c2743bda8ac1fbfccb27",
     "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "8f4d566f3ba7dd8e475757fed7817659918fe7655db8f5643861b7bd488cb1a7",
-    "scripts/power-audit.mjs": "d0da1a30c986842519a118e86d5de39c46af0dd3dcbb80f0ad88e861e2ba9de5"
+    "scripts/power-audit.mjs": "c5e785ba9fc19d80975651e38292041fb443e0266d0e3771611d9365a586c487"
   },
   "assumptions": {
     "resistor_initial_tolerance_fraction": 0.01,
@@ -29,7 +29,7 @@
     "slew_capacitance_initial_tolerance_fraction": 0.1,
     "capacitor_dc_bias_and_temperature_included": false,
     "motor_model": "34HS31-6004S1",
-    "motor_phase_resistance_20c_ohm": 0.48,
+    "motor_phase_resistance_25c_ohm": 0.48,
     "motor_phase_inductance_h": 0.0035,
     "motor_rotor_inertia_kg_m2": 0.00014,
     "external_load_inertia": null,
@@ -125,7 +125,7 @@
       "eight_bridge_mosfets_conduction_25c_max_rds_total": 1.8271000000000002,
       "eight_bridge_mosfets_conduction_hot_sensitivity_total": 3.6542000000000003,
       "efuse_at_nominal_limit_and_125c_max_ron": 1.0625974604588997,
-      "two_motor_windings_20c": 29.04,
+      "two_motor_windings_25c": 29.04,
       "note": "Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep."
     },
     "inrush": {
@@ -182,7 +182,7 @@
     "Measured VSA ripple and VS transient margin",
     "Measured brake/cutoff tolerance coordination",
     "PD source/cable 2x eFuse pulse coordination",
-    "Ordered motor current convention, rotor/load inertia, speed, ambient and mechanics qualification",
+    "Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification",
     "TI-generated EEPROM image and approved configuration identity",
     "Fabricator stack-up/impedance/filled-via approval",
     "Assembled-board current, thermal, USB, brake and fault measurements"

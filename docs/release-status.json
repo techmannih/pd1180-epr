@@ -44,10 +44,11 @@
   },
   "architecture_review": "engineering/reviewer-eco.json",
   "order_hold_reasons": [
-    "Ordered motor is 34HS31-6004S1; driver current convention, rotor/load inertia, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
+    "Ordered motor is 34HS31-6004S1; driver current convention, external load inertia, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
     "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
     "TI full-flash configuration and staged powered commissioning remain pending.",
-    "34HS31-6004S1 adapter/front-mount interface and rear encoder attachment are unqualified; QSH CAD, holder and inertia assumptions are superseded."
+    "34HS31-6004S1 adapter/front-mount interface and rear encoder attachment are unqualified; QSH CAD, holder and inertia assumptions are superseded.",
+    "Reference review remains incomplete: RGB/buzzer/power indication and dedicated rail test pads are missing; PD EEPROM programming access and full cable/fixture fit remain unresolved. See docs/reference-review.md."
   ]
 }

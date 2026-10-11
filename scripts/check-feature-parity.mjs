@@ -35,7 +35,19 @@ const usbCStandardConnectors = ['J1','J10'].filter((name) => sourceByName.get(na
 if (usbCStandardConnectors.length !== 2) errors.push('J1 and J10 must use tscircuit connector standard="usb_c"')
 if (sourceByName.has('J6') || sourceByName.has('J9')) errors.push('Industrial interfaces must use the consolidated J7 harness')
 
+// Component presence is distinct from complete parity with the reference boards.
+const comparison = JSON.parse(await readFile('engineering/reference-comparison.json', 'utf8'))
+const statuses = new Set(['implemented', 'intentional_difference', 'missing', 'open'])
+for (const item of comparison.features) {
+  if (!statuses.has(item.status)) errors.push(`${item.id}: unknown reference-review status`)
+  try { await access(item.evidence) } catch { errors.push(`${item.id}: missing reference-review evidence ${item.evidence}`) }
+}
+const referenceOpenItems = comparison.features.filter(item => ['missing', 'open'].includes(item.status))
 const report = {
+  scope: 'Existing component/net presence; not hardware qualification or complete reference parity',
+  reference_parity_complete: referenceOpenItems.length === 0,
+  reference_comparison: 'engineering/reference-comparison.json',
+  reference_open_items: referenceOpenItems.map(({id, feature, status, evidence}) => ({id, feature, status, evidence})),
   checked_at: new Date().toISOString(),
   features: results.length,
   passing: results.filter((item) => item.pass).length,

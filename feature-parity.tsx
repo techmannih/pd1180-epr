@@ -1,5 +1,7 @@
 /**
- * Machine-checked product feature contract. Components and nets are verified
+ * Existing product feature inventory, not complete reference-board parity.
+ * Missing functions and reviewer closure are tracked in engineering/reference-comparison.json.
+ * Components and nets are verified
  * against the generated circuit by scripts/check-feature-parity.mjs.
  */
 export const FEATURE_PARITY = [

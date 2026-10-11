@@ -1,8 +1,10 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, magnetic position feedback and industrial control interfaces.
+PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and industrial interface hardware.
 
 **Revision:** r0.4 reference ECO · **Status:** CAD routing verified; powered validation pending · **Assembly:** top only · **Order status:** HOLD
+
+**Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) identifies missing RGB/buzzer/power indication, dedicated power probes, and unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
 
 **Reference-board changes:** Retain the separate PD POWER / USB DATA ports, industrial J7 harness and TMC5160 external bridges. Add TMP102 hardware temperature inhibit, INA240 phase-current diagnostics, ADS1115 bus telemetry and a DATA-powered logic supply. Place bootstrap/gate/bypass parts locally and preserve Kelvin connections to the shunt terminals. Native routing, DRC, schematic parity, ERC and Kelvin isolation pass. Physical USB power validation remains open. The STM32 commissioning firmware is motion-locked. TI programming and powered tests are also pending.
 

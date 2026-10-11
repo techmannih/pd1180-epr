@@ -1,5 +1,64 @@
 {
-  "checked_at": "2026-10-11T03:15:41.441Z",
+  "scope": "Existing component/net presence; not hardware qualification or complete reference parity",
+  "reference_parity_complete": false,
+  "reference_comparison": "engineering/reference-comparison.json",
+  "reference_open_items": [
+    {
+      "id": "rgb",
+      "feature": "Visible multicolor status",
+      "status": "missing",
+      "evidence": "index.circuit.tsx"
+    },
+    {
+      "id": "buzzer",
+      "feature": "Audible fault alert",
+      "status": "missing",
+      "evidence": "index.circuit.tsx"
+    },
+    {
+      "id": "power_indicator",
+      "feature": "Independent logic-power indication",
+      "status": "missing",
+      "evidence": "index.circuit.tsx"
+    },
+    {
+      "id": "power_probes",
+      "feature": "Dedicated PD / VMOTOR / GND measurement pads",
+      "status": "missing",
+      "evidence": "index.circuit.tsx"
+    },
+    {
+      "id": "encoder_mechanics",
+      "feature": "Shaft magnet / holder / working gap",
+      "status": "open",
+      "evidence": "docs/motor-assembly.md"
+    },
+    {
+      "id": "pd_programming",
+      "feature": "Blank PD EEPROM programming and approved image",
+      "status": "open",
+      "evidence": "docs/assembly.md"
+    },
+    {
+      "id": "mechanics",
+      "feature": "Motor mounting, holes and cable/tool access",
+      "status": "open",
+      "evidence": "docs/motor-assembly-check.json"
+    },
+    {
+      "id": "thermal",
+      "feature": "Heatsink, enclosure and brake load",
+      "status": "open",
+      "evidence": "docs/power-validation.md"
+    },
+    {
+      "id": "firmware",
+      "feature": "Executable motor / interface application",
+      "status": "open",
+      "evidence": "firmware/README.md"
+    }
+  ],
+  "checked_at": "2026-10-11T03:42:43.985Z",
   "features": 10,
   "passing": 10,
   "assembly_layers": {

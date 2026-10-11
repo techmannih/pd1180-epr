@@ -43,6 +43,8 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
   ['brake resistor', external.brake_resistor.selected_part || '', `${external.brake_resistor.target_resistance_ohms} ohm / ${external.brake_resistor.starting_continuous_power_w} W`, external.brake_resistor.status],
   ['motor', external.motor, external.motor_specification, 'ordered; current and mounting qualification pending'],
   ['magnet', external.magnet, 'AS5047P compatible', 'mechanical validation required'],
+  ['brake cable assembly', 'VHR-2N; 2 x SVH-41T-P1.1', '16 AWG, insulation OD 1.7–3.0 mm; J3: VMOTOR / BRAKE_RETURN', 'Specification only; physical access, strain relief and thermal qualification pending'],
+  ['industrial cable assembly', 'PHDR-20VS; 20 x SPHD-001T-P0.5', '22 AWG, insulation OD 1.0–1.5 mm; pin17 is VMOTOR, not 24 V', 'Specification only; completed harness and application/load qualification pending'],
   ['motor cable assembly', `${harness.motor_connector.mate}; ${harness.motor_connector.contacts}`, 'Four 16 AWG pigtails, four TE 320559 splices to factory cable; see motor-harness.md', harness.motor_connector.connection_status],
 ]))
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
@@ -68,6 +70,9 @@ const copies = [
   ['docs/assembly.md', 'assembly.md'],
   ['docs/motor-assembly.md', 'motor-assembly.md'],
   ['engineering/motor-harness.json', 'motor-harness.json'],
+  ['engineering/reference-comparison.json', 'reference-comparison.json'],
+  ['docs/reference-review.md', 'reference-review.md'],
+  ['docs/connector-harnesses.md', 'connector-harnesses.md'],
   ['docs/release-status.json', 'release-status.json'],
   ['hardware-contract.json', 'hardware-contract.json'],
   ['dist/pd1180-epr-r0.3-manufacturing.zip', 'pd1180-epr-r0.3-manufacturing.zip'],

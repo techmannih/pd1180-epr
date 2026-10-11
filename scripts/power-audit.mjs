@@ -80,7 +80,7 @@ export async function audit() {
   const contract = JSON.parse(bytes['hardware-contract.json'])
   const motor = JSON.parse(bytes['docs/motor-data.json'])
   if (motor.motor !== contract.rated_targets.motor) throw new Error('Motor data does not match the selected motor')
-  for (const field of ['phase_resistance_20c_ohm', 'phase_inductance_h']) {
+  for (const field of ['phase_resistance_25c_ohm', 'phase_inductance_h']) {
     if (!Number.isFinite(motor[field]) || motor[field] <= 0) throw new Error(`Missing motor ${field}`)
   }
   const part = name => {
@@ -192,7 +192,7 @@ export async function audit() {
       slew_capacitance_initial_tolerance_fraction: 0.1,
       capacitor_dc_bias_and_temperature_included: false,
       motor_model: contract.rated_targets.motor,
-      motor_phase_resistance_20c_ohm: motor.phase_resistance_20c_ohm,
+      motor_phase_resistance_25c_ohm: motor.phase_resistance_25c_ohm,
       motor_phase_inductance_h: motor.phase_inductance_h,
       motor_rotor_inertia_kg_m2: motor.rotor_inertia_kg_m2,
       external_load_inertia: null,
@@ -229,7 +229,7 @@ export async function audit() {
         eight_bridge_mosfets_conduction_25c_max_rds_total: 4*target**2*0.0151,
         eight_bridge_mosfets_conduction_hot_sensitivity_total: 4*target**2*0.0151*2,
         efuse_at_nominal_limit_and_125c_max_ron: ilim.formula_nominal_a**2*0.053,
-        two_motor_windings_20c: 2*target**2*motor.phase_resistance_20c_ohm,
+        two_motor_windings_25c: 2*target**2*motor.phase_resistance_25c_ohm,
         note: 'Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep.' },
       inrush: { capacitance_f: bulk, stored_energy_at_48v_j: 0.5*bulk*48**2,
         charge_to_48v_c: bulk*48, nominal_ramp_ms: 48/slew.nominal*1000,
@@ -253,7 +253,7 @@ export async function audit() {
     },
     errors,
     outstanding: ['Measured VSA ripple and VS transient margin', 'Measured brake/cutoff tolerance coordination',
-      'PD source/cable 2x eFuse pulse coordination', 'Ordered motor current convention, rotor/load inertia, speed, ambient and mechanics qualification',
+      'PD source/cable 2x eFuse pulse coordination', 'Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification',
       'TI-generated EEPROM image and approved configuration identity', 'Fabricator stack-up/impedance/filled-via approval',
       'Assembled-board current, thermal, USB, brake and fault measurements'],
     sources: {

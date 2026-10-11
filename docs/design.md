@@ -4,7 +4,7 @@
 
 ### Scope
 
-PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR is a 48 V EPR single-axis controller for a 5.5 A RMS stepper motor, with magnetic encoder feedback and serial/control interfaces. Its 85.9 mm square outline, four M4 mounting holes, shaft-axis location and connector placement are explicit in the PCB model. The selected 25 mm bulk capacitors require matching enclosure clearance.
+PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR is a 48 V EPR single-axis controller with a 5.5 A RMS board design target (not a qualified setting for the ordered motor), an optional DNP magnetic encoder footprint and serial/control interface hardware. Its 85.9 mm square outline, four M4 mounting holes, shaft-axis location and connector placement are explicit in the PCB model. The selected 25 mm bulk capacitors require matching enclosure clearance.
 
 ### Power sequence
 

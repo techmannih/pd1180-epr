@@ -2,6 +2,11 @@
 
 Start with `bun install --frozen-lockfile` and run `bun run review`. Machine checks produce evidence under `docs/`, `routing/` and `release/`; this checklist focuses reviewer time on design decisions and physical risks.
 
+## Reference review closure
+
+- [ ] Review every row in [reference-review.md](reference-review.md), including the missing RGB/buzzer, independent power indication, power test pads and programming access. A feature-presence pass is not reference parity or permission to resume review as complete.
+- [ ] Use [connector-harnesses.md](connector-harnesses.md) for J3/J7 mating parts and termination; qualify insertion, latch/tool access and strain relief in the complete assembly.
+
 ## Requirements and mechanics
 
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
