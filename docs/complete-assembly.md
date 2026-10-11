@@ -16,7 +16,7 @@ VHR and PHDR housings use dimensions from the [JST VH catalogue](https://www.jst
 
 The motor STEP already includes a shortened cable and four bare ends. Their measured end-face centres anchor the visible splices; the STEP has no wire colours, so assigning colours to those four geometric tips is illustrative. **Use the manufacturer's winding colours and continuity measurements**, never the order of the monochrome CAD tips. The factory cable is 1 m; the render does not authorize cutting it to the shortened CAD length.
 
-The visible motor loop stays outside the motor/PCB gap. Splices are deliberately spread apart; their 28 × Ø5 mm envelopes reserve insulation space rather than assert exact TE dimensions. Final pigtail length, insulation bend limit, splice tooling and excess-cable retention must be set for the actual fixture.
+The visible motor loop stays outside the motor/PCB gap. Splices are deliberately spread apart, but their current 28 × Ø5 mm envelopes do not establish fit. **Audit finding, 2026-10-12:** the [TE 320559 product page](https://www.te.com/en/product-320559.html) lists a 32.13 mm product length, longer than the modeled 28 mm. Correct the model from the manufacturer drawing/CAD and rerun clearance checks before accepting it. Final pigtail length, insulation bend limit, splice tooling and excess-cable retention must also be set for the actual fixture. The [review audit](reviewer-request-audit.md) lists the unresolved external endpoints and sourcing.
 
 ## Assembly order
 

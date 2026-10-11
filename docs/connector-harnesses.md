@@ -1,5 +1,7 @@
 # External cable assemblies and connector justification
 
+**Scope under review — 2026-10-12:** this is the current board's connection inventory. It is not proof that each interface was requested by Seve. See [the latest audit](reviewer-request-audit.md) for the endpoint gaps and proposed removals; no connector or circuit change has been applied.
+
 This closes the missing **mating-part specification**, not physical harness qualification. These parts are outside the populated PCB BOM. Do not treat the header's presence in 3D as a complete cable assembly. Motor wiring is specified separately in [motor-harness.md](motor-harness.md).
 
 | Header | Purpose / reason retained | Mating assembly |
@@ -49,4 +51,4 @@ OUT0/OUT1 use MMBT5551 stages with flyback diodes returning to VMOTOR. No approv
 
 J2 retains its conservative vertical insertion-envelope check. J2/J3/J7 mated catalogue envelopes and outgoing wires now appear in the assembly, with component/fastener/fixture collision checks in `harness-assembly-check.json`. Final latch/release-tool access, wire-bend limits, enclosure fit and physical approval remain open. A wire clamp, its attachment, strain-relief path, connector removal procedure and pin-1 harness labels are not yet fabrication-released. Do not close the reviewer's assembly comment from bare headers alone.
 
-No extra diagnostic cable headers are added: STM32 SWD/NRST and optional encoder ABI remain bare top-side service pads. Industrial functions remain because the user explicitly required them; any subsequent removal requires a requirements change.
+No extra diagnostic cable headers are added: STM32 SWD/NRST and optional encoder ABI remain bare top-side service pads. Industrial functions were previously retained at the user's request. The reviewer's later challenge reopens their justification; the revised scope must identify actual external devices before these functions can be presented as required.

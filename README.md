@@ -2,6 +2,8 @@
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and industrial interface hardware.
 
+**Review scope correction — 2026-10-12:** CAN/RS485/RS232 were incorrectly described as the reviewer's specified interfaces. Their presence here does not establish a requirement or a defined external device. The [message-by-message review audit](docs/reviewer-request-audit.md) records the proposed interface reduction, incomplete external sourcing and assembly discrepancies, including the undersized motor-splice model. Circuit and manufacturing files have not been changed by this audit; existing connector tables describe the implemented board, not an approved final interface list.
+
 **Revision:** r0.4 reference ECO · **Status:** CAD routing verified; powered validation pending · **Assembly:** top only · **Order status:** HOLD
 
 **Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.

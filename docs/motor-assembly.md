@@ -34,7 +34,7 @@ The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm h
 | H1 | R89 | 0.5563 |
 | H2 | D10 | 0.6471 |
 | H3 | C89 | 0.8562 |
-| H4 | U19 | 0.7743 |
+| H4 | D17 | 0.5475 |
 
 Both outer copper layers have a 4.25 mm radius keepout around each screw axis for the metal head and standoff. The latest measured component clearances and motor/PCB axis offsets are recorded in `motor-assembly-check.json`.
 

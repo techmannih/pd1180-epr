@@ -38,9 +38,9 @@ The connector mates vertically from the populated side. Reserve 40 mm above the 
 
 Ask the harness maker to provide the completed cable as a separate line item. PCB assembly does not automatically include this cable, housing, contacts or motor. External harness inventory has not been reserved. Use the prescribed JST and TE tooling/application instructions, verify every cavity against the table, perform crimp pull tests and a continuity/shorts test, then label the finished cable. With power disconnected, black-to-green and red-to-blue must be the two winding pairs (nominal 0.48 Ω per phase at 25 °C, before cable/contact/test-lead resistance). Different phases and motor frame must be isolated. Never connect or disconnect J2 while the driver is energized.
 
-## Why J7 stays
+## J7 retention history and current scope review
 
-The user explicitly requires industrial interfaces. **B20B-PHDSS(LF)(SN)** with **PHDR-20VS** consolidates STEP/DIR/24 V ENABLE, HOME/limits/DIN, CAN, RS485, RS232 and the existing OUT0/OUT1 signals into one keyed harness. Its full cavity map is in [hardware-contract.json](../hardware-contract.json). Pin 17 is protected **VMOTOR**, approximately 48 V, not a 24 V auxiliary supply; do not use this 3 A/contact interface as the motor winding connector. External bus termination and the permitted output loads remain system design requirements.
+Industrial interfaces were retained under an earlier user instruction. **B20B-PHDSS(LF)(SN)** with **PHDR-20VS** currently consolidates STEP/DIR/24 V ENABLE, HOME/limits/DIN, CAN, RS485, RS232 and the existing OUT0/OUT1 signals into one keyed harness. Its full cavity map is in [hardware-contract.json](../hardware-contract.json). Pin 17 is protected **VMOTOR**, approximately 48 V, not a 24 V auxiliary supply; do not use this 3 A/contact interface as the motor winding connector. The reviewer has now challenged the industrial buses, and no specific external peer/load is defined. Follow the [2026-10-12 scope audit](reviewer-request-audit.md) before retaining or resizing J7; consolidation alone is not justification. No removal has been applied yet.
 
 ## Encoder boundary
 

@@ -1,5 +1,7 @@
 # NEMA17 / NEMA23 comparison and reviewer response
 
+**2026-10-12 correction:** the [latest message-by-message audit](reviewer-request-audit.md) supersedes the interface-justification conclusions below. Earlier user retention of industrial interfaces was not evidence that Seve specified them. J7's remote equipment, J3's complete cooled brake assembly and exact USB cables/source remain undefined; the nominal assembly does not close those requests. No circuit removals have been applied.
+
 **2026-10-11 — review remains open.** Compared the actual published source of NEMA17 **v1.0.42** and NEMA23 **v1.3.2** against controller baseline `0a53ace`. [Reference provenance and file hashes](../engineering/reference-comparison.json) pin the releases and retrieval URLs. Source-level comparison covered the board entrypoints, current/temperature circuits, status/alarm, encoder, power test access and PD control. It is not a certification of either reference board or this board.
 
 The earlier `feature-parity` check covered ten functions already present on this board. It **did not establish complete parity** with the reference boards: RGB, buzzer, independent power LED and dedicated power probe pads were absent from that list. The inventory now also checks the implemented indicators and isolated programming access. Its report still includes the comparison's mechanical, firmware and qualification gaps, with `reference_parity_complete: false`.
