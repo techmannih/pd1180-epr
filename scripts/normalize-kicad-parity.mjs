@@ -150,7 +150,9 @@ dump(sys.argv[1],sys.argv[2]);dump(sys.argv[3],sys.argv[4])`
           labels.push(new GlobalLabel({ value: pad.net, shape: 'passive', at: { x, y, angle: 0 }, effects: new TextEffects({ font, hiddenText: true }), uuid: deterministicUuid(`${name}:${ref}:label:${number}`), fieldsAutoplaced: false })); stats.labels++
         } else {
           noConnects.push(new NoConnect({ at: { x, y }, uuid: deterministicUuid(`${name}:${ref}:nc:${number}`) })); stats.noConnects++
-          stats.ncAssignments.push({ ref, number, net: `unconnected-(${ref}-${entry.pin.name}-Pad${number})` })
+          // KiCad omits a numeric pin name identical to its number in NC nets.
+          const ncName = entry.pin.name && entry.pin.name !== number && entry.pin.name !== '~' ? `${entry.pin.name}-` : ''
+          stats.ncAssignments.push({ ref, number, net: `unconnected-(${ref}-${ncName}Pad${number})` })
         }
       }
     }

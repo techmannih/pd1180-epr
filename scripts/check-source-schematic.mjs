@@ -118,9 +118,9 @@ const expectedSheetNames = [
   "alarm",
   "pd-programming"
 ]
-const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]))
-check(sheets.length === 27, "exactly 27 A4 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 27, "all schematic sheet names are unique")
+const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["serial", "serial-rs232", "outputs"].includes(name)))
+check(sheets.length === 24, "24 retained A4 schematic sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 24, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -161,7 +161,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 81, "81 high-level sheet annotations are present", {
+check(annotations.length === 72, "72 high-level annotations on 24 retained sheets", {
   actual: annotations.length,
 })
 
@@ -321,7 +321,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 212, "212 named source nets are present", { actual: sourceNets.length })
+check(sourceNets.length === 181, "181 named source nets after removal of 31 unused interface nets", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -395,7 +395,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 96, "96 capacitors audited after C19 removal and diagnostics ECO", { actual: capacitors.length })
+check(capacitors.length === 89, "89 capacitors after removal of seven interface capacitors", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -436,8 +436,9 @@ const expectedNoConnects = [
   "U34.4:PG", "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
   "U18.8:W", "U18.9:V", "U18.10:U",
-  "U19.5:NC1", "U19.8:NC2",
-  "U21.7:T2OUT", "U21.9:R2OUT", "U35.13:N_INT",
+  "U35.13:N_INT",
+  "U16.2:PC14_OSC32_IN", "U16.3:PC15_OSC32_OUT", "U16.13:PA2", "U16.14:PA3", "U16.22:PB10", "U16.29:PA9", "U16.32:PA10", "U16.38:PD0", "U16.39:PD1", "U16.40:PD2", "U16.41:PD3",
+  ...[4,5,9,10,11,12,13,14,15,16,17,19,20].map(n => `J7.${n}:pin${n}`),
 ].sort()
 const actualNoConnectPorts = sourcePorts.filter((port) => !port.subcircuit_connectivity_map_key)
 const actualNoConnects = actualNoConnectPorts.map(portLabel).sort()

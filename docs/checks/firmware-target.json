@@ -1,17 +1,17 @@
 {
-  "built_at": "2026-10-11T04:50:19.876Z",
+  "built_at": "2026-10-12T01:29:52.895Z",
   "target": "STM32G0B1CBT6",
   "image_type": "commissioning-diagnostics-only",
   "motor_operation_enabled": false,
   "flash_address": "0x08000000",
   "initial_sp": "0x20024000",
-  "reset_vector": "0x800b3c1",
+  "reset_vector": "0x800b3a9",
   "max_flash_bytes": 131072,
-  "image_bytes": 57080,
+  "image_bytes": 57040,
   "inputs": {
     "firmware/platformio.ini": "5df4514a0cf5d63153892206e96558c79e36929af6b26c969d5b130b51d22642",
     "firmware/README.md": "22e9366a7b9cea4ccdcc63bcf6391e0f2ed49ac49c76858aacb4ef2cea40d470",
-    "docs/firmware-pinmap.json": "66bf07d5e39e476786a83c976eab13337014c1ddfff263f4b962557e80dabb62",
+    "docs/firmware-pinmap.json": "1c67515d33c6c1398f40ab5c1babbb9f80c8ac1903e4b592c8e8ee4fc3dcf421",
     "scripts/build-firmware.mjs": "7563bc0f322cfe78d27010978131b8f856e601382c53ef01272d29f65db2bd07",
     "firmware/src/control.c": "eeb34233188208b67d7a0910caaf37a62a85f8a24c2abcd91005fe13c2293118",
     "firmware/src/main.c": "879d6eed4cf9ede83b7a37f69a22696fce7ed87692dab7a2b729396bbb1fabb6",
@@ -21,7 +21,7 @@
     "firmware/src/telemetry.c": "1d07229dd0dc730ea0f0fb27e85bf398b792c90b8756f8f5f48bae44d0540bce",
     "firmware/src/tmc5160.c": "7ca6f990b4dd762443eb916ba070c65cf9f3a8e3ada7d10817e33208b84b8c78",
     "firmware/src/tmc5160_config.c": "d43477deb228c19e276e29a86f1db5aec673faa82e0991e42111bd7668b3cef5",
-    "firmware/include/board_pins.h": "209bbe45f84e165b2c69ffdfb18191c55546e1daa379a0df11b63bb81ed8a487",
+    "firmware/include/board_pins.h": "dc373c4224a084784d1be0ce05cdf1631a2de630f3ca88d6e55acd5d095f6469",
     "firmware/include/control.h": "3c17154c652873c88d78fa1506578186d9312073b2ec032e9906368400a09cd0",
     "firmware/include/motor_service.h": "cbbf6c04a3c76882d8332920a72465faf63ea1ef170eeb851a29df1d280d63fa",
     "firmware/include/pd_contract.h": "d1c5ba4b42105e73d7ab7e775e558c27e9c7a5439d83cf537f0abb4ec5b61fc8",
@@ -29,14 +29,14 @@
     "firmware/include/telemetry.h": "5b78411c0d1d8675561b58875f426f4c4e8fdff7db67b5b6b75990bab0eb1303",
     "firmware/include/tmc5160.h": "77354e6d81c735f0360838a6a6bb7ec2e6d9a459e3853a8659f4453708b76caf",
     "firmware/include/tmc5160_config.h": "923c88caad88d3c5c68c352419003d49d29742eb7e31c2743bda8ac1fbfccb27",
-    "firmware/target/main.cpp": "11c546056bac5a9ca6746ae9e6732323a8658855a3726f8e27b37bc2ca6cfbc6",
+    "firmware/target/main.cpp": "c99c6bac7a0774f39514df67366849ca84255056a154cf58246fdcd172d20ab7",
     "firmware/target/usb_suspend.cpp": "adc4976790187046d1054223cf740c80b64e5c72c507dab04351b02c7f53a42f",
     "firmware/target/usb_suspend.h": "15822f65fd0691f4340ed026f94b5adea98d3f7cadd42f9f948017fac0d6945d",
     "firmware/boards/pd1180.json": "bf96ddf2d976e26caed4ab68d285cf0372f9f332aae4cb8824f425951788489c"
   },
   "artifacts": {
-    "firmware.bin": "b531d621355e606accb366e6d739801aabbba25816500b43f9d2e8a904b17e74",
-    "firmware.elf": "1d94ae03ece208938fe9431611a302414c7fd12481df91545c1a0ff28694f30e"
+    "firmware.bin": "b4a8bfa295414d5164d010efd538d1a7b72aeb51d9555e0a4d0f6b08ab2dbaca",
+    "firmware.elf": "af04b261680681a9cf0efa19928f9439a78d00ffde6dd80989843978e6c55a14"
   },
   "unverified": [
     "USB enumeration and measured GPIO levels on hardware",

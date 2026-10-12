@@ -53,6 +53,8 @@ const wires=geometry.wires.map(w=>{
 let wireGap=Infinity,nearestWires=null
 for(let i=0;i<geometry.wires.length;i++) for(let j=i+1;j<geometry.wires.length;j++) {
   const a=geometry.wires[i],b=geometry.wires[j]
+  // Factory conductors intentionally emerge from their common jacket.
+  if(a.kind==='jacket'||b.kind==='jacket')continue
   // A pigtail, its splice and its factory lead deliberately meet.
   if(a.connection===b.connection)continue
   let gap=Infinity
@@ -72,7 +74,19 @@ for(const c of geometry.connectors.filter(c=>c.ports)) {
   }
   if(p.rotation!==0)errors.push(`${c.reference} mating orientation changed`)
 }
-const report={glb_sha256:geometry.glb_sha256,board_glb_sha256:board.sha256,layout_sha256:geometry.layout_sha256,connectors_checked:mates.length,wire_segments_checked:geometry.wires.reduce((sum,w)=>sum+w.points.length-1,0),minimum_required_nominal_clearance_mm:required,minimum_wire_separation_mm:wireGap,nearest_wires:nearestWires,mates,bodies,wires,errors,scope:'Conservative component/body/fastener/plate/post envelope check of mated bodies and insulated cable segments, plus separation between different conductors. Own mating header and same-conductor splice contact is intentional. Factory cable colour order, latches, tool access, bend limits, tolerances and physical strain relief remain separate checks.'}
+const bendChecks=geometry.wires.filter(w=>w.kind==='pigtail').map(w=>{
+  let radius=Infinity
+  for(let i=1;i<w.points.length-1;i++){
+    const a=w.points[i-1],b=w.points[i],c=w.points[i+1]
+    const u=a.map((v,k)=>v-b[k]),v=c.map((n,k)=>n-b[k])
+    const cross=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]]
+    const twiceArea=Math.hypot(...cross)
+    if(twiceArea>1e-8)radius=Math.min(radius,Math.hypot(...u)*Math.hypot(...v)*Math.hypot(...a.map((n,k)=>n-c[k]))/(2*twiceArea))
+  }
+  if(radius<w.minimum_bend_radius_mm)errors.push(`${w.name} bend radius ${radius} below wire specification ${w.minimum_bend_radius_mm}`)
+  return {name:w.name,minimum_sampled_radius_mm:radius,required_mm:w.minimum_bend_radius_mm,cut_length_mm:w.cut_length_mm}
+})
+const report={bend_checks:bendChecks,glb_sha256:geometry.glb_sha256,board_glb_sha256:board.sha256,layout_sha256:geometry.layout_sha256,connectors_checked:mates.length,wire_segments_checked:geometry.wires.reduce((sum,w)=>sum+w.points.length-1,0),minimum_required_nominal_clearance_mm:required,minimum_wire_separation_mm:wireGap,nearest_wires:nearestWires,mates,bodies,wires,errors,scope:'Conservative component/body/fastener/plate/post envelope check of mated bodies and insulated cable segments, plus separation between different conductors. Own mating header and same-conductor splice contact is intentional. Factory cable colour order, latches, tool access, bend limits, tolerances and physical strain relief remain separate checks.'}
 await writeFile('docs/harness-assembly-check.json',JSON.stringify(report,null,2)+'\n')
 console.log(JSON.stringify({connectors:mates.length,wires:wires.length,segments:report.wire_segments_checked,errors},null,2))
 if(errors.length)process.exitCode=1

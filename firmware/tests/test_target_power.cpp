@@ -9,8 +9,7 @@ void sleepWhileUsbSuspended() { ++sleeps; }
 
 static void advance(unsigned ms) { fakeNow+=ms; loop(); }
 static void expectSafe() {
-  for (auto p : {PD1180_PIN_MCU_RUN, PD1180_PIN_POWER_PERMIT, PD1180_PIN_SD_MODE,
-                 PD1180_PIN_RS485_DE, PD1180_PIN_OUT0_DRIVE, PD1180_PIN_OUT1_DRIVE})
+  for (auto p : {PD1180_PIN_MCU_RUN, PD1180_PIN_POWER_PERMIT, PD1180_PIN_SD_MODE})
     assert(fakeLevels[pin(p)]==LOW);
   for (auto p : {PD1180_PIN_TMC_CS_N, PD1180_PIN_ENC_CS_N, PD1180_PIN_FLASH_CS_N}) {
     assert(fakeModes[pin(p)]==OUTPUT_OPEN_DRAIN);

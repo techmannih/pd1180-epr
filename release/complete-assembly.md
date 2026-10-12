@@ -1,36 +1,19 @@
-# Motor, board and cable assembly
+# Revision B motor and J2 assembly
 
-The default 3D view and `motor-assembly.circuit.tsx` now show the ordered 34HS31-6004S1, existing adapter/post/PCB-fastener proposal, J2 motor mating harness, J3 brake mate, J7 industrial mate and two USB cable access gauges. This is a **nominal fit proposal**, not an approved mechanical kit, cable cut-length drawing or powered test result.
+Open `motor-assembly.circuit.tsx`. The current preview contains 66 named parts: the ordered motor, custom plate and cable clamp, separate fasteners/spacers, J2 mate, four pigtails, four splices and the factory cable continuation. Unconnected J3/J7 and generic USB tails were removed. The complete powered system is not yet defined; [product correction](product-eco.md) lists every retained connection and blocker.
 
-## What is connected in the model
+## Fabrication and assembly order
 
-| Connection | Assembly shown | Evidence / boundary |
-|---|---|---|
-| Motor → J2 | Four factory lead ends → insulated splice envelopes → black/green/red/blue pigtails → VHR-4N → B4P-VH | Wire exits follow compiled physical cavity positions. The pin/net/colour map remains in `motor-harness.md`. |
-| J3 → external brake | VHR-2N and two outgoing conductors | The remote resistor, heatsink and attachment depend on the unqualified brake/load requirement; they are not invented in this model. |
-| J7 → industrial equipment | PHDR-20VS and twenty outgoing conductors | Remote equipment is outside the assembly. Use numbered cavities from `connector-harnesses.md`; gray rendering does not specify wire identification. |
-| J1 / J10 → USB cables | Two separate straight plug and cable access gauges | Generic 12 × 6 mm overmold envelopes; not a purchased cable, certification or proof of EPR capability. Select actual POWER/DATA cables within the checked space. |
-| PCB → motor | Existing plate, four long posts, four PCB standoffs and four maximum screw-head envelopes | Front-flange support is a proposal. Rear motor case screws are not mounting authorization. |
+1. Obtain mechanical approval for sharing the motor's front flange with four NBK SHBS-M5-80 support posts. Do not loosen motor case screws. Confirm the exact motor body/cable dimensions and machine mounting access.
+2. Quote the custom 85.9×85.9×3 mm 6061-T6 plate from `engineering/mechanical/fabrication/adapter-plate.dxf`, its hole CSV and SVG. General target tolerance is ±0.10 mm; no supplier has accepted it. Quote the PA12 support/cap STLs and approve print orientation/strength.
+3. Assemble posts with M5×16 front and M5×10 top screws/washers. Fit the custom support beneath the plate using M3×12 fasteners. Verify thread engagement and tool access before applying an approved torque.
+4. Fit four 6 mm Essentra spacers, PCB, M4×20 button screws, **8 mm DIN433 washers** and M4 nuts. The PCB bottom is nominally 19.5 mm above the motor rear. Check the approximately 1.6 mm screw-tip clearance and all tolerances; do not substitute larger washers.
+5. Harness maker: retain enough factory cable for the modeled route and assembly adjustment. Fit four TE320559 splices (32.13 mm catalog length; OD still unverified) to Alpha3057 16 AWG pigtails. Nominal pigtail cuts are 170/170/170/165 mm, with 12 mm allowance already included. Confirm strip/crimp dimensions and actual cut length on the first article.
+6. Insert SVH-41T-P1.1 contacts into VHR-4N cavities 1 black, 2 green, 3 red, 4 blue; confirm cavity orientation and winding continuity. Route the loop with minimum 23.876 mm bend radius. Fit the split clamp around the factory jacket, not a splice or bare conductor. Its nominal 7.5 mm bore comes from vendor CAD and must be checked against the physical cable. Qualify pull retention and hot creep; screw torque is not yet released.
+7. Do not energize the motor until J3 braking, J7 command equipment, power source/cables, firmware/configuration and the staged acceptance tests are complete. J7 has only seven connected pins and has not yet been physically reduced.
 
-VHR and PHDR housings use dimensions from the [JST VH catalogue](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) and [JST PHD catalogue](https://www.jst-mfg.com/product/pdf/eng/ePHD.pdf). They are simplified catalogue envelopes, not molded-production CAD: contact/latch details and release-tool access require the final parts. No alternative connector or extra PCB header is added.
+## Evidence and limits
 
-The motor STEP already includes a shortened cable and four bare ends. Their measured end-face centres anchor the visible splices; the STEP has no wire colours, so assigning colours to those four geometric tips is illustrative. **Use the manufacturer's winding colours and continuity measurements**, never the order of the monochrome CAD tips. The factory cable is 1 m; the render does not authorize cutting it to the shortened CAD length.
+`motor-assembly-check.json` compares all 66 exported models with their generated geometry, checks holes and screw/post clearance. `harness-assembly-check.json` checks 429 cable segments, wire separation, cavity alignment and pigtail bend radius. `cable-support-check.json` checks actual support/cap/fastener mesh surfaces against the cables, excluding only the intended jacket passage. All are nominal CAD screens, not strength, tolerance, pull, thermal or physical-fit qualification.
 
-The visible motor loop stays outside the motor/PCB gap. Splices are deliberately spread apart; their 28 × Ø5 mm envelopes reserve insulation space rather than assert exact TE dimensions. Final pigtail length, insulation bend limit, splice tooling and excess-cable retention must be set for the actual fixture.
-
-## Assembly order
-
-1. Approve the front-flange adapter's shared machine mount, tolerances and fastener/thread engagement. The modeled orange heads reserve maximum head/washer space; they are not a released screw specification.
-2. Mount the plate and standoffs, then the PCB. Keep the defined 10 mm nominal motor-rear-to-PCB-bottom gap; protect exposed underside conductors from the conductive plate.
-3. Make the motor harness using the exact housing, contacts and conductor sizes in `motor-harness.md`. Continuity-test each winding/cavity and inspect/pull-test the crimps before insertion.
-4. Plug J2 from above, with the latch accessible. Anchor the loom to a qualified clamp on the fixture before allowing cable tension. **The clamp/attachment is still to be selected; the loose loop is not strain relief.** Do not force the factory cable into the narrow PCB/motor gap.
-5. Attach the required brake and industrial harnesses using the cavity tables. Route brake power and low-level control/bus wiring separately and implement the required remote bus termination.
-6. Connect DATA and qualified PD POWER cables to their separately marked ports. Follow the staged programming and commissioning procedure; never connect/disconnect the motor while energized.
-
-## Checks and remaining limits
-
-`harness-assembly-check.json` screens all five mated/access bodies and 674 insulated cable segments against the actual exported component bounds, screw-head envelopes, motor-body envelope, adapter plate and support posts. Intentional contact with each cable's own header is excluded. The exported harness vertices are separately checked against the generated CAD so a misplaced or reflected assembly cannot pass from a plausible screenshot.
-
-Different-conductor wire separation is also screened; the minimum nominal gap is approximately 0.50 mm. These checks do not qualify molded latch details, cable-to-cable wear, minimum bend radii, tool/finger access, tolerances, crimp quality, thermal behavior or strain relief. The motor and adapter remain the same locked models; the PCB, schematic, routing and manufactured drill pattern are unchanged by this assembly addition.
-
-U18/C52/C53 remain centered bottom-side `doNotPlace`. No rear magnet or holder is shown because this single-shaft motor has no confirmed rear rotating attachment. A centered optional footprint does not make the encoder operational. Mechanical approval and the existing powered/programming/order holds remain open.
+U18/C52/C53 stay centered on the bottom and `doNotPlace`. The ordered single-front-shaft motor has no confirmed rear rotating attachment; no magnet holder has been invented. [Brake integration](brake-integration.md) remains open. [Before](../previews/product-eco/before.png) and [after](../previews/product-eco/after.png) use the same camera.

@@ -1,7 +1,7 @@
 import { test, expect } from 'bun:test'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { encodeGlb } from './assembly-glb.mjs'
+import { encodeGlb, indexedMesh } from './assembly-glb.mjs'
 import { bezier, tube } from './harness-geometry.mjs'
 
 const triangle = positions => ({ name: 'triangle', positions, indices: [0, 1, 2] })
@@ -36,7 +36,7 @@ test('cable paths and GLB bytes agree across Bun and Node', () => {
   const bytes = encodeGlb([tube('cable', path, 1.2, [.7, .06, .05, 1])])
   const code = `
     import { createHash } from 'node:crypto'
-    import { encodeGlb } from ${JSON.stringify(new URL('./assembly-glb.mjs', import.meta.url).href)}
+    import { encodeGlb, indexedMesh } from ${JSON.stringify(new URL('./assembly-glb.mjs', import.meta.url).href)}
     import { bezier, tube } from ${JSON.stringify(new URL('./harness-geometry.mjs', import.meta.url).href)}
     const path = bezier(${JSON.stringify(control)}, 40)
     const bytes = encodeGlb([tube('cable', path, 1.2, [.7, .06, .05, 1])])
@@ -45,4 +45,11 @@ test('cable paths and GLB bytes agree across Bun and Node', () => {
   const other = JSON.parse(execFileSync('node', ['--input-type=module', '-e', code], { encoding: 'utf8' }))
   expect(other.path).toEqual(path)
   expect(other.sha256).toBe(createHash('sha256').update(bytes).digest('hex'))
+})
+
+test('indexed meshes preserve every stored triangle coordinate',()=>{
+ const source={name:'duplicates',positions:[.1,0,0,1,0,0,0,1,0,.1,0,0],indices:[0,1,2,3,2,1]}
+ const compact=indexedMesh(source)
+ expect(compact.positions.length).toBe(9)
+ expect(compact.indices.map(i=>compact.positions.slice(i*3,i*3+3))).toEqual(source.indices.map(i=>source.positions.slice(i*3,i*3+3).map(Math.fround)))
 })

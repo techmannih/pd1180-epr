@@ -77,7 +77,7 @@ test('hosted release ignores only the CLI cache key while preserving every sourc
     })
     const mechanicalIds = new Set(original.filter(row => row.type === 'source_component' && row.ftype === 'subassembly').map(row => row.source_component_id))
     expect(original.filter(row => row.type === 'source_component' && row.ftype === 'subassembly').map(row => row.name).sort())
-      .toEqual(['adapter_proposal', 'harness_proposal', 'ordered_motor'])
+      .toEqual(JSON.parse(readFileSync('engineering/mechanical/assembly-parts.json')).map(part=>part.name).sort())
     expect(original.filter(row => !copper.has(row.type) && !mechanicalIds.has(row.source_component_id))).toEqual(expectedModel)
     expect(original.some(row => row.type === 'pcb_trace')).toBe(true)
   } finally {
@@ -206,8 +206,9 @@ test('brake dissipates downstream energy without feeding the USB supply',()=>{
   on('J3',1,'VMOTOR');on('J3',2,'BRAKE_RETURN');on('Q16',5,'BRAKE_RETURN');on('Q16',1,'GND')
   on('U13',3,'BRAKE_SENSE');on('U13',4,'VREF_2V5');on('U15',6,'BRAKE_ON')
 })
-test('MCU pin mapping retains EPR-safe USB attach sense, data, FDCAN and SWD without sharing their pins',()=>{
-  for(const [pin,net]of [[19,'USB_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK'],[38,'CAN_RX'],[39,'CAN_TX']])on('U16',pin,net)
+test('MCU retains USB attach sense, data and SWD while removed interface pins are disconnected',()=>{
+  for(const [pin,net]of [[19,'USB_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK']])on('U16',pin,net)
+  for(const pin of [2,3,13,14,22,29,32,38,39,40,41])expect(key('U16',pin)).toBeFalsy()
   expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(48)
 })
 test('analytical limits have margin below the 5-A USB input contract',()=>{
@@ -242,12 +243,12 @@ test('USB DATA has independent CC, attach sense and ESD while VMOTOR retains bra
   on('U22',2,'VMOTOR');on('U22',3,'VMOTOR')
   expect(new Set(['PD_VBUS','USB_DATA_VBUS','VMOTOR','DATA_CC1','DATA_CC2','CC1_PD','CC2_PD'].map(netKey)).size).toBe(7)
 })
-test('one 20-pin harness retains all industrial interfaces',()=>{
+test('interim J7 preserves command/inhibit inputs and removes undefined interfaces and motor-bus export',()=>{
   expect(comp('J6')).toBeUndefined();expect(comp('J9')).toBeUndefined()
   expect(comp('J7').manufacturer_part_number).toBe('B20B-PHDSS(LF)(SN)')
-  const expected=['HOME_24V','STOPL_24V','STOPR_24V','DIN0_24V','DIN1_24V','STEP_24V','DIR_24V','GND','RS232_TX_CONN','RS232_RX_CONN','GND','CAN_H','CAN_L','GND','RS485_A','RS485_B','VMOTOR','HW_ENABLE_24V','OUT0','OUT1']
-  expected.forEach((net,index)=>on('J7',index+1,net))
-  for(const ref of ['U19','U20','U21','Q17','Q18','Q24','Q25'])expect(comp(ref)).toBeDefined()
+  for(const [pin,net]of [[1,'HOME_24V'],[2,'STOPL_24V'],[3,'STOPR_24V'],[6,'STEP_24V'],[7,'DIR_24V'],[8,'GND'],[18,'HW_ENABLE_24V']])on('J7',pin,net)
+  for(const pin of [4,5,9,10,11,12,13,14,15,16,17,19,20])expect(key('J7',pin)).toBeFalsy()
+  for(const ref of ['U19','U20','U21','Q17','Q18','Q24','Q25'])expect(comp(ref)).toBeUndefined()
 })
 test('STEP/DIR multifunction pins cannot contend with encoder outputs',()=>{
   on('U7',23,'GND');on('U7',24,'GND');expect(key('U7',25)).toBeFalsy()
@@ -293,7 +294,7 @@ test('USB-only power is confined to the MCU and its reset/decoupling network',()
   const mcuRail=netKey('V3V3_MCU')
   const attached=new Set(ports.filter(p=>p.subcircuit_connectivity_map_key===mcuRail).map(p=>components.find(c=>c.source_component_id===p.source_component_id).name))
   expect([...attached].sort()).toEqual(['U16','U26','U27','C44','C45','C46','C47','R70','TP_SWD_3V3'].sort())
-  for(const [ref,pin] of [['U19',3],['U20',8],['U21',16],['U31',6],['U32',6],['U18',11],['U17',8]])on(ref,pin,'V3V3')
+  for(const [ref,pin] of [['U31',6],['U32',6],['U18',11],['U17',8]])on(ref,pin,'V3V3')
   on('U16',20,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
   on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')
   expect(key('U2',10)).toBeFalsy()

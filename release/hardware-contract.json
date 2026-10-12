@@ -100,9 +100,6 @@
   "reset_safe_outputs": {
     "POWER_PERMIT": 0,
     "MCU_RUN": 0,
-    "RS485_DE": 0,
-    "OUT0_DRIVE": 0,
-    "OUT1_DRIVE": 0,
     "SD_MODE": 0,
     "STATUS_GPIO": 0
   },
@@ -111,7 +108,7 @@
     "J10": "USB DATA",
     "J2": "Motor A1/A2/B1/B2",
     "J3": "External regeneration brake resistor",
-    "J7": "20-pin keyed JST PHD industrial harness; all former J6/J7/J9 functions retained"
+    "J7": "Retained STEP/DIR/ENABLE and home/limit inputs; command-source product and final connector reduction unresolved"
   },
   "industrial_harness": {
     "reference": "J7",
@@ -122,26 +119,28 @@
       "1": "HOME_24V",
       "2": "STOPL_24V",
       "3": "STOPR_24V",
-      "4": "DIN0_24V",
-      "5": "DIN1_24V",
       "6": "STEP_24V",
       "7": "DIR_24V",
       "8": "GND",
-      "9": "RS232_TX_CONN",
-      "10": "RS232_RX_CONN",
-      "11": "GND",
-      "12": "CAN_H",
-      "13": "CAN_L",
-      "14": "GND",
-      "15": "RS485_A",
-      "16": "RS485_B",
-      "17": "VMOTOR",
-      "18": "HW_ENABLE_24V",
-      "19": "OUT0",
-      "20": "OUT1"
+      "18": "HW_ENABLE_24V"
     },
-    "warning": "Pin 17 is protected VMOTOR (~48 V), not a 24 V auxiliary output. New harness is not pin-compatible with previous separate connectors.",
-    "current_rating": "3 A/contact with AWG22 per JST; system output current remains limited by the original output circuitry."
+    "warning": "Revision B disconnects all field buses, general I/O and external VMOTOR. No pin is a 48 V output. Retained 20-pin footprint is interim until the command-source/interface decision is resolved; do not manufacture this interim ECO.",
+    "current_rating": "Only input signals and signal ground remain; not a power-output connector.",
+    "no_connect_pins": [
+      4,
+      5,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19,
+      20
+    ]
   },
   "logic_power": {
     "U5": "PD_VBUS -> V3V3_PD -> U23 -> board V3V3",

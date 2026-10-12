@@ -44,7 +44,7 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
   ['motor', external.motor, external.motor_specification, 'ordered; current and mounting qualification pending'],
   ['magnet', external.magnet, 'AS5047P compatible', 'mechanical validation required'],
   ['brake cable assembly', 'VHR-2N; 2 x SVH-41T-P1.1', '16 AWG, insulation OD 1.7–3.0 mm; J3: VMOTOR / BRAKE_RETURN', 'Specification only; physical access, strain relief and thermal qualification pending'],
-  ['industrial cable assembly', 'PHDR-20VS; 20 x SPHD-001T-P0.5', '22 AWG, insulation OD 1.0–1.5 mm; pin17 is VMOTOR, not 24 V', 'Specification only; completed harness and application/load qualification pending'],
+  ['interim external control connection', 'Existing J7 B20B-PHDSS; final mate/cable not released', 'Only pins 1/2/3/6/7/8/18 connected; all others NC, including pin17', 'Command source and limit products unresolved; physical connector reduction pending; do not order this harness'],
   ['motor cable assembly', `${harness.motor_connector.mate}; ${harness.motor_connector.contacts}`, 'Four 16 AWG pigtails, four TE 320559 splices to factory cable; see motor-harness.md', harness.motor_connector.connection_status],
 ]))
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
@@ -106,8 +106,12 @@ execFileSync('bunx', ['tsci', 'build', 'motor-assembly.circuit.tsx', '--glbs', '
 })
 execFileSync('bun', ['scripts/check-motor-assembly.mjs', routedGlb, motorAssemblyGlb], { stdio: 'inherit' })
 execFileSync('bun', ['scripts/check-harness-assembly.mjs', routedGlb], { stdio: 'inherit' })
+execFileSync('bun', ['scripts/check-cable-support.mjs'], { stdio: 'inherit' })
+execFileSync('bun', ['scripts/check-mechanical-assets.mjs'], { stdio: 'inherit' })
 await copyFile('docs/harness-assembly-check.json', join(release, 'harness-assembly-check.json'))
 await copyFile('docs/motor-assembly-check.json', join(release, 'motor-assembly-check.json'))
+const activeSheetFiles=new Set((await readdir('dist/schematics')).filter(file=>file.endsWith('.svg')))
+for(const file of await readdir(join(release,'schematics'))) if(file.endsWith('.svg')&&!activeSheetFiles.has(file)) await rm(join(release,'schematics',file))
 for (const file of await readdir('dist/schematics')) {
   if (file.endsWith('.svg')) await copyFile(join('dist/schematics', file), join(release, 'schematics', file))
 }
@@ -145,7 +149,7 @@ await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Moto
 
 ${releaseStatus.fabrication_orderable ? 'Prototype CAD gates passed; system validation remains open.' : '**ORDER HOLD.** These are engineering review files. Powered USB, current/thermal and system qualification remain open; do not submit a fabrication order from this package.'}
 
-The ECO separates PD POWER and USB DATA, consolidates the industrial harness and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: ${releaseStatus.status}. See \`engineering/reviewer-eco.json\` and \`docs/step-dir-hardware-review.md\`.
+The ECO separates PD POWER and USB DATA, removes unsupported CAN/RS485/RS232 and general I/O circuits while preserving the external STEP/DIR/ENABLE path and corrects the TMC5160 STEP/DIR pins while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: ${releaseStatus.status}. See \`engineering/reviewer-eco.json\` and \`docs/step-dir-hardware-review.md\`.
 
 The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Rear case fasteners are not approved accessory threads; a front-flange adapter is proposed and encoder attachment remains unresolved. See \`motor-assembly.md\` for the proposed mount and ordered-motor limitations, nominal screw clearances and unresolved mechanical gates.
 
@@ -153,7 +157,7 @@ RGB, independent board-power indication, a reset-safe buzzer and eight new power
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 retains the required industrial interfaces. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All 311 fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
+J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 retains only STEP/DIR/ENABLE, HOME/limits and GND pending selection of actual external equipment. Its physical connector reduction is not complete. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All 279 fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
 
 The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 

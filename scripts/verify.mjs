@@ -24,12 +24,17 @@ verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md
 verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
 verifiedInputPaths.push('scripts/verify-programming.mjs', 'scripts/verify-programming.test.mjs', 'docs/pd-configuration-review.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
+verifiedInputPaths.push('engineering/interface-cleanup.json', 'engineering/mechanical/assembly-parts.json', 'engineering/mechanical/34hs31-6004s1-routed-cable.glb', 'scripts/check-cable-support.mjs')
+verifiedInputPaths.push('scripts/check-mechanical-assets.mjs', 'scripts/export-previews.mjs')
+for (const file of (await readdir('engineering/mechanical/parts')).sort()) verifiedInputPaths.push(`engineering/mechanical/parts/${file}`)
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
   ['cloud-package', ['run', 'check:cloud-package']],
   ['mounting-template', ['run', 'check:mounting-template']],
   ['typecheck', ['run', 'typecheck']],
+  ['mechanical-assets', ['scripts/check-mechanical-assets.mjs']],
+  ['cable-support', ['scripts/check-cable-support.mjs']],
   ['import-previews', ['run', 'check:import-previews']],
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],

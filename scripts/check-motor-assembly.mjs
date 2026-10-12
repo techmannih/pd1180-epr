@@ -2,6 +2,7 @@ import { readGlb as glb } from './assembly-glb.mjs'
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import JSZip from 'jszip'
+import { MECHANICAL_PARTS } from '../imports/MotorAssemblyCad.ts'
 import { rearHoleAxes, mountingAlignment, readMetricDrills, verifyMountingDrills, meshDrillRadius } from './motor-mounting-geometry.mjs'
 
 // Nominal CAD collision screen; manufacturing tolerances and magnetic performance
@@ -75,22 +76,23 @@ if(Math.abs(fixtureCadBounds.max[2]-(contract.fabrication.finished_thickness_mm/
 let assemblyAlignment=null
 if(process.argv[3]) {
   const assembled=await glb(process.argv[3])
-  const motorNode=assembled.meshes.find(m=>m.name==='ordered_motor')
-  const fixtureNode=assembled.meshes.find(m=>m.name==='adapter_proposal')
-  const harnessNode=assembled.meshes.find(m=>m.name==='harness_proposal')
-  const harnessCad=await glb('engineering/mechanical/harness-proposal.glb')
-  if(!motorNode||!fixtureNode||!harnessNode) throw new Error('Assembly export is missing the motor, fixture or harness')
-  const motorBounds=meshBounds([motorNode]),fixtureBounds=meshBounds([fixtureNode])
+  const motorNode=assembled.meshes.find(m=>m.name==='stepperonline_34HS31_6004S1')
+  if(!motorNode) throw new Error('Assembly export is missing the selected motor')
+  const motorBounds=meshBounds([motorNode])
   const rear=-contract.fabrication.finished_thickness_mm/2-spec.mount.pcb_bottom_to_motor_rear_mm
   const gap=-contract.fabrication.finished_thickness_mm/2-motorBounds.max[1]
-  if(Math.abs(motorBounds.max[1]-rear)>.001 || Math.abs(fixtureBounds.max[1]-(contract.fabrication.finished_thickness_mm/2+spec.mount.pcb_top_head_and_washer_height_mm))>.001) errors.push('Exported assembly axes/offsets are wrong: motor and fixture must align with the PCB normal')
+  if(Math.abs(motorBounds.max[1]-rear)>.001) errors.push('Exported motor normal/height is incorrect')
   const offsets={}
-  for(const [name,cad,rendered,height] of [['motor',motor.meshes,motorNode,rear],['fixture',fixture.meshes,fixtureNode,0],['harness',harnessCad.meshes,harnessNode,0]]) {
-    const expected=vertices(cad).map(([x,y,z])=>[-x,z+height,y]), actual=vertices([rendered])
-    offsets[name]=Math.max(maximumVertexOffset(expected,actual),maximumVertexOffset(actual,expected))
-    if(offsets[name]>.001) errors.push(`Exported ${name} geometry is reflected, rotated or displaced from the specified CAD transform`)
+  for(const part of MECHANICAL_PARTS) {
+    const rendered=assembled.meshes.find(m=>m.name===part.name)
+    if(!rendered) {errors.push(`Missing assembly part ${part.name}`);continue}
+    const cad=await glb(`engineering/mechanical/parts/${part.name}.glb`)
+    const expected=vertices(cad.meshes).map(([x,y,z])=>[-x,z+part.z,y]), actual=vertices([rendered])
+    offsets[part.name]=Math.max(maximumVertexOffset(expected,actual),maximumVertexOffset(actual,expected))
+    if(offsets[part.name]>.001)errors.push(`Exported ${part.name} differs from specified CAD transform`)
   }
-  assemblyAlignment={maximum_vertex_offset_mm:offsets,assembly_glb_sha256:assembled.sha256,motor_bounds_display_mm:motorBounds,fixture_bounds_display_mm:fixtureBounds,minimum_motor_to_pcb_bottom_mm:gap}
+  assemblyAlignment={maximum_vertex_offset_mm:offsets,assembly_glb_sha256:assembled.sha256,motor_bounds_display_mm:motorBounds,minimum_motor_to_pcb_bottom_mm:gap}
+
 }
 // Runtime motor asset is in tscircuit CAD axes (Z height); display meshes are Y-up.
 for (const mesh of motor.meshes) mesh.triangles = mesh.triangles.map(tri => tri.map(([x,y,z]) => [x,z,y]))

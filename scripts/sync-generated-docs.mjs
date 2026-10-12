@@ -50,11 +50,11 @@ const available = stock.parts.filter(part => part.status === 'available').length
 const packageMatched = stock.parts.filter(part => part.package_match === true).length
 lines.push(
   '',
-  `All ${available} selected PCB part types (${manifest.parts.length} placements) had sufficient reported stock for ${stock.board_quantity} boards at the timestamp above, and all ${packageMatched} supplier package names matched the pinned manifest expectation.`,
+  `${available} of ${stock.parts.length} selected part types (${manifest.parts.length} placements) had sufficient reported stock for ${stock.board_quantity} boards. ${packageMatched} package names matched the pinned expectation. See failed rows before ordering.`,
   '',
   '## Substitution policy',
   '',
-  'See `alternatives.json` for checked candidates and whether they are package-compatible, need electrical/thermal review, or require a redesign. No alternative is silently selected. All selected primary PCB parts are currently available.',
+  'See `alternatives.json` for checked candidates and whether they are package-compatible, need electrical/thermal review, or require a redesign. No alternative is silently selected. Missing or insufficient exact stock is an order hold; do not infer availability from this generated page.',
   '',
   '## External system items',
   '',

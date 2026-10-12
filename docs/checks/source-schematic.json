@@ -1,31 +1,31 @@
 {
-  "generated_at": "2026-10-11T17:45:21.431Z",
+  "generated_at": "2026-10-12T02:09:01.487Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "cf13573c0328c47a4ad2bb92c66ead78e81a2b783b11e3edc5a4db960d5a3383",
-    "bytes": 5312317
+    "sha256": "6d7410e1c124dc76bc47a07d5a601817e673332f4d24d3f435c4817f0d6cb7d4",
+    "bytes": 4804222
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 12039,
-    "sheets": 27,
-    "source_components": 333,
-    "source_ports": 1137,
-    "connected_source_ports": 1099,
-    "intentional_no_connect_ports": 38,
-    "source_nets": 212,
+    "elements": 10863,
+    "sheets": 24,
+    "source_components": 301,
+    "source_ports": 1041,
+    "connected_source_ports": 983,
+    "intentional_no_connect_ports": 58,
+    "source_nets": 181,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 96,
+    "capacitors": 89,
     "test_points": 19,
-    "annotations": 81,
+    "annotations": 72,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 89,
-    "3": 70,
-    "4": 28,
+    "2": 72,
+    "3": 59,
+    "4": 25,
     "5": 5,
     "6": 3,
     "8": 1,
@@ -36,9 +36,9 @@
     "13": 2,
     "18": 1,
     "23": 1,
-    "45": 1,
-    "77": 1,
-    "264": 1
+    "42": 1,
+    "68": 1,
+    "239": 1
   },
   "usb_c": {
     "connectors": [
@@ -372,19 +372,39 @@
     "J1.14:DN2",
     "J10.10:SBU1",
     "J10.16:SBU2",
+    "J7.10:pin10",
+    "J7.11:pin11",
+    "J7.12:pin12",
+    "J7.13:pin13",
+    "J7.14:pin14",
+    "J7.15:pin15",
+    "J7.16:pin16",
+    "J7.17:pin17",
+    "J7.19:pin19",
+    "J7.20:pin20",
+    "J7.4:pin4",
+    "J7.5:pin5",
+    "J7.9:pin9",
     "U1.14:SBU2",
     "U1.15:SBU1",
+    "U16.13:PA2",
+    "U16.14:PA3",
+    "U16.22:PB10",
+    "U16.29:PA9",
+    "U16.2:PC14_OSC32_IN",
+    "U16.32:PA10",
+    "U16.38:PD0",
+    "U16.39:PD1",
+    "U16.3:PC15_OSC32_OUT",
+    "U16.40:PD2",
+    "U16.41:PD3",
     "U18.10:U",
     "U18.8:W",
     "U18.9:V",
-    "U19.5:NC1",
-    "U19.8:NC2",
     "U2.10:N_I2Ct_IRQ",
     "U2.21:NC",
     "U2.28:PP5V1",
     "U2.29:PP5V2",
-    "U21.7:T2OUT",
-    "U21.9:R2OUT",
     "U23.4:NC",
     "U24.4:NC",
     "U25.4:NC",
@@ -421,8 +441,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 264,
-      "non_testpoint_peers": 260
+      "total_ports_on_net": 239,
+      "non_testpoint_peers": 235
     },
     {
       "ref": "TP_SWCLK",
@@ -445,8 +465,8 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 77,
-      "non_testpoint_peers": 76
+      "total_ports_on_net": 68,
+      "non_testpoint_peers": 67
     },
     {
       "ref": "TP_ENC_A",
@@ -469,8 +489,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 264,
-      "non_testpoint_peers": 260
+      "total_ports_on_net": 239,
+      "non_testpoint_peers": 235
     },
     {
       "ref": "TP_PD_VREF",
@@ -481,8 +501,8 @@
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 264,
-      "non_testpoint_peers": 260
+      "total_ports_on_net": 239,
+      "non_testpoint_peers": 235
     },
     {
       "ref": "TP_EEP_SDA",
@@ -511,14 +531,14 @@
     {
       "ref": "TP_VMOTOR",
       "net": "VMOTOR",
-      "total_ports_on_net": 45,
-      "non_testpoint_peers": 44
+      "total_ports_on_net": 42,
+      "non_testpoint_peers": 41
     },
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 264,
-      "non_testpoint_peers": 260
+      "total_ports_on_net": 239,
+      "non_testpoint_peers": 235
     }
   ],
   "sheets": [
@@ -700,7 +720,7 @@
       ],
       "annotations": [
         "13 / MCU Clock Memory and Debug",
-        "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and industrial buses.",
+        "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and the retained STEP/DIR input path.",
         "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
       ]
     },
@@ -735,71 +755,29 @@
     {
       "index": 16,
       "name": "inputs",
-      "display_name": "Home Limits and Digital Input 0",
+      "display_name": "Home and Limit Inputs",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "16 / Home Limits and Digital Input 0",
-        "Non-isolated 24 V HOME, left/right STOP and DIN0 conditioning.",
-        "The consolidated J7 harness is shown on the Step Direction and Industrial Harness sheet."
+        "16 / Home and Limit Inputs",
+        "Non-isolated 24 V HOME and left/right STOP input conditioning.",
+        "The consolidated J7 harness is shown on the Step Direction and Control Inputs sheet."
       ]
     },
     {
       "index": 17,
       "name": "inputs-aux",
-      "display_name": "Step Direction and Industrial Harness",
+      "display_name": "Step Direction and Control Inputs",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "17 / Step Direction and Industrial Harness",
-        "24 V DIN1, STEP and DIR conditioning; J7 carries the required industrial interfaces.",
-        "J7 pin 17 is VMOTOR, not 24 V. Numbered cable mapping is in hardware-contract.json."
-      ]
-    },
-    {
-      "index": 18,
-      "name": "serial",
-      "display_name": "CAN and RS485",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "18 / CAN and RS485",
-        "U19 is the 3.3 V CAN transceiver; U20 is RS485. D2/D3 provide line protection.",
-        "J7 carries both buses; termination and RS485 bias are defined at the system level."
-      ]
-    },
-    {
-      "index": 19,
-      "name": "serial-rs232",
-      "display_name": "RS232 Interface",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "19 / RS232 Interface",
-        "U21 provides RS232 translation and charge-pump generation.",
-        "J7 carries RS232 TX/RX and ground; local bypass remains at the transceiver."
-      ]
-    },
-    {
-      "index": 20,
-      "name": "outputs",
-      "display_name": "Hardware Outputs",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "20 / Hardware Outputs",
-        "Q24/Q25 provide the two open-collector outputs; base pulldowns keep reset inactive.",
-        "J7 carries OUT0/OUT1. External load and duty ratings still require system qualification."
+        "17 / Step Direction and Control Inputs",
+        "24 V STEP and DIR conditioning; J7 retains only motion and limit input connections.",
+        "J7 unused pins are NC; no external VMOTOR output. Command-source product remains unresolved."
       ]
     },
     {
@@ -977,8 +955,8 @@
     {
       "index": 13,
       "name": "mcu",
-      "elements": 272,
-      "coordinate_points_checked": 462
+      "elements": 250,
+      "coordinate_points_checked": 429
     },
     {
       "index": 14,
@@ -995,32 +973,14 @@
     {
       "index": 16,
       "name": "inputs",
-      "elements": 164,
-      "coordinate_points_checked": 272
+      "elements": 84,
+      "coordinate_points_checked": 138
     },
     {
       "index": 17,
       "name": "inputs-aux",
-      "elements": 186,
-      "coordinate_points_checked": 308
-    },
-    {
-      "index": 18,
-      "name": "serial",
-      "elements": 97,
-      "coordinate_points_checked": 154
-    },
-    {
-      "index": 19,
-      "name": "serial-rs232",
-      "elements": 79,
-      "coordinate_points_checked": 123
-    },
-    {
-      "index": 20,
-      "name": "outputs",
-      "elements": 72,
-      "coordinate_points_checked": 118
+      "elements": 161,
+      "coordinate_points_checked": 252
     },
     {
       "index": 21,
@@ -1070,8 +1030,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 333,
-        "schematic": 333
+        "source": 301,
+        "schematic": 301
       }
     },
     {
@@ -1090,9 +1050,9 @@
     },
     {
       "ok": true,
-      "message": "exactly 27 A4 schematic sheets",
+      "message": "24 retained A4 schematic sheets",
       "details": {
-        "actual": 27
+        "actual": 24
       }
     },
     {
@@ -1580,7 +1540,7 @@
         "actual": 3,
         "texts": [
           "13 / MCU Clock Memory and Debug",
-          "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and industrial buses.",
+          "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and the retained STEP/DIR input path.",
           "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
         ]
       }
@@ -1693,9 +1653,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "16 / Home Limits and Digital Input 0",
-          "Non-isolated 24 V HOME, left/right STOP and DIN0 conditioning.",
-          "The consolidated J7 harness is shown on the Step Direction and Industrial Harness sheet."
+          "16 / Home and Limit Inputs",
+          "Non-isolated 24 V HOME and left/right STOP input conditioning.",
+          "The consolidated J7 harness is shown on the Step Direction and Control Inputs sheet."
         ]
       }
     },
@@ -1731,9 +1691,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "17 / Step Direction and Industrial Harness",
-          "24 V DIN1, STEP and DIR conditioning; J7 carries the required industrial interfaces.",
-          "J7 pin 17 is VMOTOR, not 24 V. Numbered cable mapping is in hardware-contract.json."
+          "17 / Step Direction and Control Inputs",
+          "24 V STEP and DIR conditioning; J7 retains only motion and limit input connections.",
+          "J7 unused pins are NC; no external VMOTOR output. Command-source product remains unresolved."
         ]
       }
     },
@@ -1744,120 +1704,6 @@
     {
       "ok": true,
       "message": "inputs-aux explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet serial"
-    },
-    {
-      "ok": true,
-      "message": "serial keeps sheet index 18"
-    },
-    {
-      "ok": true,
-      "message": "serial keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "serial has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "18 / CAN and RS485",
-          "U19 is the 3.3 V CAN transceiver; U20 is RS485. D2/D3 provide line protection.",
-          "J7 carries both buses; termination and RS485 bias are defined at the system level."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "serial has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "serial explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet serial-rs232"
-    },
-    {
-      "ok": true,
-      "message": "serial-rs232 keeps sheet index 19"
-    },
-    {
-      "ok": true,
-      "message": "serial-rs232 keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "serial-rs232 has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "19 / RS232 Interface",
-          "U21 provides RS232 translation and charge-pump generation.",
-          "J7 carries RS232 TX/RX and ground; local bypass remains at the transceiver."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "serial-rs232 has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "serial-rs232 explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet outputs"
-    },
-    {
-      "ok": true,
-      "message": "outputs keeps sheet index 20"
-    },
-    {
-      "ok": true,
-      "message": "outputs keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "outputs has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "20 / Hardware Outputs",
-          "Q24/Q25 provide the two open-collector outputs; base pulldowns keep reset inactive.",
-          "J7 carries OUT0/OUT1. External load and duty ratings still require system qualification."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "outputs has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "outputs explains component roles"
     },
     {
       "ok": true,
@@ -2127,9 +1973,9 @@
     },
     {
       "ok": true,
-      "message": "81 high-level sheet annotations are present",
+      "message": "72 high-level annotations on 24 retained sheets",
       "details": {
-        "actual": 81
+        "actual": 72
       }
     },
     {
@@ -2148,17 +1994,17 @@
     },
     {
       "ok": true,
-      "message": "212 named source nets are present",
+      "message": "181 named source nets after removal of 31 unused interface nets",
       "details": {
-        "actual": 212
+        "actual": 181
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 212,
-        "source_nets": 212
+        "connected_groups": 181,
+        "source_nets": 181
       }
     },
     {
@@ -2224,9 +2070,9 @@
     },
     {
       "ok": true,
-      "message": "96 capacitors audited after C19 removal and diagnostics ECO",
+      "message": "89 capacitors after removal of seven interface capacitors",
       "details": {
-        "actual": 96
+        "actual": 89
       }
     },
     {
@@ -2261,19 +2107,39 @@
           "J1.14:DN2",
           "J10.10:SBU1",
           "J10.16:SBU2",
+          "J7.10:pin10",
+          "J7.11:pin11",
+          "J7.12:pin12",
+          "J7.13:pin13",
+          "J7.14:pin14",
+          "J7.15:pin15",
+          "J7.16:pin16",
+          "J7.17:pin17",
+          "J7.19:pin19",
+          "J7.20:pin20",
+          "J7.4:pin4",
+          "J7.5:pin5",
+          "J7.9:pin9",
           "U1.14:SBU2",
           "U1.15:SBU1",
+          "U16.13:PA2",
+          "U16.14:PA3",
+          "U16.22:PB10",
+          "U16.29:PA9",
+          "U16.2:PC14_OSC32_IN",
+          "U16.32:PA10",
+          "U16.38:PD0",
+          "U16.39:PD1",
+          "U16.3:PC15_OSC32_OUT",
+          "U16.40:PD2",
+          "U16.41:PD3",
           "U18.10:U",
           "U18.8:W",
           "U18.9:V",
-          "U19.5:NC1",
-          "U19.8:NC2",
           "U2.10:N_I2Ct_IRQ",
           "U2.21:NC",
           "U2.28:PP5V1",
           "U2.29:PP5V2",
-          "U21.7:T2OUT",
-          "U21.9:R2OUT",
           "U23.4:NC",
           "U24.4:NC",
           "U25.4:NC",
@@ -2301,19 +2167,39 @@
           "J1.14:DN2",
           "J10.10:SBU1",
           "J10.16:SBU2",
+          "J7.10:pin10",
+          "J7.11:pin11",
+          "J7.12:pin12",
+          "J7.13:pin13",
+          "J7.14:pin14",
+          "J7.15:pin15",
+          "J7.16:pin16",
+          "J7.17:pin17",
+          "J7.19:pin19",
+          "J7.20:pin20",
+          "J7.4:pin4",
+          "J7.5:pin5",
+          "J7.9:pin9",
           "U1.14:SBU2",
           "U1.15:SBU1",
+          "U16.13:PA2",
+          "U16.14:PA3",
+          "U16.22:PB10",
+          "U16.29:PA9",
+          "U16.2:PC14_OSC32_IN",
+          "U16.32:PA10",
+          "U16.38:PD0",
+          "U16.39:PD1",
+          "U16.3:PC15_OSC32_OUT",
+          "U16.40:PD2",
+          "U16.41:PD3",
           "U18.10:U",
           "U18.8:W",
           "U18.9:V",
-          "U19.5:NC1",
-          "U19.8:NC2",
           "U2.10:N_I2Ct_IRQ",
           "U2.21:NC",
           "U2.28:PP5V1",
           "U2.29:PP5V2",
-          "U21.7:T2OUT",
-          "U21.9:R2OUT",
           "U23.4:NC",
           "U24.4:NC",
           "U25.4:NC",

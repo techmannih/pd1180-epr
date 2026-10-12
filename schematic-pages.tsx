@@ -76,7 +76,7 @@ const pages = [
   [
     "mcu",
     "MCU Clock Memory and Debug",
-    "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and industrial buses.",
+    "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and the retained STEP/DIR input path.",
     "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
   ],
   [
@@ -93,34 +93,19 @@ const pages = [
   ],
   [
     "inputs",
-    "Home Limits and Digital Input 0",
-    "Non-isolated 24 V HOME, left/right STOP and DIN0 conditioning.",
-    "The consolidated J7 harness is shown on the Step Direction and Industrial Harness sheet."
+    "Home and Limit Inputs",
+    "Non-isolated 24 V HOME and left/right STOP input conditioning.",
+    "The consolidated J7 harness is shown on the Step Direction and Control Inputs sheet."
   ],
   [
     "inputs-aux",
-    "Step Direction and Industrial Harness",
-    "24 V DIN1, STEP and DIR conditioning; J7 carries the required industrial interfaces.",
-    "J7 pin 17 is VMOTOR, not 24 V. Numbered cable mapping is in hardware-contract.json."
+    "Step Direction and Control Inputs",
+    "24 V STEP and DIR conditioning; J7 retains only motion and limit input connections.",
+    "J7 unused pins are NC; no external VMOTOR output. Command-source product remains unresolved."
   ],
-  [
-    "serial",
-    "CAN and RS485",
-    "U19 is the 3.3 V CAN transceiver; U20 is RS485. D2/D3 provide line protection.",
-    "J7 carries both buses; termination and RS485 bias are defined at the system level."
-  ],
-  [
-    "serial-rs232",
-    "RS232 Interface",
-    "U21 provides RS232 translation and charge-pump generation.",
-    "J7 carries RS232 TX/RX and ground; local bypass remains at the transceiver."
-  ],
-  [
-    "outputs",
-    "Hardware Outputs",
-    "Q24/Q25 provide the two open-collector outputs; base pulldowns keep reset inactive.",
-    "J7 carries OUT0/OUT1. External load and duty ratings still require system qualification."
-  ],
+  null, // Removed interface sheet; retain subsequent approved sheet numbers.
+  null, // Removed interface sheet; retain subsequent approved sheet numbers.
+  null, // Removed interface sheet; retain subsequent approved sheet numbers.
   [
     "usb-logic",
     "USB Logic Power",
@@ -166,9 +151,9 @@ const pages = [
 ] as const
 
 export const SchematicPages = () => <>
-  {pages.map(([name, title, purpose, notes], index) => <Fragment key={name}><schematicsheet name={name} displayName={title} sheetIndex={index + 1} sheetSize="A4">
+  {pages.map((page, index) => { if (!page) return null; const [name, title, purpose, notes] = page; return <Fragment key={name}><schematicsheet name={name} displayName={title} sheetIndex={index + 1} sheetSize="A4">
     <schematictext schX={0} schY={9} fontSize={0.5} anchor="center" text={`${String(index + 1).padStart(2, "0")} / ${title}`} />
     <schematictext schX={0} schY={7.8} fontSize={0.23} anchor="center" text={purpose} />
     <schematictext schX={0} schY={7.1} fontSize={0.23} anchor="center" text={notes} />
-  </schematicsheet></Fragment>)}
+  </schematicsheet></Fragment>})}
 </>

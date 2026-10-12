@@ -1,14 +1,40 @@
 {
-  "glb_sha256": "0b6166f7ce3087bb0cd4233305b06da62e5d7ae19f5ae85dc57d9281c9c92140",
-  "board_glb_sha256": "909faa1103295209964aaf401443c212825728c8b4ad5a4b845801da91b0fc0a",
-  "layout_sha256": "e902d24ce8788237219430665ca6b6584f5cb47321a132b8b209c04c03fda623",
-  "connectors_checked": 5,
-  "wire_segments_checked": 674,
+  "bend_checks": [
+    {
+      "name": "J2 cavity 1 black Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 25.85461088716991,
+      "required_mm": 23.876,
+      "cut_length_mm": 170
+    },
+    {
+      "name": "J2 cavity 2 green Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 26.369755982722964,
+      "required_mm": 23.876,
+      "cut_length_mm": 170
+    },
+    {
+      "name": "J2 cavity 3 red Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 26.774443183710265,
+      "required_mm": 23.876,
+      "cut_length_mm": 170
+    },
+    {
+      "name": "J2 cavity 4 blue Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 27.051104935584906,
+      "required_mm": 23.876,
+      "cut_length_mm": 165
+    }
+  ],
+  "glb_sha256": "c0c34404ad8b7caa4b9f96a7ea1ce4700b42578dea965f555457e81e1d80765d",
+  "board_glb_sha256": "9f5c25287339ae5c252c4bfd4e3a324af584a8a44fb9b240729337e2c609cf69",
+  "layout_sha256": "55f76cf4756a408b23d4df4ec3ec4895602827b22c52969771a6fbcca674395a",
+  "connectors_checked": 1,
+  "wire_segments_checked": 429,
   "minimum_required_nominal_clearance_mm": 0.2,
-  "minimum_wire_separation_mm": 0.49700128406705124,
+  "minimum_wire_separation_mm": 0.6799926060278719,
   "nearest_wires": [
-    "J7 cavity 1 external lead",
-    "J7 cavity 2 external lead"
+    "motor_red_lead_to_splice_3",
+    "motor_blue_lead_to_splice_4"
   ],
   "mates": [
     {
@@ -17,7 +43,7 @@
       "nearest": [
         {
           "name": "H1 screw head",
-          "gap_mm": 0.7571319999999986
+          "gap_mm": 0.9073306263011284
         },
         {
           "name": "U14",
@@ -26,89 +52,17 @@
         {
           "name": "Q19",
           "gap_mm": 2.15079505443573
-        }
-      ]
-    },
-    {
-      "reference": "J3",
-      "part": "VHR-2N",
-      "nearest": [
-        {
-          "name": "C21",
-          "gap_mm": 2.469817824904273
-        },
-        {
-          "name": "R4",
-          "gap_mm": 2.5999999761581423
-        },
-        {
-          "name": "Q4",
-          "gap_mm": 2.6155015518698015
-        }
-      ]
-    },
-    {
-      "reference": "J7",
-      "part": "PHDR-20VS",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 2.7973200634657402
-        },
-        {
-          "name": "J2",
-          "gap_mm": 3.429999446868898
-        },
-        {
-          "name": "R78",
-          "gap_mm": 4.319177533695585
-        }
-      ]
-    },
-    {
-      "reference": "J1",
-      "part": "Generic USB access gauge",
-      "nearest": [
-        {
-          "name": "J10",
-          "gap_mm": 4.262975809276394
-        },
-        {
-          "name": "R1",
-          "gap_mm": 5.257435197655307
-        },
-        {
-          "name": "Q1",
-          "gap_mm": 5.388754020978386
-        }
-      ]
-    },
-    {
-      "reference": "J10",
-      "part": "Generic USB access gauge",
-      "nearest": [
-        {
-          "name": "BZ1",
-          "gap_mm": 2.692488031036079
-        },
-        {
-          "name": "J1",
-          "gap_mm": 4.262975809276394
-        },
-        {
-          "name": "D12",
-          "gap_mm": 5.650012731552124
         }
       ]
     }
   ],
   "bodies": [
     {
-      "name": "J2 VHR-4N nominal housing",
+      "name": "J2 VHR-4N catalogue housing envelope",
       "nearest": [
         {
           "name": "H1 screw head",
-          "gap_mm": 0.7571319999999986
+          "gap_mm": 0.9073306263011284
         },
         {
           "name": "U14",
@@ -119,720 +73,227 @@
           "gap_mm": 2.15079505443573
         }
       ]
-    },
-    {
-      "name": "J3 VHR-2N nominal housing",
-      "nearest": [
-        {
-          "name": "C21",
-          "gap_mm": 2.469817824904273
-        },
-        {
-          "name": "R4",
-          "gap_mm": 2.5999999761581423
-        },
-        {
-          "name": "Q4",
-          "gap_mm": 2.6155015518698015
-        }
-      ]
-    },
-    {
-      "name": "J7 PHDR-20VS nominal housing",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 2.7973200634657402
-        },
-        {
-          "name": "J2",
-          "gap_mm": 3.429999446868898
-        },
-        {
-          "name": "R78",
-          "gap_mm": 4.319177533695585
-        }
-      ]
-    },
-    {
-      "name": "J1 generic USB plug envelope",
-      "nearest": [
-        {
-          "name": "J10",
-          "gap_mm": 4.262975809276394
-        },
-        {
-          "name": "R1",
-          "gap_mm": 5.257435197655307
-        },
-        {
-          "name": "Q1",
-          "gap_mm": 5.388754020978386
-        }
-      ]
-    },
-    {
-      "name": "J1 USB shell envelope",
-      "nearest": [
-        {
-          "name": "D12",
-          "gap_mm": 2.28825653267675
-        },
-        {
-          "name": "R1",
-          "gap_mm": 2.9002947305313644
-        },
-        {
-          "name": "Q1",
-          "gap_mm": 4.468663723106817
-        }
-      ]
-    },
-    {
-      "name": "J10 generic USB plug envelope",
-      "nearest": [
-        {
-          "name": "BZ1",
-          "gap_mm": 2.692488031036079
-        },
-        {
-          "name": "J1",
-          "gap_mm": 4.262975809276394
-        },
-        {
-          "name": "D12",
-          "gap_mm": 5.650012731552124
-        }
-      ]
-    },
-    {
-      "name": "J10 USB shell envelope",
-      "nearest": [
-        {
-          "name": "D12",
-          "gap_mm": 2.28825653267675
-        },
-        {
-          "name": "BZ1",
-          "gap_mm": 2.849999809265137
-        },
-        {
-          "name": "J1",
-          "gap_mm": 5.380000209808349
-        }
-      ]
     }
   ],
   "wires": [
     {
-      "name": "J2 cavity 1 black MOTOR_A1_OUT",
-      "nearest": [
-        {
-          "name": "J7 mate",
-          "gap_mm": 5.348914068809449
-        },
-        {
-          "name": "J7",
-          "gap_mm": 9.869580359310119
-        },
-        {
-          "name": "R78",
-          "gap_mm": 14.289709923854998
-        }
-      ]
-    },
-    {
-      "name": "Insulated splice 1 envelope",
+      "name": "motor_factory_cable_jacket_rerouted",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 95.5
+          "gap_mm": 23.25
         },
         {
           "name": "Support post 3",
-          "gap_mm": 102.03767263527537
+          "gap_mm": 39.21695666642316
         },
         {
           "name": "Support post 4",
-          "gap_mm": 107.20471730969457
+          "gap_mm": 39.21695666642316
         }
       ]
     },
     {
-      "name": "Motor factory lead 1 colour assignment illustrative",
+      "name": "J2 cavity 1 black Alpha3057_16AWG",
       "nearest": [
-        {
-          "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 70.64132500000001
-        },
-        {
-          "name": "Support post 3",
-          "gap_mm": 80.43344427222327
-        },
-        {
-          "name": "Support post 4",
-          "gap_mm": 81.37376975519686
-        }
-      ]
-    },
-    {
-      "name": "J2 cavity 2 green MOTOR_A2",
-      "nearest": [
-        {
-          "name": "J7 mate",
-          "gap_mm": 8.768311049286538
-        },
         {
           "name": "J7",
-          "gap_mm": 12.20393524481146
+          "gap_mm": 10.175780359310119
         },
         {
           "name": "Q19",
-          "gap_mm": 14.323098124960095
+          "gap_mm": 14.6439992235507
+        },
+        {
+          "name": "U14",
+          "gap_mm": 14.845038458905226
         }
       ]
     },
     {
-      "name": "Insulated splice 2 envelope",
+      "name": "TE320559_splice_1_OD_UNVERIFIED",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 95.5
+          "gap_mm": 46.5
         },
         {
-          "name": "Support post 3",
-          "gap_mm": 103.4486904119159
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 46.55
         },
         {
-          "name": "Support post 4",
-          "gap_mm": 105.17601868568507
+          "name": "J7",
+          "gap_mm": 46.90025407710266
         }
       ]
     },
     {
-      "name": "Motor factory lead 2 colour assignment illustrative",
+      "name": "motor_black_lead_to_splice_1",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 70.64132500000001
+          "gap_mm": 48.15
         },
         {
-          "name": "Support post 3",
-          "gap_mm": 80.43344427222327
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 50.846918670265055
         },
         {
-          "name": "Support post 4",
-          "gap_mm": 81.37376975519686
+          "name": "J7",
+          "gap_mm": 54.04107658035287
         }
       ]
     },
     {
-      "name": "J2 cavity 3 red MOTOR_B1_OUT",
+      "name": "J2 cavity 2 green Alpha3057_16AWG",
       "nearest": [
         {
-          "name": "J7 mate",
-          "gap_mm": 12.476187086392914
+          "name": "J7",
+          "gap_mm": 12.51013524481146
         },
         {
-          "name": "H1 screw head",
-          "gap_mm": 12.66679906099836
+          "name": "Q19",
+          "gap_mm": 14.629298124960096
         },
         {
           "name": "D6",
-          "gap_mm": 14.566685999423711
+          "gap_mm": 14.894825837929933
         }
       ]
     },
     {
-      "name": "Insulated splice 3 envelope",
+      "name": "TE320559_splice_2_OD_UNVERIFIED",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 95.5
+          "gap_mm": 46.5
         },
         {
-          "name": "Support post 4",
-          "gap_mm": 103.4486904119159
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 46.55
         },
         {
-          "name": "Support post 3",
-          "gap_mm": 105.17601868568507
+          "name": "J7",
+          "gap_mm": 46.90025407710266
         }
       ]
     },
     {
-      "name": "Motor factory lead 3 colour assignment illustrative",
+      "name": "motor_green_lead_to_splice_2",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 70.64132500000001
+          "gap_mm": 46.9
         },
         {
-          "name": "Support post 4",
-          "gap_mm": 80.43344427222327
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 50.846918670265055
         },
         {
-          "name": "Support post 3",
-          "gap_mm": 81.37376975519686
+          "name": "J7",
+          "gap_mm": 54.04107658035287
         }
       ]
     },
     {
-      "name": "J2 cavity 4 blue MOTOR_B2",
+      "name": "J2 cavity 3 red Alpha3057_16AWG",
       "nearest": [
         {
           "name": "H1 screw head",
-          "gap_mm": 11.289774252884373
+          "gap_mm": 13.683639149084227
+        },
+        {
+          "name": "D6",
+          "gap_mm": 14.872885999423712
+        },
+        {
+          "name": "R84",
+          "gap_mm": 14.887984503376522
+        }
+      ]
+    },
+    {
+      "name": "TE320559_splice_3_OD_UNVERIFIED",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 46.5
+        },
+        {
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 46.55
+        },
+        {
+          "name": "J7",
+          "gap_mm": 47.02764389148207
+        }
+      ]
+    },
+    {
+      "name": "motor_red_lead_to_splice_3",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 48.15
+        },
+        {
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 50.846918670265055
+        },
+        {
+          "name": "J7",
+          "gap_mm": 54.155751469362976
+        }
+      ]
+    },
+    {
+      "name": "J2 cavity 4 blue Alpha3057_16AWG",
+      "nearest": [
+        {
+          "name": "H1 screw head",
+          "gap_mm": 12.378905162926955
         },
         {
           "name": "R86",
-          "gap_mm": 14.566571061478069
+          "gap_mm": 14.872771061478069
         },
         {
           "name": "R85",
-          "gap_mm": 14.629610994819338
+          "gap_mm": 14.935810994819338
         }
       ]
     },
     {
-      "name": "Insulated splice 4 envelope",
+      "name": "TE320559_splice_4_OD_UNVERIFIED",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 95.5
+          "gap_mm": 46.5
         },
         {
-          "name": "Support post 4",
-          "gap_mm": 102.03767263527537
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 46.55
         },
         {
-          "name": "Support post 3",
-          "gap_mm": 107.20471730969457
+          "name": "H1 screw head",
+          "gap_mm": 47.83947802421222
         }
       ]
     },
     {
-      "name": "Motor factory lead 4 colour assignment illustrative",
+      "name": "motor_blue_lead_to_splice_4",
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 70.64132500000001
+          "gap_mm": 46.9
+        },
+        {
+          "name": "Adapter plate conservative envelope",
+          "gap_mm": 50.846918670265055
         },
         {
           "name": "Support post 4",
-          "gap_mm": 80.43344427222327
-        },
-        {
-          "name": "Support post 3",
-          "gap_mm": 81.37376975519686
-        }
-      ]
-    },
-    {
-      "name": "J3 cavity 1 external lead",
-      "nearest": [
-        {
-          "name": "L3",
-          "gap_mm": 13.494573181648207
-        },
-        {
-          "name": "Q4",
-          "gap_mm": 13.872878281698647
-        },
-        {
-          "name": "C22",
-          "gap_mm": 14.225171487792968
-        }
-      ]
-    },
-    {
-      "name": "J3 cavity 2 external lead",
-      "nearest": [
-        {
-          "name": "C22",
-          "gap_mm": 10.26480348779297
-        },
-        {
-          "name": "Q16",
-          "gap_mm": 13.872878281698647
-        },
-        {
-          "name": "R4",
-          "gap_mm": 14.74672429712572
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 1 external lead",
-      "nearest": [
-        {
-          "name": "J2 mate",
-          "gap_mm": 4.660018000000002
-        },
-        {
-          "name": "J2",
-          "gap_mm": 4.689170621290158
-        },
-        {
-          "name": "R78",
-          "gap_mm": 11.425980609964395
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 2 external lead",
-      "nearest": [
-        {
-          "name": "J2 mate",
-          "gap_mm": 4.660018000000002
-        },
-        {
-          "name": "J2",
-          "gap_mm": 4.689170621290158
-        },
-        {
-          "name": "R78",
-          "gap_mm": 10.784948732478032
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 3 external lead",
-      "nearest": [
-        {
-          "name": "J2 mate",
-          "gap_mm": 6.660014000000001
-        },
-        {
-          "name": "J2",
-          "gap_mm": 6.673246445784887
-        },
-        {
-          "name": "R78",
-          "gap_mm": 12.109025373892738
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 4 external lead",
-      "nearest": [
-        {
-          "name": "J2 mate",
-          "gap_mm": 6.660014000000001
-        },
-        {
-          "name": "J2",
-          "gap_mm": 6.673246445784887
-        },
-        {
-          "name": "Q18",
-          "gap_mm": 11.47133049980278
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 5 external lead",
-      "nearest": [
-        {
-          "name": "J2 mate",
-          "gap_mm": 8.66001
-        },
-        {
-          "name": "J2",
-          "gap_mm": 8.664062170085874
-        },
-        {
-          "name": "Q17",
-          "gap_mm": 12.664915194806094
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 6 external lead",
-      "nearest": [
-        {
-          "name": "J2 mate",
-          "gap_mm": 8.66001
-        },
-        {
-          "name": "J2",
-          "gap_mm": 8.664062170085874
-        },
-        {
-          "name": "Q17",
-          "gap_mm": 11.47131619827405
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 7 external lead",
-      "nearest": [
-        {
-          "name": "J2",
-          "gap_mm": 10.65808981774153
-        },
-        {
-          "name": "J2 mate",
-          "gap_mm": 10.660006
-        },
-        {
-          "name": "R66",
-          "gap_mm": 12.418481924775715
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 8 external lead",
-      "nearest": [
-        {
-          "name": "J2",
-          "gap_mm": 10.65808981774153
-        },
-        {
-          "name": "J2 mate",
-          "gap_mm": 10.660006
-        },
-        {
-          "name": "Q17",
-          "gap_mm": 11.46881614852892
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 9 external lead",
-      "nearest": [
-        {
-          "name": "R66",
-          "gap_mm": 11.923158953110166
-        },
-        {
-          "name": "J2",
-          "gap_mm": 12.653896002174369
-        },
-        {
-          "name": "J2 mate",
-          "gap_mm": 12.660002000000002
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 10 external lead",
-      "nearest": [
-        {
-          "name": "R66",
-          "gap_mm": 11.03598783715069
-        },
-        {
-          "name": "Q17",
-          "gap_mm": 11.532305867750665
-        },
-        {
-          "name": "R79",
-          "gap_mm": 11.623725299662329
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 11 external lead",
-      "nearest": [
-        {
-          "name": "R66",
-          "gap_mm": 11.732346233720644
-        },
-        {
-          "name": "R79",
-          "gap_mm": 12.715456366626462
-        },
-        {
-          "name": "Q17",
-          "gap_mm": 13.050119208352262
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 12 external lead",
-      "nearest": [
-        {
-          "name": "R66",
-          "gap_mm": 10.830566434555248
-        },
-        {
-          "name": "R79",
-          "gap_mm": 11.603909527278756
-        },
-        {
-          "name": "Q17",
-          "gap_mm": 11.892939140053205
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 13 external lead",
-      "nearest": [
-        {
-          "name": "R66",
-          "gap_mm": 11.732346105540904
-        },
-        {
-          "name": "SW1",
-          "gap_mm": 12.297321816091689
-        },
-        {
-          "name": "R79",
-          "gap_mm": 12.822343007787055
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 14 external lead",
-      "nearest": [
-        {
-          "name": "R66",
-          "gap_mm": 10.830566296394137
-        },
-        {
-          "name": "R79",
-          "gap_mm": 11.720327187676103
-        },
-        {
-          "name": "U17",
-          "gap_mm": 12.244987062410383
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 15 external lead",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 10.99021463833584
-        },
-        {
-          "name": "R66",
-          "gap_mm": 11.923157564352008
-        },
-        {
-          "name": "R79",
-          "gap_mm": 13.21454227940918
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 16 external lead",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 10.99021463833584
-        },
-        {
-          "name": "R66",
-          "gap_mm": 11.035986343856004
-        },
-        {
-          "name": "R79",
-          "gap_mm": 12.14608492993413
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 17 external lead",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 9.900476089629048
-        },
-        {
-          "name": "R66",
-          "gap_mm": 12.418479373234591
-        },
-        {
-          "name": "R76",
-          "gap_mm": 13.822520737664437
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 18 external lead",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 9.900476089629048
-        },
-        {
-          "name": "R66",
-          "gap_mm": 11.56703699961856
-        },
-        {
-          "name": "U17",
-          "gap_mm": 12.376008145898163
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 19 external lead",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 9.100513190557994
-        },
-        {
-          "name": "R66",
-          "gap_mm": 13.185879712301958
-        },
-        {
-          "name": "R76",
-          "gap_mm": 13.447123592385596
-        }
-      ]
-    },
-    {
-      "name": "J7 cavity 20 external lead",
-      "nearest": [
-        {
-          "name": "SW1",
-          "gap_mm": 9.100513190557994
-        },
-        {
-          "name": "R76",
-          "gap_mm": 12.24457162603444
-        },
-        {
-          "name": "R66",
-          "gap_mm": 12.384279378877888
-        }
-      ]
-    },
-    {
-      "name": "J1 USB cable access tail",
-      "nearest": [
-        {
-          "name": "J10 mate",
-          "gap_mm": 5.5
-        },
-        {
-          "name": "Adapter plate conservative envelope",
-          "gap_mm": 18.74294000368122
-        },
-        {
-          "name": "J10",
-          "gap_mm": 20.007169381588085
-        }
-      ]
-    },
-    {
-      "name": "J10 USB cable access tail",
-      "nearest": [
-        {
-          "name": "J1 mate",
-          "gap_mm": 5.5
-        },
-        {
-          "name": "Adapter plate conservative envelope",
-          "gap_mm": 18.74294000368122
-        },
-        {
-          "name": "BZ1",
-          "gap_mm": 19.162082843556966
+          "gap_mm": 54.81671646598122
         }
       ]
     }

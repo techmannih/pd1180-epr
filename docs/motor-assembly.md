@@ -6,7 +6,7 @@ The [manufacturer STEP](https://files.omc-stepperonline.com/34HS31-6004S1.STEP) 
 
 **Direct rear PCB mounting and rear encoder attachment are not established.** The documented mounting interface is the front flange. Existing rear case fasteners are not approved accessory threads; do not remove them or drill the motor based on this preview.
 
-The default hosted 3D view includes the exact motor, routed PCB, adapter proposal and mating harness. Open `motor-assembly.circuit.tsx` for the source mechanical fit study. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Orange cylinders represent maximum screw-head/washer envelopes. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. `release/circuit.json` remains the authoritative routed PCB view and now also includes the motor, adapter and harness mechanical models. Its generator rejects any assembly change to the verified board records. Model URLs are pinned to an immutable Git commit and checked against the local CAD hashes; no moving branch URL is used.
+The default hosted 3D view includes the exact motor, routed PCB, adapter proposal and mating harness. Open `motor-assembly.circuit.tsx` for the source mechanical fit study. It uses `assembly.subassembly` and the manufacturer STEP converted to GLB. Fasteners, washers and spacers are separate named nominal models. No encoder holder or magnet is modeled for this motor. Custom supports are **proposals, not fabrication-released hardware**. `release/circuit.json` remains the authoritative routed PCB view and now also includes the motor, adapter and harness mechanical models. Its generator rejects any assembly change to the verified board records. Runtime inline models are pinned to an immutable Git commit and checked against the local CAD hashes; no moving branch URL is used.
 
 ![Ordered motor assembly proposal](../previews/motor-assembly-corrected.png)
 
@@ -25,9 +25,9 @@ The PCB hole pattern now follows the **ordered motor's rear CAD axes**, not the 
 | H3 | -24.447132 | 38.374311 |
 | H4 | -38.374311 | -24.447132 |
 
-All four drills remain Ø4.2 mm. Motor and board XY coordinates share the same orientation; no model reflection disguises the pattern. Connector and nearby component placement, local routing and the adapter's PCB holes are updated to provide clearance. The electrical schematic remains unchanged.
+All four drills remain Ø4.2 mm. Motor and board XY coordinates share the same orientation; no model reflection disguises the pattern. Connector and nearby component placement, local routing and the adapter's PCB holes are updated to provide clearance. Those earlier mounting/connector-position corrections preserved electrical connectivity. The 12 October interface ECO separately removes the unsupported bus/general-I/O circuits; see `product-eco.md`.
 
-The component-mesh screen uses an 8 mm maximum head/washer diameter and 3.5 mm height above the PCB, with at least 0.5 mm nominal component clearance.
+The component-mesh screen uses an 8 mm maximum head/washer diameter and 2.7 mm height above the PCB, with at least 0.5 mm nominal component clearance.
 
 | Hole | Nearest component | Nominal head clearance (mm) |
 |---|---|---:|
@@ -44,29 +44,17 @@ These are imported CAD-body clearances, not a tolerance study. Use M4 hardware w
 
 J2 is a top-entry JST B4P-VH connector. Its pads fitted on the previous layout, but the imported body overhung the bottom edge by **1.95 mm**. The connector is now shifted **2.50 mm inward** to PCB `(11.8, -37.6)` mm; its pin map, footprint and CAD origin are unchanged. The full body envelope leaves **0.55 mm nominal board-edge clearance**.
 
-R65, R84, R85, R86, C41 and R78 have local placement adjustments to keep the connector body and component courtyards clear. C41 remains beside U14, with its final native bypass path checked. The motor connector label is beside the body between J7 and J2. Routing and fabrication data are regenerated from this placement; the schematic and mounting-hole coordinates are unchanged.
+R65, R84, R85, R86, C41 (R78 was later removed in the interface ECO) have local placement adjustments to keep the connector body and component courtyards clear. C41 remains beside U14, with its final native bypass path checked. The motor connector label is beside the body between J7 and J2. Routing and fabrication data are regenerated from this placement; the schematic and mounting-hole coordinates are unchanged.
 
 The release geometry check measures the complete exported J2 mesh envelope against the board perimeter and neighboring component envelopes, requiring at least **0.50 mm** in each case. It rejects the previous overhanging model. This check does not replace connector/mating-harness tolerance or physical assembly validation. The [JST VH drawing](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) is the manufacturer reference.
 
-## Proposed adapter
+## Revision B adapter and hardware
 
-The drawing specifies four Ø6.5 mm front holes on a **69.6 ±0.2 mm square**. The STEP centers are `(±34.75, ±34.75)` mm, giving 69.5 mm pitch, within that tolerance. Front flange surfaces lie at STEP Z = 0 and 10 mm. The rear face lies at Z = 79.5 mm; the drawing permits an 80 mm maximum body. Four proposed supports run from the rear of the front flange to a separate plate behind the motor.
+The current stack is specified in [product correction](product-eco.md#mechanical-parts-and-fabrication) and `engineering/mechanical/assembly.json`. Four NBK SHBS-M5-80 posts (80 mm, 8 mm AF), a 3 mm 6061-T6 plate and four 6 mm Essentra spacers put the PCB bottom **19.5 mm** above the CAD rear face. The plate sits 10.5 mm above that face. Exact front-flange CAD centers remain ±34.75 mm; PCB hole centers above are unchanged.
 
-| Item | Nominal proposal |
-|---|---|
-| Support posts | Four, Ø8 mm × 70.5 mm; M5 fastening interfaces |
-| Rear plate | 85.9 × 85.9 × 3 mm, 6061-T6 aluminum; Ø20 mm center aperture |
-| Motor-to-plate gap | 1 mm at the CAD body length |
-| PCB standoffs | Four, M4, Ø8 mm × 6 mm |
-| PCB bottom above motor rear | 1 + 3 + 6 = **10 mm** nominal |
-| PCB hole pattern carried by plate | Ordered-motor rear CAD axes in the table above |
-| Plate clearance holes | Ø5.5 mm at motor posts; Ø4.5 mm at PCB standoffs |
+Nominal minimum post-to-case clearance is **0.607 mm**. The M4 washer/head stack is 2.7 mm high and 8 mm maximum diameter. The selected DIN433 M4 washer is 0.5 mm thick; ISO7089's larger washer is not interchangeable. Fasteners, thread engagement, fabrication drawings and pending supplier SKUs are listed in the product correction. The assembly uses the front flange and custom plate, not rear motor case screws.
 
-The plate carries the PCB on its own standoffs at those axes; this front-supported proposal does **not** use the motor rear threads. Matching the rear axes is a geometric fact, not approval to replace motor case screws.
-
-The mesh screen finds approximately **1.23 mm** minimum nominal clearance between the proposed long posts and the motor case. STEP X/Y map to PCB X/Y; STEP Z is the shaft axis. The motor rear face is placed at PCB Z = −10.8 mm; PCB mid-plane is Z = 0 and its bottom is Z = −0.8 mm. The shaft points away from the board. The board lies parallel to the motor rear face.
-
-At the drawing's 80 mm maximum body length, the nominal 1 mm plate gap becomes 0.5 mm before any other tolerances. The full tolerance stack is unresolved. The posts also share the motor's **front machine-mounting interface**; this has not been approved for the intended machine. Bracket clearance, bolt engagement, post-end design, tolerances, tightening torque, stiffness/vibration, cable strain relief and heat transfer require mechanical review. The GLB shows nominal envelopes, not detailed threads or a qualified fastener kit.
+Fabrication DXF/SVG/hole table and support/cap STLs are in `engineering/mechanical/fabrication`. These are custom prototype designs awaiting manufacturer DFM, tolerance/strength/heat/pull qualification and approval to share the machine's front mounting interface. No purchased or qualified kit is claimed.
 
 ## Encoder attachment unresolved
 

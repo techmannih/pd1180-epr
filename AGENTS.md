@@ -25,6 +25,8 @@ On 2026-10-11 the user approved adding all missing reference-board diagnostics: 
 
 On 2026-10-11 the user authorized correcting all 106 reported source warnings: use accurate component types and pin metadata, mark bare service pads as not assembled, and arrange the schematic on default A4 sheets with all elements inside the drawing area. Preserve electrical connectivity, component identities and PCB geometry during this schematic/metadata correction. Source warnings must fail verification rather than silently accompany a passing summary.
 
+On 2026-10-12 the user explicitly reopened affected source/PCB/assembly sections for Seve’s product review: remove unsupported CAN/RS485/RS232, DIN0/1, OUT0/1 and the J7 VMOTOR export; preserve shared safety circuitry and external STEP/DIR/ENABLE/limits pending a real command source. Complete independent J2/mounting corrections. Do not interpret USB motion as implemented or approved. This supersedes the earlier instruction to retain all industrial interfaces. Ordering remains held for sourcing, unresolved external equipment and hardware qualification.
+
 ## Required project structure
 
 Every board repository should contain:

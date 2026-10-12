@@ -1,4 +1,5 @@
 import { expect, test } from 'bun:test'
+import { readFileSync } from 'node:fs'
 import { KicadToCircuitJsonConverter } from 'kicad-to-circuit-json'
 import { combineSourceAndRoutedCircuit, assertAssemblyPreservesBoard } from './generate-cloud-viewer.mjs'
 
@@ -97,18 +98,19 @@ test('export rejects conflicting net references', () => {
   expect(() => combineSourceAndRoutedCircuit(source, routed)).toThrow('expected one named routed net')
 })
 
-test('hosted assembly requires all three models and preserves every board record', () => {
-  const extras = ['ordered_motor', 'adapter_proposal', 'harness_proposal'].flatMap(name => [
+test('hosted assembly requires every named part and preserves every board record', () => {
+  const names=JSON.parse(readFileSync('engineering/mechanical/assembly-parts.json','utf8')).map(p=>p.name)
+  const extras = names.flatMap(name => [
     { type: 'source_component', ftype: 'subassembly', source_component_id: name, name },
     { type: 'cad_component', source_component_id: name, cad_component_id: `cad_${name}`, model_glb_url: `https://example.com/${name}.glb` },
   ])
   const assembly = [...source, ...extras]
-  expect(assertAssemblyPreservesBoard(source, assembly)).toEqual(['ordered_motor', 'adapter_proposal', 'harness_proposal'])
-  expect(() => assertAssemblyPreservesBoard(source, source)).toThrow('must include')
-  expect(() => assertAssemblyPreservesBoard(source, assembly.filter(row => row.cad_component_id !== 'cad_ordered_motor'))).toThrow('Missing mechanical CAD')
+  expect(assertAssemblyPreservesBoard(source, assembly)).toEqual(names)
+  expect(() => assertAssemblyPreservesBoard(source, source)).toThrow('differs from the explicit mechanical parts manifest')
+  expect(() => assertAssemblyPreservesBoard(source, assembly.filter(row => row.cad_component_id !== `cad_${names[0]}`))).toThrow('Missing mechanical CAD')
   const changed = structuredClone(assembly)
   changed.find(row => row.type === 'schematic_text').text = 'Moved schematic'
   expect(() => assertAssemblyPreservesBoard(source, changed)).toThrow('changed the verified board')
-  expect(() => assertAssemblyPreservesBoard(source, [...assembly, { type: 'pcb_component', source_component_id: 'ordered_motor' }])).toThrow('changed the verified board')
+  expect(() => assertAssemblyPreservesBoard(source, [...assembly, { type: 'pcb_component', source_component_id: names[0] }])).toThrow('changed the verified board')
   expect(() => assertAssemblyPreservesBoard(source, [...assembly, { type: 'source_project_metadata', project: 'different' }])).toThrow('changed the verified board')
 })

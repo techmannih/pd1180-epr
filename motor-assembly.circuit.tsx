@@ -1,29 +1,22 @@
 import { assembly } from "@tscircuit/core"
 import { PD1180EPR } from "./index.circuit"
-import { MOTOR_GLB, MOTOR_FIXTURE_GLB, MOTOR_HARNESS_GLB, MOTOR_REAR_Z } from "./imports/MotorAssemblyCad"
+import { MECHANICAL_PARTS } from "./imports/MotorAssemblyCad"
 
-/** Ordered 34HS31-6004S1 fit study; adapter unqualified, encoder attachment unresolved. */
+/** Explicit physical parts. Prototype clamps and unverified dimensions stay labelled. */
 export default () => (
-  <assembly.device name="ordered_motor_controller_fit">
+  <assembly.device name="nema34_34HS31_6004S1_controller">
     <PD1180EPR />
-    <assembly.subassembly
-      name="ordered_motor"
-      displayName="Ordered STEPPERONLINE 34HS31-6004S1 STEP"
-      cadModel={{
-        glbUrl: MOTOR_GLB,
-        modelUnitToMmScale: 1,
-        positionOffset: { x: 0, y: 0, z: MOTOR_REAR_Z },
-      }}
-    />
-    <assembly.subassembly
-      name="adapter_proposal"
-      displayName="Adapter and fasteners — CAD proposal; encoder unresolved"
-      cadModel={{ glbUrl: MOTOR_FIXTURE_GLB, modelUnitToMmScale: 1 }}
-    />
-    <assembly.subassembly
-      name="harness_proposal"
-      displayName="J2 motor harness, J3/J7 mates and USB access — nominal proposal"
-      cadModel={{ glbUrl: MOTOR_HARNESS_GLB, modelUnitToMmScale: 1 }}
-    />
+    {MECHANICAL_PARTS.map((part) => (
+      <assembly.subassembly
+        key={part.name}
+        name={part.name}
+        displayName={part.description}
+        cadModel={{
+          glbUrl: part.url,
+          modelUnitToMmScale: 1,
+          positionOffset: { x: 0, y: 0, z: part.z },
+        }}
+      />
+    ))}
   </assembly.device>
 )

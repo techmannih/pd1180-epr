@@ -65,9 +65,9 @@ static void output(board_pin_t p, bool high) {
   pinMode(pin(p), OUTPUT);
 }
 static const board_pin_t boardInputs[] = {PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,
-  PD1180_PIN_STOP_L,PD1180_PIN_STOP_R,PD1180_PIN_HOME_IN,PD1180_PIN_DIN0,PD1180_PIN_DIN1,
-  PD1180_PIN_STEP_IN,PD1180_PIN_DIR_IN,PD1180_PIN_RS485_RX,PD1180_PIN_RS232_RX,
-  PD1180_PIN_CAN_RX,PD1180_PIN_TMC_DIAG0,PD1180_PIN_TMC_DIAG1};
+  PD1180_PIN_STOP_L,PD1180_PIN_STOP_R,PD1180_PIN_HOME_IN,
+  PD1180_PIN_STEP_IN,PD1180_PIN_DIR_IN,
+  PD1180_PIN_TMC_DIAG0,PD1180_PIN_TMC_DIAG1};
 static void releaseChipSelect(board_pin_t p) {
   digitalWrite(pin(p), HIGH);
   pinMode(pin(p), OUTPUT_OPEN_DRAIN); // Only external board-domain pullups drive high.
@@ -355,7 +355,7 @@ static void executeCommand() {
 void setup() {
   tmc.frame=motorFrame;
   output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_SD_MODE,false);
-  output(PD1180_PIN_RS485_DE,false); output(PD1180_PIN_OUT0_DRIVE,false); output(PD1180_PIN_OUT1_DRIVE,false);
+  // Removed field-bus and unassigned general I/O pins remain in reset input state.
   releaseChipSelect(PD1180_PIN_TMC_CS_N); releaseChipSelect(PD1180_PIN_ENC_CS_N); releaseChipSelect(PD1180_PIN_FLASH_CS_N);
   output(PD1180_PIN_STATUS_GPIO,false);
   analogReadResolution(12);

@@ -103,14 +103,14 @@
       "feature": "Software-selectable PD voltage",
       "status": "intentional_difference",
       "evidence": "docs/pd-configuration.json",
-      "detail": "References select 5–20 V / 5–28 V. This motor design is fixed 48 V / 5 A EPR; firmware rejects other contracts. No arbitrary-voltage UI is promised. TI image remains missing."
+      "detail": "References select 5\u201320 V / 5\u201328 V. This motor design is fixed 48 V / 5 A EPR; firmware rejects other contracts. No arbitrary-voltage UI is promised. TI image remains missing."
     },
     {
       "id": "power_protection",
       "feature": "Input protection and reverse blocking",
       "status": "implemented",
       "evidence": "engineering/power-audit.json",
-      "detail": "eFuse, independent power permit, reverse-blocked logic supplies and motor-side brake backup. Limits use this board’s own ratings."
+      "detail": "eFuse, independent power permit, reverse-blocked logic supplies and motor-side brake backup. Limits use this board\u2019s own ratings."
     },
     {
       "id": "driver",
@@ -138,7 +138,7 @@
       "feature": "Actual signed winding-current readings",
       "status": "implemented",
       "evidence": "docs/critical-copper-check.json",
-      "detail": "INA240A1 ×2, 5 mΩ telemetry shunts, 100 mV/A nominal. Independent 33 mΩ regulation shunts. Calibration and PWM sampling remain open."
+      "detail": "INA240A1 \u00d72, 5 m\u03a9 telemetry shunts, 100 mV/A nominal. Independent 33 m\u03a9 regulation shunts. Calibration and PWM sampling remain open."
     },
     {
       "id": "rgb",
@@ -198,10 +198,10 @@
     },
     {
       "id": "industrial",
-      "feature": "Required industrial interfaces only",
-      "status": "implemented",
+      "feature": "Retain only defined external functions",
+      "status": "open",
       "evidence": "docs/connector-harnesses.md",
-      "detail": "J7 consolidates user-required interfaces. Pin17 is ~48 V VMOTOR. Contacts/wire and external termination documented; field-bus application protocols are not implemented."
+      "detail": "CAN/RS485/RS232, DIN0/1, OUT0/1 and J7 motor-bus export removed in source and native copper. STEP/DIR/enable/limits remain until command equipment is selected; J7 connector reduction and final harness remain open."
     },
     {
       "id": "mechanics",
@@ -215,7 +215,7 @@
       "feature": "Heatsink, enclosure and brake load",
       "status": "open",
       "evidence": "docs/power-validation.md",
-      "detail": "References’ thermal vias/clearance method applies; their motor current, bulk capacitor and heatsink assumptions do not. Qualified thermal envelope and external brake cooling are missing."
+      "detail": "References\u2019 thermal vias/clearance method applies; their motor current, bulk capacitor and heatsink assumptions do not. Qualified thermal envelope and external brake cooling are missing."
     },
     {
       "id": "firmware",
@@ -249,7 +249,7 @@
     },
     {
       "id": "reference_boards",
-      "request": "Use Rishabh’s reference boards",
+      "request": "Use Rishabh\u2019s reference boards",
       "features": [
         "separate_usb",
         "pd_voltage",

@@ -48,7 +48,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `export-silkscreen-evidence.py` | Records every visible final KiCad top/bottom silkscreen label and its physical text size. |
 | `generate-firmware-pins.mjs` | Generates the STM32 pin header from the hardware pin contract or checks it for drift. |
 | `generate-cloud-viewer.mjs` | Verifies that the motor assembly preserves every source board record, then combines its board/motor CAD with routed KiCad traces, vias and pours for deterministic hosted PCB viewing. Removes floating-point recentering noise at KiCad's nanometre coordinate precision and omits the CLI's filesystem cache key, which includes generated release/report files; source and copper provenance remain enforced by SHA-256 inputs, routing fingerprint and delivery hashes. |
-| `generate-motor-assembly.mjs` | Converts the hash-locked ordered-motor STEP and parametric adapter proposal into GLBs and immutable, SHA-256-checked public runtime CAD URLs. Reads engineering/mechanical/assembly.json; custom hardware remains unqualified. |
+| `generate-motor-assembly.mjs` | Converts the hash-locked motor STEP, named hardware and custom plate/clamp into individual GLBs loaded from immutable Git asset URLs and fabrication DXF/SVG/STL files. Reads engineering/mechanical/assembly.json; custom hardware remains unqualified. |
 | `check-motor-assembly.mjs` | Checks complete J2 CAD-body containment and adjacent-component clearance; screens final routed component meshes against all four screw-head envelopes and exact motor meshes against the proposed support posts; verifies the axial stack, unresolved encoder status, CAD height axis and exported assembly orientation. Accepts board GLB and optional assembly GLB paths. Writes docs/motor-assembly-check.json; does not certify physical/magnetic fit. |
 | `generate-mounting-template.mjs` | Generates the 100%-scale SVG/PNG mounting template from the hardware contract and hash-locked STEP perimeter evidence, then detects stale copies. |
 | `generate-routing-report.py` | Generates route counts and completion state from the final KiCad board, DRC JSON and manufacturing report. |
@@ -96,5 +96,13 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `verify-programming.test.mjs`: covers corrupted end bytes, displaced/truncated dumps, image hash/size, erased images, missing/low-region TI exports and stale STM32 source identities.
 - `harness-geometry.mjs`: swept wire meshes, Bezier cable paths and exact segment-to-box clearance including insulation radius.
 - `harness-geometry.test.mjs`: regressions for crossings between sampled points, insulation clearance and finite endpoint-preserving wire meshes.
-- `generate-harness-assembly.mjs`: creates the separate J2/J3/J7 mating harness and generic USB access GLB from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
+- `generate-harness-assembly.mjs`: creates only the J2 motor mate, factory jacket, verified-length splice envelopes and bend-screened pigtails from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
 - `check-harness-assembly.mjs`: regenerates and verifies harness geometry, screens mated bodies/cable segments against component, motor-body, adapter, post and screw-head envelopes, checks cavity alignment, and writes hash-bound `docs/harness-assembly-check.json`. Runs during release export; no physical/crimp/strain-relief qualification is implied.
+
+- `apply-interface-cleanup.py`: removes the explicit 32-component/31-net interface set from a staging native PCB, leaving surviving placement and shared circuits intact. Fresh native DRC/ERC required.
+- `prune-interface-stubs.py`: iteratively removes only DRC-identified dangling GND/V3V3/VMOTOR stubs on a staging PCB; never waives findings.
+- `check-interface-eco.py`: compares original/modified native component placement, values, pad geometry and approved NC changes; writes an auditable JSON report.
+- `check-cable-support.mjs`: checks swept cable clearance against actual custom support, cap and M3 fastener mesh surfaces; scopes the intentional jacket-to-clamp contact.
+- `finish-interface-copper.py`: restores C41 ground with a 0.60/0.30 mm via and trims the identified B.Cu sliver after interface-stub deletion; staging only, fresh native checks mandatory.
+
+| `check-mechanical-assets.mjs` | Verifies all runtime model URLs use one immutable Git revision and local bytes match the part manifest; `--remote` also fetches and hash-checks every published asset. |

@@ -1,5 +1,5 @@
 {
-  "status": "Ordered motor CAD with adapter proposal; custom hardware and encoder are not released for fabrication",
+  "status": "Revision B CAD implementation; procurement, shared machine mounting and physical qualification remain open",
   "motor": {
     "name": "STEPPERONLINE 34HS31-6004S1",
     "step": "34HS31-6004S1.step",
@@ -53,25 +53,26 @@
         -38.374311,
         -24.447132
       ]
-    ]
+    ],
+    "assembly_glb": "engineering/mechanical/34hs31-6004s1-routed-cable.glb"
   },
   "mount": {
-    "concept": "Front-flange support posts and separate rear adapter plate; PCB and plate holes now share the ordered motor rear CAD axes. Rear threads are not used by this proposal.",
-    "motor_rear_to_adapter_bottom_mm": 1,
+    "concept": "Four selected 80 mm front-flange posts, custom 3 mm adapter plate, 6 mm PCB spacers and M4 through-fasteners. No rear motor case screws are used.",
+    "motor_rear_to_adapter_bottom_mm": 10.5,
     "adapter_thickness_mm": 3,
     "adapter_width_mm": 85.9,
     "adapter_center_aperture_diameter_mm": 20,
     "adapter_material": "6061-T6 aluminum; bonding/isolation and fastener contact require mechanical/electrical review",
-    "long_post_length_mm": 70.5,
-    "long_post_outer_diameter_mm": 8,
-    "long_post_thread": "M5; thread engagement and shared machine-mount fastening require mechanical approval",
+    "long_post_length_mm": 80,
+    "long_post_outer_diameter_mm": 9.237604307034013,
+    "long_post_thread": "M5 x 0.8 female/female; 10 mm engagement capacity each end, NBK SHBS-M5-80",
     "adapter_to_pcb_bottom_mm": 6,
     "pcb_standoff_outer_diameter_mm": 8,
-    "pcb_standoff_thread": "M4 male/female",
+    "pcb_standoff_thread": "Unthreaded 4.3 mm bore, Essentra 311430640050",
     "pcb_top_head_maximum_diameter_mm": 8,
-    "pcb_top_head_and_washer_height_mm": 3.5,
+    "pcb_top_head_and_washer_height_mm": 2.7,
     "minimum_component_to_head_mm": 0.5,
-    "pcb_bottom_to_motor_rear_mm": 10,
+    "pcb_bottom_to_motor_rear_mm": 19.5,
     "front_mounting_interface_shared": true,
     "adapter_pcb_hole_diameter_mm": 4.5,
     "long_post_bore_diameter_mm": 5,
@@ -80,7 +81,27 @@
     "copper_keepout_layers": [
       "F.Cu",
       "B.Cu"
-    ]
+    ],
+    "long_post_across_flats_mm": 8,
+    "cable_support": {
+      "part": "PD1180-CS-B",
+      "material": "PA12, prototype only; temperature/creep and pull-load qualification pending",
+      "splice_row_y_mm": -92,
+      "jacket_center_y_mm": -92,
+      "jacket_center_z_mm": -47,
+      "mount_holes_xy_mm": [
+        [
+          -18,
+          -39
+        ],
+        [
+          18,
+          -28
+        ]
+      ],
+      "mount_hole_diameter_mm": 3.4,
+      "note": "Custom printed support with split jacket saddle; bracket itself does not establish strain-relief qualification."
+    }
   },
   "encoder": {
     "sensor": "Optional U18 AS5047P, bottom side at PCB origin; U18/C52/C53 doNotPlace",
@@ -127,5 +148,6 @@
       "minimum_component_gap_mm": 0.5,
       "basis": "Complete projected supplier CAD envelope; top-entry B4P-VH connector body must remain inside the board perimeter."
     }
-  ]
+  ],
+  "runtime_assets_base_url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/2574ba02ff5035796423c18b6ec902c8a9e58d98/engineering/mechanical/parts"
 }

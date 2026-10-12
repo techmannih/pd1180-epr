@@ -1,10 +1,12 @@
-import {readFile,writeFile,mkdir} from 'node:fs/promises'
+import {readFile,writeFile,mkdir,readdir,rm} from 'node:fs/promises'
 import {convertCircuitJsonToSchematicSvg,convertCircuitJsonToPcbSvg} from 'circuit-to-svg'
 import {Resvg} from '@resvg/resvg-js'
 
 const circuit=JSON.parse(await readFile('dist/index/circuit.json'))
 const normalizeSvg=(svg)=>`${svg.replace(/[ \\t]+$/gm,'').trimEnd()}\n`
 await mkdir('dist/schematics',{recursive:true})
+const activeSheets=new Set(circuit.filter(x=>x.type==='schematic_sheet').map(x=>x.name))
+for(const file of await readdir('dist/schematics')) if(/\.(svg|png)$/.test(file)&&!activeSheets.has(file.replace(/\.(svg|png)$/,''))) await rm(`dist/schematics/${file}`)
 for(const sheet of circuit.filter(x=>x.type==='schematic_sheet')){
  const svg=normalizeSvg(convertCircuitJsonToSchematicSvg(circuit,{schematicSheetId:sheet.schematic_sheet_id,width:2400,height:1800,includeVersion:true}))
  await writeFile(`dist/schematics/${sheet.name}.svg`,svg)

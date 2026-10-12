@@ -1,5 +1,18 @@
 import { readFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
+// Reuse exactly equal stored float32 vertices; triangle coordinates do not move.
+export function indexedMesh(mesh) {
+  const positions=[], indices=[], lookup=new Map(), remap=new Map()
+  for(const old of mesh.indices) {
+    if(!remap.has(old)) {
+      const p=mesh.positions.slice(old*3,old*3+3).map(Math.fround),key=p.join(',')
+      if(!lookup.has(key)){lookup.set(key,positions.length/3);positions.push(...p)}
+      remap.set(old,lookup.get(key))
+    }
+    indices.push(remap.get(old))
+  }
+  return {...mesh,positions,indices}
+}
 export const encodeGlb = (meshes, generator = 'Mechanical assembly; dimensions in millimeters') => {
   const j = { asset: { version: '2.0', generator }, scene: 0, scenes: [{ nodes: [] }], nodes: [], meshes: [], materials: [], accessors: [], bufferViews: [], buffers: [] }
   const chunks = []; let length = 0
@@ -29,7 +42,7 @@ export const encodeGlb = (meshes, generator = 'Mechanical assembly; dimensions i
 }
 
 export async function readGlb(path) {
-  const bytes = await readFile(path)
+  const bytes = Buffer.isBuffer(path) ? path : await readFile(path)
   if (bytes.toString('ascii',0,4) !== 'glTF' || bytes.readUInt32LE(8) !== bytes.length) throw new Error(`Invalid GLB: ${path}`)
   const size = bytes.readUInt32LE(12), json = JSON.parse(bytes.toString('utf8',20,20+size))
   const bin = bytes.subarray(28+size)

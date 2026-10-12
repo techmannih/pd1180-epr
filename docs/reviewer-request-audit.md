@@ -1,4 +1,6 @@
-# Seve review: requirements, external connections and assembly audit
+# Seve review: historical requirements audit
+
+**Superseded implementation status:** this audit describes the board before the actual product ECO. See [implemented changes](product-eco.md); its old “no change applied” statements are historical.
 
 Date: 2026-10-12 IST. Audited board: `56b7dee8d0150ae728028d68e12341bd9ad49f42`.
 Scope: the review messages supplied in this conversation, current source, routed viewer, connector/motor specifications and existing assembly evidence. This is a requirements and evidence audit, not a new hardware qualification or manufacturing release. **No circuit, schematic, routing or mechanical model was changed.**
