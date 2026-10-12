@@ -67,7 +67,7 @@
       "definition": "engineering/mechanical/assembly.json",
       "preview_entrypoint": "motor-assembly.circuit.tsx",
       "direct_rear_mount_compatible": null,
-      "status": "Exact ordered-motor CAD; front-flange adapter is a proposal. Rear case bolts are not approved accessory mounting points; encoder attachment unresolved."
+      "status": "Exact ordered-motor CAD in an alignment preview; unsupported adapter/posts/fasteners removed. Existing four PCB holes unchanged. Rear thread/depth, secure mounting and encoder attachment remain unverified."
     }
   },
   "fabrication": {
@@ -107,40 +107,7 @@
     "J1": "USB PD POWER",
     "J10": "USB DATA",
     "J2": "Motor A1/A2/B1/B2",
-    "J3": "External regeneration brake resistor",
-    "J7": "Retained STEP/DIR/ENABLE and home/limit inputs; command-source product and final connector reduction unresolved"
-  },
-  "industrial_harness": {
-    "reference": "J7",
-    "mpn": "B20B-PHDSS(LF)(SN)",
-    "lcsc": "C471521",
-    "mate": "PHDR-20VS",
-    "pin_to_net": {
-      "1": "HOME_24V",
-      "2": "STOPL_24V",
-      "3": "STOPR_24V",
-      "6": "STEP_24V",
-      "7": "DIR_24V",
-      "8": "GND",
-      "18": "HW_ENABLE_24V"
-    },
-    "warning": "Revision B disconnects all field buses, general I/O and external VMOTOR. No pin is a 48 V output. Retained 20-pin footprint is interim until the command-source/interface decision is resolved; do not manufacture this interim ECO.",
-    "current_rating": "Only input signals and signal ground remain; not a power-output connector.",
-    "no_connect_pins": [
-      4,
-      5,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      19,
-      20
-    ]
+    "J3": "External regeneration brake resistor"
   },
   "logic_power": {
     "U5": "PD_VBUS -> V3V3_PD -> U23 -> board V3V3",
@@ -148,7 +115,7 @@
     "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
     "reverse_blocking": "Two cascaded status-interlocked LM66100 pairs; DATA and PD VBUS are never connected",
     "usb_default_budget": "Startup before enumeration and USB suspend current must be measured and qualified; the current limiter is overload protection, not a USB enumeration policy",
-    "usb_data_power": "USB DATA alone powers MCU setup/diagnostics. Industrial interfaces, flash, encoder and sensors require board V3V3. CDC advertises a bus-powered 500 mA configuration.",
+    "usb_data_power": "USB DATA alone powers MCU setup/diagnostics. Flash, encoder and sensors require board V3V3. CDC advertises a bus-powered 500 mA configuration.",
     "U25": "USB_DATA_VBUS -> TPS2553 U28 -> TLV75533 U25 -> V3V3_USB",
     "selection": "U26/U27 + R112: status-interlocked OR of board V3V3 and V3V3_USB into V3V3_MCU",
     "board_presence": "R119/R120 10k/10k divider into STM32 PB1; 2.9\u20133.6 V qualified for 20 ms before peripheral access. PD IRQ removed; status remains polled.",
@@ -259,5 +226,13 @@
     "target_power": "fixed 5 V supplied through J1; no EPR negotiation during fixture programming",
     "programmer": "3.3 V open-drain, ground first, VCC output disabled; TP_PD_VREF is sense only",
     "programming_status": "fixture access designed; TI image, fixture acceptance and readback/boot qualification pending"
+  },
+  "local_control": {
+    "start_stop": "SW2, PC6 / USER_BUTTON_N, active-low with R133 10k pullup to V3V3_MCU",
+    "reset": "SW1 / NRST",
+    "motion_mode": "TMC5160 internal SPI ramp; SD_MODE low; unused U7 pins 17,18,23,24,25 grounded",
+    "qualification": "Motion inhibited until TI configuration and powered bridge validation exist",
+    "external_command_interfaces": "None; J7 and STEP/DIR/ENABLE/home/limit conditioning removed",
+    "protection": "U10/U11/U33 and DRV_EN_N pullup retained; Q14 emitter grounded after removal of external-enable transistor Q15"
   }
 }

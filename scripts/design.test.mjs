@@ -49,7 +49,7 @@ test('source model has no errors or warnings and uses physical component types',
   for (const name of ['Q2', 'Q3', 'Q4', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q16', 'Q26']) {
     expect(comp(name).ftype).toBe('simple_mosfet')
   }
-  expect(comp('J7').ftype).toBe('simple_connector')
+  expect(comp('J2').ftype).toBe('simple_connector')
   expect(comp('D16').ftype).toBe('simple_led')
   expect(ports.filter(row => row.source_component_id === comp('D16').source_component_id).map(row => row.pin_number).sort()).toEqual([1, 2, 3, 4])
 })
@@ -181,11 +181,11 @@ test('logic boots upstream of the gated motor power path',()=>{
   on('U4',1,'PD_PATH_OK');on('U4',2,'POWER_PERMIT');on('U6',12,'EFUSE_EN')
   expect(manifest.parts.find(p=>p.name==='R14').value).toBe('10k')
 })
-test('hardware driver shutdown needs MCU, power-good, voltage-good and external enable',()=>{
+test('hardware driver shutdown retains MCU, power-good, voltage-good and thermal inhibit',()=>{
   on('U7',28,'DRV_EN_N');on('R37',1,'V3V3');on('R37',2,'DRV_EN_N')
   on('U10',1,'MCU_RUN');on('U10',2,'MOTOR_PG');on('U11',2,'VMOTOR_OK')
-  on('Q14',3,'DRV_EN_N');on('Q14',2,'ENABLE_CHAIN');on('Q15',3,'ENABLE_CHAIN');on('Q15',2,'GND')
-  on('R57',1,'HW_ENABLE_24V')
+  on('Q14',3,'DRV_EN_N');on('Q14',2,'GND');on('U33',1,'RUN_WINDOW_OK');on('U33',2,'TEMP_OK');on('U33',4,'RUN_SAFE')
+  expect(comp('Q15')).toBeUndefined()
 })
 test('both bridges have four external FETs and independent low-side shunts',()=>{
   for(const [hi,lo,phase] of [[6,7,'A1'],[8,9,'A2'],[10,11,'B1'],[12,13,'B2']]){
@@ -243,15 +243,16 @@ test('USB DATA has independent CC, attach sense and ESD while VMOTOR retains bra
   on('U22',2,'VMOTOR');on('U22',3,'VMOTOR')
   expect(new Set(['PD_VBUS','USB_DATA_VBUS','VMOTOR','DATA_CC1','DATA_CC2','CC1_PD','CC2_PD'].map(netKey)).size).toBe(7)
 })
-test('interim J7 preserves command/inhibit inputs and removes undefined interfaces and motor-bus export',()=>{
-  expect(comp('J6')).toBeUndefined();expect(comp('J9')).toBeUndefined()
-  expect(comp('J7').manufacturer_part_number).toBe('B20B-PHDSS(LF)(SN)')
-  for(const [pin,net]of [[1,'HOME_24V'],[2,'STOPL_24V'],[3,'STOPR_24V'],[6,'STEP_24V'],[7,'DIR_24V'],[8,'GND'],[18,'HW_ENABLE_24V']])on('J7',pin,net)
-  for(const pin of [4,5,9,10,11,12,13,14,15,16,17,19,20])expect(key('J7',pin)).toBeFalsy()
-  for(const ref of ['U19','U20','U21','Q17','Q18','Q24','Q25'])expect(comp(ref)).toBeUndefined()
+test('onboard control replaces every unsupported external command connection',()=>{
+  const eco=JSON.parse(readFileSync('engineering/onboard-control-eco.json'))
+  for(const ref of eco.removed_components)expect(comp(ref)).toBeUndefined()
+  for(const name of eco.removed_nets)expect(nets.some(n=>n.name===name)).toBe(false)
+  on('SW2',1,'USER_BUTTON_N');on('SW2',2,'GND');on('U16',30,'USER_BUTTON_N')
+  on('R133',1,'V3V3_MCU');on('R133',2,'USER_BUTTON_N')
+  for(const p of [25,26,27,31])expect(key('U16',p)).toBeFalsy()
 })
-test('STEP/DIR multifunction pins cannot contend with encoder outputs',()=>{
-  on('U7',23,'GND');on('U7',24,'GND');expect(key('U7',25)).toBeFalsy()
+test('SPI ramp unused inputs are defined and separate from encoder outputs',()=>{
+  for(const p of [17,18,23,24,25])on('U7',p,'GND')
   on('U18',6,'ENC_B');on('U18',7,'ENC_A');on('U18',14,'ENC_I')
 })
 
@@ -290,10 +291,10 @@ test('TMP102 hardware alert inhibits the run chain independently of MCU_RUN',()=
   for(const [ref,sda,scl] of [['U29',6,1],['U30',9,10]]){on(ref,sda,'PD_SDA');on(ref,scl,'PD_SCL')}
 })
 
-test('USB-only power is confined to the MCU and its reset/decoupling network',()=>{
+test('USB-only power is confined to the MCU and its local controls/decoupling',()=>{
   const mcuRail=netKey('V3V3_MCU')
   const attached=new Set(ports.filter(p=>p.subcircuit_connectivity_map_key===mcuRail).map(p=>components.find(c=>c.source_component_id===p.source_component_id).name))
-  expect([...attached].sort()).toEqual(['U16','U26','U27','C44','C45','C46','C47','R70','TP_SWD_3V3'].sort())
+  expect([...attached].sort()).toEqual(['U16','U26','U27','C44','C45','C46','C47','R70','R133','TP_SWD_3V3'].sort())
   for(const [ref,pin] of [['U31',6],['U32',6],['U18',11],['U17',8]])on(ref,pin,'V3V3')
   on('U16',20,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
   on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')

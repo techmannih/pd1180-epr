@@ -2,7 +2,6 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises'
 import {assemblyPolicyErrors} from './assembly-policy.mjs'
 const manifest=JSON.parse(await readFile('docs/design-manifest.json'))
 const data=JSON.parse(await readFile('dist/index/circuit.json'))
-const stock=JSON.parse(await readFile('docs/stock-report.json'))
 const source=data.filter(x=>x.type==='source_component')
 const row=cells=>cells.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')
 const grouped=new Map()
@@ -12,7 +11,15 @@ const standards=JSON.parse(await readFile('board-standards.json'))
 const policyErrors=assemblyPolicyErrors(data,standards,fittedNames)
 if(policyErrors.length)throw new Error(policyErrors.join('\n'))
 const bom=[row(['Comment','Designator','Footprint','LCSC Part #','Quantity'])]
-for(const [code,parts]of grouped){const s=stock.parts.find(p=>p.lcsc===code);bom.push(row([s?.mpn,parts.map(p=>p.name).join(','),s?.package,code,parts.length]))}
+// BOM identity comes from the reviewed source manifest, not a transient stock API.
+// Stock/package availability remains an independent mandatory order gate.
+for(const [code,parts]of grouped){
+ const first=parts[0]
+ const comment=first.value||first.mpn
+ if(!comment||!first.footprint)throw new Error(`${code}: missing source value/package`)
+ if(parts.some(p=>(p.value||p.mpn)!==comment||p.footprint!==first.footprint))throw new Error(`${code}: inconsistent source BOM identity`)
+ bom.push(row([comment,parts.map(p=>p.name).join(','),first.footprint,code,parts.length]))
+}
 const cpl=[row(['Designator','Mid X','Mid Y','Layer','Rotation'])]
 for(const p of data.filter(x=>x.type==='pcb_component')){
  const c=source.find(s=>s.source_component_id===p.source_component_id)

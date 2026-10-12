@@ -45,8 +45,8 @@ const pages = [
   ],
   [
     "motion-enable",
-    "Step Direction and Hardware Enable",
-    "U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock.",
+    "Onboard Motion and Hardware Enable",
+    "STM32 commands U7 over SPI. U10/U11/U33 and Q14 retain hardware inhibits.",
     "The driver remains inhibited until the hardware safety conditions permit motion."
   ],
   [
@@ -76,7 +76,7 @@ const pages = [
   [
     "mcu",
     "MCU Clock Memory and Debug",
-    "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and the retained STEP/DIR input path.",
+    "U16 STM32G0B1 commands the TMC5160 ramp generator over SPI; SW2 requests Start/Stop.",
     "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
   ],
   [
@@ -91,17 +91,12 @@ const pages = [
     "J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port.",
     "D15 protects D+/D-/CC. R107/R108/C72 sense DATA VBUS; DATA cannot feed VMOTOR."
   ],
+  null, // External machine inputs removed; preserve later sheet numbering.
   [
-    "inputs",
-    "Home and Limit Inputs",
-    "Non-isolated 24 V HOME and left/right STOP input conditioning.",
-    "The consolidated J7 harness is shown on the Step Direction and Control Inputs sheet."
-  ],
-  [
-    "inputs-aux",
-    "Step Direction and Control Inputs",
-    "24 V STEP and DIR conditioning; J7 retains only motion and limit input connections.",
-    "J7 unused pins are NC; no external VMOTOR output. Command-source product remains unresolved."
+    "user-control",
+    "Local Start and Stop",
+    "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power.",
+    "Debounce requires release before start; reset, power loss and faults never auto-start."
   ],
   null, // Removed interface sheet; retain subsequent approved sheet numbers.
   null, // Removed interface sheet; retain subsequent approved sheet numbers.

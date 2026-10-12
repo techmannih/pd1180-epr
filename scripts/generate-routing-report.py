@@ -43,7 +43,7 @@ def main() -> None:
         "statistics": {
             "components_including_mounts_and_service_pads": len(board.GetFootprints()),
             "supplier_backed_fitted_components": len(manifest["parts"]),
-            "service_testpads": 11,
+            "service_testpads": sum(f.GetReference().startswith("TP_") for f in board.GetFootprints()),
             "mounting_holes": 4,
             "pads": len(board.GetPads()),
             "traces": len(route_segments),

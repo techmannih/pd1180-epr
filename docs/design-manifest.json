@@ -2824,8 +2824,8 @@
         "pin14": "SPI_SCK",
         "pin15": "SPI_MOSI",
         "pin16": "SPI_MISO",
-        "pin17": "REFL_STEP",
-        "pin18": "REFR_DIR",
+        "pin17": "GND",
+        "pin18": "GND",
         "pin19": "GND",
         "pin20": "V3V3",
         "pin21": "SD_MODE",
@@ -2855,7 +2855,8 @@
         "pin46": "GL_B2_DRV",
         "pin47": "GL_B1_DRV",
         "pin48": "MOTOR_B1",
-        "pin49": "GND"
+        "pin49": "GND",
+        "pin25": "GND"
       },
       "sheet": "motion",
       "xy": [
@@ -2869,9 +2870,7 @@
         9.99977679999985,
         9.999776799999964
       ],
-      "noConnect": [
-        "pin25"
-      ],
+      "noConnect": [],
       "section": "motion_U7",
       "sch": [
         -6.25,
@@ -4189,136 +4188,6 @@
       "footprint": "插件,P=3.96mm"
     },
     {
-      "tag": "A_74LVC1G157GW_125",
-      "name": "U8",
-      "connections": {
-        "pin1": "STEP_IN",
-        "pin2": "GND",
-        "pin3": "STOP_L",
-        "pin4": "REFL_STEP",
-        "pin5": "V3V3",
-        "pin6": "SD_MODE"
-      },
-      "sheet": "motion",
-      "xy": [
-        4,
-        -8
-      ],
-      "owner": null,
-      "lcsc": "C135822",
-      "mpn": "74LVC1G157GW,125",
-      "size": [
-        2.6998422000000004,
-        1.6999712000000002
-      ],
-      "noConnect": [],
-      "section": "motion_U8",
-      "sch": [
-        -5.7,
-        1.5
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "SOT-363-6"
-    },
-    {
-      "tag": "A_74LVC1G157GW_125",
-      "name": "U9",
-      "connections": {
-        "pin1": "DIR_IN",
-        "pin2": "GND",
-        "pin3": "STOP_R",
-        "pin4": "REFR_DIR",
-        "pin5": "V3V3",
-        "pin6": "SD_MODE"
-      },
-      "sheet": "motion",
-      "xy": [
-        7.5,
-        -12
-      ],
-      "owner": null,
-      "lcsc": "C135822",
-      "mpn": "74LVC1G157GW,125",
-      "size": [
-        1.6999712000000002,
-        2.699842199999999
-      ],
-      "noConnect": [],
-      "section": "motion_U9",
-      "sch": [
-        4.5,
-        1.5
-      ],
-      "rotation": 90,
-      "layer": "top",
-      "footprint": "SOT-363-6"
-    },
-    {
-      "tag": "capacitor",
-      "name": "C36",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "GND"
-      },
-      "sheet": "motion",
-      "xy": [
-        0.25,
-        -8.3
-      ],
-      "owner": "U8",
-      "value": "100nF",
-      "lcsc": "C14663",
-      "footprint": "0603",
-      "voltage": 50,
-      "size": [
-        2.45,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "rotation": 180,
-      "decoupling_straight_line_mm": 2.0250780000000006,
-      "section": "motion_U8",
-      "sch": [
-        -2,
-        3.7
-      ],
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "capacitor",
-      "name": "C37",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "GND"
-      },
-      "sheet": "motion",
-      "xy": [
-        4.25,
-        -13
-      ],
-      "owner": "U9",
-      "value": "100nF",
-      "lcsc": "C14663",
-      "footprint": "0603",
-      "voltage": 50,
-      "size": [
-        2.4500000000000006,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "rotation": 180,
-      "decoupling_straight_line_mm": 2.0250780000000006,
-      "section": "motion_U9",
-      "sch": [
-        -0.8,
-        3.7
-      ],
-      "layer": "top",
-      "mpn": null
-    },
-    {
       "tag": "SN74LVC1G08DBVR",
       "name": "U10",
       "connections": {
@@ -4542,7 +4411,8 @@
       "connections": {
         "base": "RUN_BASE",
         "emitter": "ENABLE_CHAIN",
-        "collector": "DRV_EN_N"
+        "collector": "DRV_EN_N",
+        "pin2": "GND"
       },
       "sheet": "motion",
       "xy": [
@@ -4565,125 +4435,6 @@
       "rotation": 180,
       "layer": "top",
       "footprint": "SOT-23"
-    },
-    {
-      "tag": "MMBT5551LT1G",
-      "name": "Q15",
-      "connections": {
-        "base": "HW_ENABLE_BASE",
-        "emitter": "GND",
-        "collector": "ENABLE_CHAIN"
-      },
-      "sheet": "motion",
-      "xy": [
-        -4,
-        -20
-      ],
-      "owner": "U11",
-      "lcsc": "C41095",
-      "mpn": "MMBT5551LT1G",
-      "size": [
-        3.2500062,
-        2.5999186000000023
-      ],
-      "noConnect": [],
-      "section": "motion_enable",
-      "sch": [
-        1.9205,
-        -2.7
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "SOT-23"
-    },
-    {
-      "tag": "resistor",
-      "name": "R57",
-      "connections": {
-        "pin1": "HW_ENABLE_24V",
-        "pin2": "HW_ENABLE_BASE"
-      },
-      "sheet": "motion",
-      "xy": [
-        -8,
-        -13
-      ],
-      "owner": "U11",
-      "value": "100k",
-      "lcsc": "C25803",
-      "footprint": "0603",
-      "size": [
-        2.45,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "motion_enable",
-      "sch": [
-        7,
-        -4
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R58",
-      "connections": {
-        "pin1": "HW_ENABLE_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "motion",
-      "xy": [
-        0,
-        -12
-      ],
-      "owner": "U11",
-      "value": "10k",
-      "lcsc": "C844918",
-      "footprint": "0603",
-      "size": [
-        2.45,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "motion_enable",
-      "sch": [
-        -2.5,
-        -7.7
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "BAV21W_7_F",
-      "name": "D1",
-      "connections": {
-        "pin1": "HW_ENABLE_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "motion",
-      "xy": [
-        -3.9999999999999996,
-        -23.5
-      ],
-      "owner": "Q15",
-      "lcsc": "C155214",
-      "mpn": "BAV21W-7-F",
-      "size": [
-        4.334814799999999,
-        1.1500103999999993
-      ],
-      "noConnect": [],
-      "section": "motion_enable",
-      "sch": [
-        4.5,
-        -7.7
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "SOD-123"
     },
     {
       "name": "U34",
@@ -5710,12 +5461,8 @@
         "pin21": "EFUSE_FAULT_N",
         "pin23": "ENC_CS_N",
         "pin24": "FLASH_CS_N",
-        "pin25": "STOP_L",
-        "pin26": "STOP_R",
-        "pin27": "HOME_IN",
         "pin28": "SD_MODE",
-        "pin30": "STEP_IN",
-        "pin31": "DIR_IN",
+        "pin30": "USER_BUTTON_N",
         "pin33": "USB_DM",
         "pin34": "USB_DP",
         "pin35": "SWDIO",
@@ -5741,7 +5488,23 @@
         9.999852999999995,
         9.999852999999995
       ],
-      "noConnect": [],
+      "noConnect": [
+        "pin2",
+        "pin3",
+        "pin13",
+        "pin14",
+        "pin22",
+        "pin25",
+        "pin26",
+        "pin27",
+        "pin29",
+        "pin31",
+        "pin32",
+        "pin38",
+        "pin39",
+        "pin40",
+        "pin41"
+      ],
       "section": "mcu_U16",
       "sch": [
         -2.5,
@@ -6247,786 +6010,6 @@
       ],
       "rotation": 90,
       "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "B20B_PHDSS_LF__SN_",
-      "name": "J7",
-      "connections": {
-        "pin1": "HOME_24V",
-        "pin2": "STOPL_24V",
-        "pin3": "STOPR_24V",
-        "pin6": "STEP_24V",
-        "pin7": "DIR_24V",
-        "pin8": "GND",
-        "pin18": "HW_ENABLE_24V"
-      },
-      "sheet": "inputs",
-      "xy": [
-        -10.5,
-        -40.099873
-      ],
-      "owner": null,
-      "lcsc": "C471521",
-      "mpn": "B20B-PHDSS(LF)(SN)",
-      "size": [
-        19.523964,
-        3.523995999999997
-      ],
-      "noConnect": [],
-      "section": "inputs_J7",
-      "sch": [
-        4,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "插件,P=2mm",
-      "value": "B20B-PHDSS(LF)(SN)"
-    },
-    {
-      "tag": "MMBT5551LT1G",
-      "name": "Q19",
-      "connections": {
-        "base": "STOP_L_BASE",
-        "emitter": "GND",
-        "collector": "STOP_L"
-      },
-      "sheet": "inputs",
-      "xy": [
-        8,
-        -31
-      ],
-      "owner": null,
-      "lcsc": "C41095",
-      "mpn": "MMBT5551LT1G",
-      "size": [
-        3.2500061999999987,
-        2.5999185999999987
-      ],
-      "noConnect": [],
-      "section": "inputs_Q19",
-      "sch": [
-        -12.682500000000001,
-        -7.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "SOT-23"
-    },
-    {
-      "tag": "resistor",
-      "name": "R83",
-      "connections": {
-        "pin1": "STOPL_24V",
-        "pin2": "STOP_L_BASE"
-      },
-      "sheet": "inputs",
-      "xy": [
-        16.5,
-        -31
-      ],
-      "owner": "Q19",
-      "value": "47k",
-      "lcsc": "C25819",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999975,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q19",
-      "sch": [
-        -8,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R84",
-      "connections": {
-        "pin1": "STOP_L_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        12.25,
-        -32.6
-      ],
-      "owner": "Q19",
-      "value": "10k",
-      "lcsc": "C844918",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999993,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q19",
-      "sch": [
-        -5,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "resistor",
-      "name": "R85",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "STOP_L"
-      },
-      "sheet": "inputs",
-      "xy": [
-        15.5,
-        -32.6
-      ],
-      "owner": "Q19",
-      "value": "4.7k",
-      "lcsc": "C23162",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999975,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q19",
-      "sch": [
-        -2,
-        -5.2
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "BAV21W_7_F",
-      "name": "D6",
-      "connections": {
-        "pin1": "STOP_L_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        12.5,
-        -30.5
-      ],
-      "owner": "Q19",
-      "lcsc": "C155214",
-      "mpn": "BAV21W-7-F",
-      "size": [
-        4.3348148,
-        1.1500103999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q19",
-      "sch": [
-        -3.5,
-        -5.2
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "footprint": "SOD-123"
-    },
-    {
-      "tag": "MMBT5551LT1G",
-      "name": "Q20",
-      "connections": {
-        "base": "STOP_R_BASE",
-        "emitter": "GND",
-        "collector": "STOP_R"
-      },
-      "sheet": "inputs",
-      "xy": [
-        8,
-        -26.5
-      ],
-      "owner": null,
-      "lcsc": "C41095",
-      "mpn": "MMBT5551LT1G",
-      "size": [
-        3.2500061999999987,
-        2.5999186000000023
-      ],
-      "noConnect": [],
-      "section": "inputs_Q20",
-      "sch": [
-        2.3175,
-        -7.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "SOT-23"
-    },
-    {
-      "tag": "resistor",
-      "name": "R86",
-      "connections": {
-        "pin1": "STOPR_24V",
-        "pin2": "STOP_R_BASE"
-      },
-      "sheet": "inputs",
-      "xy": [
-        18.75,
-        -32.6
-      ],
-      "owner": "Q20",
-      "value": "47k",
-      "lcsc": "C25819",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999957,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q20",
-      "sch": [
-        7,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R87",
-      "connections": {
-        "pin1": "STOP_R_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        22,
-        -33.4
-      ],
-      "owner": "Q20",
-      "value": "10k",
-      "lcsc": "C844918",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999957,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q20",
-      "sch": [
-        10,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "resistor",
-      "name": "R88",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "STOP_R"
-      },
-      "sheet": "inputs",
-      "xy": [
-        4,
-        -11
-      ],
-      "owner": "Q20",
-      "value": "4.7k",
-      "lcsc": "C23162",
-      "footprint": "0603",
-      "size": [
-        2.4500000000000006,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q20",
-      "sch": [
-        13,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "BAV21W_7_F",
-      "name": "D7",
-      "connections": {
-        "pin1": "STOP_R_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        20,
-        -11.5
-      ],
-      "owner": "Q20",
-      "lcsc": "C155214",
-      "mpn": "BAV21W-7-F",
-      "size": [
-        1.1500103999999993,
-        4.3348148
-      ],
-      "noConnect": [],
-      "section": "inputs_Q20",
-      "sch": [
-        11.5,
-        -5.2
-      ],
-      "rotation": 90,
-      "layer": "top",
-      "footprint": "SOD-123"
-    },
-    {
-      "tag": "MMBT5551LT1G",
-      "name": "Q21",
-      "connections": {
-        "base": "HOME_IN_BASE",
-        "emitter": "GND",
-        "collector": "HOME_IN"
-      },
-      "sheet": "inputs",
-      "xy": [
-        2.5,
-        9.900000000000002
-      ],
-      "owner": null,
-      "lcsc": "C41095",
-      "mpn": "MMBT5551LT1G",
-      "size": [
-        3.2500062,
-        2.5999186000000005
-      ],
-      "noConnect": [],
-      "section": "inputs_Q21",
-      "sch": [
-        -12.682500000000001,
-        1.8
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "footprint": "SOT-23"
-    },
-    {
-      "tag": "resistor",
-      "name": "R89",
-      "connections": {
-        "pin1": "HOME_24V",
-        "pin2": "HOME_IN_BASE"
-      },
-      "sheet": "inputs",
-      "xy": [
-        25.5,
-        -33.4
-      ],
-      "owner": "Q21",
-      "value": "47k",
-      "lcsc": "C25819",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999957,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q21",
-      "sch": [
-        -8,
-        3.8
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R90",
-      "connections": {
-        "pin1": "HOME_IN_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        27,
-        -31
-      ],
-      "owner": "Q21",
-      "value": "10k",
-      "lcsc": "C844918",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999957,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q21",
-      "sch": [
-        -5,
-        3.8
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "resistor",
-      "name": "R91",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "HOME_IN"
-      },
-      "sheet": "inputs",
-      "xy": [
-        33,
-        10
-      ],
-      "owner": "Q21",
-      "value": "4.7k",
-      "lcsc": "C23162",
-      "footprint": "0603",
-      "size": [
-        2.450000000000003,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q21",
-      "sch": [
-        -2,
-        3.8
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "BAV21W_7_F",
-      "name": "D8",
-      "connections": {
-        "pin1": "HOME_IN_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        41,
-        -16
-      ],
-      "owner": "Q21",
-      "lcsc": "C155214",
-      "mpn": "BAV21W-7-F",
-      "size": [
-        1.1500103999999993,
-        4.334814800000002
-      ],
-      "noConnect": [],
-      "section": "inputs_Q21",
-      "sch": [
-        -3.5,
-        3.8
-      ],
-      "rotation": 90,
-      "layer": "top",
-      "footprint": "SOD-123"
-    },
-    {
-      "tag": "MMBT5551LT1G",
-      "name": "Q22",
-      "connections": {
-        "base": "STEP_IN_BASE",
-        "emitter": "GND",
-        "collector": "STEP_IN"
-      },
-      "sheet": "inputs",
-      "xy": [
-        6,
-        14
-      ],
-      "owner": null,
-      "lcsc": "C41095",
-      "mpn": "MMBT5551LT1G",
-      "size": [
-        3.2500061999999996,
-        2.5999186000000023
-      ],
-      "noConnect": [],
-      "section": "inputs_Q22",
-      "sch": [
-        2.3175,
-        1.8
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "footprint": "SOT-23"
-    },
-    {
-      "tag": "resistor",
-      "name": "R92",
-      "connections": {
-        "pin1": "STEP_24V",
-        "pin2": "STEP_IN_BASE"
-      },
-      "sheet": "inputs",
-      "xy": [
-        41,
-        -6
-      ],
-      "owner": "Q22",
-      "value": "47k",
-      "lcsc": "C25819",
-      "footprint": "0603",
-      "size": [
-        0.9500000000000028,
-        2.450000000000001
-      ],
-      "noConnect": [],
-      "section": "inputs_Q22",
-      "sch": [
-        7,
-        3.8
-      ],
-      "rotation": 90,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R93",
-      "connections": {
-        "pin1": "STEP_IN_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        30.5,
-        -12
-      ],
-      "owner": "Q22",
-      "value": "10k",
-      "lcsc": "C844918",
-      "footprint": "0603",
-      "size": [
-        0.9500000000000028,
-        2.4499999999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q22",
-      "sch": [
-        10,
-        3.8
-      ],
-      "rotation": 90,
-      "layer": "top",
-      "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "resistor",
-      "name": "R94",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "STEP_IN"
-      },
-      "sheet": "inputs",
-      "xy": [
-        23.5,
-        9.5
-      ],
-      "owner": "Q22",
-      "value": "4.7k",
-      "lcsc": "C23162",
-      "footprint": "0603",
-      "size": [
-        2.4499999999999957,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q22",
-      "sch": [
-        13,
-        3.8
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "BAV21W_7_F",
-      "name": "D9",
-      "connections": {
-        "pin1": "STEP_IN_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        29,
-        -15
-      ],
-      "owner": "Q22",
-      "lcsc": "C155214",
-      "mpn": "BAV21W-7-F",
-      "size": [
-        4.334814800000004,
-        1.1500103999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q22",
-      "sch": [
-        11.5,
-        3.8
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "footprint": "SOD-123"
-    },
-    {
-      "tag": "MMBT5551LT1G",
-      "name": "Q23",
-      "connections": {
-        "base": "DIR_IN_BASE",
-        "emitter": "GND",
-        "collector": "DIR_IN"
-      },
-      "sheet": "inputs",
-      "xy": [
-        8,
-        18
-      ],
-      "owner": null,
-      "lcsc": "C41095",
-      "mpn": "MMBT5551LT1G",
-      "size": [
-        3.2500061999999987,
-        2.5999186000000023
-      ],
-      "noConnect": [],
-      "section": "inputs_Q23",
-      "sch": [
-        -12.682500000000001,
-        -7.2
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "footprint": "SOT-23"
-    },
-    {
-      "tag": "resistor",
-      "name": "R95",
-      "connections": {
-        "pin1": "DIR_24V",
-        "pin2": "DIR_IN_BASE"
-      },
-      "sheet": "inputs",
-      "xy": [
-        40,
-        10
-      ],
-      "owner": "Q23",
-      "value": "47k",
-      "lcsc": "C25819",
-      "footprint": "0603",
-      "size": [
-        2.450000000000003,
-        0.9499999999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q23",
-      "sch": [
-        -8,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "resistor",
-      "name": "R96",
-      "connections": {
-        "pin1": "DIR_IN_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        31.75,
-        -27.75
-      ],
-      "owner": "Q23",
-      "value": "10k",
-      "lcsc": "C844918",
-      "footprint": "0603",
-      "size": [
-        0.9500000000000028,
-        2.4499999999999957
-      ],
-      "noConnect": [],
-      "section": "inputs_Q23",
-      "sch": [
-        -5,
-        -5.2
-      ],
-      "rotation": 270,
-      "layer": "top",
-      "mpn": "CRCW060310K0FKEA"
-    },
-    {
-      "tag": "resistor",
-      "name": "R97",
-      "connections": {
-        "pin1": "V3V3",
-        "pin2": "DIR_IN"
-      },
-      "sheet": "inputs",
-      "xy": [
-        41.1,
-        -19.6
-      ],
-      "owner": "Q23",
-      "value": "4.7k",
-      "lcsc": "C23162",
-      "footprint": "0603",
-      "size": [
-        2.450000000000003,
-        0.9500000000000028
-      ],
-      "noConnect": [],
-      "section": "inputs_Q23",
-      "sch": [
-        -2,
-        -5.2
-      ],
-      "rotation": 0,
-      "layer": "top",
-      "mpn": null
-    },
-    {
-      "tag": "BAV21W_7_F",
-      "name": "D10",
-      "connections": {
-        "pin1": "DIR_IN_BASE",
-        "pin2": "GND"
-      },
-      "sheet": "inputs",
-      "xy": [
-        39,
-        19
-      ],
-      "owner": "Q23",
-      "lcsc": "C155214",
-      "mpn": "BAV21W-7-F",
-      "size": [
-        4.334814800000004,
-        1.1500103999999993
-      ],
-      "noConnect": [],
-      "section": "inputs_Q23",
-      "sch": [
-        -3.5,
-        -5.2
-      ],
-      "rotation": 180,
-      "layer": "top",
-      "footprint": "SOD-123"
     },
     {
       "tag": "USB4105_GF_A",
@@ -8780,6 +7763,65 @@
         0.9500000000000028,
         2.4499999999999957
       ]
+    },
+    {
+      "tag": "TS_1088_AR02016",
+      "name": "SW2",
+      "connections": {
+        "pin1": "USER_BUTTON_N",
+        "pin2": "GND"
+      },
+      "sheet": "user-control",
+      "xy": [
+        -10.5,
+        -40
+      ],
+      "owner": null,
+      "lcsc": "C720477",
+      "mpn": "TS-1088-AR02016",
+      "size": [
+        5.599811,
+        1.859991199999996
+      ],
+      "noConnect": [],
+      "section": "user_start_stop",
+      "sch": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "footprint": "SMD,4x3mm"
+    },
+    {
+      "tag": "resistor",
+      "name": "R133",
+      "connections": {
+        "pin1": "V3V3_MCU",
+        "pin2": "USER_BUTTON_N"
+      },
+      "sheet": "user-control",
+      "xy": [
+        -16,
+        -40
+      ],
+      "owner": null,
+      "value": "10k",
+      "lcsc": "C844918",
+      "footprint": "0603",
+      "size": [
+        2.4499999999999975,
+        0.9500000000000028
+      ],
+      "noConnect": [],
+      "section": "user_start_stop",
+      "sch": [
+        0,
+        3
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "mpn": "CRCW060310K0FKEA"
     }
   ],
   "optional_parts": [

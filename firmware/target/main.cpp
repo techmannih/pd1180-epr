@@ -13,6 +13,7 @@ extern "C" {
 #include "power_domain.h"
 #include "tmc5160.h"
 #include "motor_service.h"
+#include "local_motion.h"
 }
 
 // Commissioning image: motor outputs stay locked until the new ECO has passed
@@ -30,6 +31,7 @@ static auto &tmcStatus = motor.status;
 static constexpr uint16_t commissioningCurrentPermille = 180; // Start below 1 A RMS; tune on the bench.
 static uint32_t lastDriverPoll;
 static pd1180_control_t control;
+static pd1180_local_motion_t localMotion;
 static pd1180_inputs_t inputs;
 static pd1180_board_power_t boardPower;
 static bool peripheralsStarted, wasSuspended;
@@ -65,8 +67,6 @@ static void output(board_pin_t p, bool high) {
   pinMode(pin(p), OUTPUT);
 }
 static const board_pin_t boardInputs[] = {PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,
-  PD1180_PIN_STOP_L,PD1180_PIN_STOP_R,PD1180_PIN_HOME_IN,
-  PD1180_PIN_STEP_IN,PD1180_PIN_DIR_IN,
   PD1180_PIN_TMC_DIAG0,PD1180_PIN_TMC_DIAG1};
 static void releaseChipSelect(board_pin_t p) {
   digitalWrite(pin(p), HIGH);
@@ -74,6 +74,7 @@ static void releaseChipSelect(board_pin_t p) {
 }
 static void invalidateTelemetry() {
   inputs = {};
+  pd1180_local_motion_cancel(&localMotion);
   temperatureConfigured = false;
   adcPending = false;
   adcValid[0] = adcValid[1] = phaseValid = pdReadOk = false;
@@ -321,18 +322,14 @@ static void pollPower() {
   inputs.watchdog_healthy = true;
   inputs.driver_ready = motionWiringVerified && pdImageVerified && tmc.configured &&
     tmcStatus.valid && !tmcStatus.fault && millis()-lastDriverPoll<=40u;
-  inputs.stop_active = digitalRead(pin(PD1180_PIN_STOP_L)) == LOW || digitalRead(pin(PD1180_PIN_STOP_R)) == LOW;
+  inputs.stop_active = false; // External limit interface removed; local STOP uses the controlled ramp.
 }
 static void executeCommand() {
   command[commandLength]=0;
   if(!strcmp(command,"DISARM")) {
-    safeOutputs(); pd1180_control_disarm(&control); pd1180_motor_service_reset(&motor); reply("OK DISARM\r\n");
+    safeOutputs(); pd1180_local_motion_cancel(&localMotion); pd1180_control_disarm(&control); pd1180_motor_service_reset(&motor); reply("OK DISARM\r\n");
   } else if(!strcmp(command,"ARM")) {
-    if (!motionWiringVerified || !pdImageVerified)
-      reply("BLOCKED: ECO hardware and TI configuration not verified\r\n");
-    else if (control.armed) reply("ERR already armed\r\n");
-    else if (pd1180_control_arm(&control,&inputs)) reply("OK ARM; awaiting stable power and driver checks\r\n");
-    else reply("BLOCKED: protection or fresh sensor/contract requirements not satisfied\r\n");
+    reply("BLOCKED: use local START/STOP; hardware qualification required\r\n");
   } else if(!strcmp(command,"DRIVER")) {
     char status[160];
     snprintf(status,sizeof(status),"TMC_VALID=%u IOIN=%08lX GSTAT=%08lX DRV_STATUS=%08lX CONFIGURED=%u FAULT=%u\r\n",
@@ -358,6 +355,7 @@ void setup() {
   // Removed field-bus and unassigned general I/O pins remain in reset input state.
   releaseChipSelect(PD1180_PIN_TMC_CS_N); releaseChipSelect(PD1180_PIN_ENC_CS_N); releaseChipSelect(PD1180_PIN_FLASH_CS_N);
   output(PD1180_PIN_STATUS_GPIO,false);
+  pinMode(pin(PD1180_PIN_USER_BUTTON_N), INPUT); // R133 is on the MCU rail.
   analogReadResolution(12);
   pd1180_control_reset(&control);
   IWatchdog.begin(250000); // 250 ms nominal; never serviced by interrupt handlers.
@@ -396,7 +394,7 @@ void loop() {
   if(usbStarted && vbusMv < 3000u) {
     SerialUSB.end(); usbStarted=false; commandLength=0; commandOverflow=false;
     responseLength=responseSent=0;
-    pd1180_control_disarm(&control);
+    safeOutputs(); pd1180_local_motion_cancel(&localMotion); pd1180_control_disarm(&control);
   }
   if(usbStarted) {
     if (SerialUSB && responseSent<responseLength) {
@@ -424,9 +422,14 @@ void loop() {
   }
   if (motionWiringVerified && pdImageVerified) {
     digitalWrite(pin(PD1180_PIN_POWER_PERMIT),control.power_permit?HIGH:LOW);
-    digitalWrite(pin(PD1180_PIN_SD_MODE),control.power_permit?HIGH:LOW);
+    digitalWrite(pin(PD1180_PIN_SD_MODE),LOW); // TMC internal SPI ramp, never STEP/DIR.
     digitalWrite(pin(PD1180_PIN_MCU_RUN),control.mcu_run && inputs.driver_ready?HIGH:LOW);
   } else safeOutputs();
+  pd1180_local_motion_update(&localMotion,&control,&inputs,&tmc,
+    digitalRead(pin(PD1180_PIN_USER_BUTTON_N))==LOW,tick,
+    motionWiringVerified && pdImageVerified && peripheralsStarted);
+  // Apply cancellations and transport/stop-timeout failures before any other work.
+  if (!control.armed || control.fault_latched) safeOutputs();
   pollIndicators(tick);
   IWatchdog.reload();
 }

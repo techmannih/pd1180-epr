@@ -50,7 +50,7 @@ bool pd1180_tmc_set_current(pd1180_tmc_t *d, uint16_t permille) {
 }
 bool pd1180_tmc_set_chopper(pd1180_tmc_t *d, bool enabled) {
   if (enabled && !d->configured) return false;
-  const uint32_t value=enabled?PD1180_TMC_STEP_CHOPCONF:(PD1180_TMC_STEP_CHOPCONF&~15u);
+  const uint32_t value=enabled?PD1180_TMC_RAMP_CHOPCONF:(PD1180_TMC_RAMP_CHOPCONF&~15u);
   uint32_t actual;
   if (!pd1180_tmc_write(d,CHOPCONF,value) || !pd1180_tmc_read(d,CHOPCONF,&actual) || actual!=value) {
     pd1180_tmc_invalidate(d); return false;
@@ -58,21 +58,35 @@ bool pd1180_tmc_set_chopper(pd1180_tmc_t *d, bool enabled) {
   d->chopconf=value;
   return true;
 }
-bool pd1180_tmc_configure_stepdir(pd1180_tmc_t *d, uint16_t permille) {
+bool pd1180_tmc_configure_ramp(pd1180_tmc_t *d, uint16_t permille) {
   pd1180_tmc_invalidate(d);
   uint32_t ioin, actual;
   if (!permille || permille>1000u || !pd1180_tmc_read(d,IOIN,&ioin) ||
-      (ioin>>24)!=0x30u || (ioin&0x50u)!=0x50u || (ioin&0x0Cu)) return false;
+      (ioin>>24)!=0x30u || (ioin&0x50u)!=0x10u || (ioin&0x0Cu)) return false;
   for (size_t i=0;i<pd1180_tmc5160_boot_config_count;++i) {
     const tmc5160_register_t reg=pd1180_tmc5160_boot_config[i];
     if (!pd1180_tmc_write(d,reg.address,reg.value)) return false;
   }
-  if (!pd1180_tmc_read(d,CHOPCONF,&actual) || actual!=(PD1180_TMC_STEP_CHOPCONF&~15u) ||
-      !pd1180_tmc_read(d,0x00u,&actual) || actual!=PD1180_TMC_STEP_GCONF ||
+  if (!pd1180_tmc_read(d,CHOPCONF,&actual) || actual!=(PD1180_TMC_RAMP_CHOPCONF&~15u) ||
+      !pd1180_tmc_read(d,0x00u,&actual) || actual!=PD1180_TMC_RAMP_GCONF ||
+      !pd1180_tmc_read(d,0x22u,&actual) || (actual&0xFFFFFFu)!=0u ||
       !pd1180_tmc_write(d,GSTAT,7u)) return false;
-  d->chopconf=PD1180_TMC_STEP_CHOPCONF&~15u;
+  d->chopconf=PD1180_TMC_RAMP_CHOPCONF&~15u;
   pd1180_tmc_status_t status;
   if (!pd1180_tmc_status(d,&status)) return false;
   d->configured=true;
   return pd1180_tmc_set_current(d,permille);
+}
+
+bool pd1180_tmc_velocity(pd1180_tmc_t *d, uint32_t target) {
+  if (!d->configured || target>PD1180_BENCH_VMAX) return false;
+  if (!pd1180_tmc_write(d,0x27u,target)) { pd1180_tmc_invalidate(d); return false; }
+  return true;
+}
+bool pd1180_tmc_actual_velocity(pd1180_tmc_t *d, int32_t *velocity) {
+  uint32_t raw;
+  if (!velocity || !d->configured || !pd1180_tmc_read(d,0x22u,&raw)) return false;
+  raw &= 0xFFFFFFu;
+  *velocity = (raw&0x800000u) ? (int32_t)(raw|0xFF000000u) : (int32_t)raw;
+  return true;
 }

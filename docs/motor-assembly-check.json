@@ -1,7 +1,7 @@
 {
   "manufacturing_drills": {
     "path": "dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH.drl",
-    "sha256": "992db1751a602079a6b0331704b4e541ea642db4a9fbc60bd0f7c2dd8a474409",
+    "sha256": "13f7b974cf7999c965badf568da3fab155e0f433f30b4f3ce0460a347a06c044",
     "holes": [
       {
         "name": "H1",
@@ -81,20 +81,20 @@
           "projected_envelope_gap_mm": 0.6749998927116394
         },
         {
-          "reference": "R84",
-          "projected_envelope_gap_mm": 0.6749998927116394
+          "reference": "C41",
+          "projected_envelope_gap_mm": 1.6037528348929935
         },
         {
-          "reference": "R85",
-          "projected_envelope_gap_mm": 0.6749998927116394
+          "reference": "U14",
+          "projected_envelope_gap_mm": 2.2499872207641616
         },
         {
-          "reference": "R86",
-          "projected_envelope_gap_mm": 0.6749998927116394
+          "reference": "C83",
+          "projected_envelope_gap_mm": 4.0749998927116415
         },
         {
-          "reference": "Q19",
-          "projected_envelope_gap_mm": 1.2499872207641616
+          "reference": "R117",
+          "projected_envelope_gap_mm": 4.399999892711641
         }
       ]
     }
@@ -121,10 +121,6 @@
     },
     "nearest": [
       {
-        "reference": "H1 fastener",
-        "gap_mm": 0.562242710423176
-      },
-      {
         "reference": "U31",
         "gap_mm": 1.4999999523162844
       },
@@ -137,8 +133,12 @@
         "gap_mm": 1.9509169578552248
       },
       {
-        "reference": "D6",
-        "gap_mm": 1.9799999713897707
+        "reference": "U32",
+        "gap_mm": 2.350765802233147
+      },
+      {
+        "reference": "C93",
+        "gap_mm": 2.5999999761581423
       }
     ],
     "scope": "Conservative insertion envelope; final cable bend, crimp tooling and strain relief require physical approval."
@@ -193,65 +193,14 @@
       "axis_offset_mm": 2.806551131218832e-7
     }
   ],
-  "board_glb_sha256": "9f5c25287339ae5c252c4bfd4e3a324af584a8a44fb9b240729337e2c609cf69",
+  "board_glb_sha256": "3a0888e90543e73500f382a6d062c2c43e99cca5103b12d34f16cec43d7830e1",
   "motor_glb_sha256": "58c1dc543cfc05583ffebd5db7cb66036269adcbbc6b11f0184318a4c2c9d87f",
   "motor_step_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
-  "spec_sha256": "49f6ac6089c674bfa9831f60937caed1f4f42acf9d997c2682949cab20997ad4",
-  "component_models_checked": 279,
+  "spec_sha256": "f21af8bb044c600d9f2914431531967e3724d2e467fb74aae65d34ff61f132d3",
+  "component_models_checked": 247,
   "assembly_alignment": {
     "maximum_vertex_offset_mm": {
       "stepperonline_34HS31_6004S1": 0,
-      "adapter_plate_PD1180_AP_B": 0,
-      "motor_support_post_M5_80_1": 0,
-      "post_top_washer_M5_1": 0,
-      "post_top_screw_M5x10_1": 0,
-      "post_front_washer_M5_1": 0,
-      "post_front_screw_M5x16_1": 0,
-      "motor_support_post_M5_80_2": 0,
-      "post_top_washer_M5_2": 0,
-      "post_top_screw_M5x10_2": 0,
-      "post_front_washer_M5_2": 0,
-      "post_front_screw_M5x16_2": 0,
-      "motor_support_post_M5_80_3": 0,
-      "post_top_washer_M5_3": 0,
-      "post_top_screw_M5x10_3": 0,
-      "post_front_washer_M5_3": 0,
-      "post_front_screw_M5x16_3": 0,
-      "motor_support_post_M5_80_4": 0,
-      "post_top_washer_M5_4": 0,
-      "post_top_screw_M5x10_4": 0,
-      "post_front_washer_M5_4": 0,
-      "post_front_screw_M5x16_4": 0,
-      "pcb_spacer_311430640050_H1": 0,
-      "pcb_top_washer_M4_H1": 0,
-      "pcb_screw_M4x20_H1": 0,
-      "pcb_lower_washer_M4_H1": 0,
-      "pcb_hex_nut_M4_H1": 0,
-      "pcb_spacer_311430640050_H2": 0,
-      "pcb_top_washer_M4_H2": 0,
-      "pcb_screw_M4x20_H2": 0,
-      "pcb_lower_washer_M4_H2": 0,
-      "pcb_hex_nut_M4_H2": 0,
-      "pcb_spacer_311430640050_H3": 0,
-      "pcb_top_washer_M4_H3": 0,
-      "pcb_screw_M4x20_H3": 0,
-      "pcb_lower_washer_M4_H3": 0,
-      "pcb_hex_nut_M4_H3": 0,
-      "pcb_spacer_311430640050_H4": 0,
-      "pcb_top_washer_M4_H4": 0,
-      "pcb_screw_M4x20_H4": 0,
-      "pcb_lower_washer_M4_H4": 0,
-      "pcb_hex_nut_M4_H4": 0,
-      "cable_support_PD1180_CS_B": 0,
-      "cable_clamp_cap_PD1180_CC_B": 0,
-      "cable_support_screw_M3x12_1": 0,
-      "cable_support_nut_M3_1": 0,
-      "cable_support_screw_M3x12_2": 0,
-      "cable_support_nut_M3_2": 0,
-      "cable_clamp_screw_M3x20_1": 0,
-      "cable_clamp_nut_M3_1": 0,
-      "cable_clamp_screw_M3x20_2": 0,
-      "cable_clamp_nut_M3_2": 0,
       "J2_VHR_4N_mating_housing": 0,
       "motor_factory_cable_jacket_rerouted": 0,
       "J2_cavity_1_black_Alpha3057_16AWG": 0,
@@ -267,7 +216,7 @@
       "TE320559_splice_4_OD_UNVERIFIED": 0,
       "motor_blue_lead_to_splice_4": 0
     },
-    "assembly_glb_sha256": "1bf2fb6007e0469740a577dd67229264721a3acac35b5ca57d427a800e67e6f7",
+    "assembly_glb_sha256": "b3ad72e63d3d7f756a54a7a3adf86a1e674227a424950bda92b5106f97d258c0",
     "motor_bounds_display_mm": {
       "min": [
         -43,
@@ -294,156 +243,12 @@
       4.573053047352005e-11
     ]
   },
-  "fixture_cad_bounds_mm": {
-    "min": [
-      -42.95000076293945,
-      -103,
-      -105.80000305175781
-    ],
-    "max": [
-      42.95000076293945,
-      42.95000076293945,
-      3.5
-    ]
-  },
-  "head_diameter_mm": 8,
-  "minimum_required_head_clearance_mm": 0.5,
-  "fasteners": [
-    {
-      "hole": "H1",
-      "nearest": [
-        {
-          "reference": "R89",
-          "clearance_mm": 0.5563
-        },
-        {
-          "reference": "J2",
-          "clearance_mm": 0.7271
-        },
-        {
-          "reference": "R87",
-          "clearance_mm": 0.8383
-        },
-        {
-          "reference": "R90",
-          "clearance_mm": 3.167
-        },
-        {
-          "reference": "R86",
-          "clearance_mm": 3.2524
-        }
-      ]
-    },
-    {
-      "hole": "H2",
-      "nearest": [
-        {
-          "reference": "D10",
-          "clearance_mm": 0.6471
-        },
-        {
-          "reference": "C23",
-          "clearance_mm": 0.9459
-        },
-        {
-          "reference": "C22",
-          "clearance_mm": 9.3211
-        },
-        {
-          "reference": "R95",
-          "clearance_mm": 10.0464
-        },
-        {
-          "reference": "R91",
-          "clearance_mm": 10.7494
-        }
-      ]
-    },
-    {
-      "hole": "H3",
-      "nearest": [
-        {
-          "reference": "C89",
-          "clearance_mm": 0.8562
-        },
-        {
-          "reference": "U34",
-          "clearance_mm": 1.1713
-        },
-        {
-          "reference": "L3",
-          "clearance_mm": 1.1971
-        },
-        {
-          "reference": "C88",
-          "clearance_mm": 2.5116
-        },
-        {
-          "reference": "R121",
-          "clearance_mm": 3.4459
-        }
-      ]
-    },
-    {
-      "hole": "H4",
-      "nearest": [
-        {
-          "reference": "D17",
-          "clearance_mm": 0.5475
-        },
-        {
-          "reference": "R127",
-          "clearance_mm": 0.8873
-        },
-        {
-          "reference": "D16",
-          "clearance_mm": 1.4599
-        },
-        {
-          "reference": "D18",
-          "clearance_mm": 2.6682
-        },
-        {
-          "reference": "Q26",
-          "clearance_mm": 3.4328
-        }
-      ]
-    }
-  ],
-  "posts": [
-    {
-      "axis_mm": [
-        34.75,
-        34.75
-      ],
-      "minimum_motor_clearance_mm": 0.6071284804653656
-    },
-    {
-      "axis_mm": [
-        -34.75,
-        34.75
-      ],
-      "minimum_motor_clearance_mm": 0.6071284804653656
-    },
-    {
-      "axis_mm": [
-        -34.75,
-        -34.75
-      ],
-      "minimum_motor_clearance_mm": 0.6071284804653656
-    },
-    {
-      "axis_mm": [
-        34.75,
-        -34.75
-      ],
-      "minimum_motor_clearance_mm": 0.6071284804653656
-    }
-  ],
+  "mounting_hardware_modeled": false,
+  "mechanically_secured": false,
   "pcb_bottom_to_motor_rear_mm": 19.5,
   "encoder_hardware_modeled": false,
   "encoder_fit_verified": false,
   "encoder_status": "Unresolved for ordered single-shaft motor",
   "errors": [],
-  "scope": "Nominal component-mesh and motor-post collision screen. Adapter is a proposal; encoder attachment unresolved; no strength, tolerance, physical-fit or magnetic-field qualification."
+  "scope": "Nominal CAD alignment, connector clearance and actual drill screen only. No mounting hardware modeled, no secure mounting, strain relief, strength, tolerance, physical-fit or encoder qualification."
 }

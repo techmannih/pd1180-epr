@@ -18,10 +18,14 @@ typedef struct {
 bool pd1180_tmc_read(pd1180_tmc_t *driver, uint8_t address, uint32_t *value);
 bool pd1180_tmc_write(pd1180_tmc_t *driver, uint8_t address, uint32_t value);
 bool pd1180_tmc_status(pd1180_tmc_t *driver, pd1180_tmc_status_t *status);
-/* Caller must hold DRV_ENN high and set SD_MODE high before initialization.
+/* Caller must hold DRV_ENN high and hold SD_MODE low before initialization.
  * No OTP writes. Bridge timing/short thresholds keep manufacturer defaults
  * pending scope qualification. This function leaves TOFF=0 (bridge disabled). */
-bool pd1180_tmc_configure_stepdir(pd1180_tmc_t *driver, uint16_t current_permille);
+bool pd1180_tmc_configure_ramp(pd1180_tmc_t *driver, uint16_t current_permille);
 bool pd1180_tmc_set_current(pd1180_tmc_t *driver, uint16_t current_permille);
 bool pd1180_tmc_set_chopper(pd1180_tmc_t *driver, bool enabled);
 void pd1180_tmc_invalidate(pd1180_tmc_t *driver);
+
+/* Bounded commissioning profile; caller must first qualify and enable the bridge. */
+bool pd1180_tmc_velocity(pd1180_tmc_t *driver, uint32_t target);
+bool pd1180_tmc_actual_velocity(pd1180_tmc_t *driver, int32_t *velocity);

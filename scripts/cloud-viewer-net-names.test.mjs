@@ -107,6 +107,7 @@ test('hosted assembly requires every named part and preserves every board record
   const assembly = [...source, ...extras]
   expect(assertAssemblyPreservesBoard(source, assembly)).toEqual(names)
   expect(() => assertAssemblyPreservesBoard(source, source)).toThrow('differs from the explicit mechanical parts manifest')
+  expect(() => assertAssemblyPreservesBoard(source, assembly.filter(row => row.source_component_id !== names[0]))).toThrow('differs from the explicit mechanical parts manifest')
   expect(() => assertAssemblyPreservesBoard(source, assembly.filter(row => row.cad_component_id !== `cad_${names[0]}`))).toThrow('Missing mechanical CAD')
   const changed = structuredClone(assembly)
   changed.find(row => row.type === 'schematic_text').text = 'Moved schematic'

@@ -90,7 +90,7 @@ Last complete refresh: 2026-10-12T01:57:49.343Z.
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 150 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 2869 | U1 |
 
-7 of 83 selected part types (279 placements) had sufficient reported stock for 5 boards. 32 package names matched the pinned expectation. See failed rows before ordering.
+7 of 83 selected part types (247 placements) had sufficient reported stock for 5 boards. 32 package names matched the pinned expectation. See failed rows before ordering.
 
 ## Substitution policy
 

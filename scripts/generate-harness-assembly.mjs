@@ -32,7 +32,7 @@ const mc=layout.motor_cable
 const jacketStart=[0,mc.cad_clip_plane_y_mm,mc.jacket_section_center_z_from_rear_mm+rear]
 const jacketEnd=[0,mc.jacket_end_y_mm,mc.jacket_end_z_mm]
 const jacket=[...bezier([jacketStart,[0,-108,jacketStart[2]],[0,mc.jacket_end_y_mm,-75],[0,mc.jacket_end_y_mm,-62]],64),jacketEnd]
-wire('motor_factory_cable_jacket_rerouted',jacket,mc.jacket_diameter_mm/2,[.18,.18,.19,1],'factory cable jacket',{kind:'jacket',intentional_contacts:['motor cable cut plane','cable_support_PD1180_CS_B','cable_clamp_cap_PD1180_CC_B'],diameter_basis:'7.5 mm vendor STEP cable section, confirm physical cable'})
+wire('motor_factory_cable_jacket_rerouted',jacket,mc.jacket_diameter_mm/2,[.18,.18,.19,1],'factory cable jacket',{kind:'jacket',intentional_contacts:['motor cable cut plane'],diameter_basis:'7.5 mm vendor STEP cable section, confirm physical cable'})
 for(const p of ports){
  const i=p.pin-1,color=motorHarness.motor_connector.wire_colours[i],x=mc.splice_x_mm[i],y=mc.splice_y_mm,z=mc.splice_top_z_mm
  const start=[p.x,p.y,height-.5],r=(p.y-y)/2

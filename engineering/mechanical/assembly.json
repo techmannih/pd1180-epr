@@ -1,5 +1,5 @@
 {
-  "status": "Revision B CAD implementation; procurement, shared machine mounting and physical qualification remain open",
+  "status": "Motor/PCB alignment and connected J2 harness preview; no mounting fasteners modeled or qualified",
   "motor": {
     "name": "STEPPERONLINE 34HS31-6004S1",
     "step": "34HS31-6004S1.step",
@@ -57,51 +57,18 @@
     "assembly_glb": "engineering/mechanical/34hs31-6004s1-routed-cable.glb"
   },
   "mount": {
-    "concept": "Four selected 80 mm front-flange posts, custom 3 mm adapter plate, 6 mm PCB spacers and M4 through-fasteners. No rear motor case screws are used.",
-    "motor_rear_to_adapter_bottom_mm": 10.5,
-    "adapter_thickness_mm": 3,
-    "adapter_width_mm": 85.9,
-    "adapter_center_aperture_diameter_mm": 20,
-    "adapter_material": "6061-T6 aluminum; bonding/isolation and fastener contact require mechanical/electrical review",
-    "long_post_length_mm": 80,
-    "long_post_outer_diameter_mm": 9.237604307034013,
-    "long_post_thread": "M5 x 0.8 female/female; 10 mm engagement capacity each end, NBK SHBS-M5-80",
-    "adapter_to_pcb_bottom_mm": 6,
-    "pcb_standoff_outer_diameter_mm": 8,
-    "pcb_standoff_thread": "Unthreaded 4.3 mm bore, Essentra 311430640050",
-    "pcb_top_head_maximum_diameter_mm": 8,
-    "pcb_top_head_and_washer_height_mm": 2.7,
-    "minimum_component_to_head_mm": 0.5,
     "pcb_bottom_to_motor_rear_mm": 19.5,
-    "front_mounting_interface_shared": true,
-    "adapter_pcb_hole_diameter_mm": 4.5,
-    "long_post_bore_diameter_mm": 5,
-    "front_mounting_interface_approval": null,
     "copper_keepout_radius_mm": 4.25,
     "copper_keepout_layers": [
       "F.Cu",
       "B.Cu"
     ],
-    "long_post_across_flats_mm": 8,
-    "cable_support": {
-      "part": "PD1180-CS-B",
-      "material": "PA12, prototype only; temperature/creep and pull-load qualification pending",
-      "splice_row_y_mm": -92,
-      "jacket_center_y_mm": -92,
-      "jacket_center_z_mm": -47,
-      "mount_holes_xy_mm": [
-        [
-          -18,
-          -39
-        ],
-        [
-          18,
-          -28
-        ]
-      ],
-      "mount_hole_diameter_mm": 3.4,
-      "note": "Custom printed support with split jacket saddle; bracket itself does not establish strain-relief qualification."
-    }
+    "concept": "Four existing PCB holes preserved. Unsupported long posts, adapter, spacers, nuts, screws and cable-support fixture removed at user request. No replacement hardware assumed.",
+    "hardware_modeled": false,
+    "mechanically_secured": false,
+    "spacing_note": "19.5 mm retained only as the previous preview separation; not a manufactured mounting stack or confirmed final spacing.",
+    "rear_thread_specification": null,
+    "rear_usable_depth_mm": null
   },
   "encoder": {
     "sensor": "Optional U18 AS5047P, bottom side at PCB origin; U18/C52/C53 doNotPlace",
@@ -115,10 +82,11 @@
     ]
   },
   "unresolved": [
-    "Shared front mounting interface, post end design, fasteners, tolerances, stiffness and tool access require approval",
+    "Rear mounting thread, usable engagement and final clearance stack are unverified; no fastener or secure mount is claimed",
     "Motor body is 79.5 mm in STEP but 80 mm maximum in drawing; full tolerance stack remains to be reviewed",
     "Rear rotating-shaft access and magnet attachment are not established; no encoder hardware is modeled",
-    "6 A/phase must be translated to an approved driver current/hold waveform; external load inertia and stop profile remain unknown; manufacturer rotor inertia is 1400 g cm\u00b2"
+    "6 A/phase must be translated to an approved driver current/hold waveform; external load inertia and stop profile remain unknown; manufacturer rotor inertia is 1400 g cm\u00b2",
+    "J2 harness has no new retention bracket; final strain-relief attachment requires physical verification"
   ],
   "sources": [
     "https://www.amazon.com/dp/B091C83HWF",
@@ -131,10 +99,6 @@
     "motor": {
       "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/6d2a3103ddf35e9511eebf9be376b01f3f9c7ed8/engineering/mechanical/34hs31-6004s1.glb",
       "sha256": "58c1dc543cfc05583ffebd5db7cb66036269adcbbc6b11f0184318a4c2c9d87f"
-    },
-    "fixture": {
-      "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/6d2a3103ddf35e9511eebf9be376b01f3f9c7ed8/engineering/mechanical/adapter-proposal.glb",
-      "sha256": "6a7b6f827a4bf054807f8160a4e7f3f29497455d5fcacb968786874c89da7b1f"
     },
     "harness": {
       "url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/6d2a3103ddf35e9511eebf9be376b01f3f9c7ed8/engineering/mechanical/harness-proposal.glb",

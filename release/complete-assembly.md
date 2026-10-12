@@ -1,19 +1,13 @@
-# Revision B motor and J2 assembly
+# Current motor harness and assembly boundaries
 
-Open `motor-assembly.circuit.tsx`. The current preview contains 66 named parts: the ordered motor, custom plate and cable clamp, separate fasteners/spacers, J2 mate, four pigtails, four splices and the factory cable continuation. Unconnected J3/J7 and generic USB tails were removed. The complete powered system is not yet defined; [product correction](product-eco.md) lists every retained connection and blocker.
+Use `motor-assembly.circuit.tsx` for the current source preview. Native PCB routing is still pending for the onboard-control ECO. The current model is not a secured or ready-to-run product.
 
-## Fabrication and assembly order
+1. Keep the existing four PCB drills unchanged. No rear fasteners may be specified from the CAD bore alone; the extra front-post/adapter assembly is withdrawn.
+2. Use J2 B4P-VH with VHR-4N and four SVH-41T-P1.1 contacts. The factory 0.75 mm² motor wires join 16 AWG Alpha3057 pigtails through four TE320559 splices. Do not apply the 10 A VH/16 AWG catalogue rating directly to the thinner factory wire or to a motor current setting.
+3. Follow black/green/red/blue cavity order 1/2/3/4 and verify winding continuity. Proposed pigtail cuts are 170/170/170/165 mm including 12 mm allowance. The harness shop must approve strips, crimps, tooling and first-article lengths.
+4. TE320559's 32.13 mm length is verified; the 5 mm model outside diameter remains provisional. Actual TE drawing/CAD retrieval remains blocked by its download endpoint. No production fit is claimed.
+5. The factory motor cable exit remains. Final harness strain relief, board attachment and physical bend/tool clearance are unresolved; the removed custom bracket is not part of the BOM.
+6. J3 brake circuitry remains because regeneration cannot be presumed harmless to the USB power path. Resistor, heatsink, mounting and final cable geometry still need the actual load/stop duty and qualification; see `brake-integration.md`.
+7. No external STEP/DIR/enable or home/limit harness remains. SW2 requests the onboard SPI bench profile after qualification; SW1 resets the MCU. Both qualification flags are currently false.
 
-1. Obtain mechanical approval for sharing the motor's front flange with four NBK SHBS-M5-80 support posts. Do not loosen motor case screws. Confirm the exact motor body/cable dimensions and machine mounting access.
-2. Quote the custom 85.9×85.9×3 mm 6061-T6 plate from `engineering/mechanical/fabrication/adapter-plate.dxf`, its hole CSV and SVG. General target tolerance is ±0.10 mm; no supplier has accepted it. Quote the PA12 support/cap STLs and approve print orientation/strength.
-3. Assemble posts with M5×16 front and M5×10 top screws/washers. Fit the custom support beneath the plate using M3×12 fasteners. Verify thread engagement and tool access before applying an approved torque.
-4. Fit four 6 mm Essentra spacers, PCB, M4×20 button screws, **8 mm DIN433 washers** and M4 nuts. The PCB bottom is nominally 19.5 mm above the motor rear. Check the approximately 1.6 mm screw-tip clearance and all tolerances; do not substitute larger washers.
-5. Harness maker: retain enough factory cable for the modeled route and assembly adjustment. Fit four TE320559 splices (32.13 mm catalog length; OD still unverified) to Alpha3057 16 AWG pigtails. Nominal pigtail cuts are 170/170/170/165 mm, with 12 mm allowance already included. Confirm strip/crimp dimensions and actual cut length on the first article.
-6. Insert SVH-41T-P1.1 contacts into VHR-4N cavities 1 black, 2 green, 3 red, 4 blue; confirm cavity orientation and winding continuity. Route the loop with minimum 23.876 mm bend radius. Fit the split clamp around the factory jacket, not a splice or bare conductor. Its nominal 7.5 mm bore comes from vendor CAD and must be checked against the physical cable. Qualify pull retention and hot creep; screw torque is not yet released.
-7. Do not energize the motor until J3 braking, J7 command equipment, power source/cables, firmware/configuration and the staged acceptance tests are complete. J7 has only seven connected pins and has not yet been physically reduced.
-
-## Evidence and limits
-
-`motor-assembly-check.json` compares all 66 exported models with their generated geometry, checks holes and screw/post clearance. `harness-assembly-check.json` checks 429 cable segments, wire separation, cavity alignment and pigtail bend radius. `cable-support-check.json` checks actual support/cap/fastener mesh surfaces against the cables, excluding only the intended jacket passage. All are nominal CAD screens, not strength, tolerance, pull, thermal or physical-fit qualification.
-
-U18/C52/C53 stay centered on the bottom and `doNotPlace`. The ordered single-front-shaft motor has no confirmed rear rotating attachment; no magnet holder has been invented. [Brake integration](brake-integration.md) remains open. [Before](../previews/product-eco/before.png) and [after](../previews/product-eco/after.png) use the same camera.
+See [source/destination inventory](connector-harnesses.md), [mounting status](motor-assembly.md) and [firmware](../firmware/README.md). Required external sourcing still includes the EPR source/cable, exact wire colour SKUs, crimp tooling, brake cooling/install and programming fixture. No parts have been purchased by this work.

@@ -7,9 +7,9 @@ Compared against Rishabh's [NEMA17 v1.0.42](https://tscircuit.com/imrishabh18/rp
 | Small centered bottom encoder, DNP | Retain AS5047P U18 at the motor axis `(0,0)` on bottom. U18/C52/C53 are `doNotPlace`; no fitted BOM/CPL or paste. R74 remains fitted on top to deselect the absent SPI device. |
 | Reference motor connector | NEMA17 uses JST PH, 2 mm; NEMA23 uses JST XH, 2.5 mm. J2 already uses JST VH, 3.96 mm, appropriate for reviewing this higher-current motor. |
 | A real connection to the motor | Specify the matching housing, contacts, pigtail and factory-cable splice below. A bare PCB header alone is not a complete cable assembly. |
-| Explain J2 and J7 | J2 carries only the four winding leads. J7 is one consolidated connector for the industrial interfaces explicitly retained by the user. |
+| Explain J2 and J7 | J2 carries only the four winding leads. J7 and its external control circuits are removed; local SW2 START/STOP uses onboard STM32 control. |
 | Extra connectors | J1 = EPR POWER; J10 = USB DATA; J3 = external regeneration resistor. SWD and encoder observation use service pads, not additional cable headers. |
-| Assembly clearance | Check the complete J2 body and a conservative vertical mating/insertion prism against component and screw-head envelopes. Final cable bend, strain relief and fixture access still require physical approval. |
+| Assembly clearance | Check the complete J2 body and a conservative vertical mating/insertion prism against component envelopes. Final cable bend, strain relief and fixture access still require physical approval. |
 
 ## Motor cable to J2
 
@@ -30,7 +30,7 @@ The connection is **motor factory cable → four insulated permanent splices →
 | Socket contact | 4 | JST **SVH-41T-P1.1**, for the 16 AWG pigtail; wire insulation OD 1.7–3.0 mm |
 | Pigtail | 4 conductors | 16 AWG stranded copper, ≥105 °C and ≥250 V insulation, matching Black/Green/Red/Blue labels; maker confirms actual conductor/insulation fit to JST tooling |
 | Insulated butt splice | 4 | TE **320559**, 0.3–1.42 mm² / 22–16 AWG; one factory conductor and one pigtail conductor per splice |
-| Strain relief | 1 set | Clamp the cable jacket to the mechanical fixture; connector solder joints must not carry cable tension |
+| Strain relief | 1 set | Unresolved after withdrawal of the unsupported fixture; qualify a real retention method before physical assembly. Connector solder joints must not carry cable tension |
 
 JST's standard VH header rating is **10 A with 16 AWG wire**. That condition is why the specified pigtail uses 16 AWG. Do not claim 10 A for a direct crimp onto the motor's 0.75 mm² leads. A direct-crimp alternative would use the applicable contact range and would need its own current/temperature qualification. The connector rating does not raise the motor rating or approve the existing 5.5 A RMS driver target. See the [JST VH catalogue](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) and [TE splice specification](https://www.te.com/en/product-320559.html).
 
@@ -40,14 +40,14 @@ Ask the harness maker to provide the completed cable as a separate line item. PC
 
 ## J7 after interface cleanup
 
-CAN/RS485/RS232, DIN0/1, OUT0/1 and the J7 VMOTOR export have now been removed. STEP/DIR/ENABLE/limits remain pending actual command equipment. Only pins 1/2/3/6/7/8/18 are connected; all others are NC. The 20-pin physical footprint is interim and is not a final harness specification. See [product correction](product-eco.md).
+J7, STEP/DIR/ENABLE/home/limit conditioning and their unused wires are removed. The STM32 now commands the TMC5160 internal SPI ramp from local SW2 START/STOP. The pre-existing protections remain; there is no external command harness. See [product correction](product-eco.md).
 
 ## Encoder boundary
 
-Both reference boards leave the bottom sensor and two nearby capacitors unpopulated. This board now follows that assembly policy while retaining its existing SPI/ABI sensor interface. DNP means an optional, routed footprint, not an installed working encoder. All 311 fitted components and 19 service pads remain top-side.
+Both reference boards leave the bottom sensor and two nearby capacitors unpopulated. This board now follows that assembly policy while retaining its existing SPI/ABI sensor interface. DNP means an optional, routed footprint, not an installed working encoder. All 247 fitted components and 19 service pads remain top-side.
 
-The ordered motor is single-shaft. Its rear recess is not evidence of an accessible rotating shaft. A centered footprint does not create a magnet attachment: a compatible rear shaft/holder, diametric magnet, field strength and operating gap remain unresolved. Do not drill the motor, remove its case bolts or populate U18/C52/C53 on the assumption that the magnet will fit. External STEP/DIR operation does not require this optional encoder; the supplied commissioning firmware remains motion-locked for the separately documented qualification reasons.
+The ordered motor is single-shaft. Its rear recess is not evidence of an accessible rotating shaft. A centered footprint does not create a magnet attachment: a compatible rear shaft/holder, diametric magnet, field strength and operating gap remain unresolved. Do not drill the motor, remove its case bolts or populate U18/C52/C53 on the assumption that the magnet will fit. Open-loop internal-ramp operation does not require this optional encoder; the supplied commissioning firmware remains motion-locked for the separately documented qualification reasons.
 
 ## Remaining assembly gates
 
-The adapter is a front-flange-supported proposal, not a released mounting kit. Approve its shared machine-mount interface, tolerances, fasteners, tool access, cable clamp and vibration strength. Motor electrical settings, TI PD programming, power/thermal/brake tests and pre-shipment motor-operation qualification remain in [power-validation.md](power-validation.md). No bench, crimp or physical-fit results are claimed by this review.
+The unsupported adapter, posts and fixture hardware have been removed. The existing four PCB holes remain unchanged. Rear thread/depth, fastening and cable retention are unverified; the model is an alignment preview. Motor electrical settings, TI PD programming, power/thermal/brake tests and pre-shipment motor-operation qualification remain in [power-validation.md](power-validation.md). No bench, crimp or physical-fit results are claimed by this review.

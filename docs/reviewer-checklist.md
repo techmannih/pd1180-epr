@@ -5,12 +5,12 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Reference review closure
 
 - [ ] Review every row in [reference-review.md](reference-review.md), including the added RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or permission to resume review as complete.
-- [ ] Use [connector-harnesses.md](connector-harnesses.md) for J3/J7 mating parts and termination; review the modeled envelopes in [complete-assembly.md](complete-assembly.md), then qualify insertion, latch/tool access and strain relief in the physical assembly.
+- [ ] Use [connector-harnesses.md](connector-harnesses.md) for J2/J3 mating parts and termination; review the modeled envelopes in [complete-assembly.md](complete-assembly.md), then qualify insertion, latch/tool access and strain relief in the physical assembly.
 
 ## Requirements and mechanics
 
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
-- [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the ordered 34HS31-6004S1 rear CAD axes in the mechanical reference; native drills, adapter and screw-head clearances agree.
+- [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the ordered 34HS31-6004S1 rear CAD axes in the mechanical reference; native drills agree. The alignment preview contains no qualified replacement mounting hardware.
 - [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
 - [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and U18/C52/C53 are bottom-side DNP. Verify fitted BOM/CPL and paste exclude them; encoder magnetic fit remains unqualified.
 - [ ] J2 has the specified VHR-4N mating harness, correct winding colours/cavities and cable strain relief; inspect the insertion-envelope evidence and `docs/motor-harness.md`.
@@ -19,7 +19,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Schematic
 
 - [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
-- [ ] All 27 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
+- [ ] All 23 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
 - [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
 - [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 carries EPR CC/VBUS, J10 carries USB 2.0 D+/D− with independent CC pulldowns, and only J10 VBUS feeds the attach divider. U22 retains motor-bus brake backup.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
@@ -47,7 +47,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
 - [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 58 via-in-pad locations with filled/capped processing.
-- [ ] All 48 final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] All 46 final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
@@ -62,7 +62,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 ## Delivery and bring-up
 
-- [ ] Verify the corrected STEP/DIR pin configuration at U7 pins 23–25 against the routed board; see `step-dir-hardware-review.md`. A clean geometric DRC does not validate mode-dependent pin functions.
+- [ ] Verify SD_MODE is low, U7 pins 17/18/23/24/25 are grounded, and SW2 PC6 drives only the qualified internal SPI ramp; see `step-dir-hardware-review.md`. A clean geometric DRC does not validate mode-dependent pin functions.
 
 - [ ] `bun run review` passes and `release/delivery-manifest.json` matches the exact release files.
 - [ ] Gerber, drill, BOM, CPL, KiCad, schematic, 3D, firmware contract and SHA-256 files open successfully.

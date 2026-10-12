@@ -2,7 +2,7 @@ import { assembly } from "@tscircuit/core"
 import { PD1180EPR } from "./index.circuit"
 import { MECHANICAL_PARTS } from "./imports/MotorAssemblyCad"
 
-/** Explicit physical parts. Prototype clamps and unverified dimensions stay labelled. */
+/** Motor and J2 harness alignment preview. Existing PCB holes retained; no unverified mounting hardware. */
 export default () => (
   <assembly.device name="nema34_34HS31_6004S1_controller">
     <PD1180EPR />

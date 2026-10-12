@@ -19,13 +19,13 @@ bool pd1180_motor_service(pd1180_motor_service_t *m, const pd1180_control_t *c,
   if (!m->driver.configured) {
     if (m->attempted_configuration) return false;
     m->attempted_configuration=true;
-    if (!pd1180_tmc_configure_stepdir(&m->driver,limit)) return false;
+    if (!pd1180_tmc_configure_ramp(&m->driver,limit)) return false;
     m->applied_current_permille=limit;
     if (!pd1180_tmc_set_chopper(&m->driver,true)) return false;
   }
   if (!pd1180_tmc_status(&m->driver,&m->status)) return false;
-  // Verify the external step mode and its dcStep-disable pins continuously.
-  if ((m->status.ioin&0x4Cu)!=0x40u) {
+  // Verify internal-ramp mode and grounded unused encoder pins continuously.
+  if ((m->status.ioin&0x4Cu)!=0u) {
     pd1180_tmc_invalidate(&m->driver); return false;
   }
   if (limit!=m->applied_current_permille) {

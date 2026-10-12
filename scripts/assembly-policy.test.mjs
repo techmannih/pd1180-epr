@@ -1,5 +1,8 @@
 import { test, expect } from 'bun:test'
-import { readFileSync } from 'node:fs'
+import { readFileSync, mkdtempSync, mkdirSync, copyFileSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join, resolve } from 'node:path'
+import { spawnSync } from 'node:child_process'
 import { assemblyPolicyErrors } from './assembly-policy.mjs'
 
 const circuit = JSON.parse(readFileSync('dist/index/circuit.json'))
@@ -51,4 +54,26 @@ test('motor harness uses the rated VH family and preserves manufacturer winding 
     expect(port.subcircuit_connectivity_map_key).toBe(net.subcircuit_connectivity_map_key)
   }
   expect(sources.filter(row => /^J\d+$/.test(row.name)).map(row => row.name).sort()).toEqual(Object.keys(harness.required_connectors).sort())
+})
+
+// A sourcing-service outage must block ordering, but must not rewrite the
+// component identities already reviewed in the engineering BOM.
+test('BOM identities survive missing or malformed live stock responses', () => {
+  const scratch = mkdtempSync(join(tmpdir(), 'pd1180-bom-'))
+  try {
+    mkdirSync(join(scratch, 'docs'), { recursive: true })
+    mkdirSync(join(scratch, 'dist/index'), { recursive: true })
+    for (const file of ['docs/design-manifest.json', 'dist/index/circuit.json', 'board-standards.json'])
+      copyFileSync(file, join(scratch, file))
+    const exporter = resolve('scripts/export-assembly.mjs')
+    const run = () => spawnSync(process.execPath, [exporter], { cwd: scratch, encoding: 'utf8' })
+    expect(run().status).toBe(0)
+    const bom = readFileSync(join(scratch, 'dist/assembly-review/assembly-bom.csv'), 'utf8')
+    expect(bom).toContain('USB4105-GF-A')
+    expect(bom).toContain('C3020560')
+    expect(bom).not.toContain('U18')
+    writeFileSync(join(scratch, 'docs/stock-report.json'), 'upstream unavailable')
+    expect(run().status).toBe(0)
+    expect(readFileSync(join(scratch, 'dist/assembly-review/assembly-bom.csv'), 'utf8')).toBe(bom)
+  } finally { rmSync(scratch, { recursive: true, force: true }) }
 })

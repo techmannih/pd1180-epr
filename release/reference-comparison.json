@@ -201,14 +201,14 @@
       "feature": "Retain only defined external functions",
       "status": "open",
       "evidence": "docs/connector-harnesses.md",
-      "detail": "CAN/RS485/RS232, DIN0/1, OUT0/1 and J7 motor-bus export removed in source and native copper. STEP/DIR/enable/limits remain until command equipment is selected; J7 connector reduction and final harness remain open."
+      "detail": "J7 and remaining STEP/DIR/enable/home/limit stages removed from current TSX. Onboard SPI ramp and local START/STOP replace the undefined external command equipment; native copper refresh pending."
     },
     {
       "id": "mechanics",
       "feature": "Motor mounting, holes and cable/tool access",
       "status": "open",
       "evidence": "docs/motor-assembly-check.json",
-      "detail": "Exact motor CAD and four drills checked. Front-supported adapter is still a proposal; J2 insertion screened, J7/J3 mating/tool envelopes and cable clamp remain unqualified."
+      "detail": "Four PCB drills and exact motor-axis alignment retained. Unsupported front-post/adapter/clamp hardware withdrawn; no rear fastener dimensions invented. Alignment-only preview, physical mounting and retention unverified."
     },
     {
       "id": "thermal",
@@ -222,7 +222,7 @@
       "feature": "Executable motor / interface application",
       "status": "open",
       "evidence": "firmware/README.md",
-      "detail": "References supply hardware, not executable firmware. Our commissioning binary is motion-locked; no CANopen/TMCL/RS485/RS232 application or encoder angle command is implemented."
+      "detail": "Executable bounded local START/STOP/internal SPI ramp path implemented and host-tested; shipped STM32 binary remains locked pending TI image and powered qualification. Reference READMEs include no executable motion firmware."
     },
     {
       "id": "markings",
@@ -234,9 +234,9 @@
     {
       "id": "fabrication",
       "feature": "Sourcing, assembly files and routed DRC",
-      "status": "implemented",
+      "status": "open",
       "evidence": "docs/verification.json",
-      "detail": "Latest baseline routed CAD passed DRC/ERC/parity. All fitted components top, optional encoder DNP; 0.30 mm minimum via drills. Does not close powered/order gates."
+      "detail": "Current source ECO invalidates older native routing/release evidence. New route, full review and stock approval are pending; no orderable release."
     }
   ],
   "review_lines": [

@@ -5,7 +5,6 @@ export function BoardMarkings() {
     <silkscreentext text="Stepper Controller with USB-C PD 3.1 EPR · r0.4 ECO" layer="bottom" pcbX={0} pcbY={18.8} fontSize="0.8mm" />
     <silkscreentext text="PWR" layer="top" pcbX={-41.85} pcbY={22.2} pcbRotation={90} fontSize="1mm" isKnockout />
     <silkscreentext text="DATA" layer="top" pcbX={-41.85} pcbY={-4.1} pcbRotation={90} fontSize="1mm" isKnockout />
-    <silkscreentext text="J7 I/O" layer="top" pcbX={-13.5} pcbY={-36.05} fontSize="0.8mm" />
     <silkscreentext text="U35" layer="top" pcbX={35.5} pcbY={-24.25} fontSize="0.8mm" />
     <silkscreentext text="U36" layer="top" pcbX={-6.9} pcbY={18.2} fontSize="0.8mm" />
     {/* PD fixture contacts 1/2/3: VREF/GND/SDA; see the programming fixture map. */}

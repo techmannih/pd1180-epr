@@ -20,17 +20,24 @@ static bool transfer(void *context,const uint8_t tx[5],uint8_t rx[5]) {
   return true;
 }
 int main(void) {
-  fake_t f={0}; f.regs[4]=0x30000050;f.regs[1]=1;
+  fake_t f={0}; f.regs[4]=0x30000010;f.regs[1]=1;
   f.regs[0x09]=0x10606u; f.regs[0x0A]=0x200u;
   pd1180_tmc_t d={.frame=transfer,.context=&f};
   uint32_t value;
-  assert(pd1180_tmc_read(&d,4,&value) && value==0x30000050 && f.calls==2);
-  assert(pd1180_tmc_configure_stepdir(&d,180)); // Approx. 0.86 A RMS first tuning stage.
+  assert(pd1180_tmc_read(&d,4,&value) && value==0x30000010 && f.calls==2);
+  assert(pd1180_tmc_configure_ramp(&d,180)); // Approx. 0.86 A RMS first tuning stage.
   assert(d.configured && !(f.regs[0x6C]&15u));
   assert(f.regs[0x09]==0x10C06u && f.regs[0x0A]==0x400u);
-  assert(((f.regs[0x6C]>>24)&15u)==4 && !(f.regs[0x6C]&(3u<<30)));
+  assert(((f.regs[0x6C]>>24)&15u)==0 && !(f.regs[0x6C]&(3u<<30)));
   assert(((f.regs[0x10]>>8)&31u)==4 && f.regs[0x0B]==198);
   assert(pd1180_tmc_set_chopper(&d,true));
+  assert(f.regs[0x27]==0 && f.regs[0x20]==1 && f.regs[0x26]==130 && f.regs[0x34]==0);
+  assert(pd1180_tmc_velocity(&d,11930) && f.regs[0x27]==11930);
+  assert(!pd1180_tmc_velocity(&d,11931));
+  assert(pd1180_tmc_velocity(&d,0));
+  int32_t velocity=0; f.regs[0x22]=0xFFFFFF;
+  assert(pd1180_tmc_actual_velocity(&d,&velocity) && velocity==-1);
+  f.regs[0x22]=0;
   assert(pd1180_tmc_set_current(&d,500) && d.irun==15);
   assert(!pd1180_tmc_set_current(&d,1001));
   pd1180_tmc_status_t status;
@@ -41,14 +48,14 @@ int main(void) {
   for(unsigned bit=0;bit<32;++bit) if((1u<<bit)&0x1E003000u) {
     f.regs[0x6F]=1u<<bit; assert(!pd1180_tmc_status(&d,&status));
   }
-  f.regs[0x6F]=0;f.regs[4]=0xFFFFFFFF;assert(!pd1180_tmc_configure_stepdir(&d,180));
-  f.regs[4]=0;assert(!pd1180_tmc_configure_stepdir(&d,180));
-  f.regs[4]=0x30000040;assert(!pd1180_tmc_configure_stepdir(&d,180)); // Enabled bridge.
-  f.regs[4]=0x30000010;assert(!pd1180_tmc_configure_stepdir(&d,180)); // Wrong mode.
-  f.regs[4]=0x30000054;assert(!pd1180_tmc_configure_stepdir(&d,180)); // dcStep unexpectedly enabled.
-  f.regs[4]=0x30000050;f.corrupt_echo=true;assert(!pd1180_tmc_configure_stepdir(&d,180));
+  f.regs[0x6F]=0;f.regs[4]=0xFFFFFFFF;assert(!pd1180_tmc_configure_ramp(&d,180));
+  f.regs[4]=0;assert(!pd1180_tmc_configure_ramp(&d,180));
+  f.regs[4]=0x30000000;assert(!pd1180_tmc_configure_ramp(&d,180)); // Enabled bridge.
+  f.regs[4]=0x30000050;assert(!pd1180_tmc_configure_ramp(&d,180)); // Wrong mode.
+  f.regs[4]=0x30000014;assert(!pd1180_tmc_configure_ramp(&d,180)); // dcStep unexpectedly enabled.
+  f.regs[4]=0x30000010;f.corrupt_echo=true;assert(!pd1180_tmc_configure_ramp(&d,180));
   f.corrupt_echo=false;f.fail=true;assert(!pd1180_tmc_status(&d,&status) && !status.valid);
-  f.fail=false;f.regs[1]=0;f.regs[0x6F]=0;f.regs[4]=0x30000050;
+  f.fail=false;f.regs[1]=0;f.regs[0x6F]=0;f.regs[4]=0x30000010;
   pd1180_motor_service_t motor={.driver={.frame=transfer,.context=&f}};
   pd1180_control_t c={.armed=true,.power_permit=true,.current_limit_permille=1000};
   pd1180_inputs_t in={.motor_power_good=true,.vmotor_in_range=true};
@@ -66,18 +73,18 @@ int main(void) {
   assert(motor.driver.irun==3); // Thermal derating reaches actual current register.
   in.vmotor_in_range=false;assert(!pd1180_motor_service(&motor,&c,&in,500) && !in.driver_ready);
   for(unsigned levels=6;levels<=12;levels+=6) for(unsigned clocks=2;clocks<=4;clocks+=2) {
-    fake_t defaults={0}; defaults.regs[4]=0x30000050;
+    fake_t defaults={0}; defaults.regs[4]=0x30000010;
     defaults.regs[0x09]=(1u<<16)|(levels<<8)|levels;
     defaults.regs[0x0A]=clocks<<8;
     pd1180_tmc_t chip={.frame=transfer,.context=&defaults};
-    assert(pd1180_tmc_configure_stepdir(&chip,180));
+    assert(pd1180_tmc_configure_ramp(&chip,180));
     assert(defaults.regs[0x09]==0x10C06u && defaults.regs[0x0A]==0x400u);
     assert(!(defaults.regs[0x6C]&15u));
   }
   for(unsigned address=0x09;address<=0x0A;++address) {
-    fake_t bad={0}; bad.regs[4]=0x30000050; bad.corrupt_write_address=(uint8_t)address;
+    fake_t bad={0}; bad.regs[4]=0x30000010; bad.corrupt_write_address=(uint8_t)address;
     pd1180_tmc_t chip={.frame=transfer,.context=&bad};
-    assert(!pd1180_tmc_configure_stepdir(&chip,180) && !chip.configured);
+    assert(!pd1180_tmc_configure_ramp(&chip,180) && !chip.configured);
     assert(!(bad.regs[0x6C]&15u) && !pd1180_tmc_set_chopper(&chip,true));
   }
   puts("PASS: TMC explicit protection defaults, write failures, pipelined SPI, write echo, disabled initialization, mode checks, current limits and latched faults");

@@ -38,13 +38,19 @@
       "feature": "Executable motor / interface application",
       "status": "open",
       "evidence": "firmware/README.md"
+    },
+    {
+      "id": "fabrication",
+      "feature": "Sourcing, assembly files and routed DRC",
+      "status": "open",
+      "evidence": "docs/verification.json"
     }
   ],
-  "checked_at": "2026-10-12T02:09:01.982Z",
+  "checked_at": "2026-10-12T04:44:21.932Z",
   "features": 11,
   "passing": 11,
   "assembly_layers": {
-    "top": 279
+    "top": 247
   },
   "usb_c_standard_connectors": [
     "J1",
@@ -116,10 +122,10 @@
       "pass": true
     },
     {
-      "id": "machine_io",
-      "feature": "Retained Step/Dir, hardware enable, home and limit input circuitry",
-      "components": 7,
-      "nets": 6,
+      "id": "local_control",
+      "feature": "Local START/STOP and independent reset; MCU-controlled SPI ramp",
+      "components": 9,
+      "nets": 4,
       "evidence": "hardware-contract.json",
       "pass": true
     },

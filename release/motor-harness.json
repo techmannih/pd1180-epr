@@ -71,8 +71,7 @@
     "J1": "USB-C EPR motor power; requested separate POWER input",
     "J10": "USB DATA/setup/diagnostics; separate from EPR input",
     "J2": "Four motor winding leads; JST VH high-current keyed harness",
-    "J3": "External braking resistor required by the retained regenerative brake stage",
-    "J7": "STEP/DIR/ENABLE and home/limits preserved pending defined command source; no CAN/RS485/RS232/DIN/OUT/VMOTOR export"
+    "J3": "External braking resistor required by the retained regenerative brake stage"
   },
   "optional_encoder": {
     "references": [
@@ -96,7 +95,7 @@
   ],
   "limitations": [
     "No physical assembly, crimp or motor test was performed.",
-    "The proposed adapter shares the motor front flange and still needs mechanical approval.",
-    "External harness parts are separate procurement items; PCB supplier stock checks do not reserve or certify them."
+    "External harness parts are separate procurement items; PCB supplier stock checks do not reserve or certify them.",
+    "No mounting hardware is modeled; rear screw specification, board clearance and physical cable restraint remain unresolved."
   ]
 }

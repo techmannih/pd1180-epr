@@ -18,17 +18,7 @@ const obstacles=board.meshes.filter(m=>refs.has(m.name)).map(mesh=>{
 })
 const top=contract.fabrication.finished_thickness_mm/2
 const rear=-top-assembly.mount.pcb_bottom_to_motor_rear_mm
-for(const h of contract.mechanical.mounting_holes) {
-  const r=assembly.mount.pcb_top_head_maximum_diameter_mm/2
-  obstacles.push({name:`${h.name} screw head`,bounds:{min:[h.centered_x_mm-r,h.centered_y_mm-r,top],max:[h.centered_x_mm+r,h.centered_y_mm+r,top+assembly.mount.pcb_top_head_and_washer_height_mm]}})
-}
 obstacles.push({name:'Motor body conservative envelope (factory leads excluded)',bounds:{min:[-43,-43,rear-79.5],max:[43,43,rear]}})
-const plateBottom=rear+assembly.mount.motor_rear_to_adapter_bottom_mm,half=assembly.mount.adapter_width_mm/2
-obstacles.push({name:'Adapter plate conservative envelope',bounds:{min:[-half,-half,plateBottom],max:[half,half,plateBottom+assembly.mount.adapter_thickness_mm]}})
-for(const [i,[x,y]] of assembly.motor.front_hole_xy_mm.entries()) {
-  const r=assembly.mount.long_post_outer_diameter_mm/2
-  obstacles.push({name:`Support post ${i+1}`,bounds:{min:[x-r,y-r,plateBottom-assembly.mount.long_post_length_mm],max:[x+r,y+r,plateBottom]}})
-}
 const required=layout.minimum_nominal_clearance_mm
 const nearest=(items)=>items.sort((a,b)=>a.gap_mm-b.gap_mm).slice(0,3)
 const mates=geometry.connectors.map(c=>{
@@ -86,7 +76,7 @@ const bendChecks=geometry.wires.filter(w=>w.kind==='pigtail').map(w=>{
   if(radius<w.minimum_bend_radius_mm)errors.push(`${w.name} bend radius ${radius} below wire specification ${w.minimum_bend_radius_mm}`)
   return {name:w.name,minimum_sampled_radius_mm:radius,required_mm:w.minimum_bend_radius_mm,cut_length_mm:w.cut_length_mm}
 })
-const report={bend_checks:bendChecks,glb_sha256:geometry.glb_sha256,board_glb_sha256:board.sha256,layout_sha256:geometry.layout_sha256,connectors_checked:mates.length,wire_segments_checked:geometry.wires.reduce((sum,w)=>sum+w.points.length-1,0),minimum_required_nominal_clearance_mm:required,minimum_wire_separation_mm:wireGap,nearest_wires:nearestWires,mates,bodies,wires,errors,scope:'Conservative component/body/fastener/plate/post envelope check of mated bodies and insulated cable segments, plus separation between different conductors. Own mating header and same-conductor splice contact is intentional. Factory cable colour order, latches, tool access, bend limits, tolerances and physical strain relief remain separate checks.'}
+const report={bend_checks:bendChecks,glb_sha256:geometry.glb_sha256,board_glb_sha256:board.sha256,layout_sha256:geometry.layout_sha256,connectors_checked:mates.length,wire_segments_checked:geometry.wires.reduce((sum,w)=>sum+w.points.length-1,0),minimum_required_nominal_clearance_mm:required,minimum_wire_separation_mm:wireGap,nearest_wires:nearestWires,mates,bodies,wires,errors,scope:'Conservative component/motor-body envelope check (no unverified mounting hardware) of mated bodies and insulated cable segments, plus separation between different conductors. Own mating header and same-conductor splice contact is intentional. Factory cable colour order, latches, tool access, bend limits, tolerances and physical strain relief remain separate checks.'}
 await writeFile('docs/harness-assembly-check.json',JSON.stringify(report,null,2)+'\n')
 console.log(JSON.stringify({connectors:mates.length,wires:wires.length,segments:report.wire_segments_checked,errors},null,2))
 if(errors.length)process.exitCode=1

@@ -1,44 +1,43 @@
 {
-  "generated_at": "2026-10-12T02:09:01.487Z",
+  "generated_at": "2026-10-12T05:02:02.128Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "6d7410e1c124dc76bc47a07d5a601817e673332f4d24d3f435c4817f0d6cb7d4",
-    "bytes": 4804222
+    "sha256": "06cd4de57adcf146ef94897efe79aae26152bbbeda3d72174bf9cfb145f02c6c",
+    "bytes": 4300211
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 10863,
-    "sheets": 24,
-    "source_components": 301,
-    "source_ports": 1041,
-    "connected_source_ports": 983,
-    "intentional_no_connect_ports": 58,
-    "source_nets": 181,
+    "elements": 9740,
+    "sheets": 23,
+    "source_components": 269,
+    "source_ports": 945,
+    "connected_source_ports": 897,
+    "intentional_no_connect_ports": 48,
+    "source_nets": 162,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 89,
+    "capacitors": 87,
     "test_points": 19,
-    "annotations": 72,
+    "annotations": 69,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 72,
-    "3": 59,
-    "4": 25,
-    "5": 5,
+    "2": 63,
+    "3": 60,
+    "4": 15,
+    "5": 4,
     "6": 3,
     "8": 1,
     "9": 2,
     "10": 3,
-    "11": 1,
-    "12": 3,
+    "12": 4,
     "13": 2,
     "18": 1,
     "23": 1,
     "42": 1,
-    "68": 1,
-    "239": 1
+    "59": 1,
+    "221": 1
   },
   "usb_c": {
     "connectors": [
@@ -372,26 +371,17 @@
     "J1.14:DN2",
     "J10.10:SBU1",
     "J10.16:SBU2",
-    "J7.10:pin10",
-    "J7.11:pin11",
-    "J7.12:pin12",
-    "J7.13:pin13",
-    "J7.14:pin14",
-    "J7.15:pin15",
-    "J7.16:pin16",
-    "J7.17:pin17",
-    "J7.19:pin19",
-    "J7.20:pin20",
-    "J7.4:pin4",
-    "J7.5:pin5",
-    "J7.9:pin9",
     "U1.14:SBU2",
     "U1.15:SBU1",
     "U16.13:PA2",
     "U16.14:PA3",
     "U16.22:PB10",
+    "U16.25:PB13",
+    "U16.26:PB14",
+    "U16.27:PB15",
     "U16.29:PA9",
     "U16.2:PC14_OSC32_IN",
+    "U16.31:PC7",
     "U16.32:PA10",
     "U16.38:PD0",
     "U16.39:PD1",
@@ -422,15 +412,14 @@
     "U6.21:N_C4",
     "U6.22:N_C3",
     "U6.23:N_C2",
-    "U6.24:N_C1",
-    "U7.25:ENCN_DCO_CFG6"
+    "U6.24:N_C1"
   ],
   "test_points": [
     {
       "ref": "TP_SWD_3V3",
       "net": "V3V3_MCU",
-      "total_ports_on_net": 11,
-      "non_testpoint_peers": 10
+      "total_ports_on_net": 12,
+      "non_testpoint_peers": 11
     },
     {
       "ref": "TP_SWDIO",
@@ -441,8 +430,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 239,
-      "non_testpoint_peers": 235
+      "total_ports_on_net": 221,
+      "non_testpoint_peers": 217
     },
     {
       "ref": "TP_SWCLK",
@@ -465,8 +454,8 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 68,
-      "non_testpoint_peers": 67
+      "total_ports_on_net": 59,
+      "non_testpoint_peers": 58
     },
     {
       "ref": "TP_ENC_A",
@@ -489,8 +478,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 239,
-      "non_testpoint_peers": 235
+      "total_ports_on_net": 221,
+      "non_testpoint_peers": 217
     },
     {
       "ref": "TP_PD_VREF",
@@ -501,8 +490,8 @@
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 239,
-      "non_testpoint_peers": 235
+      "total_ports_on_net": 221,
+      "non_testpoint_peers": 217
     },
     {
       "ref": "TP_EEP_SDA",
@@ -537,8 +526,8 @@
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 239,
-      "non_testpoint_peers": 235
+      "total_ports_on_net": 221,
+      "non_testpoint_peers": 217
     }
   ],
   "sheets": [
@@ -643,14 +632,14 @@
     {
       "index": 8,
       "name": "motion-enable",
-      "display_name": "Step Direction and Hardware Enable",
+      "display_name": "Onboard Motion and Hardware Enable",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "08 / Step Direction and Hardware Enable",
-        "U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock.",
+        "08 / Onboard Motion and Hardware Enable",
+        "STM32 commands U7 over SPI. U10/U11/U33 and Q14 retain hardware inhibits.",
         "The driver remains inhibited until the hardware safety conditions permit motion."
       ]
     },
@@ -720,7 +709,7 @@
       ],
       "annotations": [
         "13 / MCU Clock Memory and Debug",
-        "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and the retained STEP/DIR input path.",
+        "U16 STM32G0B1 commands the TMC5160 ramp generator over SPI; SW2 requests Start/Stop.",
         "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
       ]
     },
@@ -753,31 +742,17 @@
       ]
     },
     {
-      "index": 16,
-      "name": "inputs",
-      "display_name": "Home and Limit Inputs",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "16 / Home and Limit Inputs",
-        "Non-isolated 24 V HOME and left/right STOP input conditioning.",
-        "The consolidated J7 harness is shown on the Step Direction and Control Inputs sheet."
-      ]
-    },
-    {
       "index": 17,
-      "name": "inputs-aux",
-      "display_name": "Step Direction and Control Inputs",
+      "name": "user-control",
+      "display_name": "Local Start and Stop",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "17 / Step Direction and Control Inputs",
-        "24 V STEP and DIR conditioning; J7 retains only motion and limit input connections.",
-        "J7 unused pins are NC; no external VMOTOR output. Command-source product remains unresolved."
+        "17 / Local Start and Stop",
+        "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power.",
+        "Debounce requires release before start; reset, power loss and faults never auto-start."
       ]
     },
     {
@@ -919,14 +894,14 @@
     {
       "index": 7,
       "name": "motion",
-      "elements": 238,
-      "coordinate_points_checked": 419
+      "elements": 237,
+      "coordinate_points_checked": 433
     },
     {
       "index": 8,
       "name": "motion-enable",
-      "elements": 169,
-      "coordinate_points_checked": 295
+      "elements": 83,
+      "coordinate_points_checked": 160
     },
     {
       "index": 9,
@@ -955,8 +930,8 @@
     {
       "index": 13,
       "name": "mcu",
-      "elements": 250,
-      "coordinate_points_checked": 429
+      "elements": 242,
+      "coordinate_points_checked": 417
     },
     {
       "index": 14,
@@ -971,16 +946,10 @@
       "coordinate_points_checked": 323
     },
     {
-      "index": 16,
-      "name": "inputs",
-      "elements": 84,
-      "coordinate_points_checked": 138
-    },
-    {
       "index": 17,
-      "name": "inputs-aux",
-      "elements": 161,
-      "coordinate_points_checked": 252
+      "name": "user-control",
+      "elements": 14,
+      "coordinate_points_checked": 17
     },
     {
       "index": 21,
@@ -1030,8 +999,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 301,
-        "schematic": 301
+        "source": 269,
+        "schematic": 269
       }
     },
     {
@@ -1050,9 +1019,9 @@
     },
     {
       "ok": true,
-      "message": "24 retained A4 schematic sheets",
+      "message": "23 retained A4 schematic sheets",
       "details": {
-        "actual": 24
+        "actual": 23
       }
     },
     {
@@ -1349,8 +1318,8 @@
       "details": {
         "actual": 3,
         "texts": [
-          "08 / Step Direction and Hardware Enable",
-          "U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock.",
+          "08 / Onboard Motion and Hardware Enable",
+          "STM32 commands U7 over SPI. U10/U11/U33 and Q14 retain hardware inhibits.",
           "The driver remains inhibited until the hardware safety conditions permit motion."
         ]
       }
@@ -1540,7 +1509,7 @@
         "actual": 3,
         "texts": [
           "13 / MCU Clock Memory and Debug",
-          "U16 STM32G0B1 provides USB diagnostics, external STEP/DIR control and the retained STEP/DIR input path.",
+          "U16 STM32G0B1 commands the TMC5160 ramp generator over SPI; SW2 requests Start/Stop.",
           "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
         ]
       }
@@ -1631,15 +1600,15 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet inputs"
+      "message": "known fixed geometry for sheet user-control"
     },
     {
       "ok": true,
-      "message": "inputs keeps sheet index 16"
+      "message": "user-control keeps sheet index 17"
     },
     {
       "ok": true,
-      "message": "inputs keeps fixed 297 x 210 frame",
+      "message": "user-control keeps fixed 297 x 210 frame",
       "details": {
         "actual": [
           297,
@@ -1649,61 +1618,23 @@
     },
     {
       "ok": true,
-      "message": "inputs has 3 explanatory annotations",
+      "message": "user-control has 3 explanatory annotations",
       "details": {
         "actual": 3,
         "texts": [
-          "16 / Home and Limit Inputs",
-          "Non-isolated 24 V HOME and left/right STOP input conditioning.",
-          "The consolidated J7 harness is shown on the Step Direction and Control Inputs sheet."
+          "17 / Local Start and Stop",
+          "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power.",
+          "Debounce requires release before start; reset, power loss and faults never auto-start."
         ]
       }
     },
     {
       "ok": true,
-      "message": "inputs has numbered sheet heading"
+      "message": "user-control has numbered sheet heading"
     },
     {
       "ok": true,
-      "message": "inputs explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet inputs-aux"
-    },
-    {
-      "ok": true,
-      "message": "inputs-aux keeps sheet index 17"
-    },
-    {
-      "ok": true,
-      "message": "inputs-aux keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "inputs-aux has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "17 / Step Direction and Control Inputs",
-          "24 V STEP and DIR conditioning; J7 retains only motion and limit input connections.",
-          "J7 unused pins are NC; no external VMOTOR output. Command-source product remains unresolved."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "inputs-aux has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "inputs-aux explains component roles"
+      "message": "user-control explains component roles"
     },
     {
       "ok": true,
@@ -1973,9 +1904,9 @@
     },
     {
       "ok": true,
-      "message": "72 high-level annotations on 24 retained sheets",
+      "message": "69 high-level annotations on 23 retained sheets",
       "details": {
-        "actual": 72
+        "actual": 69
       }
     },
     {
@@ -1994,17 +1925,17 @@
     },
     {
       "ok": true,
-      "message": "181 named source nets after removal of 31 unused interface nets",
+      "message": "162 named source nets after removal of external command circuits",
       "details": {
-        "actual": 181
+        "actual": 162
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 181,
-        "source_nets": 181
+        "connected_groups": 162,
+        "source_nets": 162
       }
     },
     {
@@ -2047,7 +1978,7 @@
     },
     {
       "ok": true,
-      "message": "J7 consolidates industrial harness connectors"
+      "message": "Unsupported external control harnesses are removed"
     },
     {
       "ok": true,
@@ -2070,9 +2001,9 @@
     },
     {
       "ok": true,
-      "message": "89 capacitors after removal of seven interface capacitors",
+      "message": "87 capacitors after removal of external-command buffers",
       "details": {
-        "actual": 89
+        "actual": 87
       }
     },
     {
@@ -2107,26 +2038,17 @@
           "J1.14:DN2",
           "J10.10:SBU1",
           "J10.16:SBU2",
-          "J7.10:pin10",
-          "J7.11:pin11",
-          "J7.12:pin12",
-          "J7.13:pin13",
-          "J7.14:pin14",
-          "J7.15:pin15",
-          "J7.16:pin16",
-          "J7.17:pin17",
-          "J7.19:pin19",
-          "J7.20:pin20",
-          "J7.4:pin4",
-          "J7.5:pin5",
-          "J7.9:pin9",
           "U1.14:SBU2",
           "U1.15:SBU1",
           "U16.13:PA2",
           "U16.14:PA3",
           "U16.22:PB10",
+          "U16.25:PB13",
+          "U16.26:PB14",
+          "U16.27:PB15",
           "U16.29:PA9",
           "U16.2:PC14_OSC32_IN",
+          "U16.31:PC7",
           "U16.32:PA10",
           "U16.38:PD0",
           "U16.39:PD1",
@@ -2157,8 +2079,7 @@
           "U6.21:N_C4",
           "U6.22:N_C3",
           "U6.23:N_C2",
-          "U6.24:N_C1",
-          "U7.25:ENCN_DCO_CFG6"
+          "U6.24:N_C1"
         ],
         "actual": [
           "J1.11:DP2",
@@ -2167,26 +2088,17 @@
           "J1.14:DN2",
           "J10.10:SBU1",
           "J10.16:SBU2",
-          "J7.10:pin10",
-          "J7.11:pin11",
-          "J7.12:pin12",
-          "J7.13:pin13",
-          "J7.14:pin14",
-          "J7.15:pin15",
-          "J7.16:pin16",
-          "J7.17:pin17",
-          "J7.19:pin19",
-          "J7.20:pin20",
-          "J7.4:pin4",
-          "J7.5:pin5",
-          "J7.9:pin9",
           "U1.14:SBU2",
           "U1.15:SBU1",
           "U16.13:PA2",
           "U16.14:PA3",
           "U16.22:PB10",
+          "U16.25:PB13",
+          "U16.26:PB14",
+          "U16.27:PB15",
           "U16.29:PA9",
           "U16.2:PC14_OSC32_IN",
+          "U16.31:PC7",
           "U16.32:PA10",
           "U16.38:PD0",
           "U16.39:PD1",
@@ -2217,8 +2129,7 @@
           "U6.21:N_C4",
           "U6.22:N_C3",
           "U6.23:N_C2",
-          "U6.24:N_C1",
-          "U7.25:ENCN_DCO_CFG6"
+          "U6.24:N_C1"
         ],
         "missing": [],
         "extra": []

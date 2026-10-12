@@ -1,5 +1,5 @@
 {
-  "status": "Revision B connected motor harness; provisional splice outside diameter and custom retention fixture require qualification",
+  "status": "Connected J2 harness CAD; splice OD and physical retention remain unqualified",
   "coordinate_system": "PCB X/Y; Z height; millimetres",
   "sources": {
     "VH": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf",
@@ -73,12 +73,11 @@
   "not_modeled": [
     "Rear encoder magnet/holder: rotating rear shaft unavailable",
     "J3 brake resistor/heatsink: retained circuit, thermal system unresolved",
-    "J7 external command equipment: retained command path, product selection unresolved",
     "USB source/host cables: actual products not selected; no fictitious free tails rendered"
   ],
   "limitations": [
     "TE 320559 length verified; 5 mm outside diameter is a provisional clearance envelope, not verified production CAD",
-    "Custom cable support is a prototype fabrication design; dimensions chosen for this assembly, not a stocked part",
-    "Crimps, wire bend radius, termination allowance and retention must be qualified by the harness manufacturer"
+    "Crimps, wire bend radius, termination allowance and retention must be qualified by the harness manufacturer",
+    "Unsupported adapter-mounted cable clamp removed; no physical strain-relief qualification or replacement bracket claimed."
   ]
 }

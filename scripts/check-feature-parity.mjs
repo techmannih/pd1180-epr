@@ -33,7 +33,7 @@ if (disallowedFitted.length) errors.push(`Assembly layer policy violated by ${di
 
 const usbCStandardConnectors = ['J1','J10'].filter((name) => sourceByName.get(name)?.standard === 'usb_c')
 if (usbCStandardConnectors.length !== 2) errors.push('J1 and J10 must use tscircuit connector standard="usb_c"')
-if (sourceByName.has('J6') || sourceByName.has('J9')) errors.push('Industrial interfaces must use the consolidated J7 harness')
+if (sourceByName.has('J6') || sourceByName.has('J9') || sourceByName.has('J7')) errors.push('Unsupported external control interfaces must remain removed')
 
 // Component presence is distinct from complete parity with the reference boards.
 const comparison = JSON.parse(await readFile('engineering/reference-comparison.json', 'utf8'))

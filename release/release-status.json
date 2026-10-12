@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.0-ECO",
-  "status": "product-interface-eco-order-held",
+  "status": "onboard-control-eco-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -44,18 +44,18 @@
     "pd_programming_fixture_and_readback_qualified": false,
     "indicators_alarm_and_supply_budget_qualified": false
   },
-  "architecture_review": "engineering/reviewer-eco.json",
+  "architecture_review": "engineering/onboard-control-eco.json",
   "order_hold_reasons": [
     "Ordered motor is 34HS31-6004S1; driver current convention, external load inertia, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
     "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
     "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
     "TI full-flash configuration and staged powered commissioning remain pending.",
-    "34HS31-6004S1 adapter/front-mount interface and rear encoder attachment are unqualified; QSH CAD, holder and inertia assumptions are superseded.",
-    "Diagnostics and isolated EEPROM programming access are implemented and CAD-verified. TI image, assembled-fixture qualification, full cable/adapter fit and powered indicator/alarm validation remain unresolved. See docs/reference-review.md.",
     "U1 unused SBU channels match a TI-reported false-fault arrangement; the proposed narrow hardware correction awaits schematic-freeze approval. See docs/pd-configuration-review.md.",
-    "Live sourcing 2026-10-12T01:57:49.343Z: {'unverified-no-exact-match': 51, 'insufficient': 25, 'available': 7}; inventory is not reserved.",
-    "External command source and limit products undefined; J7 physical reduction and harness remain blocked. USB motion is not implemented.",
-    "TE 320559 splice OD unverified; prototype PA12 cable support needs fit/pull/thermal qualification and machining/printing supplier acceptance.",
-    "Alternative stock/package refresh stopped because the primary exact-part stock/package evidence failed; older alternative availability is not current procurement approval."
-  ]
+    "Alternative stock/package refresh stopped because the primary exact-part stock/package evidence failed; older alternative availability is not current procurement approval.",
+    "Four existing holes retained without new hardware. Rear thread/depth, secure mounting and cable strain relief remain unverified. The 3D view is alignment-only.",
+    "TE 320559 length 32.13 mm is verified; splice outer diameter and actual crimp/pull/insulation fit are unverified.",
+    "Local START/STOP and SPI-ramp firmware build, but qualification flags remain false. The TI image, powered operation, stop behavior and delivered running system remain unqualified.",
+    "Current 247-part BOM sourcing at 2026-10-12T04:36:23.637Z: {'available': 22, 'insufficient': 25, 'unverified-no-exact-match': 34}. Missing/null stock is unverified, not proof of zero inventory. See engineering/onboard-control-stock.json; ordering is blocked and inventory is not reserved."
+  ],
+  "current_stock_evidence": "engineering/onboard-control-stock.json"
 }

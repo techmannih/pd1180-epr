@@ -62,10 +62,10 @@ export const FEATURE_PARITY = [
     evidence: "docs/firmware-pinmap.json",
   },
   {
-    id: "machine_io",
-    feature: "Retained Step/Dir, hardware enable, home and limit input circuitry",
-    components: ["J7", "Q15", "Q19", "Q20", "Q21", "Q22", "Q23"],
-    nets: ["STEP_24V", "DIR_24V", "HW_ENABLE_24V", "HOME_24V", "STOPL_24V", "STOPR_24V"],
+    id: "local_control",
+    feature: "Local START/STOP and independent reset; MCU-controlled SPI ramp",
+    components: ["SW1", "SW2", "R133", "U16", "U7", "U10", "U11", "U33", "Q14"],
+    nets: ["USER_BUTTON_N", "SD_MODE", "RUN_SAFE", "DRV_EN_N"],
     evidence: "hardware-contract.json",
   },
   {

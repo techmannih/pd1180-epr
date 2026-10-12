@@ -6,12 +6,12 @@ Every executable script is listed here so a reviewer can understand the release 
 |---|---|
 | `add-board-planes.py` | Adds board-outline-conformal GND and V3V3 planes to the routed four-layer PCB. |
 | `build-firmware.mjs` | Builds and packages the pinned STM32 ARM commissioning image; --check proves source/artifact hashes match and motion remains locked. |
-| `check-operating-mode.mjs` | Fails for encoder connections incompatible with the selected external STEP/DIR mode; records the exact hardware blocker. |
+| `check-operating-mode.mjs` | Verifies internal SPI-ramp mode, grounded unused U7 inputs, the local button and removal of external command interfaces. |
 | `check-alternatives.mjs` | Rechecks reviewed LCSC alternative parts, their pinned live package names and intended package compatibility, then writes availability evidence. |
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and permitted top/bottom placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs, including paste-free bare probe pads. |
 | `check-cloud-package.mjs` | Guards the source entrypoint, visibility of every TSX/import and both explicit CI build targets; `--built` verifies the selected hosted output exists and matches the complete routed JSON; enforces a compact upload, rejects oversized loose GitHub-import files and prevents runtime `@tsci/*` dependencies that are not locally pinned under `imports/`. |
-| `check-cloud-viewer.mjs` | Regenerates the hosted viewer artifact in memory and proves it preserves the source schematic/3D model, verified KiCad copper counts and a named source net for every route, via and pour. |
+| `check-cloud-viewer.mjs` | Regenerates the hosted viewer artifact in memory and proves it preserves the exact mechanical parts manifest, source schematic/3D model, verified KiCad copper counts and a named source net for every route, via and pour. |
 | `cloud-viewer-net-names.test.mjs` | Regresses KiCad 10 named branch routes without pad endpoints, via/pour net remapping, unchanged schematic/route geometry and rejection of missing, unknown or conflicting net identities. |
 | `check-feature-parity.mjs` | Reports component/net presence separately from open reference-board functions in `engineering/reference-comparison.json`; never treats a presence pass as complete parity. Verifies the product feature contract against compiled components, nets and evidence, enforces tscircuit's standard USB-C connector model, and checks permitted assembly layers. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
@@ -35,11 +35,11 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
 | `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
-| `check-source-schematic.mjs` | Audits all 27 default A4 schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
+| `check-source-schematic.mjs` | Audits all retained default A4 schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
 | `clean-silkscreen.py` | Removes dense passive references and applies reviewed markings. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings while retaining references and polarity marks; native DRC remains mandatory. |
 | `design.test.mjs` | Regression tests electrical topology, fixed parts and safety behavior. |
-| `export-assembly.mjs` | Generates JLC-compatible BOM/CPL from current source; `--check <directory>` rejects stale manufacturing or release assembly data. |
+| `export-assembly.mjs` | Generates JLC-compatible BOM/CPL using stable source values/packages and exact LCSC identities independently of transient stock responses; `--check <directory>` rejects stale manufacturing or release assembly data. |
 | `export-routing-interchange.py` | Exports a routing-only copy with unique, world-aligned footprint images while asserting every pad coordinate, layer, angle and net is unchanged; no blanket bottom rotation is needed. |
 | `export-kicad-route.mjs` | Exports the current Circuit JSON to a fresh KiCad PCB/project and hierarchical schematics for external routing; excludes DNP footprints and bare probe contacts from the paste stencil. |
 | `export-manufacturing.mjs` | Refreshes BOM/CPL, then uses KiCad CLI to export Gerbers, drills, positions, PCB DRC, schematic ERC, top/bottom renders and the manufacturing ZIP. |
@@ -48,8 +48,8 @@ Every executable script is listed here so a reviewer can understand the release 
 | `export-silkscreen-evidence.py` | Records every visible final KiCad top/bottom silkscreen label and its physical text size. |
 | `generate-firmware-pins.mjs` | Generates the STM32 pin header from the hardware pin contract or checks it for drift. |
 | `generate-cloud-viewer.mjs` | Verifies that the motor assembly preserves every source board record, then combines its board/motor CAD with routed KiCad traces, vias and pours for deterministic hosted PCB viewing. Removes floating-point recentering noise at KiCad's nanometre coordinate precision and omits the CLI's filesystem cache key, which includes generated release/report files; source and copper provenance remain enforced by SHA-256 inputs, routing fingerprint and delivery hashes. |
-| `generate-motor-assembly.mjs` | Converts the hash-locked motor STEP, named hardware and custom plate/clamp into individual GLBs loaded from immutable Git asset URLs and fabrication DXF/SVG/STL files. Reads engineering/mechanical/assembly.json; custom hardware remains unqualified. |
-| `check-motor-assembly.mjs` | Checks complete J2 CAD-body containment and adjacent-component clearance; screens final routed component meshes against all four screw-head envelopes and exact motor meshes against the proposed support posts; verifies the axial stack, unresolved encoder status, CAD height axis and exported assembly orientation. Accepts board GLB and optional assembly GLB paths. Writes docs/motor-assembly-check.json; does not certify physical/magnetic fit. |
+| `generate-motor-assembly.mjs` | Converts the hash-locked motor STEP and connected J2 harness into individual GLBs. Existing PCB holes are retained; unsupported mounting hardware is not generated. |
+| `check-motor-assembly.mjs` | Checks complete J2 CAD-body containment and adjacent-component clearance; verifies unchanged hole alignment/drills, CAD height axis and exported assembly orientation; rejects removed mounting hardware returning to the active model. Accepts board GLB and optional assembly GLB paths. Writes docs/motor-assembly-check.json; does not certify physical/magnetic fit. |
 | `generate-mounting-template.mjs` | Generates the 100%-scale SVG/PNG mounting template from the hardware contract and hash-locked STEP perimeter evidence, then detects stale copies. |
 | `generate-routing-report.py` | Generates route counts and completion state from the final KiCad board, DRC JSON and manufacturing report. |
 | `import-routing-copper.py` | Imports SES copper from the normalized routing copy, rejects placement changes, and preserves the original board footprints; `--restore-critical-branches` restores source Kelvin branches reserved as DSN obstacles and rejects premature joins before saving. Native DRC remains mandatory. |
@@ -97,12 +97,14 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `harness-geometry.mjs`: swept wire meshes, Bezier cable paths and exact segment-to-box clearance including insulation radius.
 - `harness-geometry.test.mjs`: regressions for crossings between sampled points, insulation clearance and finite endpoint-preserving wire meshes.
 - `generate-harness-assembly.mjs`: creates only the J2 motor mate, factory jacket, verified-length splice envelopes and bend-screened pigtails from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
-- `check-harness-assembly.mjs`: regenerates and verifies harness geometry, screens mated bodies/cable segments against component, motor-body, adapter, post and screw-head envelopes, checks cavity alignment, and writes hash-bound `docs/harness-assembly-check.json`. Runs during release export; no physical/crimp/strain-relief qualification is implied.
+- `check-harness-assembly.mjs`: regenerates and verifies harness geometry, screens mated bodies/cable segments against component, motor-body, remaining component and motor-body envelopes, checks cavity alignment, and writes hash-bound `docs/harness-assembly-check.json`. Runs during release export; no physical/crimp/strain-relief qualification is implied.
 
 - `apply-interface-cleanup.py`: removes the explicit 32-component/31-net interface set from a staging native PCB, leaving surviving placement and shared circuits intact. Fresh native DRC/ERC required.
-- `prune-interface-stubs.py`: iteratively removes only DRC-identified dangling GND/V3V3/VMOTOR stubs on a staging PCB; never waives findings.
+- `prune-interface-stubs.py`: iteratively removes only DRC-identified dangling GND/V3V3/VMOTOR stubs on a staging PCB; `--allow-net NAME` permits an explicitly reviewed additional net (SD_MODE branches after U8/U9 removal in this ECO). Never waives findings.
 - `check-interface-eco.py`: compares original/modified native component placement, values, pad geometry and approved NC changes; writes an auditable JSON report.
-- `check-cable-support.mjs`: checks swept cable clearance against actual custom support, cap and M3 fastener mesh surfaces; scopes the intentional jacket-to-clamp contact.
+- `check-cable-support.mjs`: checks that the withdrawn adapter-mounted clamp/support is absent and that physical retention remains explicitly unverified.
 - `finish-interface-copper.py`: restores C41 ground with a 0.60/0.30 mm via and trims the identified B.Cu sliver after interface-stub deletion; staging only, fresh native checks mandatory.
 
 | `check-mechanical-assets.mjs` | Verifies all runtime model URLs use one immutable Git revision and local bytes match the part manifest; `--remote` also fetches and hash-checks every published asset. |
+
+- `check-onboard-eco.py`: compares baseline, final and fresh-export native PCBs for the onboard START/STOP ECO. Checks the exact 34 removals/two additions, all retained pad geometry/net changes and four independently identified mounting holes. Fresh DRC/ERC/parity remains mandatory.

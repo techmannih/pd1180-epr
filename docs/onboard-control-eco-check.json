@@ -1,0 +1,104 @@
+{
+  "before_sha256": "ff41cd44b279a9e805fa16e6b2956b76f19a3868fd6ebfd857e29c65f8757227",
+  "after_sha256": "556fe993091b35fb10a83289a03eb62edc8a107fb8fa2bac6cabd4ce49dcd80e",
+  "removed_components": [
+    "C36",
+    "C37",
+    "D1",
+    "D10",
+    "D6",
+    "D7",
+    "D8",
+    "D9",
+    "J7",
+    "Q15",
+    "Q19",
+    "Q20",
+    "Q21",
+    "Q22",
+    "Q23",
+    "R57",
+    "R58",
+    "R83",
+    "R84",
+    "R85",
+    "R86",
+    "R87",
+    "R88",
+    "R89",
+    "R90",
+    "R91",
+    "R92",
+    "R93",
+    "R94",
+    "R95",
+    "R96",
+    "R97",
+    "U8",
+    "U9"
+  ],
+  "added_components": [
+    "R133",
+    "SW2"
+  ],
+  "retained_components": 271,
+  "mounting_holes_unchanged": true,
+  "pad_net_changes": [
+    {
+      "ref": "U16",
+      "pin": "25",
+      "before": "STOP_L",
+      "after": ""
+    },
+    {
+      "ref": "U16",
+      "pin": "26",
+      "before": "STOP_R",
+      "after": ""
+    },
+    {
+      "ref": "U16",
+      "pin": "27",
+      "before": "HOME_IN",
+      "after": ""
+    },
+    {
+      "ref": "U16",
+      "pin": "30",
+      "before": "STEP_IN",
+      "after": "USER_BUTTON_N"
+    },
+    {
+      "ref": "U16",
+      "pin": "31",
+      "before": "DIR_IN",
+      "after": ""
+    },
+    {
+      "ref": "Q14",
+      "pin": "2",
+      "before": "ENABLE_CHAIN",
+      "after": "GND"
+    },
+    {
+      "ref": "U7",
+      "pin": "17",
+      "before": "REFL_STEP",
+      "after": "GND"
+    },
+    {
+      "ref": "U7",
+      "pin": "18",
+      "before": "REFR_DIR",
+      "after": "GND"
+    },
+    {
+      "ref": "U7",
+      "pin": "25",
+      "before": "",
+      "after": "GND"
+    }
+  ],
+  "errors": [],
+  "scope": "Every surviving component value/placement/layer, pad geometry and all four mounting holes unchanged; added control footprints match the fresh source. Native DRC/ERC/parity separately verifies copper."
+}

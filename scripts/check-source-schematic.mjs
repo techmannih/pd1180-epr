@@ -106,7 +106,7 @@ const expectedSheetNames = [
   "encoder",
   "usb-data",
   "inputs",
-  "inputs-aux",
+  "user-control",
   "serial",
   "serial-rs232",
   "outputs",
@@ -118,9 +118,9 @@ const expectedSheetNames = [
   "alarm",
   "pd-programming"
 ]
-const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["serial", "serial-rs232", "outputs"].includes(name)))
-check(sheets.length === 24, "24 retained A4 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 24, "all schematic sheet names are unique")
+const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["inputs", "serial", "serial-rs232", "outputs"].includes(name)))
+check(sheets.length === 23, "23 retained A4 schematic sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 23, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -161,7 +161,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 72, "72 high-level annotations on 24 retained sheets", {
+check(annotations.length === 69, "69 high-level annotations on 23 retained sheets", {
   actual: annotations.length,
 })
 
@@ -321,7 +321,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 181, "181 named source nets after removal of 31 unused interface nets", { actual: sourceNets.length })
+check(sourceNets.length === 162, "162 named source nets after removal of external command circuits", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -345,7 +345,7 @@ check(["J1", "J10"].every(ref => usbCComponents.some(c => c.name === ref)), "PD 
 check(usbNamedConnectors.length === 2, "exactly two connector MPN is USB/Type-C related", {
   refs: usbNamedConnectors.map((component) => component.name),
 })
-check(!sourceComponentByName.J6 && !sourceComponentByName.J9, "J7 consolidates industrial harness connectors")
+check(!sourceComponentByName.J6 && !sourceComponentByName.J9 && !sourceComponentByName.J7, "Unsupported external control harnesses are removed")
 
 const usbExpectedPins = [
   ["J1", 7, "PD_VBUS"], ["J1", 8, "PD_VBUS"], ["J1", 17, "PD_VBUS"], ["J1", 18, "PD_VBUS"],
@@ -395,7 +395,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 89, "89 capacitors after removal of seven interface capacitors", { actual: capacitors.length })
+check(capacitors.length === 87, "87 capacitors after removal of external-command buffers", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -430,7 +430,7 @@ check(testPointIssues.length === 0, "every test point probes a shared functional
 // is_connected can be false for ports intentionally joined by matching net labels.
 const expectedNoConnects = [
   "J1.11:DP2", "J1.12:DM", "J1.13:DP", "J1.14:DN2", "J10.10:SBU1", "J10.16:SBU2",
-  "U1.14:SBU2", "U1.15:SBU1", "U7.25:ENCN_DCO_CFG6",
+  "U1.14:SBU2", "U1.15:SBU1",
   "U2.10:N_I2Ct_IRQ", "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
   "U23.4:NC", "U24.4:NC", "U25.4:NC", "U26.4:NC", "U27.4:NC",
   "U34.4:PG", "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
@@ -438,7 +438,7 @@ const expectedNoConnects = [
   "U18.8:W", "U18.9:V", "U18.10:U",
   "U35.13:N_INT",
   "U16.2:PC14_OSC32_IN", "U16.3:PC15_OSC32_OUT", "U16.13:PA2", "U16.14:PA3", "U16.22:PB10", "U16.29:PA9", "U16.32:PA10", "U16.38:PD0", "U16.39:PD1", "U16.40:PD2", "U16.41:PD3",
-  ...[4,5,9,10,11,12,13,14,15,16,17,19,20].map(n => `J7.${n}:pin${n}`),
+  "U16.25:PB13", "U16.26:PB14", "U16.27:PB15", "U16.31:PC7",
 ].sort()
 const actualNoConnectPorts = sourcePorts.filter((port) => !port.subcircuit_connectivity_map_key)
 const actualNoConnects = actualNoConnectPorts.map(portLabel).sort()
