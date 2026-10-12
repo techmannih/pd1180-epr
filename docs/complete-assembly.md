@@ -2,6 +2,8 @@
 
 The default 3D view and `motor-assembly.circuit.tsx` now show the ordered 34HS31-6004S1, existing adapter/post/PCB-fastener proposal, J2 motor mating harness, J3 brake mate, J7 industrial mate and two USB cable access gauges. This is a **nominal fit proposal**, not an approved mechanical kit, cable cut-length drawing or powered test result.
 
+**Reviewer follow-up, 2026-10-12:** the displayed `adapter_proposal` is a single group containing the plate, posts, standoffs and fastener clearance envelopes. It does not identify a particular sourced bolt. J3/J7 tails do not have defined, modeled remote destinations. The [assembly identity and endpoint audit](reviewer-request-audit.md#assembly-identity-and-endpoint-work-required-by-the-latest-screenshot) records the required part separation, meaningful names, procurement links and complete connections. Those corrections have not yet been applied to the model.
+
 ## What is connected in the model
 
 | Connection | Assembly shown | Evidence / boundary |
