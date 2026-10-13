@@ -28,6 +28,11 @@ verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference
 verifiedInputPaths.push('engineering/onboard-control-eco.json', 'engineering/interface-cleanup.json', 'engineering/mechanical/assembly-parts.json', 'engineering/mechanical/34hs31-6004s1-routed-cable.glb', 'scripts/check-cable-support.mjs')
 verifiedInputPaths.push('scripts/check-mechanical-assets.mjs', 'scripts/export-previews.mjs')
 for (const file of (await readdir('engineering/mechanical/parts')).sort()) verifiedInputPaths.push(`engineering/mechanical/parts/${file}`)
+verifiedInputPaths.push('scripts/native-eco-policy.mjs', 'scripts/native-eco-policy.test.mjs', 'engineering/unused-sbu-eco.json', 'scripts/check-placement.mjs', 'scripts/placement-review.mjs', 'scripts/placement-review.test.mjs', 'docs/placement-review.md', 'scripts/jlc-stock.mjs', 'scripts/jlc-stock.test.mjs')
+verifiedInputPaths.push('scripts/fixtures/placement-reviewed.txt')
+verifiedInputPaths.push('scripts/pd-image-policy.mjs', 'scripts/check-pd-image.mjs', 'scripts/pd-image-policy.test.mjs', 'docs/pd-tool-project.json', 'firmware/pd/ti-configuration.zip')
+verifiedInputPaths.push('docs/readiness.md', 'docs/brake-integration.md', 'scripts/check-alternatives.mjs')
+verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-review.test.mjs', 'engineering/native-silk-hold.json', 'scripts/check-pcb-references.mjs', 'scripts/sync-pcb-references.py')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -40,7 +45,8 @@ const checks = [
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['firmware-target', ['run', 'check:firmware-target']],
-  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs']],
+  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs']],
+  ['pd-image', ['scripts/check-pd-image.mjs']],
   ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
   ['cloud-viewer', ['run', 'check:cloud-viewer']],
@@ -49,7 +55,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['power-audit', ['run', 'check:power-audit']],
@@ -109,7 +115,7 @@ const report={
   production_released:false,
   limitations:[
     'The KiCad DRC proves geometric connectivity under the committed project rules; it does not replace physical validation.',
-    'Placement and schematic CLI checks include advisory heuristics; their nonzero exit codes are retained.',
+    'Raw placement heuristic output is retained with a narrow physical review and regression checks; all other failures remain blocking.',
     'Stock is a separate timestamped check in stock-report.json, not reserved assembly inventory.',
     'See routing-report.json for the final route record and release-status.json for hardware/firmware gates.'
   ]
@@ -124,6 +130,6 @@ const verificationMarkdown = `# PD1180-EPR verification\n\n` +
   `- Prototype fabrication orderable: **${report.prototype_fabrication_orderable ? 'yes' : 'no'}**\n` +
   `- Production released: **no**\n` +
   `- Verified entry SHA-256: \`${report.entry_sha256}\`\n\n` +
-  `Production remains gated by the TI PD image, STM32 target firmware, brake/load sizing, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
+  `Production remains gated by PD programming/readback, qualified STM32 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
 await writeFile('verification.md', verificationMarkdown)
 if(results.some(r=>r.exit_code!==0))process.exitCode=1

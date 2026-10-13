@@ -64,3 +64,10 @@ test('registered PD image identity is retained; wrong byte count is rejected', a
   config.eeprom.image.bytes++
   await expect(loadProgrammingImage('pd', read)).rejects.toThrow('length differs')
 })
+
+test('registered TI ZIP loads its reviewed full-flash member', async () => {
+  const image = await loadProgrammingImage('pd')
+  expect(image.image.length).toBe(31552)
+  expect(image.capacity).toBe(65536)
+  expect(image.base).toBe(0)
+})

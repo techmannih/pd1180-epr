@@ -3,6 +3,9 @@ import { promisify } from 'node:util'
 import { basename, dirname, extname, isAbsolute, join, relative, resolve } from 'node:path'
 import { access, copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import JSZip from 'jszip'
+import { createHash } from 'node:crypto'
+import { assertReviewDrc } from './silkscreen-review.mjs'
+const reviewSilk = process.argv.includes('--review-silkscreen')
 
 const run = promisify(execFile)
 const boardPathArg = process.argv[2]
@@ -46,13 +49,14 @@ await run(kicad, [
   '--all-track-errors',
   '--schematic-parity',
   '--severity-all',
-  '--exit-code-violations',
+  ...(reviewSilk ? [] : ['--exit-code-violations']),
   '--refill-zones',
   '--save-board',
   '--format', 'json',
   '--output', join(out, 'kicad-drc.json'),
   finalBoard,
 ])
+assertReviewDrc(JSON.parse(await readFile(join(out,'kicad-drc.json'))),reviewSilk)
 await run(kicad, [
   'sch', 'erc',
   '--severity-all',
@@ -91,6 +95,10 @@ const ercCounts = {}
 for (const item of ercViolations) ercCounts[item.type] = (ercCounts[item.type] || 0) + 1
 const report = {
   generated_at: new Date().toISOString(),
+  review_only: (drc.violations || []).length > 0,
+  fabrication_authorized: false,
+  board_sha256: createHash('sha256').update(await readFile(finalBoard)).digest('hex'),
+  drc_sha256: createHash('sha256').update(await readFile(join(out,'kicad-drc.json'))).digest('hex'),
   source_board: basename(boardPath),
   gerber_files: (await readdir(gerbers)).sort(),
   unconnected_items: (drc.unconnected_items || []).length,

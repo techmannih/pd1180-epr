@@ -4,7 +4,7 @@
 
 ## Historical native CAD recheck — 2026-10-11
 
-The native PCB SHA-256 at that historical revision was `7e46297f0bf288c2a8add54f65b2da0cff8255a7ed4c24951f7746c24f01f1d6`, after the diagnostics ECO and the source-warning cleanup. The latter changes assembly metadata and schematic layout only; [the exact native/source comparison](checks/warning-fix-parity.json) verifies unchanged PCB geometry, copper and pin connectivity. RGB, independent power indication, a driven buzzer and isolated EEPROM programming/probe access are now routed. The diagnostics and EEPROM connections are included in the 27 A4 schematic sheets. The warning cleanup preserves all electrical connectivity and the complete PCB route. Fresh native checks found zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Raw reports: [PCB](checks/pre-order-native-drc.json), [schematic](checks/pre-order-native-erc.json). The complete automated review is recorded in [verification.json](verification.json); its passing results do not cover every manufacturer design instruction.
+The native PCB SHA-256 at that historical revision was `7e46297f0bf288c2a8add54f65b2da0cff8255a7ed4c24951f7746c24f01f1d6`, after the diagnostics ECO and the source-warning cleanup. The latter changes assembly metadata and schematic layout only; [the exact native/source comparison](checks/warning-fix-parity.json) verifies unchanged PCB geometry, copper and pin connectivity. RGB, independent power indication, a driven buzzer and isolated EEPROM programming/probe access are now routed. The diagnostics and EEPROM connections are included in the 27 A4 schematic sheets. The warning cleanup preserves all electrical connectivity and the complete PCB route. Fresh native checks found zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Raw reports: [PCB](checks/pre-order-native-drc.json), [schematic](checks/pre-order-native-erc.json). That historical result does not describe the current DRC: integrated native labels retain 404 silkscreen/text findings. The latest full review is recorded in [verification.json](verification.json), including failures.
 
 | Review area | Finding |
 |---|---|
@@ -40,7 +40,7 @@ Reference data: [TI LMR36510 tables 8-1/8-4](https://www.ti.com/lit/ds/symlink/l
 
 C87 has a documented 3.3 mm pad-center placement limit: VIN is the second pin in U34's PowerPAD package, and the adjacent 0805 capacitor must clear the PGND land and package courtyard. Actual separation is approximately 3.166 mm, with a constrained top-layer path under 5 mm. All other bypass targets retain the 3 mm placement limit. This is not an exception to copper clearance, connectivity or the short ground-return requirement. L3 uses the manufacturer's recommended land pattern; its 3D object is a dimensioned body envelope, not a manufacturer STEP model.
 
-The final native PCB has 252 fitted parts and 19 service pads on top, a minimum 0.30 mm finished via drill, 40 MOSFET drain thermal vias and four U34 exposed-pad thermal vias. The drill-over-solder-land audit counts **55 via-in-pad locations**, all requiring the selected filled/capped process. Exact coordinates and the board hash are in the `power_eco_via_audit` entry of `engineering/top-side-placement.json`; order settings carry the same count. Native routing checks verify all 43 specified IC-to-capacitor same-side paths within 5 mm, all nine Kelvin/analog-return branches, USB reference continuity and the power-corridor policy. The native bypass regression rejects the earlier copper with five missing or excessive paths.
+At that historical diagnostics revision, the native PCB had 252 fitted parts and 19 service pads on top, a minimum 0.30 mm finished via drill, 40 MOSFET drain thermal vias and four U34 exposed-pad thermal vias. The drill-over-solder-land audit counts **55 via-in-pad locations**, all requiring the selected filled/capped process. Exact coordinates and the board hash are in the `power_eco_via_audit` entry of `engineering/top-side-placement.json`; order settings carry the same count. Native routing checks verify all 43 specified IC-to-capacitor same-side paths within 5 mm, all nine Kelvin/analog-return branches, USB reference continuity and the power-corridor policy. The native bypass regression rejects the earlier copper with five missing or excessive paths.
 
 ## Diagnostics load allocation
 
@@ -65,7 +65,7 @@ The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J betw
 - Fresh Gerber/drill ZIP and matching BOM/CPL, with SHA-256 provenance. Reject older ZIPs and manually substituted files.
 - Exact stock/package checks for the actual order quantity, plus manufacturer confirmation of filled/capped via-in-pad processing and the chosen impedance stack-up.
 - Review of the ordered 34HS31-6004S1 current waveform, supply/cable, maximum speed, stop time, rotor/load inertia, ambient temperature, enclosure and brake heatsink. These operating details remain unqualified.
-- A documented PD programming path. `docs/pd-configuration.json` contains requirements only; the TI-generated full-flash image is still missing. Do not substitute that JSON for an EEPROM binary.
+- A documented PD programming path. `docs/pd-configuration.json` now identifies the reviewed TI-generated full-flash candidate. Physical programming/readback and cold boot remain open. Do not substitute JSON for the EEPROM binary.
 
 ## Staged powered test record — all results pending
 
@@ -115,7 +115,7 @@ Complete and approve this envelope **before** a motor-enabled test. Empty fields
 | Brake resistor, heatsink, mounting and airflow | Not qualified |
 | Ambient range, enclosure, duty cycle and thermal limits | Not agreed |
 | Microsteps, current settings and STEP/DIR timing limits | Not qualified |
-| TI configuration/full-flash hashes and motor-test firmware hash | Not available |
+| TI configuration/full-flash hashes and motor-test firmware hash | TI candidate and locked commissioning image recorded; no qualified motor-enabled image |
 | Fixture revision, instrument list and calibration dates | Not supplied |
 
 For every matrix row, retain: board/release identity; procedure revision; operator/date; actual motor/load/ambient; instrument setup; programmed settings; numeric expected limits and their source; readings with units; waveform/photo/log filenames; PASS/FAIL; and the engineer's disposition. A record labelled “not tested” is not acceptable shipment evidence.

@@ -43,7 +43,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `export-assembly.mjs` | Generates JLC-compatible BOM/CPL using stable source values/packages and exact LCSC identities independently of transient stock responses; `--check <directory>` rejects stale manufacturing or release assembly data. |
 | `export-routing-interchange.py` | Exports a routing-only copy with unique, world-aligned footprint images while asserting every pad coordinate, layer, angle and net is unchanged; no blanket bottom rotation is needed. |
 | `export-kicad-route.mjs` | Exports the current Circuit JSON to a fresh KiCad PCB/project and hierarchical schematics for external routing; excludes DNP footprints and bare probe contacts from the paste stencil. |
-| `export-manufacturing.mjs` | Refreshes BOM/CPL, then uses KiCad CLI to export Gerbers, drills, positions, PCB DRC, schematic ERC, top/bottom renders and the manufacturing ZIP. |
+| `export-manufacturing.mjs` | Refreshes BOM/CPL, then uses KiCad CLI to export Gerbers, drills, positions, PCB DRC, schematic ERC, top/bottom renders and the manufacturing ZIP. Explicit `--review-silkscreen` retains the exact known label findings for a held review package; normal exports remain strict. |
 | `export-previews.mjs` | Renders top PCB and all functional schematic sheets. |
 | `export-release.mjs` | Rejects stale manufacturing BOM/CPL, checks the hosted package size, regenerates routed-board and motor assembly GLBs, checks geometry/axis alignment, then builds synchronized release manifests, sourcing tables and hashes. |
 | `export-silkscreen-evidence.py` | Records every visible final KiCad top/bottom silkscreen label and its physical text size. |
@@ -57,7 +57,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `import-routed-kicad.mjs` | Imports externally routed KiCad copper into reviewable Circuit JSON artifacts. |
 | `import-specctra-route.py` | Imports a Freerouting Specctra SES result into its matching KiCad PCB, reverses the temporary bottom-placement routing compensation, and records connectivity counts. |
 | `make-power-only-dsn.py` | Produces a power-focused Specctra routing input for controlled routing work. |
-| `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, synchronizes DNP/BOM flags, and publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. |
+| `normalize-kicad-parity.mjs` | Reconciles a routed KiCad board with a fresh source export, fails closed on reference, footprint, net and pin drift, synchronizes DNP/BOM flags, and normally publishes output only after all-severity PCB DRC, schematic parity and native schematic ERC pass. Explicit `--review-silkscreen` permits only the exact retained 404 label findings in review-only output; it does not pass DRC or release gates. |
 | `normalize-generated-svgs.mjs` | Removes generator-only trailing whitespace so previews remain deterministic in review. |
 | `prepare-plane-escapes.py` | Adds short 0.20 mm ground/board-supply escapes to 0.60/0.30 mm vias before internal-plane routing. Preserves Kelvin isolation and leaves inaccessible pads in the router netlist; native DRC and filled-plane connectivity remain mandatory. |
 | `test-plane-escapes.py` | Native connectivity regression: existing capacitor-return vias and plated connector pads must not receive redundant plane fanouts; isolated SMD lands still need an escape. |
@@ -116,7 +116,16 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 
 PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/winding and input-step cases plus winding energy balance. `check-delivery.mjs` verifies source external-equipment guidance and actual native DRC counts against delivered copies; `check-stock.mjs` distinguishes unknown inventory from insufficient known inventory.
 
-- `check-protection-refinement.mjs`: reverses only the three R25/R61/R66 value fields and requires the entire native PCB to hash exactly to main 4836266. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.
+- `check-protection-refinement.mjs`: checks the narrow unused-SBU ECO against the native-reference baseline, preserving every unrelated PCB object. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.
 
+- `jlc-stock.mjs`: reads the public official JLCPCB part-detail endpoint; verifies the exact code and uses the lesser of warehouse stock and available order quantity. Unknown quantities fail closed; retains only relevant evidence fields.
+- `jlc-stock.test.mjs`: rejects fuzzy/missing identities, null/negative/string quantities and reserved stock being counted as available order quantity.
+
+- `native-eco-policy.mjs`, `native-eco-policy.test.mjs`: parse and protect the unchanged native board around the six-pad SBU correction, including negative copper/hole/net tests.
+- `check-placement.mjs`, `placement-review.mjs`, `placement-review.test.mjs`: retain raw placement advice and enforce only the three documented, native-route-reviewed cases. Unit tests use the committed CLI fixture `fixtures/placement-reviewed.txt` (recorded on 2026-10-13 from PR #3 at `3a48c34`), resolved relative to the test module; they require neither generated logs nor a particular working directory. CI runs this regression before the stock-dependent review. The live placement check still generates and validates current output, independently of the fixture.
+
+- `pd-image-policy.mjs`, `check-pd-image.mjs`, `pd-image-policy.test.mjs`: validate genuine TI full-flash export identity, sink/GPIO policy and both configuration regions; reject import resets or corrupted output.
 - `check-pcb-references.mjs`: checks every electrical component reference in compiled source, native PCB and the default routed PCB/3D viewer. Rejects hidden, absent, detached or stale names, and screens rotated reference envelopes against the full board outline. Native edge anchors may move per the user's edge-clearance exception; native DRC still checks stroke clearance. Runs within `check:cloud-viewer`.
 - `sync-pcb-references.py`: copies compiled native footprint references into the KiCad Reference fields, removes obsolete detached captions, and rejects any change outside those label fields. Arguments: board path and optional `--source` Circuit JSON.
+
+- `silkscreen-review.mjs`, `silkscreen-review.test.mjs`: permit an explicit `--review-silkscreen` normalization/manufacturing export only when the exact 404 native-reference finding identities match main 97ea91e. Preserve every raw finding and fail fabrication/review gates; reject electrical/parity faults or changed findings.

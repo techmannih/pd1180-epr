@@ -1,25 +1,52 @@
 {
-  "base_commit": "4836266cb3d771da798b0559fe3ae5de7c5905b6",
-  "baseline_board_sha256": "c955f3f13b799e879e358d342fcf4a4509f92616a88bfc0bfa981981235fbcd6",
-  "current_board_sha256": "6d44ea79349c7d87ef28b3f0e69f430855dacf07854e1c2677ba255687bcdd60",
-  "changes": [
+  "base_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
+  "baseline_board_sha256": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
+  "current_board_sha256": "7f5ab5e8669a6339033096fe58a5a8814d0db827c44491e46587c972d8c88b58",
+  "pad_net_changes": [
     {
-      "reference": "R25",
-      "before": "4.22kΩ",
-      "after": "4.99kΩ"
+      "reference": "J1",
+      "pin": "10",
+      "before": "\"PD_SBU1_CONN\"",
+      "after": "\"unconnected-(J1-SBU1-Pad10)\""
     },
     {
-      "reference": "R61",
-      "before": "16kΩ",
-      "after": "16.2kΩ"
+      "reference": "J1",
+      "pin": "16",
+      "before": "\"PD_SBU2_CONN\"",
+      "after": "\"unconnected-(J1-SBU2-Pad16)\""
     },
     {
-      "reference": "R66",
-      "before": "1.21kΩ",
-      "after": "1.2kΩ"
+      "reference": "U1",
+      "pin": "1",
+      "before": "\"PD_SBU1_CONN\"",
+      "after": "\"unconnected-(U1-DP-Pad1)\""
+    },
+    {
+      "reference": "U1",
+      "pin": "2",
+      "before": "\"PD_SBU2_CONN\"",
+      "after": "\"unconnected-(U1-DM-Pad2)\""
+    },
+    {
+      "reference": "U1",
+      "pin": "14",
+      "before": "\"unconnected-(U1-SBU2-Pad14)\"",
+      "after": "\"GND\""
+    },
+    {
+      "reference": "U1",
+      "pin": "15",
+      "before": "\"unconnected-(U1-SBU1-Pad15)\"",
+      "after": "\"GND\""
     }
   ],
-  "all_other_native_bytes_unchanged": true,
-  "checker_sha256": "524a63a689612bd0be49ba53ab2106b7f343e1bb8af37bbbb71c49ee5a0dcdbd",
+  "removed_copper_items": 44,
+  "removed_isolated_zones": 1,
+  "added_ground_segments": 2,
+  "added_local_fill_trim": 1,
+  "all_other_native_geometry_unchanged": true,
+  "derived_zone_fills_recomputed": true,
+  "policy_sha256": "833915c5d893e595fede32f91f368056afd2eaaa43fe571be497045c3afa89d0",
+  "checker_sha256": "4f04b3557584de72c1742a1431b588823f4e27623d97a7187e622a1f15b3e2e6",
   "hardware_qualified": false
 }

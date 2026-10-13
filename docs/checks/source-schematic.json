@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-10-13T04:48:00.435Z",
+  "generated_at": "2026-10-13T10:36:08.556Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "96ad9768c16d2520d7f2e8795a50d994206f30487fd4a36fc4258a7ebdcf0160",
-    "bytes": 4437491
+    "sha256": "3b72ead375ab68e60b0c72c702376aed1eb15c90da6910e2fdf19532d35167cc",
+    "bytes": 4434362
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 10076,
+    "elements": 10067,
     "sheets": 24,
     "source_components": 274,
     "source_ports": 955,
-    "connected_source_ports": 907,
-    "intentional_no_connect_ports": 48,
-    "source_nets": 164,
+    "connected_source_ports": 905,
+    "intentional_no_connect_ports": 50,
+    "source_nets": 162,
     "minimum_ports_per_connected_net": 2,
     "capacitors": 88,
     "test_points": 19,
@@ -23,7 +23,7 @@
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 64,
+    "2": 62,
     "3": 60,
     "4": 16,
     "5": 4,
@@ -37,7 +37,7 @@
     "23": 1,
     "43": 1,
     "59": 1,
-    "222": 1
+    "224": 1
   },
   "usb_c": {
     "connectors": [
@@ -93,7 +93,7 @@
       {
         "pin": 10,
         "name": "SBU1",
-        "net": "PD_SBU1_CONN"
+        "net": "NC"
       },
       {
         "pin": 11,
@@ -123,7 +123,7 @@
       {
         "pin": 16,
         "name": "SBU2",
-        "net": "PD_SBU2_CONN"
+        "net": "NC"
       },
       {
         "pin": 17,
@@ -365,14 +365,16 @@
     ]
   },
   "intentional_no_connects": [
+    "J1.10:SBU1",
     "J1.11:DP2",
     "J1.12:DM",
     "J1.13:DP",
     "J1.14:DN2",
+    "J1.16:SBU2",
     "J10.10:SBU1",
     "J10.16:SBU2",
-    "U1.14:SBU2",
-    "U1.15:SBU1",
+    "U1.1:DP",
+    "U1.2:DM",
     "U16.13:PA2",
     "U16.14:PA3",
     "U16.22:PB10",
@@ -430,8 +432,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 222,
-      "non_testpoint_peers": 218
+      "total_ports_on_net": 224,
+      "non_testpoint_peers": 220
     },
     {
       "ref": "TP_SWCLK",
@@ -478,8 +480,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 222,
-      "non_testpoint_peers": 218
+      "total_ports_on_net": 224,
+      "non_testpoint_peers": 220
     },
     {
       "ref": "TP_PD_VREF",
@@ -490,8 +492,8 @@
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 222,
-      "non_testpoint_peers": 218
+      "total_ports_on_net": 224,
+      "non_testpoint_peers": 220
     },
     {
       "ref": "TP_EEP_SDA",
@@ -526,8 +528,8 @@
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 222,
-      "non_testpoint_peers": 218
+      "total_ports_on_net": 224,
+      "non_testpoint_peers": 220
     }
   ],
   "sheets": [
@@ -872,8 +874,8 @@
     {
       "index": 1,
       "name": "usb-pd",
-      "elements": 134,
-      "coordinate_points_checked": 276
+      "elements": 129,
+      "coordinate_points_checked": 278
     },
     {
       "index": 2,
@@ -1983,17 +1985,17 @@
     },
     {
       "ok": true,
-      "message": "164 named source nets including brake feedback",
+      "message": "162 named source nets after unused SBU removal",
       "details": {
-        "actual": 164
+        "actual": 162
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 164,
-        "source_nets": 164
+        "connected_groups": 162,
+        "source_nets": 162
       }
     },
     {
@@ -2090,14 +2092,16 @@
       "message": "source no-connect set exactly matches the reviewed intentional allowlist",
       "details": {
         "expected": [
+          "J1.10:SBU1",
           "J1.11:DP2",
           "J1.12:DM",
           "J1.13:DP",
           "J1.14:DN2",
+          "J1.16:SBU2",
           "J10.10:SBU1",
           "J10.16:SBU2",
-          "U1.14:SBU2",
-          "U1.15:SBU1",
+          "U1.1:DP",
+          "U1.2:DM",
           "U16.13:PA2",
           "U16.14:PA3",
           "U16.22:PB10",
@@ -2140,14 +2144,16 @@
           "U6.24:N_C1"
         ],
         "actual": [
+          "J1.10:SBU1",
           "J1.11:DP2",
           "J1.12:DM",
           "J1.13:DP",
           "J1.14:DN2",
+          "J1.16:SBU2",
           "J10.10:SBU1",
           "J10.16:SBU2",
-          "U1.14:SBU2",
-          "U1.15:SBU1",
+          "U1.1:DP",
+          "U1.2:DM",
           "U16.13:PA2",
           "U16.14:PA3",
           "U16.22:PB10",

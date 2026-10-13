@@ -1,18 +1,18 @@
 {
-  "built_at": "2026-10-13T02:56:04.581Z",
+  "built_at": "2026-10-13T05:15:28.875Z",
   "target": "STM32G0B1CBT6",
   "image_type": "commissioning-diagnostics-only",
   "motor_operation_enabled": false,
   "flash_address": "0x08000000",
   "initial_sp": "0x20024000",
-  "reset_vector": "0x800b745",
+  "reset_vector": "0x800b75d",
   "max_flash_bytes": 131072,
-  "image_bytes": 57968,
+  "image_bytes": 57992,
   "inputs": {
     "firmware/platformio.ini": "c6c22c0c77ed26edf1a9a00c2c9e3591c7a6cd139775ce135f17e084451bea90",
-    "firmware/README.md": "c6dc4fcf1c6d292a1b315734a5377de874a6d6bc75ab247b128807df5afb3c30",
+    "firmware/README.md": "a8b50ea942058120b0e9f6e183a489250237d24b6d709109d848e1285d824a7f",
     "docs/firmware-pinmap.json": "e1d4cdb2688dc72265fcb901cd8624050bc0f195e02f7af1e9c084def1647cb9",
-    "scripts/build-firmware.mjs": "618a681387ac69c53898021cb33a39fa7348946cf4ba0ef64fff2ffdc3c34d85",
+    "scripts/build-firmware.mjs": "92cfa44cda56bd3042b728be1ff6972b0cc230b82942f6d14beb037c9f945ca1",
     "firmware/src/brake_preflight.c": "c5ac0b5847b2bfb5c33568e9878770a69a18fccfc168f942555e0e8fcf547e6c",
     "firmware/src/control.c": "95c4700a91e3cc3fe744a3b887c28ed6db261104a68430f6b6e2e6fcb8fd29e2",
     "firmware/src/local_motion.c": "34931a584031af763e5076d75ea8d0016a51f5d3a74d95517696d261b867a741",
@@ -33,18 +33,18 @@
     "firmware/include/telemetry.h": "5b78411c0d1d8675561b58875f426f4c4e8fdff7db67b5b6b75990bab0eb1303",
     "firmware/include/tmc5160.h": "c54a6a85208b50a35ab301e7db4c138f7d9b071fa6704c67836e84be7fd8510f",
     "firmware/include/tmc5160_config.h": "eaa9d3f2a2a33382ad0c7cfc986ce2f216ad17cd1aa5a8ec04e0db91b27c5335",
-    "firmware/target/main.cpp": "868573ded389da85ea7981a4988c30aa991b2251c324c3b2db244f6918c682c9",
+    "firmware/target/main.cpp": "6c6661c04c54c0fa31d5fe6bbdc9dfacac68437d66494845a3cde74fcedabd24",
     "firmware/target/usb_suspend.cpp": "adc4976790187046d1054223cf740c80b64e5c72c507dab04351b02c7f53a42f",
     "firmware/target/usb_suspend.h": "15822f65fd0691f4340ed026f94b5adea98d3f7cadd42f9f948017fac0d6945d",
     "firmware/boards/pd1180.json": "bf96ddf2d976e26caed4ab68d285cf0372f9f332aae4cb8824f425951788489c"
   },
   "artifacts": {
-    "firmware.bin": "2d78850e7daf9fa7d36ca995003c4a23f0f0cf0d8aa1d9b86e3a6b8f70b22cdb",
-    "firmware.elf": "c71bb06d1597409bc8e5def977de8ba40fa34a2ff92f5c61c0dba5297d29fda6"
+    "firmware.bin": "ed3318c3ee0f199df5d2f4794c6dd96e7cc44d45b1691e5ee9d6b85081139fa6",
+    "firmware.elf": "90cb03409dddbe4ac840ee2c4f8759b97fee5ae99dfab0f2aca95e06d2124f28"
   },
   "unverified": [
     "USB enumeration and measured GPIO levels on hardware",
-    "TI configuration image/programming",
+    "TI physical programming/readback and cold boot",
     "SPI ramp/control hardware ECO",
     "motor operation and thermal/EMC validation"
   ]

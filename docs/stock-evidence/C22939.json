@@ -1,7 +1,7 @@
 {
   "url": "https://jlcsearch.tscircuit.com/components/list.json?search=22939",
   "fallback_url": "https://jlcsearch.tscircuit.com/resistors/list.json?resistance=2.2&package=0603",
-  "checked_at": "2026-10-13T03:03:22.886Z",
+  "checked_at": "2026-10-13T10:33:45.097Z",
   "response": {
     "components": []
   },
@@ -1226,5 +1226,7 @@
         "attributes": "{\"Operating Temperature\":\"-55℃~+155℃\",\"Power(Watts)\":\"200mW\",\"Resistance\":\"2.2Ω\",\"Temperature Coefficient\":\"±200ppm/℃\",\"Tolerance\":\"±1%\",\"Type\":\"Thick Film Resistor\"}"
       }
     ]
-  }
+  },
+  "official": null,
+  "official_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 30 https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C22939\ncurl: (56) The requested URL returned error: 429\n"
 }

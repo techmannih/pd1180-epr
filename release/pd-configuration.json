@@ -1,0 +1,82 @@
+{
+  "status": "TI-full-flash-generated-register-reviewed-not-programmed",
+  "controller": "TPS26750SRSMR",
+  "tool": "TI USBCPD Application Customization Tool linked from the TPS26750 product page",
+  "eeprom": {
+    "part": "M24512-RMN6TP",
+    "bytes": 65536,
+    "bus": "I2Cc",
+    "address_7_bit": "0x50",
+    "image": {
+      "path": "release/pd1180-ti-configuration.zip",
+      "archive_member": "fullFlash.bin",
+      "sha256": "ae4222fe41cde5bb9704b4b949fb67aaf231fc897d429199420a99db725b5d18",
+      "bytes": 31552,
+      "format": "ti-full-flash",
+      "start_address": 0
+    }
+  },
+  "boot": {
+    "mode": "SafeMode",
+    "adcin1": 7,
+    "adcin2": 0,
+    "i2ct_address_7_bit": "0x20"
+  },
+  "requirements": {
+    "power_role": "sink-only",
+    "data_role": "power-only J1; no USB communications; data-role swaps disabled",
+    "power_role_swap": false,
+    "vconn_role_swap": "not exposed by this GUI/TRM revision; source path disabled; protocol capture required",
+    "epr": true,
+    "requested_max_voltage_mv": 48000,
+    "requested_max_current_ma": 5000,
+    "gpio2": "event 92 VBUS_SENSE_DIVIDER; push-pull output, initially low, noninverted to TPD4S480 EPR_EN",
+    "gpio0": "event 33 Fault_Input_Event_Port1; input, active low, noninverted",
+    "power_path_en": "TI Figure 8-5 non-inverting CSD17484F4 dual-NMOS buffer; 100k pull-ups use PD_3V3/LDO_3V3"
+  },
+  "mcu_permit_conditions": [
+    "APP mode and approved configuration identity",
+    "active 48 V / 5 A EPR contract",
+    "no protection fault",
+    "MCU watchdog healthy",
+    "valid bus measurements"
+  ],
+  "missing_image_behavior": "POWER_PERMIT and MCU_RUN remain low",
+  "tool_version": "2.0.1",
+  "tool_access_status": "both-TI-licenses-accepted-by-user-2026-10-13",
+  "programming_access": {
+    "document": "docs/pd-programming.md",
+    "isolation_switch": "U36 SN74LVC2G66DCUR",
+    "isolation_control": "TP_PD_ISO grounded opens both I2Cc wires",
+    "eeprom_side_nets": [
+      "EEP_PROG_SDA",
+      "EEP_PROG_SCL"
+    ],
+    "pads": [
+      "TP_PD_GND",
+      "TP_PD_VREF",
+      "TP_PD_ISO",
+      "TP_EEP_SDA",
+      "TP_EEP_SCL"
+    ],
+    "supply": "fixed 5 V at J1; programmer VCC output off; VREF sense only",
+    "programmer": "3.3 V open-drain I2C, 100 kHz, address 0x50",
+    "qualification": "fixture implementation, image readback and cold APP boot pending"
+  },
+  "base_firmware": "TPS26750_F809_11_59_0000.bin",
+  "project": {
+    "path": "docs/pd-tool-project.json",
+    "sha256": "1e3236f68c213d96dde5754894ec8f457919da4d9a359474dae1680b34b32bac",
+    "customer_use_ascii": "PD118041",
+    "customer_use_hex_le": "5044313138303431"
+  },
+  "export_review": {
+    "questionnaire_import_caveat": "Tool 2.0.1 reset question 1 to DRP and reapplied dependent defaults on import despite the advanced-data option. Re-select sink-only without BQ; reapply swap and GPIO2 polarity fields; re-export and run check-pd-image.mjs. Do not flash an unchecked imported project.",
+    "full_flash_export_zip_sha256": "a40f83db5f52a02fabf43e3549df132afb61d4dbbf3e6e6e9d12dbfef1758df1",
+    "full_flash_selected_in_gui": true,
+    "programmed": false,
+    "readback_verified": false,
+    "cold_app_boot_verified": false,
+    "physical_gpio_polarity_measured": false
+  }
+}

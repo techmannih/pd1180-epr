@@ -26,7 +26,7 @@ Pin numbering follows the imported physical footprints. J7 is the 20-pin B20B-PH
 
 ## Programming and external items
 
-Program U3 with the approved TI-generated TPS26750 full-flash image and U16 with board-specific firmware before motor bring-up. The TI image is currently missing; the supplied STM32 image is for motion-locked commissioning only. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled top service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
+Program U3 with the approved TI-generated TPS26750 full-flash image and U16 with board-specific firmware before motor bring-up. A register-reviewed TI full-flash candidate is included; physical programming/readback is pending. The supplied STM32 image remains for motion-locked commissioning only. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled top service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
 
 ### Programming and test work order
 

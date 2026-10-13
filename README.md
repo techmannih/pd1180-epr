@@ -1,8 +1,8 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-Component names come from native footprint references, including SW1 and SW2; custom imports use `{NAME}`. Q5, L3, R4, C92, C89 and R9 use inward reference anchors to keep their names inside the board. No names are hidden or replaced with detached captions. [Edge labels before](previews/edge-labels-before.png) · [Edge labels after](previews/edge-labels-after.png).
+Component names come from native footprint references, including SW1 and SW2; custom imports use `{NAME}`. Q5, L3, R4, C92, C89 and R9 use inward reference anchors to keep their names inside the board. No names are hidden or replaced with detached captions. [Edge labels before](previews/edge-labels-before.png) · [Edge labels after](previews/edge-labels-after.png). The earlier pre-label screenshot is preserved byte-for-byte in [native-reference history](previews/native-reference-history.zip).
 
-**Current label-only revision:** electrical/schematic records and native copper are unchanged. All 255 reference envelopes are inside the board outline; native DRC has zero edge-clipping findings, 404 other silkscreen/text findings, zero unconnected items and zero schematic-parity issues. Earlier zero-DRC results and manufacturing archives below describe the pre-label revision, not this viewer. Fabrication remains held. Evidence: [edge-reference verification](engineering/edge-reference-verification.json).
+**Current protection and label revision:** unused U1 SBU wiring is corrected in source/native copper and a reviewed TI full-flash candidate is included. All 255 native references remain visible and inside the outline. Native DRC retains 404 silkscreen/text findings, with zero unconnected items, parity issues and ERC violations. Review archives include these findings; fabrication and motor operation remain held. See [readiness](docs/readiness.md) and [PD review](docs/pd-configuration-review.md).
 
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and local START/STOP control.
@@ -11,7 +11,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 **Previous control ECO — 2026-10-12:** J7 and 33 associated command/interface parts removed from TSX; SW2 START/STOP and R133 added. STM32 now commands the TMC5160 internal SPI ramp. SW1 RESET, J2 VH, both USB ports and protection remain. Removed 51 unsupported mounting parts; kept all four Ø4.2 mm holes unchanged. [Before](previews/onboard-control-before.png) · [After — source alignment preview](previews/onboard-control-after.png).
 
-**Status:** source, firmware, native PCB and 3D updated. Native DRC/ERC/parity pass with zero violations and zero unconnected items. Motion and ordering remain locked; live sourcing and powered/mechanical qualification are open.
+**Status:** source, firmware, native PCB and 3D updated. Electrical connectivity, schematic parity and ERC pass; 404 silkscreen/text DRC findings remain blocking. Motion and ordering remain locked; live sourcing and powered/mechanical qualification are open.
 
 **Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
 
@@ -19,7 +19,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 [View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
 
-Open `motor-assembly.circuit.tsx` for the current local source preview. It contains the ordered motor and connected J2 harness, with no unverified adapter or replacement fasteners. The routed viewer is regenerated from this ECO after native DRC/ERC/parity.
+Open `motor-assembly.circuit.tsx` for the current local source preview. It contains the ordered motor and connected J2 harness, with no unverified adapter or replacement fasteners. The routed viewer and review archives are regenerated from the current ECO with all native findings retained.
 
 ![Current alignment preview; physical fastening remains unverified](previews/onboard-control-after.png)
 
@@ -27,12 +27,12 @@ Open `motor-assembly.circuit.tsx` for the current local source preview. It conta
 
 The intended purchase is **PCB fabrication plus complete assembly, programming and functional test**, so the delivered PCBA can operate with its specified motor, power source and harness. Bare-PCB electrical testing and soldering the components do not establish motor operation. Programming and powered testing must be explicitly included in the accepted assembly/test work order; they are not assumed to be included in an SMT assembly quote.
 
-**The current release cannot yet deliver a ready-to-run motor controller.** No assembled hardware has been tested. U3's TI PD image is missing, and the supplied STM32 commissioning image deliberately blocks motor power and motion, including after `ARM`. The following deliverables are required before accepting a board as ready to run:
+**The current release cannot yet deliver a ready-to-run motor controller.** No assembled hardware has been tested. U3's register-reviewed TI PD image is generated but not programmed/read back, and the supplied STM32 commissioning image deliberately blocks motor power and motion, including after `ARM`. The following deliverables are required before accepting a board as ready to run:
 
 | Deliverable | Required handoff / present status |
 |---|---|
 | Complete populated PCBA | Matching Gerbers, BOM and CPL; 252 fitted parts on top, including an agreed through-hole/tall-part assembly plan. Source and native route built; sourcing, physical assembly and qualification pending. |
-| U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Binary pending.** The requirements JSON is not flashable firmware. |
+| U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Candidate binary included; physical readback pending.** See `pd1180-ti-configuration.zip`; JSON is not firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
 | External system | Confirmed motor, EPR source/cable, mating harnesses, brake resistor/heatsink, magnet and mounting hardware; these are outside the populated-PCB BOM. |
@@ -41,7 +41,7 @@ First articles need staged engineering qualification using [the power-validation
 
 The [provider request and first-article programming sequence](docs/assembly.md#request-to-send-to-the-assemblytest-provider) are ready for review. Provider acceptance and the [motor/load qualification inputs](docs/power-validation.md#qualification-work-sheet-for-the-provider) remain open. Programming and the accepted motor tests must finish before shipment.
 
-The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU review finding](docs/pd-configuration-review.md) needs a narrowly approved hardware correction; the frozen schematic has not been changed.
+The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU correction](docs/pd-configuration-review.md) is applied and native-checked, with physical startup/fault validation pending.
 
 ## Connections and operation
 
@@ -206,7 +206,7 @@ Source errors and warnings both fail verification and block the release checks. 
 
 All fitted components and labelled service pads are on top. U18 is centered on the motor axis on the bottom, with C52/C53 nearby; all three footprints are DNP and excluded from assembly. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
-The completed KiCad route passes all-severity DRC, connectivity, schematic parity, ERC and terminal-only Kelvin checks. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
+The KiCad route passes connectivity, schematic parity, ERC and terminal-only Kelvin checks. Full DRC fails on the retained 404 silkscreen/text findings. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
 The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` and `engineering/mechanical/ordered-motor-pcb-reference.json`. It retains the TMCM-1180 stepped perimeter and places all four Ø4.2 mm PCB holes on the ordered **34HS31-6004S1 rear CAD axes**. The reference records both sources and their coordinate systems. Print it at 100% and check its 20 mm calibration bar. **Matching the rear axes does not approve rear case screws for accessory mounting.** The documented motor mounting interface is the front flange; [motor assembly](docs/motor-assembly.md) records the alignment-only preview and unverified rear mounting interface.
 
@@ -236,7 +236,7 @@ bun run review
 
 The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, top-side assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
 
-Current verification results are recorded in [verification.json](docs/verification.json). Fresh native DRC/ERC/parity pass; 45 retained native bypass paths pass. Live stock and assembly procurement checks fail, so the full review is not an order approval. CAD screens do not establish powered operation.
+Current verification results are recorded in [verification.json](docs/verification.json). Fresh native connectivity/ERC/parity checks pass; 43 native IC bypass paths and the separate buzzer bulk path pass. Full DRC retains 404 silkscreen/text findings. Live stock and assembly procurement checks fail, so the full review is not an order approval. CAD screens do not establish powered operation.
 
 Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 
@@ -261,6 +261,8 @@ After pulling updates, run `bun install --frozen-lockfile` and restart `bun run 
 The toolchain uses tscircuit `0.0.2830`, CLI `0.1.2298` and circuit-to-svg `0.0.445`. The CLI now compresses `tsci push` uploads by default; `--compress` also explicitly selects that behavior. This applies to CLI uploads, not a guarantee that the separate GitHub-import worker succeeds. Core is explicitly pinned to `0.0.2112`: core `0.0.2125` resets explicitly sized schematic sheets to the origin, moving their frames around the frozen layout. Remove this compatibility pin only after all surviving sheet centres and the approved schematic pass the upgrade comparison. The package's JavaScript entry is `dist/index.js`; the editable circuit entry remains `index.circuit.tsx` in the tscircuit configuration.
 
 The hosted failures checked on 2026-10-12 are distinct from an upload-size rejection. [v0.3.69](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/911bcb7b-1140-48cf-ab7f-65bd1045d488) registered all 444 files, including `index.circuit.tsx` and `package.json`, but the worker logged writes for only the final 58 files and then reported both entry files missing. [v0.3.70](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/77417e37-0eee-43bb-8fc1-8a021ac51582) logged only `Starting execution` before a 30-minute timeout, with no build-command or upload log. These logs point to incomplete worker setup; the server-side cause remains unconfirmed. Compression alone has not been demonstrated to fix these releases. GitHub's separate `Circuit checks` sourcing failure remains an independent order hold.
+
+PR #3 at `3a48c34` shows the same incomplete-input failure: 551 files registered, only the final 70 written by the worker, and required entry files registered after execution began. The three required files match Git byte-for-byte. See the [timestamped import investigation](docs/hosted-build-investigation.md) and [machine-readable evidence](docs/hosted-build-investigation.json). Hosted success remains unresolved; the clean-checkout placement regression is fixed independently.
 
 Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it verifies that the compiled motor assembly preserves every code-defined board record, including the 24-sheet schematic, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
 
@@ -292,7 +294,7 @@ Run `bun run build:pcb` (also `bun run build`) to refresh the default routed vie
 
 The r0.4 ECO files become a prototype fabrication handoff only after the order hold is cleared. Archive and KiCad basenames retain the legacy `r0.3` suffix for pipeline compatibility; the hardware contract, board silkscreen, release status and hashes identify the actual r0.4 ECO revision. They are not a production release. Before applying motor power:
 
-1. Generate and independently review the sink-only TPS26750 EPR configuration, then program U3.
+1. Program U3 with the included register-reviewed TI Full Flash candidate, verify the complete EEPROM readback, then measure cold APP boot and PD/fault behavior.
 2. Qualify the integrated STM32 target on the bench, verify fault shutdown and produce the motor-enabled release with recorded configuration/hash evidence.
 3. Keep the existing four holes; establish verified mounting before physical assembly, plus rotating-shaft access, encoder attachment, magnet field/gap and enclosure clearances.
 4. Select the brake resistor/heatsink from measured load inertia, speed and stopping duty.

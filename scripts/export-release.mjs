@@ -48,6 +48,12 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
 const copies = [
+  ['firmware/pd/ti-configuration.zip', 'pd1180-ti-configuration.zip'],
+  ['docs/pd-configuration.json', 'pd-configuration.json'],
+  ['docs/pd-configuration-review.md', 'pd-configuration-review.md'],
+  ['docs/pd-image-check.json', 'pd-image-check.json'],
+  ['docs/readiness.md', 'readiness.md'],
+  ['docs/placement-review.md', 'placement-review.md'],
   ['dist/manufacturing/kicad-board.png', 'pcb-3d.png'],
   ['dist/manufacturing/kicad-board-bottom.png', 'pcb-bottom.png'],
   ['dist/manufacturing/assembly-bom.csv', 'jlc-bom.csv'],
@@ -164,13 +170,13 @@ The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image w
 
 J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 and its external input conditioning are removed; SW2 provides local START/STOP and SW1 remains RESET. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All ${stock.parts.reduce((total, part) => total + part.quantity_per_board, 0)} fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
 
-The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
+The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's register-reviewed TI full-flash candidate is included in pd1180-ti-configuration.zip, with programming/readback pending. A qualified motor-enabled U16 image is still missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 
-For the checked prototype handoff, use the newly generated Gerbers together with \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for top-side assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for every via-in-pad listed in the order settings (including 40 MOSFET drain-pad and four U34 thermal vias), and top-side assembly.
+This is a held review package, not an orderable handoff. After the DRC, sourcing and other order gates are resolved, use newly regenerated Gerbers together with \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for top-side assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for every via-in-pad listed in the order settings (including 40 MOSFET drain-pad and four U34 thermal vias), and top-side assembly.
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents and hardware contract correspond to ${releaseStatus.revision}, identified by this delivery manifest.
 
-The native reports contain ${kicadDrc.violations.length} PCB DRC violations, ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The native reports contain ${kicadDrc.violations.length} PCB DRC violations, ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch plus exact-ID official catalog evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style result is recorded across all ${standards.project_geometry.schematic_sheet_count} sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 

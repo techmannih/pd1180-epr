@@ -2,7 +2,7 @@
 
 U3 holds the TPS26750 application image. USB DATA and MCU SWD do not program a blank U3. U36 (SN74LVC2G66DCUR) separates the controller's EEPROM I2Cc bus from the EEPROM-side programming pads. R131 normally enables both switches. Grounding TP_PD_ISO opens both wires; R129/R130 provide 4.7 kΩ EEPROM-side pullups. Existing controller-side pullups remain.
 
-The TI-generated full-flash binary is still absent. The requirements in `pd-configuration.json` are not a firmware image. TI tool license acceptance, image generation, fixture implementation and a successful readback/cold-boot record remain required before shipment.
+The TI-generated full-flash candidate and both license approvals are recorded. `pd-configuration.json` identifies the binary and its hash; it is not itself flashable. Fixture implementation, physical programming/readback and cold boot remain required before shipment.
 
 ## Fixture contacts
 
@@ -64,8 +64,12 @@ bun scripts/verify-programming.mjs --kind stm32 --serial FIRST-ARTICLE-001 \
   --readback /path/to/u16-readback.bin --output /path/to/u16-verification.json
 ```
 
-For U3, use the same command with `--kind pd` and the EEPROM dump. It currently refuses to run because the TI image is absent. After the actual TI tool **full-flash** export has been independently reviewed, register its `path`, `sha256`, `bytes`, `format: "ti-full-flash"` and `start_address: 0` under `eeprom.image` in `pd-configuration.json`. Never relabel a low-region export or requirements JSON to bypass that check. Archive the matching TI project export and tool version with the image. The file comparator checks identity and content; it cannot determine whether the TI settings are electrically correct.
+For U3, use the same command with `--kind pd` and the EEPROM dump. The reviewed TI Full Flash candidate is registered under `eeprom.image` in `pd-configuration.json`; its `path` is the release ZIP and `archive_member` is `fullFlash.bin`. Extract that member for the programmer, starting at address 0. It has 31,552 bytes, not the full EEPROM capacity. Read back all 65,536 device bytes for the comparator, which checks every programmed image byte and explicitly does not qualify the remaining tail. Never relabel a low-region export or requirements JSON to bypass that check. Archive the matching TI project export and tool version with the image. The file comparator checks identity and content; it cannot determine whether the TI settings are electrically correct.
 
 The command checks every image byte, rejects stale STM32 source identities, and refuses to overwrite an earlier report. Bytes beyond the image are recorded in the full dump hash but not accepted against an invented padding pattern. A successful comparison proves neither cold APP boot nor motor operation. Keep the separate cold-boot, EPR negotiation, safety-inhibit and motor test records required in `power-validation.md`.
 
-The [unused-SBU finding in the repository](https://github.com/techmannih/pd1180-epr/blob/main/docs/pd-configuration-review.md) remains a hardware review hold even after a successful memory comparison.
+The [unused-SBU correction](pd-configuration-review.md) is applied and native-checked. Its physical startup/fault validation remains open even after a successful memory comparison.
+
+## Prepared TI image; physical programming pending
+
+Run `bun scripts/check-pd-image.mjs` before programming. Keep all three motion qualification flags false. Retain the complete EEPROM dump, programmer log, serial and SHA-256; verify `APP ` and register 0x06 = `PD118041`, then perform the stationary fault/negotiation sequence in `pd-configuration-review.md`. An exported binary is not a readback. TI tool import can reset role-dependent fields; use the archived reviewed binary or re-export and revalidate all fields. No hardware was flashed in this review.

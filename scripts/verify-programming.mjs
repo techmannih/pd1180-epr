@@ -60,7 +60,9 @@ export async function loadProgrammingImage(kind, read = path => readFile(path)) 
     throw new Error('Unexpected PD controller/EEPROM configuration')
   if (!image || image.format !== 'ti-full-flash' || !image.path || image.start_address !== 0)
     throw new Error('No reviewed TI full-flash image is registered in docs/pd-configuration.json')
-  const bytes = await read(image.path)
+  const container = await read(image.path)
+  const bytes = image.archive_member ? await (await JSZip.loadAsync(container, { checkCRC32: true })).file(image.archive_member)?.async('nodebuffer') : container
+  if (!bytes) throw new Error('Missing PD image archive member')
   if (bytes.length !== image.bytes) throw new Error('PD image length differs from its configuration record')
   return { image: bytes, hash: image.sha256, capacity: 65536, base: 0,
     source: image.path, target: config.eeprom.part, configuration_sha256: sha256(configBytes) }

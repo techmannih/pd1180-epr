@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
+import { officialPart, packagesMatch } from './jlc-stock.mjs'
 
 const run = promisify(execFile)
 const path = new URL('../docs/alternatives.json', import.meta.url)
@@ -30,14 +31,18 @@ for (const part of data.parts) {
   if (!/^C\d+$/.test(part.alternative)) throw new Error(`Invalid alternative supplier code: ${part.alternative}`)
   if (typeof part.expected_package !== 'string' || !part.expected_package.trim()) throw new Error(`${part.alternative}: missing expected JLC package`)
   const primary = stock.parts.find(item => item.lcsc === part.primary)
-  if (!primary || primary.status !== 'available' || primary.package_match !== true) throw new Error(`${part.primary}: primary package/stock evidence is not current`)
+  if (!primary) throw new Error(`${part.primary}: not in current BOM`)
+  const primary_available = primary.status === 'available' && primary.package_match === true
   const numericLcsc = part.alternative.replace(/^C/, '')
   const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${numericLcsc}`
   try {
     const { stdout } = await run('curl', ['--fail', '--silent', '--show-error', '-L', '--retry', '2', '--max-time', '40', url], { maxBuffer: 8_000_000 })
     const response = JSON.parse(stdout)
-    const exact = (response.components || []).find(item => `C${String(item.lcsc).replace(/^C/, '')}` === part.alternative)
-    const expected_package_match = typeof exact?.package === 'string' && part.expected_package.trim().toLowerCase() === exact.package.trim().toLowerCase()
+    let exact = (response.components || []).find(item => `C${String(item.lcsc).replace(/^C/, '')}` === part.alternative)
+    const official = await officialPart(part.alternative)
+    if (official.exact) exact = official.exact
+    await writeFile(new URL(`../docs/stock-evidence/alternatives-${part.alternative}.json`, import.meta.url), JSON.stringify({url,response,official},null,2)+'\n')
+    const expected_package_match = packagesMatch(part.expected_package, exact?.package)
     const package_compatible = expected_package_match && normalizePackage(primary.package) === normalizePackage(exact?.package)
     const requires_package_compatibility = part.classification !== 'not-approved-redesign-required'
     const { error: _error, ...stable } = part
@@ -47,11 +52,14 @@ for (const part of data.parts) {
       package: exact?.package ?? part.package ?? null,
       expected_package_match,
       primary_package: primary.package,
+      primary_available,
+      evidence_source: official.exact ? "jlcpcb-official" : "jlcsearch",
+      official_url: official.url,
       package_compatible,
       stock: exact?.stock ?? null,
       checked_at: new Date().toISOString(),
       evidence: url,
-      status: !exact ? 'unverified-no-exact-match' : !expected_package_match ? 'package-mismatch' : requires_package_compatibility && !package_compatible ? 'package-incompatible' : exact.stock > 0 ? 'available' : 'out-of-stock',
+      status: !exact ? 'unverified-no-exact-match' : !expected_package_match ? 'package-mismatch' : requires_package_compatibility && !package_compatible ? 'package-incompatible' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= primary.required ? 'available' : 'insufficient',
     })
   } catch (error) {
     checked.push({ ...part, checked_at: new Date().toISOString(), evidence: url, status: 'unverified-network-error', error: error.message })

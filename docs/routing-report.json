@@ -1,7 +1,7 @@
 {
-  "recorded_at": "2026-10-13T01:50:53.227910+00:00",
+  "recorded_at": "2026-10-13T05:31:31.457293+00:00",
   "revision": "0.4.1-ECO",
-  "complete": true,
+  "complete": false,
   "router": "Freerouting seed with KiCad-reviewed local completion and 2.4 mm power-corridor reinforcement",
   "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
   "statistics": {
@@ -10,14 +10,14 @@
     "service_testpads": 19,
     "mounting_holes": 4,
     "pads": 963,
-    "traces": 6098,
-    "vias": 632,
+    "traces": 6060,
+    "vias": 628,
     "copper_pours": 874,
     "layers": 4
   },
   "kicad_drc": {
     "report": "dist/manufacturing/kicad-drc.json",
-    "violations": 0,
+    "violations": 404,
     "unconnected_items": 0
   },
   "manufacturing": {
@@ -32,8 +32,5 @@
     "brake resistor energy and thermal sizing",
     "motor rear-face fit and shaft-magnet alignment",
     "conducted and radiated EMC"
-  ],
-  "board_sha256": "c955f3f13b799e879e358d342fcf4a4509f92616a88bfc0bfa981981235fbcd6",
-  "eco_geometry_evidence": "engineering/power-eco-geometry.json",
-  "brake_sense_evidence": "docs/brake-sense-copper-check.json"
+  ]
 }

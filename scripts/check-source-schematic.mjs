@@ -322,7 +322,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 164, "164 named source nets including brake feedback", { actual: sourceNets.length })
+check(sourceNets.length === 162, "162 named source nets after unused SBU removal", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -431,7 +431,7 @@ check(testPointIssues.length === 0, "every test point probes a shared functional
 // is_connected can be false for ports intentionally joined by matching net labels.
 const expectedNoConnects = [
   "J1.11:DP2", "J1.12:DM", "J1.13:DP", "J1.14:DN2", "J10.10:SBU1", "J10.16:SBU2",
-  "U1.14:SBU2", "U1.15:SBU1",
+  "J1.10:SBU1", "J1.16:SBU2", "U1.1:DP", "U1.2:DM",
   "U2.10:N_I2Ct_IRQ", "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
   "U23.4:NC", "U24.4:NC", "U25.4:NC", "U26.4:NC", "U27.4:NC",
   "U34.4:PG", "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",

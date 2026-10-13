@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-13T04:53:27.040Z",
+  "checked_at": "2026-10-13T10:46:14.977Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -9,7 +9,7 @@
     "release/circuit.json"
   ],
   "hosted_preview_output": "dist/release/circuit.json",
-  "verified_preview_records": 13724,
+  "verified_preview_records": 13701,
   "selectable_source_files": 63,
   "selectable_import_files": 57,
   "unavailable_viewer_files": [],
@@ -55,20 +55,22 @@
     "release/motor-assembly-check.json",
     "release/harness-layout.json",
     "release/harness-assembly-check.json",
-    "release/external-parts.json"
+    "release/external-parts.json",
+    "release/pd-configuration.json",
+    "release/pd-image-check.json"
   ],
-  "included_files": 81,
-  "included_bytes": 8256360,
-  "included_mebibytes": 7.87,
+  "included_files": 80,
+  "included_bytes": 8220684,
+  "included_mebibytes": 7.84,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7641540
+      "bytes": 7618238
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 129624
+      "bytes": 129468
     },
     {
       "path": "bun.lock",
@@ -76,19 +78,15 @@
     },
     {
       "path": "README.md",
-      "bytes": 38334
+      "bytes": 39269
     },
     {
       "path": "AGENTS.md",
-      "bytes": 20954
+      "bytes": 21424
     },
     {
       "path": "release/reference-comparison.json",
       "bytes": 14964
-    },
-    {
-      "path": "logs/freerouting.log",
-      "bytes": 14616
     },
     {
       "path": "imports/STM32G0B1CBT6.local.js",
@@ -100,26 +98,30 @@
     },
     {
       "path": "hardware-contract.json",
-      "bytes": 12472
+      "bytes": 12522
+    },
+    {
+      "path": "delivery-manifest.json",
+      "bytes": 12356
     }
   ],
-  "github_import_files": 564,
-  "github_import_bytes": 24232887,
-  "github_import_mebibytes": 23.11,
+  "github_import_files": 602,
+  "github_import_bytes": 24651903,
+  "github_import_mebibytes": 23.51,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7641540
+      "bytes": 7618238
     },
     {
       "path": "release/pcb-3d.png",
-      "bytes": 1455209
+      "bytes": 1508079
     },
     {
       "path": "release/pcb-bottom.png",
-      "bytes": 1208069
+      "bytes": 1208664
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1.glb",
@@ -128,10 +130,6 @@
     {
       "path": "checks/vendor/circuit-json-schematic-placement-analysis.browser.js",
       "bytes": 725913
-    },
-    {
-      "path": "previews/native-labels-before-pcb.png",
-      "bytes": 725024
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1-routed-cable.glb",
@@ -144,6 +142,10 @@
     {
       "path": "previews/native-labels-after-pcb.png",
       "bytes": 582824
+    },
+    {
+      "path": "release/kicad-drc.json",
+      "bytes": 273104
     },
     {
       "path": "release/schematics/mcu.svg",

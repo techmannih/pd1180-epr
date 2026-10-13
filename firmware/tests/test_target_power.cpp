@@ -17,6 +17,11 @@ static void expectSafe() {
   }
 }
 int main() {
+  uint8_t identity[8] = {'P','D','1','1','8','0','4','1'};
+  assert(pdConfigurationMatches(identity));
+  for (unsigned i=0;i<sizeof(identity);i++) {identity[i]^=1; assert(!pdConfigurationMatches(identity)); identity[i]^=1;}
+  memset(identity,0,sizeof(identity)); assert(!pdConfigurationMatches(identity));
+  assert(!pdImageVerified && !motionQualified);
   pdBus.adcPresent=true;
   for (unsigned n=1;n<=6;n++) pollBusAdc(n*10u);
   assert((pdBus.adcChannels==std::vector<unsigned>{0,1,2}));

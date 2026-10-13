@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { access, readFile, stat, writeFile } from 'node:fs/promises'
 import JSZip from 'jszip'
+import { validatePdImage } from './pd-image-policy.mjs'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
@@ -17,7 +18,7 @@ const checked = []
 
 // Wiring/purchase guidance must travel with the package and match the current
 // source documents, including the distinction between candidates and purchases.
-for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md']) {
+for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md']) {
   const current = await readFile(`docs/${name}`, 'utf8')
   const delivered = await readFile(`release/${name}`, 'utf8').catch(() => '')
   if (current !== delivered) errors.push(`release/${name}: differs from current source guidance`)
@@ -77,6 +78,11 @@ for (const path of standards.release.zip_files) {
         if (!archived || await archived.async('string') !== await readFile(`release/${releaseName}`, 'utf8'))
           errors.push(`${path}: ${name} differs from the current release assembly data`)
       }
+    }
+    if (path.endsWith('pd1180-ti-configuration.zip')) {
+      const config = JSON.parse(await readFile('docs/pd-configuration.json'))
+      validatePdImage(await zip.file('project.json').async('nodebuffer'), await zip.file('fullFlash.bin').async('nodebuffer'), config)
+      if (!(await readFile(path)).equals(await readFile('firmware/pd/ti-configuration.zip'))) errors.push('Delivered TI archive differs from reviewed source')
     }
     if (path.endsWith('-commissioning-firmware.zip')) {
       for (const name of ['firmware.bin', 'firmware.elf', 'manifest.json', 'README.md']) {
