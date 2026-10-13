@@ -65,7 +65,7 @@ The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J betw
 - Fresh Gerber/drill ZIP and matching BOM/CPL, with SHA-256 provenance. Reject older ZIPs and manually substituted files.
 - Exact stock/package checks for the actual order quantity, plus manufacturer confirmation of filled/capped via-in-pad processing and the chosen impedance stack-up.
 - Review of the ordered 34HS31-6004S1 current waveform, supply/cable, maximum speed, stop time, rotor/load inertia, ambient temperature, enclosure and brake heatsink. These operating details remain unqualified.
-- A documented PD programming path. `docs/pd-configuration.json` contains requirements only; the TI-generated full-flash image is still missing. Do not substitute that JSON for an EEPROM binary.
+- A documented PD programming path. `docs/pd-configuration.json` now identifies the reviewed TI-generated full-flash candidate. Physical programming/readback and cold boot remain open. Do not substitute JSON for the EEPROM binary.
 
 ## Staged powered test record — all results pending
 
@@ -115,7 +115,7 @@ Complete and approve this envelope **before** a motor-enabled test. Empty fields
 | Brake resistor, heatsink, mounting and airflow | Not qualified |
 | Ambient range, enclosure, duty cycle and thermal limits | Not agreed |
 | Microsteps, current settings and STEP/DIR timing limits | Not qualified |
-| TI configuration/full-flash hashes and motor-test firmware hash | Not available |
+| TI configuration/full-flash hashes and motor-test firmware hash | TI candidate and locked commissioning image recorded; no qualified motor-enabled image |
 | Fixture revision, instrument list and calibration dates | Not supplied |
 
 For every matrix row, retain: board/release identity; procedure revision; operator/date; actual motor/load/ambient; instrument setup; programmed settings; numeric expected limits and their source; readings with units; waveform/photo/log filenames; PASS/FAIL; and the engineer's disposition. A record labelled “not tested” is not acceptable shipment evidence.

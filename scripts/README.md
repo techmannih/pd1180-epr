@@ -117,3 +117,11 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/winding and input-step cases plus winding energy balance. `check-delivery.mjs` verifies source external-equipment guidance and actual native DRC counts against delivered copies; `check-stock.mjs` distinguishes unknown inventory from insufficient known inventory.
 
 - `check-protection-refinement.mjs`: reverses only the three R25/R61/R66 value fields and requires the entire native PCB to hash exactly to main 4836266. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.
+
+- `jlc-stock.mjs`: reads the public official JLCPCB part-detail endpoint; verifies the exact code and uses the lesser of warehouse stock and available order quantity. Unknown quantities fail closed; retains only relevant evidence fields.
+- `jlc-stock.test.mjs`: rejects fuzzy/missing identities, null/negative/string quantities and reserved stock being counted as available order quantity.
+
+- `native-eco-policy.mjs`, `native-eco-policy.test.mjs`: parse and protect the unchanged native board around the six-pad SBU correction, including negative copper/hole/net tests.
+- `check-placement.mjs`, `placement-review.mjs`, `placement-review.test.mjs`: retain raw placement advice and enforce only the three documented, native-route-reviewed cases.
+
+- `pd-image-policy.mjs`, `check-pd-image.mjs`, `pd-image-policy.test.mjs`: validate genuine TI full-flash export identity, sink/GPIO policy and both configuration regions; reject import resets or corrupted output.

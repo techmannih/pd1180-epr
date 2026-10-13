@@ -4,7 +4,7 @@ The r0.4 ECO separates PD POWER J1 from USB DATA J10, preserving the original mo
 
 ## Two independent USB-C ports
 
-J1 and J10 use tscircuit's standard USB-C connector with the exact C3020560 USB4105-GF-A footprint. J1 VBUS is PD_VBUS and J10 VBUS is USB_DATA_VBUS; they are never joined. J1 D+/D− pins are NC. Its SBU contacts use U1's protected SBU channels, whose system-side outputs are NC. J10 powers setup/diagnostics independently through U28 TPS2553 and U25 TLV755. It cannot energize VMOTOR.
+J1 and J10 use tscircuit's standard USB-C connector with the exact C3020560 USB4105-GF-A footprint. J1 VBUS is PD_VBUS and J10 VBUS is USB_DATA_VBUS; they are never joined. J1 D+/D− pins are NC. Its SBU contacts and U1 connector-side SBU pins are NC; U1 system-side SBU pins 14/15 are grounded. J10 powers setup/diagnostics independently through U28 TPS2553 and U25 TLV755. It cannot energize VMOTOR.
 
 U5 derives board logic from PD_VBUS before the eFuse; U22 retains VMOTOR-fed brake backup. U23/U24 OR these supplies into V3V3. U26/U27 combine board V3V3 and DATA-derived V3V3_USB into a separate V3V3_MCU rail. Only STM32, its reset pullup, bypass/bulk capacitors and SWD supply reference use this output. Industrial transceivers, flash, encoder and sensors cannot draw their supply from DATA. R119/R120 sense board V3V3 on PB1; the unused U2 IRQ is NC and PD state is polled. Chip selects are released open-drain into board-domain pullups; peripheral inputs and I²C are high impedance with board power absent.
 

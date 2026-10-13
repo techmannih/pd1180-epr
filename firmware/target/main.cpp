@@ -43,7 +43,7 @@ static bool peripheralsStarted, wasSuspended;
 static bool indicatorsReady, indicatorResetReleased;
 static uint32_t indicatorAttemptAt, lastIndicatorPoll;
 static uint32_t boardMv;
-static uint8_t pdMode[4], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
+static uint8_t pdMode[4], pdIdentity[8], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
 static uint32_t lastPoll, lastTick, lastGoodSample, vbusMv, vmotorMv;
 static uint32_t lastTemperaturePoll, lastTemperatureSample, temperatureConfiguredAt;
 static uint32_t lastAdcPoll, lastPhaseSample, adcSampleAt[3];
@@ -306,11 +306,15 @@ static uint32_t dividerMillivolts(board_pin_t input, uint32_t topK, uint32_t bot
   return static_cast<uint32_t>((static_cast<uint64_t>(analogRead(pin(input))) * 3300u *
     (topK+bottomK)) / (4095u*bottomK));
 }
+static bool pdConfigurationMatches(const uint8_t *identity) {
+  static constexpr uint8_t expected[8] = {'P','D','1','1','8','0','4','1'};
+  return memcmp(identity, expected, sizeof(expected)) == 0;
+}
 static void pollPower() {
   vbusMv = dividerMillivolts(PD1180_PIN_USB_VBUS_SENSE,1000,47);
   vmotorMv = static_cast<uint32_t>(adcMv[0]) * 19u; // 360k / 20k divider, ADS1115 AIN0.
   // TI I2C reads include the leading byte count; all fields must succeed.
-  pdReadOk = pdRead(0x03,pdMode,sizeof(pdMode)) && pdRead(0x34,pdo,sizeof(pdo)) &&
+  pdReadOk = pdRead(0x03,pdMode,sizeof(pdMode)) && pdRead(0x06,pdIdentity,sizeof(pdIdentity)) && pdRead(0x34,pdo,sizeof(pdo)) &&
     pdRead(0x35,rdo,sizeof(rdo)) && pdRead(0x3F,powerStatus,sizeof(powerStatus)) &&
     pdRead(0x40,pdStatus,sizeof(pdStatus));
   if(pdReadOk) lastGoodSample=millis();
@@ -319,7 +323,7 @@ static void pollPower() {
   inputs.epr_contract = pdReadOk && contract.valid;
   inputs.contract_mv = contract.mv;
   inputs.contract_ma = contract.ma;
-  inputs.configuration_verified = pdImageVerified;
+  inputs.configuration_verified = pdImageVerified && pdReadOk && pdConfigurationMatches(pdIdentity);
   inputs.motion_wiring_verified = motionWiringVerified && brakeHardwareVerified;
   inputs.pd_fault = !pdReadOk;
   inputs.efuse_fault = digitalRead(pin(PD1180_PIN_EFUSE_FAULT_N)) == LOW;

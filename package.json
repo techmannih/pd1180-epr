@@ -16,7 +16,7 @@
     "build": "bun run build:pcb",
     "build:pcb": "bun scripts/refresh-routed-preview.mjs",
     "check:netlist": "bun scripts/check-netlist.mjs",
-    "check:placement": "tsci check placement dist/index/circuit.json",
+    "check:placement": "bun scripts/check-placement.mjs",
     "check:schematic": "tsci check schematic-placement dist/index/circuit.json",
     "check:source-schematic": "bun scripts/check-source-schematic.mjs",
     "check:schematic-style": "bun scripts/check-schematic-style.mjs",

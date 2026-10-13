@@ -33,6 +33,8 @@ On 2026-10-13 the user authorized power/thermal risk corrections, commit and pus
 
 On 2026-10-13 the user authorized correcting PR #2 after review. Merge the latest main protections, adapt the current guard and audits, retain the proven readable markings, and refresh consistent engineering delivery files. R25/R61/R66 value refinements are within this scope. Missing stock remains an order blocker; it does not authorize inventing inventory or waiving qualification.
 
+On 2026-10-13 the user explicitly requested closure of the remaining U1 unused-SBU wiring, stock/package and placement findings, PD programming preparation, J3 documentation, and system qualification blockers. Affected source, native copper, checks and documentation are reopened. Physical measurements and supplier inventory must still be evidenced; no procurement or invented qualification is authorized. Preserve unrelated circuitry and the four existing PCB holes.
+
 ## Required project structure
 
 Every board repository should contain:

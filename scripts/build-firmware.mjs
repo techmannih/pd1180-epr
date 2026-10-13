@@ -30,7 +30,7 @@ if (!check) {
     flash_address:'0x08000000', initial_sp:`0x${sp.toString(16)}`, reset_vector:`0x${reset.toString(16)}`,
     max_flash_bytes:131072, image_bytes:bin.length, inputs,
     artifacts:{'firmware.bin':sha(bin),'firmware.elf':sha(elf)},
-    unverified:['USB enumeration and measured GPIO levels on hardware','TI configuration image/programming','SPI ramp/control hardware ECO','motor operation and thermal/EMC validation']}
+    unverified:['USB enumeration and measured GPIO levels on hardware','TI physical programming/readback and cold boot','SPI ramp/control hardware ECO','motor operation and thermal/EMC validation']}
   const zip=new JSZip()
   zip.file('firmware.bin',bin);zip.file('firmware.elf',elf)
   zip.file('manifest.json',JSON.stringify(manifest,null,2)+'\n')

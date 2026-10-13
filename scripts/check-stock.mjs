@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
+import { officialPart, packagesMatch } from './jlc-stock.mjs'
 
 // JLCSearch fuzzy results must never stand in for an exact LCSC part match.
 const run = promisify(execFile)
@@ -51,12 +52,18 @@ await Promise.all(Array.from({ length: 5 }, async () => {
         fallback_response = JSON.parse(fallback.stdout)
         exact = (fallback_response.resistors || []).find(p => `C${String(p.lcsc).replace(/^C/, '')}` === entry.lcsc)
       }
+      let official = null
+      let official_error = null
+      try {
+        official = await officialPart(entry.lcsc)
+        if (official.exact) exact = official.exact
+      } catch (error) { official_error = error.message }
       const checked_at = new Date().toISOString()
-      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify({ url, fallback_url, checked_at, response, fallback_response }, null, 2))
-      const package_match = typeof exact?.package === 'string' && entry.footprint.trim().toLowerCase() === exact.package.trim().toLowerCase()
-      results.push({ ...entry, checked_at, url, fallback_url, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
+      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify({ url, fallback_url, checked_at, response, fallback_response, official, official_error }, null, 2))
+      const package_match = packagesMatch(entry.footprint, exact?.package)
+      results.push({ ...entry, checked_at, url, fallback_url, official_url: official?.url ?? null, evidence_source: official?.exact ? "jlcpcb-official" : "jlcsearch", warehouse_stock: exact?.warehouse_stock ?? null, available_order_quantity: exact?.available_order_quantity ?? null, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
-        status: !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
+        status: !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
         required: entry.quantity_per_board * quantity })
     } catch (error) { results.push({ ...entry, url, status: 'unverified-network-error', error: String(error.message) }) }
   }

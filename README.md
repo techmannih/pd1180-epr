@@ -22,12 +22,12 @@ Open `motor-assembly.circuit.tsx` for the current local source preview. It conta
 
 The intended purchase is **PCB fabrication plus complete assembly, programming and functional test**, so the delivered PCBA can operate with its specified motor, power source and harness. Bare-PCB electrical testing and soldering the components do not establish motor operation. Programming and powered testing must be explicitly included in the accepted assembly/test work order; they are not assumed to be included in an SMT assembly quote.
 
-**The current release cannot yet deliver a ready-to-run motor controller.** No assembled hardware has been tested. U3's TI PD image is missing, and the supplied STM32 commissioning image deliberately blocks motor power and motion, including after `ARM`. The following deliverables are required before accepting a board as ready to run:
+**The current release cannot yet deliver a ready-to-run motor controller.** No assembled hardware has been tested. U3's register-reviewed TI PD image is generated but not programmed/read back, and the supplied STM32 commissioning image deliberately blocks motor power and motion, including after `ARM`. The following deliverables are required before accepting a board as ready to run:
 
 | Deliverable | Required handoff / present status |
 |---|---|
 | Complete populated PCBA | Matching Gerbers, BOM and CPL; 252 fitted parts on top, including an agreed through-hole/tall-part assembly plan. Source and native route built; sourcing, physical assembly and qualification pending. |
-| U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Binary pending.** The requirements JSON is not flashable firmware. |
+| U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Candidate binary included; physical readback pending.** See `pd1180-ti-configuration.zip`; JSON is not firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
 | External system | Confirmed motor, EPR source/cable, mating harnesses, brake resistor/heatsink, magnet and mounting hardware; these are outside the populated-PCB BOM. |
@@ -36,7 +36,7 @@ First articles need staged engineering qualification using [the power-validation
 
 The [provider request and first-article programming sequence](docs/assembly.md#request-to-send-to-the-assemblytest-provider) are ready for review. Provider acceptance and the [motor/load qualification inputs](docs/power-validation.md#qualification-work-sheet-for-the-provider) remain open. Programming and the accepted motor tests must finish before shipment.
 
-The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU review finding](docs/pd-configuration-review.md) needs a narrowly approved hardware correction; the frozen schematic has not been changed.
+The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU correction](docs/pd-configuration-review.md) is applied and native-checked, with physical startup/fault validation pending.
 
 ## Connections and operation
 

@@ -297,8 +297,6 @@ export const PD1180EPR = () => (
 
     <net name="DATA_CC1" isPowerNet={false} />
     <net name="DATA_CC2" isPowerNet={false} />
-    <net name="PD_SBU1_CONN" isPowerNet={false} />
-    <net name="PD_SBU2_CONN" isPowerNet={false} />
     <net name="USB_DATA_VBUS" isPowerNet={true} />
 
     {/* Separate PD POWER and USB DATA ports; no shared VBUS or data paths. */}
@@ -307,9 +305,9 @@ export const PD1180EPR = () => (
       schPinArrangement={{ rightSide: { pins: ["pin7", "pin15", "pin9", "pin11", "pin13", "pin12", "pin14", "pin10", "pin16"], direction: "top-to-bottom" }, bottomSide: { pins: ["pin5", "pin1"], direction: "left-to-right" } }}
       schWidth={1.4}
       schPinStyle={{ pin7: { topMargin: 0.1, bottomMargin: 0.1 }, pin15: { topMargin: 0.1, bottomMargin: 0.1 }, pin9: { topMargin: 0.1, bottomMargin: 0.1 }, pin11: { topMargin: 0.1, bottomMargin: 0.1 }, pin13: { topMargin: 0.1, bottomMargin: 0.1 }, pin12: { topMargin: 0.1, bottomMargin: 0.1 }, pin14: { topMargin: 0.1, bottomMargin: 0.1 }, pin10: { topMargin: 0.1, bottomMargin: 0.1 }, pin16: { topMargin: 0.1, bottomMargin: 0.1 } }}
-      noConnect={["pin11", "pin12", "pin13", "pin14"]}
+      noConnect={["pin10", "pin11", "pin12", "pin13", "pin14", "pin16"]}
 
-      connections={{ pin10: "net.PD_SBU1_CONN", pin16: "net.PD_SBU2_CONN", pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.PD_VBUS", pin8: "net.PD_VBUS", pin17: "net.PD_VBUS", pin18: "net.PD_VBUS", pin9: "net.CC2_CONN", pin15: "net.CC1_CONN" }} />
+      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.GND", pin4: "net.GND", pin5: "net.GND", pin6: "net.GND", pin19: "net.GND", pin20: "net.GND", pin7: "net.PD_VBUS", pin8: "net.PD_VBUS", pin17: "net.PD_VBUS", pin18: "net.PD_VBUS", pin9: "net.CC2_CONN", pin15: "net.CC1_CONN" }} />
     <resistor name="R107" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-data" schSectionName="usb-data_J10" schX={3.5} schY={1.3} pcbX={-22.25} pcbY={16.0}
       schRotation={-90}
       resistance="1M" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C22935"] }}
@@ -328,8 +326,8 @@ export const PD1180EPR = () => (
         leftSide: { pins: ["pin20", "pin4", "pin5", "pin1", "pin2", "pin18", "pin13", "pin8", "pin21"], direction: "top-to-bottom" },
         rightSide: { pins: ["pin19", "pin17", "pin16", "pin12", "pin11", "pin15", "pin14", "pin9", "pin10", "pin3"], direction: "top-to-bottom" },
       }}
-      noConnect={["pin14", "pin15"]}
-      connections={{ pin1: "net.PD_SBU1_CONN", pin2: "net.PD_SBU2_CONN", pin3: "net.CC_VBIAS", pin4: "net.CC1_CONN", pin5: "net.CC2_CONN", pin6: "net.CC2_CONN", pin7: "net.CC1_CONN", pin8: "net.GND", pin9: "net.CC_FAULT_N", pin10: "net.PD_3V3", pin11: "net.CC2_PD", pin12: "net.CC1_PD", pin13: "net.GND", pin16: "net.EPR_EN", pin17: "net.EPR_BLK_GATE", pin18: "net.GND", pin19: "net.VBUS_LV", pin20: "net.PD_VBUS", pin21: "net.GND" }} />
+      noConnect={["pin1", "pin2"]}
+      connections={{ pin3: "net.CC_VBIAS", pin4: "net.CC1_CONN", pin5: "net.CC2_CONN", pin6: "net.CC2_CONN", pin7: "net.CC1_CONN", pin8: "net.GND", pin9: "net.CC_FAULT_N", pin10: "net.PD_3V3", pin11: "net.CC2_PD", pin12: "net.CC1_PD", pin13: "net.GND", pin14: "net.GND", pin15: "net.GND", pin16: "net.EPR_EN", pin17: "net.EPR_BLK_GATE", pin18: "net.GND", pin19: "net.VBUS_LV", pin20: "net.PD_VBUS", pin21: "net.GND" }} />
     <TPS26750SRSMR name="U2" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="usb-pd-policy" schSectionName="usb-pd_U2" schX={-7.5} schY={-0.95} pcbX={-24} pcbY={23.35}
       noConnect={["pin10", "pin21", "pin28", "pin29"]}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_3V3", pin3: "net.GND", pin4: "net.PD_1V5", pin5: "net.CC_FAULT_N", pin6: "net.GND", pin7: "net.EPR_EN", pin8: "net.PD_SDA", pin9: "net.PD_SCL", pin11: "net.GND", pin12: "net.GND", pin13: "net.GND", pin14: "net.GND", pin15: "net.EEP_SDA", pin16: "net.EEP_SCL", pin17: "net.EEP_IRQ_N", pin18: "net.GND", pin19: "net.GND", pin20: "net.PD_PATH_HV", pin22: "net.GND", pin23: "net.GND", pin24: "net.CC1_PD", pin25: "net.CC2_PD", pin26: "net.VBUS_LV", pin27: "net.VBUS_LV", pin30: "net.GND", pin31: "net.GND", pin32: "net.V3V3", pin33: "net.GND" }} />
