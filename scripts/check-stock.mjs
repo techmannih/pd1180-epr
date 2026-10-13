@@ -1,10 +1,7 @@
 import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises'
-import { execFile } from 'node:child_process'
-import { promisify } from 'node:util'
-import { officialPart, packagesMatch, inventoryEvidencePasses } from './jlc-stock.mjs'
+import { catalogEvidence, packagesMatch, inventoryEvidencePasses } from './jlc-stock.mjs'
 
 // JLCSearch fuzzy results must never stand in for an exact LCSC part match.
-const run = promisify(execFile)
 const manifest = JSON.parse(await readFile(new URL('../docs/design-manifest.json', import.meta.url)))
 const order = JSON.parse(await readFile(new URL('../release/order-settings.json', import.meta.url)))
 const quantity = Number(process.env.BOARD_QUANTITY || order.pcb.quantity)
@@ -38,32 +35,13 @@ await Promise.all(Array.from({ length: 5 }, async () => {
     const numericLcsc = entry.lcsc.slice(1)
     const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${numericLcsc}`
     try {
-      const { stdout } = await run('curl', ['--fail', '--silent', '--show-error', '-L', '--retry', '2', '--max-time', '40', url], { maxBuffer: 8_000_000 })
-      const response = JSON.parse(stdout)
-      let exact = (response.components || []).find(p => `C${String(p.lcsc).replace(/^C/, '')}` === entry.lcsc)
-      let fallback_url = null
-      let fallback_response = null
-      // The generic search index occasionally omits stocked catalog resistors.
-      // An exact code match in the typed catalog is also valid evidence.
-      if (!exact && entry.kind === 'resistor') {
-        const ohms = Number.parseFloat(entry.value) * (entry.value.endsWith('k') ? 1000 : entry.value.endsWith('M') ? 1e6 : 1)
-        fallback_url = `https://jlcsearch.tscircuit.com/resistors/list.json?resistance=${ohms}&package=${entry.footprint}`
-        const fallback = await run('curl', ['--fail', '--silent', '-L', '--max-time', '40', fallback_url])
-        fallback_response = JSON.parse(fallback.stdout)
-        exact = (fallback_response.resistors || []).find(p => `C${String(p.lcsc).replace(/^C/, '')}` === entry.lcsc)
-      }
-      let official = null
-      let official_error = null
-      try {
-        official = await officialPart(entry.lcsc)
-        if (official.exact) exact = official.exact
-      } catch (error) { official_error = error.message }
-      const checked_at = new Date().toISOString()
-      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify({ url, fallback_url, checked_at, response, fallback_response, official, official_error }, null, 2))
+      const evidence = await catalogEvidence(entry.lcsc)
+      const {exact, official, checked_at} = evidence
+      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify(evidence, null, 2)+'\n')
       const package_match = packagesMatch(entry.footprint, exact?.package)
-      results.push({ ...entry, checked_at, url, fallback_url, official_url: official?.url ?? null, evidence_source: official?.exact ? "jlcpcb-official" : "jlcsearch", warehouse_stock: exact?.warehouse_stock ?? null, available_order_quantity: exact?.available_order_quantity ?? null, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
+      results.push({ ...entry, checked_at, url, search_error: evidence.search_error, official_error: evidence.official_error, official_url: official?.url ?? null, evidence_source: exact ? "jlcpcb-official" : null, warehouse_stock: exact?.warehouse_stock ?? null, available_order_quantity: exact?.available_order_quantity ?? null, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
-        status: !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
+        status: evidence.official_error ? 'unverified-network-error' : !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
         required: entry.quantity_per_board * quantity })
     } catch (error) { results.push({ ...entry, url, status: 'unverified-network-error', error: String(error.message) }) }
   }

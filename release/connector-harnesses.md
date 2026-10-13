@@ -16,4 +16,4 @@ J7 and its external STEP/DIR/ENABLE/home/limit path are removed from TSX. The ma
 
 SW2 is on the PCB: PC6 to GND, with R133 to V3V3_MCU. STM32 supplies the motion command over existing PCB SPI traces, so there is no external command harness. SW1 remains RESET.
 
-The J2 170/170/170/165 mm cut lengths include 12 mm termination/adjustment allowance and are CAD proposals requiring first-article fit. TE320559 length is verified at 32.13 mm; its current 5 mm OD model remains unverified. Physical harness retention remains open after removal of the unsupported adapter-mounted clamp. No loose cable is rendered as a completed external system.
+The J2 170/170/170/165 mm cut lengths include 12 mm termination/adjustment allowance and are CAD proposals requiring first-article fit. TE320559 uses the actual manufacturer AE STEP: nominal length 32.131 mm and diameter 5.6134 mm, translated without scaling. Rev V6 drawing and STEP are archived with hashes. The finished crimp is not dimensionally qualified by the uncrimped CAD. Physical harness retention remains open after removal of the unsupported adapter-mounted clamp. No loose cable is rendered as a completed external system.

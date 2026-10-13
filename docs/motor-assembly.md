@@ -15,7 +15,7 @@ The 51-part adapter/front-post/fastener/spacer/clamp assembly is withdrawn. No r
 
 The retained 19.5 mm PCB-bottom/rear-face gap is **only the previous preview separation**, not a fabricated stack or verified final mounting height. The board is not shown as mechanically secured. Bottom pin clearance, tool access and actual fastening still require physical verification.
 
-The active preview contains 15 named models: motor, J2 mating housing, four pigtails, four splice envelopes, four factory conductors and the factory cable jacket. Existing factory cable exit geometry remains; no new restraint bracket is assumed. See [connections](connector-harnesses.md).
+The active preview contains 15 named models: motor, J2 mating housing, four pigtails, four manufacturer TE320559 STEP bodies, four factory conductors and the factory cable jacket. Existing factory cable exit geometry remains; no new restraint bracket is assumed. See [connections](connector-harnesses.md).
 
 The centered underside AS5047P and its bypass capacitors stay doNotPlace. This single-shaft motor has no documented rotating rear interface for an encoder magnet; no holder or magnet is modeled.
 

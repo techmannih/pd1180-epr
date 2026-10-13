@@ -35,7 +35,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
-| `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
+| `check-stock.mjs` | Queries numeric JLCSearch identities and independently checks official JLC available-order quantities for the fitted BOM; index errors are recorded and cannot skip the official lookup. Missing official evidence or package expectations fail closed. |
 | `check-source-schematic.mjs` | Audits all retained default A4 schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
 | `clean-silkscreen.py` | Preserves native component references and their size. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings; native DRC remains mandatory. |
@@ -119,7 +119,7 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 - `check-protection-refinement.mjs`: checks the narrow unused-SBU ECO against the native-reference baseline, preserving every unrelated PCB object. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.
 
 - `jlc-stock.mjs`: reads the public official JLCPCB part-detail endpoint; verifies the exact code and uses the lesser of warehouse stock and available order quantity. Unknown quantities fail closed; retains only relevant evidence fields.
-- `jlc-stock.test.mjs`: rejects fuzzy/missing identities, null/negative/string quantities and reserved stock being counted as available order quantity.
+- `jlc-stock.test.mjs`: rejects fuzzy/missing identities, null/negative/string quantities and reserved stock being counted as available order quantity; reproduces index outages and rejects cached availability when official evidence is absent.
 
 - `native-eco-policy.mjs`, `native-eco-policy.test.mjs`: parse and protect the unchanged native board around the six-pad SBU correction and the exact reviewed U17/J1/J10 sourcing names; reject unrelated copper, hole, net, pad or text geometry changes.
 - `check-placement.mjs`, `placement-review.mjs`, `placement-review.test.mjs`: retain raw placement advice and enforce only the three documented, native-route-reviewed cases. Unit tests use the committed CLI fixture `fixtures/placement-reviewed.txt` (recorded on 2026-10-13 from PR #3 at `3a48c34`), resolved relative to the test module; they require neither generated logs nor a particular working directory. CI runs this regression before the stock-dependent review. The live placement check still generates and validates current output, independently of the fixture.
@@ -134,3 +134,7 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 
 - `check-copper-evidence.mjs`: checks all six filled-copper path screens at both mesh sizes against the current PCB and solver hashes; does not qualify temperature or current rating.
 - `copper-evidence.test.mjs`: rejects stale/mixed board hashes, missing meshes and invalid resistance evidence.
+
+- `splice-model.mjs`, `splice-model.test.mjs`: import the official TE 320559 STEP from the archived manufacturer evidence, verify STEP/drawing hashes, axial origin and nominal dimensions, and translate its unscaled mesh into each J2 splice position. Regresses wrong dimensions, source corruption, mirrored placement and the four generated CAD parts. Nominal CAD does not qualify finished crimps.
+
+Harness intermediate part data is deterministically stored in `engineering/mechanical/harness-parts.zip` to keep duplicate base64 geometry out of the raw GitHub import payload. `generate-motor-assembly.mjs` reads it with ZIP CRC checking; exported GLBs keep their original mesh resolution.

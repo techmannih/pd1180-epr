@@ -1,6 +1,7 @@
 import {readFile,writeFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import modeling from '@jscad/modeling'
+import JSZip from 'jszip'
 import {encodeGlb} from './assembly-glb.mjs'
 import {bezier,tube,distance,canonicalHarnessGeometry} from './harness-geometry.mjs'
 import {loadSpliceModel,positionSplice} from './splice-model.mjs'
@@ -57,7 +58,7 @@ const glb=encodeGlb(meshes),sha=b=>createHash('sha256').update(b).digest('hex')
 const outputs={
  'engineering/mechanical/harness-proposal.glb':glb,
  'engineering/mechanical/harness-geometry.json':JSON.stringify(canonicalHarnessGeometry({layout_sha256:sha(await readFile('engineering/mechanical/harness-layout.json')),glb_sha256:sha(glb),connectors,bodies,wires}))+'\n',
- 'engineering/mechanical/harness-parts.json':JSON.stringify(meshes.map(m=>({name:m.name.replace(/[^a-zA-Z0-9_]/g,'_'),description:m.name,bom:m.name.startsWith('TE320559')?'320559':m.name.includes('Alpha3057')?'Alpha Wire 3057':m.name,base64:encodeGlb([m]).toString('base64')})))+'\n'
+ 'engineering/mechanical/harness-parts.zip':await new JSZip().file('harness-parts.json',JSON.stringify(meshes.map(m=>({name:m.name.replace(/[^a-zA-Z0-9_]/g,'_'),description:m.name,bom:m.name.startsWith('TE320559')?'320559':m.name.includes('Alpha3057')?'Alpha Wire 3057':m.name,base64:encodeGlb([m]).toString('base64')})))+'\n',{date:new Date('2026-10-13T00:00:00Z')}).generateAsync({type:'nodebuffer',compression:'DEFLATE'})
 }
 for(const [path,bytes]of Object.entries(outputs)){
  if(process.argv.includes('--check')){if(!(await readFile(path)).equals(Buffer.from(bytes)))throw new Error(`Stale harness: ${path}`)}else await writeFile(path,bytes)

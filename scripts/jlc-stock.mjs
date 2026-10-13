@@ -29,6 +29,22 @@ export async function officialPart(code) {
     returned_code:response.data?.componentCode ?? null, exact}
 }
 
+// Query the numeric index as required, but never let an index outage prevent
+// the authoritative lookup. Index stock can include material not orderable.
+export async function catalogEvidence(code, options = {}) {
+  if (!/^C\d+$/.test(code)) throw new Error('Invalid exact JLC code')
+  const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${code.slice(1)}`
+  const readIndex = options.readIndex || (async url => {
+    const {stdout} = await run('curl', ['--fail','--silent','--show-error','-L','--retry','2','--max-time','40',url], {maxBuffer:8_000_000})
+    return JSON.parse(stdout)
+  })
+  let response = null, search_error = null, official = null, official_error = null
+  try { response = await readIndex(url) } catch (error) { search_error = error.message }
+  try { official = await (options.readOfficial || officialPart)(code) } catch (error) { official_error = error.message }
+  const exact = official?.exact?.lcsc === code ? official.exact : null
+  return {url, checked_at:new Date().toISOString(), response, search_error, official, official_error, exact}
+}
+
 // Official English catalog translates only the Chinese through-hole prefix.
 // Preserve pitch, dimensions and every other package detail exactly.
 export function normalizePackageLabel(value) {

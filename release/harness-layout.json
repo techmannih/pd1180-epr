@@ -1,5 +1,5 @@
 {
-  "status": "Connected J2 harness CAD; splice OD and physical retention remain unqualified",
+  "status": "Connected J2 harness with manufacturer TE 320559 STEP; physical crimp fit and retention remain unqualified",
   "coordinate_system": "PCB X/Y; Z height; millimetres",
   "sources": {
     "VH": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf",
@@ -36,9 +36,9 @@
     ],
     "tip_identity_note": "Four end-face centres measured from the locked motor mesh. STEP is uncoloured: their colour assignment is illustrative, not evidence of factory conductor ordering. Use manufacturer winding colours and continuity checks.",
     "splice_y_mm": -92,
-    "splice_length_envelope_mm": 32.13,
-    "splice_diameter_envelope_mm": 5,
-    "splice_note": "TE 320559 catalogue length 32.13 mm verified. Diameter remains a provisional 5 mm clearance envelope pending readable production drawing; not qualified production CAD.",
+    "splice_length_envelope_mm": 32.131,
+    "splice_diameter_envelope_mm": 5.6134,
+    "splice_note": "TE 320559 manufacturer STEP AE, nominal 32.131 mm axial span / 5.6134 mm radial envelope. V6 drawing length 32.13 mm max is the rounded 1.265 inch value. STEP dimensions are not a finished-crimp tolerance or physical fit approval.",
     "splice_x_mm": [
       -12,
       -4,
@@ -73,10 +73,10 @@
   "not_modeled": [
     "Rear encoder magnet/holder: rotating rear shaft unavailable",
     "J3 brake resistor/heatsink: retained circuit, thermal system unresolved",
-    "USB source/host cables: actual products not selected; no fictitious free tails rendered"
+    "USB source/host cables: product candidates identified in external-system.md; actual plug CAD, access and negotiation unqualified, no free tails rendered"
   ],
   "limitations": [
-    "TE 320559 length verified; 5 mm outside diameter is a provisional clearance envelope, not verified production CAD",
+    "TE 320559 manufacturer STEP geometry is hash-locked; V6 drawing does not specify an exterior OD tolerance. Finished crimp envelope still needs physical verification.",
     "Crimps, wire bend radius, termination allowance and retention must be qualified by the harness manufacturer",
     "Unsupported adapter-mounted cable clamp removed; no physical strain-relief qualification or replacement bracket claimed."
   ]

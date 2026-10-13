@@ -1,6 +1,6 @@
 # Prototype completion and acceptance record
 
-This handoff builds on merged PR #3 (`0cacbb2`). It is an engineering review package, not an order approval or proof that the motor runs. No physical test results are available. The three firmware qualification flags remain false.
+This handoff builds on merged PR #5 (`d856d30`), including the sourcing replacements from PR #4. It is an engineering review package, not an order approval or proof that the motor runs. No physical test results are available. The three firmware qualification flags remain false.
 
 ## Implemented in this pass
 
@@ -9,7 +9,9 @@ This handoff builds on merged PR #3 (`0cacbb2`). It is an engineering review pac
 - The exact 404 native-reference text findings are accepted according to the user's instruction. Every raw KiCad finding remains in the package. Changed finding identities, shorts, unconnected items, parity errors and ERC failures are rejected. Names, text sizes, PCB placement, four holes and copper are unchanged.
 - Review can complete with explicitly recorded stock shortages; strict procurement/release commands still fail. Unknown stock, package mismatch and failed engineering checks are not accepted. Exact inventory is refreshed and remains unreserved.
 - The six motor copper paths are re-screened at 0.075/0.05 mm against the current native PCB. Results remain DC analytical estimates, excluding device/contact losses and thermal qualification.
-- The TE 320559 manufacturer drawing is archived with its source and SHA-256. It confirms 32.13 mm maximum length and a 2.03–3.18 mm wire-insulation diameter range. It does **not** dimension the exterior diameter; the CAD's 5 mm envelope remains provisional. No dimension was guessed to close this hold.
+- All four TE320559 splice cylinders are replaced by the manufacturer C-320559 AE STEP, translated without scaling. Nominal length is 32.131 mm (drawing: 1.265 in / 32.13 mm maximum) and nominal maximum diameter is 5.6134 mm. The current V6 drawing and STEP are archived with SHA-256 evidence. Geometry regressions check all four exported bodies against the STEP; conservative harness-clearance checks pass. The uncrimped CAD does not qualify finished-crimp dimensions or physical retention.
+- Stock checks query the numeric index first and always attempt the official exact-part lookup, even if the index fails. Only official available-order evidence can pass; a failed lookup or zero quantity cannot fall back to cached index stock. Regression tests exercise those failure paths.
+- Exact coloured Alpha3057 wire SKUs, EPR/data cable candidates and programming-tool candidates are specified in [external-system.md](external-system.md). These are identified products, not purchased or physically qualified items.
 
 ## Connections and purchases
 
@@ -43,7 +45,7 @@ U16 and U35 remain unchanged; no inventory has been reserved or order placed. `s
 | Stage | Required evidence before advancing |
 |---|---|
 | Before ordering | Resolve the two remaining stock shortages; obtain fabricator acceptance of the actual stackup/USB impedance and filled/capped via-in-pad process. Measure the actual motor rear holes/thread/depth and define secure attachment using the retained four PCB holes. Do not reuse motor tie bolts or add guessed hardware. |
-| Harness first article | Verify delivered lead insulation against the current TE application drawing, finished splice envelope, crimp/pull/insulation tests, winding mapping, connector insertion/tool clearance, cable bend/retention and final cut lengths. The archived TE drawing is older Rev V2; request current Rev V6/STEP before production fit approval. |
+| Harness first article | Verify delivered lead insulation against the current TE application drawing, finished splice envelope, crimp/pull/insulation tests, winding mapping, connector insertion/tool clearance, cable bend/retention and final cut lengths. Current Rev V6 and AE STEP are archived; inspect the finished crimp rather than treating nominal uncrimped CAD as an acceptance gauge. |
 | Stationary electrical | Serial-number the PCB. Record BOM/revision, firmware/PD-image hashes and readback; inspect before power. With the bridge inhibited, measure source negotiation, all rails, USB power states/backfeed, eFuse response, brake/cutoff thresholds and fault/restart paths. |
 | First motion | Only after stationary checks and a qualified brake installation: securely mounted **unloaded** motor, 20–25°C, nominal 10 rpm, 10 rpm/s, IRUN=6 / GS=139 (about 0.827 A RMS). Capture phase current, gates, VMOTOR and brake waveforms. These are proposed qualification limits, not tested ratings. |
 | Brake fault | First inject feedback/open faults with the motor inhibited. A controlled running-open test needs the restricted energy envelope and independent test-rig overvoltage containment. Measure ADC/filter/scheduler detection delay, inhibit timing and peak VMOTOR. Require the 55 V operating limit with the project's transient margin; if it fails, keep motion disabled and revise protection. Do not simply unplug the brake during a high-energy run. |
@@ -55,6 +57,6 @@ Runtime voltage monitoring does not absorb energy, detect the resistor's resista
 
 `bun run review` refreshes stock evidence, runs the source/native/firmware checks and regenerates previews/release artifacts. It may pass with the recorded procurement hold. `bun run check:stock`, `bun run check:assembly` and `bun run check:release` remain strict; they do not authorize ordering while shortages or other holds remain. `docs/verification.json`, the raw DRC/ERC reports and `delivery-manifest.json` identify the actual reviewed artifacts.
 
-The current PCB/3D geometry is retained from merged PR #3. Firmware and review-policy changes do not produce a physical before/after shape change. The regenerated `release/pcb-3d.png` and assembly archive show that retained geometry; they are not photographs or proof of completed mounting/brake installation.
+PCB copper, components, holes and firmware are retained from merged PR #5. The physical CAD change in this pass is the four manufacturer splice bodies and the 0.001 mm factory-lead endpoint adjustment to their exact nominal length. The regenerated assembly archive and [before/after splice views](splice-model-update.md) show this change; they are renders, not proof of completed mounting or brake installation.
 
 Sourcing replacements from PR #4 are included: R64 C2984356, U17 C6000508 and J1/J10 C3025063. See [sourcing resolution](sourcing-resolution.md). U17 has limited stock; USB -060 shorter stakes still need assembly/retention acceptance. No inventory is reserved.
