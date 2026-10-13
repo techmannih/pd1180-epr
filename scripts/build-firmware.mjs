@@ -38,6 +38,14 @@ if (!check) {
   await mkdir('release',{recursive:true})
   await writeFile(archivePath,await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE'}))
   await writeFile('docs/checks/firmware-target.json',JSON.stringify(manifest,null,2)+'\n')
+  const orderPath = 'release/order-settings.json'
+  const order = JSON.parse(await readFile(orderPath, 'utf8'))
+  order.programming.U16_mcu.commissioning_image = {
+    archive: 'pd1180-commissioning-firmware.zip', member: 'firmware.bin',
+    sha256: manifest.artifacts['firmware.bin'], image_bytes: manifest.image_bytes,
+    motion_enabled: false,
+  }
+  await writeFile(orderPath, JSON.stringify(order,null,2)+'\n')
 }
 const zip=await JSZip.loadAsync(await readFile(archivePath),{checkCRC32:true})
 const manifest=JSON.parse(await zip.file('manifest.json').async('string'))
@@ -49,4 +57,8 @@ for(const [p, hash] of Object.entries(manifest.artifacts)) {
   if(sha(await zip.file(p).async('nodebuffer'))!==hash) throw new Error(`Corrupt firmware artifact: ${p}`)
 }
 if(manifest.motor_operation_enabled!==false) throw new Error('This frozen-board commissioning image must not enable motion')
+const requestedImage = JSON.parse(await readFile('release/order-settings.json','utf8')).programming.U16_mcu.commissioning_image
+if(requestedImage?.sha256 !== manifest.artifacts['firmware.bin'] ||
+   requestedImage.image_bytes !== manifest.image_bytes || requestedImage.motion_enabled !== false)
+  throw new Error('Commissioning image in order settings differs from the verified ARM archive')
 console.log(`Verified ARM commissioning image: ${manifest.image_bytes}/131072 bytes; motion locked; source hashes match.`)

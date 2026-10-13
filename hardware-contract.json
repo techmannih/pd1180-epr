@@ -76,7 +76,7 @@
     "copper_oz_all_layers": 1,
     "minimum_trace_space_mm": 0.09,
     "solder_mask": "green",
-    "surface_finish": "lead-free HASL or ENIG",
+    "surface_finish": "ENIG",
     "power_corridor_nominal_width_mm": 2.4,
     "power_zone_clearance_mm": 0.16,
     "signal_via_mm": {
@@ -87,7 +87,7 @@
       "diameter": 0.6,
       "drill": 0.3
     },
-    "via_in_pad": "filled and capped for CSD19534 thermal pads"
+    "via_in_pad": "epoxy filled and copper capped for all 55 recorded via-in-pad locations; see docs/manufacturing-acceptance.md"
   },
   "rated_targets": {
     "pd_contract_v": 48,
@@ -295,6 +295,6 @@
       "tolerance_fraction": 0.001,
       "tcr_ppm_per_c": 25
     },
-    "continuity_scope": "Startup only: D20 and R134/R135/R136/C98 -> U30 AIN2, three fresh samples; no runtime current/cable integrity proof."
+    "continuity_scope": "Startup: three fresh distinct bus/return pairs. RUN: both ADC timestamps checked; mismatches get one fixed 100 ms retry window for multiplexed sampling skew, with stale ADC and hard bus range faults immediate at the next check. Physical detection/inhibit latency is unqualified; no brake-current, resistance or backup energy proof."
   }
 }

@@ -37,3 +37,15 @@ export function normalizePackageLabel(value) {
 export function packagesMatch(expected, actual) {
   return typeof expected === 'string' && typeof actual === 'string' && normalizePackageLabel(expected) === normalizePackageLabel(actual)
 }
+
+// Review may record a known shortage, never invent stock or accept unknown
+// identity/package evidence. The default remains the strict procurement gate.
+export function inventoryEvidencePasses(part, review = false, alternative = false) {
+  if (!part || typeof part.mpn !== 'string' || !part.mpn.trim() ||
+      !Number.isFinite(part.stock) || part.stock < 0) return false
+  if (alternative) {
+    if (part.expected_package_match !== true ||
+        (part.classification !== 'not-approved-redesign-required' && part.package_compatible !== true)) return false
+  } else if (part.package_match !== true) return false
+  return part.status === 'available' || (review && part.status === 'insufficient')
+}

@@ -53,6 +53,14 @@ const copies = [
   ['docs/pd-configuration-review.md', 'pd-configuration-review.md'],
   ['docs/pd-image-check.json', 'pd-image-check.json'],
   ['docs/readiness.md', 'readiness.md'],
+  ['docs/completion-handoff.md', 'completion-handoff.md'],
+  ['engineering/mechanical/splice-evidence.json', 'splice-evidence.json'],
+  ['engineering/mechanical/TE-320559-drawing.zip', 'TE-320559-drawing.zip'],
+  ['engineering/filled-copper-review.json', 'filled-copper-review.json'],
+  ['docs/sourcing-resolution.md', 'sourcing-resolution.md'],
+  ['docs/manufacturing-acceptance.md', 'manufacturing-acceptance.md'],
+  ['sourcing/replacement-catalog-evidence.json', 'replacement-catalog-evidence.json'],
+  ['sourcing/procurement-open-items.csv', 'procurement-open-items.csv'],
   ['docs/placement-review.md', 'placement-review.md'],
   ['dist/manufacturing/kicad-board.png', 'pcb-3d.png'],
   ['dist/manufacturing/kicad-board-bottom.png', 'pcb-bottom.png'],
@@ -164,7 +172,7 @@ The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact 
 
 RGB, independent board-power indication, a reset-safe buzzer and eight new power/programming pads are included. See \`indicators.md\` and \`pd-programming.md\` for states, supply allocation and isolated EEPROM programming. The fixture and TI image still require qualification.
 
-The power ECO uses TPS26630 1× latch-off limiting at nominal 3.607 A, sets motor inhibit to nominal 53.21 V, and includes a 100 V brake-cable recirculation diode and ADS1115 startup brake-continuity sensing. The conservative input screen is 4.252 A including the 250 mA upstream allocation; the nominal 48 V motor-input budget is approximately 173 W. The conservative motor-current ceiling is 3.8 A RMS; the supplied profile remains locked at approximately 0.827 A / 10 rpm unloaded until all hardware qualification flags can be justified, and requests above 240 permille are rejected before SPI access. The continuity check is startup-only and does not qualify the heatsink or protect against every runtime brake fault. See \`power-validation.md\` and the repository's \`engineering/protection-refinement.json\`.
+The power ECO uses TPS26630 1× latch-off limiting at nominal 3.607 A, sets motor inhibit to nominal 53.21 V, and includes a 100 V brake-cable recirculation diode and ADS1115 startup and runtime brake-voltage monitoring. The conservative input screen is 4.252 A including the 250 mA upstream allocation; the nominal 48 V motor-input budget is approximately 173 W. The conservative motor-current ceiling is 3.8 A RMS; the supplied profile remains locked at approximately 0.827 A / 10 rpm unloaded until all hardware qualification flags can be justified, and requests above 240 permille are rejected before SPI access. The runtime continuity check accounts for muxed ADC sample skew with a bounded observation gap; it does not qualify the heatsink or contain energy after every brake fault. See \`power-validation.md\` and the repository's \`engineering/protection-refinement.json\`.
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
@@ -176,7 +184,7 @@ This is a held review package, not an orderable handoff. After the DRC, sourcing
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents and hardware contract correspond to ${releaseStatus.revision}, identified by this delivery manifest.
 
-The native reports contain ${kicadDrc.violations.length} PCB DRC violations, ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch plus exact-ID official catalog evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The native reports contain ${kicadDrc.violations.length} raw PCB DRC findings (the exact user-accepted cosmetic baseline), ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch plus exact-ID official catalog evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style result is recorded across all ${standards.project_geometry.schematic_sheet_count} sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 

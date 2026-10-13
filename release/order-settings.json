@@ -1,5 +1,5 @@
 {
-  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "service": "JLCPCB PCB + SMT assembly",
   "requested_delivery": "Fully populated, programmed and functionally tested PCBA for the confirmed motor/load",
   "additional_services": {
@@ -26,7 +26,7 @@
     "minimum_trace_space_mm": 0.09,
     "solder_mask": "green",
     "silkscreen": "white",
-    "surface_finish": "lead-free HASL or ENIG",
+    "surface_finish": "ENIG",
     "remove_order_number": true,
     "electrical_test": "100 percent",
     "via_in_pad": "epoxy filled and copper capped",
@@ -59,6 +59,17 @@
       "via_pad_mm": 0.6,
       "finished_drill_mm": 0.3,
       "process": "epoxy filled and copper capped"
+    },
+    "fabricator_accepted": false,
+    "acceptance_document": "manufacturing-acceptance.md",
+    "usb_impedance": {
+      "target_differential_ohm": 90,
+      "tolerance_percent": 10,
+      "stackup_id": null,
+      "fabricator_field_solver_report": null,
+      "coupon_required": true,
+      "status": "pending-stackup-and-route-impedance-review",
+      "copper_requirement": "1 oz outer AND inner; do not substitute a standard 0.5 oz inner stack-up"
     }
   },
   "assembly": {
@@ -80,10 +91,17 @@
     "U3_eeprom": {
       "part": "M24512-RMN6TP",
       "requirement": "Program approved TI TPS26750 full-flash image and verify/read back after assembly",
-      "image": null,
-      "sha256": null,
-      "status": "blocked-image-and-demonstrated-programming-method-pending",
-      "interface": "EEP_SDA/EEP_SCL on TPS26750 I2Cc; separate from STM32 PD_SDA/PD_SCL. Fixture access, power and bus ownership require qualification."
+      "image": "pd1180-ti-configuration.zip",
+      "sha256": "ae4222fe41cde5bb9704b4b949fb67aaf231fc897d429199420a99db725b5d18",
+      "status": "image-prepared-physical-programming-readback-and-cold-boot-pending",
+      "interface": "EEP_SDA/EEP_SCL on TPS26750 I2Cc; separate from STM32 PD_SDA/PD_SCL. Fixture access, power and bus ownership require qualification.",
+      "archive_member": "fullFlash.bin",
+      "image_bytes": 31552,
+      "readback_bytes": 65536,
+      "start_address": "0x0000",
+      "programmed": false,
+      "readback_verified": false,
+      "cold_boot_verified": false
     },
     "U16_mcu": {
       "part": "STM32G0B1CBT6",
@@ -92,7 +110,18 @@
       "image": null,
       "sha256": null,
       "status": "blocked-motor-qualified-image-pending",
-      "commissioning_only": "pd1180-commissioning-firmware.zip contains a diagnostics image with motor operation locked; it does not meet ready-to-run delivery acceptance"
+      "commissioning_only": "pd1180-commissioning-firmware.zip contains a diagnostics image with motor operation locked; it does not meet ready-to-run delivery acceptance",
+      "commissioning_image": {
+        "archive": "pd1180-commissioning-firmware.zip",
+        "member": "firmware.bin",
+        "sha256": "cb0b82779725b35084cc24f1fe297299e0ea4df92fa35966ff744bfd5b1bba37",
+        "image_bytes": 58216,
+        "motion_enabled": false
+      },
+      "readback_bytes": 131072,
+      "programmed": false,
+      "readback_verified": false,
+      "cold_boot_verified": false
     }
   },
   "functional_test": {

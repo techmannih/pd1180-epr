@@ -35,6 +35,8 @@ On 2026-10-13 the user authorized correcting PR #2 after review. Merge the lates
 
 On 2026-10-13 the user explicitly requested closure of the remaining U1 unused-SBU wiring, stock/package and placement findings, PD programming preparation, J3 documentation, and system qualification blockers. Affected source, native copper, checks and documentation are reopened. Physical measurements and supplier inventory must still be evidenced; no procurement or invented qualification is authorized. Preserve unrelated circuitry and the four existing PCB holes.
 
+On 2026-10-13 after PR #3 merged, the user requested programming/readback/cold-boot and external-system qualification checklists, sourcing fixes for U17/R64/U35/U16/J1/J10, and manufacturing/mechanical closure. Reviewed compatible substitutions and their affected metadata are authorized. The user explicitly deferred the 404 silkscreen/text findings: leave native labels unchanged and retain raw findings. Do not claim zero DRC or fabricator acceptance. Physical qualification and purchase/consignment remain evidence-dependent; no order or supplier message is authorized.
+
 ## Required project structure
 
 Every board repository should contain:
@@ -145,3 +147,7 @@ Never suppress, filter or waive a failing check without documenting the physical
 When adding or removing a script, update `scripts/README.md`; the script-catalog check enforces this. When adding a release artifact, update `board-standards.json` and the delivery checker.
 
 Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
+
+## Current review authorization — 2026-10-13
+
+The user accepted native reference text size, overlaps and silk over copper, and requested one PR containing the remaining implementation and physical/procurement documentation. Retain the exact raw cosmetic baseline in `engineering/native-silk-hold.json`; do not suppress labels or waive electrical, connectivity, parity or ERC faults. Engineering review may record exact known stock shortages with `--review`; strict procurement/release still fails. Unknown identity/package/stock evidence remains a failure, and no substitute or order is authorized by this distinction. Physical measurements, purchases and motor qualification remain explicitly open in `docs/completion-handoff.md`.

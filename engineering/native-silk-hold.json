@@ -1,11 +1,12 @@
 {
   "baseline_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
-  "reason": "User requires every native reference, even overlaps; only board-edge anchors may move. These 404 pre-existing findings remain fabrication blockers, not waived DRC.",
+  "reason": "User explicitly accepts native reference text size, overlaps and text over copper. Retain all 404 raw findings and native names; only this exact finding signature is nonblocking. Electrical/changed findings and separate order holds are not waived.",
   "counts": {
     "text_height": 186,
     "silk_over_copper": 118,
     "silk_overlap": 100
   },
   "signature": "7ce3cdef140ce4cb28655ee25a259b7fdfd483d1077383e25ac630b1e3f1d43a",
-  "fabrication_authorized": false
+  "fabrication_authorized": false,
+  "user_accepted_cosmetic_findings": true
 }

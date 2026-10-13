@@ -16,6 +16,10 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Placement regression without generated logs
         run: bun test scripts/placement-review.test.mjs
+      - name: Check committed harness across runtimes
+        run: |
+          bun scripts/generate-harness-assembly.mjs --check
+          node scripts/generate-harness-assembly.mjs --check
       - run: bun run review
       - uses: actions/upload-artifact@v7
         if: always()

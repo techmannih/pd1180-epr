@@ -16,6 +16,19 @@ test('unknown stock is never coerced to zero or availability',()=>{
 })
 
 import { packagesMatch } from './jlc-stock.mjs'
+import { inventoryEvidencePasses } from './jlc-stock.mjs'
+test('review records known shortages without relaxing the procurement or identity gate', () => {
+  const part = {mpn:'EXACT-PART', stock:0, status:'insufficient', package_match:true}
+  expect(inventoryEvidencePasses(part)).toBe(false)
+  expect(inventoryEvidencePasses(part,true)).toBe(true)
+  for (const delta of [{stock:null},{stock:-1},{mpn:null},{package_match:false},
+    {status:'unverified-network-error'},{status:'package-mismatch'},{status:'not-purchasable'}])
+    expect(inventoryEvidencePasses({...part,...delta},true)).toBe(false)
+  const alt={...part,expected_package_match:true,package_compatible:false,classification:'not-approved-redesign-required'}
+  expect(inventoryEvidencePasses(alt,true,true)).toBe(true)
+  expect(inventoryEvidencePasses({...alt,classification:'drop-in'},true,true)).toBe(false)
+  expect(inventoryEvidencePasses({...alt,expected_package_match:false},true,true)).toBe(false)
+})
 test('only translates the through-hole label, retaining pitch and body dimensions', () => {
   expect(packagesMatch('插件,P=3.96mm', 'Plugin,P=3.96mm')).toBe(true)
   expect(packagesMatch('插件,D12.5xL25mm', 'Plugin,D12.5xL25mm')).toBe(true)

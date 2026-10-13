@@ -3,16 +3,14 @@
     "width_mm": 85.9,
     "height_mm": 85.9,
     "layers": 4,
-    "status": "interface-cleanup-ECO-validation-not-orderable",
-    "revision": "0.4.0-ECO"
+    "status": "sourcing-correction-review-not-orderable",
+    "revision": "0.4.1-ECO"
   },
   "parts": [
     {
       "tag": "USB4105_GF_A",
       "name": "J1",
       "connections": {
-        "pin10": "PD_SBU1_CONN",
-        "pin16": "PD_SBU2_CONN",
         "pin1": "GND",
         "pin2": "GND",
         "pin3": "GND",
@@ -35,17 +33,19 @@
       ],
       "owner": null,
       "rotation": 270,
-      "lcsc": "C3020560",
-      "mpn": "USB4105-GF-A",
+      "lcsc": "C3025063",
+      "mpn": "USB4105-GF-A-060",
       "size": [
         6.221247399999996,
         9.740061800000001
       ],
       "noConnect": [
+        "pin10",
         "pin11",
         "pin12",
         "pin13",
-        "pin14"
+        "pin14",
+        "pin16"
       ],
       "section": "usb-pd_J1",
       "sch": [
@@ -150,8 +150,6 @@
       "tag": "TPD4S480RUKR",
       "name": "U1",
       "connections": {
-        "pin1": "PD_SBU1_CONN",
-        "pin2": "PD_SBU2_CONN",
         "pin3": "CC_VBIAS",
         "pin4": "CC1_CONN",
         "pin5": "CC2_CONN",
@@ -168,7 +166,9 @@
         "pin18": "GND",
         "pin19": "VBUS_LV",
         "pin20": "PD_VBUS",
-        "pin21": "GND"
+        "pin21": "GND",
+        "pin14": "GND",
+        "pin15": "GND"
       },
       "sheet": "usb-pd",
       "xy": [
@@ -183,8 +183,8 @@
         3.7999924000000007
       ],
       "noConnect": [
-        "pin14",
-        "pin15"
+        "pin1",
+        "pin2"
       ],
       "section": "usb-pd_J1",
       "sch": [
@@ -5085,7 +5085,7 @@
       ],
       "owner": "U14",
       "value": "430k",
-      "lcsc": "C861400",
+      "lcsc": "C2984356",
       "footprint": "0603",
       "size": [
         2.45,
@@ -5099,7 +5099,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "AR03BTCX4303"
     },
     {
       "tag": "resistor",
@@ -5903,8 +5903,8 @@
         -26
       ],
       "owner": null,
-      "lcsc": "C179173",
-      "mpn": "W25Q32JVSSIQ",
+      "lcsc": "C6000508",
+      "mpn": "W25Q32JVSSIM",
       "size": [
         4.4399961999999995,
         9.310192200000003
@@ -6041,8 +6041,8 @@
       ],
       "owner": null,
       "rotation": 270,
-      "lcsc": "C3020560",
-      "mpn": "USB4105-GF-A",
+      "lcsc": "C3025063",
+      "mpn": "USB4105-GF-A-060",
       "size": [
         6.221247399999996,
         9.740061800000003

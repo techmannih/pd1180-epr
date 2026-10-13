@@ -1,3 +1,4 @@
+import { assertReviewDrc } from './silkscreen-review.mjs'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { kicadPadPosition } from './power-copper-geometry.mjs'
 import { mountingAlignment } from './motor-mounting-geometry.mjs'
@@ -186,8 +187,7 @@ const gerberFiles = await readdir('dist/manufacturing/gerbers')
 if (!standards.assembly.bottom_paste_allowed && gerberFiles.some((name) => /B[_-]Paste/i.test(name))) errors.push('Bottom paste Gerber is present for a top-only assembly')
 
 const drc = JSON.parse(await readFile('dist/manufacturing/kicad-drc.json', 'utf8'))
-if ((drc.violations || []).length) errors.push(`Final KiCad DRC contains ${drc.violations.length} violations`)
-if ((drc.unconnected_items || []).length) errors.push(`Final KiCad DRC contains ${drc.unconnected_items.length} unconnected items`)
+try { assertReviewDrc(drc) } catch (error) { errors.push(error.message) }
 
 const assembly = JSON.parse(await readFile('docs/assembly-check.json', 'utf8'))
 if (assembly.errors?.length) errors.push(...assembly.errors.map((error) => `Assembly: ${error}`))

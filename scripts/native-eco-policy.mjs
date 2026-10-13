@@ -13,6 +13,7 @@ const ref = x => x.find(v => Array.isArray(v) && v[0] === 'property' && v[1] ===
 // refilled board separately. All zone outlines/settings remain protected.
 export function protectedProjection(board, policy, baseline = false) {
   const changes = new Map(policy.pad_changes.map(p => [`${p.reference}.${p.pin}`, p]))
+  const metadata = new Map((policy.part_value_changes || []).map(p => [p.reference, p]))
   const seen = new Set(), removed = new Set(policy.removed_uuids), additions = new Map(policy.added_objects.map(x => [uuid(x), x]))
   const projected = board.map(x => {
     if (!Array.isArray(x)) return x
@@ -22,7 +23,17 @@ export function protectedProjection(board, policy, baseline = false) {
     if (x[0] === 'zone') return x.filter(v => !Array.isArray(v) || v[0] !== 'filled_polygon')
     if (x[0] !== 'footprint') return x
     const reference = ref(x)
-    return x.map(p => {
+    return x.map((p, index) => {
+      const changeValue = metadata.get(reference)
+      if (changeValue && index === 1) {
+        if (p !== JSON.stringify(baseline ? changeValue.before : changeValue.after)) throw new Error(`Unexpected ${reference} footprint identity`)
+        return '"reviewed-sourcing-footprint-name"'
+      }
+      if (changeValue && Array.isArray(p) && p[0] === 'property' && p[1] === '"Value"') {
+        if (p[2] !== JSON.stringify(baseline ? changeValue.before : changeValue.after)) throw new Error(`Unexpected ${reference} part value`)
+        seen.add(`value:${reference}`)
+        return p.map((v, i) => i === 2 ? '"reviewed-sourcing-value"' : v)
+      }
       if (!Array.isArray(p) || p[0] !== 'pad') return p
       const key = `${reference}.${p[1].slice(1,-1)}`, change = changes.get(key)
       if (!change) return p
@@ -33,6 +44,7 @@ export function protectedProjection(board, policy, baseline = false) {
     })
   }).filter(x => x !== null)
   for (const key of changes.keys()) if (!seen.has(key)) throw new Error(`Missing affected pad ${key}`)
+  for (const key of metadata.keys()) if (!seen.has(`value:${key}`)) throw new Error(`Missing affected part value ${key}`)
   if (!baseline) for (const key of additions.keys()) if (!seen.has(key)) throw new Error('Missing approved ground/trim object')
   // Saving KiCad can reorder top-level objects, so compare a canonical multiset.
   return projected.map(x => JSON.stringify(x)).sort()

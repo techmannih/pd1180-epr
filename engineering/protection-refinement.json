@@ -32,7 +32,8 @@
     "max_request_permille": 240,
     "nominal_rms_a": 0.8271367552997603,
     "all_three_qualification_flags": false,
-    "runtime_brake_integrity_monitoring": false
+    "runtime_brake_integrity_monitoring": true,
+    "runtime_monitor_scope": "Fresh voltage continuity, <=100 ms sample age, <=100 ms braking observation gap, latched failure. Not brake-current measurement, an energy sink or full-current fault qualification."
   },
   "input_budget": {
     "formula_nominal_a": 3.6072144288577155,

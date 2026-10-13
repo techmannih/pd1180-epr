@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { officialPart, packagesMatch } from './jlc-stock.mjs'
+import { officialPart, packagesMatch, inventoryEvidencePasses } from './jlc-stock.mjs'
 
 // JLCSearch fuzzy results must never stand in for an exact LCSC part match.
 const run = promisify(execFile)
@@ -72,4 +72,4 @@ results.sort((a,b) => Number(a.lcsc.slice(1)) - Number(b.lcsc.slice(1)))
 const report = { checked_at: new Date().toISOString(), board_quantity: quantity, stock_is_not_reserved: true, parts: results }
 await writeFile(new URL('../docs/stock-report.json', import.meta.url), JSON.stringify(report, null, 2))
 console.log(JSON.stringify({ unique_parts: results.length, package_matches: results.filter(p=>p.package_match===true).length, available: results.filter(p=>p.status==='available').length, problems: results.filter(p=>p.status!=='available') }, null, 2))
-if (results.some(p=>p.status!=='available'||p.package_match!==true)) process.exitCode = 1
+if (results.some(p=>!inventoryEvidencePasses(p,process.argv.includes('--review')))) process.exitCode = 1

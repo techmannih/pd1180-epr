@@ -15,4 +15,4 @@ const drc=JSON.parse(drcBytes), report=JSON.parse(await readFile('dist/manufactu
 if(report.board_sha256!==digest(bytes)||report.drc_sha256!==digest(drcBytes))throw new Error('Stale native DRC/board evidence')
 assertReviewDrc(drc,true)
 await writeFile('docs/checks/placement-review.json',JSON.stringify({reviewed_advisories:advice,raw_cli_exit:result.status,raw_log:'docs/checks/placement-raw.log',board_sha256:digest(bytes),reason:'docs/placement-review.md',unrelated_native_geometry_preserved:true,native_drc_passed:drc.violations.length===0,retained_silk_findings:drc.violations.length,electrical_connectivity_passed:true,hardware_qualified:false},null,2)+'\n')
-console.log('Three nearest-port orientation advisories reviewed against preserved native routing; raw CLI evidence retained. Electrical connectivity/parity zero; retained native-reference DRC findings stay blocking.')
+console.log('Three nearest-port orientation advisories reviewed against preserved native routing; raw CLI evidence retained. Electrical connectivity/parity zero; the exact user-accepted cosmetic findings are retained; order holds remain separate.')

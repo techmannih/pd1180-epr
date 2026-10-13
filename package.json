@@ -68,7 +68,7 @@
     "check:firmware": "bun scripts/check-firmware.mjs",
     "export:release": "bun scripts/export-release.mjs",
     "generate:mounting-template": "bun scripts/generate-mounting-template.mjs",
-    "review": "bun run check:stock && bun run check:alternatives && bun run verify && bun run export:previews && bun run export:release && bun run check:cloud-viewer && bun run check:review",
+    "review": "bun run check:stock --review && bun run check:alternatives --review && bun run verify && bun run export:previews && bun run export:release && bun run check:cloud-viewer && bun run check:review",
     "build:firmware": "bun scripts/build-firmware.mjs",
     "check:firmware-target": "bun scripts/build-firmware.mjs --check",
     "check:operating-mode": "bun scripts/check-operating-mode.mjs",

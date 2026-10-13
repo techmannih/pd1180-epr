@@ -333,7 +333,7 @@ static void pollPower() {
   inputs.brake_preflight_ok = pd1180_brake_preflight_update(&brakePreflight,
     control.power_permit, control.mcu_run, adcValid[0] && adcValid[2] &&
     millis()-adcSampleAt[0]<=100u && millis()-adcSampleAt[2]<=100u,
-    adcSampleAt[2], vmotorMv, static_cast<uint32_t>(adcMv[2])*991u/51u);
+    millis(), adcSampleAt[0], adcSampleAt[2], vmotorMv, static_cast<uint32_t>(adcMv[2])*991u/51u);
   inputs.watchdog_healthy = true;
   inputs.driver_ready = motionQualified && tmc.configured &&
     tmcStatus.valid && !tmcStatus.fault && millis()-lastDriverPoll<=40u;

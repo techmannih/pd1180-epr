@@ -35,7 +35,7 @@ await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
 const lines = [
   '# Procurement snapshot',
   '',
-  'Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.',
+  'Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped public catalog snapshot, with the evidence source recorded per row, and is not reserved JLC assembly inventory.',
   '',
   `Last complete refresh: ${stock.checked_at}.`,
   '',

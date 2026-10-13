@@ -1,3 +1,4 @@
+import {inventoryEvidencePasses} from './jlc-stock.mjs'
 import {readFile,writeFile} from 'node:fs/promises'
 import {assemblyPolicyErrors} from './assembly-policy.mjs'
 const manifest=JSON.parse(await readFile('docs/design-manifest.json'))
@@ -13,7 +14,7 @@ for(const part of manifest.parts){
  const source=components.find(x=>x.name===part.name)
  if(!source?.supplier_part_numbers?.jlcpcb?.includes(part.lcsc))errors.push(`${part.name}: supplier code differs from manifest`)
  const entry=stock.parts.find(x=>x.lcsc===part.lcsc)
- if(entry?.status!=='available')errors.push(`${part.name}: no exact stocked part evidence`)
+ if(!inventoryEvidencePasses(entry,process.argv.includes('--review')))errors.push(`${part.name}: stock/identity evidence fails ${process.argv.includes('--review')?'review':'procurement'} gate`)
  if(entry?.package_match!==true)errors.push(`${part.name}: supplier package was not proven against ${part.footprint??'an expected package'}`)
  if(entry?.footprint?.trim().toLowerCase()!==part.footprint?.trim().toLowerCase())errors.push(`${part.name}: stock evidence package expectation is stale`)
  if(!json.some(x=>x.type==='pcb_component'&&x.source_component_id===source?.source_component_id))errors.push(`${part.name}: no PCB component`)
@@ -30,7 +31,7 @@ const sourceIds=new Set(components.map(component=>component.source_component_id)
 const positions=json.filter(x=>x.type==='pcb_component'&&sourceIds.has(x.source_component_id))
 errors.push(...assemblyPolicyErrors(json,standards,fittedNames))
 const layers=Object.fromEntries(standards.assembly.populated_layers.map(layer=>[layer,positions.filter(position=>position.layer===layer).length]))
-const report={checked_at:new Date().toISOString(),parts:manifest.parts.length,optional_unpopulated:standards.assembly.optional_unpopulated_parts,service_testpoints:serviceTestpoints.length,unique_supplier_parts:new Set(manifest.parts.map(p=>p.lcsc)).size,layers,errors}
+const report={procurement_held:stock.parts.some(p=>p.status!=='available'),shortages:stock.parts.filter(p=>p.status==='insufficient').map(p=>p.lcsc),checked_at:new Date().toISOString(),parts:manifest.parts.length,optional_unpopulated:standards.assembly.optional_unpopulated_parts,service_testpoints:serviceTestpoints.length,unique_supplier_parts:new Set(manifest.parts.map(p=>p.lcsc)).size,layers,errors}
 await writeFile('docs/assembly-check.json',JSON.stringify(report,null,2))
 console.log(JSON.stringify(report,null,2))
 if(errors.length)process.exitCode=1
