@@ -72,7 +72,6 @@ export const TPD4S480RUKR = (props: ChipProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":-1.5499079999999594,"y":-1.1001247999998895},{"x":-1.5499079999999594,"y":-1.549958800000013},{"x":-1.0500105999999505,"y":-1.549958800000013}]} />
 <silkscreencircle pcbX="-1.396619mm" pcbY="-1.904873mm" radius="0.100076mm" />
 <courtyardoutline outline={[{"x":-2.1499962000000323,"y":2.149996200000146},{"x":2.1499962000000323,"y":2.149996200000146},{"x":2.1499962000000323,"y":-2.1499962000000323},{"x":-2.1499962000000323,"y":-2.1499962000000323},{"x":-2.1499962000000323,"y":2.149996200000146}]} />
-<silkscreentext text="{NAME}" pcbX="0mm" pcbY="3.15mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C43131250.obj?uuid=71760926877f42c6b0f5954e672bfe89",

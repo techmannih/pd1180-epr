@@ -1,5 +1,5 @@
-// TPS26630 and TPS26631 share TI RGE-24 pinout and package (TI TPS2663 Rev. G, Figure 5-1).
-// Reuse the reviewed RGE package geometry/CAD; supplier identity below is TPS26630RGER.
+// TI TPS26630/31 share the RGE 24-pin package and pin map (SLVSE94G).
+// Retain the verified RGE footprint/package CAD; electrical identity is TPS26630.
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
@@ -79,7 +79,6 @@ export const TPS26630RGER = (props: ChipProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":-1.7001235999998698,"y":-2.1043392000001404},{"x":-2.1000973999998678,"y":-2.1043392000001404},{"x":-2.0999703999998474,"y":-1.7000220000001036}]} />
 <silkscreencircle pcbX="-1.905mm" pcbY="-2.540127mm" radius="0.127mm" />
 <courtyardoutline outline={[{"x":-2.5481792999999016,"y":2.5419562999999243},{"x":2.5481793000000152,"y":2.5419562999999243},{"x":2.5481793000000152,"y":-2.541956300000038},{"x":-2.5481792999999016,"y":-2.541956300000038},{"x":-2.5481792999999016,"y":2.5419562999999243}]} />
-<silkscreentext text="{NAME}" pcbX="0mm" pcbY="3.55mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C1850273.obj?uuid=3654f3e3e10f4db0800aff4bd5674e66",

@@ -15,7 +15,7 @@ int main(void) {
     .motor_power_good = true,
     .vmotor_in_range = true,
     .watchdog_healthy = true,
-    .configuration_verified = true, .sample_fresh = true, .driver_ready = true, .motion_wiring_verified = true,
+    .configuration_verified = true, .sample_fresh = true, .driver_ready = true, .brake_preflight_ok = true, .motion_wiring_verified = true,
     .temperature_valid = true, .temperature_deci_c = 250,
   };
   if (!pd1180_control_arm(&control, &inputs)) return 1;

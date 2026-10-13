@@ -2379,7 +2379,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": "RN73R1JTTD4991B25"
+      "mpn": "FRH0603B4221TS"
     },
     {
       "tag": "capacitor",
@@ -2652,7 +2652,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "footprint": "\u63d2\u4ef6,D12.5xL25mm"
+      "footprint": "插件,D12.5xL25mm"
     },
     {
       "tag": "EEUFR1J471",
@@ -2681,7 +2681,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "footprint": "\u63d2\u4ef6,D12.5xL25mm"
+      "footprint": "插件,D12.5xL25mm"
     },
     {
       "tag": "resistor",
@@ -4185,7 +4185,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "footprint": "\u63d2\u4ef6,P=3.96mm"
+      "footprint": "插件,P=3.96mm"
     },
     {
       "tag": "SN74LVC1G08DBVR",
@@ -4945,7 +4945,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": "RT0603BRD0716K2L"
+      "mpn": null
     },
     {
       "tag": "resistor",
@@ -5159,7 +5159,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": "RT0603BRD071K2L"
+      "mpn": "RT0603BRD071K21L"
     },
     {
       "tag": "resistor",
@@ -5436,7 +5436,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "footprint": "\u63d2\u4ef6,P=3.96mm"
+      "footprint": "插件,P=3.96mm"
     },
     {
       "tag": "STM32G0B1",
@@ -6697,7 +6697,7 @@
         "pin3": "GND",
         "pin4": "VMON_ADC",
         "pin5": "IIN_MON",
-        "pin6": "GND",
+        "pin6": "BRAKE_FB",
         "pin7": "GND",
         "pin8": "V3V3",
         "pin9": "PD_SDA",
@@ -7822,6 +7822,156 @@
       "rotation": 0,
       "layer": "top",
       "mpn": "CRCW060310K0FKEA"
+    },
+    {
+      "name": "R134",
+      "tag": "resistor",
+      "value": "4.7k",
+      "lcsc": "C6675858",
+      "mpn": "MR12X4701FTL",
+      "footprint": "1206",
+      "xy": [
+        -3.4,
+        -37.5
+      ],
+      "sch": [
+        -7,
+        2
+      ],
+      "rotation": 180,
+      "connections": {
+        "pin1": "BRAKE_RETURN",
+        "pin2": "BRAKE_FB_MID"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        4.05,
+        1.75
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "R135",
+      "tag": "resistor",
+      "value": "4.7k",
+      "lcsc": "C6675858",
+      "mpn": "MR12X4701FTL",
+      "footprint": "1206",
+      "xy": [
+        -3.4,
+        -40.5
+      ],
+      "sch": [
+        -2,
+        2
+      ],
+      "rotation": 0,
+      "connections": {
+        "pin1": "BRAKE_FB_MID",
+        "pin2": "BRAKE_FB"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        4.05,
+        1.75
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "R136",
+      "tag": "resistor",
+      "value": "510",
+      "lcsc": "C7468460",
+      "mpn": "FRQ0603F5100TS",
+      "footprint": "0603",
+      "xy": [
+        1,
+        -40.5
+      ],
+      "sch": [
+        3,
+        2
+      ],
+      "rotation": 90,
+      "connections": {
+        "pin1": "BRAKE_FB",
+        "pin2": "GND"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        0.9500000000000001,
+        2.450000000000003
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "C98",
+      "tag": "capacitor",
+      "value": "10nF",
+      "lcsc": "C57112",
+      "mpn": null,
+      "footprint": "0603",
+      "xy": [
+        2.5,
+        -37.5
+      ],
+      "sch": [
+        6,
+        2
+      ],
+      "rotation": 90,
+      "connections": {
+        "pin1": "BRAKE_FB",
+        "pin2": "GND"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        0.9500000000000002,
+        2.450000000000003
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "D20",
+      "tag": "SS10100_SMBF",
+      "value": null,
+      "lcsc": "C49242208",
+      "mpn": "SS10100",
+      "footprint": "SMBF",
+      "xy": [
+        15,
+        40
+      ],
+      "sch": [
+        -7,
+        -3
+      ],
+      "rotation": 180,
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "BRAKE_RETURN"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        6.4,
+        2.5999999999999943
+      ],
+      "noConnect": []
     }
   ],
   "optional_parts": [

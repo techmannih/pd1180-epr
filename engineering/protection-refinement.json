@@ -1,0 +1,112 @@
+{
+  "revision": "0.4.1-ECO protection refinement",
+  "base_commit": "4836266cb3d771da798b0559fe3ae5de7c5905b6",
+  "prior_pr_head": "0a8ce71065a9b2d5e641c038b02ca2fb99875a3f",
+  "scope": "Integrate main and the reviewed PR #2 safety improvements; retain all main copper, placement, four holes, D20, brake feedback and readable labels.",
+  "hardware_qualified": false,
+  "motor_operation_authorized": false,
+  "order_authorized": false,
+  "parts": {
+    "R25": {
+      "before": "4.22k C49196690",
+      "after": "4.99k C7293210",
+      "initial_tolerance_fraction": 0.001,
+      "tcr_ppm_per_c": 25
+    },
+    "R61": {
+      "before": "16k C860148",
+      "after": "16.2k C728583",
+      "initial_tolerance_fraction": 0.001,
+      "tcr_ppm_per_c": 25
+    },
+    "R66": {
+      "before": "1.21k C705737",
+      "after": "1.2k C136970",
+      "initial_tolerance_fraction": 0.001,
+      "tcr_ppm_per_c": 25
+    }
+  },
+  "current_profile": {
+    "global_scaler": 139,
+    "irun": 6,
+    "max_request_permille": 240,
+    "nominal_rms_a": 0.8271367552997603,
+    "all_three_qualification_flags": false,
+    "runtime_brake_integrity_monitoring": false
+  },
+  "input_budget": {
+    "formula_nominal_a": 3.6072144288577155,
+    "table_interpolated_nominal_a": 3.625250501002004,
+    "min_a": 3.251345740808972,
+    "max_a": 4.001781787357958,
+    "resistor_tolerance_with_temperature_fraction": 0.0034999999999999996,
+    "device_error_allocation_fraction": 0.1,
+    "upstream_input_allocation_a": 0.25,
+    "total_input_screen_a": 4.251781787357958,
+    "remaining_contract_margin_a": 0.7482182126420422,
+    "manufacturer_guaranteed_at_selected_resistance": false
+  },
+  "nominal_motor_input_budget_w": 173.14629258517033,
+  "thresholds": {
+    "input_uvlo": {
+      "min": 42.61912336633663,
+      "nominal": 44.4,
+      "max": 46.23272181818182
+    },
+    "input_ovp": {
+      "min": 50.9325569583707,
+      "nominal": 52.404,
+      "max": 53.89272675135474
+    },
+    "brake_on_screen": {
+      "min": 51.378846705081195,
+      "nominal": 52.04050000000001,
+      "max": 52.64373394120547
+    },
+    "brake_off_nominal": 51.393040000000006,
+    "brake_off_screen": {
+      "min": 50.73177802219108,
+      "nominal": 51.393040000000006,
+      "max": 52.14691389636242
+    },
+    "independent_reference_envelope_gap": -0.048568900330955955,
+    "brake_on_to_cutoff_shared_reference_minimum_gap": 0.10754540065474764,
+    "shared_reference_error_v": 0.003725,
+    "each_comparator_error_screen_v": 0.00840797902362465,
+    "coordination_note": "U13 and U14 share the same U12 output, verified in compiled connectivity. U12 error is common; comparator offset/CMRR/PSRR and resistor errors are independent. Independent absolute envelopes may overlap across different boards. Dynamic separation still requires measurement.",
+    "brake_off_above_high_source_and_noise_allocation": 0.031778022191073785,
+    "motor_cutoff_screen": {
+      "min": 52.59516504087451,
+      "nominal": 53.20754716981132,
+      "max": 53.825859349397014
+    },
+    "vsa_operating_max": 50,
+    "vs_operating_max": 55,
+    "note": "Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions."
+  },
+  "stock": {
+    "checked_at": "2026-10-13T03:03:27.396Z",
+    "counts": {
+      "available": 31,
+      "unverified-stock": 24,
+      "unverified-no-exact-match": 29
+    },
+    "ordering_approved": false
+  },
+  "evidence": {
+    "geometry": "engineering/protection-refinement-geometry.json",
+    "audit": "engineering/power-audit.json",
+    "simulation": "engineering/power-eco-simulation/results.json",
+    "delivery": "docs/delivery-check.json",
+    "verification": "docs/verification.json"
+  },
+  "open_gates": [
+    "Unknown exact-part inventory and reviewed alternatives",
+    "Three existing placement advisories",
+    "TI PD image and provider programming/readback",
+    "Measured source/cable/current/transient coordination",
+    "Runtime brake failure, resistor/heatsink/pulse qualification",
+    "Actual load/speed/stop duty and thermal soak",
+    "Secure mechanical mounting and physical harness qualification"
+  ]
+}

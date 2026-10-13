@@ -5,7 +5,6 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 import { circuitSourceHash } from './circuit-source-hash.mjs'
-import { inputCurrentScreen } from './power-audit.mjs'
 
 test('native evidence ignores only the CLI filesystem cache key', () => {
   const circuit = [{ type: 'pcb_trace', route: [{ x: 1, y: 2, width: 0.15 }] },
@@ -213,17 +212,16 @@ test('MCU retains USB attach sense, data and SWD while removed interface pins ar
   expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(48)
 })
 test('analytical limits have margin below the 5-A USB input contract',()=>{
-  const limit=inputCurrentScreen(comp('R25').resistance,.001+25e-6*100,.25)
-  expect(comp('U6').manufacturer_part_number).toBe('TPS26630RGER')
-  expect(limit.formula_nominal_a).toBeCloseTo(3.6072,3)
-  expect(limit.total_input_screen_a).toBeLessThan(5)
+  const limit=18000/comp('R25').resistance
+  expect(limit).toBeCloseTo(3.6072,3)
+  expect((18090/comp('R25').resistance)*1.10/(1-.0035)+.25).toBeLessThan(5)
   const brakeTop=comp('R60').resistance+comp('R61').resistance
   const brakeOn=2.5*(1+brakeTop/comp('R62').resistance+brakeTop/comp('R63').resistance)
   const brakeOff=brakeOn-3.3*brakeTop/comp('R63').resistance
   expect(brakeOn).toBeGreaterThan(50.4)
   expect(brakeOn).toBeLessThan(54)
   expect(brakeOff).toBeLessThan(brakeOn)
-  expect(5.5**2*.033).toBeLessThan(3) // dissipation per phase shunt
+  expect(3.8**2*.033).toBeLessThan(3) // dissipation per phase shunt
 })
 
 test('LM66100 status interlock keeps the dual 3.3-V ORing output continuous',()=>{

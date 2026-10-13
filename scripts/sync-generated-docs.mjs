@@ -58,7 +58,7 @@ lines.push(
   '',
   '## External system items',
   '',
-  'See [external-system.md](external-system.md) for required motor/EPR/J2 equipment, exact identified parts, quantities, endpoints and unresolved supplier choices. Brake equipment is conditional on the approved load/stop envelope; 300 W is not a confirmed requirement. Encoder/magnet parts remain optional and DNP. Local control uses no external command loom. Shared programming/test services are separate from per-motor purchases.',
+  'The motor, shaft magnet, 48 V EPR source, 5 A EPR cable, mating harness and braking resistor/heatsink are separate system items. The external braking resistor is load-dependent and remains a system-level sizing and procurement gate.',
   '',
 )
 await writeFile(new URL('docs/procurement.md', root), lines.join('\n'))

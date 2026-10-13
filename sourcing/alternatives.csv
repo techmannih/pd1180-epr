@@ -1,5 +1,5 @@
 Primary LCSC,Alternative LCSC,MPN,Package,Stock,Status,Reason
-C1850273,C1850281,TPS26631RGET,VQFN-24(4x4),23,available,"TPS26631RGET: same RGE footprint, alternate tape quantity; verify ordering suffix and assembly availability."
+C1850276,C2864391,TPS26630RGET,,,unverified,TPS26630RGET retains the 1x active-limit/latch-off variant and RGE footprint; alternate tape quantity. Exact stock/package refresh required. TPS26631 must not be substituted because it permits 2x overload.
 C114200,C2876530,CSD19534Q5AT,VSONP-8(5x6),69,available,"CSD19534Q5AT: same MOSFET/package, alternate tape quantity."
 C2862245,,,,,no-drop-in-selected,"No verified drop-in replacement is approved for the TPS26750 POWER_PATH_EN buffer. CSD17484F4 is the exact TI EVM device; any substitute needs a guaranteed low RDS(on) at 2.5-3.6 V, the same PicoStar-3 pinout/land pattern, leakage review and a PCB recheck."
 C105188,C83561,TLV3201AIDBVT,SOT-23-5,43,available,"TLV3201AIDBVT: same DBV package, alternate reel quantity."
@@ -18,3 +18,7 @@ C2874116,,,,,no-drop-in-selected,NH-B2020RGBA-HF uses common anode pin 3 and cat
 C391032,,,,,no-drop-in-selected,"FUET-9650B-3V is an active 2–5 V SMT buzzer. A passive transducer would not sound with the static enable firmware; any substitute needs footprint, polarity, current and acoustic review. No drop-in alternative selected."
 C20917,,,,,no-drop-in-selected,AO3400A requires reviewed SOT-23 G/S/D order and on-resistance specified at 2.5 V gate drive. Threshold voltage alone is insufficient to approve a substitute. No drop-in alternative selected.
 C965799,,,,,no-drop-in-selected,"XL-1608SURC-06 uses the imported 0603 cathode/anode numbering. A replacement needs polarity, footprint and low-current visibility review; no drop-in alternative selected."
+C7293210,,,,,no-drop-in-selected,"R25: reviewed 4.99 kohm 0603, <=0.1% initial tolerance, <=25 ppm/C, >=100 mW. Recalculate the conservative current envelope; no automatic substitution."
+C136970,,,,,no-drop-in-selected,"R66: reviewed 1.2 kohm 0603, <=0.1%, <=25 ppm/C. Recalculate same-board brake/OVP coordination; no automatic substitution."
+C49242208,,,,,no-drop-in-selected,"D20: replacement must retain cathode pin 1/anode pin 2 and the verified SMBF land pattern, >=100 V / 10 A ratings, forward and hot-leakage limits. A 2 mA hot leakage bound is part of startup continuity detection; no automatic substitution."
+C728583,,,,,no-drop-in-selected,"R61: reviewed 16.2 kohm 0603, <=0.1%, <=25 ppm/C. Both brake-on and release margins must be recalculated; no automatic substitution."

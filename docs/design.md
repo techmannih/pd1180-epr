@@ -4,11 +4,11 @@
 
 ### Scope
 
-PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR is a 48 V EPR single-axis controller with a 5.5 A RMS board design target (not a qualified setting for the ordered motor), an optional DNP magnetic encoder footprint and local START/STOP control. Its 85.9 mm square outline, four Ø4.2 mm mounting holes, shaft-axis location and connector placement are explicit in the PCB model. The selected 25 mm bulk capacitors require matching enclosure clearance.
+PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR is a 48 V EPR single-axis controller with a 3.8 A RMS conservative ceiling (not a qualified setting for the ordered motor), an optional DNP magnetic encoder footprint and serial/control interface hardware. Its 85.9 mm square outline, four M4 mounting holes, shaft-axis location and connector placement are explicit in the PCB model. The selected 25 mm bulk capacitors require matching enclosure clearance.
 
 ### Power sequence
 
-1. J1 VBUS initially supplies 5 V. U5, LMR36510, starts from this and provides V3V3_PD before any motor power is enabled. U23 passes that rail to board V3V3; U26/U27 combine it with DATA-derived V3V3_USB into V3V3_MCU. DATA USB powers the MCU only; flash, encoder and telemetry sensors require board V3V3. LM5164 was rejected for this position because its 6 V minimum input cannot bootstrap from default USB 5 V. J10 carries USB 2.0 D+/D− and independently powers setup/diagnostics through U28/U25.
+1. J1 VBUS initially supplies 5 V. U5, LMR36510, starts from this and provides V3V3_PD before any motor power is enabled. U23 passes that rail to board V3V3; U26/U27 combine it with DATA-derived V3V3_USB into V3V3_MCU. DATA USB powers the MCU only; industrial interfaces, flash, encoder and telemetry sensors require board V3V3. LM5164 was rejected for this position because its 6 V minimum input cannot bootstrap from default USB 5 V. J10 carries USB 2.0 D+/D− and independently powers setup/diagnostics through U28/U25.
 2. U1, TPD4S480, protects J1's CC and SBU contacts. J1 data pins and the protected SBU outputs are unused. C2 is the required 1 µF local VPWR/LDO_3V3 bypass. U1's VBUS divider feeds U2's low-voltage VBUS sense pins. Q1 bypasses that divider in SPR with its source toward VBUS_LV and drain toward raw VBUS.
 3. U2, TPS26750, boots in SafeMode: ADCIN1 to LDO_3V3, ADCIN2 to ground, I2Ct address 0x20. The 64 KiB EEPROM is at 0x50 on the independent I2Cc bus. An appropriate TI configuration image is required; a blank EEPROM does not negotiate 48 V.
 4. PD POWER_PATH_EN is not a logic-level output. Q2/Q3 are the CSD17484F4 dual-NMOS non-inverting buffer used by the TPS26750 EVM: R9 and R12 are 0 Ω gate links, while R11 and R13 are 100 kΩ pull-ups to U2's own PD_3V3/LDO_3V3 rail. U4 then combines PD_PATH_OK with the MCU power permit. Firmware may assert that permit only after an active 48 V / 5 A EPR contract and valid fault status. Loss of the contract must remove the permit immediately.
@@ -22,41 +22,45 @@ PP5V is not connected in this sink-only implementation. Power-source operation, 
 | Item | Nominal calculation | Implication |
 |---|---|---|
 | Logic rail | 1 V × (1 + 100 kΩ / 43.2 kΩ) | 3.315 V before ideal-diode loss; check load drop, reference and tolerance |
-| eFuse current limit | 18,000 / 4,020 Ω | 4.478 A nominal; approximately 215 W motor input at 48 V |
+| eFuse current limit | 18,000 / 4,990 Ω | 3.607 A nominal; approximately 173 W motor input at 48 V |
 | Input UVLO | 1.2 V × (1 + 360 kΩ / 10 kΩ) | 44.4 V nominal; prevents motor operation on SPR or 36 V EPR |
 | Input OVP | 1.2 V × (1 + 426.7 kΩ / 10 kΩ) | 52.40 V nominal; calculate full comparator/resistor tolerances |
 | Motor ADC scale | (360 kΩ + 20 kΩ) / 20 kΩ | 19:1; 48 V gives 2.526 V |
 | Current monitor | approximately 27.9 µA/A × 20 kΩ | approximately 0.558 V/A; calibrate using the U6 datasheet limits |
-| Phase shunt | 5.5² × 0.033 Ω | approximately 1.0 W per shunt; selected 3 W parts need copper/thermal verification |
+| Phase shunt | 3.8² × 0.033 Ω | approximately 0.477 W per shunt; selected 3 W parts need copper/thermal verification |
 | Bulk energy, 48→53 V | ½ × 940 µF × (53²−48²) | only 0.237 J; bulk capacitors cannot absorb sustained regeneration |
 | Brake switch on | 2.5 × (1 + 196.2 kΩ/10 kΩ + 196.2 kΩ/1 MΩ) | approximately 52.04 V |
 | Brake switch off | above − 3.3 × 196.2 kΩ/1 MΩ | approximately 51.39 V; nominal 0.647 V hysteresis |
 | Motor OVP shutdown | 2.5 × (1 + 430 kΩ/21.2 kΩ) | approximately 53.21 V; independent of MCU software |
-| Candidate 10 Ω brake load | 53² / 10 Ω | approximately 281 W while on, 5.3 A; external resistor/heatsink/pulse-energy rating required |
+| Initial brake load | 53² / 10 Ω | approximately 281 W while on, 5.3 A; external resistor/heatsink/pulse-energy rating required |
 
 The resistor tolerances, comparator offset, reference error, gate delay, wiring inductance, maximum regenerated power and maximum bus overshoot must be evaluated together. The 60 V motor-driver rating is not a usable transient clamp setting. A generic 51 V TVS can clamp far above 60 V and is not an adequate motor-bus braking strategy.
 
 ### Motion and shutdown
 
-U7 drives eight 100 V external MOSFETs and two 33 mΩ phase shunts. Four 470 nF bootstrap capacitors, the charge pump, local 12 V/5 V bypasses and the VCC filter are represented explicitly. Current scaling, gate drive, dead time and chopper settings must be determined from the actual motor and validated waveforms; default register values are not an approved 5.5 A setup.
+U7 drives eight 100 V external MOSFETs and two 33 mΩ phase shunts. Four 470 nF bootstrap capacitors, the charge pump, local 12 V/5 V bypasses and the VCC filter are represented explicitly. Current scaling, gate drive, dead time and chopper settings must be determined from the actual motor and validated waveforms; default register values are not an approved motor setup.
 
-STM32 commands the internal SPI ramp with SD_MODE held low. SW2 is a debounced START/STOP input on PC6; SW1 resets the MCU. U7 pins 17, 18, 23, 24 and 25 are grounded for this mode. The supplied commissioning image remains locked until PD and motor qualification are recorded.
+U8/U9 select native left/right endstop signals in ramp mode or external Step/Dir signals in step mode. The transistor input stages invert their external signals. Open inputs read high; firmware and TMC switch polarity must account for this. The maximum Step/Dir rate has not been qualified.
 
-DRV_EN_N has a pull-up and a Q14 sink gated by RUN_SAFE. The retained power-good, voltage, MCU/watchdog and U29/U33 temperature conditions inhibit the bridge on faults. This is a functional inhibit, not certified safe torque off. The motor-side buck sustains the control logic while the motor bus is charged; disable timing and brake operation need bench validation.
+DRV_EN_N has a pull-up. Its sink path requires two series transistors: MCU_RUN with motor power-good and voltage-good, plus the externally asserted hardware-enable input and U29/U33 temperature permit. Open or grounded hardware enable disables the bridge. This is a functional enable, not a certified safe-torque-off circuit. The motor-side buck sustains this logic while motor capacitors are charged; power-loss disable timing and comparator operation still need bench validation.
 
-The AS5047P and its two bypass capacitors are optional bottom-side DNP footprints at the motor axis. All populated parts remain top-side. A compatible rear magnet interface, gap and field orientation are not yet qualified. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs remain on labelled service pads; U7 pins 23/24/25 are grounded for the selected internal-ramp mode.
+The AS5047P and its two bypass capacitors are optional bottom-side DNP footprints at the motor axis. All populated parts remain top-side. A compatible rear magnet interface, gap and field orientation are not yet qualified. Its SPI port shares the bus with TMC5160 and flash; each device has a separate CS and all unselected devices must release MISO. Its ABI outputs remain on labelled service pads; U7 pins23/24 are grounded and pin25 is NC for the selected STEP/DIR mode.
 
 ### Interfaces
 
-J1 is the EPR motor-power input. J10 is the separate USB setup/diagnostics port; D15 provides USB ESD protection and R71/R72 are 22 Ω series resistors. R107/R108 divide J10 VBUS onto PB0/ADC_IN8: 1 MΩ over 47 kΩ gives approximately 0.224 V at 5 V. Firmware enables USB only with valid DATA VBUS. USB reference continuity is checked separately from any fabricator impedance qualification.
+CAN uses TCAN332 and RS485 uses MAX3485E. Supply bypass and bus ESD parts are included. Fit 120 Ω termination externally only at the two physical ends of each bus; establish RS485 bias at the system level. These are non-isolated interfaces.
 
-J2 connects the two motor windings. J3 connects an external brake resistor if required by the qualified operating envelope. Its return is switched by Q16, not permanently grounded. See the [connection schedule](connector-harnesses.md) for numbered endpoints and external equipment.
+RS232 uses MAX3232 at 3.3 V, with its four charge-pump capacitors. J10 USB 2.0 D+/D− has USBLC6-4SC6 shunt ESD protection and MCU-side 22 Ω series resistors. R107/R108 provide a divided and filtered VBUS attach sense on PB0/ADC_IN8: 1 MΩ over 47 kΩ gives about 0.224 V at J10's nominal 5 V. J10 VBUS is independent from the EPR rail. Firmware must keep the USB peripheral detached unless `USB_VBUS_SENSE` indicates present VBUS. Route USB as a 90 Ω differential pair with an uninterrupted reference plane; no impedance claim is made for the current placement.
+
+The former J7 industrial I/O and STEP/DIR command circuits were removed in the approved control ECO. SW2 requests the internal SPI ramp after qualification, and SW1 resets the MCU. No external command or accessory-power output is provided by the current board.
+
+The logic rail is supplied from reverse-blocked USB-derived and motor-derived regulators. TMCL command execution, CANopen CiA profiles, standalone programs and motor tuning are firmware work outside the circuit netlist.
 
 ### Layout release requirements
 
-The high-current nets use nominal 2.4 mm copper corridors and parallel 0.6/0.3 mm vias. The 1 oz IPC-2221 external-layer screening estimate is 6.12 A at a 20 °C rise. Dense package exits, clipped zone geometry, current sharing between layers and enclosure temperature still require powered thermal validation. Verify the bridge loops, Kelvin shunt returns, charge-pump/bootstrap paths, QFN thermal stitching and eFuse copper against the manufacturers' layout guidance.
+The r0.4 ECO route reinforces the high-current nets with nominal 2.4 mm copper corridors and parallel 0.6/0.3 mm vias. The 1 oz IPC-2221 external-layer screening estimate is 6.12 A at a 20 °C rise. Dense package exits, clipped zone geometry, current sharing between layers and enclosure temperature still require powered thermal validation. Verify the bridge loops, Kelvin shunt returns, charge-pump/bootstrap paths, QFN thermal stitching and eFuse copper against the manufacturers' layout guidance.
 
-The imported CSD19534 footprint contains four vias inside its drain pad. They are explicitly connected to the drain and the board declares via-in-pad fabrication. Specify filled-and-capped vias; ordinary open holes can wick solder and invalidate assembly assumptions.
+The imported CSD19534 footprint contains four vias inside its drain pad. They are now explicitly connected to the drain and the board declares via-in-pad fabrication. Specify filled-and-capped vias; ordinary open holes can wick solder and invalidate assembly assumptions.
 
 ### Primary power-part ratings
 
@@ -64,12 +68,12 @@ The [GCT USB4105 specification](https://gct.co/files/specs/usb4105-spec.pdf) rat
 
 ### Datasheet-based motor assumptions
 
-The ordered [STEPPERONLINE 34HS31-6004S1](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) specifies 6 A/phase, 4.8 Nm holding torque, 1.8-degree steps, 0.48 Ω phase resistance (±10%) and 3.5 mH phase inductance (±20%). The manufacturer rating is not an approved TMC5160 RMS setting. The board's 5.5 A RMS design screen is retained without enabling motion; current waveform, hold current and thermal limits need qualification for this motor.
+The ordered [STEPPERONLINE 34HS31-6004S1](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) specifies 6 A/phase, 4.8 Nm holding torque, 1.8-degree steps, 0.48 Ω phase resistance (±10%) and 3.5 mH phase inductance (±20%). The manufacturer rating is not an approved TMC5160 RMS setting. The ceiling is reduced to 3.8 A RMS (GLOBALSCALER=139); the locked initial profile is approximately 0.827 A RMS at 10 rpm unloaded. Current waveform, hold current and thermal limits still need qualification. See power-validation.md for the nine behavioral screens and remaining unsafe load cases.
 
-The manufacturer drawing specifies rotor inertia of **1400 g·cm² (0.00014 kg·m²)**. The 940 µF bulk bank absorbs only 0.237 J between 48 V and 53 V. Actual speed, attached-load inertia, gearing, gravity and stopping duty determine regenerated energy. Holding torque alone does not size a brake. The **10 Ω / 300 W resistor is a candidate only**, with no final part selected; see [brake decision](brake-integration.md), [motor data](motor-data.json) and [energy review](j3-energy-review.json).
+Rotor inertia is not specified in the cited motor sheet. The previous QSH8618 inertia and kinetic-energy examples are withdrawn; the power audit records unknown energy as null, not zero. The 940 µF bulk bank absorbs only 0.237 J between 48 V and 53 V. Rotor and attached-load inertia, gearing, gravity and stopping time determine braking energy; speed and brake duty cannot be inferred from holding torque. The 10 Ω / 300 W external brake remains a starting specification. See `motor-data.json` for sourced inputs.
 
-Independent USB logic power, board-temperature inhibition and phase-current diagnostics are detailed in [USB and telemetry architecture](usb-pd-architecture.md), including their unmeasured limits.
+The reference-board ECO adds independent USB logic power, board-temperature inhibition and phase-current diagnostics. See [USB and telemetry architecture](usb-pd-architecture.md) for the exact power paths, thresholds, transfer functions and unmeasured USB/thermal limits.
 
-### Driver supply and protection
+### Driver supply and protection ECO
 
-U34 regulates VMOTOR to 12 V for U7 VSA/12VOUT and U15. U12 is a REF3425 series reference; the brake and input/motor OVP dividers use reviewed precision resistors. See [power validation](power-validation.md) for tolerance envelopes, order holds and the unperformed bench test matrix. Current CAD results are in [verification](../verification.md); powered qualification and the order hold remain open.
+U34 now regulates VMOTOR to 12 V for U7 VSA/12VOUT and U15. U12 is a REF3425 series reference; the brake and input/motor OVP dividers use reviewed precision resistors. See [power validation](power-validation.md) for tolerance envelopes, order holds and the unperformed bench test matrix. The regenerated ECO has fresh native routing and manufacturing checks; powered system qualification and the order hold remain open.

@@ -2,8 +2,9 @@
 
 /* ADI Rev. 1.18: SPI velocity ramp, SD_MODE=0, 256 microsteps.
  * TOFF=0 keeps the chopper disabled throughout configuration. The waveform
- * parameters are a tuning starting point, not a qualified 5.5 A setup.
- * GLOBALSCALER=198 and IRUN=31 target approximately 5.5 A RMS at 33 mOhm. */
+ * parameters are a tuning starting point, not a qualified motor setup.
+ * GLOBALSCALER=139 and IRUN=31 cap the nominal setpoint at 3.78 A RMS.
+ * The 6 A/phase ordered motor must not receive a copied 5.5 A RMS setting. */
 const tmc5160_register_t pd1180_tmc5160_boot_config[] = {
   {0x27u, 0u}, /* VMAX=0 before any other configuration; no startup motion. */
   {0x6Cu, PD1180_TMC_RAMP_CHOPCONF & ~15u},

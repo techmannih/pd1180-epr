@@ -1,0 +1,150 @@
+{
+  "revision": "0.4.1-ECO",
+  "base_commit": "16d1347fc9991399f7ff5ea089966af2876fc3ad",
+  "authorization": "2026-10-13 user requested implementation, commit/push as techmannih and reference-based initial limits.",
+  "status": "power-thermal-eco-order-held",
+  "hardware_qualified": false,
+  "changes": {
+    "U6": {
+      "before": "TPS26631RGER / C1850273",
+      "after": "TPS26630RGER / C1850276",
+      "mode": "Pin 11 left open: 1x active limiting then latch-off; eliminates 2x overload interval."
+    },
+    "R25": {
+      "before": "4.02 kohm",
+      "after": "4.22 kohm / C49196690 / 0.1% / 100 ppm/C",
+      "nominal_limit_a": 4.265402843601896,
+      "screened_max_limit_a": 4.6378169341428706
+    },
+    "R66": {
+      "before": "1 kohm",
+      "after": "1.21 kohm / C705737 / 0.1% / 25 ppm/C",
+      "cutoff_nominal_v": 53.183639792550686
+    },
+    "D20": {
+      "part": "GOODWORK SS10100 SMBF / C49242208",
+      "rating": "100 V / 10 A",
+      "cathode_pin_1": "VMOTOR",
+      "anode_pin_2": "BRAKE_RETURN",
+      "pcb_trace_width_mm": 2.4,
+      "purpose": "Local recirculation path for brake cable inductance; actual switching waveforms remain unmeasured."
+    },
+    "feedback": {
+      "R134_R135": "4.7 kohm 1206 250 mW C6675858 each",
+      "R136": "510 ohm 0603 C7468460",
+      "C98": "10 nF 0603 C57112",
+      "adc": "U30 AIN2 pin 6 changed from GND to BRAKE_FB",
+      "ratio": 19.431372549019606,
+      "scope": "Startup continuity only; not runtime cable/current or heatsink monitoring."
+    },
+    "firmware": {
+      "current_ceiling_rms_a": 3.8,
+      "global_scaler": 139,
+      "initial_irun": 6,
+      "initial_current_rms_a": 0.8271367553,
+      "brake_preflight_distinct_samples": 3,
+      "freshness_ms": 100,
+      "bus_window_mv": [
+        44000,
+        50400
+      ],
+      "return_to_bus_ratio": [
+        0.9,
+        1.1
+      ],
+      "motionWiringVerified": false,
+      "pdImageVerified": false,
+      "brakeHardwareVerified": false
+    }
+  },
+  "added_components": [
+    "D20",
+    "R134",
+    "R135",
+    "R136",
+    "C98"
+  ],
+  "removed_components": [],
+  "moved_components": [
+    "TP_VMOTOR",
+    "TP_PWR_GND"
+  ],
+  "native_label_changes": [
+    "VM and GND follow moved power probes",
+    "J2 MOTOR moved clear of added feedback passives"
+  ],
+  "mounting_holes": "All four existing holes retained unchanged; no unsupported mounting fixture added.",
+  "reference_setup": {
+    "module": {
+      "url": "https://www.analog.com/en/products/pd-1180.html",
+      "use": "24/48 V integrated-drive architecture reference only; its 5.5 A/7 Nm rating is not transferred."
+    },
+    "source_candidate": {
+      "model": "Framework Power Adapter 240 W",
+      "url": "https://frame.work/products/power-adapter-240w",
+      "required_contract": "48 V / 5 A EPR with rated cable",
+      "purchased": false,
+      "qualified": false
+    },
+    "motor": "Ordered STEPPERONLINE 34HS31-6004S1, not the 7 Nm ADI module motor",
+    "initial_test": {
+      "attached_load": "none",
+      "max_rpm": 10,
+      "acceleration_rpm_per_s": 10,
+      "deceleration_rpm_per_s": 10,
+      "ambient_c": [
+        20,
+        25
+      ],
+      "brake_required": true
+    },
+    "brake_candidate": {
+      "model": "Vishay LPS0300H10R0GB",
+      "ohms": 10,
+      "continuous_nameplate_w": 300,
+      "case_limit_c_at_300w": 85,
+      "combined_interface_heatsink_c_per_w_at_281w_50c": 0.1246,
+      "qualified": false,
+      "final_heatsink_model": null
+    }
+  },
+  "evidence": {
+    "calculations": "engineering/power-audit.json",
+    "behavioral_simulation": "engineering/power-eco-simulation/results.json",
+    "geometry_scope": "engineering/power-eco-geometry.json",
+    "brake_sense_branch": "docs/brake-sense-copper-check.json"
+  },
+  "stock": {
+    "checked_at": "2026-10-13T01:37:42.379Z",
+    "unique_parts": 84,
+    "fitted_parts": 252,
+    "status_counts": {
+      "available": 31,
+      "insufficient": 24,
+      "unverified-no-exact-match": 29
+    },
+    "ordering_approved": false,
+    "note": "Missing/null catalog stock remains unverified; the legacy checker labels null stock insufficient. Inventory is not reserved."
+  },
+  "remaining_gates": [
+    "Exact BOM availability and reviewed alternatives",
+    "TI full-flash image and readback",
+    "Input transient, source/cable contract, eFuse SOA and actual upstream logic draw",
+    "Actual motor peak/RMS current, switching loss, capacitor ripple and full thermal soak",
+    "Brake diode/cable Q16 VDS transients and repeated brake heating",
+    "Actual load, gravity, maximum speed, fastest stop and duty cycle",
+    "Runtime brake disconnection remains unmonitored; startup preflight alone is not fault tolerance",
+    "Secure mechanical mounting and motor encoder qualification"
+  ],
+  "validation": {
+    "native_DRC_violations": 0,
+    "native_unconnected": 0,
+    "schematic_parity": 0,
+    "schematic_ERC_violations": 0,
+    "source_schematic_checks": 173,
+    "schematic_sheets": 24,
+    "new_via_pad_overlaps": 0,
+    "powered_tests": false
+  },
+  "follow_up": "Historical base ECO record. Current R25/R61/R66 values, request guard and refined screens are in engineering/protection-refinement.json; its geometry proof preserves this ECO."
+}

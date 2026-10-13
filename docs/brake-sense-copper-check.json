@@ -1,0 +1,53 @@
+{
+  "board_sha256": "6d44ea79349c7d87ef28b3f0e69f430855dacf07854e1c2677ba255687bcdd60",
+  "checker_sha256": "984e33cb5b9f78bc5a43cf92e25c6cd13fa1c654b121f55791fde09bb7b582b3",
+  "segment_uuids": [
+    "0833c98d-f06b-4a70-84ff-20f150095ce5",
+    "3ee2745d-b8a6-4152-aebc-d0af04e5512a",
+    "40d83ab6-7034-49f3-a834-63feb6346cf3",
+    "643954e5-a890-469a-aac5-6230e0e884dd",
+    "84a480b0-09b3-4dee-afae-e073c6ec9b1e",
+    "88606527-fc92-443b-9ed9-c5d155441c63",
+    "91d9855c-4734-4b16-b03d-c1da608f7bb7",
+    "99bdcfdb-ff7c-4472-9ef3-180f29173ef4",
+    "afcba997-3a6f-4f37-9051-ad71d0bcb3a9",
+    "b9b1c8ec-3f4a-4079-8c24-f4b262d46537",
+    "bd0b56cb-0365-4e72-adbc-19b71c1eabde",
+    "bdf5eef7-4152-4fd3-b724-1c639f4b15f3",
+    "cb7045ed-3f29-4546-87b7-f7393149fa75",
+    "dcae5bf4-4c3c-4fb3-b084-8c74bff0e03e",
+    "ecfb6f95-d461-46a4-8584-a8f587a21225",
+    "eff2638a-41a0-4708-9a21-a035559464b7"
+  ],
+  "removed_vias": 3,
+  "length_mm": 79.65373013515705,
+  "negative_drc_unconnected": [
+    {
+      "description": "Missing connection between items",
+      "items": [
+        {
+          "description": "Pad 1 [BRAKE_RETURN] of R134 on F.Cu",
+          "pos": {
+            "x": 98.0625,
+            "y": 137.5
+          },
+          "uuid": "3b77ddb9-9934-42f2-b1bc-e12c6b6b19c4"
+        },
+        {
+          "description": "Zone [BRAKE_RETURN] on F.Cu, priority 971",
+          "pos": {
+            "x": 106.302943,
+            "y": 66.349999
+          },
+          "uuid": "93788d14-1f60-4876-82df-8d39261474d2"
+        }
+      ],
+      "severity": "error",
+      "type": "unconnected_items"
+    }
+  ],
+  "negative_drc_violations": [],
+  "maximum_divider_current_a": 0.005663213822360428,
+  "reason": "Only the 9.91 kohm startup divider is disconnected by removing the thin branch; all brake power terminals remain connected. The branch carries <5.7 mA at 55 V, not the brake load current.",
+  "errors": []
+}

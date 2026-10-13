@@ -1,20 +1,20 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
-  "revision": "0.4.0-ECO",
-  "status": "onboard-control-eco-order-held",
+  "revision": "0.4.1-ECO",
+  "status": "power-thermal-eco-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
     "input": "USB-C PD 3.1 EPR 48 V / 5 A contract",
-    "motor_bus_current_limit_nominal_a": 4.477612,
-    "motor_phase_current_target_rms_a": 5.5,
+    "motor_bus_current_limit_nominal_a": 4.265402843601896,
+    "motor_phase_current_target_rms_a": 3.8,
     "board_size_mm": [
       85.9,
       85.9
     ],
     "assembly_side": "top-only",
     "ordered_motor": "34HS31-6004S1",
-    "motor_current_note": "5.5 A RMS remains the existing board design screen only, not a qualified setting for this motor; motion firmware remains locked."
+    "motor_current_note": "Conservative 3.8 A RMS ceiling, 3.781 A programmed nominal; locked initial 0.827 A / 10 rpm unloaded profile. No powered motor setting qualified."
   },
   "prototype_order_gates": {
     "kicad_drc_zero_violations": true,
@@ -42,9 +42,10 @@
     "temperature_threshold_and_phase_telemetry_calibrated": false,
     "ordered_motor_mount_and_encoder_qualified": false,
     "pd_programming_fixture_and_readback_qualified": false,
-    "indicators_alarm_and_supply_budget_qualified": false
+    "indicators_alarm_and_supply_budget_qualified": false,
+    "brake_preflight_clamp_and_fault_validation": false
   },
-  "architecture_review": "engineering/onboard-control-eco.json",
+  "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
     "Ordered motor is 34HS31-6004S1; driver current convention, external load inertia, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
     "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
@@ -55,7 +56,8 @@
     "Four existing holes retained without new hardware. Rear thread/depth, secure mounting and cable strain relief remain unverified. The 3D view is alignment-only.",
     "TE 320559 length 32.13 mm is verified; splice outer diameter and actual crimp/pull/insulation fit are unverified.",
     "Local START/STOP and SPI-ramp firmware build, but qualification flags remain false. The TI image, powered operation, stop behavior and delivered running system remain unqualified.",
-    "Current 247-part BOM sourcing at 2026-10-12T04:36:23.637Z: {'available': 22, 'insufficient': 25, 'unverified-no-exact-match': 34}. Missing/null stock is unverified, not proof of zero inventory. See engineering/onboard-control-stock.json; ordering is blocked and inventory is not reserved."
+    "Startup brake continuity is implemented but does not prove Q16/heatsink or detect runtime cable disconnection. All three firmware qualification flags remain false.",
+    "Current 252-part / 84-identity BOM at 2026-10-13T01:37:42.379Z: {'available': 31, 'insufficient': 24, 'unverified-no-exact-match': 29}. Null stock is unverified. R66 exact stock is unresolved; ordering remains held."
   ],
-  "current_stock_evidence": "engineering/onboard-control-stock.json"
+  "current_stock_evidence": "docs/stock-report.json"
 }

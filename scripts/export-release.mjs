@@ -69,7 +69,6 @@ const copies = [
   ['docs/external-system.md', 'external-system.md'],
   ['docs/external-parts.json', 'external-parts.json'],
   ['docs/brake-integration.md', 'brake-integration.md'],
-  ['docs/j3-energy-review.json', 'j3-energy-review.json'],
   ['sourcing/external-items.csv', 'external-items.csv'],
   ['docs/motor-assembly.md', 'motor-assembly.md'],
   ['engineering/motor-harness.json', 'motor-harness.json'],
@@ -123,7 +122,6 @@ async function zipDirectory(directory, destination) {
   const zip = new JSZip()
   async function add(path, prefix = '') {
     for (const entry of await readdir(path, { withFileTypes: true })) {
-      // Editor session state is not a manufacturing/review artifact.
       if (entry.name.endsWith('.kicad_prl') || entry.name.endsWith('.lck')) continue
       const full = join(path, entry.name)
       if (entry.isDirectory()) await add(full, `${prefix}${entry.name}/`)
@@ -148,36 +146,39 @@ await Promise.all([
   zipFile(motorAssemblyGlb, '34hs31-6004s1-assembly-proposal.glb', join(release, '34hs31-6004s1-assembly-proposal.zip')),
 ])
 
-await writeFile(join(release, 'README.md'), `# PD1180-EPR — revision 0.4 review package
+await writeFile(join(release, 'README.md'), `# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-${releaseStatus.fabrication_orderable ? 'Prototype CAD gates passed; system qualification remains open.' : '**Engineering review only — order hold.** The current package is not authorization to fabricate or a ready-to-run delivery.'}
+## ${releaseStatus.revision} review handoff — powered validation pending
 
-For the STEPPERONLINE 34HS31-6004S1 motor. Local SW2 START/STOP commands the STM32/TMC5160 internal ramp; SW1 is RESET. The supplied commissioning firmware supports USB diagnostics but remains motion-locked. The TI PD full-flash image and powered motor qualification are pending.
+${releaseStatus.fabrication_orderable ? 'Prototype CAD gates passed; system validation remains open.' : '**ORDER HOLD.** These are engineering review files. Powered USB, current/thermal and system qualification remain open; do not submit a fabrication order from this package.'}
 
-## Connections
+The ECO separates PD POWER and USB DATA, removes unsupported CAN/RS485/RS232 and general I/O circuits and the remaining J7 external command path, adds local START/STOP using the TMC5160 internal SPI ramp, while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: ${releaseStatus.status}. See \`engineering/reviewer-eco.json\` and \`docs/step-dir-hardware-review.md\`.
 
-| Connector | Purpose | External equipment |
-|---|---|---|
-| J2, 4-pin JST VH | Motor winding connection | VHR-4N, four SVH-41T-P1.1 contacts, four 16 AWG pigtails and four TE320559 splices to the motor leads; physical harness qualification pending |
-| J3, 2-pin JST VH | Conditional regenerated-energy dissipation | VHR-2N, two SVH contacts, two-wire harness and selected resistor/terminals/cooling/mounting; final brake requirement and installation unresolved |
-| J1, USB-C POWER | Motor and board supply | Qualified 48 V / 5 A EPR source and 5 A EPR e-marked cable; exact products unselected |
-| J10, USB-C DATA | Setup/diagnostics and independent MCU logic | Host and data-capable cable; does not supply motor power |
+The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Existing four PCB holes are unchanged. Unsupported posts, adapter and fasteners have been removed; rear attachment and encoder mounting remain unresolved. See \`motor-assembly.md\` for the alignment preview and unresolved mechanical gates.
 
-J3 is not a speed aid. Its return is switched, not permanently grounded. The documented 300 W resistor is only a candidate; an empty J3 cannot dissipate brake energy. See [external equipment](external-system.md), [endpoint schedule](connector-harnesses.md), [J2 harness](motor-harness.md) and [brake decision](brake-integration.md).
+RGB, independent board-power indication, a reset-safe buzzer and eight new power/programming pads are included. See \`indicators.md\` and \`pd-programming.md\` for states, supply allocation and isolated EEPROM programming. The fixture and TI image still require qualification.
 
-## Assembly and qualification
+The power ECO uses TPS26630 1× latch-off limiting at nominal 3.607 A, sets motor inhibit to nominal 53.21 V, and includes a 100 V brake-cable recirculation diode and ADS1115 startup brake-continuity sensing. The conservative input screen is 4.252 A including the 250 mA upstream allocation; the nominal 48 V motor-input budget is approximately 173 W. The conservative motor-current ceiling is 3.8 A RMS; the supplied profile remains locked at approximately 0.827 A / 10 rpm unloaded until all hardware qualification flags can be justified, and requests above 240 permille are rejected before SPI access. The continuity check is startup-only and does not qualify the heatsink or protect against every runtime brake fault. See \`power-validation.md\` and the repository's \`engineering/protection-refinement.json\`.
 
-All 247 fitted components and 19 bare service pads are top-side. U18/C52/C53 are centered/local bottom DNP encoder footprints, excluded from fitted BOM/CPL and paste. The single-shaft motor has no qualified rear magnet installation.
+The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-The 3D view contains the motor and J2 harness. Four Ø4.2 mm PCB holes are present, but rear fastening, the visual 19.5 mm gap, cable retention and final harness fit remain unqualified. See [motor assembly](motor-assembly.md). Part numbers in [external-parts.json](external-parts.json) identify candidates and selected items; they are not stock reservations.
+J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 and its external input conditioning are removed; SW2 provides local START/STOP and SW1 remains RESET. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All ${stock.parts.reduce((total, part) => total + part.quantity_per_board, 0)} fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
 
-[Verification](verification.json) preserves actual check results. Native reports are [DRC](kicad-drc.json) and [ERC](kicad-erc.json); schematic style covers ${standards.project_geometry.schematic_sheet_count} sheets in [its report](schematic-style-check.json). Live PCB stock evidence covers ${stock.parts.length} unique fitted supplier codes. Failed sourcing/placement gates and pending programming, power, thermal, mechanical and EMC qualification must be resolved before acceptance.
+The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 
-The intended delivery includes complete assembly, programming/readback and serial-numbered functional tests. Provider acceptance is pending. Follow [assembly requirements](assembly.md), [power test matrix](power-validation.md) and [order settings](order-settings.json). Blank or motion-locked assemblies do not meet ready-to-run acceptance.
+For the checked prototype handoff, use the newly generated Gerbers together with \`jlc-bom.csv\` plus \`jlc-cpl.csv\` for top-side assembly. Apply every value in \`order-settings.json\`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for every via-in-pad listed in the order settings (including 40 MOSFET drain-pad and four U34 thermal vias), and top-side assembly.
 
-Use the matching Gerbers, BOM/CPL and order settings, including the four-layer stack, 1 oz copper, top assembly and specified filled/capped via-in-pad treatment. The routed viewer preserves the source schematic and native KiCad copper. Native renders are [top](pcb-3d.png) and [bottom](pcb-bottom.png); full 3D models are in the GLB ZIPs.
+Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents and hardware contract correspond to ${releaseStatus.revision}, identified by this delivery manifest.
 
-Some archive/KiCad basenames retain r0.3 for pipeline compatibility. This package is revision 0.4; [delivery-manifest.json](delivery-manifest.json) and [sha256.json](sha256.json) identify the exact contents. Run \`bun run review\` from the repository for the prescribed review sequence.
+The native reports contain ${kicadDrc.violations.length} PCB DRC violations, ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+
+The tscircuit viewer-equivalent schematic style result is recorded across all ${standards.project_geometry.schematic_sheet_count} sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
+
+External equipment and candidates are listed in [external-system.md](external-system.md) and [external-parts.json](external-parts.json); the current profile requires a qualified brake assembly.
+
+Power calculations and the unperformed bench-test matrix are in \`power-validation.md\`; \`power-audit.json\` and \`native-decoupling-check.json\` contain the numerical evidence.
+
+Use \`pcb-3d.png\` and \`pcb-bottom.png\` for visual review. Print \`mounting-template.svg\` at 100% and measure its calibration bar before comparing it with the motor. The complete 3D model is stored as \`pd1180-epr-r0.3-glb.zip\` so cloud imports do not serialize a large loose binary. \`delivery-manifest.json\` records the exact file sizes and hashes, while \`sha256.json\` recursively covers this release directory.
 `)
 
 const artifactPaths = standards.release.required_files.filter((path) => !path.endsWith('/delivery-manifest.json') && !path.endsWith('/sha256.json'))

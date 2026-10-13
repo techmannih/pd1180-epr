@@ -39,7 +39,7 @@ test('current board audit keeps full-current operation held after static checks 
   expect(r.calculations.supply.overload_after_pgood.pulse_multiplier).toBe(1)
   expect(r.calculations.supply.overload_after_pgood.hard_5a_ceiling).toBe(false)
   expect(r.calculations.supply.efuse_limit.total_input_screen_a).toBeLessThan(5)
-  expect(r.calculations.ripple_and_brake_switch.brake_return_component_references).toEqual(['J3','Q16'])
+  expect(r.calculations.ripple_and_brake_switch.brake_return_component_references).toEqual(['D20','J3','Q16','R134'])
   expect(r.calculations.ripple_and_brake_switch.measured_each_ripple_a).toBeNull()
   expect(r.calculations.commissioning_profile.motor_operation_authorized).toBe(false)
   expect(r.calculations.commissioning_profile.nominal_rms_a).toBeLessThan(.85)

@@ -1036,5 +1036,565 @@
     "baseline_board_sha256": "0181e5b4c89659b3f502aa19fb4344057770f8a1cd0d9da20caf6518244016ce",
     "geometry_and_routing_unchanged": true,
     "evidence": "docs/checks/warning-fix-parity.json"
+  },
+  "power_eco_via_audit": {
+    "board_sha256": "c955f3f13b799e879e358d342fcf4a4509f92616a88bfc0bfa981981235fbcd6",
+    "total_vias": 632,
+    "minimum_finished_drill_mm": 0.3,
+    "criterion": "Through-via finished-drill circle overlaps an F.Paste-enabled solder land",
+    "required_process": "epoxy filled and copper capped",
+    "count": 55,
+    "vias": [
+      {
+        "x_mm": 75.4,
+        "y_mm": 69.4,
+        "net": "GND",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "U34:9"
+        ]
+      },
+      {
+        "x_mm": 102.325,
+        "y_mm": 132.4,
+        "net": "GND",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "C41:2"
+        ]
+      },
+      {
+        "x_mm": 76.6,
+        "y_mm": 69.4,
+        "net": "GND",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "U34:9"
+        ]
+      },
+      {
+        "x_mm": 76.6,
+        "y_mm": 70.4,
+        "net": "GND",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "U34:9"
+        ]
+      },
+      {
+        "x_mm": 119.8473,
+        "y_mm": 103.7029,
+        "net": "GND",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "U7:24"
+        ]
+      },
+      {
+        "x_mm": 135.749986,
+        "y_mm": 101.5,
+        "net": "MOTOR_B1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q11:9"
+        ]
+      },
+      {
+        "x_mm": 136.749986,
+        "y_mm": 101.5,
+        "net": "MOTOR_B1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q11:9"
+        ]
+      },
+      {
+        "x_mm": 136.75,
+        "y_mm": 100.5,
+        "net": "MOTOR_B1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q11:9"
+        ]
+      },
+      {
+        "x_mm": 135.749986,
+        "y_mm": 100.5,
+        "net": "MOTOR_B1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q11:9"
+        ]
+      },
+      {
+        "x_mm": 70.6,
+        "y_mm": 72.5003,
+        "net": "PD_3V3",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "C2:1"
+        ]
+      },
+      {
+        "x_mm": 84.195,
+        "y_mm": 67.400056,
+        "net": "PD_3V3",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "U3:8"
+        ]
+      },
+      {
+        "x_mm": 105.659005,
+        "y_mm": 96.613042,
+        "net": "V3V3",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "U33:5"
+        ]
+      },
+      {
+        "x_mm": 114.149986,
+        "y_mm": 96.5,
+        "net": "MOTOR_A1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q7:9"
+        ]
+      },
+      {
+        "x_mm": 114.149986,
+        "y_mm": 97.5,
+        "net": "MOTOR_A1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q7:9"
+        ]
+      },
+      {
+        "x_mm": 113.15,
+        "y_mm": 97.5,
+        "net": "MOTOR_A1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q7:9"
+        ]
+      },
+      {
+        "x_mm": 113.15,
+        "y_mm": 96.5,
+        "net": "MOTOR_A1",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q7:9"
+        ]
+      },
+      {
+        "x_mm": 136.75,
+        "y_mm": 116.700001,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q12:9"
+        ]
+      },
+      {
+        "x_mm": 112.85,
+        "y_mm": 90.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q6:9"
+        ]
+      },
+      {
+        "x_mm": 113.15,
+        "y_mm": 113.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q8:9"
+        ]
+      },
+      {
+        "x_mm": 136.75,
+        "y_mm": 117.700001,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q12:9"
+        ]
+      },
+      {
+        "x_mm": 111.85,
+        "y_mm": 91.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q6:9"
+        ]
+      },
+      {
+        "x_mm": 135.749986,
+        "y_mm": 116.700001,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q12:9"
+        ]
+      },
+      {
+        "x_mm": 79.824999,
+        "y_mm": 72.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "C86:1"
+        ]
+      },
+      {
+        "x_mm": 135.45,
+        "y_mm": 94.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q10:9"
+        ]
+      },
+      {
+        "x_mm": 114.15,
+        "y_mm": 113.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q8:9"
+        ]
+      },
+      {
+        "x_mm": 135.749986,
+        "y_mm": 117.700001,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q12:9"
+        ]
+      },
+      {
+        "x_mm": 113.15,
+        "y_mm": 112.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q8:9"
+        ]
+      },
+      {
+        "x_mm": 111.85,
+        "y_mm": 90.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q6:9"
+        ]
+      },
+      {
+        "x_mm": 134.45,
+        "y_mm": 93.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q10:9"
+        ]
+      },
+      {
+        "x_mm": 112.85,
+        "y_mm": 91.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q6:9"
+        ]
+      },
+      {
+        "x_mm": 91.925,
+        "y_mm": 73.05,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "R31:1"
+        ]
+      },
+      {
+        "x_mm": 134.45,
+        "y_mm": 94.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q10:9"
+        ]
+      },
+      {
+        "x_mm": 73.0,
+        "y_mm": 72.4125,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "C87:1"
+        ]
+      },
+      {
+        "x_mm": 135.45,
+        "y_mm": 93.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q10:9"
+        ]
+      },
+      {
+        "x_mm": 114.15,
+        "y_mm": 112.5,
+        "net": "VMOTOR",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q8:9"
+        ]
+      },
+      {
+        "x_mm": 66.800077,
+        "y_mm": 83.249997,
+        "net": "PD_SBU2_CONN",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "J1:16"
+        ]
+      },
+      {
+        "x_mm": 74.55,
+        "y_mm": 74.624999,
+        "net": "CC1_PD",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "U2:24"
+        ]
+      },
+      {
+        "x_mm": 79.899999,
+        "y_mm": 74.825,
+        "net": "CC1_PD",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "C3:1"
+        ]
+      },
+      {
+        "x_mm": 112.85,
+        "y_mm": 107.5,
+        "net": "MOTOR_A2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q9:9"
+        ]
+      },
+      {
+        "x_mm": 111.85,
+        "y_mm": 106.5,
+        "net": "MOTOR_A2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q9:9"
+        ]
+      },
+      {
+        "x_mm": 111.85,
+        "y_mm": 107.5,
+        "net": "MOTOR_A2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q9:9"
+        ]
+      },
+      {
+        "x_mm": 112.85,
+        "y_mm": 106.5,
+        "net": "MOTOR_A2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q9:9"
+        ]
+      },
+      {
+        "x_mm": 134.45,
+        "y_mm": 110.900001,
+        "net": "MOTOR_B2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q13:9"
+        ]
+      },
+      {
+        "x_mm": 134.45,
+        "y_mm": 111.900001,
+        "net": "MOTOR_B2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q13:9"
+        ]
+      },
+      {
+        "x_mm": 135.45,
+        "y_mm": 111.900001,
+        "net": "MOTOR_B2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q13:9"
+        ]
+      },
+      {
+        "x_mm": 135.45,
+        "y_mm": 110.900001,
+        "net": "MOTOR_B2",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q13:9"
+        ]
+      },
+      {
+        "x_mm": 107.5,
+        "y_mm": 66.849999,
+        "net": "BRAKE_RETURN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q16:9"
+        ]
+      },
+      {
+        "x_mm": 107.5,
+        "y_mm": 65.849999,
+        "net": "BRAKE_RETURN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q16:9"
+        ]
+      },
+      {
+        "x_mm": 108.5,
+        "y_mm": 65.849999,
+        "net": "BRAKE_RETURN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q16:9"
+        ]
+      },
+      {
+        "x_mm": 108.5,
+        "y_mm": 66.849999,
+        "net": "BRAKE_RETURN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q16:9"
+        ]
+      },
+      {
+        "x_mm": 91.5,
+        "y_mm": 65.849999,
+        "net": "EFUSE_IN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q4:9"
+        ]
+      },
+      {
+        "x_mm": 92.5,
+        "y_mm": 65.849999,
+        "net": "EFUSE_IN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q4:9"
+        ]
+      },
+      {
+        "x_mm": 91.5,
+        "y_mm": 66.849999,
+        "net": "EFUSE_IN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q4:9"
+        ]
+      },
+      {
+        "x_mm": 92.5,
+        "y_mm": 66.849999,
+        "net": "EFUSE_IN",
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "lands": [
+          "Q4:9"
+        ]
+      },
+      {
+        "x_mm": 108.9769,
+        "y_mm": 72.289499,
+        "net": "BRAKE_ON",
+        "pad_mm": 0.5,
+        "drill_mm": 0.3,
+        "lands": [
+          "U15:6"
+        ]
+      }
+    ]
   }
 }

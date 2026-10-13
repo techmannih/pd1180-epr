@@ -6,7 +6,9 @@ const boardPath = process.argv[2] || 'dist/manufacturing/kicad-project/pd1180-ep
 const source = await readFile(boardPath, 'utf8')
 const sense = JSON.parse(await readFile('docs/critical-copper-check.json', 'utf8'))
 if (sense.board_sha256 !== createHash('sha256').update(source).digest('hex') || !Array.isArray(sense.errors) || sense.errors.length) throw new Error('Power audit requires current, passing native Kelvin isolation evidence')
-const senseSegments = new Set(sense.paths.flatMap(path => path.segment_uuids))
+const brakeSense = JSON.parse(await readFile('docs/brake-sense-copper-check.json', 'utf8'))
+if (brakeSense.board_sha256 !== createHash('sha256').update(source).digest('hex') || brakeSense.checker_sha256 !== createHash('sha256').update(await readFile('scripts/check-brake-sense.py')).digest('hex') || !Array.isArray(brakeSense.errors) || brakeSense.errors.length || !brakeSense.segment_uuids?.length) throw new Error('Power audit requires current, passing brake-divider branch-removal evidence')
+const senseSegments = new Set([...sense.paths.flatMap(path => path.segment_uuids), ...brakeSense.segment_uuids])
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const powerNets = [
   'PD_VBUS', 'EFUSE_IN', 'VMOTOR',

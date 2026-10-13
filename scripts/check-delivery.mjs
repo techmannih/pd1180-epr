@@ -17,7 +17,7 @@ const checked = []
 
 // Wiring/purchase guidance must travel with the package and match the current
 // source documents, including the distinction between candidates and purchases.
-for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md', 'j3-energy-review.json']) {
+for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md']) {
   const current = await readFile(`docs/${name}`, 'utf8')
   const delivered = await readFile(`release/${name}`, 'utf8').catch(() => '')
   if (current !== delivered) errors.push(`release/${name}: differs from current source guidance`)

@@ -218,7 +218,6 @@ export const TMC5160A_TA_T = (props: ChipProps<typeof pinLabels>) => (
 <silkscreencircle pcbX={-2.750058000000081} pcbY={-5.299963999999932} radius={0.100076} layer="top" strokeWidth={0.19999959999999997} />
 <silkscreencircle pcbX={-2.6713179999999284} pcbY={-2.6713179999999284} radius={0.150114} layer="top" strokeWidth={0.29999939999999997} />
 <courtyardoutline outline={[{"x":-5.249888400000032,"y":5.249888400000032},{"x":5.249888399999918,"y":5.249888400000032},{"x":5.249888399999918,"y":-5.249888400000032},{"x":-5.249888400000032,"y":-5.249888400000032},{"x":-5.249888400000032,"y":5.249888400000032}]} layer="top" />
-<silkscreentext text="{NAME}" pcbX="0mm" pcbY="6.25mm" anchorAlignment="center" />
       </footprint>}
     pinLabels={pinLabels}
     supplierPartNumbers={{

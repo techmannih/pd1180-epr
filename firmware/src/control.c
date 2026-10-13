@@ -61,7 +61,7 @@ void pd1180_control_tick(pd1180_control_t *state, const pd1180_inputs_t *inputs,
     }
   }
 
-  const bool motor_valid = state->power_permit && inputs->motor_power_good && inputs->vmotor_in_range && inputs->driver_ready;
+  const bool motor_valid = state->power_permit && inputs->motor_power_good && inputs->vmotor_in_range && inputs->driver_ready && inputs->brake_preflight_ok;
   if (!motor_valid) {
     if (state->mcu_run) {
       state->fault_latched = true;

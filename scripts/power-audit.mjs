@@ -131,7 +131,7 @@ export async function audit() {
   const paths = ['index.circuit.tsx', 'dist/index/circuit.json', 'docs/design-manifest.json',
     'hardware-contract.json', 'docs/motor-data.json', 'firmware/include/tmc5160_config.h',
     'firmware/src/tmc5160.c', 'firmware/src/motor_service.c', 'firmware/target/main.cpp',
-    'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', 'scripts/power-audit.mjs']
+    'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', 'scripts/power-audit.mjs', 'firmware/src/control.c']
   const bytes = Object.fromEntries(await Promise.all(paths.map(async p => [p, await readFile(p)])))
   const circuit = JSON.parse(bytes['dist/index/circuit.json'])
   const parts = Object.fromEntries(circuit.filter(p => p.type === 'source_component').map(p => [p.name, p]))
@@ -233,11 +233,12 @@ export async function audit() {
     errors.push('Brake release lacks the allocated margin above a 5% high 48 V source')
   if (benchCutoffPeak === null || benchCutoffPeak + 0.5 > 54.75)
     errors.push('Restricted rotor-only energy screen lacks 0.25 V residual margin below 55 V after the 0.5 V transient allocation')
-  if (!(benchPermille > 0 && benchPermille <= 180) || benchIrun < 0)
-    errors.push('The unloaded commissioning profile must not permit a current request above 180 permille')
+  if (!(benchPermille > 0 && benchPermille <= 240) || benchIrun < 0)
+    errors.push('The unloaded commissioning profile must not permit a current request above 240 permille')
   if (part('U6').manufacturer_part_number !== 'TPS26630RGER') errors.push('U6 must use the reviewed 1x TPS26630RGER, not a 2x pulse-current variant')
   if (resistance('R25') !== ilimPart.ohm) errors.push('R25 differs from the reviewed input-current contract')
   if (ilim.remaining_contract_margin_a <= 0) errors.push('Input-current screen plus upstream allocation exceeds the PD contract')
+  if (programmed * 1.05 / 0.99 * Math.SQRT2 >= motor.phase_current_a) errors.push('Programmed sine-peak sensitivity exceeds ordered motor phase rating')
   errors.push(...imonBypassErrors(circuit))
   // Allow a 5% high 48 V source plus 0.3 V noise margin without nuisance OVP.
   if (ovp.min < 48*1.05 + 0.3) errors.push('Input OVP lacks margin above a 5% high 48 V source')
@@ -246,10 +247,15 @@ export async function audit() {
     ['VMOTOR', 'TMC_12V', 'GND', 'DRIVER_BUCK_SW', 'DRIVER_BUCK_BOOT', 'DRIVER_BUCK_VCC', 'VREF_2V5', 'V3V3'].map(name => [name, netKey(name)]),
   )))
   if (pinKey('C61', 1) !== netKey('TMC_12V')) errors.push('C61 local VSA bypass must be on TMC_12V')
-  for (const [name,pin,net] of [['U7',3,'TMC_12V'],['U7',4,'TMC_12V'],['U7',33,'VMOTOR'],['U34',2,'VMOTOR'],['U34',3,'VMOTOR'],['U34',5,'DRIVER_BUCK_FB'],['U34',8,'DRIVER_BUCK_SW'],['L3',1,'DRIVER_BUCK_SW'],['L3',2,'TMC_12V'],['U34',1,'GND'],['U34',6,'DRIVER_BUCK_VCC'],['U34',7,'DRIVER_BUCK_BOOT'],['U34',9,'GND'],['C86',1,'VMOTOR'],['C86',2,'GND'],['C87',1,'VMOTOR'],['C87',2,'GND'],['C88',1,'DRIVER_BUCK_VCC'],['C88',2,'GND'],['C89',1,'DRIVER_BUCK_BOOT'],['C89',2,'DRIVER_BUCK_SW'],['C90',1,'TMC_12V'],['C90',2,'GND'],['C91',1,'TMC_12V'],['C91',2,'GND'],['C92',1,'TMC_12V'],['C92',2,'GND'],['R121',1,'TMC_12V'],['R121',2,'DRIVER_BUCK_FB'],['R122',1,'DRIVER_BUCK_FB'],['R122',2,'GND'],['C93',1,'V3V3'],['C93',2,'GND'],['C94',1,'VREF_2V5'],['C94',2,'GND'],['U12',1,'GND'],['U12',2,'GND'],['U12',3,'V3V3'],['U12',4,'V3V3'],['U12',5,'VREF_2V5'],['U12',6,'VREF_2V5']]) {
+  for (const [name,pin,net] of [['U7',3,'TMC_12V'],['U7',4,'TMC_12V'],['U7',33,'VMOTOR'],['U34',2,'VMOTOR'],['U34',3,'VMOTOR'],['U34',5,'DRIVER_BUCK_FB'],['U34',8,'DRIVER_BUCK_SW'],['L3',1,'DRIVER_BUCK_SW'],['L3',2,'TMC_12V'],['U34',1,'GND'],['U34',6,'DRIVER_BUCK_VCC'],['U34',7,'DRIVER_BUCK_BOOT'],['U34',9,'GND'],['C86',1,'VMOTOR'],['C86',2,'GND'],['C87',1,'VMOTOR'],['C87',2,'GND'],['C88',1,'DRIVER_BUCK_VCC'],['C88',2,'GND'],['C89',1,'DRIVER_BUCK_BOOT'],['C89',2,'DRIVER_BUCK_SW'],['C90',1,'TMC_12V'],['C90',2,'GND'],['C91',1,'TMC_12V'],['C91',2,'GND'],['C92',1,'TMC_12V'],['C92',2,'GND'],['R121',1,'TMC_12V'],['R121',2,'DRIVER_BUCK_FB'],['R122',1,'DRIVER_BUCK_FB'],['R122',2,'GND'],['C93',1,'V3V3'],['C93',2,'GND'],['C94',1,'VREF_2V5'],['C94',2,'GND'],['D20',1,'VMOTOR'],['D20',2,'BRAKE_RETURN'],['R134',1,'BRAKE_RETURN'],['R134',2,'BRAKE_FB_MID'],['R135',1,'BRAKE_FB_MID'],['R135',2,'BRAKE_FB'],['R136',1,'BRAKE_FB'],['R136',2,'GND'],['C98',1,'BRAKE_FB'],['C98',2,'GND'],['U30',6,'BRAKE_FB'],['U12',1,'GND'],['U12',2,'GND'],['U12',3,'V3V3'],['U12',4,'V3V3'],['U12',5,'VREF_2V5'],['U12',6,'VREF_2V5']]) {
     if (!netKey(net) || pinKey(name,pin) !== netKey(net)) errors.push(`${name}.${pin} must connect to ${net}`)
   }
-  const requiredParts = { U6:'C1850276', R25:'C7293210', U12:'C187836', U34:'C1858393', L3:'C2047110', R22:'C23162', R23:'C705777', R24:'C95204', R60:'C326731', R61:'C728583', R62:'C95204', R63:'C326730', R64:'C861400', R65:'C723637', R66:'C136970', R122:'C861611' }
+  for (const [ref, ohms] of Object.entries({R25:4990, R61:16200, R66:1200, R134:4700, R135:4700, R136:510})) {
+    if (Math.abs(resistance(ref)-ohms)>1e-6) errors.push(`${ref}: audited resistance must remain ${ohms} ohms`)
+  }
+  const modePort = circuit.find(p => p.type === 'source_port' && p.source_component_id === part('U6').source_component_id && p.pin_number === 11)
+  if (!modePort || circuit.some(t => t.type === 'source_trace' && t.connected_source_port_ids?.includes(modePort.source_port_id))) errors.push('TPS26630 MODE pin 11 must remain open for latch-off')
+  const requiredParts = { U12:'C187836', U34:'C1858393', L3:'C2047110', R22:'C23162', R23:'C705777', R24:'C95204', R60:'C326731', R61:'C728583', R62:'C95204', R63:'C326730', R64:'C861400', R65:'C723637', U6:'C1850276', R25:'C7293210', R66:'C136970', R122:'C861611', R134:'C6675858', R135:'C6675858', R136:'C7468460', C98:'C57112', D20:'C49242208' }
   for (const [name,code] of Object.entries(requiredParts)) {
     if (!part(name).supplier_part_numbers?.jlcpcb?.includes(code)) errors.push(`${name}: ${code} is required for the audited ratings/tolerances`)
   }
@@ -360,7 +366,7 @@ export async function audit() {
         sensitivity_min_rms_a: programmed*0.95/1.01, sensitivity_max_rms_a: programmed*1.05/0.99,
         motor_rated_phase_a: motor.phase_current_a, motor_qualified_driver_rms_a: motor.qualified_driver_rms_a,
         motor_rating_note: motor.current_rating_basis,
-        note: 'Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance.' },
+        note: 'Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=139 is only a sensitivity calculation, not a guaranteed tolerance.' },
       dissipation_w: { regulation_shunt_cycle_upper_bound_each: target**2*rs,
         regulation_shunt_held_peak_upper_bound_each: 2*target**2*rs,
         phase_telemetry_shunt_cycle_each: target**2*telemetryShunt,
@@ -400,7 +406,12 @@ export async function audit() {
         equal_current_sharing_qualified: false,
         brake_return_component_references: brakeReturnReferences,
         explicit_clamp_or_snubber_verified: false, measured_q16_turnoff_peak_v: null,
-        note: 'A rating at 100 kHz is not a validated chopping/braking waveform rating. The current BRAKE_RETURN net contains only J3 and Q16; do not count a body diode as a qualified positive-drain-overvoltage clamp.' },
+        note: 'A rating at 100 kHz is not a validated chopping/braking waveform rating. D20 provides a local cable-inductance recirculation path and R134 feeds startup continuity sensing. Their presence does not qualify switching overshoot or runtime brake integrity.' },
+      brake_feedback: {
+        divider_ratio: sum(['R134','R135','R136'])/resistance('R136'),
+        maximum_open_return_v_at_2ma_leakage: .002*sum(['R134','R135','R136'])*1.02,
+        each_top_resistor_nominal_w_at_55v: (55/sum(['R134','R135','R136']))**2*resistance('R134'),
+        note:'D20 2 mA at 125 C rated reverse voltage is the leakage screen; higher junction temperatures and actual ADC errors need qualification. Divider is 1%, 100 ppm/C, two 250 mW 1206 top resistors; board ambient design limit 50 C, local temperature must stay within derated ratings.' },
       telemetry: { volts_per_ampere: telemetryShunt*20,
         phase_output_at_target_peak_v: [1.65-target*Math.SQRT2*telemetryShunt*20,1.65+target*Math.SQRT2*telemetryShunt*20],
         vmon_at_55v: 55*resistance('R33')/(sum(['R31','R32'])+resistance('R33')),

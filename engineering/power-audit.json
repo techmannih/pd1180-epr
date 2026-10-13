@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-13T02:03:09.477Z",
+  "checked_at": "2026-10-13T03:30:18.066Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "full_current_operation_authorized": false,
@@ -37,17 +37,18 @@
     }
   ],
   "input_sha256": {
-    "index.circuit.tsx": "6ea5b06f6d4726b842435730d5358935b642542a6e611cb8d3a42db938acedcc",
-    "dist/index/circuit.json": "f9e31820cba7ec42657627c348c54464155aedb98bd0b7354921af536bd56a01",
-    "docs/design-manifest.json": "5f7d1c438d4e46b1429543fafb066c4b610625f61ded1c2def1d734986101c10",
-    "hardware-contract.json": "7d65298364ed7ca4b95b320906b851bd99584e36ef56e515d6f90cc8e4c7064a",
+    "index.circuit.tsx": "8f16c5d1b12f3c403272cddebc7c4891d436931585f91b3c7a0279e2eedc3a34",
+    "dist/index/circuit.json": "209fd78001f2d5e3ecace1d0e1981fd9a14633fe190835e429f60ebc8be09c7f",
+    "docs/design-manifest.json": "27d36b853ea4b58fec5a7b1881561cf306b72bbd6baa495a887c9b42f0b33e73",
+    "hardware-contract.json": "dfecfbf4e33f0692da8a0a7c707ca27dc38423d05587b6a7aab9aba84d358743",
     "docs/motor-data.json": "4579b126fccbfcd4d7620f2dec90dfd7fe9c5cd299be555aea5053a673f86103",
-    "firmware/include/tmc5160_config.h": "07cbc0bb70687e5a5ea11c799c89c035ed75a927781064e28b4b935728dc9699",
+    "firmware/include/tmc5160_config.h": "eaa9d3f2a2a33382ad0c7cfc986ce2f216ad17cd1aa5a8ec04e0db91b27c5335",
     "firmware/src/tmc5160.c": "f46873b8e9d4fb700ee17b18ac47a6ad454777a6e25c87374de47359419ea0f2",
     "firmware/src/motor_service.c": "240ba8af856bedda5cb2f1d063762969bbf207307b601ba458a0fcda4e05b1bd",
-    "firmware/target/main.cpp": "57eebf36e58e9563cfd0a40d2eaf3a816989a0da8cb6b4a8324960aeb7afde68",
-    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "9c4e4da9e57ed2289235dfa697c91c292286a5274716dc3fcf3a0a469fa16310",
-    "scripts/power-audit.mjs": "3bd433d3a18dc292ee9c1a6e0228841825324eadbdc630dc4072c84ce802939e"
+    "firmware/target/main.cpp": "868573ded389da85ea7981a4988c30aa991b2251c324c3b2db244f6918c682c9",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "6d44ea79349c7d87ef28b3f0e69f430855dacf07854e1c2677ba255687bcdd60",
+    "scripts/power-audit.mjs": "d9958014e183d4bbe3de7b0fabbc8b87a077bb172d7422c6855ba891206fbd50",
+    "firmware/src/control.c": "95c4700a91e3cc3fe744a3b887c28ed6db261104a68430f6b6e2e6fcb8fd29e2"
   },
   "assumptions": {
     "resistor_initial_tolerance_fraction": 0.01,
@@ -92,15 +93,15 @@
       "scope": "Unloaded rotor only; no coupling, driven load, gravity load or external back-drive",
       "selection_basis": "Retained low-energy commissioning choice; not copied from PD-1180 ratings",
       "motor_operation_authorized": false,
-      "max_requested_current_permille": 180,
-      "irun": 4,
-      "nominal_rms_a": 0.841588271065532,
-      "nominal_sine_peak_a": 1.190185546875,
+      "max_requested_current_permille": 240,
+      "irun": 6,
+      "nominal_rms_a": 0.8271367552997603,
+      "nominal_sine_peak_a": 1.169748017282197,
       "nominal_speed_rpm": 9.999610483646393,
       "nominal_acceleration_rpm_per_s": 9.976020010071807,
       "nominal_ramp_stop_s": 1.0023647179487178,
       "nominal_rotor_energy_j": 0.00007675760976800189,
-      "nominal_winding_energy_j": 0.00247894786298275,
+      "nominal_winding_energy_j": 0.002394543241887354,
       "nominal_rotor_energy_at_1000rpm_j": 0.7676358978625054,
       "brake_open_sensitivity": {
         "each_phase_instantaneous_current_a": 1.5,
@@ -207,26 +208,26 @@
       "note": "Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions."
     },
     "current": {
-      "target_rms_a": 5.5,
-      "sine_peak_a": 7.778174593052023,
-      "programmed_rms_a": 5.386164934819405,
-      "sensitivity_min_rms_a": 5.066194740671717,
-      "sensitivity_max_rms_a": 5.712599173293309,
+      "target_rms_a": 3.8,
+      "sine_peak_a": 5.374011537017761,
+      "programmed_rms_a": 3.7811965956560467,
+      "sensitivity_min_rms_a": 3.556571055320044,
+      "sensitivity_max_rms_a": 4.010360025695807,
       "motor_rated_phase_a": 6,
       "motor_qualified_driver_rms_a": null,
       "motor_rating_note": "Manufacturer states AMPS/PHASE, not an approved TMC5160 RMS setpoint. Resolve waveform, peak/hold current and thermal limits before motor-enabled firmware.",
-      "note": "Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance."
+      "note": "Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=139 is only a sensitivity calculation, not a guaranteed tolerance."
     },
     "dissipation_w": {
-      "regulation_shunt_cycle_upper_bound_each": 0.9982500000000001,
-      "regulation_shunt_held_peak_upper_bound_each": 1.9965000000000002,
-      "phase_telemetry_shunt_cycle_each": 0.15125,
-      "phase_telemetry_shunt_held_peak_each": 0.3025,
-      "eight_bridge_mosfets_conduction_25c_max_rds_total": 1.8271000000000002,
-      "eight_bridge_mosfets_conduction_hot_sensitivity_total": 3.6542000000000003,
+      "regulation_shunt_cycle_upper_bound_each": 0.47652,
+      "regulation_shunt_held_peak_upper_bound_each": 0.95304,
+      "phase_telemetry_shunt_cycle_each": 0.0722,
+      "phase_telemetry_shunt_held_peak_each": 0.1444,
+      "eight_bridge_mosfets_conduction_25c_max_rds_total": 0.872176,
+      "eight_bridge_mosfets_conduction_hot_sensitivity_total": 1.744352,
       "efuse_at_nominal_limit_and_125c_max_ron": 0.6896357845952426,
-      "two_motor_windings_25c": 29.04,
-      "two_motor_windings_100c_linear_copper_sensitivity": 37.59954,
+      "two_motor_windings_25c": 13.8624,
+      "two_motor_windings_100c_linear_copper_sensitivity": 17.9483424,
       "note": "Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep."
     },
     "inrush": {
@@ -250,11 +251,11 @@
       "bulk_energy_48_to_53v_j": 0.23735,
       "bulk_energy_48_to_53v_min_cap_j": 0.18988000000000002,
       "bulk_energy_48_to_brake_on_nominal_j": 0.18998041091750043,
-      "winding_energy_nominal_sine_quadrature_j": 0.105875,
+      "winding_energy_nominal_sine_quadrature_j": 0.05054,
       "brake_unavailable_return_screen": {
-        "voltage_after_nominal_cutoff_nominal_cap_nominal_inductance_v": 55.28389488155212,
-        "voltage_after_upper_cutoff_min_cap_nominal_inductance_v": 56.38089731025554,
-        "voltage_after_upper_cutoff_min_cap_high_inductance_v": 56.87813350375769,
+        "voltage_after_nominal_cutoff_nominal_cap_nominal_inductance_v": 54.208624689446914,
+        "voltage_after_upper_cutoff_min_cap_nominal_inductance_v": 55.0603126427565,
+        "voltage_after_upper_cutoff_min_cap_high_inductance_v": 55.303896852224575,
         "min_cap_energy_headroom_upper_cutoff_to_55v_j": 0.04804410135239778,
         "mechanical_regeneration_included": false,
         "note": "All remaining winding energy returned to the bus after inhibit; lossless screening cases, not measured or predicted waveforms. Inductance under operating current, current tolerance, ESR/ESL, source response and mechanical energy are not bounded by this model. Exceeding 55 V requires closure even when static threshold checks pass."
@@ -287,18 +288,26 @@
       "measured_each_ripple_a": null,
       "equal_current_sharing_qualified": false,
       "brake_return_component_references": [
+        "D20",
         "J3",
-        "Q16"
+        "Q16",
+        "R134"
       ],
       "explicit_clamp_or_snubber_verified": false,
       "measured_q16_turnoff_peak_v": null,
-      "note": "A rating at 100 kHz is not a validated chopping/braking waveform rating. The current BRAKE_RETURN net contains only J3 and Q16; do not count a body diode as a qualified positive-drain-overvoltage clamp."
+      "note": "A rating at 100 kHz is not a validated chopping/braking waveform rating. D20 provides a local cable-inductance recirculation path and R134 feeds startup continuity sensing. Their presence does not qualify switching overshoot or runtime brake integrity."
+    },
+    "brake_feedback": {
+      "divider_ratio": 19.431372549019606,
+      "maximum_open_return_v_at_2ma_leakage": 20.2164,
+      "each_top_resistor_nominal_w_at_55v": 0.14476911782225704,
+      "note": "D20 2 mA at 125 C rated reverse voltage is the leakage screen; higher junction temperatures and actual ADC errors need qualification. Divider is 1%, 100 ppm/C, two 250 mW 1206 top resistors; board ambient design limit 50 C, local temperature must stay within derated ratings."
     },
     "telemetry": {
       "volts_per_ampere": 0.1,
       "phase_output_at_target_peak_v": [
-        0.8721825406947976,
-        2.427817459305202
+        1.1125988462982237,
+        2.187401153701776
       ],
       "vmon_at_55v": 2.8947368421052633,
       "note": "Nominal transfer only; ADC/reference/gain errors, offset, common-mode switching and sampling require calibration."

@@ -1,8 +1,0 @@
-$ bun scripts/check-firmware.mjs
-PASS: manual arm, 15 fault cases and thermal/telemetry boundaries, latched stop, stale timing, fixed PDO/RDO decoder, package pins
-PASS: TMC explicit protection defaults, write failures, pipelined SPI, write echo, disabled initialization, mode checks, current limits and latched faults
-PASS: local button debounce, release-before-start, motion gates, ramp stop, timeout, SPI failure and no automatic restart
-permit=1 run=1 tmc_registers=18 mcu_run_pin=PA15
-PASS: target USB-only startup, power loss/recovery, suspend/resume, detach and ARM lock
-PASS: indicator polarity, safe initialization, reset, bounded alarm, brownout and bus faults
-Firmware safety logic and pin contract compiled and passed.

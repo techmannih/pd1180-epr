@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-12T18:37:28.397Z",
+  "checked_at": "2026-10-13T03:41:01.414Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -9,9 +9,9 @@
     "release/circuit.json"
   ],
   "hosted_preview_output": "dist/release/circuit.json",
-  "verified_preview_records": null,
-  "selectable_source_files": 62,
-  "selectable_import_files": 56,
+  "verified_preview_records": 13504,
+  "selectable_source_files": 63,
+  "selectable_import_files": 57,
   "unavailable_viewer_files": [],
   "registry_dependencies": [],
   "ignored_files": [
@@ -53,71 +53,72 @@
     ".cache/**",
     "release/motor-assembly-check.json",
     "release/harness-layout.json",
-    "release/harness-assembly-check.json"
+    "release/harness-assembly-check.json",
+    "release/external-parts.json"
   ],
-  "included_files": 82,
-  "included_bytes": 8122230,
-  "included_mebibytes": 7.75,
+  "included_files": 80,
+  "included_bytes": 8182575,
+  "included_mebibytes": 7.8,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7526686
+      "bytes": 7571022
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 127599
+      "bytes": 144756
     },
     {
       "path": "bun.lock",
       "bytes": 88935
     },
     {
+      "path": "README.md",
+      "bytes": 37452
+    },
+    {
       "path": "AGENTS.md",
-      "bytes": 19160
+      "bytes": 20001
     },
     {
       "path": "release/reference-comparison.json",
       "bytes": 14964
     },
     {
-      "path": "release/external-parts.json",
-      "bytes": 14641
-    },
-    {
-      "path": "logs/freerouting.log",
-      "bytes": 14616
-    },
-    {
       "path": "imports/STM32G0B1CBT6.local.js",
-      "bytes": 14488
+      "bytes": 14333
     },
     {
       "path": "imports/TMC5160A_TA_T.tsx",
-      "bytes": 13386
+      "bytes": 13303
     },
     {
-      "path": "delivery-manifest.json",
-      "bytes": 11577
+      "path": "hardware-contract.json",
+      "bytes": 12472
+    },
+    {
+      "path": "board-diagnostics.tsx",
+      "bytes": 12464
     }
   ],
-  "github_import_files": 520,
-  "github_import_bytes": 22726776,
-  "github_import_mebibytes": 21.67,
+  "github_import_files": 557,
+  "github_import_bytes": 22755267,
+  "github_import_mebibytes": 21.7,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7526686
+      "bytes": 7571022
     },
     {
       "path": "release/pcb-3d.png",
-      "bytes": 1499356
+      "bytes": 1455209
     },
     {
       "path": "release/pcb-bottom.png",
-      "bytes": 1206728
+      "bytes": 1208069
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1.glb",
@@ -136,16 +137,16 @@
       "bytes": 651976
     },
     {
-      "path": "release/kicad-drc.json",
-      "bytes": 273221
-    },
-    {
       "path": "release/schematics/mcu.svg",
       "bytes": 248843
     },
     {
       "path": "previews/reference-eco-placement.png",
       "bytes": 241700
+    },
+    {
+      "path": "release/schematics/motion.svg",
+      "bytes": 236959
     }
   ],
   "errors": []

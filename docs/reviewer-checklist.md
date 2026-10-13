@@ -4,7 +4,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 ## Reference review closure
 
-- [ ] Review every row in [reference-review.md](reference-review.md), including RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or evidence of completed system qualification.
+- [ ] Review every row in [reference-review.md](reference-review.md), including the added RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or permission to resume review as complete.
 - [ ] Use [connector-harnesses.md](connector-harnesses.md) for J2/J3 mating parts and termination; review the modeled envelopes in [complete-assembly.md](complete-assembly.md), then qualify insertion, latch/tool access and strain relief in the physical assembly.
 
 ## Requirements and mechanics
@@ -46,8 +46,8 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
-- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 58 via-in-pad locations with filled/capped processing.
-- [ ] All specified final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 55 via-in-pad locations with filled/capped processing.
+- [ ] All 46 final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
@@ -75,9 +75,14 @@ Reviewer sign-off should record board revision, commit, release hashes, open ris
 
 Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
 
-## Diagnostics acceptance
+## Diagnostics ECO acceptance
 
 - [ ] D16 RGB and D17 board-power indication are visible after full mechanical assembly; verify brightness at rail extremes.
 - [ ] BZ1 remains silent at reset, watchdog, loss of board power and failed I2C; verify the audible alarm and allocated 75 mA additional logic-rail design allocation.
 - [ ] U36 isolates both EEPROM wires when TP_PD_ISO is grounded. Follow [pd-programming.md](pd-programming.md), verify readback and cold APP boot with the approved TI image.
 - [ ] All 19 service pads are identified in the final fixture drawing; high-voltage probes cannot touch the logic programming contacts.
+
+- [ ] Review the power ECO: R25 4.99 kΩ, TPS26630 MODE open (1× latch-off), R61 16.2 kΩ / R66 1.2 kΩ, D20 cathode VMOTOR/anode BRAKE_RETURN, and R134/R135/R136/C98 to ADS1115 AIN2. Confirm startup-only continuity detection, three locked qualification flags, 3.8 A ceiling and 0.827 A / 10 rpm initial profile.
+- [ ] Reproduce engineering/power-eco-simulation/results.json; healthy winding corner must pass while open-brake/full-load and 5 J / 20 ms cases remain explicitly unsafe. No source/heatsink/load hardware qualification is implied.
+
+- [ ] Confirm the 240-permille request guard cannot bypass the 0.827 A commissioning profile, all three qualification locks remain false, and regenerated delivery BOM/CPL/viewer match the current source. Review 14 behavioral cases and their unqualified assumptions.

@@ -6,16 +6,11 @@
       "alternative": "C2864391",
       "mpn": "TPS26630RGET",
       "stock": null,
-      "checked_at": "2026-10-12T19:04:38.499875+00:00",
-      "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=2864391",
+      "checked_at": null,
       "classification": "same-silicon-package",
-      "notes": "TPS26630RGET shares TI RGE-24 silicon/package with TPS26630RGER; alternate reel quantity. Exact live stock lookup returned no match. TPS26631 is not a protection-equivalent substitute because it allows 2x pulses.",
-      "package": "VQFN-24(4x4)",
-      "status": "unverified-no-exact-match",
+      "notes": "TPS26630RGET retains the 1x active-limit/latch-off variant and RGE footprint; alternate tape quantity. Exact stock/package refresh required. TPS26631 must not be substituted because it permits 2x overload.",
       "expected_package": "VQFN-24(4x4)",
-      "expected_package_match": true,
-      "primary_package": "VQFN-24(4x4)",
-      "package_compatible": true
+      "status": "unverified"
     },
     {
       "primary": "C114200",
@@ -178,11 +173,20 @@
       "status": "no-drop-in-selected"
     },
     {
-      "primary": "C7293210",
-      "alternative": null,
-      "classification": "not-approved-redesign-required",
-      "status": "no-drop-in-selected",
-      "notes": "R25 is now 4.99k, 0.1%, 25 ppm/C. The former 4.02k candidate is not equivalent. Any substitute must retain the reviewed current-budget tolerance and package."
+      "primary": "C141679",
+      "alternative": "C705781",
+      "mpn": "RT0603BRD074K02L",
+      "stock": 43346,
+      "checked_at": "2026-10-11T16:01:37.280Z",
+      "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=705781",
+      "classification": "passive-review",
+      "notes": "4.02 kOhm, 0603, 0.1%, 100 mW, 25 ppm/degC candidate for R25; tighter tolerance than the primary 1%. Confirm manufacturer land pattern and actual assembler inventory. The API power_watts numeric field is mis-scaled; 100 mW comes from the attributes text.",
+      "package": "0603",
+      "status": "available",
+      "expected_package": "0603",
+      "expected_package_match": true,
+      "primary_package": "0603",
+      "package_compatible": true
     },
     {
       "primary": "C2652286",
@@ -225,6 +229,34 @@
       "classification": "not-approved-redesign-required",
       "notes": "XL-1608SURC-06 uses the imported 0603 cathode/anode numbering. A replacement needs polarity, footprint and low-current visibility review; no drop-in alternative selected.",
       "status": "no-drop-in-selected"
+    },
+    {
+      "primary": "C7293210",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R25: reviewed 4.99 kohm 0603, <=0.1% initial tolerance, <=25 ppm/C, >=100 mW. Recalculate the conservative current envelope; no automatic substitution."
+    },
+    {
+      "primary": "C136970",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R66: reviewed 1.2 kohm 0603, <=0.1%, <=25 ppm/C. Recalculate same-board brake/OVP coordination; no automatic substitution."
+    },
+    {
+      "primary": "C49242208",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "D20: replacement must retain cathode pin 1/anode pin 2 and the verified SMBF land pattern, >=100 V / 10 A ratings, forward and hot-leakage limits. A 2 mA hot leakage bound is part of startup continuity detection; no automatic substitution."
+    },
+    {
+      "primary": "C728583",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R61: reviewed 16.2 kohm 0603, <=0.1%, <=25 ppm/C. Both brake-on and release margins must be recalculated; no automatic substitution."
     }
   ],
   "checked_at": "2026-10-11T16:01:37.280Z"

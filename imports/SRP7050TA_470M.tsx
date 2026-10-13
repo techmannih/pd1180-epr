@@ -25,7 +25,6 @@ export const SRP7050TA_470M = (props: Omit<InductorProps, "inductance">) => (
         <silkscreenpath route={[{ x: -3.65, y: 2.1 }, { x: -3.65, y: 3.3 }, { x: 3.65, y: 3.3 }, { x: 3.65, y: 2.1 }]} />
         <silkscreenpath route={[{ x: -3.65, y: -2.1 }, { x: -3.65, y: -3.3 }, { x: 3.65, y: -3.3 }, { x: 3.65, y: -2.1 }]} />
         <courtyardoutline outline={[{ x: -4.45, y: -3.7 }, { x: 4.45, y: -3.7 }, { x: 4.45, y: 3.7 }, { x: -4.45, y: 3.7 }, { x: -4.45, y: -3.7 }]} />
-<silkscreentext text="{NAME}" pcbX="0mm" pcbY="4.7mm" anchorAlignment="center" />
       </footprint>
     }
     {...props}

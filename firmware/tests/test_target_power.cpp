@@ -17,6 +17,15 @@ static void expectSafe() {
   }
 }
 int main() {
+  pdBus.adcPresent=true;
+  for (unsigned n=1;n<=6;n++) pollBusAdc(n*10u);
+  assert((pdBus.adcChannels==std::vector<unsigned>{0,1,2}));
+  assert(adcValid[0] && adcValid[1] && adcValid[2]);
+  assert(adcMv[2]==2470 && adcSampleAt[2]==60);
+  pdBus.adcFail=true; pollBusAdc(70);
+  assert(!adcValid[0] && !adcValid[1] && !adcValid[2]);
+  pdBus.adcPresent=false; pdBus.adcFail=false; pdBus.transactions=0;
+  invalidateTelemetry(); lastAdcPoll=0;
   fakeAdc[pin(PD1180_PIN_USB_VBUS_SENSE)]=279; // Approximately 5 V DATA supply.
   setup(); advance(1);
   assert(usbStarted && !peripheralsStarted && !pdBus.started);
@@ -36,10 +45,11 @@ int main() {
   assert(spiStarted && !tmcStatus.valid && !inputs.driver_ready);
   inputs.motor_power_good=false; pollDriver(fakeNow+21);
   assert(!spiStarted && fakeModes[pin(PD1180_PIN_SPI_MOSI)]==INPUT_ANALOG);
-  adcValid[0]=phaseValid=inputs.temperature_valid=true;
+  adcValid[0]=adcValid[2]=phaseValid=inputs.temperature_valid=true;
+  brakePreflight.ready=inputs.brake_preflight_ok=true;
   fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=0;
   advance(1);
-  assert(!peripheralsStarted && !pdBus.started && !adcValid[0] && !phaseValid && !inputs.temperature_valid);
+  assert(!peripheralsStarted && !pdBus.started && !adcValid[0] && !adcValid[2] && !brakePreflight.ready && !inputs.brake_preflight_ok && !phaseValid && !inputs.temperature_valid);
   assert(fakeModes[pin(PD1180_PIN_PD_SCL)]==INPUT_ANALOG);
   expectSafe();
 

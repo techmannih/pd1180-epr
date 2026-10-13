@@ -3,7 +3,7 @@
     "target_resistance_ohms": 10,
     "selected_part": null,
     "manufacturer_page": "https://www.vishay.com/en/product/50052/",
-    "status": "Candidate only. Final need, resistance, pulse/average rating and heatsink unresolved; 300 W is not a confirmed requirement. Do not order from this candidate.",
+    "status": "10 ohm LPS0300H10R0GB is the current candidate; a qualified brake assembly is mandatory for this commissioning profile. Final heatsink, load/pulse duty and procurement remain unresolved.",
     "searches": [
       {
         "query": "RX24-300W",
@@ -93,11 +93,12 @@
     "candidate_part": "Vishay LPS0300H10R0GB",
     "candidate_continuous_rating_w": 300,
     "required_continuous_power_w": null,
-    "final_resistance_ohms": null
+    "final_resistance_ohms": null,
+    "starting_continuous_power_w": 300
   },
   "motor": "STEPPERONLINE 34HS31-6004S1, user ordered ASIN B091C83HWF",
   "magnet": "Unselected; rear rotating-shaft access on ordered motor must be established first",
-  "motor_mount": "Unsupported adapter/posts/spacers/fasteners withdrawn. Keep the existing four PCB holes; rear thread/depth, secure mounting and solder-tail clearance remain unverified.",
+  "motor_mount": "Unselected. Existing four PCB holes retained; removed adapter/posts/fasteners must not be purchased. Secure physical mounting remains unqualified.",
   "encoder_holder": "Unresolved for ordered single-shaft motor; QSH pilot/holder proposal withdrawn",
   "motor_specification": "4.8 Nm; 6 A/phase manufacturer rating; driver RMS/hold setting unqualified",
   "inventory_scope": "Per controller unless shared-service stated. Manufacturer identification is not live stock or purchase approval. No external parts purchased by this work.",
@@ -119,14 +120,14 @@
       "id": "epr-source",
       "item": "USB-C EPR power source",
       "quantity": 1,
-      "part_or_candidate": null,
+      "part_or_candidate": "Framework Power Adapter 240 W (candidate only)",
       "specification": "Actual 48 V / 5 A contract on selected port",
       "source": "AC mains through suitable source",
       "destination": "J1 POWER via EPR cable",
       "purpose": "Motor energy supply",
       "need": "basic-system",
-      "status": "Exact product/supplier unresolved; no laptop or advertised total-wattage substitution",
-      "manufacturer_url": ""
+      "status": "Not purchased or qualified; confirm 48 V / 5 A capability with the actual cable and sink",
+      "manufacturer_url": "https://frame.work/products/power-adapter-240w"
     },
     {
       "id": "epr-cable",
@@ -254,7 +255,7 @@
       "source": "J3 pin 1 VMOTOR",
       "destination": "Resistor then J3 pin 2 BRAKE_RETURN",
       "purpose": "Dissipate returned energy when application needs it",
-      "need": "conditional-brake",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
       "status": "NOT selected or approved for purchase; need/load/pulse/average/thermal qualification pending",
       "manufacturer_url": "https://www.vishay.com/docs/50052/lps300.pdf"
     },
@@ -267,7 +268,7 @@
       "source": "Two brake conductors",
       "destination": "J3 B2P-VH(LF)(SN)",
       "purpose": "Detachable qualified brake load",
-      "need": "conditional-brake",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
       "status": "Identified for provision; fit only with approved brake installation; stock pending",
       "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
     },
@@ -280,7 +281,7 @@
       "source": "Brake cable",
       "destination": "VHR-2N cavities 1/2",
       "purpose": "Carry VMOTOR and switched return",
-      "need": "conditional-brake",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
       "status": "Tooling, temperature and stock qualification pending",
       "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
     },
@@ -293,7 +294,7 @@
       "source": "J3 pins 1/2",
       "destination": "Separate resistor terminals",
       "purpose": "Outgoing bus and switched return; not permanent ground",
-      "need": "conditional-brake",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
       "status": "Exact colour/SKU and installed temperature acceptance pending",
       "manufacturer_url": ""
     },
@@ -306,7 +307,7 @@
       "source": "Two brake wires",
       "destination": "Candidate resistor M4 terminals",
       "purpose": "Terminate brake load",
-      "need": "conditional-brake",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
       "status": "Re-select if resistor changes; stock, tooling, terminal temperature and guarded access pending",
       "manufacturer_url": "https://www.te.com/en/product-152883.html"
     },
@@ -319,7 +320,7 @@
       "source": "Selected resistor case/terminals",
       "destination": "Qualified heat-dissipating mounting location",
       "purpose": "Remove heat and prevent contact/cable hazards",
-      "need": "conditional-brake",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
       "status": "Exact parts, dimensions and location depend on load/duty/ambient; no small-plate assumption",
       "manufacturer_url": ""
     },

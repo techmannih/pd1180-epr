@@ -37,7 +37,6 @@ export const LM66100DCKR = (props: ChipProps<typeof pinLabels>) => {
 <silkscreencircle pcbX="-1.070102mm" pcbY="-0.910082mm" radius="0.050038mm" />
 <silkscreencircle pcbX="-0.780034mm" pcbY="-0.260096mm" radius="0.050038mm" />
 <courtyardoutline outline={[{"x":-1.249998000000005,"y":1.7750795000000608},{"x":1.2499979999998914,"y":1.7750795000000608},{"x":1.2499979999998914,"y":-1.775079499999947},{"x":-1.249998000000005,"y":-1.775079499999947},{"x":-1.249998000000005,"y":1.7750795000000608}]} />
-<silkscreentext text="{NAME}" pcbX="0mm" pcbY="2.78mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C2869734.obj?uuid=190ec793c4fb4dd685e7d8ea6d5a8fd2",

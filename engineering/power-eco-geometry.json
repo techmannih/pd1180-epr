@@ -1,0 +1,26 @@
+{
+  "before_sha256": "556fe993091b35fb10a83289a03eb62edc8a107fb8fa2bac6cabd4ce49dcd80e",
+  "after_sha256": "c955f3f13b799e879e358d342fcf4a4509f92616a88bfc0bfa981981235fbcd6",
+  "removed_components": [],
+  "added_components": [
+    "C98",
+    "D20",
+    "R134",
+    "R135",
+    "R136"
+  ],
+  "retained_components": 273,
+  "mounting_holes_unchanged": true,
+  "pad_net_changes": [
+    {
+      "ref": "U30",
+      "pin": "6",
+      "before": "GND",
+      "after": "BRAKE_FB"
+    }
+  ],
+  "new_via_pad_overlaps": [],
+  "preexisting_via_pad_overlaps": 63,
+  "errors": [],
+  "scope": "Only U6/R25/R66 values, two power-probe positions and U30 AIN2 connectivity may change. Five new footprints and affected parts must match fresh source. All other placement/pad geometry and all four holes unchanged. Native DRC/ERC/parity separately verifies copper."
+}

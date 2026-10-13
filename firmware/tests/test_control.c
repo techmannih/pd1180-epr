@@ -11,7 +11,7 @@ static pd1180_inputs_t valid_inputs(void) {
   return (pd1180_inputs_t){
     .pd_app_mode = true, .epr_contract = true, .contract_mv = 48000, .contract_ma = 5000,
     .motor_power_good = true, .vmotor_in_range = true, .watchdog_healthy = true,
-    .configuration_verified = true, .sample_fresh = true, .driver_ready = true,
+    .configuration_verified = true, .sample_fresh = true, .driver_ready = true, .brake_preflight_ok = true,
     .motion_wiring_verified = true, .temperature_valid = true, .temperature_deci_c = 250,
   };
 }
@@ -46,7 +46,7 @@ int main(void) {
   assert(pd1180_control_arm(&s,&i)); ticks(&s,&i,9); assert(!s.power_permit);
   ticks(&s,&i,1); assert(s.power_permit && !s.mcu_run);
   ticks(&s,&i,18); assert(!s.mcu_run); ticks(&s,&i,1); assert(s.mcu_run);
-  for (unsigned fault=0;fault<15;++fault) {
+  for (unsigned fault=0;fault<16;++fault) {
     running(&s,&i);
     switch(fault) {
       case 0:i.pd_fault=true;break; case 1:i.efuse_fault=true;break;
@@ -57,6 +57,7 @@ int main(void) {
       case 10:i.contract_mv=50000;break; case 11:i.contract_ma=3000;break;
       case 12:i.epr_contract=false;break;
       case 13:i.temperature_valid=false;break; case 14:i.temperature_deci_c=700;break;
+      case 15:i.brake_preflight_ok=false;break;
     }
     pd1180_control_tick(&s,&i,10);
     assert(!s.power_permit && !s.mcu_run && s.fault_latched);
@@ -64,6 +65,10 @@ int main(void) {
     assert(!pd1180_control_arm(&s,&i));
     pd1180_control_disarm(&s); assert(pd1180_control_arm(&s,&i));
   }
+  pd1180_control_disarm(&s); i=valid_inputs(); i.brake_preflight_ok=false;
+  assert(pd1180_control_arm(&s,&i)); ticks(&s,&i,40);
+  assert(s.power_permit && !s.mcu_run); /* Power is needed for the brake test. */
+  ticks(&s,&i,80); assert(s.fault_latched && !s.power_permit);
   running(&s,&i); pd1180_control_tick(&s,&i,1000); assert(!s.mcu_run && s.fault_latched);
   pd1180_control_disarm(&s); assert(!s.power_permit && !s.mcu_run);
   i=valid_inputs(); i.motor_power_good=false; assert(pd1180_control_arm(&s,&i));
@@ -98,6 +103,6 @@ int main(void) {
   power[0]=13; mode[0]='P'; assert(!pd1180_decode_contract(mode,pdo,rdo,power,pd).valid);
   assert(PD1180_PIN_POWER_PERMIT.port=='B' && PD1180_PIN_POWER_PERMIT.bit==5 && PD1180_PIN_POWER_PERMIT.package_pin==44);
   assert(PD1180_PIN_PD_SCL.bit==6 && PD1180_PIN_PD_SDA.bit==7 && PD1180_PIN_VMOTOR_OK.bit==9);
-  puts("PASS: manual arm, 15 fault cases and thermal/telemetry boundaries, latched stop, stale timing, fixed PDO/RDO decoder, package pins");
+  puts("PASS: manual arm, 16 fault cases and thermal/telemetry boundaries, latched stop, stale timing, fixed PDO/RDO decoder, package pins");
   return 0;
 }

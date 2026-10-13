@@ -64,13 +64,12 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":-4.469993600000066,"y":-3.7522085999999035},{"x":-4.469993600000066,"y":-5.254948799999966},{"x":4.4699935999999525,"y":-5.254948799999966},{"x":4.4699935999999525,"y":-3.7522085999999035}]} />
 <fabricationnotepath route={[{"x":-4.469993600000066,"y":0.2778824000001805},{"x":-4.469993600000066,"y":-1.5190659999998388}]} />
 <courtyardoutline outline={[{"x":-5.120030900000074,"y":2.935624599999983},{"x":5.120030900000074,"y":2.935624599999983},{"x":5.120030900000074,"y":-5.437511799999925},{"x":-5.120030900000074,"y":-5.437511799999925},{"x":-5.120030900000074,"y":2.935624599999983}]} />
-<silkscreentext text="{NAME}" pcbX="0mm" pcbY="3.94mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C3020560.obj?uuid=b568c80088e44e7787ac98e18b16aaa3",
         stepUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C3020560.step?uuid=b568c80088e44e7787ac98e18b16aaa3",
         pcbRotationOffset: 0,
-        modelOriginPosition: { x: 0, y: 1.075092000000494, z: -0.0000020000000000575113 },
+        modelOriginPosition: { x: 0, y: 1.5075092000000494, z: -0.0000020000000000575113 },
       }}
       {...restProps}
     />

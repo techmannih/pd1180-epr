@@ -1,12 +1,12 @@
 # USB-C PD, USB data and current-sense architecture
 
-PD POWER J1 and USB DATA J10 use separate power rails. A motor-bus backup supply supports the brake-control circuitry. `scripts/design.test.mjs` checks physical numbered-pin connections in `dist/index/circuit.json`.
+The r0.4 ECO separates PD POWER J1 from USB DATA J10, preserving the original motor-bus backup supply. `scripts/design.test.mjs` checks physical numbered-pin connections in `dist/index/circuit.json`.
 
 ## Two independent USB-C ports
 
 J1 and J10 use tscircuit's standard USB-C connector with the exact C3020560 USB4105-GF-A footprint. J1 VBUS is PD_VBUS and J10 VBUS is USB_DATA_VBUS; they are never joined. J1 D+/D− pins are NC. Its SBU contacts use U1's protected SBU channels, whose system-side outputs are NC. J10 powers setup/diagnostics independently through U28 TPS2553 and U25 TLV755. It cannot energize VMOTOR.
 
-U5 derives board logic from PD_VBUS before the eFuse; U22 retains VMOTOR-fed brake backup. U23/U24 OR these supplies into V3V3. U26/U27 combine board V3V3 and DATA-derived V3V3_USB into a separate V3V3_MCU rail. Only STM32, its reset pullup, bypass/bulk capacitors and SWD supply reference use this output. Flash, encoder and sensors cannot draw their supply from DATA. R119/R120 sense board V3V3 on PB1; the unused U2 IRQ is NC and PD state is polled. Chip selects are released open-drain into board-domain pullups; peripheral inputs and I²C are high impedance with board power absent.
+U5 derives board logic from PD_VBUS before the eFuse; U22 retains VMOTOR-fed brake backup. U23/U24 OR these supplies into V3V3. U26/U27 combine board V3V3 and DATA-derived V3V3_USB into a separate V3V3_MCU rail. Only STM32, its reset pullup, bypass/bulk capacitors and SWD supply reference use this output. Industrial transceivers, flash, encoder and sensors cannot draw their supply from DATA. R119/R120 sense board V3V3 on PB1; the unused U2 IRQ is NC and PD state is polled. Chip selects are released open-drain into board-domain pullups; peripheral inputs and I²C are high impedance with board power absent.
 
 R113 limits DATA overload current; it does not enforce USB power states. Firmware advertises a bus-powered 500 mA configuration, disarms on suspend, clears commands and stale telemetry, quiesces GPIO/I²C and enters STOP0. RTC wakes the main loop every nominal 50 ms for VBUS sampling and IWDG service. USB resume/reset wakes normally; full clocks return before servicing pending USB interrupts. See `firmware/README.md` for the implementation and mandatory current, wake-latency, detach, inrush, reverse-current and supply-handover bench checks. The 2.5 mA suspend limit is not yet a measured result.
 
@@ -20,7 +20,7 @@ J1 CC1/CC2
   -> configured sink-only 48 V / 5 A EPR negotiation
 ```
 
-The TPS26750 is the dedicated PD controller. TI specifies EPR sink support at 28 V, 36 V and 48 V and shows the PD exchange on CC. U2's optional `USB_P`/`USB_N` pins do not carry board USB data; pins 22 and 23 are grounded as TI requires for unused GPIO4/GPIO5. `POWER_PATH_EN` drives the exact two-NMOS buffer from TI Figure 8-5: R9 (0 Ω) drives Q2, R11 pulls Q2's drain up to `PD_3V3`, R12 (0 Ω) drives Q3, and R13 pulls `PD_PATH_OK` up to `PD_3V3`. Q2/Q3 are the CSD17484F4 devices used by the TPS26750 EVM. `PD_PATH_OK` is then combined with the MCU permit before the TPS26630 eFuse can energize the motor bus.
+The TPS26750 is the dedicated PD controller. TI specifies EPR sink support at 28 V, 36 V and 48 V and shows the PD exchange on CC. U2's optional `USB_P`/`USB_N` pins do not carry board USB data; pins 22 and 23 are grounded as TI requires for unused GPIO4/GPIO5. `POWER_PATH_EN` drives the exact two-NMOS buffer from TI Figure 8-5: R9 (0 Ω) drives Q2, R11 pulls Q2's drain up to `PD_3V3`, R12 (0 Ω) drives Q3, and R13 pulls `PD_PATH_OK` up to `PD_3V3`. Q2/Q3 are the CSD17484F4 devices used by the TPS26750 EVM. `PD_PATH_OK` is then combined with the MCU permit before the TPS26631 eFuse can energize the motor bus.
 
 The board still requires a reviewed TI-generated full-flash configuration image in U3. A blank image leaves the design in SafeMode and does not negotiate 48 V.
 
@@ -32,7 +32,7 @@ J10 VBUS feeds R107 1 MΩ / R108 47 kΩ with C72 100 nF, and U16 PB0 senses thei
 
 ## Motor current and voltage feedback
 
-- U6 TPS26630 pin 13 produces `IIN_MON`; R26 converts it to a voltage and U30 ADS1115 channel 1 reads it.
+- U6 TPS26631 pin 13 produces `IIN_MON`; R26 converts it to a voltage and U30 ADS1115 channel 1 reads it.
 - The independent VMOTOR divider R31/R32/R33 produces `VMON_ADC`; U30 channel 0 reads it at ±4.096 V full scale. U30 address is 0x49; conversion validity and freshness are checked before motor permission.
 - R109 and R110 are independent 33 mΩ, 3 W low-side phase shunts connected to TMC5160A `SRAH` and `SRBH` inputs for phase-current regulation.
 - R115/R116 are 5 mΩ, 1 W series shunts in the A1/B1 motor leads. U31/U32 INA240A1 (gain 20) feed STM32 PA0/PA1 through 1 kΩ/10 nF filters. Nominal output is 1.65 V + 0.1 V/A, giving 0.872–2.428 V at the ±7.78 A peak of a 5.5 A RMS sine wave. Each shunt dissipates 0.151 W at 5.5 A RMS. These are calculated targets; ADC reference/zero calibration, PWM settling, negative transients, overload and temperature must be measured. Current firmware reports instantaneous samples, not calibrated RMS current.
