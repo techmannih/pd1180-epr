@@ -223,7 +223,7 @@ The exact ordered-motor CAD and retained J2 harness appear in the source 3D alig
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
 
-The EPR source, certified 5 A EPR cable, 34HS31-6004S1 motor, shaft magnet, brake resistor/heatsink, mating housings, contacts, wire and command/limit equipment are system items outside the assembled PCB BOM. See [docs/procurement.md](docs/procurement.md) and [sourcing/](sourcing/).
+The EPR source, certified 5 A EPR cable, 34HS31-6004S1 motor, brake resistor/heatsink, mating housings, contacts and wire are system items outside the assembled PCB BOM. The selected open-loop profile requires no shaft magnet or external command/limit equipment. See [docs/procurement.md](docs/procurement.md) and [sourcing/](sourcing/).
 
 ## Verification
 
@@ -236,7 +236,7 @@ bun run review
 
 The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, top-side assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
 
-Current verification results are recorded in [verification.json](docs/verification.json). Fresh native connectivity/ERC/parity checks pass; 43 native IC bypass paths and the separate buzzer bulk path pass. Full DRC retains 404 silkscreen/text findings. Engineering review records the five exact stock shortages separately; strict procurement/release checks still fail. A passing review is not an order approval. CAD screens do not establish powered operation.
+Current verification results are recorded in [verification.json](docs/verification.json). Fresh native connectivity/ERC/parity checks pass; 43 native IC bypass paths and the separate buzzer bulk path pass. Full DRC retains 404 silkscreen/text findings. Engineering review records the two remaining exact stock shortages separately; strict procurement/release checks still fail. A passing review is not an order approval. CAD screens do not establish powered operation.
 
 Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 

@@ -34,11 +34,11 @@ JLCPCB currently offers [programming](https://jlcpcb.com/help/article/pcba-progr
 
 Supply the following before approving a ready-to-run batch:
 
-1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 58 filled/capped via-in-pad locations and the agreed stack-up.
+1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 55 filled/capped via-in-pad locations and the agreed stack-up.
 2. U3 **M24512-RMN6TP**: approved full-flash BIN, hash, reviewed EEPROM programming method and readback verification. [TI's EVM guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf) describes generating the full-flash binary. U36 separates U2's EEP_SDA/EEP_SCL I2Cc bus from U3's EEP_PROG_SDA/EEP_PROG_SCL programming pads. Ground TP_PD_ISO before fixed-5 V target power and keep programmer VCC off. Follow [pd-programming.md](pd-programming.md); the constructed fixture still needs qualification. SWD/J10 do not directly program this EEPROM.
 3. U16 **STM32G0B1CBT6**: qualified motor-enabled BIN/HEX, hash, SWD pad drawing, flash address `0x08000000` for a raw BIN, supply arrangement and readback procedure. The existing commissioning archive is suitable only for initial diagnostic testing. Do not substitute it as the final motor-operating image.
-4. Exact motor and brake load, qualified current/microstep settings, STEP pulse/ direction timing and maximum rate, supply/cable, external 24 V controls, heatsink, enclosure and ambient limits. These operating limits must come from first-article qualification, not the 5.5 A target alone.
-5. An accepted fixture and test procedure: labelled power/USB/motor/J7 connections, current limiting, probes, controlled loads, expected readings, stop criteria and an operator demonstration. Agree who performs first-article qualification and who tests the remaining boards.
+4. Exact motor and brake load, qualified current/microstep settings, onboard motion limits and stop profile, actual 48 V EPR supply/cable, heatsink, enclosure and ambient limits. These must come from first-article qualification; the 3.8 A RMS design ceiling is not a measured motor rating.
+5. An accepted fixture and test procedure: labelled J1 POWER/J10 DATA/J2 motor/J3 brake connections, current limiting, probes, controlled loads, expected readings, stop criteria and an operator demonstration. Agree who performs first-article qualification and who tests the remaining boards.
 
 ### Request to send to the assembly/test provider
 
@@ -90,3 +90,5 @@ U22, L2 and U24 provide motor-side logic backup; U5, L1 and U23 provide PD-side 
 ## Indicator and programming-fixture acceptance
 
 Verify the new top-side D16/D17/BZ1/Q26/U35/U36 parts and their polarity against the source/BOM, with R126 = 1 kΩ and R127 = 100 kΩ. Check the 19 bare service contacts against the fixture map in [pd-programming.md](pd-programming.md). The indicators consume board V3V3 and do not imply motor permission or correct PD programming. Verify RGB visibility, power indication, fault chirps, silent reset and the combined rail current using [indicators.md](indicators.md). Record these tests with the per-board firmware/configuration hashes.
+
+Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 55 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. **10 Ω/300 W remains provisional; motion locks remain enabled.**

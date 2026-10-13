@@ -2,7 +2,7 @@ import {readFile,writeFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import modeling from '@jscad/modeling'
 import {encodeGlb} from './assembly-glb.mjs'
-import {bezier,tube,distance} from './harness-geometry.mjs'
+import {bezier,tube,distance,canonicalHarnessGeometry} from './harness-geometry.mjs'
 const layout=JSON.parse(await readFile('engineering/mechanical/harness-layout.json'))
 const assembly=JSON.parse(await readFile('engineering/mechanical/assembly.json'))
 const contract=JSON.parse(await readFile('hardware-contract.json'))
@@ -52,7 +52,7 @@ for(const p of ports){
 const glb=encodeGlb(meshes),sha=b=>createHash('sha256').update(b).digest('hex')
 const outputs={
  'engineering/mechanical/harness-proposal.glb':glb,
- 'engineering/mechanical/harness-geometry.json':JSON.stringify({layout_sha256:sha(await readFile('engineering/mechanical/harness-layout.json')),glb_sha256:sha(glb),connectors,bodies,wires})+'\n',
+ 'engineering/mechanical/harness-geometry.json':JSON.stringify(canonicalHarnessGeometry({layout_sha256:sha(await readFile('engineering/mechanical/harness-layout.json')),glb_sha256:sha(glb),connectors,bodies,wires}))+'\n',
  'engineering/mechanical/harness-parts.json':JSON.stringify(meshes.map(m=>({name:m.name.replace(/[^a-zA-Z0-9_]/g,'_'),description:m.name,bom:m.name.startsWith('TE320559')?'320559':m.name.includes('Alpha3057')?'Alpha Wire 3057':m.name,base64:encodeGlb([m]).toString('base64')})))+'\n'
 }
 for(const [path,bytes]of Object.entries(outputs)){

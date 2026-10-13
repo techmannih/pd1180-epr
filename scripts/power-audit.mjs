@@ -255,7 +255,7 @@ export async function audit() {
   }
   const modePort = circuit.find(p => p.type === 'source_port' && p.source_component_id === part('U6').source_component_id && p.pin_number === 11)
   if (!modePort || circuit.some(t => t.type === 'source_trace' && t.connected_source_port_ids?.includes(modePort.source_port_id))) errors.push('TPS26630 MODE pin 11 must remain open for latch-off')
-  const requiredParts = { U12:'C187836', U34:'C1858393', L3:'C2047110', R22:'C23162', R23:'C705777', R24:'C95204', R60:'C326731', R61:'C728583', R62:'C95204', R63:'C326730', R64:'C861400', R65:'C723637', U6:'C1850276', R25:'C7293210', R66:'C136970', R122:'C861611', R134:'C6675858', R135:'C6675858', R136:'C7468460', C98:'C57112', D20:'C49242208' }
+  const requiredParts = { U12:'C187836', U34:'C1858393', L3:'C2047110', R22:'C23162', R23:'C705777', R24:'C95204', R60:'C326731', R61:'C728583', R62:'C95204', R63:'C326730', R64:'C2984356', R65:'C723637', U6:'C1850276', R25:'C7293210', R66:'C136970', R122:'C861611', R134:'C6675858', R135:'C6675858', R136:'C7468460', C98:'C57112', D20:'C49242208' }
   for (const [name,code] of Object.entries(requiredParts)) {
     if (!part(name).supplier_part_numbers?.jlcpcb?.includes(code)) errors.push(`${name}: ${code} is required for the audited ratings/tolerances`)
   }

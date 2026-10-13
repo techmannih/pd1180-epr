@@ -22,3 +22,14 @@ test('wire separation catches crossings and overlapping parallel runs', () => {
   expect(segmentDistance([0,0,0],[4,0,0],[1,0,0],[5,0,0])).toBe(0)
   expect(segmentDistance([0,0,0],[4,0,0],[1,2,0],[5,2,0])).toBe(2)
 })
+
+test('canonical harness metadata tolerates libm ULPs, not changed dimensions or invalid numbers', async () => {
+  const { canonicalHarnessGeometry } = await import('./harness-geometry.mjs')
+  const original = { points: [[-37.60000000000001, .4019619216820569, 20]], length_mm: 153.723896311411, glb_sha256: 'fixed' }
+  const variant = { points: [[-37.6, .401961921682057, 20]], length_mm: 153.723896311412, glb_sha256: 'fixed' }
+  expect(JSON.stringify(canonicalHarnessGeometry(original))).toBe(JSON.stringify(canonicalHarnessGeometry(variant)))
+  variant.points[0][0] += .000001
+  expect(canonicalHarnessGeometry(variant)).not.toEqual(canonicalHarnessGeometry(original))
+  expect(() => canonicalHarnessGeometry({ points: [NaN] })).toThrow('Non-finite')
+  expect(() => canonicalHarnessGeometry({ length: Infinity })).toThrow('Non-finite')
+})

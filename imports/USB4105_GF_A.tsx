@@ -1,3 +1,5 @@
+// Shared GCT land pattern retained. Generic family CAD has 0.95 mm stakes; the selected
+// -060 part has 0.60 mm stakes. This conservative visual envelope is not a fit approval.
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
@@ -33,10 +35,10 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
       
       supplierPartNumbers={{
   "jlcpcb": [
-    "C3020560"
+    "C3025063"
   ]
 }}
-      manufacturerPartNumber="USB4105-GF-A"
+      manufacturerPartNumber="USB4105-GF-A-060"
       footprint={<footprint insertionDirection="from_bottom">
         <hole pcbX="2.890012mm" pcbY="1.0646474mm" diameter="0.649986mm" />
 <hole pcbX="-2.890012mm" pcbY="1.0646474mm" diameter="0.649986mm" />

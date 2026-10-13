@@ -36,6 +36,7 @@ verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-rev
 verifiedInputPaths.push('scripts/check-inventory.mjs', 'docs/stock-report.json', 'docs/alternatives.json', 'firmware/tests/test_brake_preflight.c', 'firmware/README.md')
 verifiedInputPaths.push('docs/completion-handoff.md', 'engineering/mechanical/splice-evidence.json', 'engineering/mechanical/TE-320559-drawing.zip', 'engineering/filled-copper-review.json')
 verifiedInputPaths.push('scripts/check-copper-evidence.mjs', 'scripts/copper-evidence.test.mjs')
+verifiedInputPaths.push('docs/sourcing-resolution.md', 'docs/manufacturing-acceptance.md', 'sourcing/procurement-open-items.csv', 'release/order-settings.json', 'engineering/sourcing-native-metadata.json')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],

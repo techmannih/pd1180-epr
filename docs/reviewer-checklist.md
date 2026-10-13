@@ -82,9 +82,16 @@ Engineering review and ordering are separate gates: `bun run review` validates t
 - [ ] U36 isolates both EEPROM wires when TP_PD_ISO is grounded. Follow [pd-programming.md](pd-programming.md), verify readback and cold APP boot with the approved TI image.
 - [ ] All 19 service pads are identified in the final fixture drawing; high-voltage probes cannot touch the logic programming contacts.
 
-- [ ] Review the power ECO: R25 4.99 kΩ, TPS26630 MODE open (1× latch-off), R61 16.2 kΩ / R66 1.2 kΩ, D20 cathode VMOTOR/anode BRAKE_RETURN, and R134/R135/R136/C98 to ADS1115 AIN2. Confirm startup-only continuity detection, three locked qualification flags, 3.8 A ceiling and 0.827 A / 10 rpm initial profile.
+- [ ] Review the power ECO: R25 4.99 kΩ, TPS26630 MODE open (1× latch-off), R61 16.2 kΩ / R66 1.2 kΩ, D20 cathode VMOTOR/anode BRAKE_RETURN, and R134/R135/R136/C98 to ADS1115 AIN2. Confirm startup and ADC-skew-aware runtime voltage monitoring, three locked qualification flags, 3.8 A ceiling and 0.827 A / 10 rpm initial profile.
 - [ ] Reproduce engineering/power-eco-simulation/results.json; healthy winding corner must pass while open-brake/full-load and 5 J / 20 ms cases remain explicitly unsafe. No source/heatsink/load hardware qualification is implied.
 
 - [ ] Confirm the 240-permille request guard cannot bypass the 0.827 A commissioning profile, all three qualification locks remain false, and regenerated delivery BOM/CPL/viewer match the current source. Review 14 behavioral cases and their unqualified assumptions.
 
 Unused-SBU correction and TI export: inspect `engineering/unused-sbu-eco.json`, `docs/pd-image-check.json`, `docs/pd-configuration-review.md` and `docs/placement-review.md`. Ordering remains held while procurement and hardware gates are open.
+
+## Post-merge sourcing and first-article handoff
+
+- [ ] Review selected U17/R64/J1/J10 identities and unresolved U16/U35 procurement in [sourcing-resolution.md](sourcing-resolution.md); do not fit rejected PCA9538PWR.
+- [ ] Complete the U3/U16 programming, full-capacity readback and cold-boot checklist in [readiness.md](readiness.md). Keep qualification flags false until supported by physical results.
+- [ ] Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md); record actual EPR source/cable and provisional J3 resistor/heatsink qualification.
+- [ ] Preserve the 404 silkscreen/text findings deferred by the user, and obtain fabricator printing disposition. This is not zero DRC.

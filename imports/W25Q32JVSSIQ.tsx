@@ -1,3 +1,4 @@
+// Stable component wrapper; selected M variant is reviewed in docs/sourcing-resolution.md.
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
@@ -23,10 +24,10 @@ export const W25Q32JVSSIQ = (props: ChipProps<typeof pinLabels>) => {
       pinAttributes={pinAttributes}
       supplierPartNumbers={{
   "jlcpcb": [
-    "C179173"
+    "C6000508"
   ]
 }}
-      manufacturerPartNumber="W25Q32JVSSIQ"
+      manufacturerPartNumber="W25Q32JVSSIM"
       footprint={<footprint>
         <smtpad portHints={["pin1"]} pcbX="-1.905mm" pcbY="-3.530092mm" width="0.6299962mm" height="2.2500082mm" radius="0.3149981mm" shape="pill" />
 <smtpad portHints={["pin2"]} pcbX="-0.635mm" pcbY="-3.530092mm" width="0.6299962mm" height="2.2500082mm" radius="0.3149981mm" shape="pill" />

@@ -4,7 +4,7 @@ This handoff builds on merged PR #3 (`0cacbb2`). It is an engineering review pac
 
 ## Implemented in this pass
 
-- Brake feedback continues to be checked during RUN. At a 44–50.4 V bus, the return must follow the bus within ±10%; invalid or stale feedback latches a fault. Samples older than 100 ms fail. Above 50.4 V, the expected low return during Q16 switching is allowed for at most 100 ms from the last healthy conversion. Repeated polling cannot extend that interval. The separate motor-bus interlock remains active. The control state machine removes RUN/power permission on a failed check and requires deliberate rearm.
+- Brake feedback continues during RUN. The ADC multiplexes bus and brake-return conversions, normally up to 40 ms apart. A low return can therefore accompany an older 48 V bus sample during normal Q16 switching. Both channels must be valid and no older than 100 ms. The first mismatching observation starts a fixed 100 ms retry window regardless of the stored bus value, allowing a complete new ADC scan. Only a distinct fresh healthy pair within ±10% at 44–50.4 V clears the pending mismatch. Repeated polls, continued bad pairs, or just one updated channel cannot renew the deadline. Invalid/stale ADC or a bus outside 44–55 V faults immediately at the next check. The separate 44–51 V motor-bus interlock remains active. Checks run every 50 ms, followed by the 10 ms control tick. The 60 ms ADC scan, first detection, 100 ms retry and polling phase can accumulate to roughly 270 ms plus conversion/filter/I2C timing; this is not a guaranteed 100 ms disconnect-to-inhibit response. Measure the actual bound before enabling motion. A brake pulse that prevents a healthy pair for the whole retry window deliberately inhibits motion. The control state machine removes RUN/power permission on failure and requires deliberate rearm.
 - Host regressions cover running cable-open, reconnection, stale/duplicate conversions, the bounded observation gap, no preflight qualification and timer wrap. The ARM target is rebuilt from the updated source. The archived image still cannot enable motion.
 - The exact 404 native-reference text findings are accepted according to the user's instruction. Every raw KiCad finding remains in the package. Changed finding identities, shorts, unconnected items, parity errors and ERC failures are rejected. Names, text sizes, PCB placement, four holes and copper are unchanged.
 - Review can complete with explicitly recorded stock shortages; strict procurement/release commands still fail. Unknown stock, package mismatch and failed engineering checks are not accepted. Exact inventory is refreshed and remains unreserved.
@@ -34,18 +34,15 @@ The live JLC snapshot in `stock-report.json` controls; warehouse stock is not th
 | Reference | Exact MPN / package | JLC code | Required quantity | Next action |
 |---|---|---|---:|---|
 | U16 | STM32G0B1CBT6 / LQFP-48 7×7 | C2847904 | 5 | Obtain exact-part allocation or an assembler-approved consignment quote. |
-| U17 | W25Q32JVSSIQ / SOIC-8 208 mil | C179173 | 5 | Same; reported warehouse pieces are not orderable inventory. |
 | U35 | TCA9538PWR / TSSOP-16 | C2652286 | 5 | Same; a reset-less expander is not an approved substitution. |
-| R64 | RT0603BRD07430KL / 0603 | C861400 | 5 | Same; retain 0.1% resistance and temperature coefficient used in OVP analysis. |
-| J1/J10 | USB4105-GF-A | C3020560 | 10 | Same; any other USB-C receptacle needs pin/land-pattern, voltage/current and mechanical review. |
 
-No substitute has been installed, inventory reserved, or order placed. `sourcing/bom-with-stock.csv` and `sourcing/external-items.csv` are the procurement handoff. An unavailable optional alternative does not become an approved part through a passing engineering review.
+U16 and U35 remain unchanged; no inventory has been reserved or order placed. `sourcing/bom-with-stock.csv` and `sourcing/external-items.csv` are the procurement handoff. An unavailable optional alternative does not become an approved part through a passing engineering review.
 
 ## Physical work and evidence needed
 
 | Stage | Required evidence before advancing |
 |---|---|
-| Before ordering | Resolve the five stock shortages; obtain fabricator acceptance of the actual stackup/USB impedance and filled/capped via-in-pad process. Measure the actual motor rear holes/thread/depth and define secure attachment using the retained four PCB holes. Do not reuse motor tie bolts or add guessed hardware. |
+| Before ordering | Resolve the two remaining stock shortages; obtain fabricator acceptance of the actual stackup/USB impedance and filled/capped via-in-pad process. Measure the actual motor rear holes/thread/depth and define secure attachment using the retained four PCB holes. Do not reuse motor tie bolts or add guessed hardware. |
 | Harness first article | Verify delivered lead insulation against the current TE application drawing, finished splice envelope, crimp/pull/insulation tests, winding mapping, connector insertion/tool clearance, cable bend/retention and final cut lengths. The archived TE drawing is older Rev V2; request current Rev V6/STEP before production fit approval. |
 | Stationary electrical | Serial-number the PCB. Record BOM/revision, firmware/PD-image hashes and readback; inspect before power. With the bridge inhibited, measure source negotiation, all rails, USB power states/backfeed, eFuse response, brake/cutoff thresholds and fault/restart paths. |
 | First motion | Only after stationary checks and a qualified brake installation: securely mounted **unloaded** motor, 20–25°C, nominal 10 rpm, 10 rpm/s, IRUN=6 / GS=139 (about 0.827 A RMS). Capture phase current, gates, VMOTOR and brake waveforms. These are proposed qualification limits, not tested ratings. |
@@ -59,3 +56,5 @@ Runtime voltage monitoring does not absorb energy, detect the resistor's resista
 `bun run review` refreshes stock evidence, runs the source/native/firmware checks and regenerates previews/release artifacts. It may pass with the recorded procurement hold. `bun run check:stock`, `bun run check:assembly` and `bun run check:release` remain strict; they do not authorize ordering while shortages or other holds remain. `docs/verification.json`, the raw DRC/ERC reports and `delivery-manifest.json` identify the actual reviewed artifacts.
 
 The current PCB/3D geometry is retained from merged PR #3. Firmware and review-policy changes do not produce a physical before/after shape change. The regenerated `release/pcb-3d.png` and assembly archive show that retained geometry; they are not photographs or proof of completed mounting/brake installation.
+
+Sourcing replacements from PR #4 are included: R64 C2984356, U17 C6000508 and J1/J10 C3025063. See [sourcing resolution](sourcing-resolution.md). U17 has limited stock; USB -060 shorter stakes still need assembly/retention acceptance. No inventory is reserved.

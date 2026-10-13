@@ -11,3 +11,16 @@ test('rejects restored SBU signal, changed capacitor route and moved mounting ho
     b => { const h=b.find(x=>x[0]==='footprint'&&x.some(v=>v[0]==='pad'&&v[2]==='np_thru_hole'));field(h,'at')[1]='101' },
   ]) {const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
 })
+test('supplier substitution permits only reviewed values, never pad or text geometry', () => {
+  for (const mutate of [
+    f => { f.find(p=>p[0]==='property' && p[1]==='"Value"')[2]='"USB4105-GF-A-120"' },
+    f => { field(f.find(p=>p[0]==='pad'),'at')[1]='99' },
+    f => { field(f,'at')[1]='99' },
+    f => { field(f.find(p=>p[0]==='property' && p[1]==='"Reference"'),'at')[1]='99' },
+  ]) {
+    const b=structuredClone(original)
+    const f=b.find(x=>x[0]==='footprint' && x.some(p=>p[0]==='property' && p[1]==='"Reference"' && p[2]==='"J1"'))
+    mutate(f)
+    expect(()=>verifyNativeEco(b,policy)).toThrow()
+  }
+})

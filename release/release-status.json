@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "status": "runtime-brake-monitor-reviewed-order-held",
+  "status": "adc-skew-aware-brake-and-sourcing-reviewed-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -50,7 +50,7 @@
   },
   "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
-    "Exact current assembler inventory is insufficient for C179173 (U17), C861400 (R64), C2652286 (U35), C2847904 (U16), C3020560 (J1/J10). No unreviewed substitutes or stock reservations; see stock-report.json.",
+    "Exact current assembler inventory remains insufficient for U16 C2847904 and U35 C2652286. Reviewed replacements are selected for R64, U17 and J1/J10. No inventory is reserved; see stock-report.json and sourcing-resolution.md.",
     "Alternative-part stock/package evidence includes unavailable candidates; alternatives never authorize automatic substitution.",
     "Fabricator acceptance of filled/capped via-in-pad treatment and USB stackup/impedance remains unrecorded.",
     "Four existing holes are retained. Actual rear thread/depth, secure motor mounting, connector access and strain relief are unverified; the 3D view is alignment-only.",
@@ -62,15 +62,12 @@
   ],
   "current_stock_evidence": "docs/stock-report.json",
   "stock_summary": {
-    "checked_at": "2026-10-13T11:55:20.630Z",
-    "available": 79,
+    "checked_at": "2026-10-13T13:39:14.253Z",
+    "available": 82,
     "total": 84,
     "unavailable_codes": [
-      "C179173",
-      "C861400",
       "C2652286",
-      "C2847904",
-      "C3020560"
+      "C2847904"
     ],
     "not_reserved": true
   },

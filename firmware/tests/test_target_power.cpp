@@ -22,6 +22,30 @@ int main() {
   for (unsigned i=0;i<sizeof(identity);i++) {identity[i]^=1; assert(!pdConfigurationMatches(identity)); identity[i]^=1;}
   memset(identity,0,sizeof(identity)); assert(!pdConfigurationMatches(identity));
   assert(!pdImageVerified && !motionQualified);
+  // Exercise the actual mux scan and target call site: bus=200 ms, return=240
+  // ms. Q16 goes low after the bus reading; the next scan recovers at 300 ms.
+  pdBus.adcPresent=true;
+  control.power_permit=true;
+  for(unsigned t=10;t<=180;t+=10) {
+    fakeNow=t; pollBusAdc(t);
+    if(t%60==0) pollPower();
+  }
+  assert(brakePreflight.ready);
+  control.mcu_run=true;
+  for(unsigned t=190;t<=300;t+=10) {
+    fakeNow=t;
+    pdBus.adcRaw[2]=(t>200 && t<=240) ? 0 : 19762;
+    pollBusAdc(t);
+    if(t==240) {
+      assert(adcSampleAt[0]==200 && adcSampleAt[2]==240);
+      pollPower(); assert(inputs.brake_preflight_ok && !brakePreflight.faulted);
+    }
+    if(t==250 || t==300) {
+      pollPower(); assert(inputs.brake_preflight_ok && !brakePreflight.faulted);
+    }
+  }
+  assert(!brakePreflight.mismatch_pending);
+  invalidateTelemetry(); fakeNow=lastAdcPoll=0; pdBus.adcChannels.clear();
   pdBus.adcPresent=true;
   for (unsigned n=1;n<=6;n++) pollBusAdc(n*10u);
   assert((pdBus.adcChannels==std::vector<unsigned>{0,1,2}));

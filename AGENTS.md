@@ -35,6 +35,8 @@ On 2026-10-13 the user authorized correcting PR #2 after review. Merge the lates
 
 On 2026-10-13 the user explicitly requested closure of the remaining U1 unused-SBU wiring, stock/package and placement findings, PD programming preparation, J3 documentation, and system qualification blockers. Affected source, native copper, checks and documentation are reopened. Physical measurements and supplier inventory must still be evidenced; no procurement or invented qualification is authorized. Preserve unrelated circuitry and the four existing PCB holes.
 
+On 2026-10-13 after PR #3 merged, the user requested programming/readback/cold-boot and external-system qualification checklists, sourcing fixes for U17/R64/U35/U16/J1/J10, and manufacturing/mechanical closure. Reviewed compatible substitutions and their affected metadata are authorized. The user explicitly deferred the 404 silkscreen/text findings: leave native labels unchanged and retain raw findings. Do not claim zero DRC or fabricator acceptance. Physical qualification and purchase/consignment remain evidence-dependent; no order or supplier message is authorized.
+
 ## Required project structure
 
 Every board repository should contain:

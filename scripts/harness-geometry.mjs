@@ -5,6 +5,21 @@ const subtract = (a, b) => a.map((v, k) => v - b[k])
 const unit = a => a.map(v => v / Math.hypot(...a))
 const cross = (a, b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
 
+// Serialize nominal mm geometry at 1e-9 mm, far below CAD/measurement precision.
+// libm sin/cos/hypot can differ by an ULP on macOS ARM and Linux x64. Keep
+// strict byte comparisons after this canonicalization; dimensions, hashes,
+// identities and any meaningful change must still invalidate saved evidence.
+export function canonicalHarnessGeometry(value) {
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value)) throw new Error('Non-finite harness geometry')
+    return Math.round(value * 1e9) / 1e9;
+  }
+  if (Array.isArray(value)) return value.map(canonicalHarnessGeometry)
+  if (value && typeof value === 'object')
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, canonicalHarnessGeometry(item)]))
+  return value
+}
+
 export function bezier(control, steps = 32) {
   return Array.from({ length: steps + 1 }, (_, i) => {
     const t = i / steps, s = 1 - t
