@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-13T04:24:50.659Z",
+  "checked_at": "2026-10-13T04:29:54.355Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -40,6 +40,7 @@
     "release/schematic-style-check.json",
     "release/sha256.json",
     "release/verification.json",
+    "__snapshots__/**",
     "**/__snapshots__/**",
     "docs/**",
     "engineering/**",
@@ -57,7 +58,7 @@
     "release/external-parts.json"
   ],
   "included_files": 81,
-  "included_bytes": 8255223,
+  "included_bytes": 8255247,
   "included_mebibytes": 7.87,
   "maximum_mebibytes": 20,
   "largest_files": [
@@ -102,9 +103,9 @@
       "bytes": 12472
     }
   ],
-  "github_import_files": 557,
-  "github_import_bytes": 22814678,
-  "github_import_mebibytes": 21.76,
+  "github_import_files": 564,
+  "github_import_bytes": 24451058,
+  "github_import_mebibytes": 23.32,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
@@ -125,8 +126,16 @@
       "bytes": 838276
     },
     {
+      "path": "previews/native-labels-after-pcb.png",
+      "bytes": 804173
+    },
+    {
       "path": "checks/vendor/circuit-json-schematic-placement-analysis.browser.js",
       "bytes": 725913
+    },
+    {
+      "path": "previews/native-labels-before-pcb.png",
+      "bytes": 725024
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1-routed-cable.glb",
@@ -139,17 +148,7 @@
     {
       "path": "release/schematics/mcu.svg",
       "bytes": 248843
-    },
-    {
-      "path": "previews/reference-eco-placement.png",
-      "bytes": 241700
-    },
-    {
-      "path": "release/schematics/motion.svg",
-      "bytes": 236959
     }
   ],
-  "errors": [
-    "tscircuit.config.json must ignore __snapshots__/**"
-  ]
+  "errors": []
 }
