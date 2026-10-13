@@ -1,7 +1,9 @@
 import type { MosfetProps } from "@tscircuit/props"
 
-export const BSS123LT1G = (props: Omit<MosfetProps, "channelType" | "mosfetMode">) => {
-  const { name = "Q1", ...restProps } = props
+export const BSS123LT1G = (props: Omit<MosfetProps, "channelType" | "mosfetMode"> & {
+  referenceOffset?: { x: number; y: number }
+}) => {
+  const { name = "Q1", referenceOffset = { x: 0, y: 2.7 }, ...restProps } = props
   return (
     <mosfet
       name={name}
@@ -42,7 +44,7 @@ export const BSS123LT1G = (props: Omit<MosfetProps, "channelType" | "mosfetMode"
 <fabricationnotepath route={[{"x":-0.6999731999999881,"y":-1.5000478000000044},{"x":-0.6999731999999881,"y":-0.6360414000000105}]} />
 <fabricationnotepath route={[{"x":-0.6999731999999881,"y":-1.5000478000000044},{"x":0.30005020000000115,"y":-1.5000478000000044}]} />
 <courtyardoutline outline={[{"x":-1.8999840000000034,"y":1.6999589999999927},{"x":1.8999840000000034,"y":1.6999589999999927},{"x":1.8999840000000034,"y":-1.700035200000002},{"x":-1.8999840000000034,"y":-1.700035200000002},{"x":-1.8999840000000034,"y":1.6999589999999927}]} />
-      <silkscreentext text="{NAME}" pcbX="0mm" pcbY="2.7mm" anchorAlignment="center" />
+      <silkscreentext text="{NAME}" pcbX={referenceOffset.x} pcbY={referenceOffset.y} anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C78755.obj?uuid=d777607a152f4f3aac9bb0d0c14ed6fd",

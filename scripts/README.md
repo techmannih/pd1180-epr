@@ -118,5 +118,5 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 
 - `check-protection-refinement.mjs`: reverses only the three R25/R61/R66 value fields and requires the entire native PCB to hash exactly to main 4836266. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.
 
-- `check-pcb-references.mjs`: checks every electrical component reference in compiled source, native PCB and the default routed PCB/3D viewer. Rejects hidden, absent, detached, stale or manually positioned names. Runs within `check:cloud-viewer`.
+- `check-pcb-references.mjs`: checks every electrical component reference in compiled source, native PCB and the default routed PCB/3D viewer. Rejects hidden, absent, detached or stale names, and screens rotated reference envelopes against the full board outline. Native edge anchors may move per the user's edge-clearance exception; native DRC still checks stroke clearance. Runs within `check:cloud-viewer`.
 - `sync-pcb-references.py`: copies compiled native footprint references into the KiCad Reference fields, removes obsolete detached captions, and rejects any change outside those label fields. Arguments: board path and optional `--source` Circuit JSON.

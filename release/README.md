@@ -1,6 +1,6 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-The default `circuit.json` viewer has refreshed native component names. The manufacturing archives and their zero-DRC evidence remain the pre-label revision. The current native PCB has 408 silkscreen/text findings, zero unconnected items and zero schematic-parity issues; fabrication remains held. See [label-only evidence](../engineering/native-reference-verification.json).
+The default `circuit.json` viewer has refreshed native component names, with six edge references moved inside the board. The manufacturing archives and their zero-DRC evidence remain the pre-label revision. The current native PCB has zero edge-clipping findings, 404 other silkscreen/text findings, zero unconnected items and zero schematic-parity issues; fabrication remains held. See [label-only evidence](../engineering/edge-reference-verification.json).
 
 
 ## 0.4.1-ECO review handoff — powered validation pending

@@ -25,13 +25,13 @@
   "artifacts": [
     {
       "path": "README.md",
-      "bytes": 6147,
-      "sha256": "8c844f758dbcc3cd27bc43cc86b07fcef6d09abfe00686a3fcec2684f906e33b"
+      "bytes": 6229,
+      "sha256": "3fe0817d7a1c570ebfcfdb4dfd2f565963e5f7cb739e8ca6c2691bb9622ce0ef"
     },
     {
       "path": "circuit.json",
-      "bytes": 7641546,
-      "sha256": "640273cd8ffe96f42ae518d1dceec15c59faf2f3218ce12e16c2077b552420cd"
+      "bytes": 7641540,
+      "sha256": "059ae4d64a271558372cdf3fa81d1492978124d80e3a46f9d20201b80f3ccbb7"
     },
     {
       "path": "hardware-contract.json",
@@ -365,11 +365,12 @@
     }
   ],
   "viewer_only_update": {
-    "scope": "Native component reference labels",
-    "evidence": "../engineering/native-reference-verification.json",
+    "scope": "Native component references, with six board-edge anchor corrections",
+    "evidence": "../engineering/edge-reference-verification.json",
     "manufacturing_archives_refreshed": false,
-    "current_native_silkscreen_findings": 408,
+    "current_native_silkscreen_findings": 404,
     "current_native_unconnected_items": 0,
-    "current_native_schematic_parity": 0
+    "current_native_schematic_parity": 0,
+    "current_native_edge_clipping_findings": 0
   }
 }

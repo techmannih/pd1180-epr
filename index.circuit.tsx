@@ -415,6 +415,7 @@ export const PD1180EPR = () => (
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.EEP_SDA" }} pcbRotation={0} />
     <resistor name="R4" schSheetName="usb-pd-policy" schSectionName="usb-pd_U3" schX={8.5} schY={2.55} pcbX={-0.25} pcbY={41.9}
+      pcbSx={{ "& silkscreentext": { pcbX: 1.9, pcbY: 0 } }}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.EEP_SCL" }} pcbRotation={0} />
@@ -431,6 +432,7 @@ export const PD1180EPR = () => (
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.PD_SCL" }} />
     <resistor name="R9" schSheetName="usb-pd-policy" schSectionName="usb-pd_U2" schX={-2.5} schY={-2.35} pcbX={-31.75} pcbY={28.25}
+      pcbSx={{ "& silkscreentext": { pcbX: 0, pcbY: -1.375 } }}
       resistance="0" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C21189"] }}
       connections={{ pin1: "net.PD_PATH_HV", pin2: "net.PD_LEVEL_BASE" }} pcbRotation={0} />
     <CSD17484F4 name="Q2" schSheetName="usb-pd-policy" schSectionName="usb-pd_U2" schX={3.67} schY={-2.35} pcbX={-17.5} pcbY={20.0} pcbRotation={180}
@@ -621,6 +623,7 @@ export const PD1180EPR = () => (
     <CSD19534Q5A name="Q4" schSheetName="motor-power" schSectionName="motor-power_U6" schX={-11.25} schY={0.55} pcbX={-8} pcbY={33}
       connections={{ source: "net.PD_VBUS", gate: "net.BLOCK_GATE", drain: "net.EFUSE_IN" }} />
     <BSS123LT1G name="Q5" schSheetName="motor-power" schSectionName="motor-power_U6" schX={-7.75} schY={4.05} pcbX={-8.35} pcbY={40.75}
+      referenceOffset={{ x: -3, y: 1 }}
       connections={{ gate: "net.BLOCK_FAST_GATE", source: "net.PD_VBUS", drain: "net.BLOCK_GATE" }} />
     <TPS26630RGER name="U6" schSheetName="motor-power" schSectionName="motor-power_U6" schX={-5.25} schY={0.55} schWidth={1.6} schHeight={2.8} pcbX={1} pcbY={25}
       schPinArrangement={{
@@ -934,6 +937,7 @@ export const PD1180EPR = () => (
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }} maxVoltageRating="25V"
       connections={{ pin1: "net.DRIVER_BUCK_VCC", pin2: "net.GND" }} />
     <capacitor name="C89" layer="top" schSheetName="driver-power" schSectionName="driver-power_U34" schX={-0.5} schY={0.8} schRotation={-90} pcbX={-27.8} pcbY={33.7} pcbRotation={270}
+      pcbSx={{ "& silkscreentext": { pcbX: -2.3, pcbY: 0 } }}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} maxVoltageRating="50V"
       connections={{ pin1: "net.DRIVER_BUCK_BOOT", pin2: "net.DRIVER_BUCK_SW" }} />
     <capacitor name="C90" layer="top" schSheetName="driver-power" schSectionName="driver-power_U34" schX={3.5} schY={2.8} schRotation={-90} pcbX={-9.4} pcbY={38} pcbRotation={0}
@@ -943,6 +947,7 @@ export const PD1180EPR = () => (
       capacitance="22uF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C45783"] }} maxVoltageRating="25V"
       connections={{ pin1: "net.TMC_12V", pin2: "net.GND" }} />
     <capacitor name="C92" layer="top" schSheetName="driver-power" schSectionName="driver-power_U34" schX={6.5} schY={2.8} schRotation={-90} pcbX={-3.6} pcbY={41.75} pcbRotation={0}
+      pcbSx={{ "& silkscreentext": { pcbX: 0, pcbY: -1.6 } }}
       capacitance="22uF" footprint="0805" supplierPartNumbers={{ jlcpcb: ["C45783"] }} maxVoltageRating="25V"
       connections={{ pin1: "net.TMC_12V", pin2: "net.GND" }} />
     <resistor name="R121" layer="top" schSheetName="driver-power" schSectionName="driver-power_U34" schX={0} schY={-3.2} schRotation={-90} pcbX={-18.975} pcbY={32.1}
