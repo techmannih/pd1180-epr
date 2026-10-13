@@ -15,9 +15,35 @@ try {
 }
 const checked = []
 
+// Wiring/purchase guidance must travel with the package and match the current
+// source documents, including the distinction between candidates and purchases.
+for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md']) {
+  const current = await readFile(`docs/${name}`, 'utf8')
+  const delivered = await readFile(`release/${name}`, 'utf8').catch(() => '')
+  if (current !== delivered) errors.push(`release/${name}: differs from current source guidance`)
+}
+const externalItems = await readFile('sourcing/external-items.csv', 'utf8')
+if (externalItems !== await readFile('release/external-items.csv', 'utf8').catch(() => ''))
+  errors.push('release/external-items.csv: differs from the sourcing inventory')
+
 const rootManifest = await readFile('delivery-manifest.json', 'utf8').catch(() => '')
 const releaseManifest = await readFile('release/delivery-manifest.json', 'utf8')
 if (rootManifest !== releaseManifest) errors.push('Root delivery-manifest.json does not match release/delivery-manifest.json')
+
+// Integrity is separate from engineering approval, but every reported count
+// must faithfully retain the delivered native findings, including failures.
+const nativeDrcText = await readFile('dist/manufacturing/kicad-drc.json', 'utf8')
+const deliveredDrcText = await readFile('release/kicad-drc.json', 'utf8')
+if (nativeDrcText !== deliveredDrcText) errors.push('Delivered DRC differs from the current native report')
+const deliveredDrc = JSON.parse(deliveredDrcText)
+for (const [field, count] of [
+  ['violations', 'kicad_drc_violations'],
+  ['unconnected_items', 'kicad_unconnected_items'],
+  ['schematic_parity', 'kicad_schematic_parity_issues'],
+]) {
+  if (!Array.isArray(deliveredDrc[field]) || manifest.checks?.[count] !== deliveredDrc[field].length)
+    errors.push(`Delivery manifest ${count} does not match the native findings`)
+}
 
 for (const path of standards.release.required_files) {
   try {

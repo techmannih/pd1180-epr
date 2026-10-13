@@ -8,7 +8,7 @@ const routed = process.argv.includes('--routed')
 const verifiedInputPaths = ['AGENTS.md', 'board-diagnostics.tsx', 'schematic-pages.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
-verifiedInputPaths.push('scripts/check-brake-sense.py', 'scripts/check-power-eco.py', 'scripts/simulate-power-eco.py', 'engineering/power-thermal-eco.json')
+verifiedInputPaths.push('scripts/check-brake-sense.py', 'scripts/check-power-eco.py', 'scripts/simulate-power-eco.py', 'engineering/power-thermal-eco.json', 'scripts/check-protection-refinement.mjs', 'engineering/protection-refinement.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
 verifiedInputPaths.push('motor-assembly.circuit.tsx', 'imports/MotorAssemblyCad.ts', 'engineering/mechanical/34hs31-6004s1.glb', 'engineering/mechanical/assembly.json', 'engineering/mechanical/34HS31-6004S1-manufacturer.zip', 'docs/motor-data.json', 'scripts/generate-motor-assembly.mjs', 'scripts/check-motor-assembly.mjs')
 verifiedInputPaths.push('engineering/mechanical/harness-layout.json', 'engineering/mechanical/harness-proposal.glb', 'scripts/assembly-glb.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/generate-harness-assembly.mjs', 'scripts/check-harness-assembly.mjs', 'scripts/harness-geometry.mjs', 'scripts/harness-geometry.test.mjs', 'docs/complete-assembly.md')
@@ -21,7 +21,7 @@ verifiedInputPaths.push('firmware/platformio.ini', 'docs/firmware-pinmap.json', 
 async function hashInputs() {
   return Object.fromEntries(await Promise.all(verifiedInputPaths.map(async (path) => [path, createHash('sha256').update(await readFile(path)).digest('hex')])))
 }
-verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/normalize-kicad-parity.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs')
+verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/normalize-kicad-parity.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs', 'scripts/check-delivery.mjs', 'scripts/check-stock.mjs', 'docs/external-system.md', 'docs/external-parts.json')
 verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
 verifiedInputPaths.push('scripts/verify-programming.mjs', 'scripts/verify-programming.test.mjs', 'docs/pd-configuration-review.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
@@ -51,6 +51,7 @@ const checks = [
   ['script-catalog', ['run', 'check:script-catalog']],
   ['topology-tests', ['test', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
+  ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['power-audit', ['run', 'check:power-audit']],
   ['power-simulation', ['run', 'check:power-simulation']],
   ['schematic', ['run', 'check:schematic']],

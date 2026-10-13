@@ -56,7 +56,7 @@ await Promise.all(Array.from({ length: 5 }, async () => {
       const package_match = typeof exact?.package === 'string' && entry.footprint.trim().toLowerCase() === exact.package.trim().toLowerCase()
       results.push({ ...entry, checked_at, url, fallback_url, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
-        status: !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
+        status: !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
         required: entry.quantity_per_board * quantity })
     } catch (error) { results.push({ ...entry, url, status: 'unverified-network-error', error: String(error.message) }) }
   }

@@ -31,6 +31,8 @@ On 2026-10-12 the user then authorized replacing the remaining J7 external comma
 
 On 2026-10-13 the user authorized power/thermal risk corrections, commit and push as techmannih, and using ADI PD-1180 plus other primary references to choose conservative initial conditions. Affected protection and firmware sections are reopened. The existing sourcing/order hold remains in force; this authorization is for a design revision, not procurement or powered qualification. Preserve unrelated circuitry, assembly and the four existing holes.
 
+On 2026-10-13 the user authorized correcting PR #2 after review. Merge the latest main protections, adapt the current guard and audits, retain the proven readable markings, and refresh consistent engineering delivery files. R25/R61/R66 value refinements are within this scope. Missing stock remains an order blocker; it does not authorize inventing inventory or waiving qualification.
+
 ## Required project structure
 
 Every board repository should contain:

@@ -1,5 +1,4 @@
 #include "tmc5160.h"
-#include "tmc5160_config.h"
 #include "motor_service.h"
 #include <assert.h>
 #include <stdio.h>
@@ -26,11 +25,11 @@ int main(void) {
   pd1180_tmc_t d={.frame=transfer,.context=&f};
   uint32_t value;
   assert(pd1180_tmc_read(&d,4,&value) && value==0x30000010 && f.calls==2);
-  assert(pd1180_tmc_configure_ramp(&d,240)); // Exercise current scaling below the commissioning setting.
+  assert(pd1180_tmc_configure_ramp(&d,240)); // Approx. 0.827 A RMS first tuning stage.
   assert(d.configured && !(f.regs[0x6C]&15u));
   assert(f.regs[0x09]==0x10C06u && f.regs[0x0A]==0x400u);
   assert(((f.regs[0x6C]>>24)&15u)==0 && !(f.regs[0x6C]&(3u<<30)));
-  assert(((f.regs[0x10]>>8)&31u)==6 && f.regs[0x0B]==PD1180_GLOBALSCALER);
+  assert(((f.regs[0x10]>>8)&31u)==6 && f.regs[0x0B]==139);
   assert(pd1180_tmc_set_chopper(&d,true));
   assert(f.regs[0x27]==0 && f.regs[0x20]==1 && f.regs[0x26]==130 && f.regs[0x34]==0);
   assert(pd1180_tmc_velocity(&d,11930) && f.regs[0x27]==11930);
@@ -39,8 +38,12 @@ int main(void) {
   int32_t velocity=0; f.regs[0x22]=0xFFFFFF;
   assert(pd1180_tmc_actual_velocity(&d,&velocity) && velocity==-1);
   f.regs[0x22]=0;
-  assert(pd1180_tmc_set_current(&d,500) && d.irun==15);
-  assert(!pd1180_tmc_set_current(&d,1001));
+  assert(pd1180_tmc_set_current(&d,125) && d.irun==3);
+  for(unsigned request=241;request<=1001;++request) {
+    const unsigned before=f.calls;
+    assert(!pd1180_tmc_set_current(&d,(uint16_t)request));
+    assert(f.calls==before && d.irun==3); // Rejection must not write a higher current.
+  }
   pd1180_tmc_status_t status;
   for(unsigned bit=0;bit<3;++bit) {
     f.regs[1]=1u<<bit; assert(!pd1180_tmc_status(&d,&status) && !d.configured);
@@ -61,31 +64,39 @@ int main(void) {
   pd1180_control_t c={.armed=true,.power_permit=true,.current_limit_permille=1000};
   pd1180_inputs_t in={.motor_power_good=true,.vmotor_in_range=true};
   unsigned calls=f.calls;
-  assert(!pd1180_motor_service(&motor,&c,&in,180) && f.calls==calls);
+  assert(!pd1180_motor_service(&motor,&c,&in,240) && f.calls==calls);
   in.configuration_verified=in.motion_wiring_verified=true;
-  assert(pd1180_motor_service(&motor,&c,&in,180) && in.driver_ready);
+  assert(pd1180_motor_service(&motor,&c,&in,240) && in.driver_ready);
   f.regs[1]=1;
-  assert(!pd1180_motor_service(&motor,&c,&in,180) && !in.driver_ready);
+  assert(!pd1180_motor_service(&motor,&c,&in,240) && !in.driver_ready);
   f.regs[1]=0;calls=f.calls;
-  assert(!pd1180_motor_service(&motor,&c,&in,180) && f.calls==calls); // No automatic reconfigure after reset.
-  c.armed=false;assert(!pd1180_motor_service(&motor,&c,&in,180));
-  c.armed=true;assert(pd1180_motor_service(&motor,&c,&in,500));
-  c.current_limit_permille=250;assert(pd1180_motor_service(&motor,&c,&in,500));
+  assert(!pd1180_motor_service(&motor,&c,&in,240) && f.calls==calls); // No automatic reconfigure after reset.
+  c.armed=false;assert(!pd1180_motor_service(&motor,&c,&in,240));
+  c.armed=true;assert(pd1180_motor_service(&motor,&c,&in,240));
+  c.current_limit_permille=550;assert(pd1180_motor_service(&motor,&c,&in,240));
   assert(motor.driver.irun==3); // Thermal derating reaches actual current register.
-  in.vmotor_in_range=false;assert(!pd1180_motor_service(&motor,&c,&in,500) && !in.driver_ready);
+  calls=f.calls;
+  assert(!pd1180_motor_service(&motor,&c,&in,241) && !in.driver_ready);
+  assert(f.calls==calls && !motor.driver.configured);
+  in.vmotor_in_range=false;assert(!pd1180_motor_service(&motor,&c,&in,240) && !in.driver_ready);
+  for(unsigned request=241;request<=1001;++request) {
+    calls=f.calls;
+    assert(!pd1180_tmc_configure_ramp(&d,(uint16_t)request));
+    assert(!d.configured && f.calls==calls);
+  }
   for(unsigned levels=6;levels<=12;levels+=6) for(unsigned clocks=2;clocks<=4;clocks+=2) {
     fake_t defaults={0}; defaults.regs[4]=0x30000010;
     defaults.regs[0x09]=(1u<<16)|(levels<<8)|levels;
     defaults.regs[0x0A]=clocks<<8;
     pd1180_tmc_t chip={.frame=transfer,.context=&defaults};
-    assert(pd1180_tmc_configure_ramp(&chip,180));
+    assert(pd1180_tmc_configure_ramp(&chip,240));
     assert(defaults.regs[0x09]==0x10C06u && defaults.regs[0x0A]==0x400u);
     assert(!(defaults.regs[0x6C]&15u));
   }
   for(unsigned address=0x09;address<=0x0A;++address) {
     fake_t bad={0}; bad.regs[4]=0x30000010; bad.corrupt_write_address=(uint8_t)address;
     pd1180_tmc_t chip={.frame=transfer,.context=&bad};
-    assert(!pd1180_tmc_configure_ramp(&chip,180) && !chip.configured);
+    assert(!pd1180_tmc_configure_ramp(&chip,240) && !chip.configured);
     assert(!(bad.regs[0x6C]&15u) && !pd1180_tmc_set_chopper(&chip,true));
   }
   puts("PASS: TMC explicit protection defaults, write failures, pipelined SPI, write echo, disabled initialization, mode checks, current limits and latched faults");

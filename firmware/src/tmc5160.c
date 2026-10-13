@@ -38,7 +38,7 @@ bool pd1180_tmc_status(pd1180_tmc_t *d, pd1180_tmc_status_t *s) {
   return s->valid && !s->fault;
 }
 bool pd1180_tmc_set_current(pd1180_tmc_t *d, uint16_t permille) {
-  if (!d->configured || !permille || permille>1000u) return false;
+  if (!d->configured || !permille || permille>PD1180_BENCH_CURRENT_MAX_PERMILLE) return false;
   const uint32_t scale=(32u*permille)/1000u;
   if (!scale) return false;
   const uint8_t irun=(uint8_t)(scale-1u), ihold=irun<PD1180_IHOLD?irun:PD1180_IHOLD;
@@ -61,7 +61,7 @@ bool pd1180_tmc_set_chopper(pd1180_tmc_t *d, bool enabled) {
 bool pd1180_tmc_configure_ramp(pd1180_tmc_t *d, uint16_t permille) {
   pd1180_tmc_invalidate(d);
   uint32_t ioin, actual;
-  if (!permille || permille>1000u || !pd1180_tmc_read(d,IOIN,&ioin) ||
+  if (!permille || permille>PD1180_BENCH_CURRENT_MAX_PERMILLE || !pd1180_tmc_read(d,IOIN,&ioin) ||
       (ioin>>24)!=0x30u || (ioin&0x50u)!=0x10u || (ioin&0x0Cu)) return false;
   for (size_t i=0;i<pd1180_tmc5160_boot_config_count;++i) {
     const tmc5160_register_t reg=pd1180_tmc5160_boot_config[i];

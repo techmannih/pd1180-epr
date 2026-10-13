@@ -653,7 +653,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.OVP_DIV", pin2: "net.GND" }} />
     <resistor name="R25" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={-11.25} schY={-2.45} pcbX={5.5} pcbY={23.0}
       schRotation={-90}
-      resistance="4.22k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C49196690"] }}
+      resistance="4.99k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C7293210"] }}
       connections={{ pin1: "net.ILIM_SET", pin2: "net.GND" }} />
     <capacitor name="C18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={7.75} schY={0.95} pcbX={5.5} pcbY={27.0}
       schRotation={-90}
@@ -968,7 +968,7 @@ export const PD1180EPR = () => (
       resistance="180k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C326731"] }}
       connections={{ pin1: "net.VMOTOR", pin2: "net.BRAKE_MID" }} />
     <resistor name="R61" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_sense" schX={9.33} schY={0.3} pcbX={13.0} pcbY={-17.5}
-      resistance="16k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C860148"] }}
+      resistance="16.2k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C728583"] }}
       connections={{ pin1: "net.BRAKE_MID", pin2: "net.BRAKE_SENSE" }} />
     <resistor name="R62" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake" schSectionName="brake_sense" schX={10.5} schY={0.3} pcbX={11.75} pcbY={-20.5} pcbRotation={90}
       schRotation={-90}
@@ -996,7 +996,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.MOTOR_OVP_SENSE", pin2: "net.MOTOR_OVP_LOW" }} />
     <resistor name="R66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake-ovp" schSectionName="brake_U14" schX={-0.6} schY={4.3} pcbX={-12.5} pcbY={-34.25} pcbRotation={180}
       schRotation={-90}
-      resistance="1.21k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C705737"] }}
+      resistance="1.2k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C136970"] }}
       connections={{ pin1: "net.MOTOR_OVP_LOW", pin2: "net.GND" }} />
     <resistor name="R67" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake-ovp" schSectionName="brake_U14" schX={-6.27} schY={2.5} pcbX={-1.0} pcbY={-26.0}
       schRotation={-90}

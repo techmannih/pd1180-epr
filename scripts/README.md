@@ -113,3 +113,7 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `check-power-eco.py` — arguments: `BEFORE AFTER FRESH_EXPORT REPORT`: proves the power ECO changes only U6/R25/R66 values, U30 AIN2, two probe locations and the five declared additions; compares new geometry with source and preserves the four holes. Requires KiCad Python.
 
 - `check-brake-sense.py` — arguments: `BOARD REPORT`: destructive negative test on a temporary copy only. Removes thin BRAKE_RETURN copper and requires native DRC to disconnect only R134.1; binds a low-current-branch exception to exact board/checker hashes for the power-corridor audit. Requires KiCad Python and CLI.
+
+PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/winding and input-step cases plus winding energy balance. `check-delivery.mjs` verifies source external-equipment guidance and actual native DRC counts against delivered copies; `check-stock.mjs` distinguishes unknown inventory from insufficient known inventory.
+
+- `check-protection-refinement.mjs`: reverses only the three R25/R61/R66 value fields and requires the entire native PCB to hash exactly to main 4836266. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.

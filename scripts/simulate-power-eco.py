@@ -96,14 +96,14 @@ def header(title):
 .options reltol=1e-5 abstol=1e-9 vntol=1e-7 method=gear maxord=2
 '''
 
-def brake_network(cap, initial, brake=True, on=51.99, off=51.3432, esr=.01, lag=1e-7, resistance=10):
+def brake_network(cap, initial, brake=True, on=51.99, off=51.3432, esr=.01, lag=1e-7, resistance=10, initial_sense=None):
     # First-order sensing lag is an assumed sensitivity parameter, not a TLV3201 model.
     return f'''.param Cbulk={cap:.12g} Vinitial={initial:.12g}
 Cbulk cap 0 {{Cbulk}} ic={{Vinitial}}
 Resr cap bus {esr}
 Rleak bus 0 1e9
 Rsense bus sense 1k
-Csense sense 0 {lag/1000:.12g} ic={{Vinitial}}
+Csense sense 0 {lag/1000:.12g} ic={initial if initial_sense is None else initial_sense:.12g}
 Vbrake bus rb 0
 Rbrake rb drain {resistance if brake else 1e12}
 Sbrake drain 0 sense 0 BRK
@@ -127,7 +127,7 @@ Vregen inj bus 0
 def winding(p,dt):
     cap=p.get('cap',940e-6); initial=p.get('initial',53.69047619047619)
     current=p.get('current',5.5); inductance=p.get('inductance',.0035); duration=.003
-    deck=header(p['name'])+brake_network(cap,initial,p.get('brake',False),on=p.get('on',51.99),off=p.get('off',51.3432),esr=p.get('esr',.01))
+    deck=header(p['name'])+brake_network(cap,initial,p.get('brake',False),on=p.get('on',51.99),off=p.get('off',51.3432),esr=p.get('esr',.01),lag=p.get('lag',1e-7),initial_sense=p.get('initial_sense_v'))
     # Two phases at a 45-degree electrical angle: both initially Irms, total L*Irms^2.
     # Two body diodes per phase; simple diode model, without reverse recovery.
     for phase in ['a','b']:
@@ -139,11 +139,15 @@ Vret{phase} ret{phase} bus 0
 Rfloatlo{phase} lo{phase} 0 1G
 Rfloathi{phase} hi{phase} 0 1G
 '''
-    deck+=f'''.model BODY D(Is=1e-9 N=1.2 Rs=.015 Cjo=330p)
+    # An imposed 100 us rotor-energy pulse, not a motor torque/deceleration model.
+    energy=p.get('rotor_energy',0)
+    deck+=f'''Bregen 0 inj I=(time<=100u) ? ({2*energy/100e-6:.12g}*(1-time/100u)/max(v(bus),1)) : 0
+Vregen inj bus 0
+.model BODY D(Is=1e-9 N=1.2 Rs=.015 Cjo=330p)
 .tran {dt:.12g} {duration} 0 {dt:.12g} uic
 .end
 '''
-    return deck,['v(bus)','v(cap)','i(vbrake)','i(la)','i(lb)','i(vreta)','i(vretb)'],duration
+    return deck,['v(bus)','v(cap)','i(vbrake)','i(la)','i(lb)','i(vreta)','i(vretb)','i(vregen)','v(loa)','v(hia)','v(lob)','v(hib)'],duration
 
 def overload(p,dt):
     # Reduced selectable 1x/2x eFuse overload envelope. Timer begins at the prescribed load edge.
@@ -153,18 +157,19 @@ def overload(p,dt):
     trip=p.get('trip',False); uvlo=p.get('uvlo',False)
     start=.005; load_end=start+p.get('load_duration',.040); duration=.060
     load=p.get('load',7); rcable=.1; rfuse=.031+.0151
-    vin0=48-2.1*rcable; bus0=vin0-2*rfuse
+    upstream=p.get('upstream',.1)
+    vin0=48-(2+upstream)*rcable; bus0=vin0-2*rfuse
     deck=header(p['name'])
     limit=f'((time >= {start} && time < {start+cbtime:.12g}) ? {ilim*pulse:.12g} : {ilim:.12g})'
     deck+=f'''* 48 V source; 100 mOhm source/cable R and 2.2 uF input C are assumptions.
-* Upstream logic is represented by a constant 100 mA load above 10 V.
+* Upstream logic is represented by a constant {upstream*1000:g} mA load above 10 V.
 * Initial capacitors are precharged: this is an overload test, not startup.
 Videal ideal 0 48
 Bsource ideal src I = (v(trip) < .5) ? min({source_limit},max(0,(48-v(vin))/{rcable})) : 0
 Vsource src vin 0
 Cinput vin 0 2.2u ic={vin0}
 Rleakin vin 0 1G
-Blogic vin 0 I=.1*min(1,max(v(vin),0)/10)
+Blogic vin 0 I={upstream:.12g}*min(1,max(v(vin),0)/10)
 Bpath vin feed I = (v(uv) > .5) ? 0 : min({limit},max(0,(v(vin)-v(bus))/{rfuse}))
 Vfeed feed bus 0
 Cbulk cap 0 940u ic={bus0}
@@ -219,6 +224,15 @@ def summarize(p,d):
             s['returned_energy_j']=integral(t,[v*(a+b) for v,a,b in zip(bus,d['i(vreta)'],d['i(vretb)'])])
             s['copper_energy_j']=integral(t,[.48*(a*a+b*b) for a,b in zip(d['i(la)'],d['i(lb)'])])
             s['lossless_capacitor_final_v']=math.sqrt(p.get('initial',53.69047619047619)**2+2*l*i0*i0/c)
+            injected=integral(t,[v*i for v,i in zip(bus,d['i(vregen)'])])
+            esr=integral(t,[(v-u)**2/p.get('esr',.01) for v,u in zip(bus,cap)])
+            switch=integral(t,[i*i*.0302 for i in ib])
+            diode=sum(integral(t,[-lo*il+(hi-v)*ir for lo,il,hi,v,ir in
+                zip(d['v(lo'+phase+')'],d['i(l'+phase+')'],d['v(hi'+phase+')'],bus,d['i(vret'+phase+')'])]) for phase in ['a','b'])
+            remaining=.5*l*(d['i(la)'][-1]**2+d['i(lb)'][-1]**2)
+            residual=s['initial_winding_energy_j']+injected-s['capacitor_energy_change_j']-s['brake_energy_j']-s['copper_energy_j']-esr-switch-diode-remaining
+            s.update(injected_rotor_energy_j=injected,energy_residual_j=residual,
+                diode_energy_j=diode,esr_energy_j=esr,switch_energy_j=switch,remaining_winding_energy_j=remaining)
     else:
         i=d['i(vsource)']; s.update(input_peak_a=max(i),efuse_peak_a=max(d['i(vfeed)']),first_5a_s=crossing(t,i,5),
             first_44v_s=crossing(t,bus,44,False),first_40v_s=crossing(t,bus,40,False),
@@ -239,25 +253,35 @@ def main():
     if args.check:
         r=json.loads((ROOT/'results.json').read_text())
         assert r['source_sha256']==VERSION and r['model_sha256']==model_hash and r['audit_parameters_sha256']==audit_hash, 'Stale simulation evidence'
-        assert r['hardware_qualified'] is False and not r['errors'] and all(r['checks'].values()) and len(r['cases'])==9
+        assert r['hardware_qualified'] is False and not r['errors'] and all(r['checks'].values()) and len(r['cases'])==14
         for name,digest in r['deck_sha256'].items():
             assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest, 'Changed simulation deck: '+name
-        print('Nine behavioral cases: source/model/audit-parameter/deck hashes and bounded checks verified; hardware remains unqualified.')
+        print('Fourteen behavioral cases: source/model/audit-parameter/deck hashes and numerical checks verified; hardware remains unqualified.')
         return
     a=audit['calculations']; th=a['thresholds_v']
     corner=dict(kind='winding',cap=752e-6,initial=th['motor_cutoff_screen']['max'],
         inductance=.0042,current=a['current']['sensitivity_max_rms_a'],
-        on=th['brake_on_screen']['max'],off=th['brake_on_screen']['max']-.6468)
+        on=th['brake_on_screen']['max'],off=th['brake_off_screen']['max'])
+    upstream=a['supply']['efuse_limit']['upstream_input_allocation_a']
+    restricted=a['commissioning_profile']['brake_open_sensitivity']
+    rotor_energy=restricted['returned_energy_j']-.0042*restricted['each_phase_instantaneous_current_a']**2
     cases=[
       dict(name='winding_nominal_brake',kind='winding',brake=True,
-           initial=th['motor_cutoff_screen']['nominal'],current=a['current']['programmed_rms_a']),
+           initial=th['motor_cutoff_screen']['nominal'],current=a['current']['programmed_rms_a'],
+           on=th['brake_on_screen']['nominal'],off=th['brake_off_screen']['nominal']),
       dict(corner,name='winding_corner_brake',brake=True),
       dict(corner,name='winding_corner_open',brake=False),
       dict(corner,name='commissioning_corner_open',brake=False,current=a['current']['sensitivity_max_rms_a']*7/32),
-      dict(name='rotor_1000rpm_brake',kind='regen',cap=752e-6,on=th['brake_on_screen']['max'],off=th['brake_on_screen']['max']-.6468),
+      dict(corner,name='winding_corner_recovery_100us',brake=True,lag=100e-6,initial_sense_v=48),
+      dict(corner,name='restricted_open_with_rotor',brake=False,current=1.5,rotor_energy=rotor_energy),
+      dict(corner,name='restricted_supply_loss_open',brake=False,current=1.5,rotor_energy=rotor_energy,initial=50.4),
+      dict(name='rotor_1000rpm_brake',kind='regen',cap=752e-6,on=th['brake_on_screen']['max'],off=th['brake_off_screen']['max']),
       dict(name='rotor_1000rpm_open',kind='regen',cap=752e-6,brake=False),
-      dict(name='five_joules_20ms_stress',kind='regen',energy=5,cap=752e-6),
-      dict(name='input_new_1x_corner',kind='overload',ilim=a['supply']['efuse_limit']['max_a'],pulse=1),
+      dict(name='five_joules_20ms_stress',kind='regen',energy=5,cap=752e-6,
+           on=th['brake_on_screen']['nominal'],off=th['brake_off_screen']['nominal']),
+      dict(name='input_new_1x_corner',kind='overload',ilim=a['supply']['efuse_limit']['max_a'],pulse=1,upstream=upstream),
+      dict(name='input_new_1x_nominal_10a',kind='overload',ilim=a['supply']['efuse_limit']['formula_nominal_a'],pulse=1,upstream=upstream,load=10,load_duration=.002),
+      dict(name='input_new_1x_corner_10a',kind='overload',ilim=a['supply']['efuse_limit']['max_a'],pulse=1,upstream=upstream,load=10,load_duration=.002),
       dict(name='input_old_2x_reference',kind='overload',ilim=18000/4020,pulse=2),
     ]
     spice=Spice(args.library); ROOT.mkdir(parents=True,exist_ok=True)
@@ -266,9 +290,10 @@ def main():
       'audit_parameters_sha256':audit_hash,
       'assumptions':['100% prescribed energy return; no full motor/bridge model',
         '10 mOhm bank ESR assumption; no capacitor ripple or thermal qualification',
-        '2.2 uF lumped input capacitance, 100 mOhm source/cable resistance and 100 mA upstream logic are model assumptions',
+        '2.2 uF lumped input capacitance, 100 mOhm source/cable resistance; revised input cases use 250 mA upstream, old reference uses 100 mA; not measured',
         'Ideal eFuse current envelope omits finite response, thermal shutdown and PD source dynamics',
-        'Winding corner starts at maximum cutoff; brake sensor lag 100 ns is assumed',
+        'Winding corner starts at maximum cutoff; 100 ns sensor lag is assumed; separate 100 us recovery begins at a 48 V sense state',
+        'Restricted rotor cases impose 15 rpm rotor energy over 100 us; other winding cases exclude mechanical energy',
         'Brake cable inductance/clamp transient is a separate screen, not in the bus models'], 'cases':[]}
     errors=[]
     for p in cases:
@@ -287,6 +312,10 @@ def main():
       if max(differences.values())>.02: errors.append(p['name']+': timestep sensitivity >20 mV')
       if p['kind']=='regen' and abs(summaries[1]['energy_residual_j'])>1e-3:
         errors.append(p['name']+': energy residual >1 mJ')
+      if p['kind']=='winding' and abs(summaries[1]['energy_residual_j'])>max(50e-6,.005*(summaries[1]['initial_winding_energy_j']+summaries[1]['injected_rotor_energy_j'])):
+        errors.append(p['name']+': winding energy balance outside 50 uJ / 0.5% bound')
+      if p['kind']=='overload' and abs(summaries[0]['input_peak_a']-summaries[1]['input_peak_a'])>.002:
+        errors.append(p['name']+': input-current timestep sensitivity >2 mA')
       result['cases'].append({'parameters':p,'normal':summaries[0],'fine':summaries[1],'refinement_difference_v':differences})
       print(p['name'],json.dumps(summaries[1]),flush=True)
     by={c['parameters']['name']:c['fine'] for c in result['cases']}
@@ -295,6 +324,8 @@ def main():
       'healthy_winding_corner_plus_0p5v_allocation_below_55v':by['winding_corner_brake']['bus_max_v']+.5<55,
       'commissioning_open_winding_plus_0p5v_allocation_below_55v':by['commissioning_corner_open']['bus_max_v']+.5<55,
       'new_steady_envelope_below_5a':by['input_new_1x_corner']['input_peak_a']<5,
+      'new_10a_request_envelope_below_5a':by['input_new_1x_corner_10a']['input_peak_a']<5,
+      'restricted_rotor_and_winding_plus_0p5v_allocation_below_55v':by['restricted_open_with_rotor']['bus_max_v']+.5<55,
       'old_2x_envelope_exceeds_5a':by['input_old_2x_reference']['input_peak_a']>5,
       'open_brake_at_1000rpm_remains_unsafe':by['rotor_1000rpm_open']['bus_max_v']>60,
       'unapproved_5j_20ms_load_remains_unsafe':by['five_joules_20ms_stress']['bus_max_v']>55,

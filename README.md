@@ -2,7 +2,7 @@
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and local START/STOP control.
 
-**Power/thermal ECO — 2026-10-13:** TPS26630 1× current limiting at nominal 4.27 A, 53.18 V motor inhibit, D20 brake-cable flyback clamp, and ADS1115 brake continuity preflight added. The firmware ceiling is 3.8 A RMS with a locked 0.827 A / 10 rpm unloaded commissioning profile. See [calculations and simulation limits](docs/power-validation.md).
+**Power/thermal ECO — 2026-10-13:** TPS26630 1× current limiting at nominal 3.61 A, 53.21 V motor inhibit, D20 brake-cable flyback clamp, and ADS1115 brake continuity preflight added. The firmware ceiling is 3.8 A RMS with a locked 0.827 A / 10 rpm unloaded commissioning profile. PR #2 adds current-request guards and expanded tolerance/fault checks while preserving the main ECO. See [calculations and simulation limits](docs/power-validation.md).
 
 **Previous control ECO — 2026-10-12:** J7 and 33 associated command/interface parts removed from TSX; SW2 START/STOP and R133 added. STM32 now commands the TMC5160 internal SPI ramp. SW1 RESET, J2 VH, both USB ports and protection remain. Removed 51 unsupported mounting parts; kept all four Ø4.2 mm holes unchanged. [Before](previews/onboard-control-before.png) · [After — source alignment preview](previews/onboard-control-after.png).
 
@@ -104,9 +104,9 @@ board V3V3 / V3V3_USB -> U26 / U27 reverse-blocked OR -> V3V3_MCU
 
 DATA alone powers MCU setup/diagnostics on V3V3_MCU. Flash, encoder and sensors remain on board V3V3 supplied by J1/VMOTOR. Open-drain chip selects and inactive peripheral pins prevent MCU-driven backfeed. Firmware now implements USB suspend with STOP0, watchdog wake and fresh power/sensor qualification after resume; measured current, inrush, wake timing and source handovers remain unverified. U22 retains VMOTOR-fed brake control. The commissioning image keeps the motor locked.
 
-The requested contract is 240 W. TPS26630 with R25 = 4.22 kΩ limits motor-path input to about 4.27 A nominal (205 W at 48 V before losses); MODE is open for 1× limiting and latch-off. The screened maximum is 4.64 A, leaving 0.36 A for upstream logic and transient allowance within a 5 A contract. The motor current ceiling is 3.8 A RMS, with GLOBALSCALER=139 giving approximately 3.781 A RMS at IRUN=31. Neither value is a measured operating rating.
+The requested contract is 240 W. TPS26630 with R25 = 4.99 kΩ limits motor-path input to about 3.607 A nominal (173 W at 48 V before losses); MODE is open for 1× limiting and latch-off. The conservative current screen is 4.002 A plus a 250 mA upstream allocation, leaving about 0.748 A within the 5 A contract. These are screening assumptions, not guaranteed current limits. The design ceiling remains 3.8 A RMS (GS=139); the firmware additionally rejects requests above its 240-permille commissioning limit, IRUN=6 and approximately 0.827 A RMS. All three qualification locks remain false.
 
-The 940 µF motor bulk bank stores only about 0.188 J between 48 V and the revised nominal 51.99 V brake turn-on threshold. It cannot absorb sustained regeneration. J3 connects a separately selected braking resistor and heatsink; 10 Ω / 300 W is an initial engineering target, not a validated load rating. Actual speed, attached inertia, stopping time and duty cycle determine the final resistor and thermal design. U34 now supplies the driver separately at nominal 12 V; see [the power ECO calculations and remaining tests](docs/power-validation.md).
+The 940 µF motor bulk bank stores only about 0.190 J between 48 V and the revised nominal 52.04 V brake turn-on threshold. It cannot absorb sustained regeneration. J3 connects a separately selected braking resistor and heatsink; 10 Ω / 300 W is an initial engineering target, not a validated load rating. Actual speed, attached inertia, stopping time and duty cycle determine the final resistor and thermal design. U34 now supplies the driver separately at nominal 12 V; see [the power ECO calculations and remaining tests](docs/power-validation.md).
 
 Detailed calculations, tolerances and protection behavior are recorded in [docs/design.md](docs/design.md). The separate CC, USB-data and current-monitor paths are traced pin by pin in [docs/usb-pd-architecture.md](docs/usb-pd-architecture.md).
 
@@ -164,7 +164,7 @@ The design uses 24 default A4 sheets; surviving sheet positions retain their ori
 | 9. Motor Phase A Power Bridge | Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt. |
 | 10. Motor Phase B Power Bridge | Q10/Q12 high-side and Q11/Q13 low-side switches form phase B. |
 | 11. Brake Reference and Turn-on Threshold | U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V. |
-| 12. Overvoltage Inhibit and Brake Driver | U14 inhibits motion at nominal 53.18 V; U15/Q16 switch the external J3 brake load. |
+| 12. Overvoltage Inhibit and Brake Driver | U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load. |
 | 13. MCU Clock Memory and Debug | U16 STM32G0B1 provides USB diagnostics, supervised internal SPI ramp control. |
 | 14. Optional Shaft Encoder | U18 AS5047P and C52/C53 are centered bottom-side DNP footprints. |
 | 15. USB DATA and Attach Sense | J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port. |

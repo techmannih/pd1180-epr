@@ -231,18 +231,18 @@
       "status": "no-drop-in-selected"
     },
     {
-      "primary": "C49196690",
+      "primary": "C7293210",
       "alternative": null,
       "classification": "not-approved-redesign-required",
       "status": "no-drop-in-selected",
-      "notes": "R25: use only a reviewed 4.22 kohm 0603 substitute with initial tolerance <=0.1%, TCR <=100 ppm/C and >=100 mW. Recalculate upper current including temperature; no automatic substitution."
+      "notes": "R25: reviewed 4.99 kohm 0603, <=0.1% initial tolerance, <=25 ppm/C, >=100 mW. Recalculate the conservative current envelope; no automatic substitution."
     },
     {
-      "primary": "C705737",
+      "primary": "C136970",
       "alternative": null,
       "classification": "not-approved-redesign-required",
       "status": "no-drop-in-selected",
-      "notes": "R66: use only a reviewed 1.21 kohm 0603 substitute with initial tolerance <=0.1% and TCR <=25 ppm/C. Recalculate brake/OVP coordination; no automatic substitution."
+      "notes": "R66: reviewed 1.2 kohm 0603, <=0.1%, <=25 ppm/C. Recalculate same-board brake/OVP coordination; no automatic substitution."
     },
     {
       "primary": "C49242208",
@@ -250,6 +250,13 @@
       "classification": "not-approved-redesign-required",
       "status": "no-drop-in-selected",
       "notes": "D20: replacement must retain cathode pin 1/anode pin 2 and the verified SMBF land pattern, >=100 V / 10 A ratings, forward and hot-leakage limits. A 2 mA hot leakage bound is part of startup continuity detection; no automatic substitution."
+    },
+    {
+      "primary": "C728583",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R61: reviewed 16.2 kohm 0603, <=0.1%, <=25 ppm/C. Both brake-on and release margins must be recalculated; no automatic substitution."
     }
   ],
   "checked_at": "2026-10-11T16:01:37.280Z"

@@ -2,7 +2,7 @@
 
 Exact LCSC-code and package matches only. A fuzzy search result or an unverified package is not accepted as availability evidence. Quantities are for one PCB; stock is a timestamped JLCSearch snapshot and is not reserved JLC assembly inventory.
 
-Last complete refresh: 2026-10-13T01:37:42.379Z.
+Last complete refresh: 2026-10-13T03:03:27.396Z.
 
 | LCSC | MPN | Qty/board | Stock | References |
 |---|---|---:|---:|---|
@@ -47,6 +47,7 @@ Last complete refresh: 2026-10-13T01:37:42.379Z.
 | [C107137](https://jlcsearch.tscircuit.com/components/list.json?search=107137) | CC0805KRX7R0BB223 | 1 | 122734 | C30 |
 | [C111212](https://jlcsearch.tscircuit.com/components/list.json?search=111212) | USBLC6-4SC6 | 1 | 1906 | D15 |
 | [C114200](https://jlcsearch.tscircuit.com/components/list.json?search=114200) | unverified | 10 | unverified | Q4, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13, Q16 |
+| [C136970](https://jlcsearch.tscircuit.com/components/list.json?search=136970) | RT0603BRD071K2L | 1 | unverified | R66 |
 | [C137720](https://jlcsearch.tscircuit.com/components/list.json?search=137720) | RC0603FR-0743K2L | 2 | unverified | R17, R103 |
 | [C155214](https://jlcsearch.tscircuit.com/components/list.json?search=155214) | unverified | 1 | unverified | D18 |
 | [C160315](https://jlcsearch.tscircuit.com/components/list.json?search=160315) | B2P-VH(LF)(SN) | 1 | 283036 | J3 |
@@ -63,12 +64,11 @@ Last complete refresh: 2026-10-13T01:37:42.379Z.
 | [C407954](https://jlcsearch.tscircuit.com/components/list.json?search=407954) | EEUFR1J471 | 2 | 2063 | C22, C23 |
 | [C513710](https://jlcsearch.tscircuit.com/components/list.json?search=513710) | CC0805KKX7R0BB224 | 1 | 151428 | C87 |
 | [C516354](https://jlcsearch.tscircuit.com/components/list.json?search=516354) | unverified | 1 | unverified | U7 |
-| [C705737](https://jlcsearch.tscircuit.com/components/list.json?search=705737) | RT0603BRD071K21L | 1 | unverified | R66 |
 | [C705777](https://jlcsearch.tscircuit.com/components/list.json?search=705777) | RT0603BRD07422KL | 1 | unverified | R23 |
 | [C720477](https://jlcsearch.tscircuit.com/components/list.json?search=720477) | unverified | 2 | unverified | SW1, SW2 |
 | [C723637](https://jlcsearch.tscircuit.com/components/list.json?search=723637) | RT0603BRD0720KL | 1 | unverified | R65 |
+| [C728583](https://jlcsearch.tscircuit.com/components/list.json?search=728583) | RT0603BRD0716K2L | 1 | unverified | R61 |
 | [C844918](https://jlcsearch.tscircuit.com/components/list.json?search=844918) | unverified | 24 | unverified | R1, R14, R18, R104, R111, R21, R28, R29, R30, R35, R36, R37, R54, R56, R70, R73, R74, R119, R120, R112, R114, R131, R132, R133 |
-| [C860148](https://jlcsearch.tscircuit.com/components/list.json?search=860148) | RT0603BRB0716KL | 1 | unverified | R61 |
 | [C861400](https://jlcsearch.tscircuit.com/components/list.json?search=861400) | RT0603BRD07430KL | 1 | unverified | R64 |
 | [C861611](https://jlcsearch.tscircuit.com/components/list.json?search=861611) | RT0603BRD079K09L | 1 | unverified | R122 |
 | [C965799](https://jlcsearch.tscircuit.com/components/list.json?search=965799) | unverified | 1 | unverified | D17 |
@@ -84,11 +84,11 @@ Last complete refresh: 2026-10-13T01:37:42.379Z.
 | [C2985721](https://jlcsearch.tscircuit.com/components/list.json?search=2985721) | unverified | 2 | unverified | R109, R110 |
 | [C3020560](https://jlcsearch.tscircuit.com/components/list.json?search=3020560) | unverified | 2 | unverified | J1, J10 |
 | [C6675858](https://jlcsearch.tscircuit.com/components/list.json?search=6675858) | MR12X4701FTL | 2 | 5000 | R134, R135 |
+| [C7293210](https://jlcsearch.tscircuit.com/components/list.json?search=7293210) | RN73R1JTTD4991B25 | 1 | 14758 | R25 |
 | [C7419996](https://jlcsearch.tscircuit.com/components/list.json?search=7419996) | FRM121WFR005TM | 2 | 585157 | R115, R116 |
 | [C7468460](https://jlcsearch.tscircuit.com/components/list.json?search=7468460) | FRQ0603F5100TS | 1 | 261442 | R136 |
 | [C42166327](https://jlcsearch.tscircuit.com/components/list.json?search=42166327) | TPS26750SRSMR | 1 | 150 | U2 |
 | [C43131250](https://jlcsearch.tscircuit.com/components/list.json?search=43131250) | TPD4S480RUKR | 1 | 2869 | U1 |
-| [C49196690](https://jlcsearch.tscircuit.com/components/list.json?search=49196690) | FRH0603B4221TS | 1 | 419 | R25 |
 | [C49242208](https://jlcsearch.tscircuit.com/components/list.json?search=49242208) | SS10100 | 1 | 747 | D20 |
 
 31 of 84 selected part types (252 placements) had sufficient reported stock for 5 boards. 55 package names matched the pinned expectation. See failed rows before ordering.

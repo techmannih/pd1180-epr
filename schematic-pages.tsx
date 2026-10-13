@@ -35,7 +35,7 @@ const pages = [
     "motor-power",
     "Protected 48 V Motor Bus",
     "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
-    "Nominal 1x current limit 4.27 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
+    "Nominal 1x current limit 3.607 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
   ],
   [
     "motion",
@@ -70,7 +70,7 @@ const pages = [
   [
     "brake-ovp",
     "Overvoltage Inhibit and Brake Driver",
-    "U14 inhibits motion at nominal 53.18 V; U15/Q16 switch the external J3 brake load.",
+    "U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load.",
     "Brake control remains powered from the protected motor bus through the backup supply."
   ],
   [

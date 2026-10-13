@@ -1,0 +1,341 @@
+{
+  "brake_resistor": {
+    "target_resistance_ohms": 10,
+    "selected_part": null,
+    "manufacturer_page": "https://www.vishay.com/en/product/50052/",
+    "status": "10 ohm LPS0300H10R0GB is the current candidate; a qualified brake assembly is mandatory for this commissioning profile. Final heatsink, load/pulse duty and procurement remain unresolved.",
+    "searches": [
+      {
+        "query": "RX24-300W",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RX24-300W",
+        "checked_at": "2026-10-03T17:29:43.478724+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RX24-100W",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RX24-100W",
+        "checked_at": "2026-10-03T17:29:43.416443+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RX24",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RX24",
+        "checked_at": "2026-10-03T17:45:11.226946+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "HS100",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=HS100",
+        "checked_at": "2026-10-03T17:45:10.500550+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "HS300",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=HS300",
+        "checked_at": "2026-10-03T17:45:11.602156+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RH250",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RH250",
+        "checked_at": "2026-10-03T17:45:11.213430+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RH100",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RH100",
+        "checked_at": "2026-10-03T17:45:11.218081+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RXLG 300W 10R",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RXLG+300W+10R",
+        "checked_at": "2026-10-03T18:07:15.574373+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RX24 300W",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RX24+300W",
+        "checked_at": "2026-10-03T18:07:15.612827+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "HSC30010RJ",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=HSC30010RJ",
+        "checked_at": "2026-10-03T18:07:16.367413+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "HS50 6R8",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=HS50+6R8",
+        "checked_at": "2026-10-03T18:07:15.664728+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RX24 50W 6R8",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RX24+50W+6R8",
+        "checked_at": "2026-10-03T18:07:15.799333+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "RX24 50W 60R",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=RX24+50W+60R",
+        "checked_at": "2026-10-03T18:07:15.860998+00:00",
+        "accepted_exact_candidates": []
+      },
+      {
+        "query": "R02 300W",
+        "url": "https://jlcsearch.tscircuit.com/components/list.json?search=R02+300W",
+        "checked_at": "2026-10-03T18:07:17.091555+00:00",
+        "accepted_exact_candidates": []
+      }
+    ],
+    "candidate_part": "Vishay LPS0300H10R0GB",
+    "candidate_continuous_rating_w": 300,
+    "required_continuous_power_w": null,
+    "final_resistance_ohms": null,
+    "starting_continuous_power_w": 300
+  },
+  "motor": "STEPPERONLINE 34HS31-6004S1, user ordered ASIN B091C83HWF",
+  "magnet": "Unselected; rear rotating-shaft access on ordered motor must be established first",
+  "motor_mount": "Unselected. Existing four PCB holes retained; removed adapter/posts/fasteners must not be purchased. Secure physical mounting remains unqualified.",
+  "encoder_holder": "Unresolved for ordered single-shaft motor; QSH pilot/holder proposal withdrawn",
+  "motor_specification": "4.8 Nm; 6 A/phase manufacturer rating; driver RMS/hold setting unqualified",
+  "inventory_scope": "Per controller unless shared-service stated. Manufacturer identification is not live stock or purchase approval. No external parts purchased by this work.",
+  "items": [
+    {
+      "id": "motor",
+      "item": "Motor",
+      "quantity": 1,
+      "part_or_candidate": "STEPPERONLINE 34HS31-6004S1",
+      "specification": "4.8 Nm; 6 A/phase; factory RVV 4x0.75 mm2 lead",
+      "source": "Motor windings",
+      "destination": "J2 via defined harness",
+      "purpose": "Convert controlled phase current to shaft motion",
+      "need": "basic-system",
+      "status": "User reports ordered ASIN B091C83HWF; received-label/current/mounting qualification pending",
+      "manufacturer_url": "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
+    },
+    {
+      "id": "epr-source",
+      "item": "USB-C EPR power source",
+      "quantity": 1,
+      "part_or_candidate": "Framework Power Adapter 240 W (candidate only)",
+      "specification": "Actual 48 V / 5 A contract on selected port",
+      "source": "AC mains through suitable source",
+      "destination": "J1 POWER via EPR cable",
+      "purpose": "Motor energy supply",
+      "need": "basic-system",
+      "status": "Not purchased or qualified; confirm 48 V / 5 A capability with the actual cable and sink",
+      "manufacturer_url": "https://frame.work/products/power-adapter-240w"
+    },
+    {
+      "id": "epr-cable",
+      "item": "EPR USB-C cable",
+      "quantity": 1,
+      "part_or_candidate": null,
+      "specification": "5 A EPR-rated electronically marked; length unresolved",
+      "source": "Selected EPR source",
+      "destination": "J1 POWER",
+      "purpose": "Power interconnect",
+      "need": "basic-system",
+      "status": "Exact SKU and source/cable negotiation qualification pending",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "j2-housing",
+      "item": "J2 mating housing",
+      "quantity": 1,
+      "part_or_candidate": "JST VHR-4N",
+      "specification": "4 cavities, VH 3.96 mm",
+      "source": "Four crimped pigtails",
+      "destination": "J2 B4P-VH(LF)(SN)",
+      "purpose": "Keyed winding connection",
+      "need": "j2-harness",
+      "status": "Identified; supplier stock and physical acceptance pending",
+      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
+    },
+    {
+      "id": "j2-contacts",
+      "item": "J2 contacts",
+      "quantity": 4,
+      "part_or_candidate": "JST SVH-41T-P1.1",
+      "specification": "16 AWG termination; insulation OD 1.7-3.0 mm",
+      "source": "16 AWG pigtails",
+      "destination": "VHR-4N cavities 1/2/3/4",
+      "purpose": "Contact each winding conductor",
+      "need": "j2-harness",
+      "status": "Identified; tooling/pull tests and stock pending",
+      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
+    },
+    {
+      "id": "j2-wire",
+      "item": "J2 pigtail conductors",
+      "quantity": 4,
+      "part_or_candidate": "Alpha Wire 3057 family",
+      "specification": "16 AWG; black/green/red/blue; proposed cuts 170/170/170/165 mm including 12 mm allowance",
+      "source": "Motor-side TE320559 splices",
+      "destination": "J2 contacts",
+      "purpose": "Join factory motor leads to the specified VH termination",
+      "need": "j2-harness",
+      "status": "Exact colour SKUs/stock unresolved; CAD cut lengths require first-article fit",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "j2-splices",
+      "item": "Motor-to-pigtail insulated splices",
+      "quantity": 4,
+      "part_or_candidate": "TE 320559",
+      "specification": "22-16 AWG / 0.3-1.42 mm2; 32.13 mm length; CAD OD not qualified",
+      "source": "Each factory 0.75 mm2 lead",
+      "destination": "Matching 16 AWG pigtail",
+      "purpose": "Permanent insulated winding-wire join",
+      "need": "j2-harness",
+      "status": "Identified; stock, insulation fit, tooling, pull/continuity tests pending",
+      "manufacturer_url": "https://www.te.com/en/product-320559.html"
+    },
+    {
+      "id": "physical-retention",
+      "item": "Motor/PCB attachment and harness retention",
+      "quantity": "1 installation",
+      "part_or_candidate": null,
+      "specification": "Keep four existing PCB holes; no guessed rear screws or replacement fixture",
+      "source": "Received motor and cable",
+      "destination": "PCB/harness mounting points, still unqualified",
+      "purpose": "Secure board and prevent cable loads on solder joints",
+      "need": "basic-system",
+      "status": "Unselected; withdrawn adapter/posts/clamps are not purchase items",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "data-cable",
+      "item": "USB data cable",
+      "quantity": 1,
+      "part_or_candidate": null,
+      "specification": "Data-capable cable matching actual host and USB-C J10; length unresolved",
+      "source": "Setup/diagnostic host",
+      "destination": "J10 DATA",
+      "purpose": "Setup and commissioning diagnostics; no motor power",
+      "need": "commissioning",
+      "status": "Exact SKU unresolved; suitable existing cable may be reused",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "programming",
+      "item": "Programming service / tools",
+      "quantity": "shared service",
+      "part_or_candidate": null,
+      "specification": "Qualified 3.3 V SWD and isolated EEPROM fixture; target power/readback as documented",
+      "source": "Accepted programmer/fixture",
+      "destination": "Top SWD and EEPROM pads",
+      "purpose": "Program/verify U16 and U3",
+      "need": "commissioning",
+      "status": "Provider/tool models, TI image and fixture qualification unresolved; not a per-motor running accessory",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "test-equipment",
+      "item": "First-article test service / equipment",
+      "quantity": "shared service",
+      "part_or_candidate": null,
+      "specification": "Suitable current-limited startup supply, bus-voltage/phase-current measurement, thermal and continuity/crimp checks",
+      "source": "Test provider instruments",
+      "destination": "Labelled probes, harness and controlled motor/load fixture",
+      "purpose": "Qualify rails, motion, stop/fault energy and thermal limits",
+      "need": "commissioning",
+      "status": "Provider, instrument ratings and test fixture unresolved",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "j3-resistor",
+      "item": "External brake resistor",
+      "quantity": 1,
+      "part_or_candidate": "Candidate: Vishay LPS0300H10R0GB",
+      "specification": "Candidate 10 ohm / 300 W heatsink-rated; final rating unspecified",
+      "source": "J3 pin 1 VMOTOR",
+      "destination": "Resistor then J3 pin 2 BRAKE_RETURN",
+      "purpose": "Dissipate returned energy when application needs it",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
+      "status": "NOT selected or approved for purchase; need/load/pulse/average/thermal qualification pending",
+      "manufacturer_url": "https://www.vishay.com/docs/50052/lps300.pdf"
+    },
+    {
+      "id": "j3-housing",
+      "item": "J3 mating housing",
+      "quantity": 1,
+      "part_or_candidate": "JST VHR-2N",
+      "specification": "2 cavities, VH 3.96 mm",
+      "source": "Two brake conductors",
+      "destination": "J3 B2P-VH(LF)(SN)",
+      "purpose": "Detachable qualified brake load",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
+      "status": "Identified for provision; fit only with approved brake installation; stock pending",
+      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
+    },
+    {
+      "id": "j3-contacts",
+      "item": "J3 contacts",
+      "quantity": 2,
+      "part_or_candidate": "JST SVH-41T-P1.1",
+      "specification": "16 AWG termination; insulation OD 1.7-3.0 mm",
+      "source": "Brake cable",
+      "destination": "VHR-2N cavities 1/2",
+      "purpose": "Carry VMOTOR and switched return",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
+      "status": "Tooling, temperature and stock qualification pending",
+      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
+    },
+    {
+      "id": "j3-wire",
+      "item": "Brake conductors",
+      "quantity": 2,
+      "part_or_candidate": "Proposed Alpha Wire 3057 family",
+      "specification": "16 AWG; final length, insulation temperature and routing unselected",
+      "source": "J3 pins 1/2",
+      "destination": "Separate resistor terminals",
+      "purpose": "Outgoing bus and switched return; not permanent ground",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
+      "status": "Exact colour/SKU and installed temperature acceptance pending",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "j3-terminals",
+      "item": "Resistor ring terminals",
+      "quantity": 2,
+      "part_or_candidate": "Proposed TE 152883",
+      "specification": "M4 / 4.3 mm; 18-16 AWG, for current resistor candidate",
+      "source": "Two brake wires",
+      "destination": "Candidate resistor M4 terminals",
+      "purpose": "Terminate brake load",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
+      "status": "Re-select if resistor changes; stock, tooling, terminal temperature and guarded access pending",
+      "manufacturer_url": "https://www.te.com/en/product-152883.html"
+    },
+    {
+      "id": "j3-cooling",
+      "item": "Brake thermal/mechanical installation",
+      "quantity": "1 installation",
+      "part_or_candidate": null,
+      "specification": "Heatsink/chassis, interface, fasteners, guard and cable support",
+      "source": "Selected resistor case/terminals",
+      "destination": "Qualified heat-dissipating mounting location",
+      "purpose": "Remove heat and prevent contact/cable hazards",
+      "need": "Required for the current commissioning profile; installation and powered qualification pending",
+      "status": "Exact parts, dimensions and location depend on load/duty/ambient; no small-plate assumption",
+      "manufacturer_url": ""
+    },
+    {
+      "id": "encoder",
+      "item": "Optional encoder/magnet installation",
+      "quantity": "optional set",
+      "part_or_candidate": null,
+      "specification": "U18 AS5047P with C52/C53 plus compatible rotating magnet/holder",
+      "source": "Qualified motor-side rotating target",
+      "destination": "Centered bottom U18 footprint",
+      "purpose": "Future position feedback",
+      "need": "optional-feedback",
+      "status": "Do not fit/order for basic build; no qualified rear shaft/holder/gap; all three PCB footprints DNP",
+      "manufacturer_url": ""
+    }
+  ]
+}

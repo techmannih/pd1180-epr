@@ -1,4 +1,5 @@
 #include "motor_service.h"
+#include "tmc5160_config.h"
 
 void pd1180_motor_service_reset(pd1180_motor_service_t *m) {
   pd1180_tmc_invalidate(&m->driver);
@@ -10,7 +11,8 @@ bool pd1180_motor_service(pd1180_motor_service_t *m, const pd1180_control_t *c,
                          pd1180_inputs_t *in, uint16_t requested) {
   in->driver_ready=false;
   if (!c->armed || !c->power_permit || !in->motor_power_good || !in->vmotor_in_range ||
-      !in->configuration_verified || !in->motion_wiring_verified || !requested || requested>1000u) {
+      !in->configuration_verified || !in->motion_wiring_verified || !requested ||
+      requested>PD1180_BENCH_CURRENT_MAX_PERMILLE) {
     pd1180_motor_service_reset(m);
     return false;
   }

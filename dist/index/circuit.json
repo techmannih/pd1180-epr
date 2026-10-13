@@ -7382,11 +7382,11 @@
     "name": "R25",
     "supplier_part_numbers": {
       "jlcpcb": [
-        "C49196690"
+        "C7293210"
       ]
     },
-    "resistance": 4220,
-    "display_resistance": "4.22kΩ",
+    "resistance": 4990,
+    "display_resistance": "4.99kΩ",
     "are_pins_interchangeable": true,
     "source_group_id": "source_group_0"
   },
@@ -13067,11 +13067,11 @@
     "name": "R61",
     "supplier_part_numbers": {
       "jlcpcb": [
-        "C860148"
+        "C728583"
       ]
     },
-    "resistance": 16000,
-    "display_resistance": "16kΩ",
+    "resistance": 16200,
+    "display_resistance": "16.2kΩ",
     "are_pins_interchangeable": true,
     "source_group_id": "source_group_0"
   },
@@ -13436,11 +13436,11 @@
     "name": "R66",
     "supplier_part_numbers": {
       "jlcpcb": [
-        "C705737"
+        "C136970"
       ]
     },
-    "resistance": 1210,
-    "display_resistance": "1.21kΩ",
+    "resistance": 1200,
+    "display_resistance": "1.2kΩ",
     "are_pins_interchangeable": true,
     "source_group_id": "source_group_0"
   },
@@ -35940,7 +35940,7 @@
     "is_box_with_pins": true,
     "symbol_name": "boxresistor_down",
     "schematic_sheet_id": "schematic_sheet_5",
-    "symbol_display_value": "4.22kΩ",
+    "symbol_display_value": "4.99kΩ",
     "schematic_group_id": "schematic_group_0"
   },
   {
@@ -37716,7 +37716,7 @@
     "is_box_with_pins": true,
     "symbol_name": "boxresistor_right",
     "schematic_sheet_id": "schematic_sheet_10",
-    "symbol_display_value": "16kΩ",
+    "symbol_display_value": "16.2kΩ",
     "schematic_group_id": "schematic_group_0"
   },
   {
@@ -37878,7 +37878,7 @@
     "is_box_with_pins": true,
     "symbol_name": "boxresistor_down",
     "schematic_sheet_id": "schematic_sheet_11",
-    "symbol_display_value": "1.21kΩ",
+    "symbol_display_value": "1.2kΩ",
     "schematic_group_id": "schematic_group_0"
   },
   {
@@ -58757,7 +58757,7 @@
     "type": "schematic_text",
     "schematic_text_id": "schematic_text_87",
     "anchor": "center",
-    "text": "Nominal 1x current limit 4.27 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage.",
+    "text": "Nominal 1x current limit 3.607 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage.",
     "font_size": 0.23,
     "color": "#000000",
     "position": {
@@ -58995,7 +58995,7 @@
     "type": "schematic_text",
     "schematic_text_id": "schematic_text_104",
     "anchor": "center",
-    "text": "U14 inhibits motion at nominal 53.18 V; U15/Q16 switch the external J3 brake load.",
+    "text": "U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load.",
     "font_size": 0.23,
     "color": "#000000",
     "position": {
@@ -82464,23 +82464,33 @@
           "y": 0.3
         },
         "to": {
-          "x": 9.84,
+          "x": 9.69,
           "y": 0.3
         }
       },
       {
         "from": {
-          "x": 9.84,
+          "x": 9.69,
           "y": 0.3
         },
         "to": {
-          "x": 9.84,
+          "x": 9.870000000000001,
+          "y": 0.3
+        }
+      },
+      {
+        "from": {
+          "x": 9.870000000000001,
+          "y": 0.3
+        },
+        "to": {
+          "x": 9.870000000000001,
           "y": 0.8
         }
       },
       {
         "from": {
-          "x": 9.84,
+          "x": 9.870000000000001,
           "y": 0.8
         },
         "to": {
@@ -82824,11 +82834,11 @@
     "text": "BRAKE_SENSE",
     "source_net_id": "source_net_11",
     "anchor_position": {
-      "x": 9.84,
+      "x": 9.870000000000001,
       "y": 0.8
     },
     "center": {
-      "x": 9.12,
+      "x": 9.15,
       "y": 0.8
     },
     "anchor_side": "right",
@@ -174369,6 +174379,6 @@
   },
   {
     "type": "source_project_metadata",
-    "source_filesystem_md5_hash": "bb1c6cc528ae5df7db9c7a344b4b635b"
+    "source_filesystem_md5_hash": "f54b6eadcfc5b5534646fa895bb7061b"
   }
 ]

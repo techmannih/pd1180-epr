@@ -20,9 +20,12 @@ function csv(rows) { return rows.map((row) => row.map(csvCell).join(',')).join('
 const stock = JSON.parse(await readFile('docs/stock-report.json', 'utf8'))
 const alternatives = JSON.parse(await readFile('docs/alternatives.json', 'utf8'))
 const external = JSON.parse(await readFile('docs/external-parts.json', 'utf8'))
-const harness = JSON.parse(await readFile('engineering/motor-harness.json', 'utf8'))
 const releaseStatus = JSON.parse(await readFile('docs/release-status.json', 'utf8'))
 const schematicStyle = JSON.parse(await readFile('docs/checks/schematic-style.json', 'utf8'))
+const kicadDrc = JSON.parse(await readFile('dist/manufacturing/kicad-drc.json', 'utf8'))
+for (const field of ['violations', 'unconnected_items', 'schematic_parity']) {
+  if (!Array.isArray(kicadDrc[field])) throw new Error(`KiCad DRC report is missing its ${field} array`)
+}
 const kicadErc = JSON.parse(await readFile('dist/manufacturing/kicad-erc.json', 'utf8'))
 if (!Array.isArray(kicadErc.sheets)) throw new Error('KiCad ERC report is missing its sheets array')
 const kicadErcViolations = kicadErc.sheets.flatMap((sheet) => {
@@ -39,12 +42,8 @@ await writeFile(join(sourcing, 'alternatives.csv'), csv([
   ...alternatives.parts.map((part) => [part.primary, part.alternative, part.mpn, part.package, part.stock, part.status, part.notes]),
 ]))
 await writeFile(join(sourcing, 'external-items.csv'), csv([
-  ['Item', 'Selected part', 'Specification', 'Status'],
-  ['brake resistor', external.brake_resistor.selected_part || '', `${external.brake_resistor.target_resistance_ohms} ohm / ${external.brake_resistor.starting_continuous_power_w} W`, external.brake_resistor.status],
-  ['motor', external.motor, external.motor_specification, 'ordered; current and mounting qualification pending'],
-  ['magnet', external.magnet, 'AS5047P compatible', 'mechanical validation required'],
-  ['brake cable assembly', 'VHR-2N; 2 x SVH-41T-P1.1', '16 AWG, insulation OD 1.7–3.0 mm; J3: VMOTOR / BRAKE_RETURN', 'Specification only; physical access, strain relief and thermal qualification pending'],
-  ['motor cable assembly', `${harness.motor_connector.mate}; ${harness.motor_connector.contacts}`, 'Four 16 AWG pigtails, four TE 320559 splices to factory cable; see motor-harness.md', harness.motor_connector.connection_status],
+  ['ID', 'Item', 'Qty', 'Part or candidate', 'Specification', 'Source', 'Destination', 'Purpose', 'Need', 'Status', 'Manufacturer URL'],
+  ...external.items.map(item => [item.id, item.item, item.quantity, item.part_or_candidate, item.specification, item.source, item.destination, item.purpose, item.need, item.status, item.manufacturer_url]),
 ]))
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
@@ -67,6 +66,10 @@ const copies = [
   ['docs/native-decoupling-check.json', 'native-decoupling-check.json'],
   ['docs/power-validation.md', 'power-validation.md'],
   ['docs/assembly.md', 'assembly.md'],
+  ['docs/external-system.md', 'external-system.md'],
+  ['docs/external-parts.json', 'external-parts.json'],
+  ['docs/brake-integration.md', 'brake-integration.md'],
+  ['sourcing/external-items.csv', 'external-items.csv'],
   ['docs/motor-assembly.md', 'motor-assembly.md'],
   ['engineering/motor-harness.json', 'motor-harness.json'],
   ['engineering/reference-comparison.json', 'reference-comparison.json'],
@@ -119,6 +122,7 @@ async function zipDirectory(directory, destination) {
   const zip = new JSZip()
   async function add(path, prefix = '') {
     for (const entry of await readdir(path, { withFileTypes: true })) {
+      if (entry.name.endsWith('.kicad_prl') || entry.name.endsWith('.lck')) continue
       const full = join(path, entry.name)
       if (entry.isDirectory()) await add(full, `${prefix}${entry.name}/`)
       else zip.file(`${prefix}${entry.name}`, await readFile(full))
@@ -154,7 +158,7 @@ The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact 
 
 RGB, independent board-power indication, a reset-safe buzzer and eight new power/programming pads are included. See \`indicators.md\` and \`pd-programming.md\` for states, supply allocation and isolated EEPROM programming. The fixture and TI image still require qualification.
 
-The power ECO uses TPS26630 1× latch-off limiting at nominal 4.27 A, lowers motor inhibit to 53.18 V, adds a 100 V brake-cable recirculation diode and ADS1115 startup brake-continuity sensing. The conservative motor-current ceiling is 3.8 A RMS; the supplied profile remains locked at approximately 0.827 A / 10 rpm unloaded until all hardware qualification flags can be justified. The continuity check is startup-only and does not qualify the heatsink or protect against every runtime brake fault. See \`power-validation.md\` and the repository's \`engineering/power-thermal-eco.json\`.
+The power ECO uses TPS26630 1× latch-off limiting at nominal 3.607 A, sets motor inhibit to nominal 53.21 V, and includes a 100 V brake-cable recirculation diode and ADS1115 startup brake-continuity sensing. The conservative input screen is 4.252 A including the 250 mA upstream allocation; the nominal 48 V motor-input budget is approximately 173 W. The conservative motor-current ceiling is 3.8 A RMS; the supplied profile remains locked at approximately 0.827 A / 10 rpm unloaded until all hardware qualification flags can be justified, and requests above 240 permille are rejected before SPI access. The continuity check is startup-only and does not qualify the heatsink or protect against every runtime brake fault. See \`power-validation.md\` and the repository's \`engineering/protection-refinement.json\`.
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
@@ -166,9 +170,11 @@ For the checked prototype handoff, use the newly generated Gerbers together with
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents and hardware contract correspond to ${releaseStatus.revision}, identified by this delivery manifest.
 
-The committed native KiCad checks have zero PCB DRC violations, zero unconnected items, zero schematic-parity issues and zero schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The native reports contain ${kicadDrc.violations.length} PCB DRC violations, ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style result is recorded across all ${standards.project_geometry.schematic_sheet_count} sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
+
+External equipment and candidates are listed in [external-system.md](external-system.md) and [external-parts.json](external-parts.json); the current profile requires a qualified brake assembly.
 
 Power calculations and the unperformed bench-test matrix are in \`power-validation.md\`; \`power-audit.json\` and \`native-decoupling-check.json\` contain the numerical evidence.
 
@@ -196,8 +202,9 @@ const deliveryManifest = {
     exact_supplier_codes: true,
   },
   checks: {
-    kicad_drc_violations: 0,
-    kicad_unconnected_items: 0,
+    kicad_drc_violations: kicadDrc.violations.length,
+    kicad_unconnected_items: kicadDrc.unconnected_items.length,
+    kicad_schematic_parity_issues: kicadDrc.schematic_parity.length,
     kicad_erc_violations: kicadErcViolations.length,
     stock_parts: stock.parts.length,
     stock_unavailable: stock.parts.filter((part) => part.status !== 'available').length,

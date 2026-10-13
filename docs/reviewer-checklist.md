@@ -82,5 +82,7 @@ Engineering review and ordering are separate gates: `bun run review` validates t
 - [ ] U36 isolates both EEPROM wires when TP_PD_ISO is grounded. Follow [pd-programming.md](pd-programming.md), verify readback and cold APP boot with the approved TI image.
 - [ ] All 19 service pads are identified in the final fixture drawing; high-voltage probes cannot touch the logic programming contacts.
 
-- [ ] Review the power ECO: R25 4.22 kΩ, TPS26630 MODE open (1× latch-off), R66 1.21 kΩ, D20 cathode VMOTOR/anode BRAKE_RETURN, and R134/R135/R136/C98 to ADS1115 AIN2. Confirm startup-only continuity detection, three locked qualification flags, 3.8 A ceiling and 0.827 A / 10 rpm initial profile.
+- [ ] Review the power ECO: R25 4.99 kΩ, TPS26630 MODE open (1× latch-off), R61 16.2 kΩ / R66 1.2 kΩ, D20 cathode VMOTOR/anode BRAKE_RETURN, and R134/R135/R136/C98 to ADS1115 AIN2. Confirm startup-only continuity detection, three locked qualification flags, 3.8 A ceiling and 0.827 A / 10 rpm initial profile.
 - [ ] Reproduce engineering/power-eco-simulation/results.json; healthy winding corner must pass while open-brake/full-load and 5 J / 20 ms cases remain explicitly unsafe. No source/heatsink/load hardware qualification is implied.
+
+- [ ] Confirm the 240-permille request guard cannot bypass the 0.827 A commissioning profile, all three qualification locks remain false, and regenerated delivery BOM/CPL/viewer match the current source. Review 14 behavioral cases and their unqualified assumptions.

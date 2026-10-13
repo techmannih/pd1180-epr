@@ -22,16 +22,16 @@ PP5V is not connected in this sink-only implementation. Power-source operation, 
 | Item | Nominal calculation | Implication |
 |---|---|---|
 | Logic rail | 1 V × (1 + 100 kΩ / 43.2 kΩ) | 3.315 V before ideal-diode loss; check load drop, reference and tolerance |
-| eFuse current limit | 18,000 / 4,220 Ω | 4.265 A nominal; approximately 205 W motor input at 48 V |
+| eFuse current limit | 18,000 / 4,990 Ω | 3.607 A nominal; approximately 173 W motor input at 48 V |
 | Input UVLO | 1.2 V × (1 + 360 kΩ / 10 kΩ) | 44.4 V nominal; prevents motor operation on SPR or 36 V EPR |
 | Input OVP | 1.2 V × (1 + 426.7 kΩ / 10 kΩ) | 52.40 V nominal; calculate full comparator/resistor tolerances |
 | Motor ADC scale | (360 kΩ + 20 kΩ) / 20 kΩ | 19:1; 48 V gives 2.526 V |
 | Current monitor | approximately 27.9 µA/A × 20 kΩ | approximately 0.558 V/A; calibrate using the U6 datasheet limits |
 | Phase shunt | 3.8² × 0.033 Ω | approximately 0.477 W per shunt; selected 3 W parts need copper/thermal verification |
 | Bulk energy, 48→53 V | ½ × 940 µF × (53²−48²) | only 0.237 J; bulk capacitors cannot absorb sustained regeneration |
-| Brake switch on | 2.5 × (1 + 196 kΩ/10 kΩ + 196 kΩ/1 MΩ) | approximately 51.99 V |
-| Brake switch off | above − 3.3 × 200 kΩ/1 MΩ | approximately 51.34 V; nominal 0.66 V hysteresis |
-| Motor OVP shutdown | 2.5 × (1 + 430 kΩ/21.21 kΩ) | approximately 53.18 V; independent of MCU software |
+| Brake switch on | 2.5 × (1 + 196.2 kΩ/10 kΩ + 196.2 kΩ/1 MΩ) | approximately 52.04 V |
+| Brake switch off | above − 3.3 × 196.2 kΩ/1 MΩ | approximately 51.39 V; nominal 0.647 V hysteresis |
+| Motor OVP shutdown | 2.5 × (1 + 430 kΩ/21.2 kΩ) | approximately 53.21 V; independent of MCU software |
 | Initial brake load | 53² / 10 Ω | approximately 281 W while on, 5.3 A; external resistor/heatsink/pulse-energy rating required |
 
 The resistor tolerances, comparator offset, reference error, gate delay, wiring inductance, maximum regenerated power and maximum bus overshoot must be evaluated together. The 60 V motor-driver rating is not a usable transient clamp setting. A generic 51 V TVS can clamp far above 60 V and is not an adequate motor-bus braking strategy.
@@ -52,7 +52,7 @@ CAN uses TCAN332 and RS485 uses MAX3485E. Supply bypass and bus ESD parts are in
 
 RS232 uses MAX3232 at 3.3 V, with its four charge-pump capacitors. J10 USB 2.0 D+/D− has USBLC6-4SC6 shunt ESD protection and MCU-side 22 Ω series resistors. R107/R108 provide a divided and filtered VBUS attach sense on PB0/ADC_IN8: 1 MΩ over 47 kΩ gives about 0.224 V at J10's nominal 5 V. J10 VBUS is independent from the EPR rail. Firmware must keep the USB peripheral detached unless `USB_VBUS_SENSE` indicates present VBUS. Route USB as a 90 Ω differential pair with an uninterrupted reference plane; no impedance claim is made for the current placement.
 
-GPIO/stop/home/Step/Dir inputs use 160 V NPN stages and base-emitter reverse protection. Nominal use is 24 V logic; thresholds and transient immunity are unqualified. Outputs are low-side NPN switches with flyback diodes; begin qualification below 100 mA per channel. J7 pin17 is **the 48 V motor bus**, not a regulated 24 V accessory rail. An accessory requiring 24 V needs a separate supply.
+The former J7 industrial I/O and STEP/DIR command circuits were removed in the approved control ECO. SW2 requests the internal SPI ramp after qualification, and SW1 resets the MCU. No external command or accessory-power output is provided by the current board.
 
 The logic rail is supplied from reverse-blocked USB-derived and motor-derived regulators. TMCL command execution, CANopen CiA profiles, standalone programs and motor tuning are firmware work outside the circuit netlist.
 

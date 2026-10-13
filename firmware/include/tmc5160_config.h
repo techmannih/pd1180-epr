@@ -14,6 +14,10 @@ extern const size_t pd1180_tmc5160_boot_config_count;
 #define PD1180_IRUN 31u
 #define PD1180_IHOLD 8u
 
+// Unloaded commissioning ceiling: GS=139, IRUN=6, approximately 0.827 A RMS.
+// Raising this requires a separately qualified operating profile.
+#define PD1180_BENCH_CURRENT_MAX_PERMILLE 240u
+
 #define PD1180_TMC_RAMP_GCONF 0x00000000u
 #define PD1180_TMC_RAMP_CHOPCONF 0x004100C5u
 #define PD1180_TMC_SHORT_CONF ((1u << 16) | (12u << 8) | 6u)

@@ -2,7 +2,7 @@
   (version 20250114)
   (generator circuit-json-to-kicad)
   (generator_version 0.0.1)
-  (uuid f7a6fc4c-fadf-4ec7-be3f-5389411f0035)
+  (uuid c1e6a7c1-d856-4918-896b-735849751304)
   (paper
     A4
   )
@@ -654,7 +654,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 3ce92d5e-4675-4da1-9a56-d8a1d56e16c6)
+    (uuid 443bd5a6-92eb-4319-ac58-ee19b92e3fbf)
     (fields_autoplaced no)
     (property "Reference" "SW2"
       (id 0)
@@ -707,14 +707,14 @@
       )
     )
     (pin "1"
-      (uuid 50852599-6715-413a-9e89-33babc9f00dc)
+      (uuid a2b2fef9-9e76-456b-9df2-4a4778b8d104)
     )
     (pin "2"
-      (uuid 2dd3fd40-aaf1-41ef-8974-9c99658e1a2a)
+      (uuid fecdab34-5fd3-46c1-8b8b-17c2386f6dd7)
     )
     (instances
       (project ""
-        (path "/495e3eb3-9d45-44b1-ad31-ea992674a5e1/008e4b99-d89b-44d3-889b-f3b66b60dd92"
+        (path "/352196ea-f6b0-4f35-9d2f-628dba42f082/f123d906-9e0e-4a64-8528-163a72626aeb"
           (reference "SW2")
           (unit 1)
         )
@@ -729,7 +729,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid bde3e6f6-74dd-476b-8b17-ccfe438997a1)
+    (uuid c1322e50-4020-4467-872b-0608b7c975ac)
     (fields_autoplaced no)
     (property "Reference" "R133"
       (id 0)
@@ -782,14 +782,14 @@
       )
     )
     (pin "1"
-      (uuid f6c85ff9-393f-48b2-95f8-cc3dee1f2ddb)
+      (uuid 99a484d8-669b-411f-9490-63e77fb43100)
     )
     (pin "2"
-      (uuid d4a12fba-9c33-407d-925e-863996065143)
+      (uuid 6217b2b6-5ced-4390-9c3e-8c47db00bfde)
     )
     (instances
       (project ""
-        (path "/495e3eb3-9d45-44b1-ad31-ea992674a5e1/008e4b99-d89b-44d3-889b-f3b66b60dd92"
+        (path "/352196ea-f6b0-4f35-9d2f-628dba42f082/f123d906-9e0e-4a64-8528-163a72626aeb"
           (reference "R133")
           (unit 1)
         )
@@ -804,7 +804,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 5968dff9-6d3b-4fad-87d9-fce4b80091c5)
+    (uuid a4be2c76-d495-4024-9f24-80a57cce3567)
   )
   (text "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power."
     (at 151.8 9.224999999999994 0)
@@ -814,7 +814,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 2423d35d-dc37-4cc2-9672-36d052fdbf3d)
+    (uuid 1c3d96fc-d503-4914-a5ac-afc4fec87420)
   )
   (text "Debounce requires release before start; reset, power loss and faults never auto-start."
     (at 151.8 19.724999999999994 0)
@@ -824,7 +824,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid f81955a7-1b1b-4c06-afa0-967014e8ee89)
+    (uuid f7a2a3f0-eb0c-493b-9b0e-b860e71df75d)
   )
   (text "USER_BUTTON_N"
     (at 147.6 102.44999999999999 -90)
@@ -834,7 +834,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid aab59dac-36c7-4b20-9e63-9cf1ba24cb75)
+    (uuid 1fa6d26d-54ba-4975-9355-933f92695e3d)
   )
   (global_label "USER_BUTTON_N"
     (shape passive)
