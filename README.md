@@ -1,5 +1,10 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
+Component names now come from the native footprint references, including SW1 and SW2; custom imports use `{NAME}`. No names are hidden or manually relocated. The default PCB/3D viewer is refreshed for this change. [Before](previews/native-labels-before-pcb.png) · [After](previews/native-labels-after-pcb.png).
+
+**Current label-only revision:** electrical/schematic records and native copper are unchanged. Native DRC has 408 visible silkscreen/text findings, zero unconnected items and zero schematic-parity issues. Earlier zero-DRC results and manufacturing archives below describe the pre-label revision, not this viewer. Fabrication remains held. Evidence: [native-reference verification](engineering/native-reference-verification.json).
+
+
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and local START/STOP control.
 
 **Power/thermal ECO — 2026-10-13:** TPS26630 1× current limiting at nominal 3.61 A, 53.21 V motor inhibit, D20 brake-cable flyback clamp, and ADS1115 brake continuity preflight added. The firmware ceiling is 3.8 A RMS with a locked 0.827 A / 10 rpm unloaded commissioning profile. PR #2 adds current-request guards and expanded tolerance/fault checks while preserving the main ECO. See [calculations and simulation limits](docs/power-validation.md).

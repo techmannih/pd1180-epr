@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-13T03:41:01.414Z",
+  "checked_at": "2026-10-13T04:24:50.659Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -9,7 +9,7 @@
     "release/circuit.json"
   ],
   "hosted_preview_output": "dist/release/circuit.json",
-  "verified_preview_records": 13504,
+  "verified_preview_records": 13724,
   "selectable_source_files": 63,
   "selectable_import_files": 57,
   "unavailable_viewer_files": [],
@@ -40,7 +40,7 @@
     "release/schematic-style-check.json",
     "release/sha256.json",
     "release/verification.json",
-    "__snapshots__/**",
+    "**/__snapshots__/**",
     "docs/**",
     "engineering/**",
     "firmware/**",
@@ -56,18 +56,18 @@
     "release/harness-assembly-check.json",
     "release/external-parts.json"
   ],
-  "included_files": 80,
-  "included_bytes": 8182575,
-  "included_mebibytes": 7.8,
+  "included_files": 81,
+  "included_bytes": 8255223,
+  "included_mebibytes": 7.87,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7571022
+      "bytes": 7641546
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 144756
+      "bytes": 129335
     },
     {
       "path": "bun.lock",
@@ -75,42 +75,42 @@
     },
     {
       "path": "README.md",
-      "bytes": 37452
+      "bytes": 38197
     },
     {
       "path": "AGENTS.md",
-      "bytes": 20001
+      "bytes": 20452
     },
     {
       "path": "release/reference-comparison.json",
       "bytes": 14964
     },
     {
+      "path": "logs/freerouting.log",
+      "bytes": 14616
+    },
+    {
       "path": "imports/STM32G0B1CBT6.local.js",
-      "bytes": 14333
+      "bytes": 14488
     },
     {
       "path": "imports/TMC5160A_TA_T.tsx",
-      "bytes": 13303
+      "bytes": 13392
     },
     {
       "path": "hardware-contract.json",
       "bytes": 12472
-    },
-    {
-      "path": "board-diagnostics.tsx",
-      "bytes": 12464
     }
   ],
   "github_import_files": 557,
-  "github_import_bytes": 22755267,
-  "github_import_mebibytes": 21.7,
+  "github_import_bytes": 22814678,
+  "github_import_mebibytes": 21.76,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7571022
+      "bytes": 7641546
     },
     {
       "path": "release/pcb-3d.png",
@@ -149,5 +149,7 @@
       "bytes": 236959
     }
   ],
-  "errors": []
+  "errors": [
+    "tscircuit.config.json must ignore __snapshots__/**"
+  ]
 }

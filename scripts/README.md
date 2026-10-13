@@ -38,7 +38,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `check-stock.mjs` | Refreshes exact JLCSearch code, package and stock evidence for the fitted BOM; missing package expectations fail closed. |
 | `check-source-schematic.mjs` | Audits all retained default A4 schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
-| `clean-silkscreen.py` | Removes dense passive references and applies reviewed markings. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings while retaining references and polarity marks; native DRC remains mandatory. |
+| `clean-silkscreen.py` | Preserves native component references and their size. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings; native DRC remains mandatory. |
 | `design.test.mjs` | Regression tests electrical topology, fixed parts and safety behavior. |
 | `export-assembly.mjs` | Generates JLC-compatible BOM/CPL using stable source values/packages and exact LCSC identities independently of transient stock responses; `--check <directory>` rejects stale manufacturing or release assembly data. |
 | `export-routing-interchange.py` | Exports a routing-only copy with unique, world-aligned footprint images while asserting every pad coordinate, layer, angle and net is unchanged; no blanket bottom rotation is needed. |
@@ -117,3 +117,6 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/winding and input-step cases plus winding energy balance. `check-delivery.mjs` verifies source external-equipment guidance and actual native DRC counts against delivered copies; `check-stock.mjs` distinguishes unknown inventory from insufficient known inventory.
 
 - `check-protection-refinement.mjs`: reverses only the three R25/R61/R66 value fields and requires the entire native PCB to hash exactly to main 4836266. Records geometry evidence; cannot waive DRC/ERC, sourcing or hardware checks.
+
+- `check-pcb-references.mjs`: checks every electrical component reference in compiled source, native PCB and the default routed PCB/3D viewer. Rejects hidden, absent, detached, stale or manually positioned names. Runs within `check:cloud-viewer`.
+- `sync-pcb-references.py`: copies compiled native footprint references into the KiCad Reference fields, removes obsolete detached captions, and rejects any change outside those label fields. Arguments: board path and optional `--source` Circuit JSON.

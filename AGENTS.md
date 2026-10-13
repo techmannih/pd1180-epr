@@ -101,6 +101,8 @@ Keep `release/circuit.json` selectable as the final routed view. Include the mec
 
 ## PCB review
 
+The user reiterated on 2026-10-13 that every component must retain its native footprint reference, including SW1/SW2, even when labels overlap. Inline imports may use the native `{NAME}` template. Do not hide, manually relocate, resize or replace references with detached board-level captions. This supersedes the earlier readable-markings choice in PR #2. Report resulting silkscreen DRC findings without suppressing them; fabrication remains held.
+
 - Place protection at the connector, bypass parts at the relevant pins, switching loops compactly and sense branches as true Kelvin connections.
 - Keep high-current paths explicit. Record their layer use, minimum width, copper weight, via count and analytical current/temperature screen.
 - Inspect ground continuity, return paths, plane necks, thermal-pad stitching, shunt bypasses, USB reference continuity, antenna/shaft/mounting keepouts and connector access.
