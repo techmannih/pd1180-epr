@@ -39,7 +39,7 @@ await Promise.all(Array.from({ length: 5 }, async () => {
       const {exact, official, checked_at} = evidence
       await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify(evidence, null, 2)+'\n')
       const package_match = packagesMatch(entry.footprint, exact?.package)
-      results.push({ ...entry, checked_at, url, search_error: evidence.search_error, official_error: evidence.official_error, official_url: official?.url ?? null, evidence_source: exact ? "jlcpcb-official" : null, warehouse_stock: exact?.warehouse_stock ?? null, available_order_quantity: exact?.available_order_quantity ?? null, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
+      results.push({ ...entry, checked_at, url, index_status: evidence.index_status, search_error: evidence.search_error, official_error: evidence.official_error, official_url: official?.url ?? null, evidence_source: exact ? "jlcpcb-official" : null, warehouse_stock: exact?.warehouse_stock ?? null, available_order_quantity: exact?.available_order_quantity ?? null, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
         status: evidence.official_error ? 'unverified-network-error' : !exact ? 'unverified-no-exact-match' : !package_match ? 'package-mismatch' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= entry.quantity_per_board * quantity ? 'available' : 'insufficient',
         required: entry.quantity_per_board * quantity })
@@ -49,5 +49,5 @@ await Promise.all(Array.from({ length: 5 }, async () => {
 results.sort((a,b) => Number(a.lcsc.slice(1)) - Number(b.lcsc.slice(1)))
 const report = { checked_at: new Date().toISOString(), board_quantity: quantity, stock_is_not_reserved: true, parts: results }
 await writeFile(new URL('../docs/stock-report.json', import.meta.url), JSON.stringify(report, null, 2))
-console.log(JSON.stringify({ unique_parts: results.length, package_matches: results.filter(p=>p.package_match===true).length, available: results.filter(p=>p.status==='available').length, problems: results.filter(p=>p.status!=='available') }, null, 2))
+console.log(JSON.stringify({ unique_parts: results.length, index_missing_or_failed: results.filter(p=>p.index_status!=='exact-match').map(p=>({lcsc:p.lcsc,index_status:p.index_status})), package_matches: results.filter(p=>p.package_match===true).length, available: results.filter(p=>p.status==='available').length, problems: results.filter(p=>p.status!=='available') }, null, 2))
 if (results.some(p=>!inventoryEvidencePasses(p,process.argv.includes('--review')))) process.exitCode = 1

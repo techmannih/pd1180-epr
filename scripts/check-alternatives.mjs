@@ -48,6 +48,7 @@ for (const part of data.parts) {
       primary_package: primary.package,
       primary_available,
       evidence_source: exact ? "jlcpcb-official" : null,
+      index_status: evidence.index_status,
       search_error: evidence.search_error,
       official_error: evidence.official_error,
       official_url: official?.url ?? null,
