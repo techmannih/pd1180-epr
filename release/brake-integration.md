@@ -2,6 +2,21 @@
 
 J3 pin 1 supplies VMOTOR to the resistor; its other terminal returns through J3 pin 2, BRAKE_RETURN, to Q16. U13 hysteresis and U15 drive the brake independently of a software-only command. The motor can regenerate when decelerated or externally driven, while the USB input cannot be assumed to absorb returned energy. The retained bulk capacitors absorb only about 0.237 J nominal between 48 and 53 V (0.190 J at minimum capacitance). Removing the brake is not approved.
 
+## When J3 is needed
+
+**Retain J3 in this 48 V design.** J3 connects an external resistor; the connector alone cannot absorb energy. Current motor-enable policy requires an installed and qualified brake path even when a light-load run might never reach the threshold. It is not a mechanical holding brake and cannot secure a gravity load.
+
+| Condition | Role of J3 and resistor |
+|---|---|
+| USB programming/logic only, VMOTOR off | No braking event expected; keep motor outputs inhibited. |
+| Slow unloaded motion | Returned energy may be small, but the brake remains a commissioning requirement. |
+| High-speed stop, attached inertia, frequent reversals | Absorbs returned energy within verified pulse/average limits. |
+| Externally driven motor or gravity load | May receive sustained energy; independent restraint and a specified energy envelope are necessary. |
+
+Nominal thresholds are approximately **52.04 V ON / 51.39 V OFF**. Current flows `VMOTOR → J3.1 → resistor → J3.2 BRAKE_RETURN → Q16 → GND`. U13/U15 operate this loop without waiting for software. USB-source reverse blocking does not make the adapter an energy sink; see [TI's regeneration explanation](https://www.ti.com/lit/pdf/ssztch8).
+
+The behavioral 1000 rpm rotor-only example peaks at **65.918 V without the brake versus 52.644 V with it**. These are simulated assumptions, not measured results or an authorized speed. The [TMC5160A datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf) specifies 55 V as the motor-supply operating ceiling. A 5 J/20 ms example exceeds it even with the brake, so J3 does not make arbitrary loads safe.
+
 The candidate remains **Vishay LPS0300H10R0GB, 10 Ω, 300 W**. It is a heatsink-mounted resistor; 300 W is not a free-air rating. The [manufacturer drawing](https://www.vishay.com/docs/50052/lps300.pdf) specifies a 60×57 mm body, 64.7 mm maximum width, 15.2±0.5 mm body height, two Ø4.2 mounting holes and two M4 terminals with 8 mm useful depth. Mounting hole pitch is 57 mm; terminal pitch is 34×36 mm diagonally. Its bottom case must remain at or below 85°C for 300 W, with 0.112°C/W element-to-case resistance. Use the specified thermal interface and flat mounting surface; connection and heatsink screw torque is 2 N·m, 2.5 N·m maximum. The resistor must mount to an independently sized metal heatsink/chassis, not the PCB or PA12 cable support.
 
 Proposed terminations are **VHR-2N + two SVH-41T-P1.1** at J3, two Alpha3057 16 AWG conductors, and **TE152883** rings at the resistor. [TE's specification](https://www.te.com/en/product-152883.html) supports 18–16 AWG, M4/4.3 mm hole, 1.4–2.67 mm insulation OD, 300 V and 0–105°C. Alpha3057 maximum OD2.3876 mm fits that window. This checks nominal ranges only: ring-head clearance, stack/screw engagement, crimp tooling, purchased stock and local terminal temperature still require acceptance. The rings are partially insulated; a finger-safe barrier and cable support are required at the remote installation.

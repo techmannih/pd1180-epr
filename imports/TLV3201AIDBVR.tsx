@@ -40,6 +40,7 @@ export const TLV3201AIDBVR = (props: ChipProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":-0.9000489999999672,"y":1.5499587999998994},{"x":0.8999728000000005,"y":1.5499587999998994}]} />
 <fabricationnotepath route={[{"x":-0.9000489999999672,"y":-1.5500604000000067},{"x":0.8999728000000005,"y":-1.5500604000000067}]} />
 <courtyardoutline outline={[{"x":-2.1000978999999234,"y":1.6999843999999484},{"x":2.1000978999999234,"y":1.6999843999999484},{"x":2.1000978999999234,"y":-1.7000097999999753},{"x":-2.1000978999999234,"y":-1.7000097999999753},{"x":-2.1000978999999234,"y":1.6999843999999484}]} />
+      <silkscreentext text="{NAME}" pcbX="0mm" pcbY="2.7mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C105188.obj?uuid=460193f9bf2d42e58cf3c2f675b07dc6",

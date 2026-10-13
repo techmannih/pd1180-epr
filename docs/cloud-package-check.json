@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-13T05:17:03.162Z",
+  "checked_at": "2026-10-13T05:45:27.527Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -9,7 +9,7 @@
     "release/circuit.json"
   ],
   "hosted_preview_output": "dist/release/circuit.json",
-  "verified_preview_records": null,
+  "verified_preview_records": 13701,
   "selectable_source_files": 63,
   "selectable_import_files": 57,
   "unavailable_viewer_files": [],
@@ -41,6 +41,7 @@
     "release/sha256.json",
     "release/verification.json",
     "__snapshots__/**",
+    "**/__snapshots__/**",
     "docs/**",
     "engineering/**",
     "firmware/**",
@@ -59,17 +60,17 @@
     "release/pd-image-check.json"
   ],
   "included_files": 80,
-  "included_bytes": 8160003,
-  "included_mebibytes": 7.78,
+  "included_bytes": 8220203,
+  "included_mebibytes": 7.84,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7547720
+      "bytes": 7618238
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 144600
+      "bytes": 129468
     },
     {
       "path": "bun.lock",
@@ -77,11 +78,11 @@
     },
     {
       "path": "README.md",
-      "bytes": 37532
+      "bytes": 38787
     },
     {
       "path": "AGENTS.md",
-      "bytes": 20471
+      "bytes": 21424
     },
     {
       "path": "release/reference-comparison.json",
@@ -89,38 +90,38 @@
     },
     {
       "path": "imports/STM32G0B1CBT6.local.js",
-      "bytes": 14333
+      "bytes": 14488
     },
     {
       "path": "imports/TMC5160A_TA_T.tsx",
-      "bytes": 13303
+      "bytes": 13392
     },
     {
       "path": "hardware-contract.json",
-      "bytes": 12472
+      "bytes": 12522
     },
     {
-      "path": "board-diagnostics.tsx",
-      "bytes": 12464
+      "path": "delivery-manifest.json",
+      "bytes": 12356
     }
   ],
-  "github_import_files": 582,
-  "github_import_bytes": 22867777,
-  "github_import_mebibytes": 21.81,
+  "github_import_files": 599,
+  "github_import_bytes": 24631469,
+  "github_import_mebibytes": 23.49,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7547720
+      "bytes": 7618238
     },
     {
       "path": "release/pcb-3d.png",
-      "bytes": 1455209
+      "bytes": 1508079
     },
     {
       "path": "release/pcb-bottom.png",
-      "bytes": 1208069
+      "bytes": 1208664
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1.glb",
@@ -139,16 +140,16 @@
       "bytes": 651976
     },
     {
+      "path": "previews/native-labels-after-pcb.png",
+      "bytes": 582824
+    },
+    {
+      "path": "release/kicad-drc.json",
+      "bytes": 273104
+    },
+    {
       "path": "release/schematics/mcu.svg",
       "bytes": 248843
-    },
-    {
-      "path": "previews/reference-eco-placement.png",
-      "bytes": 241700
-    },
-    {
-      "path": "release/schematics/motion.svg",
-      "bytes": 236959
     }
   ],
   "errors": []

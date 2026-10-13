@@ -1,0 +1,64 @@
+{
+  "baseline_commit": "6007098",
+  "scope": "Native component labels only; no electrical or mechanical changes",
+  "source_changed_record_types": [
+    "pcb_silkscreen_text",
+    "source_project_metadata"
+  ],
+  "all_other_compiled_records_identical": true,
+  "native_non_reference_data_identical": true,
+  "routing_inputs_identical": true,
+  "default_references": 255,
+  "missing_references": [],
+  "viewer_matches": true,
+  "switches": [
+    {
+      "name": "SW1",
+      "text": "SW1",
+      "layer": "top",
+      "x": -25,
+      "y": -37.29,
+      "rotation": 0,
+      "font_size": 1
+    },
+    {
+      "name": "SW2",
+      "text": "SW2",
+      "layer": "top",
+      "x": -10.5,
+      "y": -37.29,
+      "rotation": 0,
+      "font_size": 1
+    }
+  ],
+  "native_drc": {
+    "total": 408,
+    "types": {
+      "silk_edge_clearance": 4,
+      "text_height": 186,
+      "silk_overlap": 100,
+      "silk_over_copper": 118
+    },
+    "unconnected": 0,
+    "schematic_parity": 0
+  },
+  "manufacturing_refreshed": false,
+  "fabrication_authorized": false,
+  "hashes": {
+    "dist/index/circuit.json": "67a612d4cf54fd3bcfda61313adff79673f2150beab8654f7d5a7c4f4a119bde",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "5d5350e20613086df4fdf57edfcd7fbe1e1fcdbdd1ad6cd2a40ee725d5b97663",
+    "release/circuit.json": "640273cd8ffe96f42ae518d1dceec15c59faf2f3218ce12e16c2077b552420cd",
+    "scripts/check-pcb-references.mjs": "a0210f00f75f99bf7ef085518cc1a62ef4aa33b4956a04e67e3261484fb6a7e2",
+    "scripts/sync-pcb-references.py": "ad846b7c88a410c3eb7d50289c3f8b3894af06b8c06ec80d1826042d48539e2b"
+  },
+  "checks": {
+    "typecheck": "passed",
+    "source_schematic": "173/173 assertions passed",
+    "schematic_style": "0 issues",
+    "reference_coverage": "255/255 in source/native/default viewer",
+    "pcb_and_3d_render": "completed and visually inspected",
+    "hosted_build": "passed: configured transpile/site/PCB/3D preview build",
+    "hosted_package": "passed: built viewer has 13724 records and snapshots are excluded",
+    "delivery": "failed: historical archive DRC differs from label-updated native report"
+  }
+}

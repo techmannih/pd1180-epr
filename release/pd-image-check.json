@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-13T05:34:20.392Z",
+  "fixed_sink_pdos": [
+    {
+      "mv": 5000,
+      "ma": 3000
+    },
+    {
+      "mv": 9000,
+      "ma": 3000
+    },
+    {
+      "mv": 15000,
+      "ma": 3000
+    },
+    {
+      "mv": 20000,
+      "ma": 5000
+    },
+    {
+      "mv": 28000,
+      "ma": 5000
+    },
+    {
+      "mv": 36000,
+      "ma": 5000
+    },
+    {
+      "mv": 48000,
+      "ma": 5000
+    }
+  ],
+  "customer_use": "PD118041",
+  "source_pdos": 0,
+  "power_data_swaps": false,
+  "pps_avs_requests": false,
+  "gpio0_event": 33,
+  "gpio2_event": 92,
+  "matching_configuration_regions": 2,
+  "programmed": false,
+  "readback_verified": false,
+  "image": {
+    "path": "release/pd1180-ti-configuration.zip",
+    "archive_member": "fullFlash.bin",
+    "sha256": "ae4222fe41cde5bb9704b4b949fb67aaf231fc897d429199420a99db725b5d18",
+    "bytes": 31552,
+    "format": "ti-full-flash",
+    "start_address": 0
+  },
+  "project": {
+    "path": "docs/pd-tool-project.json",
+    "sha256": "1e3236f68c213d96dde5754894ec8f457919da4d9a359474dae1680b34b32bac",
+    "customer_use_ascii": "PD118041",
+    "customer_use_hex_le": "5044313138303431"
+  }
+}

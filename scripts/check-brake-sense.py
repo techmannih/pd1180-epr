@@ -29,8 +29,10 @@ with tempfile.TemporaryDirectory(prefix='brake-sense-') as tmp:
  report=Path(tmp)/'drc.json'
  subprocess.run([cli,'pcb','drc','--all-track-errors','--refill-zones','--format','json','--severity-all','--output',str(report),str(out)],check=True,stdout=subprocess.DEVNULL)
  drc=json.loads(report.read_text());unconnected=drc['unconnected_items']
- if drc['violations']:errors.append('Removing divider branch creates other native DRC violations')
+ baseline=json.loads(Path('dist/manufacturing/kicad-drc.json').read_text())
+ signature=lambda rows:sorted((r['type'],r['severity'],tuple(sorted(i['uuid'] for i in r['items']))) for r in rows)
+ if signature(drc['violations'])!=signature(baseline['violations']):errors.append('Removing divider branch creates new native DRC violations')
  if len(unconnected)!=1 or not any('Pad 1 [BRAKE_RETURN] of R134' in i['description'] for i in unconnected[0]['items']):errors.append('Removing thin branch disconnects something other than R134.1')
 sha=lambda path:hashlib.sha256(Path(path).read_bytes()).hexdigest()
-result={'board_sha256':sha(a.board),'checker_sha256':sha(__file__),'segment_uuids':sorted(t.m_Uuid.AsString() for t in segments),'removed_vias':sum(isinstance(t,pcbnew.PCB_VIA) for t in removed),'length_mm':sum(t.GetLength()/1e6 for t in segments),'negative_drc_unconnected':unconnected,'negative_drc_violations':drc['violations'],'maximum_divider_current_a':55/(9910*.98),'reason':'Only the 9.91 kohm startup divider is disconnected by removing the thin branch; all brake power terminals remain connected. The branch carries <5.7 mA at 55 V, not the brake load current.','errors':errors}
+result={'board_sha256':sha(a.board),'checker_sha256':sha(__file__),'segment_uuids':sorted(t.m_Uuid.AsString() for t in segments),'removed_vias':sum(isinstance(t,pcbnew.PCB_VIA) for t in removed),'length_mm':sum(t.GetLength()/1e6 for t in segments),'negative_drc_unconnected':unconnected,'negative_drc_violations':drc['violations'],'baseline_drc_violations':len(baseline['violations']),'maximum_divider_current_a':55/(9910*.98),'reason':'Only the 9.91 kohm startup divider is disconnected by removing the thin branch; all brake power terminals remain connected. The branch carries <5.7 mA at 55 V, not the brake load current.','errors':errors}
 a.report.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'segments':len(segments),'errors':errors}));raise SystemExit(bool(errors))

@@ -1,12 +1,12 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "status": "power-thermal-eco-order-held",
+  "status": "unused-sbu-corrected-pd-image-generated-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
     "input": "USB-C PD 3.1 EPR 48 V / 5 A contract",
-    "motor_bus_current_limit_nominal_a": 4.265402843601896,
+    "motor_bus_current_limit_nominal_a": 3.6072144288577155,
     "motor_phase_current_target_rms_a": 3.8,
     "board_size_mm": [
       85.9,
@@ -17,7 +17,7 @@
     "motor_current_note": "Conservative 3.8 A RMS ceiling, 3.781 A programmed nominal; locked initial 0.827 A / 10 rpm unloaded profile. No powered motor setting qualified."
   },
   "prototype_order_gates": {
-    "kicad_drc_zero_violations": true,
+    "kicad_drc_zero_violations": false,
     "kicad_drc_zero_unconnected_items": true,
     "gerber_and_drill_package_generated": true,
     "bom_and_cpl_generated": true,
@@ -30,7 +30,8 @@
     "kelvin_terminal_only_connections_verified": true,
     "usb_suspend_power_management_implemented": true,
     "driver_supply_and_protection_operating_limits_verified": true,
-    "tps26631_imon_bypass_removed": true
+    "tps26631_imon_bypass_removed": true,
+    "unused_sbu_source_and_native_correction_verified": true
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -43,21 +44,43 @@
     "ordered_motor_mount_and_encoder_qualified": false,
     "pd_programming_fixture_and_readback_qualified": false,
     "indicators_alarm_and_supply_budget_qualified": false,
-    "brake_preflight_clamp_and_fault_validation": false
+    "brake_preflight_clamp_and_fault_validation": false,
+    "ti_pd_full_flash_image_generated_register_reviewed": true,
+    "ti_pd_programming_and_readback_verified": false
   },
   "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
-    "Ordered motor is 34HS31-6004S1; driver current convention, external load inertia, stop profile, brake heatsink and fabricator via-in-pad/impedance review remain unconfirmed.",
-    "Powered USB startup/suspend current, resume timing and rail handovers remain unmeasured.",
-    "Clipped power-copper necks, target-current temperature rise and motor/brake operation remain unqualified.",
-    "TI full-flash configuration and staged powered commissioning remain pending.",
-    "U1 unused SBU channels match a TI-reported false-fault arrangement; the proposed narrow hardware correction awaits schematic-freeze approval. See docs/pd-configuration-review.md.",
-    "Alternative stock/package refresh stopped because the primary exact-part stock/package evidence failed; older alternative availability is not current procurement approval.",
-    "Four existing holes retained without new hardware. Rear thread/depth, secure mounting and cable strain relief remain unverified. The 3D view is alignment-only.",
-    "TE 320559 length 32.13 mm is verified; splice outer diameter and actual crimp/pull/insulation fit are unverified.",
-    "Local START/STOP and SPI-ramp firmware build, but qualification flags remain false. The TI image, powered operation, stop behavior and delivered running system remain unqualified.",
-    "Startup brake continuity is implemented but does not prove Q16/heatsink or detect runtime cable disconnection. All three firmware qualification flags remain false.",
-    "Current 252-part / 84-identity BOM at 2026-10-13T01:37:42.379Z: {'available': 31, 'insufficient': 24, 'unverified-no-exact-match': 29}. Null stock is unverified. R66 exact stock is unresolved; ordering remains held."
+    "404 native-reference silkscreen/text findings remain: 186 text-height, 118 silk-over-copper, 100 silk-overlap. All native names are preserved per user instructions; review exports retain every finding. Full DRC and fabrication gates fail until resolved.",
+    "Exact current assembler inventory is insufficient for C179173 (U17), C861400 (R64), C2652286 (U35), C2847904 (U16), C3020560 (J1/J10). No unreviewed substitutes or stock reservations; see stock-report.json.",
+    "Alternative-part stock/package evidence includes unavailable candidates; alternatives never authorize automatic substitution.",
+    "Fabricator acceptance of filled/capped via-in-pad treatment and USB stackup/impedance remains unrecorded.",
+    "Four existing holes are retained. Actual rear thread/depth, secure motor mounting, connector access and strain relief are unverified; the 3D view is alignment-only.",
+    "TI candidate is generated and U1 unused-SBU correction is native-checked. Fixture, programming/readback, cold APP boot and FLT/EPR waveforms remain untested.",
+    "No assembled PCB has powered validation. USB startup/suspend/backfeed, supply/gate thresholds, bridge current, thermal equilibrium, brake faults and EMC require first-article evidence before running/shipping.",
+    "10 ohm / 300 W brake remains a candidate. Final load/RPM/stop duty, heatsink, guarding and resistor/harness temperatures are unqualified. Startup continuity does not detect a runtime cable opening.",
+    "All three MCU motion/configuration/brake qualification flags remain false. A locked diagnostic image and successful CAD checks do not meet ready-to-run delivery.",
+    "TE 320559 splice outside diameter and actual crimp/pull/insulation fit remain unverified."
   ],
-  "current_stock_evidence": "docs/stock-report.json"
+  "current_stock_evidence": "docs/stock-report.json",
+  "stock_summary": {
+    "checked_at": "2026-10-13T05:28:58.765Z",
+    "available": 79,
+    "total": 84,
+    "unavailable_codes": [
+      "C179173",
+      "C861400",
+      "C2652286",
+      "C2847904",
+      "C3020560"
+    ],
+    "not_reserved": true
+  },
+  "native_drc_summary": {
+    "violations": 404,
+    "unconnected_items": 0,
+    "schematic_parity": 0,
+    "schematic_erc": 0,
+    "review_only": true,
+    "baseline": "engineering/native-silk-hold.json"
+  }
 }

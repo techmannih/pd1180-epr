@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep production silkscreen readable without changing copper or component placement."""
+"""Maintain silk geometry without hiding references or changing copper."""
 
 from __future__ import annotations
 
@@ -10,9 +10,6 @@ from pathlib import Path
 
 import pcbnew
 import wx
-
-
-PASSIVE_REFERENCE = re.compile(r"^(?:R|C|D|L|Y)\d+$")
 
 
 def clip_passive_outlines(board, footprints):
@@ -133,6 +130,9 @@ def main() -> None:
             footprint.SetFPID(pcbnew.LIB_ID("", fpid.GetLibItemName()))
             embedded_footprints += 1
         for field in footprint.GetFields():
+            # Keep the footprint's native reference size and position.
+            if field.GetText() == footprint.GetReference():
+                continue
             if pcbnew.ToMM(field.GetTextHeight()) < 0.8:
                 field.SetTextHeight(pcbnew.FromMM(0.8))
                 resized.append(field.GetText())
@@ -140,11 +140,7 @@ def main() -> None:
         if not isinstance(drawing, pcbnew.PCB_TEXT) or drawing.GetLayer() not in (pcbnew.F_SilkS, pcbnew.B_SilkS):
             continue
         text = drawing.GetText().strip()
-        if PASSIVE_REFERENCE.fullmatch(text):
-            board.Remove(drawing)
-            removed.append(text)
-            continue
-        elif drawing.GetLayer() == pcbnew.F_SilkS and text.startswith("PD1180-EPR"):
+        if drawing.GetLayer() == pcbnew.F_SilkS and text.startswith("PD1180-EPR"):
             drawing.SetText("PD1180-EPR — NEMA 34 Smart Motor-Mounted")
             updated.append(text)
         elif drawing.GetLayer() == pcbnew.F_SilkS and text == "48V EPR CONTROLLER":

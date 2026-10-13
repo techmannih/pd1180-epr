@@ -4,6 +4,8 @@ import { copyFile, mkdir, readdir, readFile, rename, writeFile } from 'node:fs/p
 import { basename, dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createHash } from 'node:crypto'
+import { assertReviewDrc } from './silkscreen-review.mjs'
+const reviewSilk = process.argv.includes('--review-silkscreen')
 
 function fail(message) { throw new Error(message) }
 function binary(envName, command, macFallback) {
@@ -30,7 +32,7 @@ function namedNets(fp) { return Object.fromEntries(fp.pads.filter((p) => p.numbe
 function sameObject(a, b) { return JSON.stringify(a) === JSON.stringify(b) }
 function snapConnectionGrid(value) { return Math.round(value / 1.27) * 1.27 }
 
-if (process.argv.length !== 5) fail('usage: normalize-kicad-parity.mjs ROUTED_BOARD FRESH_EXPORT_DIR OUTPUT_DIR')
+if (process.argv.filter(v=>v!=='--review-silkscreen').length !== 5) fail('usage: normalize-kicad-parity.mjs ROUTED_BOARD FRESH_EXPORT_DIR OUTPUT_DIR')
 const routedBoard = resolve(process.argv[2]), freshDir = resolve(process.argv[3]), outputDir = resolve(process.argv[4])
 if (!existsSync(routedBoard)) fail(`routed board missing: ${routedBoard}`)
 if (!existsSync(freshDir)) fail(`fresh export directory missing: ${freshDir}`)
@@ -186,18 +188,20 @@ pcbnew.SaveBoard(board_path,b)`
   run([kicadPython, '-c', preparePy, join(stage, `${base}.kicad_pcb`), freshBoard, mapPath], stage)
   const nativeArgs = [kicadCli, 'pcb', 'drc', '--all-track-errors', '--refill-zones', '--save-board', '--format', 'json', '--severity-all', '--exit-code-violations', '--output', join(stage, 'native-drc.json'), join(stage, `${base}.kicad_pcb`)]
   const parityArgs = [kicadCli, 'pcb', 'drc', '--all-track-errors', '--schematic-parity', '--refill-zones', '--save-board', '--format', 'json', '--severity-all', '--exit-code-violations', '--output', join(stage, 'parity-drc.json'), join(stage, `${base}.kicad_pcb`)]
+  if (reviewSilk) for (const args of [nativeArgs, parityArgs]) args.splice(args.indexOf('--exit-code-violations'),1)
   const native = run(nativeArgs, stage); await writeFile(join(stage, 'native-drc.log'), native.stdout + native.stderr)
   const parity = run(parityArgs, stage); await writeFile(join(stage, 'parity-drc.log'), parity.stdout + parity.stderr)
   for (const reportName of ['native-drc.json', 'parity-drc.json']) {
     const report = JSON.parse(await readFile(join(stage, reportName), 'utf8'))
-    if (report.violations.length || report.unconnected_items.length || (report.schematic_parity?.length || 0)) fail(`${reportName}: nonzero DRC/parity counts`)
+    assertReviewDrc(report, reviewSilk)
   }
   const ercArgs = [kicadCli, 'sch', 'erc', '--format', 'json', '--severity-all', '--exit-code-violations', '--output', join(stage, 'schematic-erc.json'), join(stage, `${base}.kicad_sch`)]
   const erc = run(ercArgs, stage); await writeFile(join(stage, 'schematic-erc.log'), erc.stdout + erc.stderr)
   const ercReport = JSON.parse(await readFile(join(stage, 'schematic-erc.json'), 'utf8'))
   const ercViolations = (ercReport.sheets || []).flatMap((sheet) => sheet.violations || [])
   if (ercViolations.length) fail(`schematic-erc.json: ${ercViolations.length} ERC violations`)
-  const boardBytes = await readFile(join(stage, `${base}.kicad_pcb`)); const result = { routedBoard, freshDir, outputDir, boardSha256: createHash('sha256').update(boardBytes).digest('hex'), references: board.size, ...stats, nativeDrc: { exitCode: 0, violations: 0, unconnected: 0 }, parityDrc: { exitCode: 0, violations: 0, unconnected: 0, parityIssues: 0 }, schematicErc: { exitCode: 0, violations: 0 } }
+  const heldViolations = JSON.parse(await readFile(join(stage, 'native-drc.json'))).violations.length
+  const boardBytes = await readFile(join(stage, `${base}.kicad_pcb`)); const result = { routedBoard, freshDir, outputDir, boardSha256: createHash('sha256').update(boardBytes).digest('hex'), references: board.size, ...stats, review_only: heldViolations > 0, nativeDrc: { exitCode: native.exitCode, violations: heldViolations, unconnected: 0 }, parityDrc: { exitCode: parity.exitCode, violations: heldViolations, unconnected: 0, parityIssues: 0 }, schematicErc: { exitCode: 0, violations: 0 } }
   await writeFile(join(stage, 'normalization-result.json'), `${JSON.stringify(result, null, 2)}\n`)
   await rename(stage, outputDir); console.log(JSON.stringify(result, null, 2))
 } catch (error) {

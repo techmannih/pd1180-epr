@@ -19,6 +19,7 @@ export const SS10100_SMBF = (props: DiodeProps) => {
     <silkscreenpath route={[{x:-1.8,y:1.85},{x:1.8,y:1.85}]} />
     <silkscreenpath route={[{x:-3.4,y:-1.5},{x:-3.4,y:1.5}]} />
     <courtyardoutline outline={[{x:-3.6,y:-2.1},{x:3.6,y:-2.1},{x:3.6,y:2.1},{x:-3.6,y:2.1},{x:-3.6,y:-2.1}]} />
+    <silkscreentext text="{NAME}" pcbX={0} pcbY={2.85} anchorAlignment="center" />
   </footprint>}
   {...restProps}
 />

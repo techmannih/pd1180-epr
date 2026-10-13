@@ -47,7 +47,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
 - [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 55 via-in-pad locations with filled/capped processing.
-- [ ] All 46 final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] All 43 final native same-side IC-to-capacitor paths and the separate buzzer bulk path pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.

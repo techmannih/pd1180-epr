@@ -12,4 +12,4 @@ await writeFile('engineering/protection-refinement-geometry.json', JSON.stringif
   derived_zone_fills_recomputed: true, policy_sha256: digest(await readFile('engineering/unused-sbu-eco.json')),
   checker_sha256: digest(await readFile(new URL(import.meta.url))), hardware_qualified: false,
 }, null, 2)+'\n')
-console.log('Verified narrow unused-SBU ECO; every unrelated pad/net, placement, hole, track and zone outline is unchanged from merged PR2.')
+console.log('Verified narrow unused-SBU ECO; every unrelated pad/net, placement, hole, track and zone outline is unchanged from the integrated native-reference baseline.')

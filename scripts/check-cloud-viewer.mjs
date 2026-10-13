@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
+import './check-pcb-references.mjs'
 
 const { circuit, report } = await createCloudViewerCircuit()
 const errors = []

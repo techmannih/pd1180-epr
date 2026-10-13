@@ -1,0 +1,118 @@
+{
+  "baseline_commit": "313b61fda18d6c2c6dc7ae0950f69e46503ce0b6",
+  "scope": "Move six native reference anchors inside the board; retain their text, font size and ownership. No added labels.",
+  "changes": [
+    {
+      "reference": "R4",
+      "before": {
+        "x": -0.25,
+        "y": 43.275
+      },
+      "after": {
+        "x": 1.65,
+        "y": 41.9
+      }
+    },
+    {
+      "reference": "R9",
+      "before": {
+        "x": -31.75,
+        "y": 29.625
+      },
+      "after": {
+        "x": -31.75,
+        "y": 26.875
+      }
+    },
+    {
+      "reference": "Q5",
+      "before": {
+        "x": -8.35,
+        "y": 43.45
+      },
+      "after": {
+        "x": -11.35,
+        "y": 41.75
+      }
+    },
+    {
+      "reference": "L3",
+      "before": {
+        "x": -15.6,
+        "y": 42.45
+      },
+      "after": {
+        "x": -15.6,
+        "y": 41.75
+      }
+    },
+    {
+      "reference": "C89",
+      "before": {
+        "x": -29.175,
+        "y": 33.7
+      },
+      "after": {
+        "x": -27.8,
+        "y": 36
+      }
+    },
+    {
+      "reference": "C92",
+      "before": {
+        "x": -3.6,
+        "y": 43.35
+      },
+      "after": {
+        "x": -3.6,
+        "y": 40.15
+      }
+    }
+  ],
+  "all_other_compiled_records_identical": true,
+  "native_non_reference_data_identical": true,
+  "routing_inputs_identical": true,
+  "regression_baseline_rejected_references": [
+    "Q5",
+    "L3",
+    "R4",
+    "C92",
+    "C89",
+    "R9"
+  ],
+  "native_drc": {
+    "total": 404,
+    "types": {
+      "text_height": 186,
+      "silk_overlap": 100,
+      "silk_over_copper": 118
+    },
+    "silk_edge_clearance": 0,
+    "unconnected": 0,
+    "schematic_parity": 0
+  },
+  "hashes": {
+    "index.circuit.tsx": "4c6b65728bdfcdddee13f064877cc3b736011a3ca8a8b50c0d3fe132a2df3260",
+    "imports/BSS123LT1G.tsx": "8965ce316a8b467759307a5fecd4a53376d0662a6531b58634168824e5214ce8",
+    "imports/SRP7050TA_470M.tsx": "2e94d6676da22eec718204428f87c1edcdbde71f543d154f2a5a358d03baea7b",
+    "dist/index/circuit.json": "c8bc500b22323ceec59a140f61b229399c1acb1371e2fee0443191f246daf4ad",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
+    "dist/manufacturing/kicad-drc.json": "aae05d44c760eda601dd46c6b34390c36f1d98cd15d7a0f18dfc70e8aa9ea85e",
+    "release/circuit.json": "059ae4d64a271558372cdf3fa81d1492978124d80e3a46f9d20201b80f3ccbb7",
+    "scripts/check-pcb-references.mjs": "aab690f2ec97174b41e7558ea6cf5775ea4a37c500b1ec63d7950b1251a9dfd3"
+  },
+  "manufacturing_refreshed": false,
+  "fabrication_authorized": false,
+  "checks": {
+    "source_and_motor_assembly_build": "passed",
+    "typecheck": "passed",
+    "source_schematic": "173/173 assertions passed",
+    "source_native_default_viewer_references": "255/255; zero missing or outside outline",
+    "cloud_viewer_reproducibility": "passed",
+    "pcb_render": "visually inspected",
+    "regression": "old board correctly rejected for all six edge references",
+    "native_drc": "0 edge-clipping, 0 unconnected, 0 schematic-parity; 404 existing other silk/text findings",
+    "hosted_build": "passed: source transpile, routed site, PCB/schematic SVG and 3D PNG",
+    "hosted_package": "passed: 13724 records, zero errors"
+  }
+}

@@ -100,6 +100,7 @@ export const TPS26750SRSMR = (props: ChipProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":-1.9401536000000021,"y":2.010155999999995},{"x":-1.6711675999999898,"y":2.010155999999995}]} />
 <silkscreencircle pcbX="-1.850136mm" pcbY="-2.389886mm" radius="0.100076mm" />
 <courtyardoutline outline={[{"x":-2.6500333000000182,"y":2.65003329999999},{"x":2.6500333000000182,"y":2.65003329999999},{"x":2.6500333000000182,"y":-2.650033300000004},{"x":-2.6500333000000182,"y":-2.650033300000004},{"x":-2.6500333000000182,"y":2.65003329999999}]} />
+      <silkscreentext text="{NAME}" pcbX="0mm" pcbY="3.66mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C42166327.obj?uuid=6dd4b697c6114e499488df6aa2ee6458",

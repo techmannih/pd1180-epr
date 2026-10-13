@@ -4,7 +4,8 @@
 
 | Work item | Current result | What closes it |
 |---|---|---|
-| U1 unused SBU | Applied in source and native PCB; DRC/ERC/parity/unconnected all zero | First-article startup and FLT waveforms still required |
+| U1 unused SBU | Applied in source and native PCB; ERC/parity/unconnected zero; no new electrical DRC findings | First-article startup and FLT waveforms still required |
+| Native reference labels | 404 retained findings: 186 text-height, 118 silk-over-copper, 100 silk-overlap; all 255 labels inside outline | User-approved label/fabrication resolution and fresh zero-violation DRC; labels are preserved as requested |
 | Three placement advisories | Actual copper/polarity reviewed; exact exceptions guarded, raw output retained | Any changed advice or unrelated copper must pass renewed review |
 | Stock/package check | Official exact-ID catalog supplements JLCSearch; unknown stock never passes; only Chinese/English through-hole-label translation allowed | Five current unavailable identities need stock allocation or a fully reviewed replacement |
 | TI configuration | Full Flash binary + project + license; both register regions match; MCU verifies customer marker | Program U3, read back 65,536 bytes, verify hash, cold APP boot and PD/fault behavior |
@@ -16,6 +17,6 @@ The five unavailable BOM identities are **C179173 U17**, **C861400 R64**, **C265
 
 The 10 Ω/300 W brake and source reference are candidates, not purchases or a proven system. No suitable final heatsink can be established without load and duty. The first proposed qualification is secured, unloaded, 20–25°C, 10 rpm, 10 rpm/s and about 0.827 A RMS, with the brake installed, after stationary supply/gate/fault checks. It is not authorized merely by merging this revision.
 
-The user-facing decision is two separate gates: procure/fabricate a reviewed first article after stock/fabricator/mounting preflight; then measure and qualify operation. A complete ready-to-run PCBA additionally needs a provider's accepted programming/test procedure and serial-numbered results. No test provider or order has been booked.
+The user-facing decision is two separate gates: procure/fabricate a reviewed first article after silkscreen/DRC resolution and stock/fabricator/mounting preflight; then measure and qualify operation. A complete ready-to-run PCBA additionally needs a provider's accepted programming/test procedure and serial-numbered results. No test provider or order has been booked.
 
 Evidence: [PD review](pd-configuration-review.md), [J3/brake](brake-integration.md), [test matrix](power-validation.md), [programming/readback](pd-programming.md), [placement review](placement-review.md), `verification.json`, `release-status.json` and `engineering/power-eco-simulation/results.json`. All simulated peaks are estimates; negative cases deliberately retain unsafe outcomes.

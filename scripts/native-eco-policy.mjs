@@ -3,7 +3,7 @@ export const digest = data => createHash('sha256').update(typeof data === 'strin
 export function parseNative(text) {
   const tokens = text.match(/\(|\)|"(?:\\.|[^"\\])*"|[^\s()]+/g) || []
   let i = 0
-  function item() { const t = tokens[i++]; if (t !== '(') return t; const a = []; while (i < tokens.length && tokens[i] !== ')') a.push(item()); if (tokens[i++] !== ')') throw new Error('Unbalanced KiCad file'); return a }
+  function item() { const t = tokens[i++]; if (t !== '(') return /^-?\d+(?:\.\d+)?(?:e[+-]?\d+)?$/i.test(t) ? String(Number(t)) : t; const a = []; while (i < tokens.length && tokens[i] !== ')') a.push(item()); if (tokens[i++] !== ')') throw new Error('Unbalanced KiCad file'); return a }
   const value = item(); if (i !== tokens.length || value[0] !== 'kicad_pcb') throw new Error('Invalid KiCad board'); return value
 }
 export const field = (x, key) => x.find(v => Array.isArray(v) && v[0] === key)
