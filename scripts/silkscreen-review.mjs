@@ -9,8 +9,8 @@ export function assertReviewDrc(report, allowHeldLabels=false) {
   if(report.unconnected_items.length || report.schematic_parity.length)throw new Error('Unconnected/parity issues block every export')
   if(!report.violations.length)return
   const baseline=JSON.parse(readFileSync(new URL('../engineering/native-silk-hold.json',import.meta.url)))
-  if(!allowHeldLabels || report.violations.some(v=>!['text_height','silk_over_copper','silk_overlap'].includes(v.type)) || silkSignature(report.violations)!==baseline.signature)
+  if(!(allowHeldLabels || baseline.user_accepted_cosmetic_findings === true) || report.violations.some(v=>!['text_height','silk_over_copper','silk_overlap'].includes(v.type)) || silkSignature(report.violations)!==baseline.signature)
     throw new Error('DRC findings differ from the explicitly retained native-reference baseline')
-  // This enables an explicitly labelled review export, never a passing DRC or
-  // fabrication gate. All findings remain in the unmodified reports/artifacts.
+  // Only these exact user-accepted cosmetic findings are nonblocking.
+  // Raw KiCad reports stay unchanged; procurement/physical gates remain separate.
 }

@@ -53,6 +53,10 @@ const copies = [
   ['docs/pd-configuration-review.md', 'pd-configuration-review.md'],
   ['docs/pd-image-check.json', 'pd-image-check.json'],
   ['docs/readiness.md', 'readiness.md'],
+  ['docs/completion-handoff.md', 'completion-handoff.md'],
+  ['engineering/mechanical/splice-evidence.json', 'splice-evidence.json'],
+  ['engineering/mechanical/TE-320559-drawing.zip', 'TE-320559-drawing.zip'],
+  ['engineering/filled-copper-review.json', 'filled-copper-review.json'],
   ['docs/placement-review.md', 'placement-review.md'],
   ['dist/manufacturing/kicad-board.png', 'pcb-3d.png'],
   ['dist/manufacturing/kicad-board-bottom.png', 'pcb-bottom.png'],
@@ -176,7 +180,7 @@ This is a held review package, not an orderable handoff. After the DRC, sourcing
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents and hardware contract correspond to ${releaseStatus.revision}, identified by this delivery manifest.
 
-The native reports contain ${kicadDrc.violations.length} PCB DRC violations, ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch plus exact-ID official catalog evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The native reports contain ${kicadDrc.violations.length} raw PCB DRC findings (the exact user-accepted cosmetic baseline), ${kicadDrc.unconnected_items.length} unconnected items, ${kicadDrc.schematic_parity.length} schematic-parity issues and ${kicadErcViolations.length} schematic ERC violations. See \`kicad-drc.json\` and \`kicad-erc.json\`. Live JLCSearch plus exact-ID official catalog evidence covers all ${stock.parts.length} unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style result is recorded across all ${standards.project_geometry.schematic_sheet_count} sheets; see \`schematic-style-check.json\`. \`circuit.json\` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 

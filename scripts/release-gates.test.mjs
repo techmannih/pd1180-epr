@@ -20,3 +20,12 @@ test('review never permits stale evidence, failed engineering checks or missing 
   expect(releaseErrors({ ...status, order_hold_reasons: [] }, verified, [], true)).toContain('Order hold must state its reasons')
   expect(releaseErrors({ ...status, prototype_order_gates: { routed: false } }, verified, [], true)).toContain('Open prototype gate: routed')
 })
+test('only explicit procurement holds with passing inventory review may remain open in review', () => {
+  const held={...status,prototype_order_gates:{live_lcsc_stock_check:false,alternative_parts_review:false}}
+  const evidence={...verified,checks:[...verified.checks,{name:'inventory-evidence',exit_code:0,status:'pass'}]}
+  expect(releaseErrors(held,evidence,[],true)).toEqual([])
+  expect(releaseErrors(held,evidence)).toContain('Open prototype gate: live_lcsc_stock_check')
+  expect(releaseErrors(held,verified,[],true)).toContain('Open prototype gate: live_lcsc_stock_check')
+  expect(releaseErrors({...held,fabrication_orderable:true},evidence,[],true)).toContain('Open prototype gate: live_lcsc_stock_check')
+  expect(releaseErrors({...held,prototype_order_gates:{copper:false}},evidence,[],true)).toContain('Open prototype gate: copper')
+})

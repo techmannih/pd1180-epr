@@ -14,7 +14,14 @@ export function releaseErrors(status, verification, changed = [], reviewOnly = f
     errors.push(`Verified design input changed: ${path}`)
   const open = Object.entries(status.prototype_order_gates || {}).filter(([, passed]) => passed !== true)
   if (!Object.keys(status.prototype_order_gates || {}).length) errors.push('Prototype gates are missing')
-  for (const [gate] of open) errors.push(`Open prototype gate: ${gate}`)
+  const procurementEvidencePassed = verification.checks?.some(check =>
+    check.name === 'inventory-evidence' && check.exit_code === 0 && check.status === 'pass')
+  for (const [gate] of open) {
+    const recordedProcurementHold = reviewOnly && status.fabrication_orderable === false &&
+      status.order_hold_reasons?.length && procurementEvidencePassed &&
+      ['live_lcsc_stock_check','alternative_parts_review'].includes(gate)
+    if (!recordedProcurementHold) errors.push(`Open prototype gate: ${gate}`)
+  }
   if (status.fabrication_orderable !== true) {
     if (!status.order_hold_reasons?.length) errors.push('Order hold must state its reasons')
     if (!reviewOnly) errors.push(...(status.order_hold_reasons || ['Ordering is not authorized']).map(reason => `Order hold: ${reason}`))

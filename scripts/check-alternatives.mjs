@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { officialPart, packagesMatch } from './jlc-stock.mjs'
+import { officialPart, packagesMatch, inventoryEvidencePasses } from './jlc-stock.mjs'
 
 const run = promisify(execFile)
 const path = new URL('../docs/alternatives.json', import.meta.url)
@@ -71,4 +71,4 @@ await writeFile(path, JSON.stringify(report, null, 2) + '\n')
 const problems = checked.filter(part => part.alternative && part.status !== 'available')
 const alternatives = checked.filter(part => part.alternative)
 console.log(JSON.stringify({ checked: alternatives.length, expected_package_matches: alternatives.filter(part => part.expected_package_match === true).length, package_compatible: alternatives.filter(part => part.package_compatible === true).length, redesign_candidates: alternatives.filter(part => part.classification === 'not-approved-redesign-required' && part.package_compatible === false).length, available: alternatives.filter(part => part.status === 'available').length, problems }, null, 2))
-if (problems.length) process.exitCode = 1
+if (alternatives.some(p=>!inventoryEvidencePasses(p,process.argv.includes('--review'),true))) process.exitCode = 1

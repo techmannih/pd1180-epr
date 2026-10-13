@@ -71,7 +71,7 @@ No hardware results exist yet. Complete first-article qualification using every 
 
 Blank devices, a programmed-but-motion-locked image, a USB-only demo, or an assembly photograph do not meet the requested ready-to-run acceptance. Keep shipment acceptance pending until the agreed tests pass; do not replace missing results with a CAD check. Factory testing against a qualified fixture also does not establish operation with an unspecified motor or load.
 
-The [specified J2 motor harness](motor-harness.md), EPR charger, EPR cable, motor, shaft magnet, external braking resistor/heatsink and bus terminators are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
+The [specified J2 motor harness](motor-harness.md), EPR charger, EPR cable, motor and external braking resistor/heatsink are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 
 The exact ordered STEPPERONLINE 34HS31-6004S1 CAD is available in `motor-assembly.circuit.tsx` through `assembly.subassembly`. Direct rear mounting and rotating-shaft access are not established. [Motor assembly](motor-assembly.md) records the proposed front-flange-supported adapter, 10 mm nominal motor-to-PCB gap, screw clearances and unresolved encoder attachment. Approve the shared front interface, tolerances and support strength before fabrication. The former QSH-specific magnet/holder proposal is withdrawn. Do not treat the PD86 mounting-template match as proof of fit to this motor.
 

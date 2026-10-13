@@ -33,6 +33,9 @@ verifiedInputPaths.push('scripts/fixtures/placement-reviewed.txt')
 verifiedInputPaths.push('scripts/pd-image-policy.mjs', 'scripts/check-pd-image.mjs', 'scripts/pd-image-policy.test.mjs', 'docs/pd-tool-project.json', 'firmware/pd/ti-configuration.zip')
 verifiedInputPaths.push('docs/readiness.md', 'docs/brake-integration.md', 'scripts/check-alternatives.mjs')
 verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-review.test.mjs', 'engineering/native-silk-hold.json', 'scripts/check-pcb-references.mjs', 'scripts/sync-pcb-references.py')
+verifiedInputPaths.push('scripts/check-inventory.mjs', 'docs/stock-report.json', 'docs/alternatives.json', 'firmware/tests/test_brake_preflight.c', 'firmware/README.md')
+verifiedInputPaths.push('docs/completion-handoff.md', 'engineering/mechanical/splice-evidence.json', 'engineering/mechanical/TE-320559-drawing.zip', 'engineering/filled-copper-review.json')
+verifiedInputPaths.push('scripts/check-copper-evidence.mjs', 'scripts/copper-evidence.test.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -55,16 +58,18 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['power-audit', ['run', 'check:power-audit']],
+  ['filled-copper-evidence', ['scripts/check-copper-evidence.mjs']],
   ['power-simulation', ['run', 'check:power-simulation']],
   ['schematic', ['run', 'check:schematic']],
   ['placement', ['run', 'check:placement']],
   ['routing-difficulty', ['run', 'check:routing']],
   ['decoupling', ['run', 'check:decoupling', ...(routed ? ['--native'] : [])]],
-  ['assembly', ['run', 'check:assembly']],
+  ['inventory-evidence', ['scripts/check-inventory.mjs', '--review']],
+  ['assembly', ['run', 'check:assembly', '--review']],
   ['board-standards', ['run', 'check:standards']],
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],

@@ -129,3 +129,8 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 - `sync-pcb-references.py`: copies compiled native footprint references into the KiCad Reference fields, removes obsolete detached captions, and rejects any change outside those label fields. Arguments: board path and optional `--source` Circuit JSON.
 
 - `silkscreen-review.mjs`, `silkscreen-review.test.mjs`: permit an explicit `--review-silkscreen` normalization/manufacturing export only when the exact 404 native-reference finding identities match main 97ea91e. Preserve every raw finding and fail fabrication/review gates; reject electrical/parity faults or changed findings.
+
+- `check-inventory.mjs`: validates timestamped exact stock/package evidence. Default is a strict procurement gate; `--review` permits recorded insufficient quantities only, never unknown/mismatched parts. `check-stock.mjs`, `check-alternatives.mjs` and `check-assembly.mjs` support the same explicit review mode.
+
+- `check-copper-evidence.mjs`: checks all six filled-copper path screens at both mesh sizes against the current PCB and solver hashes; does not qualify temperature or current rating.
+- `copper-evidence.test.mjs`: rejects stale/mixed board hashes, missing meshes and invalid resistance evidence.

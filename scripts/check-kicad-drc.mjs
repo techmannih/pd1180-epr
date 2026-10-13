@@ -1,3 +1,4 @@
+import { assertReviewDrc } from './silkscreen-review.mjs'
 import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
@@ -15,7 +16,11 @@ const ercViolations = erc.sheets.flatMap((sheet) => {
   if (!Array.isArray(sheet.violations)) throw new Error(`KiCad ERC sheet ${sheet.path || '<unknown>'} is missing its violations array`)
   return sheet.violations
 })
+let dispositionError = null
+try { assertReviewDrc(drc) } catch (error) { dispositionError = error.message }
 const summary = {
+  accepted_cosmetic_findings: dispositionError ? 0 : violations.length,
+  blocking_error: dispositionError,
   drc_report: drcPath,
   erc_report: ercPath,
   violations: violations.length,
@@ -24,4 +29,4 @@ const summary = {
   schematic_erc_violations: ercViolations.length,
 }
 console.log(JSON.stringify(summary, null, 2))
-if (violations.length || unconnected.length || schematicParity.length || ercViolations.length) process.exitCode = 1
+if (dispositionError || ercViolations.length) process.exitCode = 1

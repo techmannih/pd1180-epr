@@ -1,19 +1,19 @@
 {
-  "built_at": "2026-10-13T05:15:28.875Z",
+  "built_at": "2026-10-13T11:57:47.383Z",
   "target": "STM32G0B1CBT6",
   "image_type": "commissioning-diagnostics-only",
   "motor_operation_enabled": false,
   "flash_address": "0x08000000",
   "initial_sp": "0x20024000",
-  "reset_vector": "0x800b75d",
+  "reset_vector": "0x800b7e5",
   "max_flash_bytes": 131072,
-  "image_bytes": 57992,
+  "image_bytes": 58128,
   "inputs": {
     "firmware/platformio.ini": "c6c22c0c77ed26edf1a9a00c2c9e3591c7a6cd139775ce135f17e084451bea90",
-    "firmware/README.md": "a8b50ea942058120b0e9f6e183a489250237d24b6d709109d848e1285d824a7f",
+    "firmware/README.md": "0770a7d78737bf51ce55779204ea7858124827661123a4ccd11db612251a6914",
     "docs/firmware-pinmap.json": "e1d4cdb2688dc72265fcb901cd8624050bc0f195e02f7af1e9c084def1647cb9",
     "scripts/build-firmware.mjs": "92cfa44cda56bd3042b728be1ff6972b0cc230b82942f6d14beb037c9f945ca1",
-    "firmware/src/brake_preflight.c": "c5ac0b5847b2bfb5c33568e9878770a69a18fccfc168f942555e0e8fcf547e6c",
+    "firmware/src/brake_preflight.c": "47d529345b79e2779791527437e9dc4e80623ba9e43b01959501559f21ff145b",
     "firmware/src/control.c": "95c4700a91e3cc3fe744a3b887c28ed6db261104a68430f6b6e2e6fcb8fd29e2",
     "firmware/src/local_motion.c": "34931a584031af763e5076d75ea8d0016a51f5d3a74d95517696d261b867a741",
     "firmware/src/main.c": "ff822c78a3e2fec4e03c9ec64131847a8442ae5ad04cdc64fdedb35a41a3e2df",
@@ -24,7 +24,7 @@
     "firmware/src/tmc5160.c": "f46873b8e9d4fb700ee17b18ac47a6ad454777a6e25c87374de47359419ea0f2",
     "firmware/src/tmc5160_config.c": "c0462c0f93c785edb588d89563d0778420d92a101cf7e2a5cd06a7818cf32c8c",
     "firmware/include/board_pins.h": "59a41bdb9d9924dad4a67b7481244210fd14ce560f2d39c1785977484052c56e",
-    "firmware/include/brake_preflight.h": "d94faa3a634215e74e972e55364d1ca058a58ea4e192b9e885b5fdef57cd950a",
+    "firmware/include/brake_preflight.h": "2dba73f1e097d8a21207d1cf8a615e3161d0f906dab7f7315beec03d4f7f58cb",
     "firmware/include/control.h": "d141645bbf4a5a1387509786870e6d63dd25983bff5c9fd1d465cefc18a73b4b",
     "firmware/include/local_motion.h": "e4698a17afd2ce5ffc155ff2aaef5fe125bb4a095c5302e8b1db9038b9d341e6",
     "firmware/include/motor_service.h": "cbbf6c04a3c76882d8332920a72465faf63ea1ef170eeb851a29df1d280d63fa",
@@ -33,14 +33,14 @@
     "firmware/include/telemetry.h": "5b78411c0d1d8675561b58875f426f4c4e8fdff7db67b5b6b75990bab0eb1303",
     "firmware/include/tmc5160.h": "c54a6a85208b50a35ab301e7db4c138f7d9b071fa6704c67836e84be7fd8510f",
     "firmware/include/tmc5160_config.h": "eaa9d3f2a2a33382ad0c7cfc986ce2f216ad17cd1aa5a8ec04e0db91b27c5335",
-    "firmware/target/main.cpp": "6c6661c04c54c0fa31d5fe6bbdc9dfacac68437d66494845a3cde74fcedabd24",
+    "firmware/target/main.cpp": "14b02bd4bc921e19aa87a672f02460528f54d5112fb7ef018787493ffc0f62e6",
     "firmware/target/usb_suspend.cpp": "adc4976790187046d1054223cf740c80b64e5c72c507dab04351b02c7f53a42f",
     "firmware/target/usb_suspend.h": "15822f65fd0691f4340ed026f94b5adea98d3f7cadd42f9f948017fac0d6945d",
     "firmware/boards/pd1180.json": "bf96ddf2d976e26caed4ab68d285cf0372f9f332aae4cb8824f425951788489c"
   },
   "artifacts": {
-    "firmware.bin": "ed3318c3ee0f199df5d2f4794c6dd96e7cc44d45b1691e5ee9d6b85081139fa6",
-    "firmware.elf": "90cb03409dddbe4ac840ee2c4f8759b97fee5ae99dfab0f2aca95e06d2124f28"
+    "firmware.bin": "73029be952c4dc55c16c4d3eeff04f63ff5b7ce6ba599fad0c318ae471bc6b84",
+    "firmware.elf": "68a7e8def48d70a6cffc252fad26677b265de48e8246757f4f032378e1b75a56"
   },
   "unverified": [
     "USB enumeration and measured GPIO levels on hardware",

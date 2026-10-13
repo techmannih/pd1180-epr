@@ -4,7 +4,7 @@
 
 **ORDER HOLD.** These are engineering review files. Powered USB, current/thermal and system qualification remain open; do not submit a fabrication order from this package.
 
-The ECO separates PD POWER and USB DATA, removes unsupported CAN/RS485/RS232 and general I/O circuits and the remaining J7 external command path, adds local START/STOP using the TMC5160 internal SPI ramp, while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: unused-sbu-corrected-pd-image-generated-order-held. See `engineering/reviewer-eco.json` and `docs/step-dir-hardware-review.md`.
+The ECO separates PD POWER and USB DATA, removes unsupported CAN/RS485/RS232 and general I/O circuits and the remaining J7 external command path, adds local START/STOP using the TMC5160 internal SPI ramp, while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: runtime-brake-monitor-reviewed-order-held. See `engineering/reviewer-eco.json` and `docs/step-dir-hardware-review.md`.
 
 The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Existing four PCB holes are unchanged. Unsupported posts, adapter and fasteners have been removed; rear attachment and encoder mounting remain unresolved. See `motor-assembly.md` for the alignment preview and unresolved mechanical gates.
 
@@ -22,7 +22,7 @@ This is a held review package, not an orderable handoff. After the DRC, sourcing
 
 Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents and hardware contract correspond to 0.4.1-ECO, identified by this delivery manifest.
 
-The native reports contain 404 PCB DRC violations, 0 unconnected items, 0 schematic-parity issues and 0 schematic ERC violations. See `kicad-drc.json` and `kicad-erc.json`. Live JLCSearch plus exact-ID official catalog evidence covers all 84 unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+The native reports contain 404 raw PCB DRC findings (the exact user-accepted cosmetic baseline), 0 unconnected items, 0 schematic-parity issues and 0 schematic ERC violations. See `kicad-drc.json` and `kicad-erc.json`. Live JLCSearch plus exact-ID official catalog evidence covers all 84 unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
 
 The tscircuit viewer-equivalent schematic style result is recorded across all 24 sheets; see `schematic-style-check.json`. `circuit.json` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 

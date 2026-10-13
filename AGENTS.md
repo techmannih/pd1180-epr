@@ -145,3 +145,7 @@ Never suppress, filter or waive a failing check without documenting the physical
 When adding or removing a script, update `scripts/README.md`; the script-catalog check enforces this. When adding a release artifact, update `board-standards.json` and the delivery checker.
 
 Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
+
+## Current review authorization — 2026-10-13
+
+The user accepted native reference text size, overlaps and silk over copper, and requested one PR containing the remaining implementation and physical/procurement documentation. Retain the exact raw cosmetic baseline in `engineering/native-silk-hold.json`; do not suppress labels or waive electrical, connectivity, parity or ERC faults. Engineering review may record exact known stock shortages with `--review`; strict procurement/release still fails. Unknown identity/package/stock evidence remains a failure, and no substitute or order is authorized by this distinction. Physical measurements, purchases and motor qualification remain explicitly open in `docs/completion-handoff.md`.

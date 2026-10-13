@@ -26,6 +26,8 @@ const requiredIgnores = [
   'release/power-routing-check.json',
   'release/critical-copper-check.json',
   'release/power-audit.json',
+  'release/splice-evidence.json',
+  'release/filled-copper-review.json',
   'release/native-decoupling-check.json',
   'release/release-status.json',
   'release/schematic-style-check.json',
