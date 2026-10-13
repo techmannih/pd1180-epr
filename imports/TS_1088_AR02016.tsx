@@ -29,6 +29,7 @@ export const TS_1088_AR02016 = (props: PushButtonProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":2.0262087999999494,"y":-1.5411957999999686},{"x":-2.026208800000063,"y":-1.5411957999999686}]} />
 <silkscreencircle pcbX="0mm" pcbY="0mm" radius="0.899922mm" />
 <courtyardoutline outline={[{"x":-3.049905499999909,"y":1.700009800000089},{"x":3.049905499999795,"y":1.700009800000089},{"x":3.049905499999795,"y":-1.6999843999999484},{"x":-3.049905499999909,"y":-1.6999843999999484},{"x":-3.049905499999909,"y":1.700009800000089}]} />
+<silkscreentext text="{NAME}" pcbX="0mm" pcbY="2.71mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C720477.obj?uuid=2e35dca8e7854ed683469f8d54d1ef17",

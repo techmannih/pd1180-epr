@@ -19,7 +19,12 @@ extern const size_t pd1180_tmc5160_boot_config_count;
 #define PD1180_TMC_SHORT_CONF ((1u << 16) | (12u << 8) | 6u)
 #define PD1180_TMC_DRV_CONF (4u << 8)
 
-/* ADI rev1.18 section 14: 12 MHz nominal internal clock, 200 steps/rev,
+/* First prototype: unloaded rotor only; no application load is qualified.
+ * 180 permille rounds to IRUN=4 (~0.842 A RMS nominal). This is a software
+ * request ceiling, not a measured current bound or permission to enable. */
+#define PD1180_BENCH_CURRENT_MAX_PERMILLE 180u
+
+/* ADI rev1.18 section 12.1: 12 MHz nominal internal clock, 200 steps/rev,
  * 256 microsteps. About 10 rpm and 10 rpm/s; clock tolerance is uncalibrated. */
 #define PD1180_BENCH_VMAX 11930u
 #define PD1180_BENCH_AMAX 130u

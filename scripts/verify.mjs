@@ -26,7 +26,9 @@ verifiedInputPaths.push('scripts/verify-programming.mjs', 'scripts/verify-progra
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 verifiedInputPaths.push('engineering/onboard-control-eco.json', 'engineering/interface-cleanup.json', 'engineering/mechanical/assembly-parts.json', 'engineering/mechanical/34hs31-6004s1-routed-cable.glb', 'scripts/check-cable-support.mjs')
 verifiedInputPaths.push('scripts/check-mechanical-assets.mjs', 'scripts/export-previews.mjs')
+verifiedInputPaths.push('docs/external-system.md', 'docs/external-parts.json', 'docs/brake-integration.md', 'docs/j3-energy-review.json', 'sourcing/external-items.csv', 'scripts/check-delivery.mjs', 'scripts/sync-generated-docs.mjs')
 for (const file of (await readdir('engineering/mechanical/parts')).sort()) verifiedInputPaths.push(`engineering/mechanical/parts/${file}`)
+verifiedInputPaths.push('scripts/sync-pcb-references.py', 'scripts/check-pcb-references.mjs', 'scripts/clean-silkscreen.py')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -44,6 +46,7 @@ const checks = [
   ['preview', ['run', 'build:preview']],
   ['cloud-viewer', ['run', 'check:cloud-viewer']],
   ['source-schematic', ['run', 'check:source-schematic']],
+  ['pcb-references', ['scripts/check-pcb-references.mjs']],
   ['schematic-style', ['run', 'check:schematic-style']],
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],

@@ -1,0 +1,20 @@
+bun test v1.3.14 (d1632b29)
+
+scripts/power-audit.test.mjs:
+(pass) input budget includes upstream consumption and resistor temperature tolerance [2.32ms]
+(pass) returned energy raises the bus by energy conservation, not a linear voltage increment [0.41ms]
+(pass) a passing static cutoff screen does not establish brake-open safety [0.40ms]
+(pass) current board audit keeps full-current operation held after static checks pass [36.37ms]
+(pass) absolute maximum must not replace the operational supply limit [0.02ms]
+(pass) resistor and threshold tolerance widen both sides of a divider trip [0.02ms]
+(pass) zero GLOBALSCALER means full scale, and RMS is below sine peak [0.08ms]
+(pass) explicit bypass links cannot alias independent supply rails [0.12ms]
+(pass) unit-bearing inductor values cannot silently produce null calculations [0.21ms]
+(pass) rejects the removed C19 IMON bypass, including renamed parts and net aliases [0.24ms]
+(pass) allows supply decoupling but fails closed when IMON connectivity is missing or shorted [0.06ms]
+(pass) missing motor inertia stays unknown rather than becoming zero braking energy [0.02ms]
+
+ 12 pass
+ 0 fail
+ 52 expect() calls
+Ran 12 tests across 1 file. [213.00ms]

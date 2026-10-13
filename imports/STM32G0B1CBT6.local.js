@@ -432,6 +432,11 @@ const STM32G0B1CBT6 = props => {
         "x": -3.3874456000000066,
         "y": -4.059986800000004
       }]
+    }), /*#__PURE__*/React.createElement("silkscreentext", {
+      text: "{NAME}",
+      pcbX: "0mm",
+      pcbY: "6.5mm",
+      anchorAlignment: "center"
     })),
     cadModel: {
       objUrl: "https://modelcdn.tscircuit.com/easyeda_models/download?uuid=a4b96ad857dc48c08dab3d0efdf20aec&pn=C2847904",

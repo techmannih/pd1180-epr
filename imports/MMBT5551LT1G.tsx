@@ -32,6 +32,7 @@ export const MMBT5551LT1G = (props: Omit<TransistorProps, "type">) => {
 <fabricationnotepath route={[{"x":0.726211400000011,"y":-1.5262097999999469},{"x":-0.726211400000011,"y":-1.5262097999999469},{"x":-0.726211400000011,"y":-0.49458879999997407}]} />
 <fabricationnotepath route={[{"x":0.726211400000011,"y":0.45539659999997184},{"x":0.726211400000011,"y":-0.45539659999985815}]} />
 <courtyardoutline outline={[{"x":-1.8750030999998444,"y":1.6999844000000621},{"x":1.8750030999998444,"y":1.6999844000000621},{"x":1.8750030999998444,"y":-1.7000097999999753},{"x":-1.8750030999998444,"y":-1.7000097999999753},{"x":-1.8750030999998444,"y":1.6999844000000621}]} />
+<silkscreentext text="{NAME}" pcbX="0mm" pcbY="2.7mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C41095.obj?uuid=d777607a152f4f3aac9bb0d0c14ed6fd",

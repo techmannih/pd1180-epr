@@ -1,35 +1,32 @@
 # Power validation and prototype order review
 
-**Status: power and diagnostics ECO CAD verified; order hold remains. No PCB has been assembled or powered.** The user authorized changes to the driver-supply and brake/OVP sections and removal of C19 from IMON on 2026-10-10. Unrelated schematic placement and symbols remain frozen. The regenerated native board has zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Use only the matching regenerated manufacturing package; this CAD result does not close the system-validation gates.
+**Engineering review only; order hold remains. No assembled-board powered results are available.** CAD checks, analytical estimates and measured performance are separate. Current automated results, including failures, are in [verification.json](verification.json); native reports are [PCB DRC](../dist/manufacturing/kicad-drc.json) and [schematic ERC](../dist/manufacturing/kicad-erc.json).
 
-## Native CAD recheck — 2026-10-11
+## Current evidence and limits
 
-The current native PCB SHA-256 is `7e46297f0bf288c2a8add54f65b2da0cff8255a7ed4c24951f7746c24f01f1d6`, after the diagnostics ECO and the source-warning cleanup. The latter changes assembly metadata and schematic layout only; [the exact native/source comparison](checks/warning-fix-parity.json) verifies unchanged PCB geometry, copper and pin connectivity. RGB, independent power indication, a driven buzzer and isolated EEPROM programming/probe access are now routed. The diagnostics and EEPROM connections are included in the 27 A4 schematic sheets. The warning cleanup preserves all electrical connectivity and the complete PCB route. Fresh native checks found zero DRC violations, unconnected items, schematic-parity issues and ERC violations. Raw reports: [PCB](checks/pre-order-native-drc.json), [schematic](checks/pre-order-native-erc.json). The complete automated review is recorded in [verification.json](verification.json); its passing results do not cover every manufacturer design instruction.
-
-| Review area | Finding |
+| Review area | Evidence and limitation |
 |---|---|
-| Assembly and geometry | 311 fitted parts plus 19 service pads on top; minimum via drill 0.30 mm; 58 filled/capped via-in-pad locations |
-| Local routing | All 48 specified IC bypass paths and the separate buzzer bulk branch, nine Kelvin/analog branches, USB reference and power-routing checks passed |
-| Filled-copper calculation | Re-exported the current native copper and solved MOTOR_A1 Q7:9 → R115:1 at 0.075/0.05 mm mesh: 2.8995/2.8941 mΩ, 0.187% difference; fine-mesh loss 0.0875 W at 5.5 A, excluding contacts/devices and thermal feedback. B1 drain-to-shunt and all four motor-output paths were also screened at both mesh sizes; results and limitations are in the [evidence](../engineering/filled-copper-review.json). |
-| Driver initialization | Fixed reliance on OTP short-detection and dead-time defaults. Explicit register writes, disabled-chopper sequencing and write-corruption regressions pass. The regression failed on the previous configuration. See [firmware details](../firmware/README.md#tmc5160-external-stepdir-service) |
-| TPS26631 current monitor | **Corrected:** removed C19 from source and native PCB; R26 and the ADC connection remain. The compiled-connectivity regression rejects an IMON-to-ground capacitor even after reference/net renaming. TI §8.3.9 prohibits this bypass because it delays current information; this is separate from the internal current limit. |
-| Programming and operation | The TPS26750 full-flash image and qualified motor-operation firmware are absent. The supplied STM32 image supports commissioning diagnostics and deliberately keeps motion locked. The ordered motor is now identified as 34HS31-6004S1; approved current settings, load, stop profile and adapter/cable qualification remain open. |
+| Assembly | 247 fitted parts and 19 bare service pads on top; U18/C52/C53 bottom DNP. Source/package/stock checks remain separate. |
+| Schematic | 23 A4 sheets; source/style checks recorded by verification. |
+| Local copper | [Native bypass paths](native-decoupling-check.json), [Kelvin branches](critical-copper-check.json), [USB reference](../docs/usb-reference-check.json) and [power routing](power-routing-check.json) contain the measured CAD paths and input hashes. |
+| Filled-copper study | [Mesh calculation](../engineering/filled-copper-review.json) records its own board snapshot, assumptions and losses. It is a design study, not a fresh current-board thermal test. |
+| Driver configuration | Explicit register initialization, disabled-chopper sequencing and host regressions; [firmware details](../firmware/README.md). Gate/current waveforms remain unmeasured. |
+| TPS26631 IMON | R26 converts current-monitor output for the ADC, with no external IMON bypass capacitor, per [TI §8.3.9](https://www.ti.com/lit/ds/symlink/tps2663.pdf). Connectivity regressions guard this rule. |
+| Operation | TI full-flash image, qualified motor-enabled firmware, current/load/stop envelope, mechanical installation and provider acceptance are pending. |
 
-The earlier C19-only correction preserved all other pads and existing tracks/vias at that revision. Later authorized placement and diagnostics changes have their own fresh routing and manufacturing checks; that historical comparison does not describe the current route. See the `c19_correction` entry in [native placement evidence](../engineering/top-side-placement.json). The source connection was checked against [TI TPS2663 §8.3.9](https://www.ti.com/lit/ds/symlink/tps2663.pdf); generic CAD connectivity checks alone did not detect this component-specific rule.
+Use the matching manufacturing package and its delivery hashes. Programming and agreed powered acceptance must precede any ready-to-run delivery; see [assembly requirements](assembly.md).
 
-**Disposition: keep the order hold.** Passing connectivity and design calculations does not mean the delivered assembly can currently run a motor. Programming and agreed functional acceptance must be completed before shipment for a ready-to-run delivery; provider acceptance and actual test records are not yet available. See [assembly requirements](assembly.md) and [order settings](../release/order-settings.json).
+## Driver supply and protection calculations
 
-## Correction and calculation record
+U34 generates a separate 12 V rail from VMOTOR for U7 VSA/12VOUT, C61 and U15. U7 VS remains on VMOTOR. VSA's recommended operating limit is 50 V; the external-supply range is 10–13 V. A connectivity regression rejects a short between these rails. See [TMC5160A §3.2 and §28](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf).
 
-The original connection put U7 VSA on a motor bus whose brake threshold exceeded VSA's 50 V recommended operating limit. U34 now generates a separate 12 V rail from VMOTOR; U7 VSA and 12VOUT, including C61, connect to that rail. VS remains on VMOTOR. The compiled connectivity check rejects a short between these rails, including a short introduced by an explicit bypass trace. The external-supply range is 10–13 V; absolute maximum ratings are not used as operating limits. See [TMC5160A §3.2 and §28](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf).
-
-| Change | Design basis | Remaining qualification |
+| Circuit | Design basis | Remaining qualification |
 |---|---|---|
 | U34 LMR36510ADDAR, L3 47 µH, R121 100 kΩ / R122 9.09 kΩ | Nominal 12.001 V; screened 11.57–12.57 V including resistor temperature and PFM allowances | Startup, ripple, bus collapse and driver/brake load steps |
 | L3 SRP7050TA-470M | 37.6 µH at −20% versus approximately 23.1 µH minimum; 2.7 A saturation rating at 25 °C versus 2.4 A maximum high-side current limit | Hot saturation, loss and temperature rise |
 | C86/C87 input; C88 VCC; C89 bootstrap; C90–C92 output | 2.2 µF + 220 nF / 100 V input; 1 µF VCC; 100 nF bootstrap; 3 × 22 µF / 25 V output | Effective capacitance under bias/temperature, switch-loop waveform and return paths |
 | C32–C35 470 nF / 50 V X7R | MOSFET maximum gate charge is 22 nC; ADI recommends 470 nF above 20 nC. These capacitors see floating gate-drive differential voltage, not the full bus | Bootstrap droop, gate overshoot, dead time and minimum off-time |
-| U12 REF3425, C93/C94; remove R59 | 2.5 V precision reference, with input/output bypassing; replaces shunt reference and bias resistor | Reference startup and operation during loss of either USB input |
+| U12 REF3425, C93/C94 | 2.5 V precision reference, with input/output bypassing | Reference startup and operation during loss of either USB input |
 | R60/R61 = 180 kΩ + 16 kΩ; R62 = 10 kΩ; R63 = 1 MΩ | Brake nominal on 51.99 V / off 51.34 V | Measured hysteresis, comparator offset/noise and switching overshoot |
 | R64 = 430 kΩ; R65/R66 = 20 kΩ + 1 kΩ | Motor inhibit nominal 53.69 V; tolerance envelope must stay below 55 V with allocated transient margin | Dynamic shutdown response and regenerated energy after inhibit |
 | R22 = 4.7 kΩ; R23 = 422 kΩ; R24 = 10 kΩ | eFuse input OVP nominal 52.40 V; screened 50.93–53.89 V, retaining margin above a 5% high 48 V source | Source tolerance, eFuse input leakage and PD transient coordination |
@@ -40,21 +37,21 @@ Reference data: [TI LMR36510 tables 8-1/8-4](https://www.ti.com/lit/ds/symlink/l
 
 C87 has a documented 3.3 mm pad-center placement limit: VIN is the second pin in U34's PowerPAD package, and the adjacent 0805 capacitor must clear the PGND land and package courtyard. Actual separation is approximately 3.166 mm, with a constrained top-layer path under 5 mm. All other bypass targets retain the 3 mm placement limit. This is not an exception to copper clearance, connectivity or the short ground-return requirement. L3 uses the manufacturer's recommended land pattern; its 3D object is a dimensioned body envelope, not a manufacturer STEP model.
 
-The final native PCB has 311 fitted parts and 19 service pads on top, a minimum 0.30 mm finished via drill, 40 MOSFET drain thermal vias and four U34 exposed-pad thermal vias. The drill-over-solder-land audit counts **58 via-in-pad locations**, all requiring the selected filled/capped process. Exact coordinates and the board hash are in `engineering/top-side-placement.json`; order settings carry the same count. Native routing checks verify all 48 specified IC-to-capacitor same-side paths within 5 mm, all nine Kelvin/analog-return branches, USB reference continuity and the power-corridor policy. The native bypass regression rejects the earlier copper with five missing or excessive paths.
+The manufacturing specification requires at least 0.30 mm finished via drills and filled/capped processing for all identified via-in-pad locations. Counts, coordinates and applicable input hashes must be checked in the current manufacturing/assembly reports and order settings. The native copper checks enforce local bypass routes and Kelvin branches; they do not establish temperature rise on hardware.
 
 ## Diagnostics load allocation
 
-The diagnostics ECO adds the U35 GPIO expander, D16 RGB indicator, independent D17 board-power indicator and Q26-driven BZ1 buzzer, plus U36 for EEPROM programming isolation. Reserve 75 mA across the logic rails for the added diagnostics load (0.27 W at 3.6 V). The buzzer datasheet specifies up to 30 mA at its 3 V test point; the 60 mA buzzer allocation at the actual board rail is a design allowance, not a measured guarantee. Measure startup, alarm pulses and rail ripple on first assembled hardware. The upstream 5 A PD budget must include this load and regulator losses.
+The diagnostics circuitry uses the U35 GPIO expander, D16 RGB indicator, independent D17 board-power indicator and Q26-driven BZ1 buzzer, plus U36 for EEPROM programming isolation. Reserve 75 mA across the logic rails for the diagnostics load (0.27 W at 3.6 V). The buzzer datasheet specifies up to 30 mA at its 3 V test point; the 60 mA buzzer allocation at the actual board rail is a design allowance, not a measured guarantee. Measure startup, alarm pulses and rail ripple on first assembled hardware. The upstream 5 A PD budget must include this load and regulator losses.
 
 U35/C95 use PD_3V3 so that their supply follows the I²C pull-ups; the LED/buzzer loads remain on V3V3. R126 is 1 kΩ, limiting a 3.6 V gate-charging step below U35's 10 mA high-output limit; R127 is 100 kΩ so the gate defaults off while retaining drive headroom. Firmware holds U35 in reset during missing board power, USB-only power and USB suspend, and reads back its configuration/output latch during operation. C95/C97 are local IC bypasses; C96 is a separate 10 µF buzzer bulk branch. Component pin maps, state behavior and physical qualification steps are documented in [indicators](indicators.md) and [PD programming](pd-programming.md).
 
 ## What the power numbers establish
 
-At the 5.5 A RMS design target the sinusoidal phase peak is 7.78 A. The configured scaler nominally commands about 5.386 A RMS; that calculation is not a calibrated phase-current measurement. A 33 mΩ sense resistor has a conservative cycle-average bound of 1.00 W and a held-peak bound of 2.00 W. The eight bridge MOSFETs have approximately 1.83 W total conduction loss using maximum 25 °C on-resistance; doubling resistance gives 3.65 W. Neither number includes switching loss or predicts junction temperature.
+At the 5.5 A RMS design target the sinusoidal phase peak is 7.78 A. The full-current design-screen scaler nominally commands about 5.386 A RMS; this is not the locked commissioning profile (approximately 0.84 A RMS). That calculation is not a calibrated phase-current measurement. A 33 mΩ sense resistor has a conservative cycle-average bound of 1.00 W and a held-peak bound of 2.00 W. The eight bridge MOSFETs have approximately 1.83 W total conduction loss using maximum 25 °C on-resistance; doubling resistance gives 3.65 W. Neither number includes switching loss or predicts junction temperature.
 
 The eFuse limit is about 4.48 A nominal at the input, not a phase-current limit. The screened upper limit leaves only about 0.14 A from a 5 A PD contract for upstream logic. TPS26631 also permits overload pulses. Source/cable negotiation, logic consumption and overload behavior must be tested together.
 
-The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J between 48 V and 53 V. A nominal 10 Ω brake dissipates about 270 W at turn-on; 55 V across a −2% resistor would dissipate 309 W. The selected [Vishay LPS300](https://www.vishay.com/docs/50052/lps300.pdf) is rated 300 W only with its case at or below 85 °C. It needs a designed heatsink and a verified pulse-energy/repetition budget. The ordered motor's [manufacturer drawing](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) specifies rotor inertia of 1400 g·cm² (0.00014 kg·m²), also recorded in `motor-data.json`. Rotor-only kinetic energy is ½J(2π·RPM/60)²; operating RPM, driven-load inertia, gravity and stop/repetition profile remain unspecified, so no application brake-energy qualification is claimed.
+The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J between 48 V and 53 V. A nominal 10 Ω brake dissipates about 270 W at turn-on; 55 V across a −2% resistor would dissipate 309 W. The candidate [Vishay LPS300](https://www.vishay.com/docs/50052/lps300.pdf) is rated 300 W only with its case at or below 85 °C. If this candidate is chosen, it needs a designed heatsink and a verified pulse-energy/repetition budget. The 300 W rating is not a confirmed requirement. See [J3 use and fit/omit decision](brake-integration.md). The ordered motor's [manufacturer drawing](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) specifies rotor inertia of 1400 g·cm² (0.00014 kg·m²), also recorded in `motor-data.json`. Rotor-only kinetic energy is ½J(2π·RPM/60)²; operating RPM, driven-load inertia, gravity and stop/repetition profile remain unspecified, so no application brake-energy qualification is claimed.
 
 ## Evidence required before submitting a prototype order
 
@@ -62,7 +59,7 @@ The 940 µF bank stores about 1.08 J at 48 V but accepts only about 0.237 J betw
 - Top-only fitted BOM/CPL, local bypasses, preserved Kelvin paths, four-layer stack, at least 0.30 mm finished via drills, drain thermal vias and uninterrupted USB reference evidence.
 - Fresh Gerber/drill ZIP and matching BOM/CPL, with SHA-256 provenance. Reject older ZIPs and manually substituted files.
 - Exact stock/package checks for the actual order quantity, plus manufacturer confirmation of filled/capped via-in-pad processing and the chosen impedance stack-up.
-- Review of the ordered 34HS31-6004S1 current waveform, supply/cable, maximum speed, stop time, rotor/load inertia, ambient temperature, enclosure and brake heatsink. These operating details remain unqualified.
+- Review of the ordered 34HS31-6004S1 current waveform, supply/cable, maximum speed, stop time, rotor/load inertia, ambient temperature, enclosure and the conditional brake fit/omit decision (including heatsink if fitted). These operating details remain unqualified.
 - A documented PD programming path. `docs/pd-configuration.json` contains requirements only; the TI-generated full-flash image is still missing. Do not substitute that JSON for an EEPROM binary.
 
 ## Staged powered test record — all results pending
@@ -76,12 +73,12 @@ Use a current-limited bench setup, rated differential probes, a current probe/el
 | PD and handover | Approved TI image; attach/detach, hard reset, EPR cable, source swaps, USB suspend/resume | 48 V / 5 A contract proven; USB/PD ratings respected; no backfeed or unintended motor enable | Not tested |
 | eFuse | No-motor load sweep, startup/inrush, UVLO, OVP, overload and fault recovery | Measured thresholds inside the report's screen; valid source coordination; no SOA or temperature violation | Not tested |
 | Driver supply | U34 output at U7 and U15, startup, brake pulses, supply removal and load steps | VSA/12VOUT remain 10–13 V while operating; no destructive overshoot or unwanted gates; capture ripple | Not tested |
-| Reference and brake | Controlled bus ramp with rated brake load; both directions and temperature corners | Brake acts before inhibit; VS always below 55 V, including transient allowance; resistor case ≤85 °C | Not tested |
-| Inhibit matrix | External enable open/grounded, MCU reset/watchdog, PGOOD loss, overvoltage and overtemperature | Bridge disables for every fault; no automatic restart without the intended permit sequence | Not tested |
+| Reference and brake | Controlled bus ramp with rated brake load; both directions and temperature corners | Brake acts before inhibit; VS always below 55 V, including transient allowance; selected resistor pulse/average and case-temperature limits met (≤85 °C at full rating for the LPS300 candidate) | Not tested |
+| Inhibit matrix | Retained onboard enable/inhibit paths, MCU reset/watchdog, PGOOD loss, overvoltage and overtemperature; no external enable interface | Bridge disables for every fault; no automatic restart without the intended permit sequence | Not tested |
 | Low-current motor | Start below rated phase current; inspect all bridge VGS/VDS and current waveforms | Correct phase/polarity; no shoot-through; bootstrap/gate limits respected before increasing current | Not tested |
 | Rated-current soak | Increase current in stages, then standstill and loaded motion at worst intended ambient | Measured RMS/peak current and all derated component/motor temperatures acceptable; document thermal equilibrium | Not tested |
 | Regeneration | Defined load, speed, stop time and repeated stops, including USB loss | Bus remains within limits; brake pulse/average energy and temperatures pass; no uncontrolled movement | Not tested |
-| Interfaces and compliance | USB during switching, STEP/DIR rate, industrial buses, cable faults, magnetic alignment, ESD/EMC | Meets the intended system requirements and applicable test limits; record failures | Not tested |
+| Interfaces and compliance | USB during switching, local SW2/SW1 and internal SPI-ramp behavior, cable faults, ESD/EMC; magnetic alignment only if the optional encoder is fitted | Meets the intended system requirements and applicable test limits; record failures | Not tested |
 
 Full-power operation is established only after these measurements on assembled hardware. A passing design calculation or CAD report cannot close the powered, thermal or EMC gates.
 
@@ -96,12 +93,12 @@ Complete and approve this envelope **before** a motor-enabled test. Empty fields
 | Driven load, inertia/gravity, maximum RPM and acceleration | Not supplied |
 | Worst stop/deceleration profile and repeat interval | Not supplied |
 | J1 source model and EPR cable model/rating | Not supplied |
-| Brake resistor, heatsink, mounting and airflow | Not qualified |
+| Brake fit/omit decision; exact resistor, heatsink, mounting and airflow if fitted | Operating envelope and installation not qualified |
 | Ambient range, enclosure, duty cycle and thermal limits | Not agreed |
-| Microsteps, current settings and STEP/DIR timing limits | Not qualified |
+| Microsteps, current settings and internal SPI-ramp speed/acceleration/deceleration limits | Not qualified |
 | TI configuration/full-flash hashes and motor-test firmware hash | Not available |
 | Fixture revision, instrument list and calibration dates | Not supplied |
 
 For every matrix row, retain: board/release identity; procedure revision; operator/date; actual motor/load/ambient; instrument setup; programmed settings; numeric expected limits and their source; readings with units; waveform/photo/log filenames; PASS/FAIL; and the engineer's disposition. A record labelled “not tested” is not acceptable shipment evidence.
 
-First-article qualification covers operating corners and fault behavior. The provider must then approve a repeatable production acceptance procedure and duration. Every shipped board needs its own programming verification and both-direction motor/fault record; a single prototype video does not accept the batch. Neither that production procedure nor any powered result has been approved yet. See the [prepared provider request and programming sequence](assembly.md#request-to-send-to-the-assemblytest-provider).
+First-article qualification covers operating corners and fault behavior. The provider must then approve a repeatable production acceptance procedure and duration. Every shipped board needs its own programming verification and approved motor-profile/fault record; a single prototype video does not accept the batch. Neither that production procedure nor any powered result has been approved yet. See the [prepared provider request and programming sequence](assembly.md#request-to-send-to-the-assemblytest-provider).

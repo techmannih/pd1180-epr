@@ -54,6 +54,7 @@ export const M24512_RMN6TP = (props: ChipProps<typeof pinLabels>) => {
 <fabricationnotepath route={[{"x":-2.5262078000000656,"y":-0.43538139999998293},{"x":-2.5262078000000656,"y":0.44889420000004066}]} />
 <silkscreencircle pcbX="-1.905mm" pcbY="-1.016mm" radius="0.150114mm" />
 <courtyardoutline outline={[{"x":-2.699982400000067,"y":3.7499422000000777},{"x":2.7000077999998666,"y":3.7499422000000777},{"x":2.7000077999998666,"y":-3.749942199999964},{"x":-2.699982400000067,"y":-3.749942199999964},{"x":-2.699982400000067,"y":3.7499422000000777}]} />
+<silkscreentext text="{NAME}" pcbX="0mm" pcbY="4.75mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C79991.obj?uuid=ec3b9f9b31a74655be3e55848dbee9c1",

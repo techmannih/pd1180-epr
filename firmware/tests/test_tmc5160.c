@@ -25,7 +25,7 @@ int main(void) {
   pd1180_tmc_t d={.frame=transfer,.context=&f};
   uint32_t value;
   assert(pd1180_tmc_read(&d,4,&value) && value==0x30000010 && f.calls==2);
-  assert(pd1180_tmc_configure_ramp(&d,180)); // Approx. 0.86 A RMS first tuning stage.
+  assert(pd1180_tmc_configure_ramp(&d,180)); // Approx. 0.842 A RMS first tuning stage.
   assert(d.configured && !(f.regs[0x6C]&15u));
   assert(f.regs[0x09]==0x10C06u && f.regs[0x0A]==0x400u);
   assert(((f.regs[0x6C]>>24)&15u)==0 && !(f.regs[0x6C]&(3u<<30)));
@@ -38,8 +38,12 @@ int main(void) {
   int32_t velocity=0; f.regs[0x22]=0xFFFFFF;
   assert(pd1180_tmc_actual_velocity(&d,&velocity) && velocity==-1);
   f.regs[0x22]=0;
-  assert(pd1180_tmc_set_current(&d,500) && d.irun==15);
-  assert(!pd1180_tmc_set_current(&d,1001));
+  assert(pd1180_tmc_set_current(&d,125) && d.irun==3);
+  for(unsigned request=181;request<=1001;++request) {
+    const unsigned before=f.calls;
+    assert(!pd1180_tmc_set_current(&d,(uint16_t)request));
+    assert(f.calls==before && d.irun==3); // Rejection must not write a higher current.
+  }
   pd1180_tmc_status_t status;
   for(unsigned bit=0;bit<3;++bit) {
     f.regs[1]=1u<<bit; assert(!pd1180_tmc_status(&d,&status) && !d.configured);
@@ -68,10 +72,18 @@ int main(void) {
   f.regs[1]=0;calls=f.calls;
   assert(!pd1180_motor_service(&motor,&c,&in,180) && f.calls==calls); // No automatic reconfigure after reset.
   c.armed=false;assert(!pd1180_motor_service(&motor,&c,&in,180));
-  c.armed=true;assert(pd1180_motor_service(&motor,&c,&in,500));
-  c.current_limit_permille=250;assert(pd1180_motor_service(&motor,&c,&in,500));
+  c.armed=true;assert(pd1180_motor_service(&motor,&c,&in,180));
+  c.current_limit_permille=750;assert(pd1180_motor_service(&motor,&c,&in,180));
   assert(motor.driver.irun==3); // Thermal derating reaches actual current register.
-  in.vmotor_in_range=false;assert(!pd1180_motor_service(&motor,&c,&in,500) && !in.driver_ready);
+  calls=f.calls;
+  assert(!pd1180_motor_service(&motor,&c,&in,181) && !in.driver_ready);
+  assert(f.calls==calls && !motor.driver.configured);
+  in.vmotor_in_range=false;assert(!pd1180_motor_service(&motor,&c,&in,180) && !in.driver_ready);
+  for(unsigned request=181;request<=1001;++request) {
+    calls=f.calls;
+    assert(!pd1180_tmc_configure_ramp(&d,(uint16_t)request));
+    assert(!d.configured && f.calls==calls);
+  }
   for(unsigned levels=6;levels<=12;levels+=6) for(unsigned clocks=2;clocks<=4;clocks+=2) {
     fake_t defaults={0}; defaults.regs[4]=0x30000010;
     defaults.regs[0x09]=(1u<<16)|(levels<<8)|levels;

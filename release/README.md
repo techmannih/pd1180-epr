@@ -1,29 +1,30 @@
-# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+# PD1180-EPR — revision 0.4 review package
 
-## r0.4 ECO review handoff — powered validation pending
+**Engineering review only — order hold.** The current package is not authorization to fabricate or a ready-to-run delivery.
 
-**ORDER HOLD.** These are engineering review files. Powered USB, current/thermal and system qualification remain open; do not submit a fabrication order from this package.
+For the STEPPERONLINE 34HS31-6004S1 motor. Local SW2 START/STOP commands the STM32/TMC5160 internal ramp; SW1 is RESET. The supplied commissioning firmware supports USB diagnostics but remains motion-locked. The TI PD full-flash image and powered motor qualification are pending.
 
-The ECO separates PD POWER and USB DATA, removes unsupported CAN/RS485/RS232 and general I/O circuits and the remaining J7 external command path, adds local START/STOP using the TMC5160 internal SPI ramp, while retaining external MOSFET bridges. USB DATA alone powers setup/diagnostics through a current-limited, reverse-blocked supply; the motor-bus backup supply is retained for brake control after PD loss. Status: onboard-control-eco-order-held. See `engineering/reviewer-eco.json` and `docs/step-dir-hardware-review.md`.
+## Connections
 
-The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Its exact manufacturer STEP replaces the QSH reference. Existing four PCB holes are unchanged. Unsupported posts, adapter and fasteners have been removed; rear attachment and encoder mounting remain unresolved. See `motor-assembly.md` for the alignment preview and unresolved mechanical gates.
+| Connector | Purpose | External equipment |
+|---|---|---|
+| J2, 4-pin JST VH | Motor winding connection | VHR-4N, four SVH-41T-P1.1 contacts, four 16 AWG pigtails and four TE320559 splices to the motor leads; physical harness qualification pending |
+| J3, 2-pin JST VH | Conditional regenerated-energy dissipation | VHR-2N, two SVH contacts, two-wire harness and selected resistor/terminals/cooling/mounting; final brake requirement and installation unresolved |
+| J1, USB-C POWER | Motor and board supply | Qualified 48 V / 5 A EPR source and 5 A EPR e-marked cable; exact products unselected |
+| J10, USB-C DATA | Setup/diagnostics and independent MCU logic | Host and data-capable cable; does not supply motor power |
 
-RGB, independent board-power indication, a reset-safe buzzer and eight new power/programming pads are included. See `indicators.md` and `pd-programming.md` for states, supply allocation and isolated EEPROM programming. The fixture and TI image still require qualification.
+J3 is not a speed aid. Its return is switched, not permanently grounded. The documented 300 W resistor is only a candidate; an empty J3 cannot dissipate brake energy. See [external equipment](external-system.md), [endpoint schedule](connector-harnesses.md), [J2 harness](motor-harness.md) and [brake decision](brake-integration.md).
 
-The included `pd1180-commissioning-firmware.zip` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
+## Assembly and qualification
 
-J2 is JST VH and requires the separate VHR-4N cable assembly specified in `motor-harness.md`. J7 and its external input conditioning are removed; SW2 provides local START/STOP and SW1 remains RESET. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All 247 fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
+All 247 fitted components and 19 bare service pads are top-side. U18/C52/C53 are centered/local bottom DNP encoder footprints, excluded from fitted BOM/CPL and paste. The single-shaft motor has no qualified rear magnet installation.
 
-The requested delivery is a fully assembled, programmed and functionally tested PCBA. `order-settings.json` requests programming and functional testing, with provider acceptance still pending. U3's TI full-flash image and a qualified motor-enabled U16 image are missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included `assembly.md` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
+The 3D view contains the motor and J2 harness. Four Ø4.2 mm PCB holes are present, but rear fastening, the visual 19.5 mm gap, cable retention and final harness fit remain unqualified. See [motor assembly](motor-assembly.md). Part numbers in [external-parts.json](external-parts.json) identify candidates and selected items; they are not stock reservations.
 
-For the checked prototype handoff, use the newly generated Gerbers together with `jlc-bom.csv` plus `jlc-cpl.csv` for top-side assembly. Apply every value in `order-settings.json`, especially four layers, 1 oz copper on all layers, epoxy-filled/copper-capped processing for every via-in-pad listed in the order settings (including 40 MOSFET drain-pad and four U34 thermal vias), and top-side assembly.
+[Verification](verification.json) preserves actual check results. Native reports are [DRC](kicad-drc.json) and [ERC](kicad-erc.json); schematic style covers 23 sheets in [its report](schematic-style-check.json). Live PCB stock evidence covers 81 unique fitted supplier codes. Failed sourcing/placement gates and pending programming, power, thermal, mechanical and EMC qualification must be resolved before acceptance.
 
-Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility; their contents, silkscreen and hardware contract are the r0.4 ECO identified by this delivery manifest.
+The intended delivery includes complete assembly, programming/readback and serial-numbered functional tests. Provider acceptance is pending. Follow [assembly requirements](assembly.md), [power test matrix](power-validation.md) and [order settings](order-settings.json). Blank or motion-locked assemblies do not meet ready-to-run acceptance.
 
-The committed native KiCad checks have zero PCB DRC violations, zero unconnected items, zero schematic-parity issues and zero schematic ERC violations. See `kicad-drc.json` and `kicad-erc.json`. Live JLCSearch evidence covers all 81 unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed STM32 firmware plus staged powered validation.
+Use the matching Gerbers, BOM/CPL and order settings, including the four-layer stack, 1 oz copper, top assembly and specified filled/capped via-in-pad treatment. The routed viewer preserves the source schematic and native KiCad copper. Native renders are [top](pcb-3d.png) and [bottom](pcb-bottom.png); full 3D models are in the GLB ZIPs.
 
-The tscircuit viewer-equivalent schematic style result is recorded across all 23 sheets; see `schematic-style-check.json`. `circuit.json` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
-
-Power calculations and the unperformed bench-test matrix are in `power-validation.md`; `power-audit.json` and `native-decoupling-check.json` contain the numerical evidence.
-
-Use `pcb-3d.png` and `pcb-bottom.png` for visual review. Print `mounting-template.svg` at 100% and measure its calibration bar before comparing it with the motor. The complete 3D model is stored as `pd1180-epr-r0.3-glb.zip` so cloud imports do not serialize a large loose binary. `delivery-manifest.json` records the exact file sizes and hashes, while `sha256.json` recursively covers this release directory.
+Some archive/KiCad basenames retain r0.3 for pipeline compatibility. This package is revision 0.4; [delivery-manifest.json](delivery-manifest.json) and [sha256.json](sha256.json) identify the exact contents. Run `bun run review` from the repository for the prescribed review sequence.

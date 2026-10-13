@@ -1,0 +1,52 @@
+{
+  "scope": "SW1 top-silkscreen RESET label and operator documentation only; no circuit/firmware change",
+  "native_board_before_sha256": "556fe993091b35fb10a83289a03eb62edc8a107fb8fa2bac6cabd4ce49dcd80e",
+  "native_board_after_sha256": "f4f30ddc93d35714e32a4f531a8c039fbd959c4ce3707082009905dc3f4684fe",
+  "source_change": [
+    {
+      "before": {
+        "type": "pcb_silkscreen_text",
+        "pcb_silkscreen_text_id": "pcb_silkscreen_text_20",
+        "anchor_alignment": "center",
+        "anchor_position": {
+          "x": -16.8,
+          "y": -38.5
+        },
+        "font": "tscircuit2024",
+        "font_size": 0.8,
+        "layer": "top",
+        "text": "SW1",
+        "ccw_rotation": 0,
+        "pcb_component_id": null,
+        "subcircuit_id": "subcircuit_source_group_0"
+      },
+      "after": {
+        "type": "pcb_silkscreen_text",
+        "pcb_silkscreen_text_id": "pcb_silkscreen_text_20",
+        "anchor_alignment": "center",
+        "anchor_position": {
+          "x": -25,
+          "y": -37.5
+        },
+        "font": "tscircuit2024",
+        "font_size": 0.8,
+        "layer": "top",
+        "text": "RESET",
+        "ccw_rotation": 0,
+        "pcb_component_id": null,
+        "subcircuit_id": "subcircuit_source_group_0"
+      }
+    }
+  ],
+  "native_copper_footprints_holes_and_other_graphics_byte_identical": true,
+  "compiled_schematic_and_non_silkscreen_records_unchanged_except_cli_cache_key": true,
+  "native_drc": {
+    "violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity": 0
+  },
+  "button_firmware_changed": false,
+  "firmware_host_tests": "passed: debounce, release-before-start, controlled ramp stop, timeout, SPI failure, fault acknowledgement and no automatic restart",
+  "physical_motor_test_performed": false,
+  "status": "Historical custom RESET-label check. Superseded by the approved native {NAME} templates in imported footprints; see pcb-reference-check.json for current SW1/SW2 labels and complete reference coverage. Historical DRC counts here do not describe the current board."
+}

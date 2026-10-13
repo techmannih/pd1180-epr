@@ -99,14 +99,15 @@
   "markings": {
     "required_source_text": [
       "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted",
-      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.4 ECO",
+      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.4",
       "Made with tscircuit"
     ],
     "required_kicad_text": [
       "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted",
-      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.4 ECO",
+      "Stepper Controller with USB-C PD 3.1 EPR \u00b7 r0.4",
       "Made with tscircuit"
-    ]
+    ],
+    "reference_policy": "Every component must expose its footprint reference. User approved native {NAME} templates in custom imports. Preserve footprint-local defaults and overlaps; no board-level name placement, per-instance adjustments, replacement captions or assembly-layer reference injection. Fabrication clearance and text-height failures remain failures."
   },
   "routing": {
     "critical_power_nets": [
@@ -194,7 +195,12 @@
       "release/complete-assembly.md",
       "release/harness-layout.json",
       "release/harness-assembly-check.json",
-      "release/schematics/user-control.svg"
+      "release/schematics/user-control.svg",
+      "release/external-system.md",
+      "release/external-parts.json",
+      "release/brake-integration.md",
+      "release/j3-energy-review.json",
+      "release/external-items.csv"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",

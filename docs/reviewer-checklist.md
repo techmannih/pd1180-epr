@@ -4,7 +4,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 ## Reference review closure
 
-- [ ] Review every row in [reference-review.md](reference-review.md), including the added RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or permission to resume review as complete.
+- [ ] Review every row in [reference-review.md](reference-review.md), including RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or evidence of completed system qualification.
 - [ ] Use [connector-harnesses.md](connector-harnesses.md) for J2/J3 mating parts and termination; review the modeled envelopes in [complete-assembly.md](complete-assembly.md), then qualify insertion, latch/tool access and strain relief in the physical assembly.
 
 ## Requirements and mechanics
@@ -20,7 +20,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 - [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
 - [ ] All 23 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
-- [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26631, TMC5160A, MOSFETs, shunts and connectors.
+- [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26630, TMC5160A, MOSFETs, shunts and connectors.
 - [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 carries EPR CC/VBUS, J10 carries USB 2.0 D+/D− with independent CC pulldowns, and only J10 VBUS feeds the attach divider. U22 retains motor-bus brake backup.
 - [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
 - [ ] PD contract, power-good, voltage window and fault signals gate the motor stage independently of a normal firmware command.
@@ -30,7 +30,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 ## Power, protection and thermal
 
 - [ ] Input/eFuse UVLO, OVP, inrush and current-limit calculations include tolerance and startup state.
-- [ ] TPS26631 `IIN_MON` and the independent VMOTOR divider reach ADS1115 channels 1/0 at address 0x49. STM32 PA0/PA1 read INA240 phase-current diagnostics; regulation remains on the TMC5160A's independent 33 mΩ shunts.
+- [ ] TPS26630 `IIN_MON` and the independent VMOTOR divider reach ADS1115 channels 1/0 at address 0x49. STM32 PA0/PA1 read INA240 phase-current diagnostics; regulation remains on the TMC5160A's independent 33 mΩ shunts.
 - [ ] Kelvin branches join load/ground copper only at the designated shunt terminal; the final native critical-copper check passes. Inspect their lengths and switching-noise exposure as well as DRC.
 - [ ] TMP102 at 0x48 inhibits RUN_SAFE through U33. Verify ALERT polarity, 70 °C cutoff, 55 °C re-arm threshold, missing-sensor behavior and board-to-junction temperature correlation on hardware.
 - [ ] DATA USB alone powers MCU diagnostics through TPS2553, TLV755 and the second LM66100 OR. Verify board peripherals stay unpowered, chip-select/I²C pins do not backfeed, and suspend/resume invalidates old telemetry. Measure startup, pre-configuration, configured and suspend current; test both-source transitions and reverse current before claiming USB power compliance.
@@ -47,7 +47,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
 - [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 58 via-in-pad locations with filled/capped processing.
-- [ ] All 46 final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] All specified final native same-side IC-to-capacitor paths pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
@@ -75,7 +75,7 @@ Reviewer sign-off should record board revision, commit, release hashes, open ris
 
 Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
 
-## Diagnostics ECO acceptance
+## Diagnostics acceptance
 
 - [ ] D16 RGB and D17 board-power indication are visible after full mechanical assembly; verify brightness at rail extremes.
 - [ ] BZ1 remains silent at reset, watchdog, loss of board power and failed I2C; verify the audible alarm and allocated 75 mA additional logic-rail design allocation.

@@ -1,0 +1,37 @@
+/private/tmp/pd1180-prototype-pio/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Processing pd1180 (platform: ststm32@20.0.0; board: pd1180; framework: arduino)
+--------------------------------------------------------------------------------
+/private/tmp/pd1180-prototype-pio/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/ststm32/pd1180.html
+PLATFORM: ST STM32 (20.0.0) > PD1180 STM32G0B1CBT6 LQFP48 GP 128K
+HARDWARE: STM32G0B1CBT6 64MHz, 144KB RAM, 128KB Flash
+DEBUG: Current (stlink) External (stlink)
+PACKAGES: 
+ - framework-arduinoststm32 @ 4.30000.0 (3.0.0) 
+ - framework-cmsis @ 2.60300.0 (6.3.0) 
+ - framework-cmsis-dsp @ 1.16.2 
+ - tool-scons @ 4.40801.0 (4.8.1) 
+ - toolchain-gccarmnoneeabi @ 1.120301.0 (12.3.1)
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 15 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- IWatchdog @ 1.0.0
+|-- SPI @ 1.1.0
+|-- Wire @ 1.0.0
+Building in release mode
+Compiling .pio/build/pd1180/src/src/local_motion.c.o
+Compiling .pio/build/pd1180/src/src/motor_service.c.o
+Compiling .pio/build/pd1180/src/src/tmc5160.c.o
+Compiling .pio/build/pd1180/src/src/tmc5160_config.c.o
+Compiling .pio/build/pd1180/src/target/main.cpp.o
+Linking .pio/build/pd1180/firmware.elf
+Checking size .pio/build/pd1180/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [          ]   3.9% (used 5708 bytes from 147456 bytes)
+Flash: [====      ]  43.8% (used 57404 bytes from 131072 bytes)
+========================= [SUCCESS] Took 1.66 seconds =========================

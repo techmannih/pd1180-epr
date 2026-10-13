@@ -12,6 +12,7 @@ extern "C" {
 #include "telemetry.h"
 #include "power_domain.h"
 #include "tmc5160.h"
+#include "tmc5160_config.h"
 #include "motor_service.h"
 #include "local_motion.h"
 }
@@ -28,7 +29,7 @@ static bool motorFrame(void *, const uint8_t tx[5], uint8_t rx[5]);
 static pd1180_motor_service_t motor = {};
 static auto &tmc = motor.driver;
 static auto &tmcStatus = motor.status;
-static constexpr uint16_t commissioningCurrentPermille = 180; // Start below 1 A RMS; tune on the bench.
+static constexpr uint16_t commissioningCurrentPermille = PD1180_BENCH_CURRENT_MAX_PERMILLE;
 static uint32_t lastDriverPoll;
 static pd1180_control_t control;
 static pd1180_local_motion_t localMotion;

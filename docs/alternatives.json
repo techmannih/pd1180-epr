@@ -2,16 +2,16 @@
   "automatic_substitution": false,
   "parts": [
     {
-      "primary": "C1850273",
-      "alternative": "C1850281",
-      "mpn": "TPS26631RGET",
-      "stock": 23,
-      "checked_at": "2026-10-11T16:01:32.779Z",
-      "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=1850281",
+      "primary": "C1850276",
+      "alternative": "C2864391",
+      "mpn": "TPS26630RGET",
+      "stock": null,
+      "checked_at": "2026-10-12T19:04:38.499875+00:00",
+      "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=2864391",
       "classification": "same-silicon-package",
-      "notes": "TPS26631RGET: same RGE footprint, alternate tape quantity; verify ordering suffix and assembly availability.",
+      "notes": "TPS26630RGET shares TI RGE-24 silicon/package with TPS26630RGER; alternate reel quantity. Exact live stock lookup returned no match. TPS26631 is not a protection-equivalent substitute because it allows 2x pulses.",
       "package": "VQFN-24(4x4)",
-      "status": "available",
+      "status": "unverified-no-exact-match",
       "expected_package": "VQFN-24(4x4)",
       "expected_package_match": true,
       "primary_package": "VQFN-24(4x4)",
@@ -178,20 +178,11 @@
       "status": "no-drop-in-selected"
     },
     {
-      "primary": "C141679",
-      "alternative": "C705781",
-      "mpn": "RT0603BRD074K02L",
-      "stock": 43346,
-      "checked_at": "2026-10-11T16:01:37.280Z",
-      "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=705781",
-      "classification": "passive-review",
-      "notes": "4.02 kOhm, 0603, 0.1%, 100 mW, 25 ppm/degC candidate for R25; tighter tolerance than the primary 1%. Confirm manufacturer land pattern and actual assembler inventory. The API power_watts numeric field is mis-scaled; 100 mW comes from the attributes text.",
-      "package": "0603",
-      "status": "available",
-      "expected_package": "0603",
-      "expected_package_match": true,
-      "primary_package": "0603",
-      "package_compatible": true
+      "primary": "C7293210",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R25 is now 4.99k, 0.1%, 25 ppm/C. The former 4.02k candidate is not equivalent. Any substitute must retain the reviewed current-budget tolerance and package."
     },
     {
       "primary": "C2652286",
@@ -218,7 +209,7 @@
       "primary": "C391032",
       "alternative": null,
       "classification": "not-approved-redesign-required",
-      "notes": "FUET-9650B-3V is an active 2–5 V SMT buzzer. A passive transducer would not sound with the static enable firmware; any substitute needs footprint, polarity, current and acoustic review. No drop-in alternative selected.",
+      "notes": "FUET-9650B-3V is an active 2\u20135 V SMT buzzer. A passive transducer would not sound with the static enable firmware; any substitute needs footprint, polarity, current and acoustic review. No drop-in alternative selected.",
       "status": "no-drop-in-selected"
     },
     {

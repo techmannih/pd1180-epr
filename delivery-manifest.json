@@ -2,7 +2,7 @@
   "schema_version": 1,
   "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.0-ECO",
-  "generated_at": "2026-10-12T05:06:00.344Z",
+  "generated_at": "2026-10-12T18:38:45.367Z",
   "assembly": {
     "populated_layers": [
       "top"
@@ -11,11 +11,12 @@
     "exact_supplier_codes": true
   },
   "checks": {
-    "kicad_drc_violations": 0,
+    "kicad_drc_violations": 403,
     "kicad_unconnected_items": 0,
+    "kicad_schematic_parity_issues": 0,
     "kicad_erc_violations": 0,
     "stock_parts": 81,
-    "stock_unavailable": 59,
+    "stock_unavailable": 56,
     "alternative_records": 19,
     "alternatives_available": 11,
     "alternatives_requiring_redesign": 10,
@@ -24,13 +25,13 @@
   "artifacts": [
     {
       "path": "README.md",
-      "bytes": 4791,
-      "sha256": "574c6e203b58449a2300039ea00e6e88aa02bc60a20688d75e8476101bf590a7"
+      "bytes": 3538,
+      "sha256": "07123a9331adcb34f1c1d95f5c25d8656dcf5f74ec377b2d3446cc7b7e8e75b3"
     },
     {
       "path": "circuit.json",
-      "bytes": 7457755,
-      "sha256": "7ee90805918b1dca590efcdf0c0fef953dd86c28fb6977186c2a1ed6da136055"
+      "bytes": 7526686,
+      "sha256": "394facb8989c5e2de59ecf8ca53421c071fc41aa811f1cc4a3f269a31b77cdf8"
     },
     {
       "path": "hardware-contract.json",
@@ -49,8 +50,8 @@
     },
     {
       "path": "kicad-drc.json",
-      "bytes": 1093,
-      "sha256": "51db4079d8708c0e62c2c3ac3214e4eb4cbec08dda7ed48a55e65b850d018f42"
+      "bytes": 273221,
+      "sha256": "738423936896262c9f7836478fe6662a0ac24c7429346308eeaa7509131b19e4"
     },
     {
       "path": "kicad-erc.json",
@@ -59,8 +60,8 @@
     },
     {
       "path": "manufacturing-report.json",
-      "bytes": 803,
-      "sha256": "25e55ab9bf21ba9bc5609fa5067ed18626a2f0beb3360c9b113abd68c30b8e42"
+      "bytes": 1091,
+      "sha256": "7c306cbd2b090c2a1af514d8f904e4a9f5b5aad15d9decb279ea1a12d22bf492"
     },
     {
       "path": "mounting-template.svg",
@@ -75,7 +76,7 @@
     {
       "path": "feature-parity-check.json",
       "bytes": 4068,
-      "sha256": "819bc6c774ec1a43fa18ce892b98cec965d1a2634b5aa6162b109e0848d481dc"
+      "sha256": "92b26071dba4acb0c61c48f0dab6f0002cdb86dfcc47b355eb2be7aee4fa82f8"
     },
     {
       "path": "order-settings.json",
@@ -84,33 +85,33 @@
     },
     {
       "path": "pcb-3d.png",
-      "bytes": 1448824,
-      "sha256": "b317542b73d21ee5f3980f3a8fcf423600e8a731ed1339b3c4eb98bb7032733a"
+      "bytes": 1499356,
+      "sha256": "90bf79e4aa50150f19979692efe2890f406e67bd32f79d2eebadc6020fd644c5"
     },
     {
       "path": "pcb-bottom.png",
-      "bytes": 1207088,
-      "sha256": "6e4e925ac1aa58eaa21b8e96ad072921e3264e1040112f513e50512eebf9dae2"
+      "bytes": 1206728,
+      "sha256": "f59374f8ffd69ceb143e5d0689c395f7983b567dc7905b89bb655d020c7e5fc4"
     },
     {
       "path": "pd1180-epr-r0.3-gerbers.zip",
-      "bytes": 892394,
-      "sha256": "49b61bd3b66b8f4e16928b3d4da408e617107d9585228da8ff0b28b881542a46"
+      "bytes": 946965,
+      "sha256": "6f4c24a5787fc0263186bd30f3afbfa79f23c3a909298f8fab35af798a7ad438"
     },
     {
       "path": "pd1180-epr-r0.3-glb.zip",
-      "bytes": 13748597,
-      "sha256": "da7b315c965811abfc43b767bfed43564bbc8b377612450a9326a1221387bd76"
+      "bytes": 13778900,
+      "sha256": "93d47e9bde29dd0ecfa404e85d15b68f8bdbb0a3d6651049e9b101782a606b32"
     },
     {
       "path": "pd1180-epr-r0.3-kicad.zip",
-      "bytes": 1384450,
-      "sha256": "d4861fff1a1b414d7bd02abb1a3872289161d10b3ccde69556352bab2ce00325"
+      "bytes": 1383989,
+      "sha256": "597f0fff18ec068103957d21971b3ea865fe41deb7fd0e57a229641b15a2acdb"
     },
     {
       "path": "pd1180-epr-r0.3-manufacturing.zip",
-      "bytes": 4926938,
-      "sha256": "fa5250d79ddceba620dbc3bc543903bfb631e2b23041280fac91a5cf7d02c224"
+      "bytes": 5053136,
+      "sha256": "c5fe67a40bb67a029f51ea5d1ce46cd94c8131a02254730c957bcfb28cc8ad19"
     },
     {
       "path": "power-routing-check.json",
@@ -125,12 +126,12 @@
     {
       "path": "schematic-style-check.json",
       "bytes": 1789,
-      "sha256": "20e478eeae326a4a6a1123cb4d83f8040f5b85fab9d3ae0408d3af864feee297"
+      "sha256": "96c156e47d343b6c9ed24531b2eb4c3c41dc7d64e7cd60353fc2891cbb121795"
     },
     {
       "path": "verification.json",
-      "bytes": 26813,
-      "sha256": "7acffd2c9200c92bc8e2f0185394cab70f3b245e97397206798ebe3d4362169b"
+      "bytes": 28007,
+      "sha256": "cde4823701fc23e8a7be164c48b2adbe0aaf709270fb00313a9b17be17dd152c"
     },
     {
       "path": "schematics/usb-pd.svg",
@@ -179,8 +180,8 @@
     },
     {
       "path": "pd1180-commissioning-firmware.zip",
-      "bytes": 105347,
-      "sha256": "bf7a98b907c5f4a43263e963a2ccabafc3c7fa25a49694a99a602b146f60b9db"
+      "bytes": 105273,
+      "sha256": "f9dafc00d51802f16e99f242708436b30828376dfa0bd57764ee7356f70f9a44"
     },
     {
       "path": "schematics/usb-data.svg",
@@ -200,7 +201,7 @@
     {
       "path": "critical-copper-check.json",
       "bytes": 9105,
-      "sha256": "4b75a43a6d86882cc864290c1d363aa76c1b09f93bd2e4bd4d7053de991bbe17"
+      "sha256": "9c17f371681ad37e943ad4d6600a2547ab58283f432e7dfc3f8af5127e8f8ab4"
     },
     {
       "path": "schematics/driver-power.svg",
@@ -210,42 +211,42 @@
     {
       "path": "power-audit.json",
       "bytes": 9029,
-      "sha256": "8683681bfb5f820777bddd8f1038d55c1ff898591137b11e10e96b20d6618cf2"
+      "sha256": "9c55beeb7648eb8c2e937a27a6aa64a9071b691c6fd69907619df452cbc3b4e3"
     },
     {
       "path": "native-decoupling-check.json",
       "bytes": 8591,
-      "sha256": "ba33b97a50b4c699c38afa398d8341944fb78151001b12696dc644b5154aca7d"
+      "sha256": "e984f2e025d9b833f5b0659dd44a97ee20b4c9029803f512085547e090640c8b"
     },
     {
       "path": "power-validation.md",
-      "bytes": 18219,
-      "sha256": "bc00b688faec25714ca4a1e7753301ae0019c87fef552f26b4f75b1ef6c30611"
+      "bytes": 15803,
+      "sha256": "34a871845be68fe3c2e9f944006aacfce94ddade3c670b42c395027bc48158d8"
     },
     {
       "path": "assembly.md",
-      "bytes": 13689,
-      "sha256": "34ab6feb3e0e766b3db7af199081e39b4b16f3332ccad212076839e24e1da749"
+      "bytes": 13855,
+      "sha256": "214b7cab8efd04078da24e7e24a66fa40d1360b50622ae967be297afdb3d21b2"
     },
     {
       "path": "motor-assembly.md",
-      "bytes": 2161,
-      "sha256": "cc762be85b53d860b27565a3771e7b8dc368ff691d44b50aa7415a0f9eac45ab"
+      "bytes": 2010,
+      "sha256": "0989b353f6147bb08a8359f4c9e0ce74da350eb1c66d77da8db53bd73d2aa631"
     },
     {
       "path": "motor-assembly-check.json",
       "bytes": 6526,
-      "sha256": "aa7a77f6b3305eb6a5182d7ce67c29770194208cd464c6c7635c989aaf4bce3b"
+      "sha256": "8abd9fb0bdb7f990e22b4e52ab1510c5dace207f12d739fe3e77ad420174b8a3"
     },
     {
       "path": "34hs31-6004s1-assembly-proposal.zip",
-      "bytes": 13439971,
-      "sha256": "618e3c7cc547904039122636ae51172377dd118a0687e13d2644843add2ed2d1"
+      "bytes": 13471629,
+      "sha256": "e1173c77bec2842f77869bdbe4b46add4e85cd19bffe0c7df33568dcda83ee66"
     },
     {
       "path": "motor-harness.md",
-      "bytes": 6458,
-      "sha256": "2f20787a93e1a9b21683d52d15eb27efc03c74882cc223e6b90b3e6893dafeb9"
+      "bytes": 6508,
+      "sha256": "af43dbe0f244d3034946c11628354eabb8cacc24ac93f36f8c5bbf02e7b2a013"
     },
     {
       "path": "motor-harness.json",
@@ -254,8 +255,8 @@
     },
     {
       "path": "reference-review.md",
-      "bytes": 9640,
-      "sha256": "d67e9cb5ee3fdb2c866633924337eff3808546953cdb1a2cb8689b0de0b49259"
+      "bytes": 3249,
+      "sha256": "8cad5c1e4c82d310a78ee8b90aa5dfe9dc63e17b0ffe34a51829b53332eb6d7b"
     },
     {
       "path": "reference-comparison.json",
@@ -264,8 +265,8 @@
     },
     {
       "path": "connector-harnesses.md",
-      "bytes": 2163,
-      "sha256": "06022fb40eadeb9e6249ef91901f62c088f528be3d6147891a9709caa2691048"
+      "bytes": 2470,
+      "sha256": "c3e5bc9f7b3db2c43aabcef345a98943e134d1b6e7ebdaf49f30d571532e3c9e"
     },
     {
       "path": "schematics/indicators.svg",
@@ -324,8 +325,8 @@
     },
     {
       "path": "complete-assembly.md",
-      "bytes": 2059,
-      "sha256": "23e024859ec80b6d960b83d15180ae5ed63a6a7b185619e2233c868ea3456ec8"
+      "bytes": 2275,
+      "sha256": "c3887fd539dd9adf6a9948553056d9f5e66cb950e3acf05c5034b84f94874db7"
     },
     {
       "path": "harness-layout.json",
@@ -335,12 +336,37 @@
     {
       "path": "harness-assembly-check.json",
       "bytes": 7175,
-      "sha256": "436c8dba107024919ae47f741856015d01bb9273cdbc48d7da7debe870e11ea9"
+      "sha256": "2aae574342c0e4d5622f604b54125df2ae95dbcae9553e94d89699deeb93aa5c"
     },
     {
       "path": "schematics/user-control.svg",
       "bytes": 48330,
       "sha256": "ee5314c4af8bb044d81f05ef2dba2478ff3443fa329b07582a9712c2b0a536f0"
+    },
+    {
+      "path": "external-system.md",
+      "bytes": 11454,
+      "sha256": "22129170e8b9435de5a4dadf6f9386232c1bd48796a5bbf33846d8bbf1e8779d"
+    },
+    {
+      "path": "external-parts.json",
+      "bytes": 14641,
+      "sha256": "d79eb1c6698d843f3fe0710fa98cdd331482797a490f7a8a2200b0f693bc26c9"
+    },
+    {
+      "path": "brake-integration.md",
+      "bytes": 8585,
+      "sha256": "4d5754be40ce0e4b9c3c17cf5209c33fdb24c8e6bb33a9acce52f428a4e5422f"
+    },
+    {
+      "path": "j3-energy-review.json",
+      "bytes": 5860,
+      "sha256": "792cbb01280856413c9510206e7036ec64df6cd2709587e1e07ea86b662a2535"
+    },
+    {
+      "path": "external-items.csv",
+      "bytes": 5779,
+      "sha256": "36d73fbb9e4f3afae79b2f3bc47d78f8d5003a85978af1713eacba6bde1532bb"
     }
   ]
 }

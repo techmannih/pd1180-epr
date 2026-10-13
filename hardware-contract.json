@@ -234,5 +234,47 @@
     "qualification": "Motion inhibited until TI configuration and powered bridge validation exist",
     "external_command_interfaces": "None; J7 and STEP/DIR/ENABLE/home/limit conditioning removed",
     "protection": "U10/U11/U33 and DRV_EN_N pullup retained; Q14 emitter grounded after removal of external-enable transistor Q15"
+  },
+  "input_protection": {
+    "reference": "U6",
+    "mpn": "TPS26630RGER",
+    "lcsc": "C1850276",
+    "mode": "1x active current limiting; MODE open latches faults",
+    "current_set_resistor": {
+      "reference": "R25",
+      "ohm": 4990,
+      "mpn": "RN73R1JTTD4991B25",
+      "lcsc": "C7293210",
+      "initial_tolerance_fraction": 0.001,
+      "tcr_ppm_per_c": 25,
+      "temperature_excursion_c": 100
+    },
+    "upstream_input_current_allocation_a": 0.25,
+    "upstream_allocation_status": "Design allocation including upstream logic and controller consumption; not a measured upper bound",
+    "limiting_status": "No 25.5 ms 2x pulse allowance; finite loop response and fast-trip transient remain subject to source/cable qualification",
+    "hardware_qualified": false
+  },
+  "brake_protection": {
+    "cutoff_resistor": {
+      "reference": "R66",
+      "ohm": 1200,
+      "mpn": "RT0603BRD071K2L",
+      "lcsc": "C136970",
+      "tolerance_fraction": 0.001,
+      "tcr_ppm_per_c": 25
+    },
+    "nominal_motor_cutoff_v": 53.20754716981132,
+    "scope": "Restricted, unloaded rotor commissioning screen only; motion remains inhibited",
+    "brake_continuity_detection_implemented": false,
+    "brake_fault_hardware_qualified": false,
+    "full_current_operation_authorized": false,
+    "brake_divider_resistor": {
+      "reference": "R61",
+      "ohm": 16200,
+      "mpn": "RT0603BRD0716K2L",
+      "lcsc": "C728583",
+      "tolerance_fraction": 0.001,
+      "tcr_ppm_per_c": 25
+    }
   }
 }

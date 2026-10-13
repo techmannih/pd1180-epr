@@ -13,7 +13,7 @@ import pcbnew
 def text_row(item: pcbnew.PCB_TEXT, owner: str) -> dict[str, object]:
     position = item.GetPosition()
     return {
-        "text": item.GetText(),
+        "text": item.GetShownText(),
         "owner": owner,
         "layer": "top" if item.GetLayer() == pcbnew.F_SilkS else "bottom",
         "x_mm": round(pcbnew.ToMM(position.x), 6),
@@ -35,7 +35,7 @@ def main() -> None:
         if isinstance(drawing, pcbnew.PCB_TEXT) and drawing.GetLayer() in (pcbnew.F_SilkS, pcbnew.B_SilkS):
             labels.append(text_row(drawing, "board"))
     for footprint in board.GetFootprints():
-        for field in (footprint.Reference(), footprint.Value()):
+        for field in [footprint.Reference(), footprint.Value(), *[g for g in footprint.GraphicalItems() if isinstance(g, pcbnew.PCB_TEXT)]]:
             if field.IsVisible() and field.GetLayer() in (pcbnew.F_SilkS, pcbnew.B_SilkS):
                 labels.append(text_row(field, footprint.GetReference()))
 

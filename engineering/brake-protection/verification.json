@@ -1,0 +1,144 @@
+{
+  "checked_at": "2026-10-13T02:09:48.063826+00:00",
+  "changes_applied": [
+    "R61 16k -> 16.2k, YAGEO RT0603BRD0716K2L C728583",
+    "R66 1k -> 1.2k, YAGEO RT0603BRD071K2L C136970",
+    "TSX, BOM manifest, native PCB and affected schematic values synchronized",
+    "Threshold audit includes CMRR/PSRR, high output swing and the shared physical reference",
+    "Input-current regression now reads actual U6/R25 instead of stale hardcoded 4.02k",
+    "Null catalog stock now reported as unverified rather than insufficient"
+  ],
+  "prior_changes_retained": [
+    "TPS26630RGER / R25 4.99k",
+    "Restricted current ceiling ~0.842 A RMS, speed ~10 rpm",
+    "Both motion/configuration qualification locks remain false"
+  ],
+  "checks": {
+    "source_and_assembly_build": "passed; CLI emits existing C11/C12 bounding-box overlap warning; compiled model warning/error records empty",
+    "typecheck": "passed",
+    "design_tests": {
+      "passed": 27,
+      "failed": 0,
+      "assertions": 789
+    },
+    "power_audit_tests": {
+      "passed": 14,
+      "failed": 0,
+      "assertions": 67
+    },
+    "firmware_host_tests": "passed; no physical execution",
+    "schematic_style_issues": 0,
+    "native": {
+      "violations": 403,
+      "types": {
+        "silk_edge_clearance": 4,
+        "text_height": 182,
+        "silk_overlap": 99,
+        "silk_over_copper": 118
+      },
+      "unconnected": 0,
+      "schematic_parity": 0
+    },
+    "native_erc_violations": 0,
+    "behavioral_spice": {
+      "cases": 13,
+      "timesteps_per_case": 2,
+      "numerical_checks_passed": true
+    },
+    "review_pipeline": "failed at mandatory exact-stock gate; no release export performed",
+    "stock": {
+      "timestamp": "2026-10-13T02:04:42.098Z",
+      "available": 28,
+      "total": 81,
+      "status_counts": {
+        "available": 28,
+        "unverified-stock": 24,
+        "unverified-no-exact-match": 29
+      }
+    }
+  },
+  "source_sha256": {
+    "index.circuit.tsx": "6ea5b06f6d4726b842435730d5358935b642542a6e611cb8d3a42db938acedcc",
+    "schematic-pages.tsx": "4712a787c75a13b8ee51540e81d90768295eb3c974961c74d0584e648ead3b34",
+    "docs/design-manifest.json": "5f7d1c438d4e46b1429543fafb066c4b610625f61ded1c2def1d734986101c10",
+    "hardware-contract.json": "7d65298364ed7ca4b95b320906b851bd99584e36ef56e515d6f90cc8e4c7064a",
+    "dist/index/circuit.json": "f9e31820cba7ec42657627c348c54464155aedb98bd0b7354921af536bd56a01",
+    "dist/motor-assembly/circuit.json": "58b43dad3b5298045b23707505807990fdcc46535b9ee8276a07d86c1755681e",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "9c4e4da9e57ed2289235dfa697c91c292286a5274716dc3fcf3a0a469fa16310",
+    "dist/manufacturing/kicad-project/brake.kicad_sch": "22082d67cc2116ed551ef196abea3318ada32353d2667f7e7c3db890e02be2bc",
+    "dist/manufacturing/kicad-project/brake_ovp.kicad_sch": "534ef13d37806eea23d074f3a38b30e348da1bf7df02440b5b58db815d0602fe",
+    "scripts/power-audit.mjs": "3bd433d3a18dc292ee9c1a6e0228841825324eadbdc630dc4072c84ce802939e",
+    "scripts/power-audit.test.mjs": "8ee29b5e84f0d500b343a91337fc3e9dfd96ec636f5b6215759f200207bece50",
+    "scripts/design.test.mjs": "2dad4d6dd0f3dca8fe1d56a19a1ae0482052fac4b4f3d876b46307313ef7be57",
+    "scripts/check-stock.mjs": "ccdbd2f6e7e43c42362f5f7fae1bb59918ee908cdb9bdaf25b30fc1ad1140855",
+    "scripts/simulate-input-protection.py": "39431b2728374773af93191780c637174f5c442e8c944d46394b8fff561b0572",
+    "firmware/include/tmc5160_config.h": "07cbc0bb70687e5a5ea11c799c89c035ed75a927781064e28b4b935728dc9699",
+    "firmware/target/main.cpp": "57eebf36e58e9563cfd0a40d2eaf3a816989a0da8cb6b4a8324960aeb7afde68",
+    "engineering/power-audit.json": "e30617e3ca48214cf2a4cbba312b717d284d47a9d681f6ace8ebbc5cb5f7752d",
+    "engineering/input-protection/simulation.json": "dd735556caef11b7f642f70fcc3df36657a4ac80e49c9a8a7b2bd36517131c9c",
+    "docs/stock-report.json": "7ac0262d1cec169207fa1d88fc11fb320e1368f224c7cd29586fca399c3f8088"
+  },
+  "thresholds_v": {
+    "input_uvlo": {
+      "min": 42.61912336633663,
+      "nominal": 44.4,
+      "max": 46.23272181818182
+    },
+    "input_ovp": {
+      "min": 50.9325569583707,
+      "nominal": 52.404,
+      "max": 53.89272675135474
+    },
+    "brake_on_screen": {
+      "min": 51.378846705081195,
+      "nominal": 52.04050000000001,
+      "max": 52.64373394120547
+    },
+    "brake_off_nominal": 51.393040000000006,
+    "brake_off_screen": {
+      "min": 50.73177802219108,
+      "nominal": 51.393040000000006,
+      "max": 52.14691389636242
+    },
+    "independent_reference_envelope_gap": -0.048568900330955955,
+    "brake_on_to_cutoff_shared_reference_minimum_gap": 0.10754540065474764,
+    "shared_reference_error_v": 0.003725,
+    "each_comparator_error_screen_v": 0.00840797902362465,
+    "coordination_note": "U13 and U14 share the same U12 output, verified in compiled connectivity. U12 error is common; comparator offset/CMRR/PSRR and resistor errors are independent. Independent absolute envelopes may overlap across different boards. Dynamic separation still requires measurement.",
+    "brake_off_above_high_source_and_noise_allocation": 0.031778022191073785,
+    "motor_cutoff_screen": {
+      "min": 52.59516504087451,
+      "nominal": 53.20754716981132,
+      "max": 53.825859349397014
+    },
+    "vsa_operating_max": 50,
+    "vs_operating_max": 55,
+    "note": "Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions."
+  },
+  "restricted_energy_screen": {
+    "each_phase_instantaneous_current_a": 1.5,
+    "rpm": 15,
+    "returned_energy_j": 0.009622718077019064,
+    "minimum_capacitance_f": 0.0007520000000000001,
+    "peak_from_50v4_v": 50.653255920140225,
+    "peak_from_upper_cutoff_v": 54.063069372837965,
+    "upper_cutoff_peak_plus_0v5_allocation_v": 54.563069372837965,
+    "residual_margin_below_55v_v": 0.43693062716203457,
+    "guaranteed_bound": false,
+    "note": "Lossless energy screen only. The 1.5 A/phase and 15 rpm sensitivity is an engineering allocation requiring measurement; it does not close startup continuity, running brake failure or transient margin."
+  },
+  "open_work": [
+    "Brake-path continuity/current-feedback hardware and firmware interlock are not implemented; U30 AIN2 remains grounded",
+    "Running brake loss at unrestricted current/load remains unsafe in the behavioral screen",
+    "Final load, maximum speed, stop duty, resistor, heatsink, cable inductance/clamp and ripple/thermal qualification",
+    "Resolve exact assembly stock and existing 403 silkscreen DRC findings",
+    "Fresh qualified viewer/manufacturing archives after gates pass",
+    "TI PD image, powered bring-up and secure mechanical mounting"
+  ],
+  "new_placement_or_routing_performed": false,
+  "manufacturing_archives_refreshed": false,
+  "published": false,
+  "motor_operation_enabled": false,
+  "full_current_operation_authorized": false,
+  "hardware_qualified": false
+}

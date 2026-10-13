@@ -1,0 +1,432 @@
+{
+  "source_sha256": "6ea5b06f6d4726b842435730d5358935b642542a6e611cb8d3a42db938acedcc",
+  "audit_sha256": "e30617e3ca48214cf2a4cbba312b717d284d47a9d681f6ace8ebbc5cb5f7752d",
+  "model_sha256": "48d616ef5c4890a6decb0fbda364620b9fd77d0f3ff41b6dd82ec156a0b8f060",
+  "script_sha256": "39431b2728374773af93191780c637174f5c442e8c944d46394b8fff561b0572",
+  "numerical_checks_passed": true,
+  "hardware_qualified": false,
+  "scope": "13 behavioral scenarios at two timesteps. Applied cases use current audited R61/R66 thresholds; historical/candidate cases remain comparison data.",
+  "assumptions": [
+    "Permissive 48 V source, 0.1 ohm cable, ideal current limiter envelope",
+    "New cases use the 250 mA upstream allocation, not measured consumption",
+    "No real loop overshoot, cable inductance, motor chopping or thermal model",
+    "Winding cases impose an already-high initial bus and enabled/off brake",
+    "Restricted cases impose 15 rpm rotor energy over 100 us; other winding cases exclude mechanical energy",
+    "The brake-recovery case starts sensing at 48 V with a 100 us RC lag while the bus starts at cutoff; it is not a measured or guaranteed delay",
+    "No attached-load energy, source continuing to drive the bus, or hardware qualification"
+  ],
+  "brake_open_winding_screen": {
+    "energy_j": 0.13706191512210894,
+    "minimum_capacitance_f": 0.000752,
+    "screened_peak_target_v": 54.5,
+    "maximum_initial_bus_v_for_winding_energy_only": 51.0462890913178,
+    "mechanical_energy_included": false,
+    "conclusion": "A lower working-brake cutoff alone does not close the open-brake fault."
+  },
+  "cases": [
+    {
+      "parameters": {
+        "name": "old_2x_10A_request",
+        "kind": "overload",
+        "load": 10,
+        "load_duration": 0.002
+      },
+      "fine": {
+        "bus_max_v": 47.70479999958635,
+        "bus_min_v": 44.78750419023534,
+        "bus_final_v": 47.70479998824617,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 120011,
+        "input_peak_a": 8.985342230303814,
+        "efuse_peak_a": 8.9552238806,
+        "first_5a_s": 0.005058748948387152,
+        "first_44v_s": null,
+        "first_40v_s": null,
+        "above_5a_ms": 2.3124999999983014,
+        "source_trip_s": null,
+        "load_uvlo_s": null
+      },
+      "peak_timestep_difference_v": 1.9241497284383513e-11
+    },
+    {
+      "parameters": {
+        "name": "new_1x_nominal_10A_request",
+        "kind": "overload",
+        "load": 10,
+        "load_duration": 0.002,
+        "pulse": 1,
+        "ilim": 3.6072144288577155
+      },
+      "fine": {
+        "bus_max_v": 47.68279999958655,
+        "bus_min_v": 34.005969554318995,
+        "bus_final_v": 47.682799988251425,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 120011,
+        "input_peak_a": 3.857916860180879,
+        "efuse_peak_a": 3.6072144289000003,
+        "first_5a_s": null,
+        "first_44v_s": 0.005530450253188359,
+        "first_40v_s": 0.006118613258737653,
+        "above_5a_ms": 0.0,
+        "source_trip_s": null,
+        "load_uvlo_s": null
+      },
+      "peak_timestep_difference_v": 1.9241497284383513e-11
+    },
+    {
+      "parameters": {
+        "name": "new_1x_upper_screen_10A_request",
+        "kind": "overload",
+        "load": 10,
+        "load_duration": 0.002,
+        "pulse": 1,
+        "ilim": 4.001781787357958
+      },
+      "fine": {
+        "bus_max_v": 47.68279999958655,
+        "bus_min_v": 34.837682114696506,
+        "bus_final_v": 47.682799988251425,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 120011,
+        "input_peak_a": 4.25237476896136,
+        "efuse_peak_a": 4.001781787400001,
+        "first_5a_s": null,
+        "first_44v_s": 0.005564123808976217,
+        "first_40v_s": 0.006190976624335149,
+        "above_5a_ms": 0.0,
+        "source_trip_s": null,
+        "load_uvlo_s": null
+      },
+      "peak_timestep_difference_v": 1.9241497284383513e-11
+    },
+    {
+      "parameters": {
+        "name": "new_1x_upper_screen_7A_40ms",
+        "kind": "overload",
+        "load": 7,
+        "pulse": 1,
+        "ilim": 4.001781787357958
+      },
+      "fine": {
+        "bus_max_v": 47.68279999958655,
+        "bus_min_v": 5.7168311204152396,
+        "bus_final_v": 38.39027151064009,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 120011,
+        "input_peak_a": 4.252133135248357,
+        "efuse_peak_a": 4.001781787400001,
+        "first_5a_s": null,
+        "first_44v_s": 0.006128568445884182,
+        "first_40v_s": 0.007382646595219238,
+        "above_5a_ms": 0.0,
+        "source_trip_s": null,
+        "load_uvlo_s": null
+      },
+      "peak_timestep_difference_v": 1.9241497284383513e-11
+    },
+    {
+      "parameters": {
+        "name": "historical_cutoff_brake_working",
+        "kind": "winding",
+        "brake": true,
+        "cap": 0.000752,
+        "initial": 54.2624803854,
+        "inductance": 0.0042,
+        "current": 5.7125991733
+      },
+      "fine": {
+        "bus_max_v": 55.10995029089758,
+        "bus_min_v": 51.34279644008433,
+        "bus_final_v": 51.39372529179083,
+        "first_55v_s": 0.00012852635697414654,
+        "first_60v_s": null,
+        "rows": 78088,
+        "brake_peak_a": 5.4944019352453175,
+        "brake_peak_w": 301.8845262602749,
+        "brake_energy_j": 0.24235645903262434,
+        "capacitor_energy_change_j": -0.11396606000442105,
+        "initial_winding_energy_j": 0.13706191512210894,
+        "returned_energy_j": 0.12928561075624087,
+        "copper_energy_j": 0.004293901503665205,
+        "lossless_capacitor_final_v": 57.52341390756923
+      },
+      "peak_timestep_difference_v": 2.270098775625229e-09
+    },
+    {
+      "parameters": {
+        "name": "candidate_cutoff_53V3_brake_working",
+        "kind": "winding",
+        "brake": true,
+        "cap": 0.000752,
+        "initial": 53.3,
+        "inductance": 0.0042,
+        "current": 5.7125991733
+      },
+      "fine": {
+        "bus_max_v": 54.188539588430984,
+        "bus_min_v": 51.34256216284106,
+        "bus_final_v": 51.39365569817004,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 78023,
+        "brake_peak_a": 5.402538293197642,
+        "brake_peak_w": 291.87420009466894,
+        "brake_energy_j": 0.2034590714870754,
+        "capacitor_energy_change_j": -0.07504302399330107,
+        "initial_winding_energy_j": 0.13706191512210894,
+        "returned_energy_j": 0.1291584337753325,
+        "copper_energy_j": 0.004364214389610314,
+        "lossless_capacitor_final_v": 56.61639665331598
+      },
+      "peak_timestep_difference_v": 6.059977408767736e-09
+    },
+    {
+      "parameters": {
+        "name": "candidate_cutoff_53V3_brake_open",
+        "kind": "winding",
+        "brake": false,
+        "cap": 0.000752,
+        "initial": 53.3,
+        "inductance": 0.0042,
+        "current": 5.7125991733
+      },
+      "fine": {
+        "bus_max_v": 56.43010276757766,
+        "bus_min_v": 53.4142583039875,
+        "bus_final_v": 56.4290580230763,
+        "first_55v_s": 0.00012578784858456937,
+        "first_60v_s": null,
+        "rows": 79412,
+        "brake_peak_a": 5.643010276757595e-11,
+        "brake_peak_w": 3.1843564983591827e-09,
+        "brake_energy_j": 9.507660662913832e-12,
+        "capacitor_energy_change_j": 0.1290992900104575,
+        "initial_winding_energy_j": 0.13706191512210894,
+        "returned_energy_j": 0.12927838323853783,
+        "copper_energy_j": 0.0043051563166474635,
+        "lossless_capacitor_final_v": 56.61639665331598
+      },
+      "peak_timestep_difference_v": 3.507267365421285e-09
+    },
+    {
+      "parameters": {
+        "name": "applied_full_current_brake_working",
+        "kind": "winding",
+        "brake": true,
+        "cap": 0.000752,
+        "initial": 53.825859349397014,
+        "inductance": 0.0042,
+        "current": 5.7125991733,
+        "on": 52.64373394120547,
+        "off": 52.14691389636242
+      },
+      "fine": {
+        "bus_max_v": 54.69174775182046,
+        "bus_min_v": 52.14629060715733,
+        "bus_final_v": 52.19805210005538,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 78276,
+        "brake_peak_a": 5.452707598235375,
+        "brake_peak_w": 297.32020151853794,
+        "brake_energy_j": 0.1934211892426814,
+        "capacitor_energy_change_j": -0.06489267299851757,
+        "initial_winding_energy_j": 0.13706191512210894,
+        "returned_energy_j": 0.1292284011971621,
+        "copper_energy_j": 0.004325521848717732,
+        "lossless_capacitor_final_v": 57.11172825879706,
+        "injected_rotor_energy_j": 0.0,
+        "energy_residual_j": 2.0675451362432017e-07,
+        "diode_energy_j": 0.0035075659154203687,
+        "esr_energy_j": 0.0001159722099748272,
+        "switch_energy_j": 0.0005841319915128988
+      },
+      "peak_timestep_difference_v": 5.323720131400478e-09
+    },
+    {
+      "parameters": {
+        "name": "applied_full_current_brake_open",
+        "kind": "winding",
+        "brake": false,
+        "cap": 0.000752,
+        "initial": 53.825859349397014,
+        "inductance": 0.0042,
+        "current": 5.7125991733,
+        "on": 52.64373394120547,
+        "off": 52.14691389636242
+      },
+      "fine": {
+        "bus_max_v": 56.92870043955779,
+        "bus_min_v": 53.94011765211958,
+        "bus_final_v": 56.92764714912211,
+        "first_55v_s": 7.875867174295752e-05,
+        "first_60v_s": null,
+        "rows": 79427,
+        "brake_peak_a": 5.692870043955606e-11,
+        "brake_peak_w": 3.24087693373671e-09,
+        "brake_energy_j": 9.677613829662687e-12,
+        "capacitor_energy_change_j": 0.12916894110962682,
+        "initial_winding_energy_j": 0.13706191512210894,
+        "returned_energy_j": 0.1293464594056026,
+        "copper_energy_j": 0.004267406030656208,
+        "lossless_capacitor_final_v": 57.11172825879706,
+        "injected_rotor_energy_j": 0.0,
+        "energy_residual_j": 1.454719823659234e-07,
+        "diode_energy_j": 0.0034476137335166888,
+        "esr_energy_j": 0.0001778085282777694,
+        "switch_energy_j": 2.922639376558117e-25
+      },
+      "peak_timestep_difference_v": 3.10350785071023e-08
+    },
+    {
+      "parameters": {
+        "name": "applied_full_current_brake_recovery_100us",
+        "kind": "winding",
+        "brake": true,
+        "cap": 0.000752,
+        "initial": 53.825859349397014,
+        "inductance": 0.0042,
+        "current": 5.7125991733,
+        "lag": 0.0001,
+        "initial_sense_v": 48,
+        "on": 52.64373394120547,
+        "off": 52.14691389636242
+      },
+      "fine": {
+        "bus_max_v": 55.48976812808096,
+        "bus_min_v": 51.46090893921716,
+        "bus_final_v": 51.51207134962664,
+        "first_55v_s": 7.880110790812587e-05,
+        "first_60v_s": null,
+        "rows": 78136,
+        "brake_peak_a": 5.53226935934288,
+        "brake_peak_w": 306.0600426432408,
+        "brake_energy_j": 0.22000251613801838,
+        "capacitor_energy_change_j": -0.09164221120517727,
+        "initial_winding_energy_j": 0.13706191512210894,
+        "returned_energy_j": 0.12930730387644795,
+        "copper_energy_j": 0.004283902623089208,
+        "lossless_capacitor_final_v": 57.11172825879706,
+        "injected_rotor_energy_j": 0.0,
+        "energy_residual_j": 2.0631412707252833e-05,
+        "diode_energy_j": 0.003470280372592926,
+        "esr_energy_j": 0.00026238805764756436,
+        "switch_energy_j": 0.0006644075987368116
+      },
+      "peak_timestep_difference_v": 0.00025286382297906584
+    },
+    {
+      "parameters": {
+        "name": "applied_restricted_brake_working",
+        "kind": "winding",
+        "brake": true,
+        "cap": 0.0007520000000000001,
+        "initial": 53.825859349397014,
+        "inductance": 0.0042,
+        "current": 1.5,
+        "rotor_energy": 0.00017271807701906353,
+        "on": 52.64373394120547,
+        "off": 52.14691389636242
+      },
+      "fine": {
+        "bus_max_v": 53.80285908810378,
+        "bus_min_v": 52.146536186671696,
+        "bus_final_v": 52.19827265936581,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 80516,
+        "brake_peak_a": 5.364086367979081,
+        "brake_peak_w": 287.73422563139013,
+        "brake_energy_j": 0.07391897976418893,
+        "capacitor_energy_change_j": -0.06488388395059108,
+        "initial_winding_energy_j": 0.00945,
+        "returned_energy_j": 0.009144536971012902,
+        "copper_energy_j": 8.166607249392792e-05,
+        "lossless_capacitor_final_v": 54.05882086602032,
+        "injected_rotor_energy_j": 0.00017271635122229325,
+        "energy_residual_j": 2.160047520122323e-07,
+        "diode_energy_j": 0.00022362257213933142,
+        "esr_energy_j": 5.888056641848654e-05,
+        "switch_energy_j": 0.00022323531888785057
+      },
+      "peak_timestep_difference_v": 1.6648884013648058e-06
+    },
+    {
+      "parameters": {
+        "name": "applied_restricted_brake_open",
+        "kind": "winding",
+        "brake": false,
+        "cap": 0.0007520000000000001,
+        "initial": 53.825859349397014,
+        "inductance": 0.0042,
+        "current": 1.5,
+        "rotor_energy": 0.00017271807701906353,
+        "on": 52.64373394120547,
+        "off": 52.14691389636242
+      },
+      "fine": {
+        "bus_max_v": 54.05650764344393,
+        "bus_min_v": 53.85650234486357,
+        "bus_final_v": 54.05550668697775,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 81112,
+        "brake_peak_a": 5.405650764344229e-11,
+        "brake_peak_w": 2.922106018605535e-09,
+        "brake_energy_j": 8.765246929940408e-12,
+        "capacitor_energy_change_j": 0.009315441363538037,
+        "initial_winding_energy_j": 0.00945,
+        "returned_energy_j": 0.009146166454157823,
+        "copper_energy_j": 8.129165809013896e-05,
+        "lossless_capacitor_final_v": 54.05882086602032,
+        "injected_rotor_energy_j": 0.0001727163512243153,
+        "energy_residual_j": 9.501996169563066e-08,
+        "diode_energy_j": 0.00022236422378078032,
+        "esr_energy_j": 3.5239020501908034e-06,
+        "switch_energy_j": 2.647104572841987e-25
+      },
+      "peak_timestep_difference_v": 2.319517022897344e-08
+    },
+    {
+      "parameters": {
+        "name": "applied_restricted_supply_loss_brake_open",
+        "kind": "winding",
+        "brake": false,
+        "cap": 0.0007520000000000001,
+        "initial": 50.4,
+        "inductance": 0.0042,
+        "current": 1.5,
+        "rotor_energy": 0.00017271807701906353,
+        "on": 52.64373394120547,
+        "off": 52.14691389636242
+      },
+      "fine": {
+        "bus_max_v": 50.64559828960277,
+        "bus_min_v": 50.430686577093766,
+        "bus_final_v": 50.64465731291788,
+        "first_55v_s": null,
+        "first_60v_s": null,
+        "rows": 80113,
+        "brake_peak_a": 2.5322799144801388e-11,
+        "brake_peak_w": 6.412441565279539e-10,
+        "brake_energy_j": 1.923459916017704e-12,
+        "capacitor_energy_change_j": 0.009295423396576909,
+        "initial_winding_energy_j": 0.00945,
+        "returned_energy_j": 0.009126388500077099,
+        "copper_energy_j": 8.659724074844983e-05,
+        "lossless_capacitor_final_v": 50.64872139277954,
+        "injected_rotor_energy_j": 0.00017271635122559484,
+        "energy_residual_j": 8.615944562127471e-08,
+        "diode_energy_j": 0.0002368511989918526,
+        "esr_energy_j": 3.7580368244584003e-06,
+        "switch_energy_j": 5.808848946373438e-26
+      },
+      "peak_timestep_difference_v": 3.083153643501646e-08
+    }
+  ]
+}

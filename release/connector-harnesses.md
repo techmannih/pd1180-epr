@@ -1,6 +1,6 @@
-# Connections in the onboard-control ECO
+# Connection and cable schedule
 
-J7 and its external STEP/DIR/ENABLE/home/limit path are removed from TSX. The matching native PCB passes DRC, schematic parity and ERC with zero findings. No new external controller is needed or selected to justify a spare connector.
+The board uses local onboard motion control. J2 carries the motor windings; J3 is a conditional external brake-resistor connection. J1 and J10 provide separate USB power and data. The following table identifies every retained external connection.
 
 | Source | Destination | Connector and cable | Purpose / status |
 |---|---|---|---|
@@ -16,4 +16,6 @@ J7 and its external STEP/DIR/ENABLE/home/limit path are removed from TSX. The ma
 
 SW2 is on the PCB: PC6 to GND, with R133 to V3V3_MCU. STM32 supplies the motion command over existing PCB SPI traces, so there is no external command harness. SW1 remains RESET.
 
-The J2 170/170/170/165 mm cut lengths include 12 mm termination/adjustment allowance and are CAD proposals requiring first-article fit. TE320559 length is verified at 32.13 mm; its current 5 mm OD model remains unverified. Physical harness retention remains open after removal of the unsupported adapter-mounted clamp. No loose cable is rendered as a completed external system.
+The J2 170/170/170/165 mm cut lengths include 12 mm termination/adjustment allowance and are CAD proposals requiring first-article fit. TE320559 length is verified at 32.13 mm; its current 5 mm OD model remains unverified. Physical harness retention remains unqualified. J3 external hardware is not modeled as a completed installation.
+
+See [external equipment and purchase quantities](external-system.md) for why/when/how/where each item is used, bottom-side placement and sourcing status. J3 is not a speed aid: [brake integration](brake-integration.md) defines the conditional resistor decision, wiring, cooling and staged measurements. An empty J3 has no resistor dissipation.

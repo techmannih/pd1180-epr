@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-12T05:02:02.128Z",
+  "generated_at": "2026-10-13T02:03:36.814Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "06cd4de57adcf146ef94897efe79aae26152bbbeda3d72174bf9cfb145f02c6c",
-    "bytes": 4300211
+    "sha256": "f9e31820cba7ec42657627c348c54464155aedb98bd0b7354921af536bd56a01",
+    "bytes": 4389515
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9740,
+    "elements": 9955,
     "sheets": 23,
     "source_components": 269,
     "source_ports": 945,
@@ -612,7 +612,7 @@
       "annotations": [
         "06 / Protected 48 V Motor Bus",
         "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
-        "Nominal current limit 4.48 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
+        "TPS26630: 1x limiting, 3.61 A nominal. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
       ]
     },
     {
@@ -695,7 +695,7 @@
       ],
       "annotations": [
         "12 / Overvoltage Inhibit and Brake Driver",
-        "U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load.",
+        "U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load.",
         "Brake control remains powered from the protected motor bus through the backup supply."
       ]
     },
@@ -919,7 +919,7 @@
       "index": 11,
       "name": "brake",
       "elements": 79,
-      "coordinate_points_checked": 152
+      "coordinate_points_checked": 154
     },
     {
       "index": 12,
@@ -1244,7 +1244,7 @@
         "texts": [
           "06 / Protected 48 V Motor Bus",
           "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
-          "Nominal current limit 4.48 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
+          "TPS26630: 1x limiting, 3.61 A nominal. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
         ]
       }
     },
@@ -1471,7 +1471,7 @@
         "actual": 3,
         "texts": [
           "12 / Overvoltage Inhibit and Brake Driver",
-          "U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load.",
+          "U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load.",
           "Brake control remains powered from the protected motor bus through the backup supply."
         ]
       }

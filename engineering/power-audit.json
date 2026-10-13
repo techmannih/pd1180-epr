@@ -1,17 +1,53 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-12T05:03:57.171Z",
+  "checked_at": "2026-10-13T02:03:09.477Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
+  "full_current_operation_authorized": false,
+  "operating_risks": [
+    {
+      "id": "brake-unavailable",
+      "severity": "high",
+      "status": "open",
+      "closure": "Qualify brake-open, supply-loss and worst-stop energy/transients; driver inhibit is not an energy sink."
+    },
+    {
+      "id": "input-current-coordination",
+      "severity": "high",
+      "status": "open",
+      "closure": "TPS26630 removes the deliberate 2x pulse allowance. Qualify its finite limiting/fast-trip response with the exact EPR source/cable and measure all upstream loads against the allocation."
+    },
+    {
+      "id": "motor-mounted-thermal",
+      "severity": "high",
+      "status": "open",
+      "closure": "Agree the motor current waveform and qualify winding, MOSFET, shunt, capacitor and connector temperatures; the local TMP102 is insufficient evidence."
+    },
+    {
+      "id": "external-brake-installation",
+      "severity": "high",
+      "status": "open",
+      "closure": "Specify load energy, duty, resistor pulse limits, thermal interface, heatsink and mechanical installation."
+    },
+    {
+      "id": "ripple-and-brake-turnoff",
+      "severity": "medium",
+      "status": "open",
+      "closure": "Measure each bulk-capacitor ripple/heating and Q16 VDS turn-off overshoot with the intended brake harness; qualify any required clamp/snubber."
+    }
+  ],
   "input_sha256": {
-    "index.circuit.tsx": "29357b727b3b26827a3dc62bd59c4aa971c48b7539c8db7b9f678e3b77783829",
-    "dist/index/circuit.json": "06cd4de57adcf146ef94897efe79aae26152bbbeda3d72174bf9cfb145f02c6c",
-    "docs/design-manifest.json": "9ba56222485fa06b497c407f5f3bfc09acaa01651ae899d5907f5062b480711a",
-    "hardware-contract.json": "e2f68a6fab2512c5c45aa775e3d2a6669817221b18c9611d86e8ecbb0099c96d",
+    "index.circuit.tsx": "6ea5b06f6d4726b842435730d5358935b642542a6e611cb8d3a42db938acedcc",
+    "dist/index/circuit.json": "f9e31820cba7ec42657627c348c54464155aedb98bd0b7354921af536bd56a01",
+    "docs/design-manifest.json": "5f7d1c438d4e46b1429543fafb066c4b610625f61ded1c2def1d734986101c10",
+    "hardware-contract.json": "7d65298364ed7ca4b95b320906b851bd99584e36ef56e515d6f90cc8e4c7064a",
     "docs/motor-data.json": "4579b126fccbfcd4d7620f2dec90dfd7fe9c5cd299be555aea5053a673f86103",
-    "firmware/include/tmc5160_config.h": "b34a21206e06ab0ca86583632ef837bde57d988418214d14b618cb65dfb4030d",
-    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "556fe993091b35fb10a83289a03eb62edc8a107fb8fa2bac6cabd4ce49dcd80e",
-    "scripts/power-audit.mjs": "c5e785ba9fc19d80975651e38292041fb443e0266d0e3771611d9365a586c487"
+    "firmware/include/tmc5160_config.h": "07cbc0bb70687e5a5ea11c799c89c035ed75a927781064e28b4b935728dc9699",
+    "firmware/src/tmc5160.c": "f46873b8e9d4fb700ee17b18ac47a6ad454777a6e25c87374de47359419ea0f2",
+    "firmware/src/motor_service.c": "240ba8af856bedda5cb2f1d063762969bbf207307b601ba458a0fcda4e05b1bd",
+    "firmware/target/main.cpp": "57eebf36e58e9563cfd0a40d2eaf3a816989a0da8cb6b4a8324960aeb7afde68",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "9c4e4da9e57ed2289235dfa697c91c292286a5274716dc3fcf3a0a469fa16310",
+    "scripts/power-audit.mjs": "3bd433d3a18dc292ee9c1a6e0228841825324eadbdc630dc4072c84ce802939e"
   },
   "assumptions": {
     "resistor_initial_tolerance_fraction": 0.01,
@@ -26,6 +62,9 @@
     "source_high_voltage_design_allowance_fraction": 0.05,
     "input_ovp_noise_margin_v": 0.3,
     "bulk_capacitance_tolerance_fraction": 0.2,
+    "winding_inductance_high_screen_fraction": 0.2,
+    "winding_copper_temperature_coefficient_per_c_assumed": 0.00393,
+    "winding_copper_temperature_model_reference_c": 25,
     "slew_capacitance_initial_tolerance_fraction": 0.1,
     "capacitor_dc_bias_and_temperature_included": false,
     "motor_model": "34HS31-6004S1",
@@ -49,6 +88,34 @@
     ]
   },
   "calculations": {
+    "commissioning_profile": {
+      "scope": "Unloaded rotor only; no coupling, driven load, gravity load or external back-drive",
+      "selection_basis": "Retained low-energy commissioning choice; not copied from PD-1180 ratings",
+      "motor_operation_authorized": false,
+      "max_requested_current_permille": 180,
+      "irun": 4,
+      "nominal_rms_a": 0.841588271065532,
+      "nominal_sine_peak_a": 1.190185546875,
+      "nominal_speed_rpm": 9.999610483646393,
+      "nominal_acceleration_rpm_per_s": 9.976020010071807,
+      "nominal_ramp_stop_s": 1.0023647179487178,
+      "nominal_rotor_energy_j": 0.00007675760976800189,
+      "nominal_winding_energy_j": 0.00247894786298275,
+      "nominal_rotor_energy_at_1000rpm_j": 0.7676358978625054,
+      "brake_open_sensitivity": {
+        "each_phase_instantaneous_current_a": 1.5,
+        "rpm": 15,
+        "returned_energy_j": 0.009622718077019064,
+        "minimum_capacitance_f": 0.0007520000000000001,
+        "peak_from_50v4_v": 50.653255920140225,
+        "peak_from_upper_cutoff_v": 54.063069372837965,
+        "upper_cutoff_peak_plus_0v5_allocation_v": 54.563069372837965,
+        "residual_margin_below_55v_v": 0.43693062716203457,
+        "guaranteed_bound": false,
+        "note": "Lossless energy screen only. The 1.5 A/phase and 15 rpm sensitivity is an engineering allocation requiring measurement; it does not close startup continuity, running brake failure or transient margin."
+      },
+      "note": "Clock, current regulation, winding nonlinearity and speed are uncalibrated. No attached load is allowed in this prototype scope; unknown application inertia remains unknown in motor-data.json."
+    },
     "driver_supply": {
       "volts": {
         "nominal": 12.001100110011,
@@ -70,15 +137,37 @@
     "supply": {
       "contract_w": 240,
       "efuse_limit": {
-        "formula_nominal_a": 4.477611940298508,
-        "table_nominal_a": 4.5,
-        "min_a": 4.143564356435643,
-        "max_a": 4.863636363636365
+        "formula_nominal_a": 3.6072144288577155,
+        "table_interpolated_nominal_a": 3.625250501002004,
+        "min_a": 3.251345740808972,
+        "max_a": 4.001781787357958,
+        "resistor_tolerance_with_temperature_fraction": 0.0034999999999999996,
+        "device_error_allocation_fraction": 0.1,
+        "upstream_input_allocation_a": 0.25,
+        "total_input_screen_a": 4.251781787357958,
+        "remaining_contract_margin_a": 0.7482182126420422,
+        "manufacturer_guaranteed_at_selected_resistance": false
       },
-      "nominal_motor_input_ceiling_w": 214.92537313432837,
-      "tolerance_low_current_ceiling_w_at_48v": 198.89108910891088,
-      "upstream_logic_current_margin_a_at_5a_contract": 0.1363636363636349,
-      "note": "Input limit is not a phase-current limit; the upstream logic buck also draws from the 5 A contract. TPS26631 supports 2x overload pulses; source coordination needs measurement."
+      "nominal_motor_input_ceiling_w": 173.14629258517033,
+      "tolerance_low_current_ceiling_w_at_48v": 156.06459555883066,
+      "upstream_logic_current_margin_a_at_5a_contract": 0.9982182126420422,
+      "overload_after_pgood": {
+        "nominal_current_ceiling_a": 3.6072144288577155,
+        "pulse_multiplier": 1,
+        "deliberate_2x_pulse_window_ms": 0,
+        "hard_5a_ceiling": false,
+        "fast_trip_nominal_multiplier": 2,
+        "note": "TPS26630 1x active limiting, TI 8.3.7.1.1. Finite loop response and a separate 2x fast-trip threshold can still permit brief overshoot; this is not an ideal instantaneous 5 A clamp."
+      },
+      "efuse_thermal_screen": {
+        "ron_max_ohm_at_125c": 0.053,
+        "conduction_loss_w_at_formula_limit": 0.6896357845952426,
+        "conduction_loss_w_at_upper_current_screen": 0.8487556461023821,
+        "linear_limiting_loss_w_at_4v_drop_and_formula_limit": 14.428857715430862,
+        "pcb_temperature_rise_qualified": false,
+        "note": "I²R applies while fully enhanced. Active limiting dissipates (VIN-VOUT)*I and invokes thermal regulation/shutdown; MODE remains open for latch-off. No PCB thermal impedance, SOA or restart qualification is inferred."
+      },
+      "note": "Input limit is not a phase-current limit. The 250 mA upstream allocation must be verified on hardware; the 4.99k interpolation and device-error allowance are screening assumptions."
     },
     "thresholds_v": {
       "input_uvlo": {
@@ -92,15 +181,26 @@
         "max": 53.89272675135474
       },
       "brake_on_screen": {
-        "min": 51.378752622408655,
-        "nominal": 51.99000000000001,
-        "max": 52.54222020958353
+        "min": 51.378846705081195,
+        "nominal": 52.04050000000001,
+        "max": 52.64373394120547
       },
-      "brake_off_nominal": 51.34320000000001,
+      "brake_off_nominal": 51.393040000000006,
+      "brake_off_screen": {
+        "min": 50.73177802219108,
+        "nominal": 51.393040000000006,
+        "max": 52.14691389636242
+      },
+      "independent_reference_envelope_gap": -0.048568900330955955,
+      "brake_on_to_cutoff_shared_reference_minimum_gap": 0.10754540065474764,
+      "shared_reference_error_v": 0.003725,
+      "each_comparator_error_screen_v": 0.00840797902362465,
+      "coordination_note": "U13 and U14 share the same U12 output, verified in compiled connectivity. U12 error is common; comparator offset/CMRR/PSRR and resistor errors are independent. Independent absolute envelopes may overlap across different boards. Dynamic separation still requires measurement.",
+      "brake_off_above_high_source_and_noise_allocation": 0.031778022191073785,
       "motor_cutoff_screen": {
-        "min": 53.12376822712945,
-        "nominal": 53.69047619047619,
-        "max": 54.262480385368434
+        "min": 52.59516504087451,
+        "nominal": 53.20754716981132,
+        "max": 53.825859349397014
       },
       "vsa_operating_max": 50,
       "vs_operating_max": 55,
@@ -124,8 +224,9 @@
       "phase_telemetry_shunt_held_peak_each": 0.3025,
       "eight_bridge_mosfets_conduction_25c_max_rds_total": 1.8271000000000002,
       "eight_bridge_mosfets_conduction_hot_sensitivity_total": 3.6542000000000003,
-      "efuse_at_nominal_limit_and_125c_max_ron": 1.0625974604588997,
+      "efuse_at_nominal_limit_and_125c_max_ron": 0.6896357845952426,
       "two_motor_windings_25c": 29.04,
+      "two_motor_windings_100c_linear_copper_sensitivity": 37.59954,
       "note": "Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep."
     },
     "inrush": {
@@ -148,7 +249,16 @@
     "regeneration": {
       "bulk_energy_48_to_53v_j": 0.23735,
       "bulk_energy_48_to_53v_min_cap_j": 0.18988000000000002,
+      "bulk_energy_48_to_brake_on_nominal_j": 0.18998041091750043,
       "winding_energy_nominal_sine_quadrature_j": 0.105875,
+      "brake_unavailable_return_screen": {
+        "voltage_after_nominal_cutoff_nominal_cap_nominal_inductance_v": 55.28389488155212,
+        "voltage_after_upper_cutoff_min_cap_nominal_inductance_v": 56.38089731025554,
+        "voltage_after_upper_cutoff_min_cap_high_inductance_v": 56.87813350375769,
+        "min_cap_energy_headroom_upper_cutoff_to_55v_j": 0.04804410135239778,
+        "mechanical_regeneration_included": false,
+        "note": "All remaining winding energy returned to the bus after inhibit; lossless screening cases, not measured or predicted waveforms. Inductance under operating current, current tolerance, ESR/ESL, source response and mechanical energy are not bounded by this model. Exceeding 55 V requires closure even when static threshold checks pass."
+      },
       "rotor_only_energy_j": {
         "100": 0.007676358978625057,
         "500": 0.19190897446562635,
@@ -167,6 +277,23 @@
       "continuous_281w_resistor_case_to_ambient_max_c_per_w_at_50c": 0.1245995016019936,
       "note": "Brake sizing requires load inertia, stop time, duty and gravity. 300 W LPS300 rating requires 85 C maximum case temperature; pulse energy and repetition must be checked separately."
     },
+    "ripple_and_brake_switch": {
+      "bulk_capacitors": [
+        "C22",
+        "C23"
+      ],
+      "manufacturer_part": "EEUFR1J471",
+      "each_rated_ripple_a_at_100khz": 1.995,
+      "measured_each_ripple_a": null,
+      "equal_current_sharing_qualified": false,
+      "brake_return_component_references": [
+        "J3",
+        "Q16"
+      ],
+      "explicit_clamp_or_snubber_verified": false,
+      "measured_q16_turnoff_peak_v": null,
+      "note": "A rating at 100 kHz is not a validated chopping/braking waveform rating. The current BRAKE_RETURN net contains only J3 and Q16; do not count a body diode as a qualified positive-drain-overvoltage clamp."
+    },
     "telemetry": {
       "volts_per_ampere": 0.1,
       "phase_output_at_target_peak_v": [
@@ -181,7 +308,7 @@
   "outstanding": [
     "Measured VSA ripple and VS transient margin",
     "Measured brake/cutoff tolerance coordination",
-    "PD source/cable 2x eFuse pulse coordination",
+    "PD source/cable finite current-limit and fast-trip coordination; upstream current measurement",
     "Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification",
     "TI-generated EEPROM image and approved configuration identity",
     "Fabricator stack-up/impedance/filled-via approval",
@@ -195,7 +322,9 @@
     "driver_regulator": "https://www.ti.com/lit/ds/symlink/lmr36510.pdf",
     "driver_inductor": "https://www.bourns.com/docs/product-datasheets/srp7050ta.pdf",
     "comparator": "https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=6",
+    "cutoff_resistor": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD071K2L",
     "brake": "https://www.vishay.com/docs/50052/lps300.pdf",
+    "bulk_capacitor": "https://industrial.panasonic.com/ww/products/pt/aluminum-cap-lead/models/EEUFR1J471",
     "motor": "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
   }
 }

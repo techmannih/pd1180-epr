@@ -1,0 +1,159 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-13T00:42:47",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Library symbol issue",
+            "key": "lib_symbol_issues"
+        },
+        {
+            "description": "Footprint link issue",
+            "key": "footprint_link_issues"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.5",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b",
+            "violations": []
+        },
+        {
+            "path": "/USB-C PD POWER/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/3d79fd65-aafe-4056-91b4-fa89d70ecefe",
+            "violations": []
+        },
+        {
+            "path": "/PD Controller and EEPROM/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/22d92e3a-9a05-47b3-ac5d-3e094c5783d9",
+            "violations": []
+        },
+        {
+            "path": "/PD Backup Supply/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/b2d6f555-7627-4706-95c3-556dfbdc8012",
+            "violations": []
+        },
+        {
+            "path": "/Motor Backup Supply/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/72fae075-2dbb-4a80-a668-73a08588fc18",
+            "violations": []
+        },
+        {
+            "path": "/Logic Supply Selection and Power Permit/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/c966abb7-32de-4e66-bf0a-21c7f07e040e",
+            "violations": []
+        },
+        {
+            "path": "/Protected 48 V Motor Bus/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/fad49482-d481-42b3-8236-167dec559f74",
+            "violations": []
+        },
+        {
+            "path": "/Motion Controller/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/0546a8c2-8808-42dd-aa05-f6e467446469",
+            "violations": []
+        },
+        {
+            "path": "/Onboard Motion and Hardware Enable/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/1f1d7e47-3764-455a-8197-bce5bafd01e4",
+            "violations": []
+        },
+        {
+            "path": "/Motor Phase A Power Bridge/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/60b0b429-646b-4e99-bbe6-1e3fcc415fc3",
+            "violations": []
+        },
+        {
+            "path": "/Motor Phase B Power Bridge/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/2aa24294-b2ec-45bf-a7e2-b853e32ab7b5",
+            "violations": []
+        },
+        {
+            "path": "/Brake Reference and Turn-on Threshold/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/08462893-5331-40be-afbc-20a30802170e",
+            "violations": []
+        },
+        {
+            "path": "/Overvoltage Inhibit and Brake Driver/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/802111af-9d6b-44b8-a08c-7ba62f425f7b",
+            "violations": []
+        },
+        {
+            "path": "/MCU Clock Memory and Debug/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/3f4bd1c7-8b87-4e5b-be32-8072696ab5df",
+            "violations": []
+        },
+        {
+            "path": "/Optional Shaft Encoder/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/e532464f-c77a-4fbf-98c4-8d2d0ad6fdb1",
+            "violations": []
+        },
+        {
+            "path": "/USB DATA and Attach Sense/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/bf12e43e-5e04-4e92-ad59-54b8de50195d",
+            "violations": []
+        },
+        {
+            "path": "/Local Start and Stop/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/ce360368-4bd5-4ff9-a016-91b0f00eb097",
+            "violations": []
+        },
+        {
+            "path": "/USB Logic Power/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/d837fba5-e811-4d90-a43d-eaa5fb0fd2dd",
+            "violations": []
+        },
+        {
+            "path": "/Temperature and Bus Diagnostics/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/f6c5b7e1-a377-465e-8094-c207f57db82d",
+            "violations": []
+        },
+        {
+            "path": "/Phase Current Diagnostics/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/d8c938b9-840a-424e-be85-8d5c5968b618",
+            "violations": []
+        },
+        {
+            "path": "/Regulated Driver Supply/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/41417d1b-d6d1-4033-a72c-75a1b76751b1",
+            "violations": []
+        },
+        {
+            "path": "/Status and Independent Power Indication/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/ad84813c-2196-4484-9ee6-6bb2679df574",
+            "violations": []
+        },
+        {
+            "path": "/Audible Fault Alarm/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/3a8b0765-4df8-443b-b4dc-ad7d4ac44941",
+            "violations": []
+        },
+        {
+            "path": "/PD Programming and Power Probes/",
+            "uuid_path": "/0e244152-5dd0-4875-888f-7fba7369ce4b/11f62169-fdab-452a-b407-1c931141d7fa",
+            "violations": []
+        }
+    ],
+    "source": "pd1180-epr-r0.3.kicad_sch"
+}

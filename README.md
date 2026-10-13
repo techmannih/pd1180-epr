@@ -1,324 +1,65 @@
-# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+# PD1180-EPR — NEMA 34 motor-mounted controller
 
-PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and local START/STOP control.
+A four-layer, 85.9 × 85.9 mm controller for the **STEPPERONLINE 34HS31-6004S1** motor. The motor is rated 4.8 Nm holding torque and 6 A/phase. Its operating current, speed, load and stopping limits still need qualification with this board.
 
-**Current engineering ECO — 2026-10-12:** J7 and 33 associated command/interface parts removed from TSX; SW2 START/STOP and R133 added. STM32 now commands the TMC5160 internal SPI ramp. SW1 RESET, J2 VH, both USB ports and protection remain. Removed 51 unsupported mounting parts; kept all four Ø4.2 mm holes unchanged. [Before](previews/onboard-control-before.png) · [After — source alignment preview](previews/onboard-control-after.png).
+The control path is **SW2 START/STOP → STM32G0B1 → SPI → TMC5160A → external MOSFET bridges → motor**. SW1 is **RESET** and SW2 is **START/STOP**. Normal local operation is intended to use these buttons after commissioning; a laptop is used for setup and diagnostics.
 
-**Status:** source, firmware, native PCB and 3D updated. Native DRC/ERC/parity pass with zero violations and zero unconnected items. Motion and ordering remain locked; live sourcing and powered/mechanical qualification are open.
+**Engineering review only.** The supplied firmware is motion-locked, the TI PD configuration image is missing, and the assembly has not been powered or mechanically qualified. The manufacturing order remains on hold. Current automated results and failures are in [verification.md](verification.md).
 
-**Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
+The latest local protection-value changes and their remaining blockers are in [the protection change report](engineering/brake-protection/README.md). Published viewer/manufacturing archives have not been refreshed for these changes.
 
-**Sourcing/programming hold:** exact fitted-part availability has not passed the repository review/order gate. TI full-flash programming, powered bridge/current/thermal tests and mechanical fastening remain unverified. No hardware operation is claimed.
+[Board viewer](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Review files](release/) · [Reviewer checklist](docs/reviewer-checklist.md)
 
-[View the board on tscircuit](https://tscircuit.com/techmannih/NEMA-34-Smart-Motor-Mounted-Stepper-Controller) · [Open the manufacturing release](release/) · [Read the reviewer checklist](docs/reviewer-checklist.md)
+## Connections and external equipment
 
-Open `motor-assembly.circuit.tsx` for the current local source preview. It contains the ordered motor and connected J2 harness, with no unverified adapter or replacement fasteners. The routed viewer is regenerated from this ECO after native DRC/ERC/parity.
+There are **two JST VH headers and two USB-C ports**. Each has a separate purpose.
 
-![Current alignment preview; physical fastening remains unverified](previews/onboard-control-after.png)
-
-## What must arrive with the assembled board
-
-The intended purchase is **PCB fabrication plus complete assembly, programming and functional test**, so the delivered PCBA can operate with its specified motor, power source and harness. Bare-PCB electrical testing and soldering the components do not establish motor operation. Programming and powered testing must be explicitly included in the accepted assembly/test work order; they are not assumed to be included in an SMT assembly quote.
-
-**The current release cannot yet deliver a ready-to-run motor controller.** No assembled hardware has been tested. U3's TI PD image is missing, and the supplied STM32 commissioning image deliberately blocks motor power and motion, including after `ARM`. The following deliverables are required before accepting a board as ready to run:
-
-| Deliverable | Required handoff / present status |
-|---|---|
-| Complete populated PCBA | Matching Gerbers, BOM and CPL; 247 fitted parts on top, including an agreed through-hole/tall-part assembly plan. Source and native route built; sourcing, physical assembly and qualification pending. |
-| U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Binary pending.** The requirements JSON is not flashable firmware. |
-| U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
-| Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
-| External system | Confirmed motor, EPR source/cable, 24 V control source, mating harnesses, brake resistor/heatsink, magnet and mounting hardware; these are outside the populated-PCB BOM. |
-
-First articles need staged engineering qualification using [the power-validation test matrix](docs/power-validation.md), followed by an agreed per-board acceptance test for the assembled batch. If the assembler does not provide programming or motor testing, arrange a separate commissioning provider before calling the delivery ready to run. The manufacturing request and pending programming fields are in [order-settings.json](release/order-settings.json); detailed acceptance requirements are in [assembly.md](docs/assembly.md).
-
-The [provider request and first-article programming sequence](docs/assembly.md#request-to-send-to-the-assemblytest-provider) are ready for review. Provider acceptance and the [motor/load qualification inputs](docs/power-validation.md#qualification-work-sheet-for-the-provider) remain open. Programming and the accepted motor tests must finish before shipment.
-
-The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU review finding](docs/pd-configuration-review.md) needs a narrowly approved hardware correction; the frozen schematic has not been changed.
-
-## Connections and operation
-
-The selected control path is **SW2 → STM32 → SPI → TMC5160 internal ramp → external bridges → J2 → motor**. No external controller, STEP/DIR/ENABLE cable or home/limit harness is included. J10 provides programming-provider diagnostics/setup access, not motor power. The firmware implements a bounded bench motion path but ships with both qualification flags false; the supplied binary cannot spin the motor.
-
-Make motor/brake/harness connections with power removed and the bus discharged. Identify each motor winding from its verified pinout or a resistance measurement; wire colours are not a pinout.
-
-| Connection | Wiring |
-|---|---|
-| J1 **PD POWER** | Source explicitly supporting a 48 V / 5 A EPR contract, with a suitable 5 A EPR cable. A USB-C connector alone does not establish this capability. |
-| J10 **USB DATA** | USB data cable to the setup/diagnostics host. Its independent 5 V input supplies MCU logic, not VMOTOR. |
-| J2 **MOTOR** | Pin 1 A1, pin 2 A2 (one winding); pin 3 B1, pin 4 B2 (the other winding). Never connect/disconnect the motor while powered. |
-| J3 **BRAKE** | The selected resistor connects between pin 1 VMOTOR and pin 2 switched BRAKE_RETURN. Pin 2 is not a permanent ground. Heatsink and installation are not yet qualified; see [brake integration](docs/brake-integration.md). |
-
-Use the physical pin-1 marker and numbered footprint. SW2 is a functional START/STOP button; SW1 is MCU RESET. It is not a safety-rated emergency-stop implementation.
-
-### First start with the supplied commissioning firmware
-
-1. Complete the unpowered inspection in [bring-up.md](docs/bring-up.md). Keep J1 and the motor disconnected for the initial J10 diagnostic check.
-2. If U16 has not been programmed, use ST-LINK/SWD with SWDIO, SWCLK, NRST, GND and the board's 3.3 V reference. Program the verified `firmware.bin` from [the commissioning archive](release/pd1180-commissioning-firmware.zip) at `0x08000000`, verify and reset. Follow [firmware/README.md](firmware/README.md) for the exact MCU and power arrangement. This binary belongs in U16, not U3.
-3. Connect J10 and open its USB CDC serial port. Send `HELP`, `STATUS`, `DRIVER` or `DISARM`, each followed by a newline. With J10 alone, `BOARD_OK=0` is expected because the PD-powered peripherals are off; `RUN=0` and `BRINGUP_REQUIRED=1` must remain set as shown.
-4. `ARM` currently returns `BLOCKED: use local START/STOP; hardware qualification required`. This is expected, not a wiring workaround. Do not bypass the lock or bridge an enable signal to make the motor run.
-5. Commission U3 and the J1 power path with the approved TI image and instrumented, staged tests before connecting a motor. Then qualify a motor-enabled STM32 release, initially below 1 A RMS and only increasing current after gate, current and thermal measurements pass. **This qualification has not happened yet.**
-
-### Normal use after the motor-enabled release is qualified
-
-After the TI image, native PCB, gate waveforms, current and unloaded motor have been qualified: connect the motor/brake and approved EPR source while unpowered, power up, and release then press SW2. The initial bounded profile is approximately 10 rpm at approximately 0.86 A RMS; neither figure is a qualified final motor setting. Press SW2 again to request deceleration to zero before enable is removed. Faults require acknowledgement and a separate start press. Reset, power loss and USB suspend/detach cancel motion without automatic restart. See [firmware implementation and tests](firmware/README.md).
-
-## Feature overview
-
-| Area | Implementation |
-|---|---|
-| USB-C power | TPS26750 sink-only USB PD 3.1 EPR controller requesting 48 V / 5 A |
-| USB ports | J1 PD POWER and J10 USB DATA; separate VBUS rails |
-| USB protection | TPD4S480 on PD CC/SBU; USBLC6-4SC6 on DATA D+/D−/CC, independent 5.1 kΩ CC pulldowns and DATA VBUS sensing |
-| Input protection | TPS26631 eFuse, inrush control, voltage qualification, current limit and reverse-current blocking |
-| Motor stage | TMC5160A with eight 100 V CSD19534Q5A MOSFETs and two 33 mΩ phase shunts |
-| Ordered motor | STEPPERONLINE 34HS31-6004S1, 4.8 Nm, 6 A/phase; approved driver current setting pending |
-| Controller | STM32G0B1CBT6 with USB device, CAN, SPI, I²C and serial peripherals |
-| Position feedback | Optional bottom-side AS5047P at the shaft axis (DNP), with top ABI test access |
-| Temperature/current diagnostics | TMP102 hardware inhibit; two INA240 phase monitors; ADS1115 bus monitors |
-| Local controls | SW2 START/STOP, SW1 RESET; no external command cable |
-| Communications | USB 2.0 commissioning/diagnostics; industrial buses removed |
-| Inhibit | Power, voltage, temperature and MCU interlocks |
-| Braking | External switched brake-resistor interface with independent overvoltage shutdown |
-| Programming | STM32 SWD; isolated U3 EEPROM I2Cc fixture access |
-| Indicators | RGB status, independent board-power LED and reset-safe driven buzzer |
-| Assembly | 247 supplier-coded fitted parts plus 19 service test pads, all on top |
-
-The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, temperature and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN` and standalone-mode selection inactive.
-
-## Power architecture
-
-```text
-J1 PD POWER VBUS -> reverse blocking / eFuse -> VMOTOR -> bridge power / TMC5160 VS
-        |                                       |       motor J2 / brake J3
-        |                                       +-> U34 12 V -> TMC5160 VSA/12VOUT
-        +-> U5 3.3 V startup supply              +-> U22 3.3 V brake-control backup
-                         U23 / U24 reverse-blocked OR -> V3V3
-J1 CC1/2 -> U1 protection -> U2 TPS26750 EPR controller
-J10 USB DATA D+/D- -> D15 shunt ESD -> R71/R72 -> STM32 USB
-J10 VBUS -> U28 current limiter -> U25 LDO -> V3V3_USB
-board V3V3 / V3V3_USB -> U26 / U27 reverse-blocked OR -> V3V3_MCU
-```
-
-DATA alone powers MCU setup/diagnostics on V3V3_MCU. Flash, encoder and sensors remain on board V3V3 supplied by J1/VMOTOR. Open-drain chip selects and inactive peripheral pins prevent MCU-driven backfeed. Firmware now implements USB suspend with STOP0, watchdog wake and fresh power/sensor qualification after resume; measured current, inrush, wake timing and source handovers remain unverified. U22 retains VMOTOR-fed brake control. The commissioning image keeps the motor locked.
-
-The requested contract is 240 W. The nominal eFuse current limit is approximately 4.48 A, so the board-side motor input limit is about 215 W at 48 V before conversion and switching losses. USB input current and phase current are different quantities; the motor-stage target is 5.5 A RMS per phase.
-
-The 940 µF motor bulk bank stores only about 0.188 J between 48 V and the revised nominal 51.99 V brake turn-on threshold. It cannot absorb sustained regeneration. J3 connects a separately selected braking resistor and heatsink; 10 Ω / 300 W is an initial engineering target, not a validated load rating. Actual speed, attached inertia, stopping time and duty cycle determine the final resistor and thermal design. U34 now supplies the driver separately at nominal 12 V; see [the power ECO calculations and remaining tests](docs/power-validation.md).
-
-Detailed calculations, tolerances and protection behavior are recorded in [docs/design.md](docs/design.md). The separate CC, USB-data and current-monitor paths are traced pin by pin in [docs/usb-pd-architecture.md](docs/usb-pd-architecture.md).
-
-## Motor control and feedback
-
-The TMC5160A controls two external MOSFET bridges. Four bootstrap capacitors, charge-pump support, gate resistors, local driver rails and two 3 W current shunts are represented explicitly. Native SPI ramp control uses grounded unused reference/encoder inputs and SD_MODE low. Motion stays inhibited until native PCB and powered validation pass.
-
-The optional bottom-side AS5047P shares SPI with the motor driver and external flash, using an independent chip-select. Its ABI outputs are available on five top service pads for probing. The ordered motor is single-shaft, and its CAD does not identify an accessible rotating rear shaft or an approved magnet attachment. The previous QSH-specific holder and magnet stack have been withdrawn; encoder attachment, field, retention and working gap remain unresolved; see [motor assembly](docs/motor-assembly.md).
-
-Firmware must configure current scaling, gate drive, dead time, chopper behavior, motion limits and encoder calibration for the actual motor. A register default is not approval for 5.5 A operation.
-
-## Interfaces
-
-| Connector | Function | Pins / notes |
+| Connection | Purpose | What connects to it |
 |---|---|---|
-| J1 | PD POWER | 48 V / 5 A requested EPR contract; CC/SBU protection; no data connection |
-| J10 | USB DATA | USB 2.0 D+/D−, independent CC pulldowns, ESD and VBUS attach sense |
-| J2 | Motor | A1, A2, B1, B2; [JST VH selection and mating harness](#motor-connector-and-optional-encoder-review) |
-| J3 | External brake | VMOTOR and switched resistor return |
+| **J2 MOTOR — 4-pin JST VH** | Drives the motor's two windings | The ordered motor through a **VHR-4N** housing, four **SVH-41T-P1.1** contacts, four 16 AWG pigtails and four **TE 320559** splices to its factory leads. Harness fabrication and physical validation are pending. |
+| **J3 BRAKE — 2-pin JST VH** | Connection for a resistor that dissipates regenerated energy during deceleration or back-driving | **Only when required by the qualified operating envelope:** VHR-2N, two SVH-41T-P1.1 contacts, a two-wire harness, selected resistor, terminals and cooling/mounting. The resistor and complete installation are not yet selected. |
+| **J1 PD POWER — USB-C** | Supplies motor and board power | A source explicitly supporting **48 V / 5 A USB PD EPR**, with a compatible **5 A EPR e-marked cable**. Exact source/cable models remain unselected. |
+| **J10 USB DATA — USB-C** | Setup, logs and commissioning diagnostics; also supplies MCU logic independently | A host and data-capable USB cable. This port does **not** supply motor power. |
 
-J7 is removed. SWD/reset and optional encoder probe access remain on top service pads.
+J2 pin order is **1 black A+, 2 green A−, 3 red B+, 4 blue B−**. Verify winding continuity and connector cavity numbering before connection. Make or break motor connections only with power removed and the bus discharged.
 
-## Firmware contract
+J3 pin 1 is **VMOTOR**; pin 2 is **BRAKE_RETURN**, switched by Q16, not permanent ground. J3 is not a speed-boost connection. An empty J3 cannot dissipate braking energy. **A 300 W resistor is not a confirmed requirement**: the documented 10 Ω / 300 W part is a candidate, and the need, rating and heatsink depend on load, speed and stopping duty. See [brake selection and connection](docs/brake-integration.md).
 
-The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmware-pinmap.json) and [firmware/include/board_pins.h](firmware/include/board_pins.h). The shared safety logic has host tests; the pinned PlatformIO target builds a flashable USB commissioning image with motor outputs locked pending the ECO validation. See [firmware build/programming instructions](firmware/README.md).
+For quantities, cable lengths, part numbers, sourcing gaps and setup sequence, use [external equipment](docs/external-system.md) and the [wire endpoint schedule](docs/connector-harnesses.md). SWD and PD EEPROM programming use temporary service fixtures on test pads.
 
-| Function | MCU signals |
-|---|---|
-| Motor SPI | `TMC_CS_N`, `SPI_SCK`, `SPI_MISO`, `SPI_MOSI`, `TMC_DIAG0`, `TMC_DIAG1` |
-| Encoder/flash | `ENC_CS_N`, `FLASH_CS_N` on the shared SPI bus |
-| USB | `USB_VBUS_SENSE`, `USB_DM`, `USB_DP` |
-| Power safety | `BOARD_POWER_SENSE`, `EFUSE_FAULT_N`, `MOTOR_PG`, `VMOTOR_OK`, `POWER_PERMIT`, `MCU_RUN` |
-| Local button | `USER_BUTTON_N` on PC6 |
-| Removed pins | Former CAN/RS485/RS232 and general-I/O MCU pins explicitly NC |
-| Monitoring | `PHASE_A_ADC` / `PHASE_B_ADC` on PA0/PA1; ADS1115 bus monitoring and TMP102 temperature on I²C |
+## Controls and circuitry
 
-The motor-qualified STM32 firmware and TI-generated TPS26750 full-flash image are release inputs. Reset circuitry is designed to inhibit the board with blank U3 and U16; that behavior still requires a powered test. Programming both devices is necessary but does not, by itself, establish motor readiness. The current STM32 image remains motion-locked even if U3 is programmed.
+- **SW1 RESET:** resets the MCU and inhibits motion; no automatic restart.
+- **SW2 START/STOP:** release then press to request the local profile; press again for controlled deceleration. It is a normal operating control, not an emergency stop. The current commissioning image cannot start the motor.
+- **Motor stage:** TMC5160A with eight external MOSFETs and phase shunts. The 5.5 A RMS design target is not a qualified setting for the motor's 6 A/phase rating.
+- **Protection and diagnostics:** input eFuse/reverse blocking, voltage and temperature inhibition, regenerative-brake switching, phase/bus measurements, RGB status, power LED and buzzer.
+- **Assembly:** 247 fitted components and 19 bare service pads on top; 81 unique fitted supplier codes. The schematic has 23 A4 sheets.
+- **Optional encoder:** U18 AS5047P is centered on the bottom with C52/C53, all **doNotPlace** and excluded from fitted BOM/CPL and paste. The single-shaft motor has no qualified rear magnet installation.
 
-U16 remains STM32G0B1 with the existing USB, ADC, SPI, I²C and SWD firmware/pinout. The removed buses no longer justify its selection. Switching MCU families would require a separately reviewed redesign; this ECO preserves the working pin contract and motion-inhibit logic. Exact fitted code C2847904 remains subject to live sourcing.
+The [NEMA17/NEMA23 comparison](docs/reference-review.md) explains applicable design choices. [Circuit design](docs/design.md), [USB/power architecture](docs/usb-pd-architecture.md) and [firmware](firmware/README.md) give the implementation details.
 
-## Schematic organization
+## Assembly preview
 
-The design uses 24 default A4 sheets; surviving sheet positions retain their original indices. Dense power, input and telemetry sections are split into smaller functional pages; PCB placement and net connectivity are unchanged.
+Open `motor-assembly.circuit.tsx` for the motor and J2 harness model, or `release/circuit.json` for the routed board viewer. The four existing Ø4.2 mm mounting holes are preserved.
 
-| Sheet | Scope |
-|---|---|
-| 1. USB-C PD POWER | J1: 48 V / 5 A EPR power only; USB DATA is on J10. |
-| 2. PD Controller and EEPROM | U2 TPS26750 negotiates EPR; U3 stores the board-specific TI configuration. |
-| 3. PD Backup Supply | U5 converts PD VBUS to V3V3_PD; L1 and its feedback/bypass network are shown here. |
-| 4. Motor Backup Supply | U22 converts VMOTOR to V3V3_MOTOR for brake-control backup after PD loss. |
-| 5. Logic Supply Selection and Power Permit | U23/U24 and R111 form the status-interlocked reverse-blocked board supply. |
-| 6. Protected 48 V Motor Bus | Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor. |
-| 7. Motion Controller | U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V. |
-| 8. Step Direction and Hardware Enable | U8/U9 select STEP and DIR; U10/U11 and Q14/Q15 implement the enable interlock. |
-| 9. Motor Phase A Power Bridge | Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt. |
-| 10. Motor Phase B Power Bridge | Q10/Q12 high-side and Q11/Q13 low-side switches form phase B. |
-| 11. Brake Reference and Turn-on Threshold | U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V. |
-| 12. Overvoltage Inhibit and Brake Driver | U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load. |
-| 13. MCU Clock Memory and Debug | U16 STM32G0B1 provides USB diagnostics, supervised internal SPI ramp control. |
-| 14. Optional Shaft Encoder | U18 AS5047P and C52/C53 are centered bottom-side DNP footprints. |
-| 15. USB DATA and Attach Sense | J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port. |
-| 16. Home and Limits | Non-isolated 24 V HOME and left/right STOP conditioning. |
-| 17. Local Start Stop | SW2 and MCU-domain pull-up R133. |
-| 21. USB Logic Power | U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail. |
-| 22. Temperature and Bus Diagnostics | U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus. |
-| 23. Phase Current Diagnostics | U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V. |
-| 24. Regulated Driver Supply | U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15. |
-| 25. Status and Independent Power Indication | U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown. |
-| 26. Audible Fault Alarm | BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp. |
-| 27. PD Programming and Power Probes | U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded. |
+![Motor and J2 harness alignment preview; attachment is not qualified](previews/onboard-control-after.png)
 
-The 106 reported source warnings were corrected through component typing, explicit pin roles, bare-pad metadata and A4 page layout. [Source/native comparison](docs/checks/warning-fix-parity.json) verifies that PCB geometry, routing and pin connectivity are unchanged.
+The 19.5 mm model separation is a visual alignment distance, not a verified mounting stack. Rear thread/depth, fastening, solder-tail clearance and harness retention remain unresolved. TE 320559 splice length is 32.13 mm; its modeled outside diameter and proposed pigtail lengths still require physical checks. See [motor assembly](docs/motor-assembly.md) and [harness specification](docs/motor-harness.md).
 
-Source errors and warnings both fail verification and block the release checks. Bare service pads are marked `doNotPlace`: their copper remains present, but they are not purchased or assembled parts.
+## Review and acceptance
 
-## PCB, mechanics and assembly
+Run `bun run review` for the prescribed review sequence. The [verification report](verification.md), [stock evidence](docs/stock-report.json) and [delivery check](docs/delivery-check.json) retain actual results; a successful build does not establish motor operation.
 
-| Property | r0.4 ECO value |
-|---|---:|
-| Board outline | 85.9 × 85.9 mm TMCM-1180 V1.1 stepped perimeter with four concave 5.9 mm arcs |
-| Copper layers | 4 |
-| Finished thickness | 1.6 mm |
-| Copper weight | 1 oz on every layer |
-| Mounting | Four 4.2 mm holes on the documented asymmetric motor pattern |
-| Power corridor | Nominal 2.4 mm with 0.16 mm zone clearance |
-| General/power via | 0.60 mm pad / 0.30 mm finished drill |
-| MOSFET drain-pad thermal vias | 40 total: four 0.60/0.30 mm through vias under each of ten CSD19534Q5A drain pads; epoxy filled and copper capped |
-| Dense signal via | 0.50 mm pad / 0.30 mm finished drill |
-| Minimum via drill | 0.30 mm throughout the source, routed board and manufacturing exports; no smaller-drill exceptions |
-| Assembly side | Top only |
-| Solder mask / legend | Green / white |
+Before a ready-to-run delivery, complete:
 
-All fitted components and labelled service pads are on top. U18 is centered on the motor axis on the bottom, with C52/C53 nearby; all three footprints are DNP and excluded from assembly. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
+1. Exact PCB-part and external-equipment sourcing, including package/stock confirmation.
+2. TI-generated U3 full-flash image, PD hardware review and verified programming/readback.
+3. J2 harness, secure PCB/motor mounting and the load-dependent J3 decision.
+4. Staged power, current, gate-drive, stopping, thermal and EMC tests; then qualify the motor-enabled firmware.
+5. Provider acceptance of assembly, programming and serial-numbered functional tests before shipment.
 
-The completed KiCad route passes all-severity DRC, connectivity, schematic parity, ERC and terminal-only Kelvin checks. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
+[Assembly/provider requirements](docs/assembly.md) · [Power test matrix](docs/power-validation.md) · [PD configuration review](docs/pd-configuration-review.md) · [Release status](docs/release-status.json)
 
-The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` and `engineering/mechanical/ordered-motor-pcb-reference.json`. It retains the TMCM-1180 stepped perimeter and places all four Ø4.2 mm PCB holes on the ordered **34HS31-6004S1 rear CAD axes**. The reference records both sources and their coordinate systems. Print it at 100% and check its 20 mm calibration bar. **Matching the rear axes does not approve rear case screws for accessory mounting.** The documented motor mounting interface is the front flange; [motor assembly](docs/motor-assembly.md) records the alignment-only preview and unverified rear mounting interface.
+Revision 0.4 review files retain some `r0.3` archive basenames for pipeline compatibility. Use the delivery manifest and hashes to identify their contents.
 
-The exact ordered-motor CAD and retained J2 harness appear in the source 3D alignment preview and remain selectable in `motor-assembly.circuit.tsx`, using `assembly.subassembly`. All populated parts remain on top; only the three unpopulated encoder footprints are on the bottom. The unsupported plate, posts, spacers, nuts/washers and attached clamp have been removed. No replacement fasteners or encoder holder/magnet are modeled.
-
-![PD1180-EPR mounting template](previews/mounting-template.png)
-
-## Parts and procurement
-
-- 247 populated components use exact JLCPCB/LCSC identities.
-- The fitted BOM contains 83 unique LCSC codes.
-- The latest live check verifies 7/83 codes; 76 are unavailable, insufficient or unverified. Ordering is blocked.
-- Alternative candidates require a fresh stock, package and electrical review; none are substituted automatically.
-- TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
-- Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
-
-The EPR source, certified 5 A EPR cable, 34HS31-6004S1 motor, shaft magnet, brake resistor/heatsink, mating housings, contacts, wire and command/limit equipment are system items outside the assembled PCB BOM. See [docs/procurement.md](docs/procurement.md) and [sourcing/](sourcing/).
-
-## Verification
-
-Run the same fail-closed review used in CI:
-
-```sh
-bun install --frozen-lockfile
-bun run review
-```
-
-The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, top-side assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
-
-Current verification results are recorded in [verification.json](docs/verification.json). Fresh native DRC/ERC/parity pass; 45 retained native bypass paths pass. Live stock and assembly procurement checks fail, so the full review is not an order approval. CAD screens do not establish powered operation.
-
-Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
-
-## Manufacturing release
-
-The `release/` payload contains current ECO review files. **Do not order yet:** powered USB, current/thermal and system qualification remain open. Legacy archive filenames retain the r0.3 suffix for tool compatibility; their hardware contract and board markings identify r0.4. The package contains:
-
-- PCB Gerber ZIP and the routed KiCad project ZIP;
-- complete manufacturing ZIP with drills, Gerbers, DRC, BOM, CPL and project files;
-- JLCPCB BOM and top-side placement CSV;
-- ZIP-packaged 3D GLB plus top and bottom renders;
-- 24 schematic-sheet SVGs;
-- order settings, hardware contract, schematic-style evidence, power-routing evidence and release status;
-- delivery manifest and recursive SHA-256 hashes.
-
-After a new verified release exists, apply its order settings: four layers, 1 oz copper on all layers, 1.6 mm thickness, filled/capped via-in-pad and top-side assembly. Review orientation, polarity, connector direction and the through-hole assembly plan before ordering.
-
-The hosted tscircuit editor opens `release/circuit.json` by default: its 3D view includes the ordered motor and retained J2 harness in an alignment preview, and its PCB/schematic views retain the verified board. The authoritative editable source remains `index.circuit.tsx`. Its file selector includes all source TSX files, all imported components under `imports/`, and `release/circuit.json`. The cloud build compiles/transpiles `index.circuit.tsx`, then builds `release/circuit.json` into `dist/release/circuit.json` for the hosted viewer and static site. Imported components remain selectable without each becoming a separate CI board build. Run `bun run check:cloud-package --built` after the cloud build to verify the selected preview exists and exactly matches the routed artifact. Cloud autorouting stays disabled for the source preview.
-
-After pulling updates, run `bun install --frozen-lockfile` and restart `bun run dev`. The dev command checks the installed toolchain before starting. `tscircuit.config.ts` makes interactive previews use the pinned local component definitions and disables preview autorouting, just like the build. This prevents remote pin-metadata requests from holding the main-board render open while another component is selected. Live supplier stock checks still run in `bun run review`.
-
-The toolchain uses tscircuit `0.0.2830`, CLI `0.1.2298` and circuit-to-svg `0.0.445`. The CLI now compresses `tsci push` uploads by default; `--compress` also explicitly selects that behavior. This applies to CLI uploads, not a guarantee that the separate GitHub-import worker succeeds. Core is explicitly pinned to `0.0.2112`: core `0.0.2125` resets explicitly sized schematic sheets to the origin, moving their frames around the frozen layout. Remove this compatibility pin only after all surviving sheet centres and the approved schematic pass the upgrade comparison. The package's JavaScript entry is `dist/index.js`; the editable circuit entry remains `index.circuit.tsx` in the tscircuit configuration.
-
-The hosted failures checked on 2026-10-12 are distinct from an upload-size rejection. [v0.3.69](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/911bcb7b-1140-48cf-ab7f-65bd1045d488) registered all 444 files, including `index.circuit.tsx` and `package.json`, but the worker logged writes for only the final 58 files and then reported both entry files missing. [v0.3.70](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/77417e37-0eee-43bb-8fc1-8a021ac51582) logged only `Starting execution` before a 30-minute timeout, with no build-command or upload log. These logs point to incomplete worker setup; the server-side cause remains unconfirmed. Compression alone has not been demonstrated to fix these releases. GitHub's separate `Circuit checks` sourcing failure remains an independent order hold.
-
-Run `bun run build:pcb` (also `bun run build`) to refresh the default routed view from the current source. This checks the saved PCB fingerprint, native DRC report and local trace continuity, preserves the schematic exactly, and updates only viewer delivery hashes. Select `index.circuit.tsx` to edit the source and any `imports/` file to inspect that component. `release/circuit.json` is the final routed view. After regeneration it verifies that the compiled motor assembly preserves every code-defined board record, including the 24-sheet schematic, then replaces preview copper with the exact traces, vias and filled-zone polygons imported from the final KiCad board. `bun run check:cloud-viewer` regenerates that artifact in memory, checks every routed-port mapping and compares its copper counts with the KiCad import. The GitHub release importer materializes other supported tracked files before starting the CLI, so `bun run check:cloud-package` checks source/import visibility, the configured upload and the larger fixed-filter GitHub payload.
-
-## Repository map
-
-| Path | Purpose |
-|---|---|
-| `AGENTS.md` | Automatic design and review rules for AI-assisted changes |
-| `board-markings.tsx` | Product identity and rear-side tscircuit attribution |
-| `feature-parity.tsx` | Machine-checked product feature contract |
-| `board-standards.json` | Machine-readable fabrication, via, marking, assembly and delivery policy |
-| `hardware-contract.json` | Product dimensions, ratings, controller and reset-safe outputs |
-| `mounting-template.svg` | Print-at-100% mechanical fit template generated from the hardware contract |
-| `index.circuit.tsx` | Authoritative code-defined circuit, schematic layout and PCB intent |
-| `release/circuit.json` | Generated hosted-viewer circuit with source schematic/3D data and verified KiCad copper |
-| `engineering/` | Reviewer map linking contracts to generated evidence |
-| `imports/` | Locally pinned component models and symbol/footprint corrections |
-| `firmware/` | Safety state machine, generated pins and TMC5160A startup configuration |
-| `routing/` | Power-copper requirements and guarded route fingerprint |
-| `checks/` | Pinned viewer-equivalent review engine used by local and CI checks |
-| `docs/` | Design calculations, assembly, procurement, bring-up and verification evidence |
-| `scripts/` | Documented generation and fail-closed review tools |
-| `sourcing/` | Stock-qualified BOM, alternatives and external-system items |
-| `previews/` | Lightweight images used by this README and tscircuit package |
-| `dist/` | Generated circuit, schematics, routed PCB and manufacturing outputs |
-| `release/` | Engineering review handoff with archive/hash verification; ordering remains on hold |
-
-## Bring-up and remaining gates
-
-The r0.4 ECO files become a prototype fabrication handoff only after the order hold is cleared. Archive and KiCad basenames retain the legacy `r0.3` suffix for pipeline compatibility; the hardware contract, board silkscreen, release status and hashes identify the actual r0.4 ECO revision. They are not a production release. Before applying motor power:
-
-1. Generate and independently review the sink-only TPS26750 EPR configuration, then program U3.
-2. Qualify the integrated STM32 target on the bench, verify fault shutdown and produce the motor-enabled release with recorded configuration/hash evidence.
-3. Keep the existing four holes; establish verified mounting before physical assembly, plus rotating-shaft access, encoder attachment, magnet field/gap and enclosure clearances.
-4. Select the brake resistor/heatsink from measured load inertia, speed and stopping duty.
-5. Perform current-limited rail bring-up before fitting the motor.
-6. Measure gate waveforms, phase current, bus overshoot, connector temperature and PCB temperature.
-7. Complete USB PD, cable-fault, regeneration, ESD, EMC and representative-load testing.
-
-The staged procedure and sign-off points are in [docs/bring-up.md](docs/bring-up.md). Prototype-order gates and physical system-validation gates remain separate in [docs/release-status.json](docs/release-status.json).
-
-Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
-
-## Motor connector and optional encoder review
-
-**J2 retains the four-pin JST VH B4P-VH(LF)(SN), 3.96 mm pitch.** The NEMA17 reference uses JST PH and the NEMA23 reference uses JST XH. Their connector families were compared against the current requirements of this board:
-
-| Connector family | Manufacturer current rating and wire condition | Decision for J2 |
-|---|---|---|
-| [JST PH](https://www.jst-mfg.com/product/pdf/eng/ePH.pdf) | 2 A with AWG24 wire | Below the existing motor-stage current target |
-| [JST XH](https://www.jst-mfg.com/product/pdf/eng/eXH.pdf) | 3 A with AWG22 wire | Below the existing motor-stage current target |
-| [JST VH](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) | 10 A with the standard header and AWG16 wire | Retained with the specified mating harness |
-
-The ordered [STEPPERONLINE 34HS31-6004S1](https://www.omc-stepperonline.com/download/34HS31-6004S1.pdf) is rated **6 A/phase**. The board's **5.5 A RMS/phase** figure is a design target, not a qualified driver setting for that motor; the manufacturer's current convention and motor thermal limits still require qualification. PH and XH are not suitable drop-in replacements for J2 at this target. The VH rating does not establish motor operation or connector temperature in the finished assembly.
-
-The motor has bare wire ends and needs a mating cable: **motor's 0.75 mm² leads → four TE 320559 splices → 16 AWG pigtails → four JST SVH-41T-P1.1 contacts in a VHR-4N housing → J2**. The 10 A catalogue rating applies to the specified header/16 AWG termination; it must not be claimed for a direct crimp onto the factory motor wires. This harness must be supplied separately from PCB assembly. [Motor harness and review closure](docs/motor-harness.md) gives the cavity map, wire colours, crimp requirements and remaining cable/assembly checks.
-
-U18 is centered on the motor axis, with C52/C53 nearby; all three are bottom-side DNP footprints and are excluded from fitted BOM/CPL and paste.
-
-## Status, alarm and PD programming access
-
-D16 RGB is blue while the commissioning image keeps motion locked. Red with a short periodic chirp indicates a detected fault. D17 lights from board V3V3 independently of firmware; USB DATA alone powers the MCU and does not light this LED. PC13/TP_STATUS now controls the indicator expander reset. See [indicator states and power allocation](docs/indicators.md).
-
-U36 disconnects both controller-to-EEPROM wires when TP_PD_ISO is grounded. The new pads expose EEPROM-side SDA/SCL, target-voltage sense and ground; separate PD_VBUS/VMOTOR/GND pads support rated voltage probes. Follow [the fixed-5 V fixture sequence](docs/pd-programming.md). A TI full-flash image, readback verification and cold APP boot are still required; the current commissioning firmware cannot deliver motor operation.
-
-## Current assembly preview
-
-Open `motor-assembly.circuit.tsx` for the current 15-part motor/J2 preview. The unsupported 51-part mounting fixture has been removed. No new fasteners, J3 free tails or external control loom are rendered. The product remains unqualified.
+PCB names come from their footprints. Custom imports include a native `{NAME}` reference template, so every instance resolves its own name, including SW1 and SW2. Each template has one footprint-local position above the courtyard and uses the default text size; there are no board-level reference labels, assembly-layer replacements or per-instance overlap adjustments. `docs/pcb-reference-check.json` checks that every component has exactly one matching reference. Overlaps and fabrication-rule failures remain reported; this view is not a silkscreen fabrication approval.

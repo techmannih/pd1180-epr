@@ -1,0 +1,35 @@
+bun test v1.3.14 (d1632b29)
+
+scripts/design.test.mjs:
+(pass) native evidence ignores only the CLI filesystem cache key [2.40ms]
+(pass) native evidence tolerates derived length rounding but detects copper changes [0.10ms]
+(pass) source model has no errors or warnings and uses physical component types [7.96ms]
+(pass) hosted release ignores only the CLI cache key while preserving every source model record [107934.79ms]
+(pass) all physical parts are present and have their intended JLC code [1.20ms]
+(pass) C22 bulk capacitor body and CAD model stay inside the stepped board outline [1.12ms]
+(pass) source connectivity does not short power, ground, or the switched motor rail [0.19ms]
+(pass) 48-V connector goes through the EPR protector; PD controller never sees raw 48 V [0.48ms]
+(pass) TPS26750 POWER_PATH_EN uses the TI EVM dual-NMOS buffer [1.45ms]
+(pass) separate Type-C receptacles carry EPR power and protected USB 2.0 data [25.87ms]
+(pass) logic boots upstream of the gated motor power path [0.63ms]
+(pass) hardware driver shutdown retains MCU, power-good, voltage-good and thermal inhibit [6.26ms]
+(pass) both bridges have four external FETs and independent low-side shunts [24.21ms]
+(pass) ADS1115 receives independent input-current and motor-bus voltage telemetry [3.88ms]
+(pass) brake dissipates downstream energy without feeding the USB supply [4.66ms]
+(pass) MCU retains USB attach sense, data and SWD while removed interface pins are disconnected [13.97ms]
+(pass) analytical limits have margin below the 5-A USB input contract [0.12ms]
+(pass) LM66100 status interlock keeps the dual 3.3-V ORing output continuous [4.03ms]
+(pass) USB DATA has independent CC, attach sense and ESD while VMOTOR retains brake backup [15.05ms]
+(pass) onboard control replaces every unsupported external command connection [9.56ms]
+(pass) SPI ramp unused inputs are defined and separate from encoder outputs [3.77ms]
+(pass) DATA powers only logic through a current limiter, regulator and reverse-blocking OR [19.32ms]
+(pass) both winding shunts are in series and feed bidirectional phase diagnostics [36.52ms]
+(pass) TMP102 hardware alert inhibits the run chain independently of MCU_RUN [24.01ms]
+(pass) USB-only power is confined to the MCU and its local controls/decoupling [13.88ms]
+(pass) indicator reset silences the alarm without relying on I2C or stealing industrial GPIO [78.22ms]
+(pass) EEPROM programming isolates both controller wires and never merges the power rails [44.24ms]
+
+ 27 pass
+ 0 fail
+ 789 expect() calls
+Ran 27 tests across 1 file. [108.52s]

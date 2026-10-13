@@ -40,6 +40,7 @@ export const W25Q32JVSSIQ = (props: ChipProps<typeof pinLabels>) => {
 <silkscreencircle pcbX="-1.905mm" pcbY="-1.423924mm" radius="0.150114mm" />
 <silkscreencircle pcbX="-2.672334mm" pcbY="-3.530092mm" radius="0.150114mm" />
 <courtyardoutline outline={[{"x":-2.9000074000000495,"y":4.905096100000037},{"x":2.8999820000000227,"y":4.905096100000037},{"x":2.8999820000000227,"y":-4.905096100000037},{"x":-2.9000074000000495,"y":-4.905096100000037},{"x":-2.9000074000000495,"y":4.905096100000037}]} />
+<silkscreentext text="{NAME}" pcbX="0mm" pcbY="5.91mm" anchorAlignment="center" />
       </footprint>}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C179173.obj?uuid=4652e19b90fa4dbb8662aa4cba61a532",

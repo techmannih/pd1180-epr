@@ -1,0 +1,68 @@
+{
+  "checked_at": "2026-10-12T19:13:23.216139+00:00",
+  "scope": "U6/R25 identity/value change; brake hardware and threshold values remain unchanged",
+  "source_sha256": {
+    "index.circuit.tsx": "12cfc136aea98514bebb564ab72d5706813ab94375eb995ad50860df18f01d35",
+    "imports/TPS26630RGER.tsx": "732c3c72dfc55bbc49c062896380fda6bba665ddd88f11c8fe5b3b02fa91cc25",
+    "hardware-contract.json": "09948562e070595be2b6442c93e638fa73b8080b2c1734009279c56502b20bb2",
+    "schematic-pages.tsx": "a3c960bdd933cae6866820bc31b0d7fabcee987eabb52d749d66f7736e4a08bc",
+    "docs/design-manifest.json": "8d4b4b0610e922ad15d20d4166d74fc3974942531c8d9e484b81862640e4967e",
+    "engineering/power-audit.json": "3903d6d11d462506b1fbbd5d4fdf6cee8815f303a3416a9c33b9894f236363ff",
+    "engineering/input-protection/simulation.json": "50bb57c4abc6ab89682c5dbe90d89e7fef214f4051dccf8437d460a1a963e7e0",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "ea9f93c6d5020a85374ca9ff62f0b8155dfee87fe6590fc4b64aef1b0ff43ee3",
+    "dist/manufacturing/kicad-project/motor_power.kicad_sch": "0d48b1c8840e8fd05e48822e6e396830ad9514cc349a32ba50ad8c21e4eb24f3"
+  },
+  "build": "passed; existing preview overlap warnings retained",
+  "typecheck": "passed",
+  "design_tests": {
+    "pass": 27,
+    "fail": 0
+  },
+  "power_tests": {
+    "pass": 12,
+    "fail": 0
+  },
+  "firmware_host_tests": "passed; no firmware change or motion unlock",
+  "source_schematic": "passed",
+  "schematic_style": "passed",
+  "behavioral_simulation": {
+    "cases": 7,
+    "timesteps_per_case": 2,
+    "numerical_checks": "passed",
+    "hardware_qualification": false
+  },
+  "native_erc_violations": 0,
+  "native_drc": {
+    "violations": 403,
+    "unconnected_items": 0,
+    "schematic_parity": 0,
+    "types": {
+      "silk_edge_clearance": 4,
+      "text_height": 182,
+      "silk_overlap": 99,
+      "silk_over_copper": 118
+    },
+    "previous_types": {
+      "silk_edge_clearance": 4,
+      "text_height": 182,
+      "silk_overlap": 99,
+      "silk_over_copper": 118
+    }
+  },
+  "stock": {
+    "available_types": 26,
+    "total_types": 81,
+    "checked_at": "2026-10-12T19:08:10.093Z"
+  },
+  "review": "failed at stock gate; subsequent review pipeline not executed; targeted checks recorded separately",
+  "release_artifacts_refreshed": false,
+  "published": false,
+  "full_current_operation_authorized": false,
+  "pending": [
+    "Approved motor current waveform and bounded RPM/load/stop envelope",
+    "Brake continuity/current feedback implementation",
+    "Running brake-fault energy containment",
+    "Coordinated brake/cutoff resistor selection",
+    "Physical source/cable, thermal and fault qualification"
+  ]
+}

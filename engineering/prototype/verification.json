@@ -1,0 +1,134 @@
+{
+  "checked_at": "2026-10-13T01:05:20.998179+00:00",
+  "decision": "Motor-only commissioning profile, with existing nominal velocity/acceleration and a newly enforced current-request ceiling",
+  "decision_basis": "User delegated reference research because the end application is unknown; this is an engineering prototype restriction, not a manufacturer motor rating or qualified operating permission",
+  "references": [
+    {
+      "url": "https://www.analog.com/en/products/pd-1180.html",
+      "use": "Identify the official hardware and firmware manuals"
+    },
+    {
+      "url": "https://www.analog.com/media/en/technical-documentation/user-guides/PD-1180_hardware_manual_hw1.10_rev1.05.pdf",
+      "sections": [
+        "4.2.2",
+        "4.3.1",
+        "6",
+        "7.1.4"
+      ],
+      "use": "Different motor/driver, supply buffering/overvoltage constraints; no application load bound for this board"
+    },
+    {
+      "url": "https://www.analog.com/media/en/dsp-documentation/software-manuals/PD-1180-TMCL_firmware_manual_fw4.48_rev1.16.pdf",
+      "sections": [
+        "3.7.3",
+        "6.1"
+      ],
+      "use": "Ramped stop and controller-unit conversion; command examples are not approved RPM limits"
+    },
+    {
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf",
+      "sections": [
+        "12.1",
+        "26.1",
+        "28"
+      ],
+      "use": "Our current/speed calculations and operating limits"
+    }
+  ],
+  "profile": {
+    "scope": "Unloaded rotor only; no coupling, driven load, gravity load or external back-drive",
+    "selection_basis": "Retained low-energy commissioning choice; not copied from PD-1180 ratings",
+    "motor_operation_authorized": false,
+    "max_requested_current_permille": 180,
+    "irun": 4,
+    "nominal_rms_a": 0.841588271065532,
+    "nominal_sine_peak_a": 1.190185546875,
+    "nominal_speed_rpm": 9.999610483646393,
+    "nominal_acceleration_rpm_per_s": 9.976020010071807,
+    "nominal_ramp_stop_s": 1.0023647179487178,
+    "nominal_rotor_energy_j": 7.675760976800189e-05,
+    "nominal_winding_energy_j": 0.00247894786298275,
+    "nominal_rotor_energy_at_1000rpm_j": 0.7676358978625054,
+    "brake_open_sensitivity": {
+      "each_phase_instantaneous_current_a": 1.5,
+      "rpm": 15,
+      "returned_energy_j": 0.009622718077019064,
+      "minimum_capacitance_f": 0.0007520000000000001,
+      "peak_from_50v4_v": 50.653255920140225,
+      "peak_from_upper_cutoff_v": 54.497789981647095,
+      "upper_cutoff_peak_plus_0v5_allocation_v": 54.997789981647095,
+      "guaranteed_bound": false,
+      "note": "Lossless energy screen only. The 1.5 A/phase and 15 rpm sensitivity is an engineering allocation requiring measurement; it does not close startup continuity, running brake failure or transient margin."
+    },
+    "note": "Clock, current regulation, winding nonlinearity and speed are uncalibrated. No attached load is allowed in this prototype scope; unknown application inertia remains unknown in motor-data.json."
+  },
+  "implementation": [
+    "TMC initialization and runtime current APIs reject >180 permille before SPI transfer",
+    "Motor service rejects >180 even if thermal derating would reduce the request",
+    "Target uses the shared ceiling; existing VMAX cap and both qualification locks retained"
+  ],
+  "validation": {
+    "firmware_host_tests": "passed",
+    "power_audit_tests": {
+      "passed": 12,
+      "failed": 0,
+      "assertions": 56
+    },
+    "behavioral_simulation": "7 cases at two timesteps, numerical checks passed; no new hardware model",
+    "stm32_target": "compiled and linked ARM ELF; no hardware execution",
+    "target_flash_used_bytes": 57404,
+    "target_ram_used_bytes": 5708,
+    "git_diff_check": "passed"
+  },
+  "source_sha256": {
+    "firmware/include/tmc5160_config.h": "07cbc0bb70687e5a5ea11c799c89c035ed75a927781064e28b4b935728dc9699",
+    "firmware/src/tmc5160.c": "f46873b8e9d4fb700ee17b18ac47a6ad454777a6e25c87374de47359419ea0f2",
+    "firmware/src/motor_service.c": "240ba8af856bedda5cb2f1d063762969bbf207307b601ba458a0fcda4e05b1bd",
+    "firmware/target/main.cpp": "57eebf36e58e9563cfd0a40d2eaf3a816989a0da8cb6b4a8324960aeb7afde68",
+    "firmware/tests/test_tmc5160.c": "b1d3b485643a5e9ef850cd41bbe4fe1ba00f8718b9640298b49e8628675c98d1",
+    "firmware/README.md": "e9e333a0d2fbc33f59511b5ff192285b28d904b7ca47f43e2114c927afe11b9b",
+    "scripts/power-audit.mjs": "36788f969ec28481ce2d3569ff385e8fe926a10230cc7fc366ffa95c6d5a5247",
+    "engineering/power-audit.json": "aa3c55d56c5d477bc191bf07b86442d8212e0915252da2b98941b1fd2515d0a8",
+    "engineering/input-protection/simulation.json": "4e20350d93422103725d247df695e0646a1a5d82aae88c0ff3101e9f30117baf",
+    "docs/reference-review.md": "351fbcb5a67171d50d218811f429f55e90954abd83cf19ced8521c9645c69ab8",
+    "docs/power-validation.md": "33997a833602e397c979685379a34b3d3d7d31bdbb391fcda418f836032328b8",
+    "index.circuit.tsx": "12cfc136aea98514bebb564ab72d5706813ab94375eb995ad50860df18f01d35",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "ea9f93c6d5020a85374ca9ff62f0b8155dfee87fe6590fc4b64aef1b0ff43ee3",
+    "firmware/include/board_pins.h": "59a41bdb9d9924dad4a67b7481244210fd14ce560f2d39c1785977484052c56e",
+    "firmware/include/control.h": "3c17154c652873c88d78fa1506578186d9312073b2ec032e9906368400a09cd0",
+    "firmware/include/local_motion.h": "e4698a17afd2ce5ffc155ff2aaef5fe125bb4a095c5302e8b1db9038b9d341e6",
+    "firmware/include/motor_service.h": "cbbf6c04a3c76882d8332920a72465faf63ea1ef170eeb851a29df1d280d63fa",
+    "firmware/include/pd_contract.h": "d1c5ba4b42105e73d7ab7e775e558c27e9c7a5439d83cf537f0abb4ec5b61fc8",
+    "firmware/include/power_domain.h": "55ce72e4b7e214bfa1df830c85402d0118fb8b0cfce4f2f1350c589bc754a536",
+    "firmware/include/telemetry.h": "5b78411c0d1d8675561b58875f426f4c4e8fdff7db67b5b6b75990bab0eb1303",
+    "firmware/include/tmc5160.h": "c54a6a85208b50a35ab301e7db4c138f7d9b071fa6704c67836e84be7fd8510f",
+    "firmware/src/control.c": "eeb34233188208b67d7a0910caaf37a62a85f8a24c2abcd91005fe13c2293118",
+    "firmware/src/local_motion.c": "34931a584031af763e5076d75ea8d0016a51f5d3a74d95517696d261b867a741",
+    "firmware/src/main.c": "879d6eed4cf9ede83b7a37f69a22696fce7ed87692dab7a2b729396bbb1fabb6",
+    "firmware/src/pd_contract.c": "81070c895f2190e477e773e1edc85cc82e26030bd028f23f04f55e57af240687",
+    "firmware/src/power_domain.c": "698845c6ca0b1cd3f646d130bc084365d68d9d2dd7f1748208ffead0133fdb9c",
+    "firmware/src/telemetry.c": "1d07229dd0dc730ea0f0fb27e85bf398b792c90b8756f8f5f48bae44d0540bce",
+    "firmware/src/tmc5160_config.c": "9c16ea1589171b41ae1f6b53873acd532b3a19aa41ec5d448554185f69ce0c71",
+    "firmware/target/usb_suspend.cpp": "adc4976790187046d1054223cf740c80b64e5c72c507dab04351b02c7f53a42f",
+    "firmware/target/usb_suspend.h": "15822f65fd0691f4340ed026f94b5adea98d3f7cadd42f9f948017fac0d6945d"
+  },
+  "target_elf": {
+    "path": "firmware/.pio/build/pd1180/firmware.elf",
+    "sha256": "73456ef1863716b3de87e9018ceaf1c7c759281b8dcd974ad35442efb146a637",
+    "architecture": "32-bit little-endian ARM"
+  },
+  "motor_operation_enabled": false,
+  "hardware_qualified": false,
+  "board_changed_this_pass": false,
+  "release_archives_refreshed": false,
+  "published": false,
+  "unresolved": [
+    "Startup brake continuity detection",
+    "Running brake-fault energy path",
+    "Cutoff tolerance/transient margin",
+    "Final loaded operating envelope and brake/heatsink sizing",
+    "Existing stock/DRC release gates",
+    "Physical phase current, speed, source/cable and thermal qualification"
+  ],
+  "prior_input_change_report": "engineering/input-protection/verification.json is the preceding point-in-time check; its audit hashes predate this profile addition"
+}

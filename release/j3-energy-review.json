@@ -1,0 +1,147 @@
+{
+  "checked_at": "2026-10-12T06:04:50.211626+00:00",
+  "source_commit": "16d1347fc9991399f7ff5ea089966af2876fc3ad",
+  "scope": "Read-only brake necessity analysis; no circuit, PCB, firmware or release changes",
+  "all_existing_power_audit_hashes_match": true,
+  "hardware_measurements_performed": false,
+  "manufacturer_motor_pdf_sha256": "695575d44f4ba799b5ab5d27480b8f9c0afcda4269f716f5bee120dfc8d49fd7",
+  "verified_design": {
+    "motor": "34HS31-6004S1",
+    "inertia_kg_m2": 0.00014,
+    "inductance_max_h": 0.0042,
+    "bulk_nominal_f": 0.00094,
+    "bulk_minus20percent_f": 0.0007520000000000001,
+    "nominal_supply_v": 48,
+    "supply_high_screen_assumption_v": 50.4,
+    "driver_vs_operating_max_v": 55,
+    "J3_pin1": "VMOTOR",
+    "J3_pin2": "BRAKE_RETURN -> Q16 -> GND",
+    "supply_reverse_block": "Q4/Q5 with TPS26631; upstream supply not credited as sink",
+    "onboard_brake_load_present": false
+  },
+  "bench_firmware": {
+    "nominal_clock_hz": 12000000.0,
+    "calculated_rpm": 9.999610483646393,
+    "IRUN": 4,
+    "GLOBALSCALER": 198,
+    "nominal_phase_rms_a": 0.841588271065532,
+    "sine_peak_a": 1.190185546875,
+    "nominal_sine_quadrature_winding_energy_at_inductance_max_j": 0.0029747374355793,
+    "total_motor_only_energy_j": 0.003051495045347302,
+    "motionWiringVerified": false,
+    "pdImageVerified": false
+  },
+  "rotor_only_cases": [
+    {
+      "rpm": 10,
+      "rotor_kinetic_j": 7.676358978625054e-05,
+      "bus_v_if_all_rotor_energy_returned_to_min_cap_from_48v": 48.002126603760736
+    },
+    {
+      "rpm": 100,
+      "rotor_kinetic_j": 0.007676358978625057,
+      "bus_v_if_all_rotor_energy_returned_to_min_cap_from_48v": 48.21219605398002
+    },
+    {
+      "rpm": 300,
+      "rotor_kinetic_j": 0.06908723080762551,
+      "bus_v_if_all_rotor_energy_returned_to_min_cap_from_48v": 49.877275738823826
+    },
+    {
+      "rpm": 500,
+      "rotor_kinetic_j": 0.19190897446562635,
+      "bus_v_if_all_rotor_energy_returned_to_min_cap_from_48v": 53.05088320362986
+    },
+    {
+      "rpm": 1000,
+      "rotor_kinetic_j": 0.7676358978625054,
+      "bus_v_if_all_rotor_energy_returned_to_min_cap_from_48v": 65.92105001242551
+    }
+  ],
+  "cap_headroom_cases": [
+    {
+      "initial_v": 48,
+      "end_v": 51,
+      "energy_j": 0.11167200000000001
+    },
+    {
+      "initial_v": 48,
+      "end_v": 53,
+      "energy_j": 0.18988000000000002
+    },
+    {
+      "initial_v": 48,
+      "end_v": 54.5,
+      "energy_j": 0.25051
+    },
+    {
+      "initial_v": 48,
+      "end_v": 55,
+      "energy_j": 0.271096
+    },
+    {
+      "initial_v": 50.4,
+      "end_v": 51,
+      "energy_j": 0.022875840000000057
+    },
+    {
+      "initial_v": 50.4,
+      "end_v": 53,
+      "energy_j": 0.10108384000000006
+    },
+    {
+      "initial_v": 50.4,
+      "end_v": 54.5,
+      "energy_j": 0.16171384000000008
+    },
+    {
+      "initial_v": 50.4,
+      "end_v": 55,
+      "energy_j": 0.18229984000000007
+    }
+  ],
+  "full_current_examples_not_approved_setpoints": {
+    "sine_peak_6A_winding_energy_maxL_j": 0.0756,
+    "two_phases_at_6A_DC_winding_energy_maxL_j": 0.1512
+  },
+  "candidate_10ohm_screen": {
+    "instantaneous_on_power_at_52V_w": 270.4,
+    "instantaneous_on_power_at_53V_w": 280.9,
+    "example_rotor_only_1000rpm_1_stop_per_second_average_w": 0.7676358978625054,
+    "example_rotor_only_1000rpm_stop_in_0_1s_linear_deceleration_initial_mechanical_power_w": 15.352717957250107,
+    "no_candidate_approved": true
+  },
+  "formulas": {
+    "rotor": "0.5*J*(2*pi*RPM/60)^2",
+    "capacitor_headroom": "0.5*C*(V_end^2-V_start^2)",
+    "winding": "0.5*L*(Ia^2+Ib^2); for sine quadrature Ia^2+Ib^2=2*Irms^2",
+    "all_energy_to_cap": "sqrt(V_start^2+2*E/C)",
+    "resistor_on_power": "V^2/R",
+    "repeated_stop_average": "E_return_per_stop*stops_per_second"
+  },
+  "limitations": [
+    "All-energy-to-cap voltages are energy screening bounds, not transient simulations or predicted measurements; motor losses ignored.",
+    "Attached load inertia, gravity, external driving and user operating speed/stop profile are unknown.",
+    "Motor inductance measured at 1 kHz is an approximation of stored magnetic energy under operating current.",
+    "Supply +5% is inherited design allowance, not a measured adapter voltage.",
+    "Only initial -20% capacitance included; aging, temperature, ESR/ESL and switching spikes need testing.",
+    "Low-current setpoint accuracy and internal-clock tolerance are not qualified.",
+    "Input OVP/driver disable is not an energy sink and does not close the regeneration check.",
+    "Reference circuits are source examples, not evidence of tested hardware or interchangeable voltage margins."
+  ],
+  "decision": {
+    "current_48v_general_use": "Retain J3/brake discharge provision until a bounded application or qualified replacement is demonstrated; this is a provisional engineering choice, not proof all uses need a resistor.",
+    "existing_brake_function": "Requires an actual suitable external resistor across J3 to dissipate energy.",
+    "nominal_motor_only_10rpm_bench_setting": "Stored-energy screen does not establish need for a large external resistor. Does not authorize energizing or removing protection.",
+    "300W_requirement": "Not established. Peak-on power V^2/R is not the continuous wattage requirement.",
+    "final_remove_or_fit_decision": "Unresolved without operating envelope and powered bus/thermal measurements."
+  },
+  "sources": [
+    "https://www.analog.com/media/en/technical-documentation/data-sheets/TMC5160A_datasheet_rev1.18.pdf",
+    "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf",
+    "https://www.ti.com/lit/ds/symlink/tps2663.pdf",
+    "https://www.vishay.com/docs/50052/lps300.pdf",
+    "https://tscircuit.com/imrishabh18/nema-23-stepper-controller",
+    "https://tscircuit.com/imrishabh18/rp2040-motor-controller"
+  ]
+}
