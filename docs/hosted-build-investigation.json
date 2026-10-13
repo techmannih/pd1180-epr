@@ -1,0 +1,66 @@
+{
+  "checked_on": "2026-10-13",
+  "commit": "3a48c3439405d550b6283ea8d9586294b4db8805",
+  "release_id": "fb197195-b148-4ced-bfc1-580235302878",
+  "release_url": "https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/fb197195-b148-4ced-bfc1-580235302878",
+  "file_list_url": "https://registry-api.tscircuit.com/package_files/list?package_release_id=fb197195-b148-4ced-bfc1-580235302878",
+  "log_stream_url": "https://usercode.tscircuit.com/user_code_jobs/view_log_stream?user_code_job_id=4c6044ffefa24dd5a22291ee224ae35f3e1d21758ae900a4546e0b304c095f5e",
+  "file_list_response_sha256": "51c69f16dfa2e3a7a1fef24ca1d1dcc2b9231626f997bded05596cd19ce387a9",
+  "raw_log_sha256": "6c811960785542a21fda99152a0ecf118f102932e8f5f490b4ab8af60181eba8",
+  "registered_files": 551,
+  "logged_source_file_writes": 70,
+  "writes_equal_inventory_suffix": true,
+  "first_written_source_file": "scripts/critical_copper.py",
+  "last_written_source_file": "verification.md",
+  "execution_start_utc": "2026-10-13T05:53:21.157Z",
+  "sandbox_destroyed_utc": "2026-10-13T05:54:05.929Z",
+  "last_registered_file_utc": "2026-10-13T05:54:45.388Z",
+  "registered_after_execution_start": 255,
+  "registered_after_sandbox_destroyed": 84,
+  "verified_root_and_viewer_files": [
+    {
+      "package_file_id": "7907e4ee-ed00-46de-be47-f78dde7490f2",
+      "package_release_id": "fb197195-b148-4ced-bfc1-580235302878",
+      "file_path": "index.circuit.tsx",
+      "content_mimetype": "text/tsx",
+      "created_at": "2026-10-13T05:53:49.234Z",
+      "bytes": 129468,
+      "sha256": "a96c1a3061d3659739ac42cdd1ee8892e02deb28f5108e5790e2c4b2c5596a8a",
+      "matches_git_commit": true
+    },
+    {
+      "package_file_id": "d24897e5-81de-45a9-a4d4-36a9b794569c",
+      "package_release_id": "fb197195-b148-4ced-bfc1-580235302878",
+      "file_path": "package.json",
+      "content_mimetype": "application/json",
+      "created_at": "2026-10-13T05:53:50.427Z",
+      "bytes": 5642,
+      "sha256": "613c9e6fdf1b65e6a937e27eee001e528a659d2aabe4724360d8e83b7346eab6",
+      "matches_git_commit": true
+    },
+    {
+      "package_file_id": "61219c98-0fab-4a4f-814a-7e20bdf066bd",
+      "package_release_id": "fb197195-b148-4ced-bfc1-580235302878",
+      "file_path": "release/circuit.json",
+      "content_mimetype": "application/json",
+      "created_at": "2026-10-13T05:53:53.684Z",
+      "bytes": 7618238,
+      "sha256": "0aaf8b6f93935befd72b431075d9a5907056483af4cbba65fe9980ddac2a5805",
+      "matches_git_commit": true
+    }
+  ],
+  "conclusion": "Registry contains exact commit bytes; this worker materialized only a suffix while import was still registering files. Premature or stale input snapshot is consistent with the evidence; the specific service defect is not proven. Hosted success is unresolved.",
+  "local_filtered_control_build": {
+    "checked_at": "2026-10-13T10:45:09.451Z",
+    "tracked_filtered_files": 80,
+    "dependencies": "symlink to installed pinned repository node_modules; no generated source/check files reused",
+    "command": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build release/circuit.json --site --preview-images --use-cdn-javascript --concurrency 4",
+    "exit_code": 0,
+    "routed_records": 13701,
+    "routed_json_matches": true,
+    "preview_first_attempt": "TimeoutError; CLI site-preview retry succeeded",
+    "preview_png_bytes": 92423,
+    "preview_png_sha256": "d544957cc99276b552fb9acabcfefb9bb1dd775270187e2d9a3c0fbb28a9a3d5",
+    "site_generated": true
+  }
+}

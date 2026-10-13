@@ -29,6 +29,7 @@ verifiedInputPaths.push('engineering/onboard-control-eco.json', 'engineering/int
 verifiedInputPaths.push('scripts/check-mechanical-assets.mjs', 'scripts/export-previews.mjs')
 for (const file of (await readdir('engineering/mechanical/parts')).sort()) verifiedInputPaths.push(`engineering/mechanical/parts/${file}`)
 verifiedInputPaths.push('scripts/native-eco-policy.mjs', 'scripts/native-eco-policy.test.mjs', 'engineering/unused-sbu-eco.json', 'scripts/check-placement.mjs', 'scripts/placement-review.mjs', 'scripts/placement-review.test.mjs', 'docs/placement-review.md', 'scripts/jlc-stock.mjs', 'scripts/jlc-stock.test.mjs')
+verifiedInputPaths.push('scripts/fixtures/placement-reviewed.txt')
 verifiedInputPaths.push('scripts/pd-image-policy.mjs', 'scripts/check-pd-image.mjs', 'scripts/pd-image-policy.test.mjs', 'docs/pd-tool-project.json', 'firmware/pd/ti-configuration.zip')
 verifiedInputPaths.push('docs/readiness.md', 'docs/brake-integration.md', 'scripts/check-alternatives.mjs')
 verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-review.test.mjs', 'engineering/native-silk-hold.json', 'scripts/check-pcb-references.mjs', 'scripts/sync-pcb-references.py')
