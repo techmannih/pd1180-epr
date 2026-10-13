@@ -70,7 +70,7 @@ test('BOM identities survive missing or malformed live stock responses', () => {
     expect(run().status).toBe(0)
     const bom = readFileSync(join(scratch, 'dist/assembly-review/assembly-bom.csv'), 'utf8')
     expect(bom).toContain('USB4105-GF-A')
-    expect(bom).toContain('C3020560')
+    expect(bom).toContain('C3025063')
     expect(bom).not.toContain('U18')
     writeFileSync(join(scratch, 'docs/stock-report.json'), 'upstream unavailable')
     expect(run().status).toBe(0)

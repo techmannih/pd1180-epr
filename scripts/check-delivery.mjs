@@ -18,7 +18,7 @@ const checked = []
 
 // Wiring/purchase guidance must travel with the package and match the current
 // source documents, including the distinction between candidates and purchases.
-for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md']) {
+for (const name of ['external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md', 'sourcing-resolution.md', 'manufacturing-acceptance.md']) {
   const current = await readFile(`docs/${name}`, 'utf8')
   const delivered = await readFile(`release/${name}`, 'utf8').catch(() => '')
   if (current !== delivered) errors.push(`release/${name}: differs from current source guidance`)
@@ -26,6 +26,10 @@ for (const name of ['external-system.md', 'external-parts.json', 'brake-integrat
 const externalItems = await readFile('sourcing/external-items.csv', 'utf8')
 if (externalItems !== await readFile('release/external-items.csv', 'utf8').catch(() => ''))
   errors.push('release/external-items.csv: differs from the sourcing inventory')
+
+for (const name of ['replacement-catalog-evidence.json', 'procurement-open-items.csv']) {
+  if (await readFile(`sourcing/${name}`, 'utf8') !== await readFile(`release/${name}`, 'utf8').catch(() => '')) errors.push(`release/${name}: stale sourcing handoff`)
+}
 
 const rootManifest = await readFile('delivery-manifest.json', 'utf8').catch(() => '')
 const releaseManifest = await readFile('release/delivery-manifest.json', 'utf8')

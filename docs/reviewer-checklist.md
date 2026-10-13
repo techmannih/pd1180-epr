@@ -88,3 +88,10 @@ Engineering review and ordering are separate gates: `bun run review` validates t
 - [ ] Confirm the 240-permille request guard cannot bypass the 0.827 A commissioning profile, all three qualification locks remain false, and regenerated delivery BOM/CPL/viewer match the current source. Review 14 behavioral cases and their unqualified assumptions.
 
 Unused-SBU correction and TI export: inspect `engineering/unused-sbu-eco.json`, `docs/pd-image-check.json`, `docs/pd-configuration-review.md` and `docs/placement-review.md`. Ordering remains held while procurement and hardware gates are open.
+
+## Post-merge sourcing and first-article handoff
+
+- [ ] Review selected U17/R64/J1/J10 identities and unresolved U16/U35 procurement in [sourcing-resolution.md](sourcing-resolution.md); do not fit rejected PCA9538PWR.
+- [ ] Complete the U3/U16 programming, full-capacity readback and cold-boot checklist in [readiness.md](readiness.md). Keep qualification flags false until supported by physical results.
+- [ ] Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md); record actual EPR source/cable and provisional J3 resistor/heatsink qualification.
+- [ ] Preserve the 404 silkscreen/text findings deferred by the user, and obtain fabricator printing disposition. This is not zero DRC.

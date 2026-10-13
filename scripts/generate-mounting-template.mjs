@@ -63,7 +63,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="110mm" height="145mm
 <text x="55" y="19" text-anchor="middle">85.9 × 85.9 mm · 4 × Ø4.2 mm · asymmetric pattern</text>
 <text x="55" y="115" text-anchor="middle">Hole coordinates from PCB lower-left corner:</text>
 ${holes.map((hole, index) => `<text x="55" y="${119 + index * 3}" text-anchor="middle">H${index + 1}: X ${hole.x_mm.toFixed(2)} mm · Y ${hole.y_mm.toFixed(2)} mm</text>`).join('\n')}
-<text x="55" y="141" text-anchor="middle">PCB-to-adapter pattern; front-flange motor support required.</text>
+<text x="55" y="141" text-anchor="middle">Alignment only; mounting hardware and thread depth unverified.</text>
 </g>
 <path d="M45 132h20M45 130v4M65 130v4" fill="none" stroke="#111" stroke-width="0.3"/>
 <text x="55" y="137" text-anchor="middle" font-size="2.5">Calibration: exactly 20 mm</text>

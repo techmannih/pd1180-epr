@@ -33,6 +33,7 @@ verifiedInputPaths.push('scripts/fixtures/placement-reviewed.txt')
 verifiedInputPaths.push('scripts/pd-image-policy.mjs', 'scripts/check-pd-image.mjs', 'scripts/pd-image-policy.test.mjs', 'docs/pd-tool-project.json', 'firmware/pd/ti-configuration.zip')
 verifiedInputPaths.push('docs/readiness.md', 'docs/brake-integration.md', 'scripts/check-alternatives.mjs')
 verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-review.test.mjs', 'engineering/native-silk-hold.json', 'scripts/check-pcb-references.mjs', 'scripts/sync-pcb-references.py')
+verifiedInputPaths.push('docs/sourcing-resolution.md', 'docs/manufacturing-acceptance.md', 'sourcing/procurement-open-items.csv', 'release/order-settings.json', 'engineering/sourcing-native-metadata.json')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],

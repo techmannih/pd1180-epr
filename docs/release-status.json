@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "status": "unused-sbu-corrected-pd-image-generated-order-held",
+  "status": "three-sourcing-identities-corrected-programming-prepared-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -31,7 +31,10 @@
     "usb_suspend_power_management_implemented": true,
     "driver_supply_and_protection_operating_limits_verified": true,
     "tps26631_imon_bypass_removed": true,
-    "unused_sbu_source_and_native_correction_verified": true
+    "unused_sbu_source_and_native_correction_verified": true,
+    "fabricator_via_in_pad_process_accepted": false,
+    "usb_stackup_and_impedance_accepted": false,
+    "actual_motor_mount_and_harness_accepted": false
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -46,14 +49,20 @@
     "indicators_alarm_and_supply_budget_qualified": false,
     "brake_preflight_clamp_and_fault_validation": false,
     "ti_pd_full_flash_image_generated_register_reviewed": true,
-    "ti_pd_programming_and_readback_verified": false
+    "ti_pd_programming_and_readback_verified": false,
+    "stm32_complete_main_flash_readback_verified": false,
+    "pd_and_mcu_cold_boot_verified": false,
+    "actual_48v_epr_adapter_and_cable_qualified": false,
+    "stationary_supply_and_fault_matrix_passed": false,
+    "low_current_unloaded_motor_test_passed": false,
+    "braking_and_thermal_test_matrix_passed": false
   },
   "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
-    "404 native-reference silkscreen/text findings remain: 186 text-height, 118 silk-over-copper, 100 silk-overlap. All native names are preserved per user instructions; review exports retain every finding. Full DRC and fabrication gates fail until resolved.",
-    "Exact current assembler inventory is insufficient for C179173 (U17), C861400 (R64), C2652286 (U35), C2847904 (U16), C3020560 (J1/J10). No unreviewed substitutes or stock reservations; see stock-report.json.",
+    "404 silkscreen/text findings retained unchanged and correction deferred by the user. Raw DRC/strict verification remains failed; obtain fabricator printing disposition. No electrical DRC finding is waived.",
+    "U16 C2847904 and U35 C2652286 still lack exact available public assembler inventory. U17/R64/J1/J10 have reviewed stocked selections; stock is not reserved. See sourcing-resolution.md for rejected candidates and exact-part procurement request.",
     "Alternative-part stock/package evidence includes unavailable candidates; alternatives never authorize automatic substitution.",
-    "Fabricator acceptance of filled/capped via-in-pad treatment and USB stackup/impedance remains unrecorded.",
+    "ENIG and 55 epoxy-filled/copper-capped via-in-pad locations specified. Fabricator acceptance, 1 oz inner/outer stack-up and actual USB 90 ohm impedance review remain pending; see manufacturing-acceptance.md.",
     "Four existing holes are retained. Actual rear thread/depth, secure motor mounting, connector access and strain relief are unverified; the 3D view is alignment-only.",
     "TI candidate is generated and U1 unused-SBU correction is native-checked. Fixture, programming/readback, cold APP boot and FLT/EPR waveforms remain untested.",
     "No assembled PCB has powered validation. USB startup/suspend/backfeed, supply/gate thresholds, bridge current, thermal equilibrium, brake faults and EMC require first-article evidence before running/shipping.",
@@ -63,15 +72,12 @@
   ],
   "current_stock_evidence": "docs/stock-report.json",
   "stock_summary": {
-    "checked_at": "2026-10-13T05:28:58.765Z",
-    "available": 79,
+    "checked_at": "2026-10-13T11:41:58.868Z",
+    "available": 82,
     "total": 84,
     "unavailable_codes": [
-      "C179173",
-      "C861400",
       "C2652286",
-      "C2847904",
-      "C3020560"
+      "C2847904"
     ],
     "not_reserved": true
   },
@@ -82,5 +88,11 @@
     "schematic_erc": 0,
     "review_only": true,
     "baseline": "engineering/native-silk-hold.json"
+  },
+  "silkscreen_disposition": {
+    "user_instruction_date": "2026-10-13",
+    "status": "correction-deferred-by-user",
+    "raw_violations_retained": 404,
+    "fabricator_accepted": false
   }
 }

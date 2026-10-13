@@ -992,7 +992,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.VMOTOR_OK", pin2: "net.GND", pin3: "net.VREF_2V5", pin4: "net.MOTOR_OVP_SENSE", pin5: "net.V3V3" }} />
     <resistor name="R64" schSheetName="brake-ovp" schSectionName="brake_U14" schX={-6.92} schY={4.3} pcbX={-1.0} pcbY={-28.0}
       schRotation={-90}
-      resistance="430k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C861400"] }}
+      resistance="430k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C2984356"] }}
       connections={{ pin1: "net.VMOTOR", pin2: "net.MOTOR_OVP_SENSE" }} />
     <resistor name="R65" schSheetName="brake-ovp" schSectionName="brake_U14" schX={-3.6} schY={4.3} pcbX={4.55} pcbY={-32.6}
       resistance="20k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C723637"] }}
