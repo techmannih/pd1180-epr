@@ -1,6 +1,6 @@
 {
   "name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
-  "revision": "0.4.0-ECO",
+  "revision": "0.4.1-ECO",
   "controller": "STM32G0B1CBT6",
   "motor_driver": "TMC5160A with eight CSD19534Q5A MOSFETs",
   "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
@@ -92,10 +92,10 @@
   "rated_targets": {
     "pd_contract_v": 48,
     "pd_contract_a": 5,
-    "motor_phase_rms_a": 5.5,
+    "motor_phase_rms_a": 3.8,
     "motor": "34HS31-6004S1",
     "motor_rated_phase_a": 6,
-    "motor_current_note": "5.5 A RMS remains the existing board design screen only, not a qualified setting for this motor; motion firmware remains locked."
+    "motor_current_note": "Conservative design ceiling for the ordered 6 A/phase motor: 3.8 A RMS target, GLOBALSCALER=139 gives 3.781 A nominal. The full-scale tolerance sensitivity peak is 5.671 A, below 6 A; this is not powered qualification. Initial commissioning uses IRUN=6, about 0.827 A RMS, 10 rpm and no attached load. Motion remains locked."
   },
   "reset_safe_outputs": {
     "POWER_PERMIT": 0,
@@ -156,7 +156,26 @@
       "ain0": "VMON_ADC",
       "ain1": "IIN_MON",
       "reference_range_v": 4.096,
-      "sample_rate_sps": 128
+      "sample_rate_sps": 128,
+      "ain2": "BRAKE_FB",
+      "brake_preflight": {
+        "divider_ohm": [
+          4700,
+          4700,
+          510
+        ],
+        "filter_f": 1e-08,
+        "required_fresh_samples": 3,
+        "valid_bus_mv": [
+          44000,
+          50400
+        ],
+        "return_ratio": [
+          0.9,
+          1.1
+        ],
+        "scope": "Continuity before each power-permit cycle, latched only while RUN. Not a proof of brake current, Q16 turn-on, heatsink capacity or runtime cable integrity."
+      }
     },
     "indicators": {
       "gpio_expander": "TCA9538PWR",

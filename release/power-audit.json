@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
-  "checked_at": "2026-10-12T04:46:25.199Z",
+  "checked_at": "2026-10-13T01:56:59.211Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "input_sha256": {
-    "index.circuit.tsx": "29357b727b3b26827a3dc62bd59c4aa971c48b7539c8db7b9f678e3b77783829",
-    "dist/index/circuit.json": "85f31648414d3aaddfdceb35fe642bf0767a3ac07793e7e649b86878cdf7864f",
-    "docs/design-manifest.json": "9ba56222485fa06b497c407f5f3bfc09acaa01651ae899d5907f5062b480711a",
-    "hardware-contract.json": "e2f68a6fab2512c5c45aa775e3d2a6669817221b18c9611d86e8ecbb0099c96d",
+    "index.circuit.tsx": "0bf6c0e2ce4ebc145ef74c235069d32af225fef8908c4aa59ae970d82577f727",
+    "dist/index/circuit.json": "5ade322e5f568e71b93783e4e6f9ebab1fb1d0fa1936176526c70bb1ec66e06d",
+    "docs/design-manifest.json": "6e5d08db9d828ed40dca0e0640496ccb566f849a1b0f040ca7fbbdcdfbdb0211",
+    "hardware-contract.json": "c8975a82abcaa5543c5230aebd7e058c3c7890ae513aad54d3a7499074646507",
     "docs/motor-data.json": "4579b126fccbfcd4d7620f2dec90dfd7fe9c5cd299be555aea5053a673f86103",
-    "firmware/include/tmc5160_config.h": "b34a21206e06ab0ca86583632ef837bde57d988418214d14b618cb65dfb4030d",
-    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "556fe993091b35fb10a83289a03eb62edc8a107fb8fa2bac6cabd4ce49dcd80e",
-    "scripts/power-audit.mjs": "c5e785ba9fc19d80975651e38292041fb443e0266d0e3771611d9365a586c487"
+    "firmware/include/tmc5160_config.h": "cbf6d4fc35a35579c634030b50a516d4368ca20eaf0fe060bf77817fc2f53658",
+    "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb": "c955f3f13b799e879e358d342fcf4a4509f92616a88bfc0bfa981981235fbcd6",
+    "scripts/power-audit.mjs": "a09d499fe90ee8c94790cf90fa0e6f434af4f9c37a658731bc7c0a77541d286e"
   },
   "assumptions": {
     "resistor_initial_tolerance_fraction": 0.01,
@@ -70,15 +70,15 @@
     "supply": {
       "contract_w": 240,
       "efuse_limit": {
-        "formula_nominal_a": 4.477611940298508,
-        "table_nominal_a": 4.5,
-        "min_a": 4.143564356435643,
-        "max_a": 4.863636363636365
+        "formula_nominal_a": 4.265402843601896,
+        "table_nominal_a": 4.286729857819905,
+        "min_a": 3.9432826585286964,
+        "max_a": 4.6378169341428706
       },
-      "nominal_motor_input_ceiling_w": 214.92537313432837,
-      "tolerance_low_current_ceiling_w_at_48v": 198.89108910891088,
-      "upstream_logic_current_margin_a_at_5a_contract": 0.1363636363636349,
-      "note": "Input limit is not a phase-current limit; the upstream logic buck also draws from the 5 A contract. TPS26631 supports 2x overload pulses; source coordination needs measurement."
+      "nominal_motor_input_ceiling_w": 204.739336492891,
+      "tolerance_low_current_ceiling_w_at_48v": 189.27756760937743,
+      "upstream_logic_current_margin_a_at_5a_contract": 0.36218306585712945,
+      "note": "TPS26630 uses 1x active current limiting, MODE open latch-off. R25 includes initial tolerance and TCR. Reserve 100 mA upstream logic input; fast overshoot, source response and logic allocation require measurement."
     },
     "thresholds_v": {
       "input_uvlo": {
@@ -98,34 +98,34 @@
       },
       "brake_off_nominal": 51.34320000000001,
       "motor_cutoff_screen": {
-        "min": 53.12376822712945,
-        "nominal": 53.69047619047619,
-        "max": 54.262480385368434
+        "min": 52.62242515037569,
+        "nominal": 53.183639792550686,
+        "max": 53.750098228335084
       },
       "vsa_operating_max": 50,
       "vs_operating_max": 55,
       "note": "Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions."
     },
     "current": {
-      "target_rms_a": 5.5,
-      "sine_peak_a": 7.778174593052023,
-      "programmed_rms_a": 5.386164934819405,
-      "sensitivity_min_rms_a": 5.066194740671717,
-      "sensitivity_max_rms_a": 5.712599173293309,
+      "target_rms_a": 3.8,
+      "sine_peak_a": 5.374011537017761,
+      "programmed_rms_a": 3.7811965956560467,
+      "sensitivity_min_rms_a": 3.556571055320044,
+      "sensitivity_max_rms_a": 4.010360025695807,
       "motor_rated_phase_a": 6,
       "motor_qualified_driver_rms_a": null,
       "motor_rating_note": "Manufacturer states AMPS/PHASE, not an approved TMC5160 RMS setpoint. Resolve waveform, peak/hold current and thermal limits before motor-enabled firmware.",
-      "note": "Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=198 is only a sensitivity calculation, not a guaranteed tolerance."
+      "note": "Conservative motor-current ceiling, not an approved operating setting. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=139 is only a sensitivity calculation, not a guaranteed tolerance."
     },
     "dissipation_w": {
-      "regulation_shunt_cycle_upper_bound_each": 0.9982500000000001,
-      "regulation_shunt_held_peak_upper_bound_each": 1.9965000000000002,
-      "phase_telemetry_shunt_cycle_each": 0.15125,
-      "phase_telemetry_shunt_held_peak_each": 0.3025,
-      "eight_bridge_mosfets_conduction_25c_max_rds_total": 1.8271000000000002,
-      "eight_bridge_mosfets_conduction_hot_sensitivity_total": 3.6542000000000003,
-      "efuse_at_nominal_limit_and_125c_max_ron": 1.0625974604588997,
-      "two_motor_windings_25c": 29.04,
+      "regulation_shunt_cycle_upper_bound_each": 0.47652,
+      "regulation_shunt_held_peak_upper_bound_each": 0.95304,
+      "phase_telemetry_shunt_cycle_each": 0.0722,
+      "phase_telemetry_shunt_held_peak_each": 0.1444,
+      "eight_bridge_mosfets_conduction_25c_max_rds_total": 0.872176,
+      "eight_bridge_mosfets_conduction_hot_sensitivity_total": 1.744352,
+      "efuse_at_nominal_limit_and_125c_max_ron": 0.9642640551649784,
+      "two_motor_windings_25c": 13.8624,
       "note": "Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep."
     },
     "inrush": {
@@ -148,7 +148,7 @@
     "regeneration": {
       "bulk_energy_48_to_53v_j": 0.23735,
       "bulk_energy_48_to_53v_min_cap_j": 0.18988000000000002,
-      "winding_energy_nominal_sine_quadrature_j": 0.105875,
+      "winding_energy_nominal_sine_quadrature_j": 0.05054,
       "rotor_only_energy_j": {
         "100": 0.007676358978625057,
         "500": 0.19190897446562635,
@@ -167,11 +167,17 @@
       "continuous_281w_resistor_case_to_ambient_max_c_per_w_at_50c": 0.1245995016019936,
       "note": "Brake sizing requires load inertia, stop time, duty and gravity. 300 W LPS300 rating requires 85 C maximum case temperature; pulse energy and repetition must be checked separately."
     },
+    "brake_feedback": {
+      "divider_ratio": 19.431372549019606,
+      "maximum_open_return_v_at_2ma_leakage": 20.2164,
+      "each_top_resistor_nominal_w_at_55v": 0.14476911782225704,
+      "note": "D20 2 mA at 125 C rated reverse voltage is the leakage screen; higher junction temperatures and actual ADC errors need qualification. Divider is 1%, 100 ppm/C, two 250 mW 1206 top resistors; board ambient design limit 50 C, local temperature must stay within derated ratings."
+    },
     "telemetry": {
       "volts_per_ampere": 0.1,
       "phase_output_at_target_peak_v": [
-        0.8721825406947976,
-        2.427817459305202
+        1.1125988462982237,
+        2.187401153701776
       ],
       "vmon_at_55v": 2.8947368421052633,
       "note": "Nominal transfer only; ADC/reference/gain errors, offset, common-mode switching and sampling require calibration."
@@ -181,7 +187,7 @@
   "outstanding": [
     "Measured VSA ripple and VS transient margin",
     "Measured brake/cutoff tolerance coordination",
-    "PD source/cable 2x eFuse pulse coordination",
+    "PD source/cable 1x eFuse transient coordination and 100 mA upstream logic allocation",
     "Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification",
     "TI-generated EEPROM image and approved configuration identity",
     "Fabricator stack-up/impedance/filled-via approval",

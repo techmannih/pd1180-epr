@@ -8,6 +8,7 @@
 extern "C" {
 #include "board_pins.h"
 #include "control.h"
+#include "brake_preflight.h"
 #include "pd_contract.h"
 #include "telemetry.h"
 #include "power_domain.h"
@@ -21,6 +22,9 @@ extern "C" {
 // U7 mode-pin contention is corrected in source; firmware does not assume the PCB was rebuilt.
 static constexpr bool motionWiringVerified = false;
 static constexpr bool pdImageVerified = false;
+static constexpr bool brakeHardwareVerified = false;
+static constexpr bool motionQualified = motionWiringVerified && pdImageVerified && brakeHardwareVerified;
+static pd1180_brake_preflight_t brakePreflight;
 static TwoWire pdBus(PB7, PB6);
 static SPIClass motorSpi(PA7, PA6, PA5);
 static bool spiStarted;
@@ -28,7 +32,7 @@ static bool motorFrame(void *, const uint8_t tx[5], uint8_t rx[5]);
 static pd1180_motor_service_t motor = {};
 static auto &tmc = motor.driver;
 static auto &tmcStatus = motor.status;
-static constexpr uint16_t commissioningCurrentPermille = 180; // Start below 1 A RMS; tune on the bench.
+static constexpr uint16_t commissioningCurrentPermille = 240; // Start below 1 A RMS; tune on the bench.
 static uint32_t lastDriverPoll;
 static pd1180_control_t control;
 static pd1180_local_motion_t localMotion;
@@ -41,10 +45,10 @@ static uint32_t boardMv;
 static uint8_t pdMode[4], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
 static uint32_t lastPoll, lastTick, lastGoodSample, vbusMv, vmotorMv;
 static uint32_t lastTemperaturePoll, lastTemperatureSample, temperatureConfiguredAt;
-static uint32_t lastAdcPoll, lastPhaseSample, adcSampleAt[2];
-static uint16_t adcMv[2];
+static uint32_t lastAdcPoll, lastPhaseSample, adcSampleAt[3];
+static uint16_t adcMv[3];
 static int32_t phaseMa[2];
-static bool temperatureConfigured, adcPending, adcValid[2], phaseValid;
+static bool temperatureConfigured, adcPending, adcValid[3], phaseValid;
 static uint8_t adcChannel;
 static constexpr uint16_t temperatureConfig = 0x08C0; // Two faults, active-low comparator, 8 Hz.
 static char response[384];
@@ -74,11 +78,13 @@ static void releaseChipSelect(board_pin_t p) {
 }
 static void invalidateTelemetry() {
   inputs = {};
+  brakePreflight = {};
+  adcChannel = 0;
   pd1180_local_motion_cancel(&localMotion);
   temperatureConfigured = false;
   adcPending = false;
-  adcValid[0] = adcValid[1] = phaseValid = pdReadOk = false;
-  adcMv[0] = adcMv[1] = 0;
+  adcValid[0] = adcValid[1] = adcValid[2] = phaseValid = pdReadOk = false;
+  adcMv[0] = adcMv[1] = adcMv[2] = 0;
   phaseMa[0] = phaseMa[1] = 0;
   vmotorMv = 0;
   pd1180_motor_service_reset(&motor);
@@ -138,7 +144,7 @@ static void pollDriver(uint32_t now) {
   lastDriverPoll=now;
   // Read-only in the unqualified commissioning image. Faults are not cleared
   // automatically; every reset/power loss invalidates the configured state.
-  if (motionWiringVerified && pdImageVerified) {
+  if (motionQualified) {
     pd1180_motor_service(&motor,&control,&inputs,commissioningCurrentPermille);
   } else {
     pd1180_tmc_status(&tmc,&tmcStatus);
@@ -232,7 +238,7 @@ static void pollIndicators(uint32_t now) {
     (inputs.temperature_valid && inputs.temperature_deci_c >= 700);
   uint8_t value;
   if (fault) value = 0x06 | ((now % 2000u < 200u) ? 0x08 : 0); // Red; bounded chirp.
-  else if (!motionWiringVerified || !pdImageVerified) value = 0x03; // Blue: commissioning lock.
+  else if (!motionQualified) value = 0x03; // Blue: commissioning lock.
   else if (!inputs.sample_fresh || !inputs.temperature_valid || !inputs.epr_contract)
     value = 0x04; // Amber: waiting for qualified power/telemetry.
   else value = 0x05; // Green: qualified, with RUN reported separately over USB.
@@ -273,18 +279,18 @@ static void pollBusAdc(uint32_t now) {
   const uint16_t config=0x8383u | (static_cast<uint16_t>(4u+adcChannel)<<12);
   if (!adcPending) {
     adcPending=writeRegister(0x49,1,config);
-    if (!adcPending) {adcValid[0]=false; adcValid[1]=false;}
+    if (!adcPending) {adcValid[0]=false; adcValid[1]=false; adcValid[2]=false;}
     return;
   }
   uint16_t status, raw;
   if (!readRegister(0x49,1,status) || (status & 0x7FFFu)!=(config & 0x7FFFu)) {
-    adcPending=false; adcValid[0]=false; adcValid[1]=false; return;
+    adcPending=false; adcValid[0]=false; adcValid[1]=false; adcValid[2]=false; return;
   }
   if (!(status & 0x8000u)) return;
   adcValid[adcChannel]=readRegister(0x49,0,raw) &&
     pd1180_ads1115_mv(static_cast<int16_t>(raw),&adcMv[adcChannel]);
   if (adcValid[adcChannel]) adcSampleAt[adcChannel]=now;
-  adcChannel^=1; adcPending=false;
+  adcChannel=(adcChannel+1u)%3u; adcPending=false;
 }
 static void samplePhaseCurrent(uint32_t now) {
   if (now-lastPhaseSample < 1u) return;
@@ -313,14 +319,18 @@ static void pollPower() {
   inputs.contract_mv = contract.mv;
   inputs.contract_ma = contract.ma;
   inputs.configuration_verified = pdImageVerified;
-  inputs.motion_wiring_verified = motionWiringVerified;
+  inputs.motion_wiring_verified = motionWiringVerified && brakeHardwareVerified;
   inputs.pd_fault = !pdReadOk;
   inputs.efuse_fault = digitalRead(pin(PD1180_PIN_EFUSE_FAULT_N)) == LOW;
   inputs.motor_power_good = digitalRead(pin(PD1180_PIN_MOTOR_PG)) == HIGH;
   inputs.vmotor_in_range = digitalRead(pin(PD1180_PIN_VMOTOR_OK)) == HIGH && adcValid[0] &&
     millis()-adcSampleAt[0]<=100u && vmotorMv >= 44000 && vmotorMv <= 51000;
+  inputs.brake_preflight_ok = pd1180_brake_preflight_update(&brakePreflight,
+    control.power_permit, control.mcu_run, adcValid[0] && adcValid[2] &&
+    millis()-adcSampleAt[0]<=100u && millis()-adcSampleAt[2]<=100u,
+    adcSampleAt[2], vmotorMv, static_cast<uint32_t>(adcMv[2])*991u/51u);
   inputs.watchdog_healthy = true;
-  inputs.driver_ready = motionWiringVerified && pdImageVerified && tmc.configured &&
+  inputs.driver_ready = motionQualified && tmc.configured &&
     tmcStatus.valid && !tmcStatus.fault && millis()-lastDriverPoll<=40u;
   inputs.stop_active = false; // External limit interface removed; local STOP uses the controlled ramp.
 }
@@ -338,12 +348,12 @@ static void executeCommand() {
     reply(status);
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
-    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u INDICATORS_OK=%u BRINGUP_REQUIRED=%u\r\n",
+    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BRAKE_OK=%u BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u INDICATORS_OK=%u BRINGUP_REQUIRED=%u\r\n",
       static_cast<unsigned long>(boardMv),peripheralsStarted,pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
-      adcValid[0] && millis()-adcSampleAt[0]<=100u,adcMv[1],adcValid[1] && millis()-adcSampleAt[1]<=100u,
+      inputs.brake_preflight_ok, adcValid[0] && millis()-adcSampleAt[0]<=100u,adcMv[1],adcValid[1] && millis()-adcSampleAt[1]<=100u,
       inputs.temperature_deci_c,inputs.temperature_valid,static_cast<long>(phaseMa[0]),static_cast<long>(phaseMa[1]),phaseValid,
       inputs.motor_power_good,inputs.vmotor_in_range,control.mcu_run && inputs.driver_ready,indicatorsReady,
-      !motionWiringVerified || !pdImageVerified);
+      !motionQualified);
     reply(status);
   } else if(!strcmp(command,"HELP")) {
     reply("PD1180 commissioning: STATUS, DRIVER, DISARM, ARM (blocked), HELP. No motion enabled.\r\n");
@@ -365,7 +375,7 @@ void setup() {
 }
 void loop() {
   // Qualification is a firmware build decision, never a USB command override.
-  if (!motionWiringVerified || !pdImageVerified) safeOutputs();
+  if (!motionQualified) safeOutputs();
   const uint32_t now=millis();
   vbusMv = dividerMillivolts(PD1180_PIN_USB_VBUS_SENSE,1000,47);
   if (usbStarted && usbIsSuspended() && vbusMv >= 3000u) {
@@ -420,14 +430,14 @@ void loop() {
     inputs.sample_fresh=pdReadOk && tick-lastGoodSample<=100u;
     pd1180_control_tick(&control,&inputs,tick-lastTick); lastTick=tick;
   }
-  if (motionWiringVerified && pdImageVerified) {
+  if (motionQualified) {
     digitalWrite(pin(PD1180_PIN_POWER_PERMIT),control.power_permit?HIGH:LOW);
     digitalWrite(pin(PD1180_PIN_SD_MODE),LOW); // TMC internal SPI ramp, never STEP/DIR.
     digitalWrite(pin(PD1180_PIN_MCU_RUN),control.mcu_run && inputs.driver_ready?HIGH:LOW);
   } else safeOutputs();
   pd1180_local_motion_update(&localMotion,&control,&inputs,&tmc,
     digitalRead(pin(PD1180_PIN_USER_BUTTON_N))==LOW,tick,
-    motionWiringVerified && pdImageVerified && peripheralsStarted);
+    motionQualified && peripheralsStarted);
   // Apply cancellations and transport/stop-timeout failures before any other work.
   if (!control.armed || control.fault_latched) safeOutputs();
   pollIndicators(tick);

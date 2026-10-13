@@ -27,6 +27,7 @@ Every executable script is listed here so a reviewer can understand the release 
 | `test-critical-copper.py` | Native KiCad regressions: accept a load connection at the shunt terminal; reject missing sense copper, a same-net spur, a connection at the far edge of the IC land, or a plane via before that terminal; check that DSN reservations leave other destinations intact. |
 | `check-netlist.mjs` | Validates source connectivity and required nets. |
 | `power-audit.mjs` | Reads compiled connectivity, fitted values and firmware to screen operating limits, supply isolation, forbidden IMON bypass capacitors, protection tolerances and power losses; writes hash-bound calculations while retaining hardware qualification holds. |
+| `simulate-power-eco.py` (`--check` validates committed source/model/audit-parameter/deck hashes without ngspice) | Runs current-source behavioral ngspice winding/regen and 1x versus 2x input-limit screens at two timesteps; emits decks and results in engineering/power-eco-simulation. Requires ngspice shared library; optional --csv-dir preserves raw waveforms outside the release. Includes explicit unsafe load/fault cases and never qualifies hardware. |
 | `power-audit.test.mjs` | Rejects merged/missing supply nets, non-numeric inductance and IMON bypass capacitors including renamed references/net aliases; regresses operating-limit and tolerance calculations. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
 | `release-gates.test.mjs` | Proves held designs remain reviewable but not orderable, and both modes reject failed or stale evidence. |
@@ -108,3 +109,7 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 | `check-mechanical-assets.mjs` | Verifies all runtime model URLs use one immutable Git revision and local bytes match the part manifest; `--remote` also fetches and hash-checks every published asset. |
 
 - `check-onboard-eco.py`: compares baseline, final and fresh-export native PCBs for the onboard START/STOP ECO. Checks the exact 34 removals/two additions, all retained pad geometry/net changes and four independently identified mounting holes. Fresh DRC/ERC/parity remains mandatory.
+
+- `check-power-eco.py` — arguments: `BEFORE AFTER FRESH_EXPORT REPORT`: proves the power ECO changes only U6/R25/R66 values, U30 AIN2, two probe locations and the five declared additions; compares new geometry with source and preserves the four holes. Requires KiCad Python.
+
+- `check-brake-sense.py` — arguments: `BOARD REPORT`: destructive negative test on a temporary copy only. Removes thin BRAKE_RETURN copper and requires native DRC to disconnect only R134.1; binds a low-current-branch exception to exact board/checker hashes for the power-corridor audit. Requires KiCad Python and CLI.

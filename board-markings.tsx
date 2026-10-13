@@ -14,8 +14,8 @@ export function BoardMarkings() {
     <silkscreentext text="SCL" layer="top" pcbX={2.1} pcbY={19.3} pcbRotation={90} fontSize="0.8mm" />
     <silkscreentext text="ISO" layer="top" pcbX={6.9} pcbY={39.3} pcbRotation={0} fontSize="0.8mm" />
     <silkscreentext text="PD V" layer="top" pcbX={6.9} pcbY={42.3} pcbRotation={0} fontSize="0.8mm" />
-    <silkscreentext text="VM" layer="top" pcbX={10.4} pcbY={39.3} pcbRotation={0} fontSize="0.8mm" />
-    <silkscreentext text="GND" layer="top" pcbX={19.4} pcbY={42.1} pcbRotation={0} fontSize="0.8mm" />
+    <silkscreentext text="VM" layer="top" pcbX={9.5} pcbY={42.1} pcbRotation={0} fontSize="0.8mm" />
+    <silkscreentext text="GND" layer="top" pcbX={22} pcbY={42.1} pcbRotation={0} fontSize="0.8mm" />
     <silkscreentext text="RGB" layer="top" pcbX={-40.3} pcbY={-20.1} pcbRotation={0} fontSize="0.8mm" />
     <silkscreentext text="3V3" layer="top" pcbX={-37.6} pcbY={-21.0} fontSize="0.8mm" />
     <silkscreentext text="ts" layer="bottom" pcbX={0} pcbY={14.4} fontSize="2.4mm" />

@@ -1,4 +1,5 @@
 #include "tmc5160.h"
+#include "tmc5160_config.h"
 #include "motor_service.h"
 #include <assert.h>
 #include <stdio.h>
@@ -25,11 +26,11 @@ int main(void) {
   pd1180_tmc_t d={.frame=transfer,.context=&f};
   uint32_t value;
   assert(pd1180_tmc_read(&d,4,&value) && value==0x30000010 && f.calls==2);
-  assert(pd1180_tmc_configure_ramp(&d,180)); // Approx. 0.86 A RMS first tuning stage.
+  assert(pd1180_tmc_configure_ramp(&d,240)); // Exercise current scaling below the commissioning setting.
   assert(d.configured && !(f.regs[0x6C]&15u));
   assert(f.regs[0x09]==0x10C06u && f.regs[0x0A]==0x400u);
   assert(((f.regs[0x6C]>>24)&15u)==0 && !(f.regs[0x6C]&(3u<<30)));
-  assert(((f.regs[0x10]>>8)&31u)==4 && f.regs[0x0B]==198);
+  assert(((f.regs[0x10]>>8)&31u)==6 && f.regs[0x0B]==PD1180_GLOBALSCALER);
   assert(pd1180_tmc_set_chopper(&d,true));
   assert(f.regs[0x27]==0 && f.regs[0x20]==1 && f.regs[0x26]==130 && f.regs[0x34]==0);
   assert(pd1180_tmc_velocity(&d,11930) && f.regs[0x27]==11930);
@@ -48,12 +49,12 @@ int main(void) {
   for(unsigned bit=0;bit<32;++bit) if((1u<<bit)&0x1E003000u) {
     f.regs[0x6F]=1u<<bit; assert(!pd1180_tmc_status(&d,&status));
   }
-  f.regs[0x6F]=0;f.regs[4]=0xFFFFFFFF;assert(!pd1180_tmc_configure_ramp(&d,180));
-  f.regs[4]=0;assert(!pd1180_tmc_configure_ramp(&d,180));
-  f.regs[4]=0x30000000;assert(!pd1180_tmc_configure_ramp(&d,180)); // Enabled bridge.
-  f.regs[4]=0x30000050;assert(!pd1180_tmc_configure_ramp(&d,180)); // Wrong mode.
-  f.regs[4]=0x30000014;assert(!pd1180_tmc_configure_ramp(&d,180)); // dcStep unexpectedly enabled.
-  f.regs[4]=0x30000010;f.corrupt_echo=true;assert(!pd1180_tmc_configure_ramp(&d,180));
+  f.regs[0x6F]=0;f.regs[4]=0xFFFFFFFF;assert(!pd1180_tmc_configure_ramp(&d,240));
+  f.regs[4]=0;assert(!pd1180_tmc_configure_ramp(&d,240));
+  f.regs[4]=0x30000000;assert(!pd1180_tmc_configure_ramp(&d,240)); // Enabled bridge.
+  f.regs[4]=0x30000050;assert(!pd1180_tmc_configure_ramp(&d,240)); // Wrong mode.
+  f.regs[4]=0x30000014;assert(!pd1180_tmc_configure_ramp(&d,240)); // dcStep unexpectedly enabled.
+  f.regs[4]=0x30000010;f.corrupt_echo=true;assert(!pd1180_tmc_configure_ramp(&d,240));
   f.corrupt_echo=false;f.fail=true;assert(!pd1180_tmc_status(&d,&status) && !status.valid);
   f.fail=false;f.regs[1]=0;f.regs[0x6F]=0;f.regs[4]=0x30000010;
   pd1180_motor_service_t motor={.driver={.frame=transfer,.context=&f}};

@@ -1,0 +1,24 @@
+input_new_1x_corner
+* BEHAVIORAL SCREEN -- not a manufacturer macro-model or hardware qualification.
+* Board source SHA256 0bf6c0e2ce4ebc145ef74c235069d32af225fef8908c4aa59ae970d82577f727
+.options reltol=1e-5 abstol=1e-9 vntol=1e-7 method=gear maxord=2
+* 48 V source; 100 mOhm source/cable R and 2.2 uF input C are assumptions.
+* Upstream logic is represented by a constant 100 mA load above 10 V.
+* Initial capacitors are precharged: this is an overload test, not startup.
+Videal ideal 0 48
+Bsource ideal src I = (v(trip) < .5) ? min(12,max(0,(48-v(vin))/0.1)) : 0
+Vsource src vin 0
+Cinput vin 0 2.2u ic=47.79
+Rleakin vin 0 1G
+Blogic vin 0 I=.1*min(1,max(v(vin),0)/10)
+Bpath vin feed I = (v(uv) > .5) ? 0 : min(((time >= 0.005 && time < 0.0305) ? 4.63781693414 : 4.63781693414),max(0,(v(vin)-v(bus))/0.0461))
+Vfeed feed bus 0
+Cbulk cap 0 940u ic=47.6978
+Resr cap bus .01
+Rleakout bus 0 1G
+Bload bus 0 I = (v(uv) > .5) ? 0 : (((time >= 0.005 && time < 0.045) ? 7 : 2)*min(1,max(v(bus),0)/10))
+* Below 10 V the synthetic load folds back; post-collapse values are illustrative.
+Vtrip trip 0 0
+Vuv uv 0 0
+.tran 5e-07 0.06 0 5e-07 uic
+.end

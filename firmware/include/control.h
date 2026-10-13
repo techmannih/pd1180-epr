@@ -16,6 +16,7 @@ typedef struct {
   bool configuration_verified;
   bool sample_fresh;
   bool driver_ready;
+  bool brake_preflight_ok;
   bool motion_wiring_verified;
   bool stop_active;
   bool temperature_valid;

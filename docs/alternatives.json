@@ -2,20 +2,15 @@
   "automatic_substitution": false,
   "parts": [
     {
-      "primary": "C1850273",
-      "alternative": "C1850281",
-      "mpn": "TPS26631RGET",
-      "stock": 23,
-      "checked_at": "2026-10-11T16:01:32.779Z",
-      "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=1850281",
+      "primary": "C1850276",
+      "alternative": "C2864391",
+      "mpn": "TPS26630RGET",
+      "stock": null,
+      "checked_at": null,
       "classification": "same-silicon-package",
-      "notes": "TPS26631RGET: same RGE footprint, alternate tape quantity; verify ordering suffix and assembly availability.",
-      "package": "VQFN-24(4x4)",
-      "status": "available",
+      "notes": "TPS26630RGET retains the 1x active-limit/latch-off variant and RGE footprint; alternate tape quantity. Exact stock/package refresh required. TPS26631 must not be substituted because it permits 2x overload.",
       "expected_package": "VQFN-24(4x4)",
-      "expected_package_match": true,
-      "primary_package": "VQFN-24(4x4)",
-      "package_compatible": true
+      "status": "unverified"
     },
     {
       "primary": "C114200",
@@ -218,7 +213,7 @@
       "primary": "C391032",
       "alternative": null,
       "classification": "not-approved-redesign-required",
-      "notes": "FUET-9650B-3V is an active 2–5 V SMT buzzer. A passive transducer would not sound with the static enable firmware; any substitute needs footprint, polarity, current and acoustic review. No drop-in alternative selected.",
+      "notes": "FUET-9650B-3V is an active 2\u20135 V SMT buzzer. A passive transducer would not sound with the static enable firmware; any substitute needs footprint, polarity, current and acoustic review. No drop-in alternative selected.",
       "status": "no-drop-in-selected"
     },
     {
@@ -234,6 +229,27 @@
       "classification": "not-approved-redesign-required",
       "notes": "XL-1608SURC-06 uses the imported 0603 cathode/anode numbering. A replacement needs polarity, footprint and low-current visibility review; no drop-in alternative selected.",
       "status": "no-drop-in-selected"
+    },
+    {
+      "primary": "C49196690",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R25: use only a reviewed 4.22 kohm 0603 substitute with initial tolerance <=0.1%, TCR <=100 ppm/C and >=100 mW. Recalculate upper current including temperature; no automatic substitution."
+    },
+    {
+      "primary": "C705737",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "R66: use only a reviewed 1.21 kohm 0603 substitute with initial tolerance <=0.1% and TCR <=25 ppm/C. Recalculate brake/OVP coordination; no automatic substitution."
+    },
+    {
+      "primary": "C49242208",
+      "alternative": null,
+      "classification": "not-approved-redesign-required",
+      "status": "no-drop-in-selected",
+      "notes": "D20: replacement must retain cathode pin 1/anode pin 2 and the verified SMBF land pattern, >=100 V / 10 A ratings, forward and hot-leakage limits. A 2 mA hot leakage bound is part of startup continuity detection; no automatic substitution."
     }
   ],
   "checked_at": "2026-10-11T16:01:37.280Z"

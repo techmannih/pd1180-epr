@@ -46,7 +46,7 @@ const imonCircuit = (name = 'C19') => [
 
 test('rejects the removed C19 IMON bypass, including renamed parts and net aliases', () => {
   expect(imonBypassErrors(imonCircuit())).toEqual([
-    'C19: TPS26631 IMON must not have a bypass capacitor (TI section 8.3.9)',
+    'C19: TPS2663 IMON must not have a bypass capacitor (TI section 8.3.9)',
   ])
   const aliased = imonCircuit('C999')
   aliased.push({ type:'source_net', name:'FILTER_ALIAS', subcircuit_connectivity_map_key:'imon' })

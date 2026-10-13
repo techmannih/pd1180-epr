@@ -35,7 +35,7 @@ const pages = [
     "motor-power",
     "Protected 48 V Motor Bus",
     "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
-    "Nominal current limit 4.48 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
+    "Nominal 1x current limit 4.27 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
   ],
   [
     "motion",
@@ -53,7 +53,7 @@ const pages = [
     "bridge-a",
     "Motor Phase A Power Bridge",
     "Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt.",
-    "J2 connects both motor windings. The 5.5 A RMS design target is not a qualified setting."
+    "J2 connects both motor windings. The 3.8 A RMS design ceiling is not a qualified setting."
   ],
   [
     "bridge-b",
@@ -70,7 +70,7 @@ const pages = [
   [
     "brake-ovp",
     "Overvoltage Inhibit and Brake Driver",
-    "U14 inhibits motion at nominal 53.7 V; U15/Q16 switch the external J3 brake load.",
+    "U14 inhibits motion at nominal 53.18 V; U15/Q16 switch the external J3 brake load.",
     "Brake control remains powered from the protected motor bus through the backup supply."
   ],
   [
@@ -143,6 +143,9 @@ const pages = [
     "U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded.",
     "Use fixed 5 V fixture power and a 3.3 V open-drain programmer; VREF is sense-only."
   ]
+  , ["brake-feedback", "Brake Continuity Preflight",
+    "R134-R136 sense J3 return on U30 AIN2 before motion; C98 filters the ADC input.",
+    "This check detects an absent resistor or stuck-on Q16; it does not prove braking current."]
 ] as const
 
 export const SchematicPages = () => <>

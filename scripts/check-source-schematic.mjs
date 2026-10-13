@@ -116,11 +116,12 @@ const expectedSheetNames = [
   "driver-power",
   "indicators",
   "alarm",
-  "pd-programming"
+  "pd-programming",
+  "brake-feedback"
 ]
 const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["inputs", "serial", "serial-rs232", "outputs"].includes(name)))
-check(sheets.length === 23, "23 retained A4 schematic sheets", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 23, "all schematic sheet names are unique")
+check(sheets.length === 24, "24 A4 schematic sheets including brake preflight", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 24, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -161,7 +162,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 69, "69 high-level annotations on 23 retained sheets", {
+check(annotations.length === 72, "72 high-level annotations on 24 sheets", {
   actual: annotations.length,
 })
 
@@ -321,7 +322,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 162, "162 named source nets after removal of external command circuits", { actual: sourceNets.length })
+check(sourceNets.length === 164, "164 named source nets including brake feedback", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -395,7 +396,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 87, "87 capacitors after removal of external-command buffers", { actual: capacitors.length })
+check(capacitors.length === 88, "88 capacitors including brake feedback filter", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })

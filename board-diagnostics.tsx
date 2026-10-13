@@ -102,10 +102,10 @@ export const BoardDiagnostics = () => (
       pcbX={7.0} pcbY={41.0} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
       connections={{ pin1: "net.PD_VBUS" }} />
     <testpoint doNotPlace name="TP_VMOTOR" schSheetName="pd-programming" schSectionName="pd-programming_U36" schX={4.5} schY={-8.2}
-      pcbX={10.5} pcbY={38.0} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
+      pcbX={9.5} pcbY={40.75} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
       connections={{ pin1: "net.VMOTOR" }} />
     <testpoint doNotPlace name="TP_PWR_GND" schSheetName="pd-programming" schSectionName="pd-programming_U36" schX={11.5} schY={-8.2}
-      pcbX={19.5} pcbY={40.75} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
+      pcbX={22} pcbY={40.75} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
       connections={{ pin1: "net.GND" }} />
     <resistor name="R132" schSheetName="indicators" schSectionName="indicators_U35" schX={-10.5} schY={0.8}
       pcbX={40.75} pcbY={-24.25} pcbRotation={90} layer="top" resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }} schRotation={270} pcbStyle={{ silkscreenTextVisibility: "hidden" }}

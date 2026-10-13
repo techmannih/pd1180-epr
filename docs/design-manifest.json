@@ -2119,7 +2119,7 @@
       "footprint": "SOT-23"
     },
     {
-      "tag": "TPS26631RGER",
+      "tag": "TPS26630RGER",
       "name": "U6",
       "connections": {
         "pin1": "EFUSE_IN",
@@ -2147,8 +2147,8 @@
         25
       ],
       "owner": null,
-      "lcsc": "C1850273",
-      "mpn": "TPS26631RGER",
+      "lcsc": "C1850276",
+      "mpn": "TPS26630RGER",
       "size": [
         4.5963586,
         4.583912599999998
@@ -2364,8 +2364,8 @@
         23
       ],
       "owner": "U6",
-      "value": "4.02k",
-      "lcsc": "C141679",
+      "value": "4.22k",
+      "lcsc": "C49196690",
       "footprint": "0603",
       "size": [
         2.450000000000001,
@@ -2379,7 +2379,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "mpn": null
+      "mpn": "FRH0603B4221TS"
     },
     {
       "tag": "capacitor",
@@ -5144,8 +5144,8 @@
         -34.25
       ],
       "owner": "U14",
-      "value": "1k",
-      "lcsc": "C110776",
+      "value": "1.21k",
+      "lcsc": "C705737",
       "footprint": "0603",
       "size": [
         2.4499999999999993,
@@ -5159,7 +5159,7 @@
       ],
       "rotation": 180,
       "layer": "top",
-      "mpn": null
+      "mpn": "RT0603BRD071K21L"
     },
     {
       "tag": "resistor",
@@ -6697,7 +6697,7 @@
         "pin3": "GND",
         "pin4": "VMON_ADC",
         "pin5": "IIN_MON",
-        "pin6": "GND",
+        "pin6": "BRAKE_FB",
         "pin7": "GND",
         "pin8": "V3V3",
         "pin9": "PD_SDA",
@@ -7822,6 +7822,156 @@
       "rotation": 0,
       "layer": "top",
       "mpn": "CRCW060310K0FKEA"
+    },
+    {
+      "name": "R134",
+      "tag": "resistor",
+      "value": "4.7k",
+      "lcsc": "C6675858",
+      "mpn": "MR12X4701FTL",
+      "footprint": "1206",
+      "xy": [
+        -3.4,
+        -37.5
+      ],
+      "sch": [
+        -7,
+        2
+      ],
+      "rotation": 180,
+      "connections": {
+        "pin1": "BRAKE_RETURN",
+        "pin2": "BRAKE_FB_MID"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        4.05,
+        1.75
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "R135",
+      "tag": "resistor",
+      "value": "4.7k",
+      "lcsc": "C6675858",
+      "mpn": "MR12X4701FTL",
+      "footprint": "1206",
+      "xy": [
+        -3.4,
+        -40.5
+      ],
+      "sch": [
+        -2,
+        2
+      ],
+      "rotation": 0,
+      "connections": {
+        "pin1": "BRAKE_FB_MID",
+        "pin2": "BRAKE_FB"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        4.05,
+        1.75
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "R136",
+      "tag": "resistor",
+      "value": "510",
+      "lcsc": "C7468460",
+      "mpn": "FRQ0603F5100TS",
+      "footprint": "0603",
+      "xy": [
+        1,
+        -40.5
+      ],
+      "sch": [
+        3,
+        2
+      ],
+      "rotation": 90,
+      "connections": {
+        "pin1": "BRAKE_FB",
+        "pin2": "GND"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        0.9500000000000001,
+        2.450000000000003
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "C98",
+      "tag": "capacitor",
+      "value": "10nF",
+      "lcsc": "C57112",
+      "mpn": null,
+      "footprint": "0603",
+      "xy": [
+        2.5,
+        -37.5
+      ],
+      "sch": [
+        6,
+        2
+      ],
+      "rotation": 90,
+      "connections": {
+        "pin1": "BRAKE_FB",
+        "pin2": "GND"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        0.9500000000000002,
+        2.450000000000003
+      ],
+      "noConnect": []
+    },
+    {
+      "name": "D20",
+      "tag": "SS10100_SMBF",
+      "value": null,
+      "lcsc": "C49242208",
+      "mpn": "SS10100",
+      "footprint": "SMBF",
+      "xy": [
+        15,
+        40
+      ],
+      "sch": [
+        -7,
+        -3
+      ],
+      "rotation": 180,
+      "connections": {
+        "pin1": "VMOTOR",
+        "pin2": "BRAKE_RETURN"
+      },
+      "sheet": "brake-feedback",
+      "section": null,
+      "owner": null,
+      "layer": "top",
+      "size": [
+        6.4,
+        2.5999999999999943
+      ],
+      "noConnect": []
     }
   ],
   "optional_parts": [

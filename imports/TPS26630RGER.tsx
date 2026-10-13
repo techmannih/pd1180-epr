@@ -1,3 +1,5 @@
+// TI TPS26630/31 share the RGE 24-pin package and pin map (SLVSE94G).
+// Retain the verified RGE footprint/package CAD; electrical identity is TPS26630.
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
@@ -34,17 +36,17 @@ const pinAttributes = {
   pin8: {requiresGround: true}
 } as const
 
-export const TPS26631RGER = (props: ChipProps<typeof pinLabels>) => {
+export const TPS26630RGER = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
       pinAttributes={pinAttributes}
       supplierPartNumbers={{
   "jlcpcb": [
-    "C1850273"
+    "C1850276"
   ]
 }}
-      manufacturerPartNumber="TPS26631RGER"
+      manufacturerPartNumber="TPS26630RGER"
       footprint={<footprint>
         <smtpad portHints={["pin25"]} pcbX="0.000762mm" pcbY="-0.000889mm" width="2.5999948mm" height="2.5999948mm" shape="rect" />
 <smtpad portHints={["pin24"]} pcbX="-1.94818mm" pcbY="-1.250061mm" width="0.6999986mm" height="0.299974mm" shape="rect" />

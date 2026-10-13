@@ -1,3 +1,4 @@
+import { SS10100_SMBF } from "./imports/SS10100_SMBF"
 import { SchematicPages } from "./schematic-pages"
 import { BoardDiagnostics } from "./board-diagnostics"
 import { TPS2553DBVR } from "./imports/TPS2553DBVR"
@@ -31,7 +32,7 @@ import { SRP7050TA_470M } from "./imports/SRP7050TA_470M"
 import { TLV3201AIDBVR } from "./imports/TLV3201AIDBVR"
 import { TMC5160A_TA_T } from "./imports/TMC5160A_TA_T"
 import { TPD4S480RUKR } from "./imports/TPD4S480RUKR"
-import { TPS26631RGER } from "./imports/TPS26631RGER"
+import { TPS26630RGER } from "./imports/TPS26630RGER"
 import { TPS26750SRSMR } from "./imports/TPS26750SRSMR"
 import { TS_1088_AR02016 } from "./imports/TS_1088_AR02016"
 import { UCC27511DBVR } from "./imports/UCC27511DBVR"
@@ -621,7 +622,7 @@ export const PD1180EPR = () => (
       connections={{ source: "net.PD_VBUS", gate: "net.BLOCK_GATE", drain: "net.EFUSE_IN" }} />
     <BSS123LT1G name="Q5" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={-7.75} schY={4.05} pcbX={-8.35} pcbY={40.75}
       connections={{ gate: "net.BLOCK_FAST_GATE", source: "net.PD_VBUS", drain: "net.BLOCK_GATE" }} />
-    <TPS26631RGER name="U6" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={-5.25} schY={0.55} schWidth={1.6} schHeight={2.8} pcbX={1} pcbY={25}
+    <TPS26630RGER name="U6" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={-5.25} schY={0.55} schWidth={1.6} schHeight={2.8} pcbX={1} pcbY={25}
       schPinArrangement={{
         leftSide: ["pin1", "pin2", "pin3", "pin4", "pin5", "pin6", "pin7", "pin9", "pin10", "pin11", "pin12", "pin13", "pin8"],
         rightSide: ["pin18", "pin17", "pin16", "pin15", "pin14", "pin19", "pin20", "pin21", "pin22", "pin23", "pin24", "pin25"],
@@ -652,7 +653,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.OVP_DIV", pin2: "net.GND" }} />
     <resistor name="R25" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={-11.25} schY={-2.45} pcbX={5.5} pcbY={23.0}
       schRotation={-90}
-      resistance="4.02k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C141679"] }}
+      resistance="4.22k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C49196690"] }}
       connections={{ pin1: "net.ILIM_SET", pin2: "net.GND" }} />
     <capacitor name="C18" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="motor-power" schSectionName="motor-power_U6" schX={7.75} schY={0.95} pcbX={5.5} pcbY={27.0}
       schRotation={-90}
@@ -995,7 +996,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.MOTOR_OVP_SENSE", pin2: "net.MOTOR_OVP_LOW" }} />
     <resistor name="R66" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake-ovp" schSectionName="brake_U14" schX={-0.6} schY={4.3} pcbX={-12.5} pcbY={-34.25} pcbRotation={180}
       schRotation={-90}
-      resistance="1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C110776"] }}
+      resistance="1.21k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C705737"] }}
       connections={{ pin1: "net.MOTOR_OVP_LOW", pin2: "net.GND" }} />
     <resistor name="R67" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake-ovp" schSectionName="brake_U14" schX={-6.27} schY={2.5} pcbX={-1.0} pcbY={-26.0}
       schRotation={-90}
@@ -1035,6 +1036,22 @@ export const PD1180EPR = () => (
       connections={{ source: "net.GND", gate: "net.BRAKE_GATE", drain: "net.BRAKE_RETURN" }} />
     <B2P_VH_LF__SN_ name="J3" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="brake-ovp" schSectionName="brake_J3" schX={10} schY={-6.7} pcbX={0.0} pcbY={36.5} schPinArrangement={{ topSide: ["pin1"], bottomSide: ["pin2"] }}
       connections={{ pin1: "net.VMOTOR", pin2: "net.BRAKE_RETURN" }} />
+
+    <SS10100_SMBF name="D20" pcbStyle={{ silkscreenTextVisibility: "hidden" }} layer="top" schSheetName="brake-feedback" schX={-7} schY={-3} schRotation={90} pcbX={15} pcbY={40} pcbRotation={180}
+      connections={{ pin1: "net.VMOTOR", pin2: "net.BRAKE_RETURN" }} />
+    {/* Brake continuity preflight. Low impedance also rejects SS10100 hot reverse leakage. */}
+    <resistor name="R134" pcbStyle={{ silkscreenTextVisibility: "hidden" }} layer="top" schSheetName="brake-feedback" schX={-7} schY={2} pcbX={-3.4} pcbY={-37.5} pcbRotation={180}
+      resistance="4.7k" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C6675858"] }}
+      connections={{ pin1: "net.BRAKE_RETURN", pin2: "net.BRAKE_FB_MID" }} />
+    <resistor name="R135" pcbStyle={{ silkscreenTextVisibility: "hidden" }} layer="top" schSheetName="brake-feedback" schX={-2} schY={2} pcbX={-3.4} pcbY={-40.5}
+      resistance="4.7k" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C6675858"] }}
+      connections={{ pin1: "net.BRAKE_FB_MID", pin2: "net.BRAKE_FB" }} />
+    <resistor name="R136" pcbStyle={{ silkscreenTextVisibility: "hidden" }} layer="top" schSheetName="brake-feedback" schX={3} schY={2} schRotation={-90} pcbX={1} pcbY={-40.5} pcbRotation={90}
+      resistance="510" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C7468460"] }}
+      connections={{ pin1: "net.BRAKE_FB", pin2: "net.GND" }} />
+    <capacitor name="C98" pcbStyle={{ silkscreenTextVisibility: "hidden" }} layer="top" schSheetName="brake-feedback" schX={6} schY={2} schRotation={-90} pcbX={2.5} pcbY={-37.5} pcbRotation={90}
+      capacitance="10nF" footprint="0603" maxVoltageRating="50V" supplierPartNumbers={{ jlcpcb: ["C57112"] }}
+      connections={{ pin1: "net.BRAKE_FB", pin2: "net.GND" }} />
 
     {/* MCU */}
     <STM32G0B1 name="U16" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="mcu" schSectionName="mcu_U16" schX={-2.5} schY={-1.3} pcbX={-20} pcbY={-12}
@@ -1314,7 +1331,7 @@ export const PD1180EPR = () => (
     <ADS1115IDGSR name="U30" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="telemetry" schSectionName="telemetry_U30" schX={-6} schY={-5} pcbX={-6} pcbY={5}
       layer="top"
       noConnect={["pin2"]}
-      connections={{ pin1: "net.V3V3", pin3: "net.GND", pin4: "net.VMON_ADC", pin5: "net.IIN_MON", pin6: "net.GND", pin7: "net.GND", pin8: "net.V3V3", pin9: "net.PD_SDA", pin10: "net.PD_SCL" }} pcbRotation={0} />
+      connections={{ pin1: "net.V3V3", pin3: "net.GND", pin4: "net.VMON_ADC", pin5: "net.IIN_MON", pin6: "net.BRAKE_FB", pin7: "net.GND", pin8: "net.V3V3", pin9: "net.PD_SDA", pin10: "net.PD_SCL" }} pcbRotation={0} />
     <INA240A1DR name="U31" pcbStyle={{ silkscreenTextVisibility: "hidden" }} schSheetName="phase-current" schSectionName="telemetry_U31" schX={-8} schY={-0.2} pcbX={15} pcbY={-25}
       layer="top"
       noConnect={["pin4"]}

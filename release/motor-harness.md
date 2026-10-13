@@ -44,7 +44,7 @@ J7, STEP/DIR/ENABLE/home/limit conditioning and their unused wires are removed. 
 
 ## Encoder boundary
 
-Both reference boards leave the bottom sensor and two nearby capacitors unpopulated. This board now follows that assembly policy while retaining its existing SPI/ABI sensor interface. DNP means an optional, routed footprint, not an installed working encoder. All 247 fitted components and 19 service pads remain top-side.
+Both reference boards leave the bottom sensor and two nearby capacitors unpopulated. This board now follows that assembly policy while retaining its existing SPI/ABI sensor interface. DNP means an optional, routed footprint, not an installed working encoder. All 252 fitted components and 19 service pads remain top-side.
 
 The ordered motor is single-shaft. Its rear recess is not evidence of an accessible rotating shaft. A centered footprint does not create a magnet attachment: a compatible rear shaft/holder, diametric magnet, field strength and operating gap remain unresolved. Do not drill the motor, remove its case bolts or populate U18/C52/C53 on the assumption that the magnet will fit. Open-loop internal-ramp operation does not require this optional encoder; the supplied commissioning firmware remains motion-locked for the separately documented qualification reasons.
 
