@@ -27,4 +27,12 @@ J2 uses B4P-VH, VHR-4N and **SVH-41T-P1.1** contacts with Alpha 3057 16 AWG pigt
 
 Use the applicable [TE 114-2157 crimp specification](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocFormat=pdf&DocLang=English&DocNm=114-2157&DocType=Specification+Or+Standard&PartCntxt=320559) and exact tool instruction. Record strip length, conductor/insulation crimp inspection and the specified tensile criterion/result for each wire size. Do not invent a generic pull-force pass threshold. Use coupons for destructive pull tests. Check assembled insulation, bend/strain relief, winding continuity and connector/crimp temperatures at the qualified current.
 
-The user deferred the 404 silkscreen/text corrections. Preserve raw findings and obtain the provider's printing disposition separately; this document does not approve clipped safety/polarity markings or claim zero native DRC. Electrical connectivity, parity and ERC must remain zero.
+The user deferred the 405 silkscreen/text corrections. Preserve raw findings and obtain the provider's printing disposition separately; this document does not approve clipped safety/polarity markings or claim zero native DRC. Electrical connectivity, parity and ERC must remain zero.
+
+## U16 land pattern
+
+The user-selected rounded 0.27 × 1.50 mm lands differ from ST DS13560 figure 44 (0.30 × 1.20 mm), while preserving 0.50 mm pitch and row centres. Review solder-joint/process suitability before assembly. The footprint generator name `qfn48` does not change the actual LQFP-48 package or placement orientation. See [U16 evidence](u16-footprint.md).
+
+## U35 footprint acceptance
+
+The selected 0.34 × 1.73 mm capsule lands use the supplier-style 5.73 mm row-centre spacing. TI PW0016A shows an example with 0.45 × 1.50 mm lands and 5.8 mm spacing. Verify stencil/solder-joint suitability; the `dfn16` generator does not change the actual TSSOP-16 body. C95 is moved 0.05 mm for courtyard clearance. See [U35 evidence](u35-footprint.md).

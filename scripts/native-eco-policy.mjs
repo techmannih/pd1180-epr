@@ -14,6 +14,7 @@ const ref = x => x.find(v => Array.isArray(v) && v[0] === 'property' && v[1] ===
 export function protectedProjection(board, policy, baseline = false) {
   const changes = new Map(policy.pad_changes.map(p => [`${p.reference}.${p.pin}`, p]))
   const metadata = new Map((policy.part_value_changes || []).map(p => [p.reference, p]))
+  const footprints = new Map((policy.footprint_replacements || []).map(p => [p.reference, p]))
   const seen = new Set(), removed = new Set(policy.removed_uuids), additions = new Map(policy.added_objects.map(x => [uuid(x), x]))
   const projected = board.map(x => {
     if (!Array.isArray(x)) return x
@@ -23,6 +24,13 @@ export function protectedProjection(board, policy, baseline = false) {
     if (x[0] === 'zone') return x.filter(v => !Array.isArray(v) || v[0] !== 'filled_polygon')
     if (x[0] !== 'footprint') return x
     const reference = ref(x)
+    const replacement = footprints.get(reference)
+    if (replacement) {
+      if (digest(x) !== (baseline ? digest(replacement.before) : replacement.after_sha256))
+        throw new Error(`Unexpected ${reference} footprint geometry or connectivity`)
+      seen.add(`footprint:${reference}`)
+      return replacement.before
+    }
     return x.map((p, index) => {
       const changeValue = metadata.get(reference)
       if (changeValue && index === 1) {
@@ -45,6 +53,7 @@ export function protectedProjection(board, policy, baseline = false) {
   }).filter(x => x !== null)
   for (const key of changes.keys()) if (!seen.has(key)) throw new Error(`Missing affected pad ${key}`)
   for (const key of metadata.keys()) if (!seen.has(`value:${key}`)) throw new Error(`Missing affected part value ${key}`)
+  for (const key of footprints.keys()) if (!seen.has(`footprint:${key}`)) throw new Error(`Missing affected footprint ${key}`)
   if (!baseline) for (const key of additions.keys()) if (!seen.has(key)) throw new Error('Missing approved ground/trim object')
   // Saving KiCad can reorder top-level objects, so compare a canonical multiset.
   return projected.map(x => JSON.stringify(x)).sort()

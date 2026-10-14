@@ -63,7 +63,7 @@ export const BoardDiagnostics = () => (
       pcbX={-27.5} pcbY={-25.75} pcbRotation={90} layer="top" resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }} schRotation={270}
       connections={{ pin1: "net.V3V3", pin2: "net.POWER_LED_A" }} />
     <capacitor name="C95" schSheetName="indicators" schSectionName="indicators_U35" schX={-11.5} schY={1.8}
-      pcbX={31.9} pcbY={-22.8} pcbRotation={270} layer="top" capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} schRotation={270} decouplingFor=".U35 > .pin16"
+      pcbX={31.85} pcbY={-22.8} pcbRotation={270} layer="top" capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} schRotation={270} decouplingFor=".U35 > .pin16"
       connections={{ pin1: "net.PD_3V3", pin2: "net.GND" }} />
     <capacitor name="C96" schSheetName="alarm" schSectionName="alarm_BZ1" schX={4.75} schY={2.3}
       pcbX={-33} pcbY={-4.9} pcbRotation={180} layer="top" capacitance="10uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C96446"] }} schRotation={270}

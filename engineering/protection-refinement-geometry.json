@@ -1,7 +1,7 @@
 {
   "base_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
   "baseline_board_sha256": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
-  "current_board_sha256": "9e5048f60afea727b3cacb4e2b33432b25ea7824b8ad13ef67c2b846461cb846",
+  "current_board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
   "pad_net_changes": [
     {
       "reference": "J1",
@@ -40,13 +40,30 @@
       "after": "\"GND\""
     }
   ],
+  "footprint_replacements": [
+    {
+      "reference": "U16",
+      "after_sha256": "14ea85061dd41be26db0d1cb466f549e2b7bd2fe82b806d08b77babf4a1f8222",
+      "reason": "User-selected native footprinter land pattern; same 48 nets, same placement, rounded lands and generator-native reference."
+    },
+    {
+      "reference": "U35",
+      "after_sha256": "443bd7f944a6b8e488cdb6bab90b68496e10a955a17accee99e199d18bf28a0c",
+      "reason": "User-selected native 16-pad footprinter land pattern and native reference; retained TSSOP model and nets."
+    },
+    {
+      "reference": "C95",
+      "after_sha256": "bab4b1696372ae3409708170e1090f3f1d60d4f4052079309cccc8f78972a070",
+      "reason": "C95 moved 0.05 mm left for the U35 generator courtyard; existing copper endpoints remain inside pads."
+    }
+  ],
   "removed_copper_items": 44,
   "removed_isolated_zones": 1,
   "added_ground_segments": 2,
   "added_local_fill_trim": 1,
   "all_other_native_geometry_unchanged": true,
   "derived_zone_fills_recomputed": true,
-  "policy_sha256": "ee120a6a790dfa5419d5e6c28202e171f39bfcc03bec1eb000d89ebf62fbaf44",
-  "checker_sha256": "4f04b3557584de72c1742a1431b588823f4e27623d97a7187e622a1f15b3e2e6",
+  "policy_sha256": "1c194161fe9673e4f4f5d0359098f2ded3cc74a4dd8e7aa3c3401fd9b70d2485",
+  "checker_sha256": "5da47c5f63a8c3f972a1ab9447a109b10fbf2131121eec3fee6aaafa83eb6621",
   "hardware_qualified": false
 }

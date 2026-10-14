@@ -342,3 +342,62 @@ test('EEPROM programming isolates both controller wires and never merges the pow
     expect(manifest.parts.some(p=>p.name===ref)).toBe(false)
   }
 })
+
+
+test('U16 keeps the LQFP model and all 48 numbered pill lands', () => {
+  const source = comp('U16')
+  expect(source.manufacturer_part_number).toBe('STM32G0B1CBT6')
+  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2847904'])
+  const pcb = pcbComponents.find(p => p.source_component_id === source.source_component_id)
+  const pads = data.filter(p => p.type === 'pcb_smtpad' && p.pcb_component_id === pcb.pcb_component_id)
+  expect(pads.length).toBe(48)
+  for (let n = 1; n <= 48; n++) {
+    const sp = port('U16', n)
+    const pp = data.find(p => p.type === 'pcb_port' && p.source_port_id === sp.source_port_id)
+    const pad = pads.find(p => p.pcb_port_id === pp.pcb_port_id)
+    const i = (n - 1) % 12
+    const side = Math.floor((n - 1) / 12)
+    const [x, y] = [[-2.75 + i * 0.5, -4.25], [4.25, -2.75 + i * 0.5],
+      [2.75 - i * 0.5, 4.25], [-4.25, 2.75 - i * 0.5]][side]
+    expect(pad.x - pcb.center.x).toBeCloseTo(x, 6)
+    expect(pad.y - pcb.center.y).toBeCloseTo(y, 6)
+    expect(['pill', 'rotated_pill']).toContain(pad.shape)
+    expect(Math.max(pad.width, pad.height)).toBeCloseTo(1.5, 6)
+    expect(Math.min(pad.width, pad.height)).toBeCloseTo(0.27, 6)
+  }
+  const model = data.find(p => p.type === 'cad_component' && p.pcb_component_id === pcb.pcb_component_id)
+  expect(model.model_obj_url).toContain('uuid=a4b96ad857dc48c08dab3d0efdf20aec&pn=C2847904')
+  expect(model.rotation).toEqual({ x: 0, y: 0, z: 0 })
+  expect(data.filter(p => p.type === 'pcb_silkscreen_text' && p.pcb_component_id === pcb.pcb_component_id).map(p => p.text)).toEqual(['U16'])
+})
+
+test('U35 keeps its TSSOP CAD, all 16 pin positions and C95 clearance', () => {
+  const source = comp('U35')
+  expect(source.manufacturer_part_number).toBe('TCA9538PWR')
+  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2652286'])
+  const pcb = pcbComponents.find(p => p.source_component_id === source.source_component_id)
+  const pads = data.filter(p => p.type === 'pcb_smtpad' && p.pcb_component_id === pcb.pcb_component_id)
+  expect(pads.length).toBe(16)
+  for (let n = 1; n <= 16; n++) {
+    const sp = port('U35', n)
+    const pp = data.find(p => p.type === 'pcb_port' && p.source_port_id === sp.source_port_id)
+    const pad = pads.find(p => p.pcb_port_id === pp.pcb_port_id)
+    expect(pad.x - pcb.center.x).toBeCloseTo(-2.275 + (n <= 8 ? n - 1 : 16 - n) * 0.65, 6)
+    expect(pad.y - pcb.center.y).toBeCloseTo(n <= 8 ? -2.865 : 2.865, 6)
+    expect(pad.shape).toBe('rotated_pill')
+    expect(pad.ccw_rotation).toBe(90)
+    expect(pad.width).toBeCloseTo(1.73, 6)
+    expect(pad.height).toBeCloseTo(0.34, 6)
+  }
+  const model = data.find(p => p.type === 'cad_component' && p.pcb_component_id === pcb.pcb_component_id)
+  expect(model.model_obj_url).toContain('C2652286.obj?uuid=534f03d8fe164fbab551f91e5a792e30')
+  expect(model.rotation).toEqual({ x: 0, y: 0, z: 90 })
+  expect(data.filter(p => p.type === 'pcb_silkscreen_text' && p.pcb_component_id === pcb.pcb_component_id).map(p => p.text)).toEqual(['U35'])
+  const bypass = pcbComponents.find(p => p.source_component_id === comp('C95').source_component_id)
+  expect(bypass.center.x).toBeCloseTo(31.85, 6)
+  expect(bypass.center.y).toBeCloseTo(-22.8, 6)
+  const courtyard = data.find(p => p.type === 'pcb_courtyard_rect' && p.pcb_component_id === pcb.pcb_component_id)
+  const bypassCourtyard = data.find(p => p.type === 'pcb_courtyard_rect' && p.pcb_component_id === bypass.pcb_component_id)
+  expect(bypassCourtyard.ccw_rotation).toBe(270)
+  expect(courtyard.center.x - courtyard.width / 2 - (bypassCourtyard.center.x + bypassCourtyard.height / 2)).toBeCloseTo(0.02, 6)
+})

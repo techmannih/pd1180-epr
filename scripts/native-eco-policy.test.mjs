@@ -24,3 +24,17 @@ test('supplier substitution permits only reviewed values, never pad or text geom
     expect(()=>verifyNativeEco(b,policy)).toThrow()
   }
 })
+
+test.each(['U16','U35','C95'])('%s footprint replacement rejects any further land, placement or net change', (reference) => {
+  for (const mutate of [
+    f => { field(f.find(p=>p[0]==='pad'),'size')[1]='0.9' },
+    f => { field(f.find(p=>p[0]==='pad'),'at')[1]='99' },
+    f => { field(f,'at')[1]='99' },
+    f => { field(f.find(p=>p[0]==='pad' && field(p,'net')),'net')[1]='"VMOTOR"' },
+  ]) {
+    const b=structuredClone(original)
+    const f=b.find(x=>x[0]==='footprint' && x.some(p=>p[0]==='property' && p[1]==='"Reference"' && p[2]===JSON.stringify(reference)))
+    mutate(f)
+    expect(()=>verifyNativeEco(b,policy)).toThrow()
+  }
+})

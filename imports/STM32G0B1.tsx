@@ -1,7 +1,10 @@
-import React from "react"
 import type { ChipProps } from "@tscircuit/props"
-// @ts-expect-error The pinned local component is emitted JavaScript.
-import { STM32G0B1CBT6 as LocalMCU } from "./STM32G0B1CBT6.local.js"
+
+// User-selected land pattern, checked against all 48 C2847904 pad locations.
+// `qfn48` is the footprint generator only: the physical part is LQFP-48.
+// Keep its explicit EasyEDA LQFP model instead of inferring a QFN body.
+export const stm32Footprint =
+  "qfn48_pillpads_h10.2mm_pw0.27mm_pl1.5mm_pin1location(bottomside,left)"
 export const stm32PinLabels = {
   "pin1": [
     "PC13"
@@ -151,11 +154,19 @@ export const stm32PinLabels = {
   ]
 } as const
 export const STM32G0B1 = (props: ChipProps<typeof stm32PinLabels>) => {
-  Object.assign(globalThis, { React })
-  return <LocalMCU {...props} pinLabels={stm32PinLabels}
-    pinAttributes={{ pin4: { requiresPower: true }, pin5: { requiresPower: true }, pin6: { requiresPower: true }, pin7: { requiresGround: true } }}>
-    <courtyardrect width="11mm" height="11mm" />
-  </LocalMCU>
+  return <chip
+    supplierPartNumbers={{ jlcpcb: ["C2847904"] }}
+    manufacturerPartNumber="STM32G0B1CBT6"
+    footprint={stm32Footprint}
+    cadModel={{
+      objUrl: "https://modelcdn.tscircuit.com/easyeda_models/download?uuid=a4b96ad857dc48c08dab3d0efdf20aec&pn=C2847904",
+      rotationOffset: { x: 0, y: 0, z: 0 },
+      positionOffset: { x: 0, y: 0, z: 0 },
+    }}
+    {...props}
+    pinLabels={stm32PinLabels}
+    pinAttributes={{ pin4: { requiresPower: true }, pin5: { requiresPower: true }, pin6: { requiresPower: true }, pin7: { requiresGround: true } }}
+  />
 }
 
 // The standalone viewer must render the component, not the pin-label export.
