@@ -342,3 +342,31 @@ test('EEPROM programming isolates both controller wires and never merges the pow
     expect(manifest.parts.some(p=>p.name===ref)).toBe(false)
   }
 })
+
+
+test('U16 keeps the LQFP model and all 48 numbered pill lands', () => {
+  const source = comp('U16')
+  expect(source.manufacturer_part_number).toBe('STM32G0B1CBT6')
+  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2847904'])
+  const pcb = pcbComponents.find(p => p.source_component_id === source.source_component_id)
+  const pads = data.filter(p => p.type === 'pcb_smtpad' && p.pcb_component_id === pcb.pcb_component_id)
+  expect(pads.length).toBe(48)
+  for (let n = 1; n <= 48; n++) {
+    const sp = port('U16', n)
+    const pp = data.find(p => p.type === 'pcb_port' && p.source_port_id === sp.source_port_id)
+    const pad = pads.find(p => p.pcb_port_id === pp.pcb_port_id)
+    const i = (n - 1) % 12
+    const side = Math.floor((n - 1) / 12)
+    const [x, y] = [[-2.75 + i * 0.5, -4.25], [4.25, -2.75 + i * 0.5],
+      [2.75 - i * 0.5, 4.25], [-4.25, 2.75 - i * 0.5]][side]
+    expect(pad.x - pcb.center.x).toBeCloseTo(x, 6)
+    expect(pad.y - pcb.center.y).toBeCloseTo(y, 6)
+    expect(['pill', 'rotated_pill']).toContain(pad.shape)
+    expect(Math.max(pad.width, pad.height)).toBeCloseTo(1.5, 6)
+    expect(Math.min(pad.width, pad.height)).toBeCloseTo(0.27, 6)
+  }
+  const model = data.find(p => p.type === 'cad_component' && p.pcb_component_id === pcb.pcb_component_id)
+  expect(model.model_obj_url).toContain('uuid=a4b96ad857dc48c08dab3d0efdf20aec&pn=C2847904')
+  expect(model.rotation).toEqual({ x: 0, y: 0, z: 0 })
+  expect(data.filter(p => p.type === 'pcb_silkscreen_text' && p.pcb_component_id === pcb.pcb_component_id).map(p => p.text)).toEqual(['U16'])
+})

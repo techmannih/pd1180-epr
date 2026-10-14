@@ -1,7 +1,7 @@
 {
   "base_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
   "baseline_board_sha256": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
-  "current_board_sha256": "9e5048f60afea727b3cacb4e2b33432b25ea7824b8ad13ef67c2b846461cb846",
+  "current_board_sha256": "f4435dde63632bfc7ab7125c71e350bda73277c572626ca132c61dd5c89a371d",
   "pad_net_changes": [
     {
       "reference": "J1",
@@ -40,13 +40,20 @@
       "after": "\"GND\""
     }
   ],
+  "footprint_replacements": [
+    {
+      "reference": "U16",
+      "after_sha256": "14ea85061dd41be26db0d1cb466f549e2b7bd2fe82b806d08b77babf4a1f8222",
+      "reason": "User-selected native footprinter land pattern; same 48 nets, same placement, rounded lands and generator-native reference."
+    }
+  ],
   "removed_copper_items": 44,
   "removed_isolated_zones": 1,
   "added_ground_segments": 2,
   "added_local_fill_trim": 1,
   "all_other_native_geometry_unchanged": true,
   "derived_zone_fills_recomputed": true,
-  "policy_sha256": "ee120a6a790dfa5419d5e6c28202e171f39bfcc03bec1eb000d89ebf62fbaf44",
-  "checker_sha256": "4f04b3557584de72c1742a1431b588823f4e27623d97a7187e622a1f15b3e2e6",
+  "policy_sha256": "588d72f762b66460af939470be623bac86788775d02370beb00e20faeb46d61c",
+  "checker_sha256": "498d5b4db31e73205292a48d587c0131655e0bad0c83e3ddb8ebf467221d3914",
   "hardware_qualified": false
 }

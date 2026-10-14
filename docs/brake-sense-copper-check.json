@@ -1,5 +1,5 @@
 {
-  "board_sha256": "9e5048f60afea727b3cacb4e2b33432b25ea7824b8ad13ef67c2b846461cb846",
+  "board_sha256": "f4435dde63632bfc7ab7125c71e350bda73277c572626ca132c61dd5c89a371d",
   "checker_sha256": "8a6738198faa84718b7792ca6cd4c27ef28bbb7123d9bf22dd63f61e9ad268a9",
   "segment_uuids": [
     "0833c98d-f06b-4a70-84ff-20f150095ce5",
@@ -2583,6 +2583,21 @@
       "type": "text_height"
     },
     {
+      "description": "Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)",
+      "items": [
+        {
+          "description": "Reference field of U16",
+          "pos": {
+            "x": 74.4,
+            "y": 112.0
+          },
+          "uuid": "53cdfce8-bec5-4b0e-92be-1d6776661275"
+        }
+      ],
+      "severity": "warning",
+      "type": "text_height"
+    },
+    {
       "description": "Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4000 mm)",
       "items": [
         {
@@ -4313,29 +4328,6 @@
       "description": "Silkscreen clearance",
       "items": [
         {
-          "description": "Reference field of R135",
-          "pos": {
-            "x": 96.6,
-            "y": 138.725
-          },
-          "uuid": "da35b39c-f2c5-5e04-aa87-95bd704d0b5f"
-        },
-        {
-          "description": "Segment of R134 on F.Silkscreen",
-          "pos": {
-            "x": 97.327064,
-            "y": 138.41
-          },
-          "uuid": "f4d5624c-2d54-4e80-bf64-db6e9a3695cc"
-        }
-      ],
-      "severity": "warning",
-      "type": "silk_overlap"
-    },
-    {
-      "description": "Silkscreen clearance",
-      "items": [
-        {
           "description": "Reference field of Y1",
           "pos": {
             "x": 89.0,
@@ -4396,6 +4388,29 @@
             "y": 120.09
           },
           "uuid": "945e8335-e7e7-543a-8a9f-b6ee87103ba7"
+        }
+      ],
+      "severity": "warning",
+      "type": "silk_overlap"
+    },
+    {
+      "description": "Silkscreen clearance",
+      "items": [
+        {
+          "description": "Reference field of R135",
+          "pos": {
+            "x": 96.6,
+            "y": 138.725
+          },
+          "uuid": "da35b39c-f2c5-5e04-aa87-95bd704d0b5f"
+        },
+        {
+          "description": "Segment of R134 on F.Silkscreen",
+          "pos": {
+            "x": 97.327064,
+            "y": 138.41
+          },
+          "uuid": "f4d5624c-2d54-4e80-bf64-db6e9a3695cc"
         }
       ],
       "severity": "warning",
@@ -4681,29 +4696,6 @@
       "description": "Silkscreen clearance",
       "items": [
         {
-          "description": "Segment of BZ1 on F.Silkscreen",
-          "pos": {
-            "x": 68.580457,
-            "y": 112.031189
-          },
-          "uuid": "73750b3a-9e75-4d26-a27e-fe555065fc77"
-        },
-        {
-          "description": "Reference field of Q26",
-          "pos": {
-            "x": 67.7754,
-            "y": 115.476
-          },
-          "uuid": "7d948058-6121-5150-9cf5-8c93588149e6"
-        }
-      ],
-      "severity": "warning",
-      "type": "silk_overlap"
-    },
-    {
-      "description": "Silkscreen clearance",
-      "items": [
-        {
           "description": "Reference field of R106",
           "pos": {
             "x": 70.0,
@@ -4727,20 +4719,20 @@
       "description": "Silkscreen clearance",
       "items": [
         {
-          "description": "Reference field of U16",
+          "description": "Segment of BZ1 on F.Silkscreen",
           "pos": {
-            "x": 80.0,
-            "y": 105.5
+            "x": 68.580457,
+            "y": 112.031189
           },
-          "uuid": "b9cf50c2-0914-5af6-a0eb-92100ae514dd"
+          "uuid": "73750b3a-9e75-4d26-a27e-fe555065fc77"
         },
         {
-          "description": "Reference field of U26",
+          "description": "Reference field of Q26",
           "pos": {
-            "x": 80.22,
-            "y": 105.0
+            "x": 67.7754,
+            "y": 115.476
           },
-          "uuid": "cd1946f3-bc5a-545d-96e1-9fb71e58a2c7"
+          "uuid": "7d948058-6121-5150-9cf5-8c93588149e6"
         }
       ],
       "severity": "warning",

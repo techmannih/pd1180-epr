@@ -150,7 +150,7 @@ The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmw
 
 The motor-qualified STM32 firmware and TI-generated TPS26750 full-flash image are release inputs. Reset circuitry is designed to inhibit the board with blank U3 and U16; that behavior still requires a powered test. Programming both devices is necessary but does not, by itself, establish motor readiness. The current STM32 image remains motion-locked even if U3 is programmed.
 
-U16 remains STM32G0B1 with the existing USB, ADC, SPI, I²C and SWD firmware/pinout. The removed buses no longer justify its selection. Switching MCU families would require a separately reviewed redesign; this ECO preserves the working pin contract and motion-inhibit logic. Exact fitted code C2847904 remains subject to live sourcing.
+U16 remains STM32G0B1 with the existing USB, ADC, SPI, I²C and SWD firmware/pinout. The removed buses no longer justify its selection. Switching MCU families would require a separately reviewed redesign; this ECO preserves the working pin contract and motion-inhibit logic. Exact fitted code C2847904 remains subject to live sourcing. U16 uses the requested native footprinter lands and explicit LQFP CAD; see [footprint and CAD verification](docs/u16-footprint.md).
 
 ## Schematic organization
 
