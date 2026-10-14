@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "status": "adc-skew-aware-brake-and-sourcing-reviewed-order-held",
+  "status": "manufacturer-splice-cad-and-sourcing-handoff-reviewed-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -58,11 +58,11 @@
     "No assembled PCB has powered validation. USB startup/suspend/backfeed, supply/gate thresholds, bridge current, thermal equilibrium, brake faults and EMC require first-article evidence before running/shipping.",
     "10 ohm / 300 W brake remains a candidate. Final load/RPM/stop duty, heatsink, guarding and resistor/harness temperatures are unqualified. Runtime voltage-continuity monitoring is implemented, but detection latency and energy absorption after a running cable open remain unqualified.",
     "All three MCU motion/configuration/brake qualification flags remain false. A locked diagnostic image and successful CAD checks do not meet ready-to-run delivery.",
-    "TE 320559 splice outside diameter and actual crimp/pull/insulation fit remain unverified."
+    "TE 320559 nominal uncrimped CAD is sourced and modeled; actual finished-crimp dimensions, pull/insulation fit and retention remain unverified."
   ],
   "current_stock_evidence": "docs/stock-report.json",
   "stock_summary": {
-    "checked_at": "2026-10-13T13:39:14.253Z",
+    "checked_at": "2026-10-13T16:47:33.358Z",
     "available": 82,
     "total": 84,
     "unavailable_codes": [

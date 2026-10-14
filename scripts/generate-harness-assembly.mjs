@@ -1,8 +1,10 @@
 import {readFile,writeFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import modeling from '@jscad/modeling'
+import JSZip from 'jszip'
 import {encodeGlb} from './assembly-glb.mjs'
 import {bezier,tube,distance,canonicalHarnessGeometry} from './harness-geometry.mjs'
+import {loadSpliceModel,positionSplice} from './splice-model.mjs'
 const layout=JSON.parse(await readFile('engineering/mechanical/harness-layout.json'))
 const assembly=JSON.parse(await readFile('engineering/mechanical/assembly.json'))
 const contract=JSON.parse(await readFile('hardware-contract.json'))
@@ -29,6 +31,8 @@ function wire(name,points,radius,color,connection,meta={}){
  meshes.push(tube(name,points,radius,color));wires.push({name,reference:'J2',connection,points,radius_mm:radius,...meta})
 }
 const mc=layout.motor_cable
+const spliceModel=await loadSpliceModel()
+if(Math.abs(mc.splice_length_envelope_mm-spliceModel.length)>1e-6 || Math.abs(mc.splice_diameter_envelope_mm/2-spliceModel.radius)>1e-6)throw new Error('Splice clearance envelope differs from manufacturer STEP')
 const jacketStart=[0,mc.cad_clip_plane_y_mm,mc.jacket_section_center_z_from_rear_mm+rear]
 const jacketEnd=[0,mc.jacket_end_y_mm,mc.jacket_end_z_mm]
 const jacket=[...bezier([jacketStart,[0,-108,jacketStart[2]],[0,mc.jacket_end_y_mm,-75],[0,mc.jacket_end_y_mm,-62]],64),jacketEnd]
@@ -45,7 +49,8 @@ for(const p of ports){
  const length=points.slice(1).reduce((n,v,k)=>n+distance(v,points[k]),0)
  wire(`J2 cavity ${p.pin} ${color} Alpha3057_16AWG`,points,mate.wire_od_mm/2,colors[color],connection,{kind:'pigtail',net:motorHarness.motor_connector.pin_to_net[p.pin],source:`J2:${p.pin} / SVH-41T-P1.1`,destination:`TE320559_${p.pin}:pigtail`,nominal_path_length_mm:length,cut_length_mm:Math.ceil((length+12)/5)*5,termination_and_adjustment_allowance_mm:12,minimum_bend_radius_mm:mc.pigtail_minimum_bend_radius_mm,cut_length_status:'CAD nominal, first-article termination/fit approval required'})
  const end=[x,y,z-mc.splice_length_envelope_mm]
- wire(`TE320559_splice_${p.pin}_OD_UNVERIFIED`,[[x,y,z],end],mc.splice_diameter_envelope_mm/2,[.72,.18,.12,1],connection,{kind:'splice',length_verified_mm:32.13,outside_diameter_verified:false})
+ meshes.push(positionSplice(spliceModel,[x,y,z],`TE320559_splice_${p.pin}`))
+ wires.push({name:`TE320559_splice_${p.pin}`,reference:'J2',connection,points:[[x,y,z],end],radius_mm:spliceModel.radius,kind:'splice',nominal_cad_length_mm:spliceModel.length,nominal_cad_diameter_mm:spliceModel.radius*2,step_sha256:spliceModel.step_sha256,physical_crimp_envelope_verified:false})
  const tip=[i<2?-1.25:1.25,jacketEnd[1]+(i%2?1.25:-1.25),jacketEnd[2]-.5]
  wire(`motor_${color}_lead_to_splice_${p.pin}`,bezier([tip,[tip[0],tip[1],-36],[x,y,-34],end],24),.85,colors[color],connection,{kind:'factory conductor',source:`34HS31-6004S1 ${color} lead`,destination:`TE320559_${p.pin}:motor`,cross_section_mm2:.75,note:'Factory winding colours define circuit; STEP does not establish physical conductor order. Strip jacket only to fanout length.'})
 }
@@ -53,7 +58,7 @@ const glb=encodeGlb(meshes),sha=b=>createHash('sha256').update(b).digest('hex')
 const outputs={
  'engineering/mechanical/harness-proposal.glb':glb,
  'engineering/mechanical/harness-geometry.json':JSON.stringify(canonicalHarnessGeometry({layout_sha256:sha(await readFile('engineering/mechanical/harness-layout.json')),glb_sha256:sha(glb),connectors,bodies,wires}))+'\n',
- 'engineering/mechanical/harness-parts.json':JSON.stringify(meshes.map(m=>({name:m.name.replace(/[^a-zA-Z0-9_]/g,'_'),description:m.name,bom:m.name.startsWith('TE320559')?'320559':m.name.includes('Alpha3057')?'Alpha Wire 3057':m.name,base64:encodeGlb([m]).toString('base64')})))+'\n'
+ 'engineering/mechanical/harness-parts.zip':await new JSZip().file('harness-parts.json',JSON.stringify(meshes.map(m=>({name:m.name.replace(/[^a-zA-Z0-9_]/g,'_'),description:m.name,bom:m.name.startsWith('TE320559')?'320559':m.name.includes('Alpha3057')?'Alpha Wire 3057':m.name,base64:encodeGlb([m]).toString('base64')})))+'\n',{date:new Date('2026-10-13T00:00:00Z')}).generateAsync({type:'nodebuffer',compression:'DEFLATE'})
 }
 for(const [path,bytes]of Object.entries(outputs)){
  if(process.argv.includes('--check')){if(!(await readFile(path)).equals(Buffer.from(bytes)))throw new Error(`Stale harness: ${path}`)}else await writeFile(path,bytes)

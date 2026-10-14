@@ -1,15 +1,33 @@
 {
   "manufacturer": "TE Connectivity",
   "part": "320559",
-  "drawing": "C-320559 Rev V2, 11MAR2011",
+  "drawing": "C-320559 Rev V6, 16SEP2025",
   "archive": "engineering/mechanical/TE-320559-drawing.zip",
-  "pdf_sha256": "4b43071e929ea973f04346ed5071397387cf3d981f1eea39dd6ef3e44f5bf255",
+  "pdf_sha256": "9a67887bff930f87831e1dae405b8bb7e2c1f4d9b901cbe7360a127f9682a5b2",
   "retrieved": "2026-10-13",
-  "source_url": "https://edmo-assets.s3.us-west-2.amazonaws.com/products/documents/320559/320559-320559-envelope-drawing-620eb1237d8d.pdf",
+  "source_url": "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=320559&DocType=Customer%20Drawing&DocLang=English&DocFormat=pdf&PartCntxt=320559",
   "manufacturer_page": "https://www.te.com/en/product-320559.html",
   "length_max_mm": 32.13,
   "wire_insulation_diameter_min_mm": 2.03,
   "wire_insulation_diameter_max_mm": 3.18,
-  "outside_diameter_mm": null,
-  "qualification": "Older manufacturer drawing from distributor mirror. TE currently lists V6; official download returned HTTP403. No outside diameter dimension on retrieved drawing. Obtain latest drawing/CAD and verify delivered motor insulation OD and crimp fit. Do not infer OD from image scale or the 3.18 mm wire limit."
+  "outside_diameter_mm": 5.6134,
+  "qualification": "Manufacturer STEP replaces the provisional cylinder. CAD OD is nominal, not a toleranced finished-crimp dimension. V6 drawing still does not dimension exterior OD; 32.131 mm STEP length equals 1.265 inches and rounds to the drawing 32.13 mm. Delivered motor insulation must measure 2.03-3.18 mm. Crimp tooling, finished envelope, pull/continuity/insulation tests and physical retention remain unqualified. Older V2 drawing retained in archive for provenance.",
+  "pdf_file": "ENG_CD_320559_V6.pdf",
+  "cad": {
+    "file": "c-320559-ae-3d.stp",
+    "revision": "AE, 2021-06-09; currently linked by TE alongside Rev V6 drawing",
+    "sha256": "4b9dc48d7054f3c570f3a335607f28da90600fcb796711b507de28e40bc0c5b3",
+    "source_url": "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=CVM_320559&DocType=Customer%20View%20Model&DocLang=English&DocFormat=3d_stp.zip&PartCntxt=320559",
+    "mesh_count": 1,
+    "axis": "STEP Z; upper end at Z=0; lower end at Z=-32.131 mm; XY centered on zero",
+    "transform": "No scaling or rotation. Translate STEP XYZ by each splice upper-end XYZ in harness-layout.json.",
+    "nominal_length_mm": 32.131,
+    "nominal_radial_envelope_mm": 2.8067,
+    "tessellation": {
+      "linearUnit": "millimeter",
+      "linearDeflectionType": "absolute_value",
+      "linearDeflection": 0.02,
+      "angularDeflection": 0.1
+    }
+  }
 }

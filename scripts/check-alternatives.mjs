@@ -1,9 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises'
-import { execFile } from 'node:child_process'
-import { promisify } from 'node:util'
-import { officialPart, packagesMatch, inventoryEvidencePasses } from './jlc-stock.mjs'
+import { catalogEvidence, packagesMatch, inventoryEvidencePasses } from './jlc-stock.mjs'
 
-const run = promisify(execFile)
 const path = new URL('../docs/alternatives.json', import.meta.url)
 const data = JSON.parse(await readFile(path))
 const stock = JSON.parse(await readFile(new URL('../docs/stock-report.json', import.meta.url)))
@@ -36,12 +33,9 @@ for (const part of data.parts) {
   const numericLcsc = part.alternative.replace(/^C/, '')
   const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${numericLcsc}`
   try {
-    const { stdout } = await run('curl', ['--fail', '--silent', '--show-error', '-L', '--retry', '2', '--max-time', '40', url], { maxBuffer: 8_000_000 })
-    const response = JSON.parse(stdout)
-    let exact = (response.components || []).find(item => `C${String(item.lcsc).replace(/^C/, '')}` === part.alternative)
-    const official = await officialPart(part.alternative)
-    if (official.exact) exact = official.exact
-    await writeFile(new URL(`../docs/stock-evidence/alternatives-${part.alternative}.json`, import.meta.url), JSON.stringify({url,response,official},null,2)+'\n')
+    const evidence = await catalogEvidence(part.alternative)
+    const {exact, official} = evidence
+    await writeFile(new URL(`../docs/stock-evidence/alternatives-${part.alternative}.json`, import.meta.url), JSON.stringify(evidence,null,2)+'\n')
     const expected_package_match = packagesMatch(part.expected_package, exact?.package)
     const package_compatible = expected_package_match && normalizePackage(primary.package) === normalizePackage(exact?.package)
     const requires_package_compatibility = part.classification !== 'not-approved-redesign-required'
@@ -53,13 +47,16 @@ for (const part of data.parts) {
       expected_package_match,
       primary_package: primary.package,
       primary_available,
-      evidence_source: official.exact ? "jlcpcb-official" : "jlcsearch",
-      official_url: official.url,
+      evidence_source: exact ? "jlcpcb-official" : null,
+      index_status: evidence.index_status,
+      search_error: evidence.search_error,
+      official_error: evidence.official_error,
+      official_url: official?.url ?? null,
       package_compatible,
       stock: exact?.stock ?? null,
       checked_at: new Date().toISOString(),
       evidence: url,
-      status: !exact ? 'unverified-no-exact-match' : !expected_package_match ? 'package-mismatch' : requires_package_compatibility && !package_compatible ? 'package-incompatible' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= primary.required ? 'available' : 'insufficient',
+      status: evidence.official_error ? 'unverified-network-error' : !exact ? 'unverified-no-exact-match' : !expected_package_match ? 'package-mismatch' : requires_package_compatibility && !package_compatible ? 'package-incompatible' : exact.can_purchase === false ? 'not-purchasable' : !Number.isFinite(exact.stock) ? 'unverified-stock' : exact.stock >= primary.required ? 'available' : 'insufficient',
     })
   } catch (error) {
     checked.push({ ...part, checked_at: new Date().toISOString(), evidence: url, status: 'unverified-network-error', error: error.message })

@@ -29,6 +29,26 @@ export async function officialPart(code) {
     returned_code:response.data?.componentCode ?? null, exact}
 }
 
+// Query and classify the required numeric-index evidence independently. The
+// index is incomplete and its stock can include material not orderable; only
+// an exact official identity may supply orderable inventory (AGENTS.md).
+export async function catalogEvidence(code, options = {}) {
+  if (!/^C\d+$/.test(code)) throw new Error('Invalid exact JLC code')
+  const url = `https://jlcsearch.tscircuit.com/components/list.json?search=${code.slice(1)}`
+  const readIndex = options.readIndex || (async url => {
+    const {stdout} = await run('curl', ['--fail','--silent','--show-error','-L','--retry','2','--max-time','40',url], {maxBuffer:8_000_000})
+    return JSON.parse(stdout)
+  })
+  let response = null, search_error = null, official = null, official_error = null
+  try { response = await readIndex(url) } catch (error) { search_error = error.message }
+  try { official = await (options.readOfficial || officialPart)(code) } catch (error) { official_error = error.message }
+  const index_exact = Array.isArray(response?.components)
+    ? response.components.find(part => String(part.lcsc) === code.slice(1) || part.lcsc === code) ?? null : null
+  const index_status = search_error ? 'network-error' : index_exact ? 'exact-match' : 'no-exact-match'
+  const exact = official?.exact?.lcsc === code ? official.exact : null
+  return {url, checked_at:new Date().toISOString(), response, search_error, index_status, index_exact, official, official_error, exact}
+}
+
 // Official English catalog translates only the Chinese through-hole prefix.
 // Preserve pitch, dimensions and every other package detail exactly.
 export function normalizePackageLabel(value) {

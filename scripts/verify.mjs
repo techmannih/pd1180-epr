@@ -37,6 +37,7 @@ verifiedInputPaths.push('scripts/check-inventory.mjs', 'docs/stock-report.json',
 verifiedInputPaths.push('docs/completion-handoff.md', 'engineering/mechanical/splice-evidence.json', 'engineering/mechanical/TE-320559-drawing.zip', 'engineering/filled-copper-review.json')
 verifiedInputPaths.push('scripts/check-copper-evidence.mjs', 'scripts/copper-evidence.test.mjs')
 verifiedInputPaths.push('docs/sourcing-resolution.md', 'docs/manufacturing-acceptance.md', 'sourcing/procurement-open-items.csv', 'release/order-settings.json', 'engineering/sourcing-native-metadata.json')
+verifiedInputPaths.push('scripts/splice-model.mjs', 'scripts/splice-model.test.mjs', 'engineering/mechanical/harness-parts.zip')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -59,7 +60,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['power-audit', ['run', 'check:power-audit']],

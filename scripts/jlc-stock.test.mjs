@@ -36,3 +36,49 @@ test('only translates the through-hole label, retaining pitch and body dimension
   expect(packagesMatch('插件,D12.5xL25mm', 'Plugin,D10xL25mm')).toBe(false)
   expect(packagesMatch('0603', null)).toBe(false)
 })
+
+import {catalogEvidence} from './jlc-stock.mjs'
+test('index outage does not skip exact official available-order evidence',async()=>{
+  const seen=[]
+  const result=await catalogEvidence('C728583',{
+    readIndex:async url=>{seen.push(url);throw new Error('HTTP 503')},
+    readOfficial:async code=>{seen.push(code);return {exact:normalizeOfficialPart(record(),'C728583')}}
+  })
+  expect(seen).toEqual(['https://jlcsearch.tscircuit.com/components/list.json?search=728583','C728583'])
+  expect(result.search_error).toBe('HTTP 503')
+  expect(result.index_status).toBe('network-error')
+  expect(result.index_exact).toBeNull()
+  expect(result.exact.stock).toBe(4479)
+})
+test('official zero or unavailable quantities cannot fall back to cached index stock',async()=>{
+  const readIndex=async()=>({components:[{lcsc:728583,mfr:'RT0603BRD0716K2L',package:'0603',stock:9000}]})
+  const zero=await catalogEvidence('C728583',{readIndex,readOfficial:async()=>({exact:normalizeOfficialPart(record({canPresaleNumber:0}),'C728583')})})
+  expect(zero.exact.stock).toBe(0)
+  for(const readOfficial of [async()=>{throw new Error('timeout')},async()=>({exact:null}),async()=>({exact:{lcsc:'C1',stock:9000}})]){
+    const result=await catalogEvidence('C728583',{readIndex,readOfficial})
+    expect(result.exact).toBeNull()
+  }
+})
+
+test('numeric index matches are recorded separately from exact official authority',async()=>{
+  for(const [components,status] of [
+    [[], 'no-exact-match'],
+    [[{lcsc:7285830,stock:9000}], 'no-exact-match'],
+    [[{lcsc:728583,stock:9000}], 'exact-match'],
+    [[{lcsc:'C728583',stock:9000}], 'exact-match']
+  ]) {
+    const result=await catalogEvidence('C728583',{
+      readIndex:async()=>({components}),
+      readOfficial:async()=>({exact:normalizeOfficialPart(record(),'C728583')})
+    })
+    expect(result.index_status).toBe(status)
+    expect(Boolean(result.index_exact)).toBe(status==='exact-match')
+    expect(result.exact.stock).toBe(4479)
+    // Even a present exact index must not rescue a mismatched official part.
+    const missing=await catalogEvidence('C728583',{
+      readIndex:async()=>({components}),
+      readOfficial:async()=>({exact:normalizeOfficialPart(record(),'C1')})
+    })
+    expect(missing.exact).toBeNull()
+  }
+})
