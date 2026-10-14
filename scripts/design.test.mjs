@@ -209,7 +209,8 @@ test('brake dissipates downstream energy without feeding the USB supply',()=>{
 test('MCU retains USB attach sense, data and SWD while removed interface pins are disconnected',()=>{
   for(const [pin,net]of [[19,'USB_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK']])on('U16',pin,net)
   for(const pin of [2,3,13,14,22,29,32,38,39,40,41])expect(key('U16',pin)).toBeFalsy()
-  expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(48)
+  on('U16',49,'GND')
+  expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(49)
 })
 test('analytical limits have margin below the 5-A USB input contract',()=>{
   const limit=18000/comp('R25').resistance
@@ -302,11 +303,16 @@ test('USB-only power is confined to the MCU and its local controls/decoupling',(
 })
 
 test('indicator reset silences the alarm without relying on I2C or stealing industrial GPIO',()=>{
-  on('U35',3,'STATUS_GPIO'); on('R132',1,'STATUS_GPIO'); on('R132',2,'GND')
+  on('U35',3,'U35_RESET_N'); on('U37',2,'STATUS_GPIO'); on('U37',4,'U35_RESET_N');
+  on('U37',3,'GND'); on('U37',5,'PD_3V3'); on('C99',1,'PD_3V3'); on('C99',2,'GND');
+  on('R137',1,'U35_RESET_N'); on('R137',2,'GND');
+  expect(key('U35',3)).not.toBe(key('U16',1));
+  expect(comp('U37').manufacturer_part_number).toBe('SN74LVC1G17DBVR');
+  expect(manifest.parts.find(p=>p.name==='R137').value).toBe('47k'); on('R132',1,'STATUS_GPIO'); on('R132',2,'GND')
   on('U35',16,'PD_3V3'); on('C95',1,'PD_3V3'); on('C95',2,'GND')
   for(const pin of [1,2,8,9,10,11,12])on('U35',pin,'GND')
   on('U35',14,'PD_SCL');on('U35',15,'PD_SDA')
-  // TCA9538 SCL/SDA must not exceed VCC, including supply sequencing.
+  // Reset buffer and I2C pullups share the expander supply, independent of MCU power.
   for(const [signalPin,pullup]of[[14,'R7'],[15,'R6']]){
     expect(key(pullup,2)).toBe(key('U35',signalPin))
     expect(key(pullup,1)).toBe(key('U35',16))
@@ -344,37 +350,48 @@ test('EEPROM programming isolates both controller wires and never merges the pow
 })
 
 
-test('U16 keeps the LQFP model and all 48 numbered pill lands', () => {
+test('U16 matches ST UFQFPN48 GP lands with a grounded exposed pad', () => {
   const source = comp('U16')
-  expect(source.manufacturer_part_number).toBe('STM32G0B1CBT6')
-  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2847904'])
+  expect(source.manufacturer_part_number).toBe('STM32G0B1CEU6')
+  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2829190'])
   const pcb = pcbComponents.find(p => p.source_component_id === source.source_component_id)
   const pads = data.filter(p => p.type === 'pcb_smtpad' && p.pcb_component_id === pcb.pcb_component_id)
-  expect(pads.length).toBe(48)
+  expect(pads.length).toBe(49)
   for (let n = 1; n <= 48; n++) {
     const sp = port('U16', n)
     const pp = data.find(p => p.type === 'pcb_port' && p.source_port_id === sp.source_port_id)
     const pad = pads.find(p => p.pcb_port_id === pp.pcb_port_id)
     const i = (n - 1) % 12
     const side = Math.floor((n - 1) / 12)
-    const [x, y] = [[-2.75 + i * 0.5, -4.25], [4.25, -2.75 + i * 0.5],
-      [2.75 - i * 0.5, 4.25], [-4.25, 2.75 - i * 0.5]][side]
+    const [x, y] = [[-2.75 + i * 0.5, -3.375], [3.375, -2.75 + i * 0.5],
+      [2.75 - i * 0.5, 3.375], [-3.375, 2.75 - i * 0.5]][side]
     expect(pad.x - pcb.center.x).toBeCloseTo(x, 6)
     expect(pad.y - pcb.center.y).toBeCloseTo(y, 6)
-    expect(['pill', 'rotated_pill']).toContain(pad.shape)
-    expect(Math.max(pad.width, pad.height)).toBeCloseTo(1.5, 6)
-    expect(Math.min(pad.width, pad.height)).toBeCloseTo(0.27, 6)
+    expect(pad.shape).toBe('rect')
+    expect(Math.max(pad.width, pad.height)).toBeCloseTo(0.55, 6)
+    expect(Math.min(pad.width, pad.height)).toBeCloseTo(0.30, 6)
   }
+  on('U16',49,'GND')
+  const ep = pads.find(p => p.port_hints?.includes('pin49')) || pads.find(p => p.width === 5.6)
+  expect(ep.width).toBe(5.6); expect(ep.height).toBe(5.6)
+  expect(ep.x).toBe(pcb.center.x); expect(ep.y).toBe(pcb.center.y)
+  const paste = data.filter(p => p.type === 'pcb_solder_paste' && p.pcb_smtpad_id === ep.pcb_smtpad_id)
+  expect(paste.length).toBe(1); expect(paste[0].width).toBe(4.6); expect(paste[0].height).toBe(4.6)
+  const target=JSON.parse(readFileSync('firmware/boards/pd1180.json'))
+  expect(target.build.mcu).toBe('stm32g0b1ceu6')
+  expect(target.build.extra_flags).toContain('ARDUINO_GENERIC_G0B1CEUX')
+  expect(target.upload.maximum_size).toBe(524288)
+  expect(target.upload.maximum_ram_size).toBe(147456)
   const model = data.find(p => p.type === 'cad_component' && p.pcb_component_id === pcb.pcb_component_id)
-  expect(model.model_obj_url).toContain('uuid=a4b96ad857dc48c08dab3d0efdf20aec&pn=C2847904')
-  expect(model.rotation).toEqual({ x: 0, y: 0, z: 0 })
+  expect(model.model_obj_url).toContain('uuid=16912e571dfb42a9a47b4df7b841ed45&pn=C2829190')
+  expect(model.rotation).toEqual({ x: 0, y: 0, z: 90 })
   expect(data.filter(p => p.type === 'pcb_silkscreen_text' && p.pcb_component_id === pcb.pcb_component_id).map(p => p.text)).toEqual(['U16'])
 })
 
 test('U35 keeps its TSSOP CAD, all 16 pin positions and C95 clearance', () => {
   const source = comp('U35')
-  expect(source.manufacturer_part_number).toBe('TCA9538PWR')
-  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2652286'])
+  expect(source.manufacturer_part_number).toBe('PCA9538PWR')
+  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C201530'])
   const pcb = pcbComponents.find(p => p.source_component_id === source.source_component_id)
   const pads = data.filter(p => p.type === 'pcb_smtpad' && p.pcb_component_id === pcb.pcb_component_id)
   expect(pads.length).toBe(16)
@@ -390,7 +407,7 @@ test('U35 keeps its TSSOP CAD, all 16 pin positions and C95 clearance', () => {
     expect(pad.height).toBeCloseTo(0.34, 6)
   }
   const model = data.find(p => p.type === 'cad_component' && p.pcb_component_id === pcb.pcb_component_id)
-  expect(model.model_obj_url).toContain('C2652286.obj?uuid=534f03d8fe164fbab551f91e5a792e30')
+  expect(model.model_obj_url).toContain('C201530.obj?uuid=534f03d8fe164fbab551f91e5a792e30')
   expect(model.rotation).toEqual({ x: 0, y: 0, z: 90 })
   expect(data.filter(p => p.type === 'pcb_silkscreen_text' && p.pcb_component_id === pcb.pcb_component_id).map(p => p.text)).toEqual(['U35'])
   const bypass = pcbComponents.find(p => p.source_component_id === comp('C95').source_component_id)

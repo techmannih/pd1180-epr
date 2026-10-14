@@ -29,7 +29,7 @@ The earlier `feature-parity` check covered ten functions already present on this
 | Winding connector | JST PH / JST XH | JST VH; exact mating cable now specified for the ordered bare-lead motor. |
 | Actual phase telemetry | Two INA240 channels and separate inline shunts | Implemented, using 5 mΩ and 100 mV/A here. No copied calibration or claim of RMS/position measurement. |
 | Board temperature | TMP102; software response / hardware interlock | TMP102 plus hardware inhibit and missing/stale-sensor firmware checks. Thermal correlation remains unmeasured. |
-| RGB indication | Fitted RGB and transistor sinks | D16 RGB with U35 TCA9538 sinks; PC13 reset, current limiting and firmware fault/power states. |
+| RGB indication | Fitted RGB and transistor sinks | D16 RGB with U35 PCA9538 sinks; PC13 reset, current limiting and firmware fault/power states. |
 | Audible alarm | Fitted buzzer and default-off driver | BZ1 active buzzer with Q26, gate pulldown and clamp; default-off/reset-tested. Hardware motor protection remains independent. |
 | Independent power indication | Fitted logic-power LED | D17/R128 indicate board V3V3 independently; USB-only MCU power is distinct. |
 | PD / motor voltage probes | Labeled PD, VMOTOR, GND pads | Added TP_PD_VBUS, TP_VMOTOR and TP_PWR_GND plus five programming pads; 19 service pads total. |

@@ -2,9 +2,9 @@
   "build": {
     "core": "stm32",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-DSTM32G0 -DSTM32G0xx -DSTM32G0B1xx -DARDUINO_GENERIC_G0B1CBTX",
+    "extra_flags": "-DSTM32G0 -DSTM32G0xx -DSTM32G0B1xx -DARDUINO_GENERIC_G0B1CEUX",
     "f_cpu": "64000000L",
-    "mcu": "stm32g0b1cbt6",
+    "mcu": "stm32g0b1ceu6",
     "product_line": "STM32G0B1xx",
     "variant": "STM32G0xx/G0B1C(B-C-E)(T-U)_G0C1C(C-E)(T-U)",
     "arduino": {
@@ -15,17 +15,17 @@
     }
   },
   "debug": {
-    "jlink_device": "STM32G0B1CB",
+    "jlink_device": "STM32G0B1CE",
     "openocd_target": "stm32g0x",
     "svd_path": "STM32G0B1.svd"
   },
   "frameworks": [
     "arduino"
   ],
-  "name": "PD1180 STM32G0B1CBT6 LQFP48 GP 128K",
+  "name": "PD1180 STM32G0B1CEU6 UFQFPN48 GP 512K",
   "upload": {
     "maximum_ram_size": 147456,
-    "maximum_size": 131072,
+    "maximum_size": 524288,
     "protocol": "stlink",
     "protocols": [
       "stlink"

@@ -1,18 +1,18 @@
 {
-  "built_at": "2026-10-13T13:43:47.987Z",
-  "target": "STM32G0B1CBT6",
+  "built_at": "2026-10-14T06:04:27.714Z",
+  "target": "STM32G0B1CEU6",
   "image_type": "commissioning-diagnostics-only",
   "motor_operation_enabled": false,
   "flash_address": "0x08000000",
   "initial_sp": "0x20024000",
   "reset_vector": "0x800b83d",
-  "max_flash_bytes": 131072,
+  "max_flash_bytes": 524288,
   "image_bytes": 58216,
   "inputs": {
     "firmware/platformio.ini": "c6c22c0c77ed26edf1a9a00c2c9e3591c7a6cd139775ce135f17e084451bea90",
-    "firmware/README.md": "e2161dfdfe9dfb5e2ae22348c3e6313d333a31ddd6ba4130fefb1848ae8dafc9",
-    "docs/firmware-pinmap.json": "e1d4cdb2688dc72265fcb901cd8624050bc0f195e02f7af1e9c084def1647cb9",
-    "scripts/build-firmware.mjs": "a98b3dc00987ce9acbc9aa43c72a95aeb17dcd8807ba2d0a84d77b6152f64edf",
+    "firmware/README.md": "2640f1ea4bdcee4ba38caa7d1f00f054b61263d9db14fab9227c5e3886928582",
+    "docs/firmware-pinmap.json": "8e7b89d37974991ea8a64682f30cd01092e2cd351c1ff9e0b17d67814909ec4b",
+    "scripts/build-firmware.mjs": "af71855e457c8ee28ebb9f9df59fd78aeea944722c0fad7ffe17e33846437fc9",
     "firmware/src/brake_preflight.c": "3daade4d862f022ee6148bec76a34be6d2b4f89b1bf549d42f33196ca1a8cf8e",
     "firmware/src/control.c": "95c4700a91e3cc3fe744a3b887c28ed6db261104a68430f6b6e2e6fcb8fd29e2",
     "firmware/src/local_motion.c": "34931a584031af763e5076d75ea8d0016a51f5d3a74d95517696d261b867a741",
@@ -33,14 +33,14 @@
     "firmware/include/telemetry.h": "5b78411c0d1d8675561b58875f426f4c4e8fdff7db67b5b6b75990bab0eb1303",
     "firmware/include/tmc5160.h": "c54a6a85208b50a35ab301e7db4c138f7d9b071fa6704c67836e84be7fd8510f",
     "firmware/include/tmc5160_config.h": "eaa9d3f2a2a33382ad0c7cfc986ce2f216ad17cd1aa5a8ec04e0db91b27c5335",
-    "firmware/target/main.cpp": "3b09a8c84bda328a5bfa1597083bc6094b6f85fb1be6116fdccc467f0ea51544",
+    "firmware/target/main.cpp": "5fd29f0d780149ff7eabca08fe133e9dd22f4720178907746fc7d398c91f8aa2",
     "firmware/target/usb_suspend.cpp": "adc4976790187046d1054223cf740c80b64e5c72c507dab04351b02c7f53a42f",
     "firmware/target/usb_suspend.h": "15822f65fd0691f4340ed026f94b5adea98d3f7cadd42f9f948017fac0d6945d",
-    "firmware/boards/pd1180.json": "bf96ddf2d976e26caed4ab68d285cf0372f9f332aae4cb8824f425951788489c"
+    "firmware/boards/pd1180.json": "e2e81551e3e853f840af3919878e0b032c6c08b13c8c840d9cc57b060aca1394"
   },
   "artifacts": {
     "firmware.bin": "cb0b82779725b35084cc24f1fe297299e0ea4df92fa35966ff744bfd5b1bba37",
-    "firmware.elf": "8360674164e85878ed477693226a45f897f600a457a5c4735e67e4dfd671afb1"
+    "firmware.elf": "715d687aab6c8c2cbfb9ebd0a776ff12aab4d828d8d5be5dff855e158661d209"
   },
   "unverified": [
     "USB enumeration and measured GPIO levels on hardware",

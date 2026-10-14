@@ -27,7 +27,8 @@ for (const file of await readdir(evidenceDirectory)) {
     await rm(new URL(file, evidenceDirectory))
   }
 }
-await Promise.all(Array.from({ length: 5 }, async () => {
+// Bound catalog concurrency to avoid JLC HTTP 429 responses during a full BOM refresh.
+await Promise.all(Array.from({ length: 2 }, async () => {
   while (index < entries.length) {
     const entry = entries[index++]
     // JLCSearch expects the numeric LCSC id. Supplying the leading "C" can

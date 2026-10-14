@@ -54,7 +54,7 @@ With both sides joined, the paired 4.7 kΩ pullups give about 2.35 kΩ per line 
 
 ## Save and verify programming readback
 
-The provider must save the programmer's log and complete raw memory dump: U3 has 65,536 bytes starting at 0x0000; U16 has 131,072 bytes starting at 0x08000000. Keep the board serial, fixture/programmer identity, operator and programming timestamp with those files. A copied input binary is not a device readback.
+The provider must save the programmer's log and complete raw memory dump: U3 has 65,536 bytes starting at 0x0000; U16 has 524,288 bytes starting at 0x08000000. Keep the board serial, fixture/programmer identity, operator and programming timestamp with those files. A copied input binary is not a device readback.
 
 From the repository root, compare a U16 dump with the current commissioning archive:
 
@@ -77,8 +77,8 @@ Run `bun scripts/check-pd-image.mjs` before programming. Keep all three motion q
 ## STM32 SWD programming and cold-boot acceptance
 
 1. Keep the motor disconnected and qualification locks enabled. Connect the labelled SWDIO, SWCLK, NRST and GND pads plus TP_SWD_3V3 as target-voltage reference. Verify pad identities against the current release; do not use USB VBUS as a logic reference. The ST-LINK/programmer must not supply power to the target.
-2. Power the MCU through the board's USB DATA input for this step. Confirm the 3.3 V MCU rail and connect under reset if required. Check the detected MCU identity and 128 KiB flash capacity against STM32G0B1CBT6; abort on a mismatch. Save the initial option-byte readout. Do not set irreversible protection or alter boot/BOR settings without a reviewed configuration.
-3. Check the commissioning archive's manifest/hash, program `firmware.bin` at 0x08000000 and run the programmer's verification. Save a separate raw device dump of **131,072 bytes from 0x08000000** and the tool log. Run `verify-programming.mjs --kind stm32` as shown above; archive the returned JSON with the board serial. Device option bytes are a separate record, not part of this main-flash dump.
+2. Power the MCU through the board's USB DATA input for this step. Confirm the 3.3 V MCU rail and connect under reset if required. Check the detected MCU identity and 512 KiB flash capacity against STM32G0B1CEU6; abort on a mismatch. Save the initial option-byte readout. Do not set irreversible protection or alter boot/BOR settings without a reviewed configuration.
+3. Check the commissioning archive's manifest/hash, program `firmware.bin` at 0x08000000 and run the programmer's verification. Save a separate raw device dump of **524,288 bytes from 0x08000000** and the tool log. Run `verify-programming.mjs --kind stm32` as shown above; archive the returned JSON with the board serial. Device option bytes are a separate record, not part of this main-flash dump.
 4. Turn off and disconnect J1, J10 and any programmer power path, then verify rail discharge. Remove active SWD drive; release TP_PD_ISO after EEPROM work. Cold boot on fixed 5 V at J1, confirm U2 APP/PD118041 and MCU diagnostics, and verify POWER_PERMIT/MCU_RUN stay inactive. Test USB DATA only separately: MCU diagnostics may run, but it must not energize VMOTOR or backfeed the PD rail.
 5. Record cold attach with each source, both-source attach/remove order, MCU reset/watchdog and USB suspend/resume. Then test the actual EPR source/cable and FLT/EPR_EN response according to the stationary matrix. A programmed-byte match and a successful debug reset do not close cold boot or power-sequencing acceptance.
 

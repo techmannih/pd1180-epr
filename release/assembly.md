@@ -8,7 +8,7 @@ The requested deliverable is a fabricated, fully populated, programmed and funct
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes and 1 oz copper on all layers. The fabricator must confirm the USB impedance stack-up; current/thermal qualification remains pending.
 - Assembly is top-side only. All fitted components and service pads are on top. U18 and its C52/C53 bypass footprints are bottom-side DNP and omitted from the fitted BOM/CPL and paste. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
-- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total), and U34 has four exposed-pad thermal vias. The final top-side route has 55 via drills overlapping top solder lands; exact locations are recorded in `engineering/top-side-placement.json` under `power_eco_via_audit`. Order epoxy-filled and copper-capped processing for every via-in-pad, with no finished via drill below 0.30 mm.
+- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total), U34 has four exposed-pad thermal vias, and the new U16 ground pad has four. The final top-side route has 63 via drills overlapping top solder lands; exact locations are recorded in `engineering/top-side-placement.json` under `power_eco_via_audit`. Order epoxy-filled and copper-capped processing for every via-in-pad, with no finished via drill below 0.30 mm.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
@@ -20,9 +20,8 @@ The requested deliverable is a fabricated, fully populated, programmed and funct
 | J10, USB DATA | USB 2.0 to STM32 and separate current-limited logic supply; no motor power |
 | J2, motor | 1 A1, 2 A2, 3 B1, 4 B2 |
 | J3, external brake | 1 VMOTOR, 2 switched resistor return (not a permanent ground) |
-| J7, industrial harness | 1 HOME, 2 STOP L, 3 STOP R, 4 IN0, 5 IN1, 6 STEP, 7 DIR, 8 GND, 9 RS232 TX, 10 RS232 RX, 11 GND, 12 CAN H, 13 CAN L, 14 GND, 15 RS485 A, 16 RS485 B, 17 VMOTOR, 18 HW ENABLE, 19 OUT0, 20 OUT1 |
 
-Pin numbering follows the imported physical footprints. J7 is the 20-pin B20B-PHDSS(LF)(SN), with PHDR-20VS mating housing. Its signal map is authoritative in `hardware-contract.json`. J7 pin 17 carries nominal 48 V VMOTOR, not regulated 24 V. J6/J9 are retired; do not use their old pinouts. Inputs remain nominal 24 V, with a shared ground. Mating housings, contacts, wire gauge and strain relief are separate procurement items.
+Pin numbering follows the imported physical footprints. J7 and the industrial command/transceiver interfaces are removed in the selected onboard-control design. Use the J2/J3 cavity map in [connector-harnesses.md](connector-harnesses.md); housings, contacts, cable and strain relief are separate procurement items. J6/J9 are retired; do not use their historical pinouts.
 
 ## Programming and external items
 
@@ -34,9 +33,9 @@ JLCPCB currently offers [programming](https://jlcpcb.com/help/article/pcba-progr
 
 Supply the following before approving a ready-to-run batch:
 
-1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 55 filled/capped via-in-pad locations and the agreed stack-up.
+1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 63 filled/capped via-in-pad locations and the agreed stack-up.
 2. U3 **M24512-RMN6TP**: approved full-flash BIN, hash, reviewed EEPROM programming method and readback verification. [TI's EVM guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf) describes generating the full-flash binary. U36 separates U2's EEP_SDA/EEP_SCL I2Cc bus from U3's EEP_PROG_SDA/EEP_PROG_SCL programming pads. Ground TP_PD_ISO before fixed-5 V target power and keep programmer VCC off. Follow [pd-programming.md](pd-programming.md); the constructed fixture still needs qualification. SWD/J10 do not directly program this EEPROM.
-3. U16 **STM32G0B1CBT6**: qualified motor-enabled BIN/HEX, hash, SWD pad drawing, flash address `0x08000000` for a raw BIN, supply arrangement and readback procedure. The existing commissioning archive is suitable only for initial diagnostic testing. Do not substitute it as the final motor-operating image.
+3. U16 **STM32G0B1CEU6**: qualified motor-enabled BIN/HEX, hash, SWD pad drawing, flash address `0x08000000` for a raw BIN, supply arrangement and readback procedure. The existing commissioning archive is suitable only for initial diagnostic testing. Do not substitute it as the final motor-operating image.
 4. Exact motor and brake load, qualified current/microstep settings, onboard motion limits and stop profile, actual 48 V EPR supply/cable, heatsink, enclosure and ambient limits. These must come from first-article qualification; the 3.8 A RMS design ceiling is not a measured motor rating.
 5. An accepted fixture and test procedure: labelled J1 POWER/J10 DATA/J2 motor/J3 brake connections, current limiting, probes, controlled loads, expected readings, stop criteria and an operator demonstration. Agree who performs first-article qualification and who tests the remaining boards.
 
@@ -77,7 +76,7 @@ The exact ordered STEPPERONLINE 34HS31-6004S1 CAD is available in `motor-assembl
 
 ## Imported-part corrections
 
-The STM32 registry component is retained with a complete datasheet pin-label override, power/ground attributes and a courtyard. CSD19534 drain thermal vias are implemented in the final KiCad route with explicit drain-net identities and bottom copper ties. Q2/Q3 use the exact CSD17484F4 PicoStar-3 land pattern and G/S/D pin map from the imported JLC part. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion.
+The STM32 component uses explicit ST UFQFPN48 lands, the GP pin map, a grounded exposed pad and a courtyard. CSD19534 drain thermal vias are implemented in the final KiCad route with explicit drain-net identities and bottom copper ties. Q2/Q3 use the exact CSD17484F4 PicoStar-3 land pattern and G/S/D pin map from the imported JLC part. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion.
 
 ## PD power-path enable buffer
 
@@ -91,4 +90,4 @@ U22, L2 and U24 provide motor-side logic backup; U5, L1 and U23 provide PD-side 
 
 Verify the new top-side D16/D17/BZ1/Q26/U35/U36 parts and their polarity against the source/BOM, with R126 = 1 kΩ and R127 = 100 kΩ. Check the 19 bare service contacts against the fixture map in [pd-programming.md](pd-programming.md). The indicators consume board V3V3 and do not imply motor permission or correct PD programming. Verify RGB visibility, power indication, fault chirps, silent reset and the combined rail current using [indicators.md](indicators.md). Record these tests with the per-board firmware/configuration hashes.
 
-Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 55 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. **10 Ω/300 W remains provisional; motion locks remain enabled.**
+Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 63 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. **10 Ω/300 W remains provisional; motion locks remain enabled.**

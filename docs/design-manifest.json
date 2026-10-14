@@ -5474,7 +5474,8 @@
         "pin45": "PD_SCL",
         "pin46": "PD_SDA",
         "pin47": "TMC_DIAG1",
-        "pin48": "VMOTOR_OK"
+        "pin48": "VMOTOR_OK",
+        "pin49": "GND"
       },
       "sheet": "mcu",
       "xy": [
@@ -5482,11 +5483,11 @@
         -12
       ],
       "owner": null,
-      "lcsc": "C2847904",
-      "mpn": "STM32G0B1CBT6",
+      "lcsc": "C2829190",
+      "mpn": "STM32G0B1CEU6",
       "size": [
-        10,
-        10
+        7.299999999999997,
+        7.300000000000001
       ],
       "noConnect": [
         "pin2",
@@ -5512,7 +5513,7 @@
       ],
       "rotation": 0,
       "layer": "top",
-      "footprint": "LQFP-48(7x7)"
+      "footprint": "UFQFPN-48(7x7)"
     },
     {
       "tag": "capacitor",
@@ -7137,12 +7138,12 @@
       "voltage": 50
     },
     {
-      "tag": "TCA9538PWR",
+      "tag": "PCA9538PWR",
       "name": "U35",
       "connections": {
         "pin1": "GND",
         "pin2": "GND",
-        "pin3": "STATUS_GPIO",
+        "pin3": "U35_RESET_N",
         "pin4": "RGB_R_DRV",
         "pin5": "RGB_G_DRV",
         "pin6": "RGB_B_DRV",
@@ -7172,9 +7173,9 @@
       "noConnect": [
         "pin13"
       ],
-      "lcsc": "C2652286",
+      "lcsc": "C201530",
       "footprint": "TSSOP-16",
-      "mpn": "TCA9538PWR",
+      "mpn": "PCA9538PWR",
       "size": [
         4.890000000000001,
         7.460000000000001
@@ -7972,6 +7973,99 @@
         2.5999999999999943
       ],
       "noConnect": []
+    },
+    {
+      "tag": "SN74LVC1G17DBVR",
+      "name": "U37",
+      "connections": {
+        "pin2": "STATUS_GPIO",
+        "pin3": "GND",
+        "pin4": "U35_RESET_N",
+        "pin5": "PD_3V3"
+      },
+      "sheet": "indicators",
+      "xy": [
+        26.5,
+        -32.25
+      ],
+      "sch": [
+        -6.5,
+        5.2
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U37",
+      "noConnect": [
+        "pin1"
+      ],
+      "lcsc": "C7836",
+      "footprint": "SOT-23-5",
+      "size": [
+        3.700195799999996,
+        2.499918799999996
+      ],
+      "mpn": "SN74LVC1G17DBVR"
+    },
+    {
+      "tag": "capacitor",
+      "name": "C99",
+      "connections": {
+        "pin1": "PD_3V3",
+        "pin2": "GND"
+      },
+      "sheet": "indicators",
+      "xy": [
+        22.75,
+        -33.2
+      ],
+      "sch": [
+        -12.8,
+        1.8
+      ],
+      "rotation": 180,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U37",
+      "noConnect": [],
+      "lcsc": "C14663",
+      "footprint": "0603",
+      "schRotation": 270,
+      "size": [
+        2.4499999999999957,
+        0.9500000000000028
+      ],
+      "value": "100nF"
+    },
+    {
+      "tag": "resistor",
+      "name": "R137",
+      "connections": {
+        "pin1": "U35_RESET_N",
+        "pin2": "GND"
+      },
+      "sheet": "indicators",
+      "xy": [
+        24,
+        -29.5
+      ],
+      "sch": [
+        -1.5,
+        5.2
+      ],
+      "rotation": 0,
+      "layer": "top",
+      "section": "indicators_U35",
+      "owner": "U37",
+      "noConnect": [],
+      "lcsc": "C25819",
+      "footprint": "0603",
+      "schRotation": 270,
+      "size": [
+        2.4499999999999957,
+        0.9500000000000028
+      ],
+      "value": "47k"
     }
   ],
   "optional_parts": [

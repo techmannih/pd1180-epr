@@ -145,7 +145,7 @@
       "feature": "Visible multicolor status",
       "status": "implemented",
       "evidence": "docs/indicators.md",
-      "detail": "D16 common-anode RGB, U35 reset-controlled TCA9538 sinks and current limiting. PC13 controls reset without consuming industrial pins; host-tested fault/power/suspend behavior. Optical and powered qualification remain open."
+      "detail": "D16 common-anode RGB, U35 reset-controlled PCA9538 sinks and current limiting. U37 buffers PC13 reset into PD_3V3; host-tested fault/power/suspend behavior. Optical and powered qualification remain open."
     },
     {
       "id": "buzzer",

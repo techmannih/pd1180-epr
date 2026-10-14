@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-10-14T05:04:53.792Z",
+  "generated_at": "2026-10-14T07:19:35.994Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "856b94c3df691d07cb74e04e68dd5ff207432da7e9e97077b4ec9071dd00cf39",
-    "bytes": 4438517
+    "sha256": "b2c740684116f108482829cc67fe048e33740c775fbd8d95460a920a7b12193d",
+    "bytes": 4477922
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 10073,
+    "elements": 10173,
     "sheets": 24,
-    "source_components": 274,
-    "source_ports": 955,
-    "connected_source_ports": 905,
-    "intentional_no_connect_ports": 50,
-    "source_nets": 162,
+    "source_components": 277,
+    "source_ports": 965,
+    "connected_source_ports": 914,
+    "intentional_no_connect_ports": 51,
+    "source_nets": 163,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 88,
+    "capacitors": 89,
     "test_points": 19,
     "annotations": 72,
     "frame_point_violations": 0,
@@ -24,7 +24,7 @@
   },
   "net_port_histogram": {
     "2": 62,
-    "3": 60,
+    "3": 61,
     "4": 16,
     "5": 4,
     "6": 2,
@@ -34,10 +34,10 @@
     "12": 4,
     "13": 2,
     "18": 1,
-    "23": 1,
+    "25": 1,
     "43": 1,
     "59": 1,
-    "224": 1
+    "228": 1
   },
   "usb_c": {
     "connectors": [
@@ -408,6 +408,7 @@
     "U32.4:NC",
     "U34.4:PG",
     "U35.13:N_INT",
+    "U37.1:NC",
     "U6.11:MODE",
     "U6.19:N_C6",
     "U6.20:N_C5",
@@ -432,8 +433,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 224,
-      "non_testpoint_peers": 220
+      "total_ports_on_net": 228,
+      "non_testpoint_peers": 224
     },
     {
       "ref": "TP_SWCLK",
@@ -480,20 +481,20 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 224,
-      "non_testpoint_peers": 220
+      "total_ports_on_net": 228,
+      "non_testpoint_peers": 224
     },
     {
       "ref": "TP_PD_VREF",
       "net": "PD_3V3",
-      "total_ports_on_net": 23,
-      "non_testpoint_peers": 22
+      "total_ports_on_net": 25,
+      "non_testpoint_peers": 24
     },
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 224,
-      "non_testpoint_peers": 220
+      "total_ports_on_net": 228,
+      "non_testpoint_peers": 224
     },
     {
       "ref": "TP_EEP_SDA",
@@ -528,8 +529,8 @@
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 224,
-      "non_testpoint_peers": 220
+      "total_ports_on_net": 228,
+      "non_testpoint_peers": 224
     }
   ],
   "sheets": [
@@ -823,7 +824,7 @@
       ],
       "annotations": [
         "25 / Status and Independent Power Indication",
-        "U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown.",
+        "U35 PCA9538 at 0x70; U37 buffers PC13 reset into PD_3V3 with default-low bias.",
         "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
       ]
     },
@@ -946,8 +947,8 @@
     {
       "index": 13,
       "name": "mcu",
-      "elements": 242,
-      "coordinate_points_checked": 417
+      "elements": 244,
+      "coordinate_points_checked": 432
     },
     {
       "index": 14,
@@ -994,8 +995,8 @@
     {
       "index": 25,
       "name": "indicators",
-      "elements": 120,
-      "coordinate_points_checked": 211
+      "elements": 143,
+      "coordinate_points_checked": 269
     },
     {
       "index": 26,
@@ -1021,8 +1022,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 274,
-        "schematic": 274
+        "source": 277,
+        "schematic": 277
       }
     },
     {
@@ -1835,7 +1836,7 @@
         "actual": 3,
         "texts": [
           "25 / Status and Independent Power Indication",
-          "U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown.",
+          "U35 PCA9538 at 0x70; U37 buffers PC13 reset into PD_3V3 with default-low bias.",
           "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
         ]
       }
@@ -1985,17 +1986,17 @@
     },
     {
       "ok": true,
-      "message": "162 named source nets after unused SBU removal",
+      "message": "163 named source nets including buffered indicator reset",
       "details": {
-        "actual": 162
+        "actual": 163
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 162,
-        "source_nets": 162
+        "connected_groups": 163,
+        "source_nets": 163
       }
     },
     {
@@ -2061,9 +2062,9 @@
     },
     {
       "ok": true,
-      "message": "88 capacitors including brake feedback filter",
+      "message": "89 capacitors including reset-buffer bypass and brake feedback filter",
       "details": {
-        "actual": 88
+        "actual": 89
       }
     },
     {
@@ -2135,6 +2136,7 @@
           "U32.4:NC",
           "U34.4:PG",
           "U35.13:N_INT",
+          "U37.1:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",
@@ -2187,6 +2189,7 @@
           "U32.4:NC",
           "U34.4:PG",
           "U35.13:N_INT",
+          "U37.1:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",

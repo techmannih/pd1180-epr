@@ -38,3 +38,12 @@ test.each(['U16','U35','C95'])('%s footprint replacement rejects any further lan
     expect(()=>verifyNativeEco(b,policy)).toThrow()
   }
 })
+
+test('stocked MCU/reset ECO rejects missing buffer, changed paste and restored local stubs', () => {
+  for (const mutate of [
+    b => { const i=b.findIndex(x=>x[0]==='footprint'&&x.some(p=>p[0]==='property'&&p[1]==='"Reference"'&&p[2]==='"U37"')); if(i<0) throw Error('Missing U37 fixture'); b.splice(i,1) },
+    b => { const f=b.find(x=>x[0]==='footprint'&&x.some(p=>p[0]==='property'&&p[1]==='"Reference"'&&p[2]==='"U16"')); const pad=f.find(p=>p[0]==='pad'&&p[1]==='"49"'); expect(field(pad,'solder_paste_margin')?.[1]).toBe('-0.5'); field(pad,'solder_paste_margin')[1]='0' },
+    b => { expect(policy.local_copper_removals.length).toBeGreaterThan(0); b.push(structuredClone(policy.local_copper_removals[0])) },
+    b => { const id=field(policy.local_copper_modifications[0].before,'uuid')[1]; const t=b.find(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id); field(t,t[0]==='via'?'at':'start')[1]='99' },
+  ]) {const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
+})

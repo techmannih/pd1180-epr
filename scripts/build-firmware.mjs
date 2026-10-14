@@ -23,12 +23,12 @@ if (!check) {
   if (elf.readUInt32BE(0)!==0x7f454c46 || elf[4]!==1 || elf[5]!==1 || elf.readUInt16LE(18)!==40)
     throw new Error('Expected little-endian 32-bit ARM ELF, not a host executable')
   const sp=bin.readUInt32LE(0), reset=bin.readUInt32LE(4)
-  if (bin.length>131072 || sp<=0x20000000 || sp>0x20024000 || !(reset&1) || reset<0x08000000 || reset>=0x08020000)
-    throw new Error('STM32G0B1CB vector table / memory bounds failed')
-  const manifest={built_at:new Date().toISOString(), target:'STM32G0B1CBT6',
+  if (bin.length>524288 || sp<=0x20000000 || sp>0x20024000 || !(reset&1) || reset<0x08000000 || reset>=0x08080000)
+    throw new Error('STM32G0B1CE vector table / memory bounds failed')
+  const manifest={built_at:new Date().toISOString(), target:'STM32G0B1CEU6',
     image_type:'commissioning-diagnostics-only', motor_operation_enabled:false,
     flash_address:'0x08000000', initial_sp:`0x${sp.toString(16)}`, reset_vector:`0x${reset.toString(16)}`,
-    max_flash_bytes:131072, image_bytes:bin.length, inputs,
+    max_flash_bytes:524288, image_bytes:bin.length, inputs,
     artifacts:{'firmware.bin':sha(bin),'firmware.elf':sha(elf)},
     unverified:['USB enumeration and measured GPIO levels on hardware','TI physical programming/readback and cold boot','SPI ramp/control hardware ECO','motor operation and thermal/EMC validation']}
   const zip=new JSZip()
@@ -61,4 +61,4 @@ const requestedImage = JSON.parse(await readFile('release/order-settings.json','
 if(requestedImage?.sha256 !== manifest.artifacts['firmware.bin'] ||
    requestedImage.image_bytes !== manifest.image_bytes || requestedImage.motion_enabled !== false)
   throw new Error('Commissioning image in order settings differs from the verified ARM archive')
-console.log(`Verified ARM commissioning image: ${manifest.image_bytes}/131072 bytes; motion locked; source hashes match.`)
+console.log(`Verified ARM commissioning image: ${manifest.image_bytes}/524288 bytes; motion locked; source hashes match.`)

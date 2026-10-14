@@ -9,8 +9,8 @@ await writeFile('engineering/protection-refinement-geometry.json', JSON.stringif
   current_board_sha256: digest(bytes), pad_net_changes: policy.pad_changes,
   footprint_replacements: (policy.footprint_replacements || []).map(p => ({ reference: p.reference, after_sha256: p.after_sha256, reason: p.reason })),
   removed_copper_items: 44, removed_isolated_zones: 1, added_ground_segments: 2,
-  added_local_fill_trim: 1, all_other_native_geometry_unchanged: true,
+  added_local_fill_trim: 1, stocked_controller_eco: policy.stocked_controller_eco, all_other_native_geometry_unchanged: true,
   derived_zone_fills_recomputed: true, policy_sha256: digest(await readFile('engineering/unused-sbu-eco.json')),
   checker_sha256: digest(await readFile(new URL(import.meta.url))), hardware_qualified: false,
 }, null, 2)+'\n')
-console.log('Verified narrow unused-SBU ECO; the reviewed U16/U35/C95 footprint substitutions are hash-locked; every unrelated pad/net, placement, hole, track and zone outline is unchanged.')
+console.log('Verified SBU and stocked-controller ECOs; exact reviewed footprints, reset network and local copper are hash-locked. Every unrelated pad/net, placement, hole, track and zone outline is unchanged.')

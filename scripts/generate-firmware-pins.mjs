@@ -2,14 +2,14 @@ import { readFile, writeFile } from 'node:fs/promises'
 
 const check = process.argv.includes('--check')
 const pinmap = JSON.parse(await readFile(new URL('../docs/firmware-pinmap.json', import.meta.url)))
-// Independent manufacturer package order: ST DS13560 rev 6, figure 5,
-// STM32G0B1CxT GP (not the different CxTxN package variant).
+// Independent manufacturer package order: ST DS13560 rev 6, figure 6,
+// STM32G0B1CxU GP (not the different CxUxN package variant).
 const physicalPins = ('PC13 PC14 PC15 VBAT VREF+ VDD/VDDA VSS/VSSA PF0 PF1 PF2 ' +
   'PA0 PA1 PA2 PA3 PA4 PA5 PA6 PA7 PB0 PB1 PB2 PB10 PB11 PB12 ' +
   'PB13 PB14 PB15 PA8 PA9 PC6 PC7 PA10 PA11 PA12 PA13 PA14 PA15 ' +
   'PD0 PD1 PD2 PD3 PB3 PB4 PB5 PB6 PB7 PB8 PB9').split(' ')
 for (const [pin, gpio] of Object.entries(pinmap.pin_to_gpio)) {
-  if (physicalPins[Number(pin.slice(3)) - 1] !== gpio) throw new Error(`${pin}: ${gpio} conflicts with ST LQFP48 GP pinout`)
+  if (physicalPins[Number(pin.slice(3)) - 1] !== gpio) throw new Error(`${pin}: ${gpio} conflicts with ST UFQFPN48 GP pinout`)
 }
 const source = await readFile(new URL('../index.circuit.tsx', import.meta.url), 'utf8')
 const mcu = source.match(/<STM32G0B1\s+name="U16"[\s\S]*?\/>/)?.[0]

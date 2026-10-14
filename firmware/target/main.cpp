@@ -194,7 +194,7 @@ static bool writeRegister(uint8_t address, uint8_t reg, uint16_t value) {
   pdBus.write(static_cast<uint8_t>(value >> 8)); pdBus.write(static_cast<uint8_t>(value));
   return pdBus.endTransmission() == 0;
 }
-// TCA9538: A1/A0 grounded (0x70); P0/P1/P2 sink RGB, P3 drives the alarm MOSFET.
+// PCA9538 (reset buffered into PD_3V3 by U37): A1/A0 grounded (0x70); P0/P1/P2 sink RGB, P3 drives the alarm MOSFET.
 // R132 holds RESET low during MCU reset. R127 keeps the buzzer gate low while
 // expander ports are inputs. The output latch is initialized before direction.
 static bool indicatorWrite(uint8_t reg, uint8_t value) {

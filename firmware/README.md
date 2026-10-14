@@ -2,7 +2,7 @@
 
 ## Current deliverable: commissioning diagnostics, motion locked
 
-`release/pd1180-commissioning-firmware.zip` contains an actual Cortex-M0+ ELF and raw binary for **STM32G0B1CBT6, LQFP48 GP, 128 KiB flash**. It is not a host executable. Do not use the different `...TxN` MCU variant. The archive manifest records source and image hashes.
+`release/pd1180-commissioning-firmware.zip` contains an actual Cortex-M0+ ELF and raw binary for **STM32G0B1CEU6, UFQFPN48 GP, 512 KiB flash**. It is not a host executable. Do not use the different `...UxN` MCU variant. The archive manifest records source and image hashes.
 
 The source ECO removes J7 and selects the TMC5160 internal SPI ramp with SD_MODE low. U7 pins 17, 18 and 23–25 are grounded; the rebuilt hardware still needs verification. This image deliberately keeps POWER_PERMIT, MCU_RUN and SD_MODE low, even if an ARM command is sent. It does not spin a motor. The TI TPS26750 full-flash candidate is generated; physical programming/readback is still pending.
 
@@ -63,7 +63,7 @@ Protocol and register reference: [ADI TMC5160A datasheet, rev. 1.18](https://www
 
 ## Visible status and alarm
 
-U35 TCA9538 at 0x70 drives the RGB LED and the active buzzer through Q26. PC13 / STATUS_GPIO is now its active-low reset, rather than a heartbeat; TP_STATUS probes that reset. It is held low by a physical 10 kΩ pulldown while the MCU resets, and firmware also asserts it on board-power loss, USB suspend or indicator-bus failure. The buzzer gate has a separate pulldown. Initialization writes the off latch before setting output directions, verifies register readback and waits before retrying after faults.
+U35 PCA9538 at 0x70 drives the RGB LED and the active buzzer through Q26. PC13 / STATUS_GPIO commands its active-low reset through U37, powered by PD_3V3. TP_STATUS probes the MCU-side command; U35_RESET_N is the buffered output. It is held low by a physical 10 kΩ pulldown while the MCU resets, and firmware also asserts it on board-power loss, USB suspend or indicator-bus failure. The buzzer gate has a separate pulldown. Initialization writes the off latch before setting output directions, verifies register readback and waits before retrying after faults.
 
 Blue identifies this motion-locked commissioning image. A latched motor fault, valid driver fault or valid temperature at/above 70 °C gives red plus a 200 ms alarm every 2 s; the alarm never controls motor protection. Amber/green describe power/telemetry states in a subsequently qualified application. `STATUS` includes `INDICATORS_OK`; zero can mean unpowered, not initialized or a bus fault. D17 independently indicates board V3V3 and stays off on DATA-only power. See [indicator circuitry and current budget](../docs/indicators.md).
 

@@ -7,7 +7,6 @@ from pathlib import Path
 import re
 import json
 import sys
-import textwrap
 
 
 POWER_NETS = (
@@ -29,12 +28,19 @@ POWER_NETS = (
 
 
 def wrapped_names(names: list[str], indent: str = "      ") -> str:
-    return textwrap.fill(
-        " ".join(names),
-        width=94,
-        initial_indent=indent,
-        subsequent_indent=indent,
-    ).lstrip()
+    # Wrap whole DSN identifiers. textwrap splits on hyphens even inside a
+    # quoted NC-net name; Freerouting can then stop before reading the wiring
+    # scope, silently losing every existing track and via.
+    lines, line = [], ""
+    for name in names:
+        if line and len(line) + 1 + len(name) > 94 - len(indent):
+            lines.append(line)
+            line = name
+        else:
+            line = f"{line} {name}" if line else name
+    if line:
+        lines.append(line)
+    return ("\n" + indent).join(lines)
 
 
 def main() -> None:

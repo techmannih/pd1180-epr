@@ -28,6 +28,22 @@ const servicePads = new Set(circuitJson.filter(row => row.type === 'source_compo
 for (const footprint of nativeBoard.footprints) {
   retainPartNumber(footprint.properties)
   const reference = footprint.properties.find(property => property.key === 'Reference')?.value
+  // The converter currently discards source paste sizing. Carry the reviewed
+  // QFN exposed-pad aperture into the stencil, deriving it from circuit JSON.
+  if (reference === 'U16') {
+    const component = circuitJson.find(row => row.type === 'source_component' && row.name === reference)
+    const placed = circuitJson.find(row => row.type === 'pcb_component' && row.source_component_id === component.source_component_id)
+    const copper = circuitJson.find(row => row.type === 'pcb_smtpad' && row.pcb_component_id === placed.pcb_component_id && row.port_hints?.includes('pin49'))
+    const apertures = circuitJson.filter(row => row.type === 'pcb_solder_paste' && row.pcb_smtpad_id === copper?.pcb_smtpad_id)
+    const aperture = apertures[0]
+    const pad = footprint.fpPads.find(p => p.number === '49')
+    if (!pad || apertures.length !== 1 || aperture.shape !== 'rect' || copper.shape !== 'rect' || aperture.x !== copper.x || aperture.y !== copper.y)
+      throw new Error('U16 EP requires one centered rectangular source paste aperture')
+    const margin = (aperture.width - copper.width) / 2
+    if (Math.abs((aperture.height - copper.height) / 2 - margin) > 1e-9 || margin >= 0)
+      throw new Error('U16 EP paste reduction must be symmetric and negative')
+    pad.solderPasteMargin = margin
+  }
   if (!footprint.attr?.dnp && !servicePads.has(reference)) continue
   if (footprint.attr?.dnp) footprint.attr.excludeFromBom = true
   // Bare probe contacts and unpopulated footprints need mask openings, but no stencil paste.

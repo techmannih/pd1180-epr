@@ -46,8 +46,8 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
-- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 55 via-in-pad locations with filled/capped processing.
-- [ ] All 43 final native same-side IC-to-capacitor paths and the separate buzzer bulk path pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 63 via-in-pad locations with filled/capped processing.
+- [ ] All 44 final native same-side IC-to-capacitor paths and the separate buzzer bulk path pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
@@ -91,7 +91,7 @@ Unused-SBU correction and TI export: inspect `engineering/unused-sbu-eco.json`, 
 
 ## Post-merge sourcing and first-article handoff
 
-- [ ] Review selected U17/R64/J1/J10 identities and unresolved U16/U35 procurement in [sourcing-resolution.md](sourcing-resolution.md); do not fit rejected PCA9538PWR.
+- [ ] Review selected U17/R64/J1/J10 identities and stocked U16/U35 replacements and U37 reset network in [sourcing-resolution.md](sourcing-resolution.md); verify PCA9538 is used only with the buffered reset revision.
 - [ ] Complete the U3/U16 programming, full-capacity readback and cold-boot checklist in [readiness.md](readiness.md). Keep qualification flags false until supported by physical results.
 - [ ] Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md); record actual EPR source/cable and provisional J3 resistor/heatsink qualification.
 - [ ] Preserve the 404 silkscreen/text findings deferred by the user, and obtain fabricator printing disposition. This is not zero DRC.

@@ -20,7 +20,9 @@ export function normalizeOfficialPart(response, code) {
 export async function officialPart(code) {
   if (!/^C\d+$/.test(code)) throw new Error('Invalid exact JLC code')
   const url = `https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=${code}`
-  const {stdout} = await run('curl', ['--fail','--silent','--show-error','-L','--retry','2','--max-time','30',url], {maxBuffer: 8_000_000})
+  // Some HTTP/2 gateways surface 429 as curl error 56. Retry transport/HTTP
+  // failures within a fixed bound; exhausted requests remain unknown and fail.
+  const {stdout} = await run('curl', ['--fail','--silent','--show-error','-L','--retry','4','--retry-delay','3','--retry-all-errors','--retry-max-time','150','--max-time','30',url], {maxBuffer: 8_000_000})
   const response = JSON.parse(stdout)
   const exact = normalizeOfficialPart(response, code)
   // Whitelist the evidence fields: signed image URLs, unrelated customer flags

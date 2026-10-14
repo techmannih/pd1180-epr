@@ -15,10 +15,19 @@ export function protectedProjection(board, policy, baseline = false) {
   const changes = new Map(policy.pad_changes.map(p => [`${p.reference}.${p.pin}`, p]))
   const metadata = new Map((policy.part_value_changes || []).map(p => [p.reference, p]))
   const footprints = new Map((policy.footprint_replacements || []).map(p => [p.reference, p]))
+  const localRemoved = new Map((policy.local_copper_removals || []).map(x => [uuid(x), x]))
+  const modified = new Map((policy.local_copper_modifications || []).map(x => [uuid(x.before), x]))
   const seen = new Set(), removed = new Set(policy.removed_uuids), additions = new Map(policy.added_objects.map(x => [uuid(x), x]))
   const projected = board.map(x => {
     if (!Array.isArray(x)) return x
     const id = uuid(x)
+    if (localRemoved.has(id) && !baseline) throw new Error('Removed local MCU/reset copper restored')
+    if (modified.has(id)) {
+      const change = modified.get(id)
+      if (digest(x) !== (baseline ? digest(change.before) : change.after_sha256)) throw new Error('Reviewed local copper changed')
+      seen.add(`modified:${id}`)
+      return change.before
+    }
     if (removed.has(id)) { if (!baseline) throw new Error('Removed SBU copper/island restored'); return null }
     if (additions.has(id)) { if (baseline || digest(x) !== digest(additions.get(id))) throw new Error('Approved ground/trim geometry changed'); seen.add(id); return null }
     if (x[0] === 'zone') return x.filter(v => !Array.isArray(v) || v[0] !== 'filled_polygon')
@@ -51,6 +60,8 @@ export function protectedProjection(board, policy, baseline = false) {
       return p.filter(v => !Array.isArray(v) || v[0] !== 'net')
     })
   }).filter(x => x !== null)
+  if (!baseline) for (const original of localRemoved.values()) projected.push(original)
+  for (const key of modified.keys()) if (!seen.has(`modified:${key}`)) throw new Error('Missing reviewed local copper')
   for (const key of changes.keys()) if (!seen.has(key)) throw new Error(`Missing affected pad ${key}`)
   for (const key of metadata.keys()) if (!seen.has(`value:${key}`)) throw new Error(`Missing affected part value ${key}`)
   for (const key of footprints.keys()) if (!seen.has(`footprint:${key}`)) throw new Error(`Missing affected footprint ${key}`)

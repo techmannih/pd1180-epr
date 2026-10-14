@@ -1,9 +1,10 @@
+import { SN74LVC1G17DBVR } from "./imports/SN74LVC1G17DBVR"
 import { AO3400A } from "./imports/AO3400A"
 import { BAV21W_7_F } from "./imports/BAV21W_7_F"
 import { FUET_9650B_3V } from "./imports/FUET_9650B_3V"
 import { NH_B2020RGBA_HF } from "./imports/NH_B2020RGBA_HF"
 import { SN74LVC2G66DCUR } from "./imports/SN74LVC2G66DCUR"
-import { TCA9538PWR } from "./imports/TCA9538PWR"
+import { PCA9538PWR } from "./imports/PCA9538PWR"
 import { XL_1608SURC_06 } from "./imports/XL_1608SURC_06"
 
 export const BoardDiagnostics = () => (
@@ -13,6 +14,7 @@ export const BoardDiagnostics = () => (
 
     <schematicsection name="alarm_BZ1" displayName="Audible Fault Alarm" />
     <schematicsection name="pd-programming_U36" displayName="PD Programming and Power Probes" />
+    <net name="U35_RESET_N" isPowerNet={false} />
     <net name="BUZZER_EN" isPowerNet={false} />
     <net name="BUZZER_GATE" isPowerNet={false} />
     <net name="BUZZER_LOW" isPowerNet={false} />
@@ -26,9 +28,23 @@ export const BoardDiagnostics = () => (
     <net name="RGB_G_K" isPowerNet={false} />
     <net name="RGB_R_DRV" isPowerNet={false} />
     <net name="RGB_R_K" isPowerNet={false} />
-    <TCA9538PWR name="U35" schWidth={2.132} schHeight={1.6} schPinArrangement={{ topSide: ["pin16"], leftSide: ["pin3", "pin14", "pin15"], rightSide: ["pin4", "pin5", "pin6", "pin7", "pin13"], bottomSide: ["pin1", "pin2", "pin8", "pin9", "pin10", "pin11", "pin12"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={-6.5} schY={-2.2}
+    <PCA9538PWR name="U35" schWidth={2.132} schHeight={1.6} schPinArrangement={{ topSide: ["pin16"], leftSide: ["pin3", "pin14", "pin15"], rightSide: ["pin4", "pin5", "pin6", "pin7", "pin13"], bottomSide: ["pin1", "pin2", "pin8", "pin9", "pin10", "pin11", "pin12"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={-6.5} schY={-2.2}
       pcbX={35.5} pcbY={-24.25} pcbRotation={0} layer="top" noConnect={["pin13"]}
-      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.STATUS_GPIO", pin4: "net.RGB_R_DRV", pin5: "net.RGB_G_DRV", pin6: "net.RGB_B_DRV", pin7: "net.BUZZER_EN", pin8: "net.GND", pin9: "net.GND", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin14: "net.PD_SCL", pin15: "net.PD_SDA", pin16: "net.PD_3V3" }} />
+      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.U35_RESET_N", pin4: "net.RGB_R_DRV", pin5: "net.RGB_G_DRV", pin6: "net.RGB_B_DRV", pin7: "net.BUZZER_EN", pin8: "net.GND", pin9: "net.GND", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin14: "net.PD_SCL", pin15: "net.PD_SDA", pin16: "net.PD_3V3" }} />
+    {/* The PCA9538 RESET erratum forbids direct drive from the independent MCU rail. */}
+    <SN74LVC1G17DBVR name="U37" schSheetName="indicators" schSectionName="indicators_U35"
+      schX={-6.5} schY={5.2} schWidth={1.485} schHeight={0.97}
+      schPinArrangement={{leftSide:["pin2"],rightSide:["pin4","pin1"],topSide:["pin5"],bottomSide:["pin3"]}}
+      pcbX={26.5} pcbY={-32.25} layer="top" noConnect={["pin1"]}
+      connections={{pin2:"net.STATUS_GPIO",pin3:"net.GND",pin4:"net.U35_RESET_N",pin5:"net.PD_3V3"}} />
+    <capacitor name="C99" schSheetName="indicators" schSectionName="indicators_U35" schX={-12.8} schY={1.8} schRotation={270}
+      pcbX={22.75} pcbY={-33.2} pcbRotation={180} layer="top" capacitance="100nF" footprint="0603"
+      supplierPartNumbers={{jlcpcb:["C14663"]}} maxVoltageRating="50V" decouplingFor=".U37 > .pin5"
+      connections={{pin1:"net.PD_3V3",pin2:"net.GND"}} />
+    <resistor name="R137" schSheetName="indicators" schSectionName="indicators_U35" schX={-1.5} schY={5.2} schRotation={270}
+      pcbX={24} pcbY={-29.5} pcbRotation={0} layer="top" resistance="47k" footprint="0603"
+      supplierPartNumbers={{jlcpcb:["C25819"]}} connections={{pin1:"net.U35_RESET_N",pin2:"net.GND"}} />
+    <trace name="BYPASS_C99" from=".U37 > .pin5" to=".C99 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[".C99 > .pin1"]} />
     <NH_B2020RGBA_HF name="D16" schPinArrangement={{ topSide: ["pin3"], leftSide: ["pin1", "pin4", "pin2"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={1.5} schY={-1.2}
       pcbX={-40.25} pcbY={-18.0} pcbRotation={90} layer="top"
       connections={{ pin1: "net.RGB_R_K", pin2: "net.RGB_B_K", pin3: "net.V3V3", pin4: "net.RGB_G_K" }} />

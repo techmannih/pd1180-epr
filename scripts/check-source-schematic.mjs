@@ -322,7 +322,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 162, "162 named source nets after unused SBU removal", { actual: sourceNets.length })
+check(sourceNets.length === 163, "163 named source nets including buffered indicator reset", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -396,7 +396,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 88, "88 capacitors including brake feedback filter", { actual: capacitors.length })
+check(capacitors.length === 89, "89 capacitors including reset-buffer bypass and brake feedback filter", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -437,7 +437,7 @@ const expectedNoConnects = [
   "U34.4:PG", "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
   "U18.8:W", "U18.9:V", "U18.10:U",
-  "U35.13:N_INT",
+  "U35.13:N_INT", "U37.1:NC",
   "U16.2:PC14_OSC32_IN", "U16.3:PC15_OSC32_OUT", "U16.13:PA2", "U16.14:PA3", "U16.22:PB10", "U16.29:PA9", "U16.32:PA10", "U16.38:PD0", "U16.39:PD1", "U16.40:PD2", "U16.41:PD3",
   "U16.25:PB13", "U16.26:PB14", "U16.27:PB15", "U16.31:PC7",
 ].sort()

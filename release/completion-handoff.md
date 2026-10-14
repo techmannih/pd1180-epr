@@ -1,13 +1,13 @@
 # Prototype completion and acceptance record
 
-This handoff builds on merged PR #5 (`d856d30`), including the sourcing replacements from PR #4. It is an engineering review package, not an order approval or proof that the motor runs. No physical test results are available. The three firmware qualification flags remain false.
+This revision replaces the unavailable U16/U35 on main `5bb9d4b`: U16 becomes STM32G0B1CEU6 / UFQFPN48 with 512 KiB flash, while U35 becomes PCA9538PWR with a PD_3V3-powered reset buffer U37. The affected local PCB routing, BOM/CPL, firmware, readback contract and handoff are regenerated together. No physical test results exist; all three motion qualification flags remain false.
 
-## Implemented in this pass
+## Current revision and retained protections
 
 - Brake feedback continues during RUN. The ADC multiplexes bus and brake-return conversions, normally up to 40 ms apart. A low return can therefore accompany an older 48 V bus sample during normal Q16 switching. Both channels must be valid and no older than 100 ms. The first mismatching observation starts a fixed 100 ms retry window regardless of the stored bus value, allowing a complete new ADC scan. Only a distinct fresh healthy pair within ±10% at 44–50.4 V clears the pending mismatch. Repeated polls, continued bad pairs, or just one updated channel cannot renew the deadline. Invalid/stale ADC or a bus outside 44–55 V faults immediately at the next check. The separate 44–51 V motor-bus interlock remains active. Checks run every 50 ms, followed by the 10 ms control tick. The 60 ms ADC scan, first detection, 100 ms retry and polling phase can accumulate to roughly 270 ms plus conversion/filter/I2C timing; this is not a guaranteed 100 ms disconnect-to-inhibit response. Measure the actual bound before enabling motion. A brake pulse that prevents a healthy pair for the whole retry window deliberately inhibits motion. The control state machine removes RUN/power permission on failure and requires deliberate rearm.
 - Host regressions cover running cable-open, reconnection, stale/duplicate conversions, the bounded observation gap, no preflight qualification and timer wrap. The ARM target is rebuilt from the updated source. The archived image still cannot enable motion.
-- The exact 405 native-reference text findings are accepted according to the user's instruction. Every raw KiCad finding remains in the package. Changed finding identities, shorts, unconnected items, parity errors and ERC failures are rejected. Native reference names are retained. U16/U35 use their selected Footprinter geometry; C95 moves 0.05 mm for courtyard clearance. Four holes and unrelated components/copper are unchanged.
-- Review can complete with explicitly recorded stock shortages; strict procurement/release commands still fail. Unknown stock, package mismatch and failed engineering checks are not accepted. Exact inventory is refreshed and remains unreserved.
+- The exact 409 native-reference text findings are accepted according to the user's instruction. Every raw KiCad finding remains in the package. Changed finding identities, shorts, unconnected items, parity errors and ERC failures are rejected. Native reference names are retained. U16 now uses the ST UFQFPN48 lands and grounded exposed pad; U35 retains its TSSOP lands and existing C95 placement. U37/C99/R137 implement independent-rail reset. Four holes and unrelated components/copper are unchanged.
+- The selected U16/U35 shortages are resolved in the current 85-code stock snapshot. Unknown stock, package mismatch and failed engineering checks remain blocking; stock is unreserved. Strict release still requires the documented manufacturing and hardware acceptance.
 - The six motor copper paths are re-screened at 0.075/0.05 mm against the current native PCB. Results remain DC analytical estimates, excluding device/contact losses and thermal qualification.
 - All four TE320559 splice cylinders are replaced by the manufacturer C-320559 AE STEP, translated without scaling. Nominal length is 32.131 mm (drawing: 1.265 in / 32.13 mm maximum) and nominal maximum diameter is 5.6134 mm. The current V6 drawing and STEP are archived with SHA-256 evidence. Geometry regressions check all four exported bodies against the STEP; conservative harness-clearance checks pass. The uncrimped CAD does not qualify finished-crimp dimensions or physical retention.
 - Stock checks query the numeric index first and always attempt the official exact-part lookup, even if the index fails. Only official available-order evidence can pass; a failed lookup or zero quantity cannot fall back to cached index stock. Regression tests exercise those failure paths.
@@ -29,22 +29,15 @@ SW1 is RESET. SW2 requests START/STOP only after qualification; it is not an eme
 
 The 300 W resistor is a **candidate cooling class**, not a universal motor requirement or a free-air rating. At 53 V/10 Ω its instantaneous dissipation is 280.9 W. The datasheet's 300 W rating requires case temperature ≤85°C; 50°C ambient at 280.9 W continuous requires combined interface/heatsink resistance ≤0.125°C/W. This installation is not sized without duty/load data. J3 cannot be removed on the assumption that a slow motor does not need protection. See [brake installation and calculations](brake-integration.md) and [external sourcing list](external-parts.json).
 
-## Exact assembly shortages
+## Exact assembly allocation
 
-The live JLC snapshot in `stock-report.json` controls; warehouse stock is not the same as orderable stock. For the configured five-board lot:
-
-| Reference | Exact MPN / package | JLC code | Required quantity | Next action |
-|---|---|---|---:|---|
-| U16 | STM32G0B1CBT6 / LQFP-48 7×7 | C2847904 | 5 | Obtain exact-part allocation or an assembler-approved consignment quote. |
-| U35 | TCA9538PWR / TSSOP-16 | C2652286 | 5 | Same; a reset-less expander is not an approved substitution. |
-
-U16 and U35 remain unchanged; no inventory has been reserved or order placed. `sourcing/bom-with-stock.csv` and `sourcing/external-items.csv` are the procurement handoff. An unavailable optional alternative does not become an approved part through a passing engineering review.
+The current [official stock snapshot](stock-report.json) controls. The five-board lot needs five each of U16 **C2829190 / STM32G0B1CEU6 / UFQFPN48**, U35 **C201530 / PCA9538PWR / TSSOP16** and new U37 **C7836 / SN74LVC1G17DBVR / SOT23-5**, plus assembler spares. The former two-part shortage is addressed by these replacements; inventory has not been reserved and may change. Use the updated Gerber/BOM/CPL/firmware set together. An old LQFP board cannot accept the new QFN MCU, and an old direct-reset board cannot accept PCA9538 without the reset ECO.
 
 ## Physical work and evidence needed
 
 | Stage | Required evidence before advancing |
 |---|---|
-| Before ordering | Resolve the two remaining stock shortages; obtain fabricator acceptance of the actual stackup/USB impedance and filled/capped via-in-pad process. Measure the actual motor rear holes/thread/depth and define secure attachment using the retained four PCB holes. Do not reuse motor tie bolts or add guessed hardware. |
+| Before ordering | Refresh and allocate the exact selected inventory; obtain fabricator acceptance of the actual stackup/USB impedance and filled/capped via-in-pad process. Measure the actual motor rear holes/thread/depth and define secure attachment using the retained four PCB holes. Do not reuse motor tie bolts or add guessed hardware. |
 | Harness first article | Verify delivered lead insulation against the current TE application drawing, finished splice envelope, crimp/pull/insulation tests, winding mapping, connector insertion/tool clearance, cable bend/retention and final cut lengths. Current Rev V6 and AE STEP are archived; inspect the finished crimp rather than treating nominal uncrimped CAD as an acceptance gauge. |
 | Stationary electrical | Serial-number the PCB. Record BOM/revision, firmware/PD-image hashes and readback; inspect before power. With the bridge inhibited, measure source negotiation, all rails, USB power states/backfeed, eFuse response, brake/cutoff thresholds and fault/restart paths. |
 | First motion | Only after stationary checks and a qualified brake installation: securely mounted **unloaded** motor, 20–25°C, nominal 10 rpm, 10 rpm/s, IRUN=6 / GS=139 (about 0.827 A RMS). Capture phase current, gates, VMOTOR and brake waveforms. These are proposed qualification limits, not tested ratings. |
@@ -57,6 +50,6 @@ Runtime voltage monitoring does not absorb energy, detect the resistor's resista
 
 `bun run review` refreshes stock evidence, runs the source/native/firmware checks and regenerates previews/release artifacts. It may pass with the recorded procurement hold. `bun run check:stock`, `bun run check:assembly` and `bun run check:release` remain strict; they do not authorize ordering while shortages or other holds remain. `docs/verification.json`, the raw DRC/ERC reports and `delivery-manifest.json` identify the actual reviewed artifacts.
 
-PCB copper, components, holes and firmware are retained from merged PR #5. The physical CAD change in this pass is the four manufacturer splice bodies and the 0.001 mm factory-lead endpoint adjustment to their exact nominal length. The regenerated assembly archive and [before/after splice views](splice-model-update.md) show this change; they are renders, not proof of completed mounting or brake installation.
+The four existing mounting holes, power bridge/brake circuits, USB connector model offset, other components and unrelated copper remain protected. Only the selected MCU/expander, new reset network and affected local fanout change. Physical CAD, current-stock and programming checks remain distinct from powered acceptance.
 
 Sourcing replacements from PR #4 are included: R64 C2984356, U17 C6000508 and J1/J10 C3025063. See [sourcing resolution](sourcing-resolution.md). U17 has limited stock; USB -060 shorter stakes still need assembly/retention acceptance. No inventory is reserved.

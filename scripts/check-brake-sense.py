@@ -35,4 +35,5 @@ with tempfile.TemporaryDirectory(prefix='brake-sense-') as tmp:
  if len(unconnected)!=1 or not any('Pad 1 [BRAKE_RETURN] of R134' in i['description'] for i in unconnected[0]['items']):errors.append('Removing thin branch disconnects something other than R134.1')
 sha=lambda path:hashlib.sha256(Path(path).read_bytes()).hexdigest()
 result={'board_sha256':sha(a.board),'checker_sha256':sha(__file__),'segment_uuids':sorted(t.m_Uuid.AsString() for t in segments),'removed_vias':sum(isinstance(t,pcbnew.PCB_VIA) for t in removed),'length_mm':sum(t.GetLength()/1e6 for t in segments),'negative_drc_unconnected':unconnected,'negative_drc_violations':drc['violations'],'baseline_drc_violations':len(baseline['violations']),'maximum_divider_current_a':55/(9910*.98),'reason':'Only the 9.91 kohm startup divider is disconnected by removing the thin branch; all brake power terminals remain connected. The branch carries <5.7 mA at 55 V, not the brake load current.','errors':errors}
-a.report.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'segments':len(segments),'errors':errors}));raise SystemExit(bool(errors))
+# Retain every raw finding in compact JSON to fit the GitHub importer budget.
+a.report.write_text(json.dumps(result,separators=(',',':'))+'\n');print(json.dumps({'segments':len(segments),'errors':errors}));raise SystemExit(bool(errors))

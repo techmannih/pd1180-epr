@@ -2,8 +2,8 @@
   "status": "analytical-screen-only-hardware-qualification-pending",
   "baseline_commit": "d28bcf61d0d0479ad3a44b3ad14bfbf5b858c435",
   "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
-  "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
-  "change": "Reran all six motor-current paths at both mesh sizes on the U35 footprinter PCB revision. No hardware or thermal qualification implied.",
+  "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
+  "change": "Reran all six motor-current paths at both mesh sizes on the stocked STM32G0B1CEU6/PCA9538 reset-buffer revision. No powered or thermal qualification implied.",
   "before": [
     {
       "net": "MOTOR_A1",
@@ -61,7 +61,7 @@
       "source_nodes": 2928,
       "destination_nodes": 368,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -82,7 +82,7 @@
       "source_nodes": 6552,
       "destination_nodes": 840,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -114,7 +114,7 @@
     "baseline_board": "git show d28bcf61d0d0479ad3a44b3ad14bfbf5b858c435:dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb"
   },
   "qualification": "No temperature-rise, PWM-current or 5.5 A continuous-current qualification is claimed.",
-  "reviewed_at": "2026-10-13T11:59:31.565596+00:00",
+  "reviewed_at": "2026-10-14T07:02:08.621193+00:00",
   "motor_output_paths": [
     {
       "net": "MOTOR_A1_OUT",
@@ -128,7 +128,7 @@
       "source_nodes": 368,
       "destination_nodes": 4488,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -149,7 +149,7 @@
       "source_nodes": 840,
       "destination_nodes": 9800,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -170,7 +170,7 @@
       "source_nodes": 2928,
       "destination_nodes": 3476,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -191,7 +191,7 @@
       "source_nodes": 6552,
       "destination_nodes": 7816,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -212,7 +212,7 @@
       "source_nodes": 368,
       "destination_nodes": 3464,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -233,7 +233,7 @@
       "source_nodes": 840,
       "destination_nodes": 7808,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -247,14 +247,14 @@
       "from": "Q13:9",
       "to": "J2:4",
       "grid_mm": 0.075,
-      "nodes": 34533,
-      "resistance_mohm_20c": 6.7777,
-      "voltage_drop_mv_at_5_5a": 37.277,
-      "loss_w_at_5_5a": 0.205,
+      "nodes": 34271,
+      "resistance_mohm_20c": 7.1754,
+      "voltage_drop_mv_at_5_5a": 39.465,
+      "loss_w_at_5_5a": 0.2171,
       "source_nodes": 2928,
       "destination_nodes": 3468,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -268,14 +268,14 @@
       "from": "Q13:9",
       "to": "J2:4",
       "grid_mm": 0.05,
-      "nodes": 77563,
-      "resistance_mohm_20c": 6.7556,
-      "voltage_drop_mv_at_5_5a": 37.156,
-      "loss_w_at_5_5a": 0.2044,
+      "nodes": 76976,
+      "resistance_mohm_20c": 7.1207,
+      "voltage_drop_mv_at_5_5a": 39.164,
+      "loss_w_at_5_5a": 0.2154,
       "source_nodes": 6552,
       "destination_nodes": 7816,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -285,8 +285,8 @@
       ]
     }
   ],
-  "reviewed_from_commit": "0cacbb2dcead1b818dd5ed0c09fca35fa721b132",
-  "reviewed_source_entry_sha256": "a96c1a3061d3659739ac42cdd1ee8892e02deb28f5108e5790e2c4b2c5596a8a",
+  "reviewed_from_commit": "5bb9d4bcc71c397436a0ca0a92c1b13846b4480a",
+  "reviewed_source_entry_sha256": "378f2c5487ac9fb303efb4f75385424bbc0e2bc6eb83fedbc9a3eaac667e29a5",
   "mounting_eco_baseline": {
     "net": "MOTOR_A1",
     "from": "Q7:9",
@@ -321,7 +321,7 @@
       "source_nodes": 2928,
       "destination_nodes": 368,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -342,7 +342,7 @@
       "source_nodes": 6552,
       "destination_nodes": 840,
       "components": 1,
-      "board_sha256": "273e0ba3a53ed3da0a7b8349fecfc2bf42e3c8ec1ef8754566fd3d3e4f7e3ac4",
+      "board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
       "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
       "limitations": [
         "Grid approximation; validate mesh convergence and native connectivity separately",
@@ -352,5 +352,13 @@
       ]
     }
   ],
-  "current_export_sha256": "6d4e1267c737f73419ea681ab52b0fdac6408f35692aee22684cd5968b2d8df2"
+  "current_export_sha256": "87f63794cff5541d8822524464f3ccc1f379ceebcdf610b342a644374c4871da",
+  "mesh_convergence_percent": {
+    "MOTOR_A1": 0.2825557164553388,
+    "MOTOR_B1": 0.3409178557655227,
+    "MOTOR_A1_OUT": 0.4655985686402066,
+    "MOTOR_A2": 1.1410468474025197,
+    "MOTOR_B1_OUT": 0.5511529060081909,
+    "MOTOR_B2": 0.7681829033662354
+  }
 }

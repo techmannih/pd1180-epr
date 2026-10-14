@@ -2,7 +2,7 @@
 
 Component names come from native footprint references, including SW1 and SW2; custom imports use `{NAME}`. Q5, L3, R4, C92, C89 and R9 use inward reference anchors to keep their names inside the board. No names are hidden or replaced with detached captions. [Edge labels before](previews/edge-labels-before.png) · [Edge labels after](previews/edge-labels-after.png). The earlier pre-label screenshot is preserved byte-for-byte in [native-reference history](previews/native-reference-history.zip).
 
-**Current protection and label revision:** unused U1 SBU wiring is corrected in source/native copper and a reviewed TI full-flash candidate is included. All 255 native references remain visible and inside the outline. Native DRC retains 405 silkscreen/text findings, with zero unconnected items, parity issues and ERC violations. Review archives include these findings; fabrication and motor operation remain held. See [completion and acceptance](docs/completion-handoff.md), [readiness](docs/readiness.md) and [PD review](docs/pd-configuration-review.md).
+**Current protection and label revision:** unused U1 SBU wiring is corrected in source/native copper and a reviewed TI full-flash candidate is included. All native references remain visible and inside the outline. Native DRC retains 409 silkscreen/text findings, with zero unconnected items, parity issues and ERC violations. Review archives include these findings; fabrication and motor operation remain held. See [completion and acceptance](docs/completion-handoff.md), [readiness](docs/readiness.md) and [PD review](docs/pd-configuration-review.md).
 
 
 PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERONLINE 34HS31-6004S1 NEMA 34 motor (Amazon ASIN B091C83HWF). Its rated holding torque is 4.8 Nm and rated current is 6 A/phase; the driver RMS/hold-current setting and driven load remain unqualified. J1 is the dedicated 48 V / 5 A USB Power Delivery 3.1 EPR input; J10 is a separate USB 2.0 device-data port. The board combines protected power entry, a TMC5160A external-MOSFET motor stage, STM32G0B1 control, an optional DNP magnetic encoder footprint and local START/STOP control.
@@ -11,7 +11,7 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 **Previous control ECO — 2026-10-12:** J7 and 33 associated command/interface parts removed from TSX; SW2 START/STOP and R133 added. STM32 now commands the TMC5160 internal SPI ramp. SW1 RESET, J2 VH, both USB ports and protection remain. Removed 51 unsupported mounting parts; kept all four Ø4.2 mm holes unchanged. [Before](previews/onboard-control-before.png) · [After — source alignment preview](previews/onboard-control-after.png).
 
-**Status:** source, firmware, native PCB and 3D updated. Electrical connectivity, schematic parity and ERC pass; 405 user-accepted cosmetic DRC findings remain in the raw report. Motion and ordering remain locked; live sourcing and powered/mechanical qualification are open.
+**Status:** source, firmware, native PCB and 3D updated. Electrical connectivity, schematic parity and ERC pass; 409 user-accepted cosmetic DRC findings remain in the raw report. Motion and ordering remain locked; live sourcing and powered/mechanical qualification are open.
 
 **Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
 
@@ -31,7 +31,7 @@ The intended purchase is **PCB fabrication plus complete assembly, programming a
 
 | Deliverable | Required handoff / present status |
 |---|---|
-| Complete populated PCBA | Matching Gerbers, BOM and CPL; 252 fitted parts on top, including an agreed through-hole/tall-part assembly plan. Source and native route built; sourcing, physical assembly and qualification pending. |
+| Complete populated PCBA | Matching Gerbers, BOM and CPL; 255 fitted parts on top, including an agreed through-hole/tall-part assembly plan. Source and native route built; sourcing, physical assembly and qualification pending. |
 | U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Candidate binary included; physical readback pending.** See `pd1180-ti-configuration.zip`; JSON is not firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
@@ -80,7 +80,7 @@ After the TI image, native PCB, gate waveforms, current and unloaded motor have 
 | Input protection | TPS26630 eFuse, inrush control, voltage qualification, current limit and reverse-current blocking |
 | Motor stage | TMC5160A with eight 100 V CSD19534Q5A MOSFETs and two 33 mΩ phase shunts |
 | Ordered motor | STEPPERONLINE 34HS31-6004S1, 4.8 Nm, 6 A/phase; approved driver current setting pending |
-| Controller | STM32G0B1CBT6 with USB device, CAN, SPI, I²C and serial peripherals |
+| Controller | STM32G0B1CEU6 with USB device, CAN, SPI, I²C and serial peripherals |
 | Position feedback | Optional bottom-side AS5047P at the shaft axis (DNP), with top ABI test access |
 | Temperature/current diagnostics | TMP102 hardware inhibit; two INA240 phase monitors; ADS1115 bus monitors |
 | Local controls | SW2 START/STOP, SW1 RESET; no external command cable |
@@ -89,7 +89,7 @@ After the TI image, native PCB, gate waveforms, current and unloaded motor have 
 | Braking | External switched brake-resistor interface with independent overvoltage shutdown |
 | Programming | STM32 SWD; isolated U3 EEPROM I2Cc fixture access |
 | Indicators | RGB status, independent board-power LED and reset-safe driven buzzer |
-| Assembly | 252 supplier-coded fitted parts plus 19 service test pads, all on top |
+| Assembly | 255 supplier-coded fitted parts plus 19 service test pads, all on top |
 
 The board powers up inhibited. A valid EPR contract, eFuse status, motor-power-good signal, voltage window, temperature and MCU request must all agree before the bridge can run. Reset defaults keep `POWER_PERMIT`, `MCU_RUN` and standalone-mode selection inactive.
 
@@ -150,7 +150,7 @@ The generated STM32 pin contract lives in [docs/firmware-pinmap.json](docs/firmw
 
 The motor-qualified STM32 firmware and TI-generated TPS26750 full-flash image are release inputs. Reset circuitry is designed to inhibit the board with blank U3 and U16; that behavior still requires a powered test. Programming both devices is necessary but does not, by itself, establish motor readiness. The current STM32 image remains motion-locked even if U3 is programmed.
 
-U16 remains STM32G0B1 with the existing USB, ADC, SPI, I²C and SWD firmware/pinout. The removed buses no longer justify its selection. Switching MCU families would require a separately reviewed redesign; this ECO preserves the working pin contract and motion-inhibit logic. Exact fitted code C2847904 remains subject to live sourcing. U16 uses the requested native footprinter lands and explicit LQFP CAD; see [footprint and CAD verification](docs/u16-footprint.md).
+U16 remains STM32G0B1 with the existing USB, ADC, SPI, I²C and SWD firmware/pinout. The removed buses no longer justify its selection. Switching MCU families would require a separately reviewed redesign; this ECO preserves the working pin contract and motion-inhibit logic. The stocked CE variant uses C2829190, 512 KiB flash and a UFQFPN48 footprint with a grounded exposed pad. Current stock is not reserved; see [footprint and CAD verification](docs/u16-footprint.md).
 
 ## Schematic organization
 
@@ -179,7 +179,7 @@ The design uses 24 default A4 sheets; surviving sheet positions retain their ori
 | 22. Temperature and Bus Diagnostics | U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus. |
 | 23. Phase Current Diagnostics | U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V. |
 | 24. Regulated Driver Supply | U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15. |
-| 25. Status and Independent Power Indication | U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown. |
+| 25. Status and Independent Power Indication | U35 PCA9538 at 0x70 controls D16 RGB; U37 buffers PC13 reset into PD_3V3 with default-low bias. |
 | 26. Audible Fault Alarm | BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp. |
 | 27. PD Programming and Power Probes | U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded. |
 
@@ -206,7 +206,7 @@ Source errors and warnings both fail verification and block the release checks. 
 
 All fitted components and labelled service pads are on top. U18 is centered on the motor axis on the bottom, with C52/C53 nearby; all three footprints are DNP and excluded from assembly. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
-The KiCad route passes connectivity, schematic parity, ERC and terminal-only Kelvin checks. Raw DRC retains 405 user-accepted text/silkscreen findings; only this exact signature is nonblocking. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
+The KiCad route passes connectivity, schematic parity, ERC and terminal-only Kelvin checks. Raw DRC retains 409 user-accepted text/silkscreen findings; only this exact signature is nonblocking. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
 The printable [mounting template](mounting-template.svg) is generated from `hardware-contract.json` and `engineering/mechanical/ordered-motor-pcb-reference.json`. It retains the TMCM-1180 stepped perimeter and places all four Ø4.2 mm PCB holes on the ordered **34HS31-6004S1 rear CAD axes**. The reference records both sources and their coordinate systems. Print it at 100% and check its 20 mm calibration bar. **Matching the rear axes does not approve rear case screws for accessory mounting.** The documented motor mounting interface is the front flange; [motor assembly](docs/motor-assembly.md) records the alignment-only preview and unverified rear mounting interface.
 
@@ -216,9 +216,9 @@ The exact ordered-motor CAD and retained J2 harness appear in the source 3D alig
 
 ## Parts and procurement
 
-- 252 populated components use exact JLCPCB/LCSC identities.
-- The fitted BOM contains 83 unique LCSC codes.
-- The latest live check verifies 7/83 codes; 76 are unavailable, insufficient or unverified. Ordering is blocked.
+- 255 populated components use exact JLCPCB/LCSC identities.
+- The fitted BOM contains 85 unique LCSC codes.
+- The recorded live check verifies stock for all 85 selected codes at the five-board quantity. Recheck the order cart: stock is not reserved.
 - Alternative candidates require a fresh stock, package and electrical review; none are substituted automatically.
 - TPD4S480 has no approved drop-in replacement; a lower-voltage CC protector is not suitable for 48 V EPR.
 - Automatic substitution is disabled. Package, pinout, polarity, voltage, current and thermal limits must be reviewed before any change.
@@ -236,7 +236,7 @@ bun run review
 
 The review covers the pinned toolchain, compact tscircuit cloud package, TypeScript, firmware pin contract and host tests, source topology, netlist, the viewer-equivalent schematic style analysis, schematic/PCB placement, decoupling, exact supplier identities, top-side assembly, local critical copper, shorts, native KiCad PCB DRC and schematic ERC, power routing, route fingerprint, live stock, alternatives, preview export, release archives and recursive hashes.
 
-Current verification results are recorded in [verification.json](docs/verification.json). Fresh native connectivity/ERC/parity checks pass; 43 native IC bypass paths and the separate buzzer bulk path pass. Full DRC retains 405 silkscreen/text findings. Engineering review records the two remaining exact stock shortages separately; strict procurement/release checks still fail. A passing review is not an order approval. CAD screens do not establish powered operation.
+Current verification results are recorded in [verification.json](docs/verification.json). Fresh native connectivity/ERC/parity checks pass; 44 native IC bypass paths and the separate buzzer bulk path pass. Full DRC retains 409 silkscreen/text findings. All 85 selected part types were available in the recorded inventory snapshot; inventory is not reserved. Strict release remains held for the documented manufacturing and physical qualification items. A passing review is not an order approval. CAD screens do not establish powered operation.
 
 Machine-readable evidence is stored in [docs/verification.json](docs/verification.json), [docs/checks/schematic-style.json](docs/checks/schematic-style.json), [docs/feature-parity-check.json](docs/feature-parity-check.json), [docs/board-standards-check.json](docs/board-standards-check.json), [docs/power-routing-check.json](docs/power-routing-check.json), [docs/stock-report.json](docs/stock-report.json) and [delivery-manifest.json](delivery-manifest.json).
 
@@ -260,7 +260,7 @@ After pulling updates, run `bun install --frozen-lockfile` and restart `bun run 
 
 The toolchain uses tscircuit `0.0.2830`, CLI `0.1.2298` and circuit-to-svg `0.0.445`. The CLI now compresses `tsci push` uploads by default; `--compress` also explicitly selects that behavior. This applies to CLI uploads, not a guarantee that the separate GitHub-import worker succeeds. Core is explicitly pinned to `0.0.2112`: core `0.0.2125` resets explicitly sized schematic sheets to the origin, moving their frames around the frozen layout. Remove this compatibility pin only after all surviving sheet centres and the approved schematic pass the upgrade comparison. The package's JavaScript entry is `dist/index.js`; the editable circuit entry remains `index.circuit.tsx` in the tscircuit configuration.
 
-The hosted failures checked on 2026-10-12 are distinct from an upload-size rejection. [v0.3.69](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/911bcb7b-1140-48cf-ab7f-65bd1045d488) registered all 444 files, including `index.circuit.tsx` and `package.json`, but the worker logged writes for only the final 58 files and then reported both entry files missing. [v0.3.70](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/77417e37-0eee-43bb-8fc1-8a021ac51582) logged only `Starting execution` before a 30-minute timeout, with no build-command or upload log. These logs point to incomplete worker setup; the server-side cause remains unconfirmed. Compression alone has not been demonstrated to fix these releases. GitHub's separate `Circuit checks` sourcing failure remains an independent order hold.
+The hosted failures checked on 2026-10-12 are distinct from an upload-size rejection. [v0.3.69](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/911bcb7b-1140-48cf-ab7f-65bd1045d488) registered all 444 files, including `index.circuit.tsx` and `package.json`, but the worker logged writes for only the final 58 files and then reported both entry files missing. [v0.3.70](https://tscircuit.com/techmannih/nema34-mounted-stepper-controller/releases/77417e37-0eee-43bb-8fc1-8a021ac51582) logged only `Starting execution` before a 30-minute timeout, with no build-command or upload log. These logs point to incomplete worker setup; the server-side cause remains unconfirmed. Compression alone has not been demonstrated to fix these releases. Those historical sourcing failures are superseded by the current stock evidence and the stocked U16/U35 revision.
 
 PR #3 at `3a48c34` shows the same incomplete-input failure: 551 files registered, only the final 70 written by the worker, and required entry files registered after execution began. The three required files match Git byte-for-byte. See the [timestamped import investigation](docs/hosted-build-investigation.md) and [machine-readable evidence](docs/hosted-build-investigation.json). Hosted success remains unresolved; the clean-checkout placement regression is fixed independently.
 

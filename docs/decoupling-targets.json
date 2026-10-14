@@ -97,17 +97,29 @@
   [
     "U16",
     6,
-    "C44"
+    "C44",
+    {
+      "placement_limit_mm": 3.7,
+      "reason": "UFQFPN48 lands move 0.875 mm inward from the previous LQFP row. C44/C45/C46 retain their proven ground returns and top-side branches; measured source paths remain 3.26/3.98/3.77 mm (all below the unchanged 5 mm native limit). This explicit 3.7 mm centre-distance bound preserves the local bypass placement without disturbing the adjacent crystal, USB and buzzer paths. Hardware rail ripple remains unqualified."
+    }
   ],
   [
     "U16",
     5,
-    "C45"
+    "C45",
+    {
+      "placement_limit_mm": 3.7,
+      "reason": "UFQFPN48 lands move 0.875 mm inward from the previous LQFP row. C44/C45/C46 retain their proven ground returns and top-side branches; measured source paths remain 3.26/3.98/3.77 mm (all below the unchanged 5 mm native limit). This explicit 3.7 mm centre-distance bound preserves the local bypass placement without disturbing the adjacent crystal, USB and buzzer paths. Hardware rail ripple remains unqualified."
+    }
   ],
   [
     "U16",
     4,
-    "C46"
+    "C46",
+    {
+      "placement_limit_mm": 3.7,
+      "reason": "UFQFPN48 lands move 0.875 mm inward from the previous LQFP row. C44/C45/C46 retain their proven ground returns and top-side branches; measured source paths remain 3.26/3.98/3.77 mm (all below the unchanged 5 mm native limit). This explicit 3.7 mm centre-distance bound preserves the local bypass placement without disturbing the adjacent crystal, USB and buzzer paths. Hardware rail ripple remains unqualified."
+    }
   ],
   [
     "U17",
@@ -217,5 +229,10 @@
     "U36",
     8,
     "C97"
+  ],
+  [
+    "U37",
+    5,
+    "C99"
   ]
 ]

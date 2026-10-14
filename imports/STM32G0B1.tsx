@@ -1,10 +1,63 @@
 import type { ChipProps } from "@tscircuit/props"
 
-// User-selected land pattern, checked against all 48 C2847904 pad locations.
-// `qfn48` is the footprint generator only: the physical part is LQFP-48.
-// Keep its explicit EasyEDA LQFP model instead of inferring a QFN body.
-export const stm32Footprint =
-  "qfn48_pillpads_h10.2mm_pw0.27mm_pl1.5mm_pin1location(bottomside,left)"
+// STM32G0B1CEU6, GP pinout. ST DS13560 Rev 6, figures 6 and 46.
+// 0.5 mm pitch; 0.30 x 0.55 mm peripheral lands, 5.60 mm grounded EP.
+export const stm32Footprint = <footprint>
+  <smtpad portHints={["pin1"]} pcbX={-2.75} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin2"]} pcbX={-2.25} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin3"]} pcbX={-1.75} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin4"]} pcbX={-1.25} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin5"]} pcbX={-0.75} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin6"]} pcbX={-0.25} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin7"]} pcbX={0.25} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin8"]} pcbX={0.75} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin9"]} pcbX={1.25} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin10"]} pcbX={1.75} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin11"]} pcbX={2.25} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin12"]} pcbX={2.75} pcbY={-3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin13"]} pcbX={3.375} pcbY={-2.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin14"]} pcbX={3.375} pcbY={-2.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin15"]} pcbX={3.375} pcbY={-1.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin16"]} pcbX={3.375} pcbY={-1.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin17"]} pcbX={3.375} pcbY={-0.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin18"]} pcbX={3.375} pcbY={-0.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin19"]} pcbX={3.375} pcbY={0.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin20"]} pcbX={3.375} pcbY={0.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin21"]} pcbX={3.375} pcbY={1.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin22"]} pcbX={3.375} pcbY={1.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin23"]} pcbX={3.375} pcbY={2.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin24"]} pcbX={3.375} pcbY={2.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin25"]} pcbX={2.75} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin26"]} pcbX={2.25} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin27"]} pcbX={1.75} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin28"]} pcbX={1.25} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin29"]} pcbX={0.75} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin30"]} pcbX={0.25} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin31"]} pcbX={-0.25} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin32"]} pcbX={-0.75} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin33"]} pcbX={-1.25} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin34"]} pcbX={-1.75} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin35"]} pcbX={-2.25} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin36"]} pcbX={-2.75} pcbY={3.375} width={0.3} height={0.55} shape="rect" />
+  <smtpad portHints={["pin37"]} pcbX={-3.375} pcbY={2.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin38"]} pcbX={-3.375} pcbY={2.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin39"]} pcbX={-3.375} pcbY={1.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin40"]} pcbX={-3.375} pcbY={1.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin41"]} pcbX={-3.375} pcbY={0.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin42"]} pcbX={-3.375} pcbY={0.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin43"]} pcbX={-3.375} pcbY={-0.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin44"]} pcbX={-3.375} pcbY={-0.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin45"]} pcbX={-3.375} pcbY={-1.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin46"]} pcbX={-3.375} pcbY={-1.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin47"]} pcbX={-3.375} pcbY={-2.25} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin48"]} pcbX={-3.375} pcbY={-2.75} width={0.55} height={0.3} shape="rect" />
+  <smtpad portHints={["pin49"]} pcbX={0} pcbY={0} width={5.6} height={5.6}
+    shape="rect" solderPasteMargin={-0.5} />
+  <courtyardrect width={7.8} height={7.8} />
+  <fabricationnotepath route={[{x:-3.5,y:-3.5},{x:3.5,y:-3.5},{x:3.5,y:3.5},{x:-3.5,y:3.5},{x:-3.5,y:-3.5}]} />
+  <silkscreenpath route={[{x:-3.8,y:-3.1},{x:-3.8,y:-3.8},{x:-3.1,y:-3.8}]} />
+  <silkscreentext text="{NAME}" pcbX={0} pcbY={4.6} anchorAlignment="center" />
+</footprint>
 export const stm32PinLabels = {
   "pin1": [
     "PC13"
@@ -151,21 +204,22 @@ export const stm32PinLabels = {
   ],
   "pin48": [
     "PB9"
-  ]
+  ],
+  "pin49": ["EP_GND"]
 } as const
 export const STM32G0B1 = (props: ChipProps<typeof stm32PinLabels>) => {
   return <chip
-    supplierPartNumbers={{ jlcpcb: ["C2847904"] }}
-    manufacturerPartNumber="STM32G0B1CBT6"
+    supplierPartNumbers={{ jlcpcb: ["C2829190"] }}
+    manufacturerPartNumber="STM32G0B1CEU6"
     footprint={stm32Footprint}
     cadModel={{
-      objUrl: "https://modelcdn.tscircuit.com/easyeda_models/download?uuid=a4b96ad857dc48c08dab3d0efdf20aec&pn=C2847904",
-      rotationOffset: { x: 0, y: 0, z: 0 },
+      objUrl: "https://modelcdn.tscircuit.com/easyeda_models/download?uuid=16912e571dfb42a9a47b4df7b841ed45&pn=C2829190",
+      rotationOffset: { x: 0, y: 0, z: 90 },
       positionOffset: { x: 0, y: 0, z: 0 },
     }}
     {...props}
     pinLabels={stm32PinLabels}
-    pinAttributes={{ pin4: { requiresPower: true }, pin5: { requiresPower: true }, pin6: { requiresPower: true }, pin7: { requiresGround: true } }}
+    pinAttributes={{ pin4: { requiresPower: true }, pin5: { requiresPower: true }, pin6: { requiresPower: true }, pin7: { requiresGround: true }, pin49: { requiresGround: true } }}
   />
 }
 

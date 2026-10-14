@@ -1,5 +1,5 @@
 {
-  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "service": "JLCPCB PCB + SMT assembly",
   "requested_delivery": "Fully populated, programmed and functionally tested PCBA for the confirmed motor/load",
   "additional_services": {
@@ -49,8 +49,8 @@
       "via_pad_mm": 0.6,
       "finished_drill_mm": 0.3
     },
-    "via_in_pad_count": 55,
-    "via_in_pad_count_basis": "Final power ECO native board: finished-drill overlap with top paste lands; exact coordinates and board hash in engineering/top-side-placement.json power_eco_via_audit. Includes 40 MOSFET drain-pad and four U34 thermal vias.",
+    "via_in_pad_count": 63,
+    "via_in_pad_count_basis": "Final power ECO native board: finished-drill overlap with top paste lands; exact coordinates and board hash in engineering/top-side-placement.json power_eco_via_audit. Includes 40 MOSFET drain-pad, four U34 thermal and four U16 ground-pad vias.",
     "minimum_via_finished_drill_mm": 0.3,
     "driver_regulator_thermal_vias": {
       "reference": "U34",
@@ -84,7 +84,7 @@
       "C53"
     ],
     "optional_unpopulated_policy": "Bottom footprints only; omit from fitted BOM/CPL and paste. No magnet interface is qualified on the ordered single-shaft motor.",
-    "fitted_component_count": 252,
+    "fitted_component_count": 255,
     "external_motor_harness": "Separate VHR-4N / SVH-41T-P1.1 / 16 AWG cable assembly; see motor-harness.md. Not included automatically in PCB assembly."
   },
   "programming": {
@@ -104,7 +104,7 @@
       "cold_boot_verified": false
     },
     "U16_mcu": {
-      "part": "STM32G0B1CBT6",
+      "part": "STM32G0B1CEU6",
       "requirement": "Program qualified motor-enabled firmware over SWD and verify/read back",
       "raw_binary_flash_address": "0x08000000",
       "image": null,
@@ -118,7 +118,7 @@
         "image_bytes": 58216,
         "motion_enabled": false
       },
-      "readback_bytes": 131072,
+      "readback_bytes": 524288,
       "programmed": false,
       "readback_verified": false,
       "cold_boot_verified": false

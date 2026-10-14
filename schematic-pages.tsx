@@ -128,7 +128,7 @@ const pages = [
   [
     "indicators",
     "Status and Independent Power Indication",
-    "U35 TCA9538 at 0x70 controls D16 RGB; PC13 reset has a hardware pulldown.",
+    "U35 PCA9538 at 0x70; U37 buffers PC13 reset into PD_3V3 with default-low bias.",
     "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
   ],
   [

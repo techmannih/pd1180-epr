@@ -39,6 +39,8 @@ On 2026-10-13 after PR #3 merged, the user requested programming/readback/cold-b
 
 ## Required project structure
 
+On 2026-10-14 the user authorized replacing unavailable U16/U35 with verified JLC-stocked parts, including necessary footprint, reset-domain, local routing, firmware and programming changes, and a direct push to main without a PR after validation. Preserve unrelated schematic/copper and all four holes. This does not qualify physical hardware or reserve inventory.
+
 Every board repository should contain:
 
 - `AGENTS.md`: rules an AI must follow.

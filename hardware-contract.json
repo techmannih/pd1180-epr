@@ -1,7 +1,7 @@
 {
   "name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "controller": "STM32G0B1CBT6",
+  "controller": "STM32G0B1CEU6",
   "motor_driver": "TMC5160A with eight CSD19534Q5A MOSFETs",
   "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
   "usb_ports": {
@@ -87,7 +87,7 @@
       "diameter": 0.6,
       "drill": 0.3
     },
-    "via_in_pad": "epoxy filled and copper capped for all 55 recorded via-in-pad locations; see docs/manufacturing-acceptance.md"
+    "via_in_pad": "epoxy filled and copper capped for all 63 recorded via-in-pad locations; see docs/manufacturing-acceptance.md"
   },
   "rated_targets": {
     "pd_contract_v": 48,
@@ -178,10 +178,10 @@
       }
     },
     "indicators": {
-      "gpio_expander": "TCA9538PWR",
+      "gpio_expander": "PCA9538PWR",
       "i2c_address": 112,
-      "supply": "PD_3V3, shared with the PD_SCL/PD_SDA pull-ups; TCA9538 SCL/SDA may not exceed VCC",
-      "reset": "STATUS_GPIO (PC13), 10k pulldown; assert low on reset, rail loss, USB suspend or indicator bus failure",
+      "supply": "PD_3V3, shared with PD_SCL/PD_SDA pull-ups and reset buffer U37",
+      "reset": "PC13 / STATUS_GPIO with R132 10k pulldown drives U37 SN74LVC1G17DBVR input. PD_3V3-powered output U35_RESET_N has R137 47k pulldown. Assert low on MCU reset, rail loss, USB suspend or indicator bus failure; no direct MCU-rail drive into PCA9538 RESET.",
       "ports": {
         "P0": "RGB red cathode through 1k",
         "P1": "RGB green cathode through 330 ohm",

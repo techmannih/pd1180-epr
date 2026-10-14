@@ -44,7 +44,7 @@ test('missing TI image or a low-region export cannot be treated as EEPROM firmwa
 })
 
 test('STM32 image is rejected when its recorded source has changed', async () => {
-  const manifest = { target: 'STM32G0B1CBT6', flash_address: '0x08000000', max_flash_bytes: 131072,
+  const manifest = { target: 'STM32G0B1CEU6', flash_address: '0x08000000', max_flash_bytes: 524288,
     image_type: 'commissioning-diagnostics-only', motor_operation_enabled: false,
     image_bytes: image.length, artifacts: { 'firmware.bin': hash(image) }, inputs: { 'firmware/target/main.cpp': hash(Buffer.from('before')) } }
   const zip = new JSZip().file('manifest.json', JSON.stringify(manifest)).file('firmware.bin', image)
@@ -70,4 +70,12 @@ test('registered TI ZIP loads its reviewed full-flash member', async () => {
   expect(image.image.length).toBe(31552)
   expect(image.capacity).toBe(65536)
   expect(image.base).toBe(0)
+})
+
+// The stocked CE MCU has four times the old CB flash capacity. A matching
+// image prefix in an old 128 KiB dump is not complete readback evidence.
+test('STM32 CE full readback rejects the old 128 KiB memory dump', async () => {
+  const full=Buffer.alloc(524288,0xff); image.copy(full)
+  expect(compareReadback(image,full,hash(image),524288,0x08000000).readback_bytes).toBe(524288)
+  expect(()=>compareReadback(image,full.subarray(0,131072),hash(image),524288,0x08000000)).toThrow('complete 524288-byte')
 })
