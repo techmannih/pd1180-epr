@@ -26,7 +26,7 @@ export const BoardDiagnostics = () => (
     <net name="RGB_G_K" isPowerNet={false} />
     <net name="RGB_R_DRV" isPowerNet={false} />
     <net name="RGB_R_K" isPowerNet={false} />
-    <TCA9538PWR name="U35" schWidth={2.34} schHeight={1.6} schPinArrangement={{ topSide: ["pin16"], leftSide: ["pin3", "pin14", "pin15"], rightSide: ["pin4", "pin5", "pin6", "pin7", "pin13"], bottomSide: ["pin1", "pin2", "pin8", "pin9", "pin10", "pin11", "pin12"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={-6.5} schY={-2.2}
+    <TCA9538PWR name="U35" schWidth={2.132} schHeight={1.6} schPinArrangement={{ topSide: ["pin16"], leftSide: ["pin3", "pin14", "pin15"], rightSide: ["pin4", "pin5", "pin6", "pin7", "pin13"], bottomSide: ["pin1", "pin2", "pin8", "pin9", "pin10", "pin11", "pin12"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={-6.5} schY={-2.2}
       pcbX={35.5} pcbY={-24.25} pcbRotation={0} layer="top" noConnect={["pin13"]}
       connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.STATUS_GPIO", pin4: "net.RGB_R_DRV", pin5: "net.RGB_G_DRV", pin6: "net.RGB_B_DRV", pin7: "net.BUZZER_EN", pin8: "net.GND", pin9: "net.GND", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin14: "net.PD_SCL", pin15: "net.PD_SDA", pin16: "net.PD_3V3" }} />
     <NH_B2020RGBA_HF name="D16" schPinArrangement={{ topSide: ["pin3"], leftSide: ["pin1", "pin4", "pin2"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={1.5} schY={-1.2}

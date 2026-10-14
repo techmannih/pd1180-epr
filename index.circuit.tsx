@@ -303,7 +303,7 @@ export const PD1180EPR = () => (
     <USB4105_GF_A name="J1" schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-8.5} schY={-2.95} pcbX={-36} pcbY={15}
       pcbRotation={270}
       schPinArrangement={{ rightSide: { pins: ["pin7", "pin15", "pin9", "pin11", "pin13", "pin12", "pin14", "pin10", "pin16"], direction: "top-to-bottom" }, bottomSide: { pins: ["pin5", "pin1"], direction: "left-to-right" } }}
-      schWidth={1.4}
+      schWidth={1.521}
       schPinStyle={{ pin7: { topMargin: 0.1, bottomMargin: 0.1 }, pin15: { topMargin: 0.1, bottomMargin: 0.1 }, pin9: { topMargin: 0.1, bottomMargin: 0.1 }, pin11: { topMargin: 0.1, bottomMargin: 0.1 }, pin13: { topMargin: 0.1, bottomMargin: 0.1 }, pin12: { topMargin: 0.1, bottomMargin: 0.1 }, pin14: { topMargin: 0.1, bottomMargin: 0.1 }, pin10: { topMargin: 0.1, bottomMargin: 0.1 }, pin16: { topMargin: 0.1, bottomMargin: 0.1 } }}
       noConnect={["pin10", "pin11", "pin12", "pin13", "pin14", "pin16"]}
 
@@ -321,7 +321,7 @@ export const PD1180EPR = () => (
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxVoltageRating="50V"
       connections={{ pin1: "net.USB_VBUS_SENSE", pin2: "net.GND" }} />
-    <TPD4S480RUKR name="U1" schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={1.33} schY={-2.95} pcbX={-30} pcbY={24.5}
+    <TPD4S480RUKR name="U1" schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={1.33} schY={-2.95} pcbX={-30} pcbY={24.5} schWidth={1.574}
       schPinArrangement={{
         leftSide: { pins: ["pin20", "pin4", "pin5", "pin1", "pin2", "pin18", "pin13", "pin8", "pin21"], direction: "top-to-bottom" },
         rightSide: { pins: ["pin19", "pin17", "pin16", "pin12", "pin11", "pin15", "pin14", "pin9", "pin10", "pin3"], direction: "top-to-bottom" },
@@ -721,7 +721,7 @@ export const PD1180EPR = () => (
       connections={{ pin1: "net.VMON_ADC", pin2: "net.GND" }} />
 
     {/* MOTION */}
-    <TMC5160A_TA_T name="U7" schSheetName="motion" schSectionName="motion_U7" schX={-6.25} schY={-5.2} pcbX={24} pcbY={-1}
+    <TMC5160A_TA_T name="U7" schSheetName="motion" schSectionName="motion_U7" schX={-6.25} schY={-5.2} pcbX={24} pcbY={-1} schWidth={2.501}
       connections={{ pin1: "net.GH_B1_DRV", pin2: "net.BOOT_B1", pin3: "net.TMC_12V", pin4: "net.TMC_12V", pin5: "net.TMC_5V", pin6: "net.GND", pin7: "net.GND", pin8: "net.SENSE_A", pin9: "net.SENSE_B", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin13: "net.TMC_CS_N", pin14: "net.SPI_SCK", pin15: "net.SPI_MOSI", pin16: "net.SPI_MISO", pin17: "net.GND", pin18: "net.GND", pin19: "net.GND", pin20: "net.V3V3", pin21: "net.SD_MODE", pin22: "net.V3V3", pin23: "net.GND", pin24: "net.GND", pin25: "net.GND", pin26: "net.TMC_DIAG0", pin27: "net.TMC_DIAG1", pin28: "net.DRV_EN_N", pin29: "net.TMC_VCC", pin30: "net.GND", pin31: "net.TMC_CPO", pin32: "net.TMC_CPI", pin33: "net.VMOTOR", pin34: "net.TMC_VCP", pin35: "net.BOOT_A2", pin36: "net.GH_A2_DRV", pin37: "net.MOTOR_A2", pin38: "net.GL_A2_DRV", pin39: "net.GL_A1_DRV", pin40: "net.MOTOR_A1", pin41: "net.GH_A1_DRV", pin42: "net.BOOT_A1", pin43: "net.BOOT_B2", pin44: "net.GH_B2_DRV", pin45: "net.MOTOR_B2", pin46: "net.GL_B2_DRV", pin47: "net.GL_B1_DRV", pin48: "net.MOTOR_B1", pin49: "net.GND" }} pcbRotation={180} />
     <capacitor name="C25" schSheetName="motion" schSectionName="motion_U7" schX={1.75} schY={2.8} pcbX={27.4} pcbY={6.5}
       schRotation={-90}
@@ -1012,7 +1012,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U14 > .pin5"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
-    <UCC27511DBVR name="U15" schSheetName="brake-ovp" schSectionName="brake_U15" schX={5.4} schY={-3.7} pcbX={10} pcbY={26}
+    <UCC27511DBVR name="U15" schSheetName="brake-ovp" schSectionName="brake_U15" schX={5.4} schY={-3.7} pcbX={10} pcbY={26} schWidth={2.15}
       connections={{ pin1: "net.TMC_12V", pin2: "net.BRAKE_DRIVE", pin3: "net.BRAKE_DRIVE", pin4: "net.GND", pin5: "net.GND", pin6: "net.BRAKE_ON" }} />
     <capacitor name="C42" schSheetName="brake-ovp" schSectionName="brake_U15" schX={10.4} schY={0.3} pcbX={12.75} pcbY={35.5}
       schRotation={-90}
@@ -1184,7 +1184,7 @@ export const PD1180EPR = () => (
     {/* INTERFACES */}
 
     <USB4105_GF_A name="J10" schSheetName="usb-data" schSectionName="usb-data_J10" schX={-6.5} schY={1.3} pcbX={-36} pcbY={1} pcbRotation={270}
-      schWidth={1.4}
+      schWidth={1.521}
       schPinArrangement={{ rightSide: { pins: ["pin7", "pin15", "pin9", "pin13", "pin12", "pin10", "pin16"], direction: "top-to-bottom" }, bottomSide: { pins: ["pin5", "pin1"], direction: "left-to-right" } }}
       schPinStyle={{ pin7: { topMargin: 0.1, bottomMargin: 0.1 }, pin15: { topMargin: 0.1, bottomMargin: 0.1 }, pin9: { topMargin: 0.1, bottomMargin: 0.1 }, pin13: { topMargin: 0.1, bottomMargin: 0.1 }, pin12: { topMargin: 0.1, bottomMargin: 0.1 }, pin10: { topMargin: 0.1, bottomMargin: 0.1 }, pin16: { topMargin: 0.1, bottomMargin: 0.1 } }}
       noConnect={["pin10", "pin16"]}
@@ -1319,7 +1319,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U27 > .pin1"
       maxDecouplingTraceLength="5mm"
       connections={{ pin1: "net.V3V3_USB", pin2: "net.GND" }} />
-    <TMP102AIDRLR name="U29" schSheetName="telemetry" schSectionName="telemetry_U29" schX={-6} schY={3.65} pcbX={20} pcbY={8}
+    <TMP102AIDRLR name="U29" schSheetName="telemetry" schSectionName="telemetry_U29" schX={-6} schY={3.65} pcbX={20} pcbY={8} schWidth={1.289}
       layer="top"
       connections={{ pin1: "net.PD_SCL", pin2: "net.GND", pin3: "net.TEMP_OK", pin4: "net.GND", pin5: "net.V3V3", pin6: "net.PD_SDA" }} pcbRotation={0} />
     <SN74LVC1G08DBVR name="U33" schSheetName="telemetry" schSectionName="telemetry_U29" schX={6} schY={3.65} pcbX={6.3} pcbY={4.5}
