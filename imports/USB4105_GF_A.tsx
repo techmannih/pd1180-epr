@@ -72,7 +72,7 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C3020560.obj?uuid=b568c80088e44e7787ac98e18b16aaa3",
         stepUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C3020560.step?uuid=b568c80088e44e7787ac98e18b16aaa3",
         pcbRotationOffset: 0,
-        modelOriginPosition: { x: 0, y: 1.5075092000000494, z: -0.0000020000000000575113 },
+        modelOriginPosition: { x: 0, y: 1.075092000000494, z: -0.0000020000000000575113 },
       }}
       {...restProps}
     />
