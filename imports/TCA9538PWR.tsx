@@ -24,40 +24,18 @@ const pinAttributes = {
   pin16: {requiresPower: true}
 } as const
 
+// The DFN generator describes the lands; the physical PW package is TSSOP-16.
+export const tca9538Footprint =
+  "dfn16_pillpads_p0.65mm_w7.46mm_pw0.34mm_pl1.73mm_pin1location(leftside,bottom)"
+
 export const TCA9538PWR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
       pinAttributes={pinAttributes}
-      supplierPartNumbers={{
-  "jlcpcb": [
-    "C2652286"
-  ]
-}}
+      supplierPartNumbers={{ jlcpcb: ["C2652286"] }}
       manufacturerPartNumber="TCA9538PWR"
-      footprint={<footprint>
-        <smtpad portHints={["pin1"]} pcbX="-2.275078mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin2"]} pcbX="-1.625092mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin3"]} pcbX="-0.975106mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin4"]} pcbX="-0.324866mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin5"]} pcbX="0.32512mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin6"]} pcbX="0.975106mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin7"]} pcbX="1.625092mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin8"]} pcbX="2.275078mm" pcbY="-2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin16"]} pcbX="-2.275078mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin15"]} pcbX="-1.625092mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin14"]} pcbX="-0.975106mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin13"]} pcbX="-0.324866mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin12"]} pcbX="0.32512mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin11"]} pcbX="0.975106mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin10"]} pcbX="1.625092mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<smtpad portHints={["pin9"]} pcbX="2.275078mm" pcbY="2.865755mm" width="0.3430016mm" height="1.7314926mm" radius="0.1715008mm" shape="pill" />
-<silkscreenpath route={[{"x":-2.5761949999999842,"y":-1.7712690000000748},{"x":-2.5761949999999842,"y":1.771523000000002},{"x":2.5761949999999842,"y":1.771523000000002},{"x":2.5761949999999842,"y":-1.7712690000000748},{"x":-2.5761949999999842,"y":-1.7712690000000748}]} />
-<silkscreencircle pcbX="-2.032mm" pcbY="-1.27mm" radius="0.150114mm" />
-<silkscreencircle pcbX="-2.898902mm" pcbY="-2.865755mm" radius="0.150114mm" />
-<silkscreentext text="{NAME}" pcbX="-0.2413mm" pcbY="4.556127mm" anchorAlignment="center" fontSize="1mm" />
-<courtyardoutline outline={[{"x":-2.7499950000001263,"y":3.981501299999991},{"x":2.749994999999899,"y":3.981501299999991},{"x":2.749994999999899,"y":-3.981501299999877},{"x":-2.7499950000001263,"y":-3.981501299999877},{"x":-2.7499950000001263,"y":3.981501299999991}]} />
-      </footprint>}
+      footprint={tca9538Footprint}
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C2652286.obj?uuid=534f03d8fe164fbab551f91e5a792e30",
         stepUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C2652286.step?uuid=534f03d8fe164fbab551f91e5a792e30",
@@ -68,3 +46,5 @@ export const TCA9538PWR = (props: ChipProps<typeof pinLabels>) => {
     />
   )
 }
+
+export default TCA9538PWR

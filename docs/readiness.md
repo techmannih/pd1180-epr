@@ -12,7 +12,7 @@
 | J1/J10 | Selected USB4105-GF-A-060 / C3025063; shared land pattern, shorter 0.60 mm shell stakes | Assembly process and connector retention acceptance on the 1.6 mm PCB |
 | U16, U35 | Exact STM32G0B1CBT6 / C2847904 and TCA9538PWR / C2652286 retained; public assembler stock unavailable at this revision | Exact-part allocation through an accepted sourcing/consignment process, or a separately reviewed replacement |
 | Placement | Three exact advisories reviewed against actual copper | Renew review if advice or layout changes |
-| Silkscreen/text | **User accepted the exact 404 cosmetic findings. Labels unchanged.** | Raw DRC still reports them; no zero-DRC claim or implicit fabricator acceptance |
+| Silkscreen/text | **User accepted the exact 405 cosmetic findings. Native labels retained; U16/U35 use generator anchors.** | Raw DRC still reports them; no zero-DRC claim or implicit fabricator acceptance |
 | Fabrication and mounting | ENIG and all 55 filled/capped via-in-pad locations specified; physical approvals pending | Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md) |
 
 The [sourcing review](sourcing-resolution.md) records why each replacement is acceptable or rejected. Stock is not reserved. The two remaining identities block ordering. Engineering review records the shortages explicitly; strict procurement still fails.

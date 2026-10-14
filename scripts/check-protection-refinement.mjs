@@ -13,4 +13,4 @@ await writeFile('engineering/protection-refinement-geometry.json', JSON.stringif
   derived_zone_fills_recomputed: true, policy_sha256: digest(await readFile('engineering/unused-sbu-eco.json')),
   checker_sha256: digest(await readFile(new URL(import.meta.url))), hardware_qualified: false,
 }, null, 2)+'\n')
-console.log('Verified narrow unused-SBU ECO; the reviewed U16 footprint substitution is hash-locked; every unrelated pad/net, placement, hole, track and zone outline is unchanged.')
+console.log('Verified narrow unused-SBU ECO; the reviewed U16/U35/C95 footprint substitutions are hash-locked; every unrelated pad/net, placement, hole, track and zone outline is unchanged.')
