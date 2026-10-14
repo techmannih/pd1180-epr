@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto'
+import { gunzipSync } from 'node:zlib'
 export const digest = data => createHash('sha256').update(typeof data === 'string' || Buffer.isBuffer(data) ? data : JSON.stringify(data)).digest('hex')
 export function parseNative(text) {
   const tokens = text.match(/\(|\)|"(?:\\.|[^"\\])*"|[^\s()]+/g) || []
@@ -9,9 +10,44 @@ export function parseNative(text) {
 export const field = (x, key) => x.find(v => Array.isArray(v) && v[0] === key)
 export const uuid = x => field(x, 'uuid')?.[1]
 const ref = x => x.find(v => Array.isArray(v) && v[0] === 'property' && v[1] === '"Reference"')?.[2]?.slice(1,-1)
+const withoutFill = x => x[0] === 'zone' ? x.filter(v => !Array.isArray(v) || v[0] !== 'filled_polygon') : x
+export function placementRevisions(policy) {
+  if (policy.local_placement_revisions_gzip_base64) {
+    if (policy.local_placement_revisions) throw new Error('Ambiguous placement revision encoding')
+    const bytes = gunzipSync(Buffer.from(policy.local_placement_revisions_gzip_base64, 'base64'))
+    if (digest(bytes) !== policy.local_placement_revisions_sha256) throw new Error('Placement restoration payload changed')
+    return JSON.parse(bytes)
+  }
+  return policy.local_placement_revisions || []
+}
+// Restore each explicitly reviewed placement revision before applying the older
+// electrical ECO. This preserves the historical protected projection hash.
+function restorePlacementRevisions(board, revisions = []) {
+  for (const revision of revisions.toReversed()) {
+    const modified = new Map(revision.modified.map(x => [uuid(x.before), x]))
+    const added = new Map(revision.added.map(x => [uuid(x), x]))
+    const seen = new Set()
+    board = board.map(x => {
+      if (!Array.isArray(x)) return x
+      const id = uuid(x), change = modified.get(id)
+      if (change) {
+        if (digest(withoutFill(x)) !== change.after_sha256) throw new Error('Reviewed USB placement/copper changed')
+        seen.add(id); return change.before
+      }
+      if (added.has(id)) {
+        if (digest(withoutFill(x)) !== digest(added.get(id))) throw new Error('Reviewed USB local addition changed')
+        seen.add(id); return null
+      }
+      return x
+    }).filter(x => x !== null)
+    for (const id of [...modified.keys(), ...added.keys()]) if (!seen.has(id)) throw new Error('Missing reviewed USB geometry')
+  }
+  return board
+}
 // Strip only derived zone fills. Native DRC and copper checks bind the actual
 // refilled board separately. All zone outlines/settings remain protected.
 export function protectedProjection(board, policy, baseline = false) {
+  if (!baseline) board = restorePlacementRevisions(board, placementRevisions(policy))
   const changes = new Map(policy.pad_changes.map(p => [`${p.reference}.${p.pin}`, p]))
   const metadata = new Map((policy.part_value_changes || []).map(p => [p.reference, p]))
   const footprints = new Map((policy.footprint_replacements || []).map(p => [p.reference, p]))

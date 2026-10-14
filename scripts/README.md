@@ -139,3 +139,6 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 - `splice-model.mjs`, `splice-model.test.mjs`: import the official TE 320559 STEP from the archived manufacturer evidence, verify STEP/drawing hashes, axial origin and nominal dimensions, and translate its unscaled mesh into each J2 splice position. Regresses wrong dimensions, source corruption, mirrored placement and the four generated CAD parts. Nominal CAD does not qualify finished crimps.
 
 Harness intermediate part data is deterministically stored in `engineering/mechanical/harness-parts.zip` to keep duplicate base64 geometry out of the raw GitHub import payload. `generate-motor-assembly.mjs` reads it with ZIP CRC checking; exported GLBs keep their original mesh resolution.
+
+- `check-usb-access.mjs`: measures both USB mating faces from native shell-stake lands and the GCT drawing; checks source placement, PCB edge and nominal motor/plug envelope without claiming physical fit.
+- `usb-access.test.mjs`: rejects old recessed native USB placement, incorrect source orientation and an intersecting nominal motor/plug envelope; keeps physical-fit qualification false.

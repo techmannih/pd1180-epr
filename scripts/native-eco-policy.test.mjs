@@ -1,6 +1,6 @@
 import { test, expect } from 'bun:test'
 import { readFileSync } from 'node:fs'
-import { parseNative, verifyNativeEco, field } from './native-eco-policy.mjs'
+import { parseNative, verifyNativeEco, field, placementRevisions } from './native-eco-policy.mjs'
 const original = parseNative(readFileSync('dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb','utf8'))
 const policy = JSON.parse(readFileSync('engineering/unused-sbu-eco.json'))
 test('approved unused-SBU correction preserves unrelated PCB', () => expect(verifyNativeEco(original,policy)).toBe(true))
@@ -46,4 +46,18 @@ test('stocked MCU/reset ECO rejects missing buffer, changed paste and restored l
     b => { expect(policy.local_copper_removals.length).toBeGreaterThan(0); b.push(structuredClone(policy.local_copper_removals[0])) },
     b => { const id=field(policy.local_copper_modifications[0].before,'uuid')[1]; const t=b.find(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id); field(t,t[0]==='via'?'at':'start')[1]='99' },
   ]) {const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
+})
+
+test('USB edge ECO rejects altered pour outlines or a missing local addition', () => {
+  const revision = placementRevisions(policy).at(-1)
+  expect(revision.modified.some(x => x.before[0] === 'zone')).toBe(true)
+  for (const mutate of [
+    b => { const change = revision.modified.find(x => x.before[0] === 'zone'); const z = b.find(x => Array.isArray(x) && field(x, 'uuid')?.[1] === field(change.before, 'uuid')[1]); field(field(z, 'polygon'), 'pts')[1][1] = '99' },
+    b => { const id = field(revision.added[0], 'uuid')[1]; b.splice(b.findIndex(x => Array.isArray(x) && field(x, 'uuid')?.[1] === id), 1) },
+  ]) { const b = structuredClone(original); mutate(b); expect(() => verifyNativeEco(b, policy)).toThrow() }
+})
+
+test('compressed placement restoration rejects corruption and ambiguous encodings', () => {
+  expect(() => placementRevisions({ ...policy, local_placement_revisions: [] })).toThrow()
+  expect(() => placementRevisions({ ...policy, local_placement_revisions_sha256: '0'.repeat(64) })).toThrow()
 })

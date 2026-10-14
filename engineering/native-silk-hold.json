@@ -1,15 +1,15 @@
 {
   "baseline_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
-  "reason": "User accepts native reference text-size/overlap/silk-over-copper findings. Stocked U16/U35 revision changes only affected MCU/expander/reset-network findings; every unrelated reference remains unchanged. Raw electrical/parity/connectivity findings remain blocking.",
+  "reason": "Previously accepted cosmetic findings only. Moving J1/J10 removes four prior findings; no new findings are accepted. Native electrical/parity/connectivity errors remain blocking.",
   "counts": {
     "text_height": 189,
-    "silk_overlap": 99,
-    "silk_over_copper": 121
+    "silk_overlap": 98,
+    "silk_over_copper": 118
   },
-  "signature": "3c5bdd666fbfa3e465d86e9c93de4a234bfc7d244012686f71c20da5ab21e04e",
+  "signature": "0f69708fb9d7e5618cf320828821bba1fc3406f145e98ee490b20590a3e58fde",
   "fabrication_authorized": false,
   "user_accepted_cosmetic_findings": true,
-  "previous_signature": "5bf69f9d73c2eb482f092bb0e020b110f12084fd0f7f8d6d2b2486189417488f",
+  "previous_signature": "3c5bdd666fbfa3e465d86e9c93de4a234bfc7d244012686f71c20da5ab21e04e",
   "stocked_controller_change": {
     "baseline_commit": "5bb9d4bcc71c397436a0ca0a92c1b13846b4480a",
     "removed": [
@@ -252,5 +252,103 @@
         "type": "silk_over_copper"
       }
     ]
+  },
+  "usb_edge_change": {
+    "baseline_commit": "dbaad38cc4fd2e75c812b883c97df68a17f81a2b",
+    "removed": [
+      {
+        "description": "Silkscreen clearance",
+        "items": [
+          {
+            "description": "Segment of D15 on F.Silkscreen",
+            "pos": {
+              "x": 67.960811,
+              "y": 99.689203
+            },
+            "uuid": "6d07720f-9d00-429c-8ae7-5319f83f718e"
+          },
+          {
+            "description": "Reference field of J10",
+            "pos": {
+              "x": 67.94,
+              "y": 99
+            },
+            "uuid": "eab8baae-3fe7-5b79-867f-296a0671bd4c"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_overlap"
+      },
+      {
+        "description": "Silkscreen clipped by solder mask",
+        "items": [
+          {
+            "description": "Reference field of J1",
+            "pos": {
+              "x": 67.94,
+              "y": 85
+            },
+            "uuid": "5dbcc2bd-3da7-549c-939c-b783ef1be92e"
+          },
+          {
+            "description": "Pad 1 [VBUS_LV] of C5 on F.Cu",
+            "pos": {
+              "x": 68.2,
+              "y": 85.6625
+            },
+            "uuid": "2b5035f4-3ebb-28b4-5226-1b7465910e34"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_over_copper"
+      },
+      {
+        "description": "Silkscreen clipped by solder mask",
+        "items": [
+          {
+            "description": "Reference field of J10",
+            "pos": {
+              "x": 67.94,
+              "y": 99
+            },
+            "uuid": "eab8baae-3fe7-5b79-867f-296a0671bd4c"
+          },
+          {
+            "description": "Pad 1 [USB_DP_CONN] of D15 on F.Cu",
+            "pos": {
+              "x": 68.55004,
+              "y": 99.949096
+            },
+            "uuid": "68798f4a-5263-63f6-0d40-573637e2b58a"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_over_copper"
+      },
+      {
+        "description": "Silkscreen clipped by solder mask",
+        "items": [
+          {
+            "description": "Reference field of J10",
+            "pos": {
+              "x": 67.94,
+              "y": 99
+            },
+            "uuid": "eab8baae-3fe7-5b79-867f-296a0671bd4c"
+          },
+          {
+            "description": "Pad 6 [DATA_CC2] of D15 on F.Cu",
+            "pos": {
+              "x": 68.55004,
+              "y": 97.650904
+            },
+            "uuid": "25915320-7b30-2181-1bf1-9622434cf53d"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_over_copper"
+      }
+    ],
+    "added": []
   }
 }

@@ -53,3 +53,7 @@ Runtime voltage monitoring does not absorb energy, detect the resistor's resista
 The four existing mounting holes, power bridge/brake circuits, USB connector model offset, other components and unrelated copper remain protected. Only the selected MCU/expander, new reset network and affected local fanout change. Physical CAD, current-stock and programming checks remain distinct from powered acceptance.
 
 Sourcing replacements from PR #4 are included: R64 C2984356, U17 C6000508 and J1/J10 C3025063. See [sourcing resolution](sourcing-resolution.md). U17 has limited stock; USB -060 shorter stakes still need assembly/retention acceptance. No inventory is reserved.
+
+## USB edge-placement update
+
+J1 and J10 move 2 mm outward, with local power/USB/shell-ground routing updated and the DATA marking relocated into the gap above J10. Native electrical DRC, unconnected, parity and ERC counts are zero; the accepted cosmetic set decreases from 409 to 405 without new findings. The source schematic, exact USB parts, all other component/pad geometry and four mounting holes are preserved. [USB access](usb-access.md) explains the drawing-based 0.2856 mm face overhang and remaining physical-fit limits. Use the regenerated manufacturing ZIP, BOM and CPL together.

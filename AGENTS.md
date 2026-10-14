@@ -41,6 +41,8 @@ On 2026-10-13 after PR #3 merged, the user requested programming/readback/cold-b
 
 On 2026-10-14 the user authorized replacing unavailable U16/U35 with verified JLC-stocked parts, including necessary footprint, reset-domain, local routing, firmware and programming changes, and a direct push to main without a PR after validation. Preserve unrelated schematic/copper and all four holes. This does not qualify physical hardware or reserve inventory.
 
+On 2026-10-14 the user authorized moving J1/J10 to the PCB edge for USB plug access, updating affected local routing and mechanical clearance evidence, regenerating manufacturing/release files, and pushing directly to main. Preserve unrelated source schematic, copper, component identities and the four mounting holes. Supplier/physical qualification remains separate.
+
 Every board repository should contain:
 
 - `AGENTS.md`: rules an AI must follow.

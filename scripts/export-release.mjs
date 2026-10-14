@@ -48,6 +48,9 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
 const copies = [
+  ['docs/usb-access.md', 'usb-access.md'],
+  ['docs/usb-access-check.json', 'usb-access-check.json'],
+  ['engineering/usb-edge-eco.json', 'usb-edge-eco.json'],
   ['docs/u16-footprint.md', 'u16-footprint.md'],
   ['docs/u35-footprint.md', 'u35-footprint.md'],
   ['firmware/pd/ti-configuration.zip', 'pd1180-ti-configuration.zip'],

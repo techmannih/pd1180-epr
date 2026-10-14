@@ -1,6 +1,6 @@
 # Current motor harness and assembly boundaries
 
-Use `motor-assembly.circuit.tsx` for the current source preview. Native PCB routing is still pending for the onboard-control ECO. The current model is not a secured or ready-to-run product.
+Use `motor-assembly.circuit.tsx` for the current source preview. The routed native PCB includes the USB edge-placement ECO; see `usb-access.md`. The current model is not a secured or ready-to-run product.
 
 1. Keep the existing four PCB drills unchanged. No rear fasteners may be specified from the CAD bore alone; the extra front-post/adapter assembly is withdrawn.
 2. Use J2 B4P-VH with VHR-4N and four SVH-41T-P1.1 contacts. The factory 0.75 mm² motor wires join 16 AWG Alpha3057 pigtails through four TE320559 splices. Do not apply the 10 A VH/16 AWG catalogue rating directly to the thinner factory wire or to a motor current setting.

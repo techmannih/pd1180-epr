@@ -38,3 +38,7 @@ The proposed first-motion envelope is about **0.827 A RMS, 10 rpm, 10 rpm/s, unl
 Prototype fabrication, first powered motion, and ready-to-run shipment are separate decisions. The latter requires both programming records, cold boot, qualified external equipment and per-board powered acceptance; no provider or order has been booked.
 
 Runtime brake-voltage monitoring remains implemented with motion locked. It is not a backup energy absorber; full-current open-brake cases still exceed 55 V. See [completion and acceptance](completion-handoff.md).
+
+## USB edge access revision (2026-10-14)
+
+J1/J10 now sit 2 mm farther outward; the nominal mating faces extend 0.2856 mm beyond the board edge. Local native routing, matching manufacturing placements and the routed viewer are regenerated together. See [USB access evidence](usb-access.md). This resolves the recessed-port layout review item; actual cable/enclosure/mount fit and the existing programming, power, brake and thermal qualification items still require hardware evidence.

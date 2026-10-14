@@ -1,7 +1,7 @@
 {
   "base_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
   "baseline_board_sha256": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
-  "current_board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
+  "current_board_sha256": "520bf25c71033dd6a2ccb6491d16c92f48bea7f4c0e65bd486044fd5c220da37",
   "pad_net_changes": [
     {
       "reference": "J1",
@@ -72,8 +72,16 @@
     "hardware_qualified": false
   },
   "all_other_native_geometry_unchanged": true,
+  "usb_edge_eco": [
+    {
+      "baseline_commit": "dbaad38cc4fd2e75c812b883c97df68a17f81a2b",
+      "reason": "Move J1/J10 2 mm outward; preserve their attached local route topology and power pours, reconnect fixed pad anchors, reroute one inner shell-ground connection, trim three acute fill tips, and move the DATA label clear of the J10 shell pad. All other footprints, nets, holes and geometry unchanged.",
+      "modified": 270,
+      "added": 4
+    }
+  ],
   "derived_zone_fills_recomputed": true,
-  "policy_sha256": "a9c709fc70605fcb10da80c5423c3c83451e9984d151293def6869a26e96bb2d",
-  "checker_sha256": "04935d56205dd46d2c49563afa162b5ab420e467828afc1ac76f748dc99f04bc",
+  "policy_sha256": "66f33e3b76a78a692326a9a1006d9a799ab5ef6464d252ed7fc33b429c6a01ab",
+  "checker_sha256": "67c2fab8197260746b7dc7523438fd92573422cb906af1ea597b34d0adc26623",
   "hardware_qualified": false
 }

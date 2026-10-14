@@ -1,0 +1,68 @@
+{
+  "baseline_commit": "dbaad38cc4fd2e75c812b883c97df68a17f81a2b",
+  "before_board_sha256": "708a4e6a9d81441bbc8a56124c846ab7b321720af4932f093a696e5bb0120ddd",
+  "after_board_sha256": "520bf25c71033dd6a2ccb6491d16c92f48bea7f4c0e65bd486044fd5c220da37",
+  "reason": "Move J1/J10 2 mm outward; preserve their attached local route topology and power pours, reconnect fixed pad anchors, reroute one inner shell-ground connection, trim three acute fill tips, and move the DATA label clear of the J10 shell pad. All other footprints, nets, holes and geometry unchanged.",
+  "modified_counts": {
+    "footprint": 2,
+    "segment": 161,
+    "via": 13,
+    "zone": 93,
+    "gr_text": 1
+  },
+  "added_counts": {
+    "segment": 1,
+    "zone": 3
+  },
+  "historical_protected_projection_unchanged": true,
+  "hardware_qualified": false,
+  "usb_input_copper_screen": {
+    "results": [
+      {
+        "net": "PD_VBUS",
+        "from": "J1:7,8,17,18",
+        "to": "Q4:1,2,3",
+        "grid_mm": 0.075,
+        "nodes": 61646,
+        "resistance_mohm_20c": 13.4629,
+        "voltage_drop_mv_at_5_5a": 74.046,
+        "loss_w_at_5_5a": 0.4073,
+        "source_nodes": 240,
+        "destination_nodes": 594,
+        "components": 1,
+        "board_sha256": "520bf25c71033dd6a2ccb6491d16c92f48bea7f4c0e65bd486044fd5c220da37",
+        "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
+        "limitations": [
+          "Grid approximation; validate mesh convergence and native connectivity separately",
+          "Ideal terminal contacts; via contacts approximate, copper thickness and barrel plating are assumptions",
+          "Excludes connector/contact, shunt and transistor resistance, AC/PWM/proximity effects and temperature feedback",
+          "DC 5.5 A comparison is not a duty-cycle, temperature-rise or current-rating qualification"
+        ]
+      },
+      {
+        "net": "PD_VBUS",
+        "from": "J1:7,8,17,18",
+        "to": "Q4:1,2,3",
+        "grid_mm": 0.05,
+        "nodes": 138905,
+        "resistance_mohm_20c": 13.4712,
+        "voltage_drop_mv_at_5_5a": 74.092,
+        "loss_w_at_5_5a": 0.4075,
+        "source_nodes": 552,
+        "destination_nodes": 1248,
+        "components": 1,
+        "board_sha256": "520bf25c71033dd6a2ccb6491d16c92f48bea7f4c0e65bd486044fd5c220da37",
+        "method": "9-point DC sheet-conductance screening; 35 um copper at 20 C, 20 um via plating, 1.6 mm equally spaced stack",
+        "limitations": [
+          "Grid approximation; validate mesh convergence and native connectivity separately",
+          "Ideal terminal contacts; via contacts approximate, copper thickness and barrel plating are assumptions",
+          "Excludes connector/contact, shunt and transistor resistance, AC/PWM/proximity effects and temperature feedback",
+          "DC 5.5 A comparison is not a duty-cycle, temperature-rise or current-rating qualification"
+        ]
+      }
+    ],
+    "mesh_difference_percent": 0.061612922382565743,
+    "loss_w_at_5a": 0.33677999999999997,
+    "qualification": false
+  }
+}
