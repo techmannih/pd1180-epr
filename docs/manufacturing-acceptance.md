@@ -27,7 +27,7 @@ J2 uses B4P-VH, VHR-4N and **SVH-41T-P1.1** contacts with Alpha 3057 16 AWG pigt
 
 Use the applicable [TE 114-2157 crimp specification](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocFormat=pdf&DocLang=English&DocNm=114-2157&DocType=Specification+Or+Standard&PartCntxt=320559) and exact tool instruction. Record strip length, conductor/insulation crimp inspection and the specified tensile criterion/result for each wire size. Do not invent a generic pull-force pass threshold. Use coupons for destructive pull tests. Check assembled insulation, bend/strain relief, winding continuity and connector/crimp temperatures at the qualified current.
 
-The user deferred the retained silkscreen/text corrections (405 remain after the USB edge move). Preserve raw findings and obtain the provider's printing disposition separately; this document does not approve clipped safety/polarity markings or claim zero native DRC. Electrical connectivity, parity and ERC must remain zero.
+The user deferred the retained silkscreen/text corrections (401 remain after the encoder-capacitor move, which removed four more old findings without adding any). Preserve raw findings and obtain the provider's printing disposition separately; this document does not approve clipped safety/polarity markings or claim zero native DRC. Electrical connectivity, parity and ERC must remain zero.
 
 ## U16 land pattern
 

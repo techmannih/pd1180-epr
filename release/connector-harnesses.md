@@ -10,8 +10,8 @@ J7 and its external STEP/DIR/ENABLE/home/limit path are removed from TSX. The ma
 | Motor blue lead (B−) | J2 pin 4, MOTOR_B2 | Same; 165 mm pigtail | Winding B |
 | 48 V / 5 A EPR source | J1 POWER | Exact source SKU and 5 A EPR cable still require qualification | Motor power; no generic USB cable or laptop supply is assumed |
 | Setup/diagnostic host | J10 DATA | USB data cable SKU pending | Optional diagnostics; not the normal START control |
-| J3 pin 1 VMOTOR | Brake resistor terminal 1 | VHR-2N + two SVH contacts; candidate resistor, cable/terminals described in brake-integration.md | Retained regeneration protection; physical system incomplete |
-| Brake resistor terminal 2 | J3 pin 2 BRAKE_RETURN / Q16 | Final length, heat-resistant routing, heatsink and mounting unresolved | Switched return; not permanent GND |
+| J3 pin 1 VMOTOR | Brake resistor terminal 1 | VHR-2N + two SVH contacts; candidate resistor, cable/terminals described in brake-integration.md | Connected nominal CAD assembly; physical/thermal qualification incomplete |
+| Brake resistor terminal 2 | J3 pin 2 BRAKE_RETURN / Q16 | Nominal 150/115 mm cable cuts modeled; installed lengths, temperature, heatsink and mounting unqualified | Switched return; not permanent GND |
 | Programming equipment | SWD and isolated EEPROM test pads | Fixture/programmer acceptance pending | Manufacturing service only |
 
 SW2 is on the PCB: PC6 to GND, with R133 to V3V3_MCU. STM32 supplies the motion command over existing PCB SPI traces, so there is no external command harness. SW1 remains RESET.

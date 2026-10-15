@@ -2,6 +2,7 @@ import {test,expect} from 'bun:test'
 import {readFile} from 'node:fs/promises'
 import {loadSpliceModel,positionSplice,requireSpliceHash} from './splice-model.mjs'
 import {readGlb} from './assembly-glb.mjs'
+import JSZip from 'jszip'
 const model=await loadSpliceModel()
 test('official splice has actual bore/waist geometry and the larger nominal OD',()=>{
   expect(model.length).toBeCloseTo(32.131,6)
@@ -18,7 +19,8 @@ test('manufacturer source corruption is rejected',()=>{
   expect(()=>requireSpliceHash(Buffer.from('modified'),model.step_sha256,'Splice STEP')).toThrow('differs')
 })
 test('four harness splice meshes and clearance envelopes use the same manufacturer geometry',async()=>{
-  const glb=await readGlb('engineering/mechanical/harness-proposal.glb')
+  const zip=await JSZip.loadAsync(await readFile('engineering/mechanical/harness-proposal.zip'),{checkCRC32:true})
+  const glb=await readGlb(await zip.file('harness-proposal.glb').async('nodebuffer'))
   const geometry=JSON.parse(await readFile('engineering/mechanical/harness-geometry.json'))
   const splices=geometry.wires.filter(w=>w.kind==='splice')
   expect(splices.length).toBe(4)

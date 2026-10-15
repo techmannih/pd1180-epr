@@ -16,10 +16,10 @@ function changed(name, edit) {
   return data
 }
 
-test('only the centered encoder and local bypass footprints are bottom-side DNP', () => {
+test('only the centered encoder may be bottom-side; its DNP capacitors remain on top', () => {
   expect(check(circuit)).toEqual([])
   expect(check(changed('U18', row => row.do_not_place = false)).length).toBeGreaterThan(0)
-  expect(check(changed('C52', row => row.layer = 'top')).length).toBeGreaterThan(0)
+  for (const ref of ['C52', 'C53']) expect(check(changed(ref, row => row.layer = 'bottom')).length).toBeGreaterThan(0)
   expect(check(changed('U18', row => row.center.x = 0.1)).length).toBeGreaterThan(0)
   expect(check(changed('U7', row => { row.do_not_place = true; row.layer = 'bottom' })).length).toBeGreaterThan(0)
 })

@@ -129,7 +129,26 @@
   [
     "U18",
     11,
-    "C52"
+    "C52",
+    {
+      "reason": "Only U18 is allowed on the bottom. C52 retains its XY pad centers on top, joined through one 0.60/0.30 mm V3V3 via at source (-0.6,-3.9), native (99.4,103.9). The 5 mm budget includes the 1.6 mm board thickness; all ordinary bypasses remain on the IC side. Encoder supply/ground ripple still requires powered qualification.",
+      "layer_transition": {
+        "from": "bottom",
+        "to": "top",
+        "source_xy_mm": [
+          -0.6,
+          -3.9
+        ],
+        "native_xy_mm": [
+          99.4,
+          103.9
+        ],
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "barrel_mm": 1.6,
+        "maximum_vias": 1
+      }
+    }
   ],
   [
     "U22",

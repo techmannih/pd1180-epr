@@ -10,7 +10,7 @@ The earlier `feature-parity` check covered ten functions already present on this
 
 | Reviewer request | Evidence-backed response now | What is still needed |
 |---|---|---|
-| Small encoder on bottom marked doNotPlace | U18 AS5047P and local C52/C53 are bottom DNP, excluded from fitted BOM/CPL and paste. R74 remains fitted top. See `assembly-check.json` and `native-decoupling-check.json`. | None for the optional footprint requirement; fitting and using it is a separate gate. |
+| Small encoder on bottom marked doNotPlace | U18 AS5047P alone is bottom DNP; local C52/C53 are top-side DNP, excluded from fitted BOM/CPL and paste. R74 remains fitted top. See `assembly-check.json` and `native-decoupling-check.json`. | None for the optional footprint requirement; fitting and using it is a separate gate. |
 | Use Rishabh's design as reference | Both exact reference releases were inspected; comparison below records retained functions and deliberate differences. | Diagnostics and programming-access additions are implemented; mechanical, image and powered qualification remain open. |
 | Perfectly centered; correct encoder arrangement | U18 package center is (0,0), on the motor axis. | The ordered single-shaft motor has no documented rear rotating-shaft interface. Magnet attachment, holder, field and working gap are unresolved; centering alone does not provide feedback. |
 | Explain J7 / J2 and justify extra connectors | J2 is the winding connector. J7 and its external command circuits are removed; SW2 provides local control. J1/J10 provide separate POWER/DATA; J3 connects the retained regenerative brake resistor. No redundant SWD/encoder cable header remains. | Validate complete mating assemblies and external loads, not only the connector bodies. |

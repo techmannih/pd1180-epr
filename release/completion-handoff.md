@@ -25,7 +25,7 @@ There are **two VH wire harness connections, J2 and J3**, plus **two USB recepta
 | J10 DATA | Optional setup, status and diagnostics; SW2 supplies the local motion request | Select an actual USB data cable/host and verify plug access, enumeration, startup/suspend current and reverse blocking. Laptop USB does not power this motor. |
 | SWD / EEPROM pads | Temporary manufacturing/programming fixture | ST-LINK-compatible SWD fixture and separately isolated U3 programming fixture, verified readback, no competing power sources. See `pd-programming.md`. |
 
-SW1 is RESET. SW2 requests START/STOP only after qualification; it is not an emergency-stop or gravity-load holding system. Optional U18/C52/C53 stay bottom DNP. No encoder, rear magnet, CAN/RS485/RS232 controller, J7 harness or bus terminators are needed for the selected open-loop profile.
+SW1 is RESET. SW2 requests START/STOP only after qualification; it is not an emergency-stop or gravity-load holding system. Optional U18 stays bottom DNP; C52/C53 stay DNP on top. No encoder, rear magnet, CAN/RS485/RS232 controller, J7 harness or bus terminators are needed for the selected open-loop profile.
 
 The 300 W resistor is a **candidate cooling class**, not a universal motor requirement or a free-air rating. At 53 V/10 Ω its instantaneous dissipation is 280.9 W. The datasheet's 300 W rating requires case temperature ≤85°C; 50°C ambient at 280.9 W continuous requires combined interface/heatsink resistance ≤0.125°C/W. This installation is not sized without duty/load data. J3 cannot be removed on the assumption that a slow motor does not need protection. See [brake installation and calculations](brake-integration.md) and [external sourcing list](external-parts.json).
 
@@ -57,3 +57,7 @@ Sourcing replacements from PR #4 are included: R64 C2984356, U17 C6000508 and J1
 ## USB edge-placement update
 
 J1 and J10 move 2 mm outward, with local power/USB/shell-ground routing updated and the DATA marking relocated into the gap above J10. Native electrical DRC, unconnected, parity and ERC counts are zero; the accepted cosmetic set decreases from 409 to 405 without new findings. The source schematic, exact USB parts, all other component/pad geometry and four mounting holes are preserved. [USB access](usb-access.md) explains the drawing-based 0.2856 mm face overhang and remaining physical-fit limits. Use the regenerated manufacturing ZIP, BOM and CPL together.
+
+## Encoder and brake assembly revision — 2026-10-16
+
+U18 is the only bottom-side footprint. C52/C53 move to top; all three remain DNP. The local 0.60/0.30 mm via gives a 3.873 mm encoder bypass path including the board thickness. Four old cosmetic findings disappear (401 remain); no new cosmetic or electrical/parity/ERC findings are accepted. J3 now includes a nominal complete cable/resistor installation in CAD. Cooling/guard are provisional, not thermally qualified. See [brake assembly](brake-assembly.md).

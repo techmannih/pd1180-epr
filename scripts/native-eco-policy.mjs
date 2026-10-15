@@ -26,21 +26,24 @@ function restorePlacementRevisions(board, revisions = []) {
   for (const revision of revisions.toReversed()) {
     const modified = new Map(revision.modified.map(x => [uuid(x.before), x]))
     const added = new Map(revision.added.map(x => [uuid(x), x]))
+    const removed = new Map((revision.removed || []).map(x => [uuid(x), x]))
     const seen = new Set()
     board = board.map(x => {
       if (!Array.isArray(x)) return x
       const id = uuid(x), change = modified.get(id)
+      if (removed.has(id)) throw new Error('Removed reviewed local copper restored')
       if (change) {
-        if (digest(withoutFill(x)) !== change.after_sha256) throw new Error('Reviewed USB placement/copper changed')
+        if (digest(withoutFill(x)) !== change.after_sha256) throw new Error('Reviewed local placement/copper changed')
         seen.add(id); return change.before
       }
       if (added.has(id)) {
-        if (digest(withoutFill(x)) !== digest(added.get(id))) throw new Error('Reviewed USB local addition changed')
+        if (digest(withoutFill(x)) !== digest(added.get(id))) throw new Error('Reviewed local addition changed')
         seen.add(id); return null
       }
       return x
     }).filter(x => x !== null)
-    for (const id of [...modified.keys(), ...added.keys()]) if (!seen.has(id)) throw new Error('Missing reviewed USB geometry')
+    for (const id of [...modified.keys(), ...added.keys()]) if (!seen.has(id)) throw new Error('Missing reviewed local geometry')
+    board.push(...removed.values())
   }
   return board
 }

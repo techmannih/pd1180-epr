@@ -5,6 +5,7 @@ import JSZip from 'jszip'
 import {encodeGlb} from './assembly-glb.mjs'
 import {bezier,tube,distance,canonicalHarnessGeometry} from './harness-geometry.mjs'
 import {loadSpliceModel,positionSplice} from './splice-model.mjs'
+import {addBrakeAssembly} from './brake-assembly.mjs'
 const layout=JSON.parse(await readFile('engineering/mechanical/harness-layout.json'))
 const assembly=JSON.parse(await readFile('engineering/mechanical/assembly.json'))
 const contract=JSON.parse(await readFile('hardware-contract.json'))
@@ -54,9 +55,10 @@ for(const p of ports){
  const tip=[i<2?-1.25:1.25,jacketEnd[1]+(i%2?1.25:-1.25),jacketEnd[2]-.5]
  wire(`motor_${color}_lead_to_splice_${p.pin}`,bezier([tip,[tip[0],tip[1],-36],[x,y,-34],end],24),.85,colors[color],connection,{kind:'factory conductor',source:`34HS31-6004S1 ${color} lead`,destination:`TE320559_${p.pin}:motor`,cross_section_mm2:.75,note:'Factory winding colours define circuit; STEP does not establish physical conductor order. Strip jacket only to fanout length.'})
 }
+await addBrakeAssembly({layout,circuit,top,meshes,bodies,wires,connectors})
 const glb=encodeGlb(meshes),sha=b=>createHash('sha256').update(b).digest('hex')
 const outputs={
- 'engineering/mechanical/harness-proposal.glb':glb,
+ 'engineering/mechanical/harness-proposal.zip':await new JSZip().file('harness-proposal.glb',glb,{date:new Date('2026-10-16T00:00:00Z')}).generateAsync({type:'nodebuffer',compression:'DEFLATE'}),
  'engineering/mechanical/harness-geometry.json':JSON.stringify(canonicalHarnessGeometry({layout_sha256:sha(await readFile('engineering/mechanical/harness-layout.json')),glb_sha256:sha(glb),connectors,bodies,wires}))+'\n',
  'engineering/mechanical/harness-parts.zip':await new JSZip().file('harness-parts.json',JSON.stringify(meshes.map(m=>({name:m.name.replace(/[^a-zA-Z0-9_]/g,'_'),description:m.name,bom:m.name.startsWith('TE320559')?'320559':m.name.includes('Alpha3057')?'Alpha Wire 3057':m.name,base64:encodeGlb([m]).toString('base64')})))+'\n',{date:new Date('2026-10-13T00:00:00Z')}).generateAsync({type:'nodebuffer',compression:'DEFLATE'})
 }

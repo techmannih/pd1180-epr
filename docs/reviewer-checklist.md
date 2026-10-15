@@ -12,7 +12,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
 - [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the ordered 34HS31-6004S1 rear CAD axes in the mechanical reference; native drills agree. The alignment preview contains no qualified replacement mounting hardware.
 - [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
-- [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and U18/C52/C53 are bottom-side DNP. Verify fitted BOM/CPL and paste exclude them; encoder magnetic fit remains unqualified.
+- [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and U18 alone is bottom-side and C52/C53 are on top, all three DNP. Verify fitted BOM/CPL and paste exclude them; encoder magnetic fit remains unqualified.
 - [ ] J2 has the specified VHR-4N mating harness, correct winding colours/cavities and cable strain relief; inspect the insertion-envelope evidence and `docs/motor-harness.md`.
 - [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.
 

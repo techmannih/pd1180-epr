@@ -11,7 +11,7 @@ verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs
 verifiedInputPaths.push('scripts/check-brake-sense.py', 'scripts/check-power-eco.py', 'scripts/simulate-power-eco.py', 'engineering/power-thermal-eco.json', 'scripts/check-protection-refinement.mjs', 'engineering/protection-refinement.json')
 verifiedInputPaths.push('scripts/check-power-routing.mjs', 'scripts/power-copper-geometry.mjs', 'scripts/power-copper-geometry.test.mjs')
 verifiedInputPaths.push('motor-assembly.circuit.tsx', 'imports/MotorAssemblyCad.ts', 'engineering/mechanical/34hs31-6004s1.glb', 'engineering/mechanical/assembly.json', 'engineering/mechanical/34HS31-6004S1-manufacturer.zip', 'docs/motor-data.json', 'scripts/generate-motor-assembly.mjs', 'scripts/check-motor-assembly.mjs')
-verifiedInputPaths.push('engineering/mechanical/harness-layout.json', 'engineering/mechanical/harness-proposal.glb', 'scripts/assembly-glb.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/generate-harness-assembly.mjs', 'scripts/check-harness-assembly.mjs', 'scripts/harness-geometry.mjs', 'scripts/harness-geometry.test.mjs', 'docs/complete-assembly.md')
+verifiedInputPaths.push('engineering/mechanical/harness-layout.json', 'engineering/mechanical/harness-proposal.zip', 'scripts/assembly-glb.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/generate-harness-assembly.mjs', 'scripts/check-harness-assembly.mjs', 'scripts/harness-geometry.mjs', 'scripts/harness-geometry.test.mjs', 'docs/complete-assembly.md')
 verifiedInputPaths.push('engineering/mechanical/ordered-motor-pcb-reference.json', 'scripts/motor-mounting-geometry.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs')
 verifiedInputPaths.push('bun.lock', 'scripts/generate-cloud-viewer.mjs', 'scripts/refresh-routed-preview.mjs', 'scripts/check-cloud-viewer.mjs', 'scripts/cloud-viewer-net-names.test.mjs')
 for (const dir of ['imports', 'firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
@@ -41,6 +41,7 @@ verifiedInputPaths.push('scripts/prepare-routing-rules.py', 'scripts/routing-rul
 verifiedInputPaths.push('scripts/splice-model.mjs', 'scripts/splice-model.test.mjs', 'engineering/mechanical/harness-parts.zip')
 verifiedInputPaths.push('docs/u16-footprint.md', 'engineering/u16-footprint-review.json', 'docs/u35-footprint.md', 'engineering/u35-footprint-review.json', 'engineering/stocked-controller-eco.json', 'scripts/design.test.mjs')
 verifiedInputPaths.push('scripts/check-usb-access.mjs', 'scripts/usb-access.test.mjs', 'engineering/usb-edge-eco.json', 'docs/usb-access.md')
+verifiedInputPaths.push('scripts/render-local-mechanical.mjs', 'scripts/brake-assembly.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'engineering/mechanical/brake-evidence.json', 'engineering/mechanical/Vishay-LPS300-manufacturer.zip', 'engineering/encoder-top-eco.json', 'docs/brake-assembly.md')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -63,7 +64,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['usb-access', ['scripts/check-usb-access.mjs']],

@@ -13,7 +13,7 @@ Applies to the revision 0.4.1 ECO plus PR #2 safety refinement and ordered **STE
 | SW1 RESET | Resets the MCU; must not restart motion automatically | Accessible top-side PCB switch | Already on PCB; reset is not a substitute for qualifying deceleration and regeneration |
 | External brake assembly | Dissipates returned energy during the current conservative commissioning profile | J3 pin 1 VMOTOR → resistor → J3 pin 2 BRAKE_RETURN → Q16 → GND | Required for the current commissioning profile; startup continuity sensing must pass. Empty J3 provides no resistor dissipation. See [brake decision and procedure](brake-integration.md) |
 | SWD / EEPROM fixture | Programs and verifies the board before motor operation | Programmer → labelled top service pads; isolated EEPROM sequence in [PD programming](pd-programming.md) | Qualified provider/tooling needed; no permanent loose service wires in the product |
-| Optional encoder | Future position feedback, only after a compatible magnet installation is established | U18 centered on bottom, with C52/C53; PCB SPI/ABI connections | All three DNP. No encoder or magnet needed for the chosen open-loop control architecture |
+| Optional encoder | Future position feedback, only after a compatible magnet installation is established | U18 alone on bottom; C52/C53 on top; PCB SPI/ABI connections | All three DNP. No encoder or magnet needed for the chosen open-loop control architecture |
 
 The local-control architecture requires no external command harness. J2/J3 board headers are already PCB BOM items; the mating housings and contacts below are separate.
 

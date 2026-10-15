@@ -82,7 +82,7 @@ const pages = [
   [
     "encoder",
     "Optional Shaft Encoder",
-    "U18 AS5047P and C52/C53 are centered bottom-side DNP footprints.",
+    "U18 AS5047P is centered on bottom; C52/C53 are top-side. All are DNP.",
     "SPI plus ABI test access; magnet interface for the ordered single-shaft motor is unqualified."
   ],
   [

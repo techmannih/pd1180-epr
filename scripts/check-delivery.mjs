@@ -18,7 +18,7 @@ const checked = []
 
 // Wiring/purchase guidance must travel with the package and match the current
 // source documents, including the distinction between candidates and purchases.
-for (const name of ['usb-access.md', 'usb-access-check.json', 'external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md', 'completion-handoff.md', 'sourcing-resolution.md', 'manufacturing-acceptance.md', 'u16-footprint.md', 'u35-footprint.md']) {
+for (const name of ['brake-assembly.md', 'usb-access.md', 'usb-access-check.json', 'external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md', 'completion-handoff.md', 'sourcing-resolution.md', 'manufacturing-acceptance.md', 'u16-footprint.md', 'u35-footprint.md']) {
   const current = await readFile(`docs/${name}`, 'utf8')
   const delivered = await readFile(`release/${name}`, 'utf8').catch(() => '')
   if (current !== delivered) errors.push(`release/${name}: differs from current source guidance`)

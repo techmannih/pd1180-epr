@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Measure local bypass and buzzer bulk paths in final component-side copper.
 
-Planes and vias are deliberately excluded: each specified bypass must retain
-a short connection on the IC/capacitor side. Native DRC remains the connectivity authority.
+Planes are excluded. Ordinary bypasses stay on the IC side; U18/C52 alone
+uses one specified through via, including its barrel in the unchanged 5 mm limit.
 """
 import argparse
 from collections import defaultdict
@@ -90,17 +90,35 @@ def main():
     target_path = Path('docs/decoupling-targets.json')
     targets = json.loads(target_path.read_text())
     results, errors = [], []
-    for ic, pin, capacitor, *_ in targets:
+    for ic, pin, capacitor, *options in targets:
         start = next(p for p in footprints[ic].Pads() if p.GetNumber() == str(pin))
         end = next(p for p in footprints[capacitor].Pads() if p.GetNumber() == '1')
         layer = footprints[ic].GetLayer()
         same_side = layer in (pcbnew.F_Cu, pcbnew.B_Cu) and footprints[capacitor].GetLayer() == layer
         length = route_length(start, end, tracks, pads, layer) if same_side and start.GetNetCode() == end.GetNetCode() else None
+        transition = options[0].get('layer_transition') if options else None
+        via_evidence = None
+        if transition:
+            assert (ic,pin,capacitor)==('U18',11,'C52')
+            assert transition['from']=='bottom' and transition['to']=='top'
+            assert transition['native_xy_mm']==[99.4,103.9] and transition['source_xy_mm']==[-.6,-3.9]
+            assert transition['pad_mm']==.6 and transition['drill_mm']==.3 and transition['maximum_vias']==1
+            assert transition['barrel_mm']==1.6 and board.GetDesignSettings().GetBoardThickness()==1600000
+            vias=[t for t in all_tracks if isinstance(t,pcbnew.PCB_VIA) and math.dist(xy(t.GetPosition()),(99.4,103.9))<1e-6]
+            if len(vias)==1 and layer==pcbnew.B_Cu and footprints[capacitor].GetLayer()==pcbnew.F_Cu:
+                via=vias[0]
+                if via.GetNetCode()==start.GetNetCode()==end.GetNetCode() and all(via.GetWidth(ly)==600000 for ly in (pcbnew.F_Cu,pcbnew.In1_Cu,pcbnew.In2_Cu,pcbnew.B_Cu)) and via.GetDrillValue()==300000 and via.GetViaType()==pcbnew.VIATYPE_THROUGH:
+                    bottom=route_length(start,via,tracks,pads,pcbnew.B_Cu)
+                    top=route_length(via,end,tracks,pads,pcbnew.F_Cu)
+                    if bottom is not None and top is not None:
+                        length=bottom+1.6+top
+                        via_evidence=dict(xy_mm=xy(via.GetPosition()),pad_mm=.6,drill_mm=.3,barrel_mm=1.6,bottom_mm=bottom,top_mm=top)
         passed = length is not None and length <= 5
         results.append(dict(ic=ic, pin=pin, capacitor=capacitor,
-                            layer=board.GetLayerName(layer), route_length_mm=length, maximum_mm=5, passed=passed))
+                            layer=board.GetLayerName(layer), route_length_mm=length, maximum_mm=5, passed=passed,
+                            layer_transition=via_evidence))
         if not passed:
-            errors.append(f'{ic}.{pin} to {capacitor}.1: no same-side path within 5 mm ({length})')
+            errors.append(f'{ic}.{pin} to {capacitor}.1: no approved copper path within 5 mm ({length})')
     # The buzzer bulk branch has a separate 7 mm body-clearance budget. Do not
     # relax the 5 mm IC bypass limit to accommodate the larger buzzer package.
     buzzer = next(p for p in footprints['BZ1'].Pads() if p.GetNumber() == '1')

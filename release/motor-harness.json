@@ -86,7 +86,12 @@
       0
     ],
     "sensor": "AS5047P-ATSM; retained SPI/ABI wiring",
-    "blocked_by": "Ordered single-shaft motor has no documented rear magnet interface; sensor fitting requires a qualified magnet/holder/air gap."
+    "blocked_by": "Ordered single-shaft motor has no documented rear magnet interface; sensor fitting requires a qualified magnet/holder/air gap.",
+    "reference_layers": {
+      "U18": "bottom",
+      "C52": "top",
+      "C53": "top"
+    }
   },
   "sources": [
     "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf",
@@ -96,6 +101,6 @@
   "limitations": [
     "No physical assembly, crimp or motor test was performed.",
     "External harness parts are separate procurement items; PCB supplier stock checks do not reserve or certify them.",
-    "No mounting hardware is modeled; rear screw specification, board clearance and physical cable restraint remain unresolved."
+    "No motor mounting hardware is modeled; rear screw specification, board clearance and physical cable restraint remain unresolved."
   ]
 }

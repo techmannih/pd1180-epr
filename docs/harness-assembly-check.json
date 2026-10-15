@@ -23,13 +23,25 @@
       "minimum_sampled_radius_mm": 27.051104550099762,
       "required_mm": 23.876,
       "cut_length_mm": 165
+    },
+    {
+      "name": "J3 cavity 1 red Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 27.99999792908684,
+      "required_mm": 23.876,
+      "cut_length_mm": 150
+    },
+    {
+      "name": "J3 cavity 2 black Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 24.875776940706405,
+      "required_mm": 23.876,
+      "cut_length_mm": 115
     }
   ],
-  "glb_sha256": "30e7e167b3b1f328fd09643784ec91232e5f04bdb929b869731c758983648753",
-  "board_glb_sha256": "d62d622452f4bd4a3935d447bad8944666f39133f6fdf49e2bdc343078bfafb9",
-  "layout_sha256": "cab05104af7bbe2807af434fcf770edd687c29199bafeeabb76af01d69b5390b",
-  "connectors_checked": 1,
-  "wire_segments_checked": 429,
+  "glb_sha256": "d6b8e63adbc5b9638cf1fa3be7393d2a2c82a191b59461ad3e7d1c2bb86e62f2",
+  "board_glb_sha256": "e5575ea4d3ac6860c58edfd7dbf54f5bcd3756c989b27065a1f6a65fbf9d75e5",
+  "layout_sha256": "97d802f99f93773ce3cdf37f4a5ec74183b77d036c1bcff7cf4fa2e20e5b5d15",
+  "connectors_checked": 2,
+  "wire_segments_checked": 751,
   "minimum_required_nominal_clearance_mm": 0.2,
   "minimum_wire_separation_mm": 0.6799925543606805,
   "nearest_wires": [
@@ -54,6 +66,24 @@
           "gap_mm": 2.7803281915159066
         }
       ]
+    },
+    {
+      "reference": "J3",
+      "part": "VHR-2N",
+      "nearest": [
+        {
+          "name": "C21",
+          "gap_mm": 2.469817824904273
+        },
+        {
+          "name": "R4",
+          "gap_mm": 2.5999999761581423
+        },
+        {
+          "name": "Q4",
+          "gap_mm": 2.6155015518698015
+        }
+      ]
     }
   ],
   "bodies": [
@@ -71,6 +101,567 @@
         {
           "name": "C98",
           "gap_mm": 2.7803281915159066
+        }
+      ]
+    },
+    {
+      "name": "J3 VHR-2N catalogue housing envelope",
+      "nearest": [
+        {
+          "name": "C21",
+          "gap_mm": 2.469817824904273
+        },
+        {
+          "name": "R4",
+          "gap_mm": 2.5999999761581423
+        },
+        {
+          "name": "Q4",
+          "gap_mm": 2.6155015518698015
+        }
+      ]
+    },
+    {
+      "name": "J3 SVH-41T-P1.1 contact 1 nominal envelope",
+      "nearest": [
+        {
+          "name": "Q4",
+          "gap_mm": 4.613034271011221
+        },
+        {
+          "name": "C91",
+          "gap_mm": 4.8137372968403005
+        },
+        {
+          "name": "C92",
+          "gap_mm": 5.6305528049326865
+        }
+      ]
+    },
+    {
+      "name": "J3 SVH-41T-P1.1 contact 2 nominal envelope",
+      "nearest": [
+        {
+          "name": "Q16",
+          "gap_mm": 4.613034271011221
+        },
+        {
+          "name": "R4",
+          "gap_mm": 5.795310578097806
+        },
+        {
+          "name": "C21",
+          "gap_mm": 6.4097555614122514
+        }
+      ]
+    },
+    {
+      "name": "J3 LPS300 manufacturer resistor envelope",
+      "nearest": [
+        {
+          "name": "C92",
+          "gap_mm": 74.98141852856179
+        },
+        {
+          "name": "R4",
+          "gap_mm": 75.01743545590168
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 75.02864058721876
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink base NO THERMAL RATING",
+      "nearest": [
+        {
+          "name": "C92",
+          "gap_mm": 63.21956283298523
+        },
+        {
+          "name": "R4",
+          "gap_mm": 63.26227646153458
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 63.32677352661792
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 1",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "L3",
+          "gap_mm": 65.86095203604845
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 67.74116174059704
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 2",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "L3",
+          "gap_mm": 64.30524865678763
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 64.90542757737457
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 3",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 63.23420011384585
+        },
+        {
+          "name": "C92",
+          "gap_mm": 63.84082255892385
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 4",
+      "nearest": [
+        {
+          "name": "C92",
+          "gap_mm": 62.71722749771389
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 62.80003809928894
+        },
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 5",
+      "nearest": [
+        {
+          "name": "C92",
+          "gap_mm": 62.64543578745382
+        },
+        {
+          "name": "R4",
+          "gap_mm": 62.67499998807907
+        },
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 6",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "R4",
+          "gap_mm": 63.116227099915356
+        },
+        {
+          "name": "C92",
+          "gap_mm": 63.51575099926002
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 7",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "R4",
+          "gap_mm": 64.79782498752186
+        },
+        {
+          "name": "C92",
+          "gap_mm": 65.62050460793486
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 8",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "C22",
+          "gap_mm": 67.55017786026002
+        },
+        {
+          "name": "R4",
+          "gap_mm": 67.64508942191544
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional heatsink fin 9",
+      "nearest": [
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 62.84974144735999
+        },
+        {
+          "name": "C22",
+          "gap_mm": 68.1138882837279
+        },
+        {
+          "name": "R4",
+          "gap_mm": 71.5189354135278
+        }
+      ]
+    },
+    {
+      "name": "J3 resistor mount M4x25 screw 1",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 100.72415304528515
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 100.8414039529145
+        },
+        {
+          "name": "C92",
+          "gap_mm": 101.5973824701533
+        }
+      ]
+    },
+    {
+      "name": "J3 resistor mount M4 lock washer 1",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 104.176652842689
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 105.1163638339756
+        },
+        {
+          "name": "C92",
+          "gap_mm": 105.93310683733222
+        }
+      ]
+    },
+    {
+      "name": "J3 resistor mount M4x25 screw 2",
+      "nearest": [
+        {
+          "name": "R4",
+          "gap_mm": 102.53142504436462
+        },
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 103.14363770974921
+        },
+        {
+          "name": "C92",
+          "gap_mm": 103.28421043308903
+        }
+      ]
+    },
+    {
+      "name": "J3 resistor mount M4 lock washer 2",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 104.46436343883599
+        },
+        {
+          "name": "R4",
+          "gap_mm": 106.79872714830482
+        },
+        {
+          "name": "C92",
+          "gap_mm": 107.51847805939983
+        }
+      ]
+    },
+    {
+      "name": "J3 TE152883 ring 1 nominal envelope",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 120.93325636654954
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 121.23188524699934
+        },
+        {
+          "name": "C92",
+          "gap_mm": 121.51610232365535
+        }
+      ]
+    },
+    {
+      "name": "J3 TE152883 insulated barrel 1 nominal envelope",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 112.82840951995414
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 113.27926909090583
+        },
+        {
+          "name": "C92",
+          "gap_mm": 113.66025305244135
+        }
+      ]
+    },
+    {
+      "name": "J3 terminal M4 lock washer 1",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 124.96826235287783
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 125.24420410351105
+        },
+        {
+          "name": "C92",
+          "gap_mm": 125.51690015258599
+        }
+      ]
+    },
+    {
+      "name": "J3 terminal M4x6 screw 1",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 124.27467767687656
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 124.40317573702336
+        },
+        {
+          "name": "C92",
+          "gap_mm": 124.6755931358479
+        }
+      ]
+    },
+    {
+      "name": "J3 TE152883 ring 2 nominal envelope",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 85.41125938286977
+        },
+        {
+          "name": "R4",
+          "gap_mm": 89.55416305652994
+        },
+        {
+          "name": "C92",
+          "gap_mm": 90.01090558334072
+        }
+      ]
+    },
+    {
+      "name": "J3 TE152883 insulated barrel 2 nominal envelope",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 77.22142015662666
+        },
+        {
+          "name": "R4",
+          "gap_mm": 82.39656012810909
+        },
+        {
+          "name": "C92",
+          "gap_mm": 82.95452443323991
+        }
+      ]
+    },
+    {
+      "name": "J3 terminal M4 lock washer 2",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 89.46633411756952
+        },
+        {
+          "name": "R4",
+          "gap_mm": 93.38414330400272
+        },
+        {
+          "name": "C92",
+          "gap_mm": 93.82053199547657
+        }
+      ]
+    },
+    {
+      "name": "J3 terminal M4x6 screw 2",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 89.02647268389968
+        },
+        {
+          "name": "R4",
+          "gap_mm": 91.8913206642358
+        },
+        {
+          "name": "C92",
+          "gap_mm": 92.34848090527251
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard side -41",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 66.90085945977899
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 70.35686663867435
+        },
+        {
+          "name": "C89",
+          "gap_mm": 71.95040390574036
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard side 41",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 66.97575078555484
+        },
+        {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 72.27786659828858
+        },
+        {
+          "name": "C42",
+          "gap_mm": 74.25921237047477
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard rear",
+      "nearest": [
+        {
+          "name": "C92",
+          "gap_mm": 143.8391918934313
+        },
+        {
+          "name": "R4",
+          "gap_mm": 143.8822978017499
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 143.94895707252104
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard roof",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 75.41464950453287
+        },
+        {
+          "name": "L3",
+          "gap_mm": 81.13915507274524
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 82.76204696671194
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard slotted front -33.5",
+      "nearest": [
+        {
+          "name": "L3",
+          "gap_mm": 64.07202977069365
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 65.79331450702183
+        },
+        {
+          "name": "C92",
+          "gap_mm": 67.26792047146508
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard slotted front 0",
+      "nearest": [
+        {
+          "name": "C92",
+          "gap_mm": 63.428803587607966
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 63.461009920381635
+        },
+        {
+          "name": "R4",
+          "gap_mm": 63.46192262031208
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard slotted front 33",
+      "nearest": [
+        {
+          "name": "C22",
+          "gap_mm": 65.55017786026002
+        },
+        {
+          "name": "R4",
+          "gap_mm": 68.37483544447988
+        },
+        {
+          "name": "C92",
+          "gap_mm": 69.57853925281378
         }
       ]
     }
@@ -294,6 +885,40 @@
         {
           "name": "R135",
           "gap_mm": 58.19412552602657
+        }
+      ]
+    },
+    {
+      "name": "J3 cavity 1 red Alpha3057_16AWG",
+      "nearest": [
+        {
+          "name": "J3 LPS300 manufacturer resistor envelope",
+          "gap_mm": 0.8062
+        },
+        {
+          "name": "J3 SVH-41T-P1.1 contact 2 nominal envelope",
+          "gap_mm": 1.3165679999999997
+        },
+        {
+          "name": "J3 provisional guard slotted front 0",
+          "gap_mm": 1.7170792876222718
+        }
+      ]
+    },
+    {
+      "name": "J3 cavity 2 black Alpha3057_16AWG",
+      "nearest": [
+        {
+          "name": "J3 SVH-41T-P1.1 contact 1 nominal envelope",
+          "gap_mm": 1.3165679999999997
+        },
+        {
+          "name": "J3 LPS300 manufacturer resistor envelope",
+          "gap_mm": 3.6849805853512234
+        },
+        {
+          "name": "J3 provisional guard slotted front 0",
+          "gap_mm": 7.8777196204770625
         }
       ]
     }

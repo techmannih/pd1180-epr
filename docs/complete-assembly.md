@@ -1,13 +1,14 @@
 # Current motor harness and assembly boundaries
 
-Use `motor-assembly.circuit.tsx` for the current source preview. The routed native PCB includes the USB edge-placement ECO; see `usb-access.md`. The current model is not a secured or ready-to-run product.
+Use `motor-assembly.circuit.tsx` for the current source preview. The routed native PCB includes the USB edge-placement ECO and encoder-only bottom placement; see `usb-access.md` and `brake-assembly.md`. The current model is not a secured or ready-to-run product.
 
 1. Keep the existing four PCB drills unchanged. No rear fasteners may be specified from the CAD bore alone; the extra front-post/adapter assembly is withdrawn.
 2. Use J2 B4P-VH with VHR-4N and four SVH-41T-P1.1 contacts. The factory 0.75 mm² motor wires join 16 AWG Alpha3057 pigtails through four TE320559 splices. Do not apply the 10 A VH/16 AWG catalogue rating directly to the thinner factory wire or to a motor current setting.
 3. Follow black/green/red/blue cavity order 1/2/3/4 and verify winding continuity. Proposed pigtail cuts are 170/170/170/165 mm including 12 mm allowance. The harness shop must approve strips, crimps, tooling and first-article lengths.
 4. TE320559 now uses the manufacturer C-320559 AE STEP, with its bores and waist, without scaling. The nominal CAD length is 32.131 mm (1.265 in, rounded to 32.13 mm on the drawing) and maximum nominal diameter is 5.6134 mm. Current customer drawing Rev V6 (16 September 2025) and STEP are archived with hashes in `engineering/mechanical/splice-evidence.json`. Rev V6 specifies 2.03–3.18 mm wire insulation OD. This is uncrimped nominal geometry; finished-crimp tolerance and fit still require first-article checks. Alpha3057 fits that range; the factory 0.75 mm² conductor area does not establish its insulation OD. Measure the actual motor leads and obtain current TE crimp acceptance before using this splice. No production fit is claimed.
 5. The factory motor cable exit remains. Final harness strain relief, board attachment and physical bend/tool clearance are unresolved; the removed custom bracket is not part of the BOM.
-6. J3 brake circuitry remains because regeneration cannot be presumed harmless to the USB power path. Resistor, heatsink, mounting and final cable geometry still need the actual load/stop duty and qualification; see `brake-integration.md`.
-7. No external STEP/DIR/enable or home/limit harness remains. SW2 requests the onboard SPI bench profile after qualification; SW1 resets the MCU. All three qualification flags are currently false.
+6. J3 now has a connected VHR-2N / two SVH contact harness, nominal 150 mm red and 115 mm black Alpha3057 leads, TE152883 rings and the manufacturer LPS300 resistor mesh. Cooling and terminal guard are provisional installation concepts, with no thermal or physical qualification. See `brake-assembly.md` for wiring, quantities, CAD provenance and limits.
+7. U18 alone is on the bottom; C52/C53 are on top. All three stay optional DNP until the rear magnetic interface is qualified.
+8. No external STEP/DIR/enable or home/limit harness remains. SW2 requests the onboard SPI bench profile after qualification; SW1 resets the MCU. All three qualification flags are currently false.
 
 See [source/destination inventory](connector-harnesses.md), [mounting status](motor-assembly.md) and [firmware](../firmware/README.md). Required external sourcing still includes the EPR source/cable, exact wire colour SKUs, crimp tooling, brake cooling/install and programming fixture. No parts have been purchased by this work.

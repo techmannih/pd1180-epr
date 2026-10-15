@@ -35,7 +35,8 @@ const bodies=geometry.bodies.map(body=>{
   return {name:body.name,nearest:gaps}
 })
 const wires=geometry.wires.map(w=>{
-  const blockers=[...obstacles.filter(o=>o.name!==w.reference),...geometry.connectors.filter(c=>c.reference!==w.reference).map(c=>({name:`${c.reference} mate`,bounds:c.bounds}))]
+  const blockers=[...obstacles.filter(o=>o.name!==w.reference),...geometry.connectors.filter(c=>c.reference!==w.reference).map(c=>({name:`${c.reference} mate`,bounds:c.bounds})),
+    ...geometry.bodies.filter(b=>b.reference==='J3'&&b.connection!==w.connection&&!(b.kind==='mate'&&w.reference==='J3'))]
   const gaps=nearest(blockers.map(o=>({name:o.name,gap_mm:cableBoxClearance(w.points,w.radius_mm,o.bounds)})))
   if(gaps[0]?.gap_mm<required)errors.push(`${w.name}: ${gaps[0].name} clearance ${gaps[0].gap_mm.toFixed(3)} mm`)
   return {name:w.name,nearest:gaps}

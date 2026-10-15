@@ -88,7 +88,7 @@ const TMCM1180_OUTLINE = [
 ].map(({ x, y }) => ({ x: x - 42.95, y: y - 42.95 }))
 
 export const PD1180EPR = () => (
-  <board name="PD1180_EPR" title="PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" outline={TMCM1180_OUTLINE} layers={4} isViaInPadAllowed thickness="1.6mm"
+  <board name="PD1180_EPR" title="PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" outline={TMCM1180_OUTLINE} layers={4} isViaInPadAllowed thickness="1.6mm" pcbStyle={{ viaPadDiameter: 0.6, viaHoleDiameter: 0.3 }}
     defaultTraceWidth="0.25mm" minTraceWidth="0.15mm" minViaHoleDiameter="0.3mm" minViaPadDiameter="0.5mm"
     schAutoLayoutEnabled schTraceAutoLabelEnabled schMaxTraceDistance={0.8}
     autorouter="auto-local" autorouterEffortLevel="5x" autorouterVersion="beta_pipeline7" >
@@ -1162,15 +1162,15 @@ export const PD1180EPR = () => (
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.ENC_CS_N" }} pcbRotation={90} />
-    <capacitor name="C52" kicadFootprintMetadata={{ footprintName: "capacitor_cap0603" }} schSheetName="encoder" schSectionName="encoder_U18" schX={-3} schY={2.2} pcbX={0.0} pcbY={-5.55} layer="bottom" doNotPlace
+    <capacitor name="C52" kicadFootprintMetadata={{ footprintName: "capacitor_cap0603" }} schSheetName="encoder" schSectionName="encoder_U18" schX={-3} schY={2.2} pcbX={0.0} pcbY={-5.55} layer="top" doNotPlace
       schRotation={-90}
-      pcbRotation={90}
+      pcbRotation={270}
       capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }}
       maxDecouplingTraceLength="30mm"
       decouplingFor=".U18 > .pin11"
       maxVoltageRating="50V"
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} />
-    <capacitor name="C53" kicadFootprintMetadata={{ footprintName: "capacitor_cap0603" }} schSheetName="encoder" schSectionName="encoder_U18" schX={-1.8} schY={2.2} pcbX={3.3} pcbY={-5.3} pcbRotation={180} layer="bottom" doNotPlace
+    <capacitor name="C53" kicadFootprintMetadata={{ footprintName: "capacitor_cap0603" }} schSheetName="encoder" schSectionName="encoder_U18" schX={-1.8} schY={2.2} pcbX={3.3} pcbY={-7} pcbRotation={0} layer="top" doNotPlace
       schRotation={-90}
       capacitance="1uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C15849"] }}
       maxDecouplingTraceLength="30mm"
@@ -1228,7 +1228,7 @@ export const PD1180EPR = () => (
     <trace name="BYPASS_C45" from=".U16 > .pin5" to=".C45 > .pin1" pcbPathRelativeTo=".U16 > .pin5" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.75,"y":-3.375},{"x":-0.750062,"y":-4.249928},{"x":-0.550062,"y":-4.449928},{"x":-0.550062,"y":-4.599928},{"x":-0.150062,"y":-4.999928},{"x":-0.150062,"y":-5.199928},{"x":0.949938,"y":-6.299928},{"x":0.999938,"y":-6.299928},{"x":1.049938,"y":-6.349928},{"x":1.099938,"y":-6.349928},{"x":1.149938,"y":-6.399928},{"x":1.199938,"y":-6.399928},{"x":1.25,"y":-6.425}]} />
     <trace name="BYPASS_C46" from=".U16 > .pin4" to=".C46 > .pin1" pcbPathRelativeTo=".U16 > .pin4" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.25,"y":-3.375},{"x":-1.249934,"y":-4.249928},{"x":-1.249934,"y":-4.799928},{"x":-1.349934,"y":-4.899928},{"x":-1.349934,"y":-5.199928},{"x":-2.449934,"y":-6.299928},{"x":-2.499934,"y":-6.299928},{"x":-2.549934,"y":-6.349928},{"x":-2.599934,"y":-6.349928},{"x":-2.649934,"y":-6.399928},{"x":-2.699934,"y":-6.399928},{"x":-2.75,"y":-6.425}]} />
     <trace name="BYPASS_C51" from=".U17 > .pin8" to=".C51 > .pin1" pcbPathRelativeTo=".U17 > .pin8" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-1.905,"y":3.530092},{"x":-4.205,"y":3.530092},{"x":-4.25,"y":3.575}]} />
-    <trace name="BYPASS_C52" from=".U18 > .pin11" to=".C52 > .pin1" pcbPathRelativeTo=".U18 > .pin11" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":0.0,"y":2.800096},{"x":-0.0,"y":4.725}]} />
+    <trace name="BYPASS_C52" from=".U18 > .pin11" to=".C52 > .pin1" pcbPathRelativeTo=".U18 > .pin11" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":0.0,"y":2.800096},{"x":0.6,"y":3.9,"via":true,"fromLayer":"bottom","toLayer":"top"},{"x":0,"y":4.725}]} />
     <trace name="BYPASS_C63" from=".U22 > .pin2" to=".C63 > .pin1" pcbPathRelativeTo=".U22 > .pin2" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.635,"y":-2.84607},{"x":-0.635,"y":-4.6961}]} />
     <trace name="BYPASS_C69" from=".U23 > .pin1" to=".C69 > .pin1" pcbPathRelativeTo=".U23 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.649986,"y":-1.100074},{"x":-0.699986,"y":-1.150074},{"x":-1.149986,"y":-1.150074},{"x":-1.499986,"y":-1.500074},{"x":-1.549986,"y":-1.500074},{"x":-1.599986,"y":-1.550074},{"x":-1.649986,"y":-1.550074},{"x":-1.699986,"y":-1.600074},{"x":-1.749986,"y":-1.600074},{"x":-1.799986,"y":-1.650074},{"x":-1.899986,"y":-1.650074},{"x":-1.949986,"y":-1.700074},{"x":-1.999986,"y":-1.700074},{"x":-2.049986,"y":-1.750074},{"x":-2.099986,"y":-1.750074},{"x":-2.149986,"y":-1.800074},{"x":-2.175,"y":-1.8}]} />
     <trace name="BYPASS_C70" from=".U24 > .pin1" to=".C70 > .pin1" pcbPathRelativeTo=".U24 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[{"x":-0.649986,"y":-1.100074},{"x":-0.649986,"y":-3.150074},{"x":-0.65,"y":-3.2001}]} />

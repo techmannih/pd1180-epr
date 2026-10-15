@@ -49,7 +49,7 @@ test('stocked MCU/reset ECO rejects missing buffer, changed paste and restored l
 })
 
 test('USB edge ECO rejects altered pour outlines or a missing local addition', () => {
-  const revision = placementRevisions(policy).at(-1)
+  const revision = placementRevisions(policy).find(r => r.modified.some(x => x.before[0] === 'zone'))
   expect(revision.modified.some(x => x.before[0] === 'zone')).toBe(true)
   for (const mutate of [
     b => { const change = revision.modified.find(x => x.before[0] === 'zone'); const z = b.find(x => Array.isArray(x) && field(x, 'uuid')?.[1] === field(change.before, 'uuid')[1]); field(field(z, 'polygon'), 'pts')[1][1] = '99' },
@@ -60,4 +60,14 @@ test('USB edge ECO rejects altered pour outlines or a missing local addition', (
 test('compressed placement restoration rejects corruption and ambiguous encodings', () => {
   expect(() => placementRevisions({ ...policy, local_placement_revisions: [] })).toThrow()
   expect(() => placementRevisions({ ...policy, local_placement_revisions_sha256: '0'.repeat(64) })).toThrow()
+})
+
+test('encoder top ECO rejects restored bottom stubs or changed local via geometry',()=>{
+ const revision=placementRevisions(policy).find(r=>r.name==='encoder capacitors top 2026-10-16')
+ expect(revision.removed).toHaveLength(2)
+ for(const mutate of [
+  b=>b.push(structuredClone(revision.removed[0])),
+  b=>{const id=field(revision.added.find(x=>x[0]==='via'),'uuid')[1];field(b.find(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id),'drill')[1]='0.2'},
+  b=>{const f=b.find(x=>x[0]==='footprint'&&x.some(p=>p[0]==='property'&&p[1]==='"Reference"'&&p[2]==='"C52"'));field(f,'layer')[1]='"B.Cu"'},
+ ]){const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
 })

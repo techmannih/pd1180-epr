@@ -89,7 +89,7 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `motor-mounting-geometry.mjs`: extracts rear cylindrical axes from the pinned motor STEP, checks PCB-hole alignment, parses metric Excellon drills and measures physical substrate apertures. Used by the assembly check.
 - `motor-mounting-geometry.test.mjs`: rejects mirrored axes, missing/duplicate/incorrect manufacturing drills, and capped or displaced 3D holes; checks the contract against the manufacturer STEP. Run with `bun test scripts/motor-mounting-geometry.test.mjs`.
 
-- `assembly-policy.mjs`: shared fitted/DNP placement policy; requires bare service pads to be top-side and unpopulated, permits only U18/C52/C53 as unpopulated bottom footprints, and requires shaft-axis centering.
+- `assembly-policy.mjs`: shared fitted/DNP placement policy; requires bare service pads to be top-side and unpopulated, permits only U18 as an unpopulated bottom footprint, with C52/C53 required on top, and requires shaft-axis centering.
 - `assembly-policy.test.mjs`: rejects populated bottom encoders, off-axis sensors, unapproved DNP parts and optional parts leaking into the fitted BOM.
 
 - `assembly-glb.mjs`: shared indexed mesh encoder and strict GLB reader; accessor bounds use the encoded float32 vertices so runtime rounding cannot change metadata for identical meshes.
@@ -98,7 +98,7 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `verify-programming.test.mjs`: covers corrupted end bytes, displaced/truncated dumps, image hash/size, erased images, missing/low-region TI exports and stale STM32 source identities.
 - `harness-geometry.mjs`: swept wire meshes, Bezier cable paths and exact segment-to-box clearance including insulation radius, and 1e-9 mm canonical JSON metadata across CPU/libm platforms.
 - `harness-geometry.test.mjs`: regressions for crossings between sampled points, insulation clearance and finite endpoint-preserving wire meshes.
-- `generate-harness-assembly.mjs`: creates only the J2 motor mate, factory jacket, verified-length splice envelopes and bend-screened pigtails from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
+- `generate-harness-assembly.mjs`: creates the J2 motor mate, factory jacket, verified-length splices and pigtails, plus the J3 brake assembly from catalogue dimensions and compiled cavity positions; `--check` rejects stale generated geometry. No electrical PCB records are added.
 - `check-harness-assembly.mjs`: regenerates and verifies harness geometry, screens mated bodies/cable segments against component, motor-body, remaining component and motor-body envelopes, checks cavity alignment, and writes hash-bound `docs/harness-assembly-check.json`. Runs during release export; no physical/crimp/strain-relief qualification is implied.
 
 - `apply-interface-cleanup.py`: removes the explicit 32-component/31-net interface set from a staging native PCB, leaving surviving placement and shared circuits intact. Fresh native DRC/ERC required.
@@ -129,7 +129,7 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 - `check-pcb-references.mjs`: checks every electrical component reference in compiled source, native PCB and the default routed PCB/3D viewer. Rejects hidden, absent, detached or stale names, and screens rotated reference envelopes against the full board outline. Native edge anchors may move per the user's edge-clearance exception; native DRC still checks stroke clearance. Runs within `check:cloud-viewer`.
 - `sync-pcb-references.py`: copies compiled native footprint references into the KiCad Reference fields, removes obsolete detached captions, and rejects any change outside those label fields. Arguments: board path and optional `--source` Circuit JSON.
 
-- `silkscreen-review.mjs`, `silkscreen-review.test.mjs`: permit an explicit `--review-silkscreen` normalization/manufacturing export only when the exact 404 native-reference finding identities match main 97ea91e. Preserve every raw finding and fail fabrication/review gates; reject electrical/parity faults or changed findings.
+- `silkscreen-review.mjs`, `silkscreen-review.test.mjs`: permit an explicit `--review-silkscreen` normalization/manufacturing export only when the exact retained native-reference finding identities match the reviewed baseline (401 after the encoder-capacitor move removed four findings without adding any). Preserve every raw finding and fail fabrication/review gates; reject electrical/parity faults or changed findings.
 
 - `check-inventory.mjs`: validates timestamped exact stock/package evidence. Default is a strict procurement gate; `--review` permits recorded insufficient quantities only, never unknown/mismatched parts. `check-stock.mjs`, `check-alternatives.mjs` and `check-assembly.mjs` support the same explicit review mode.
 
@@ -142,3 +142,10 @@ Harness intermediate part data is deterministically stored in `engineering/mecha
 
 - `check-usb-access.mjs`: measures both USB mating faces from native shell-stake lands and the GCT drawing; checks source placement, PCB edge and nominal motor/plug envelope without claiming physical fit.
 - `usb-access.test.mjs`: rejects old recessed native USB placement, incorrect source orientation and an intersecting nominal motor/plug envelope; keeps physical-fit qualification false.
+
+- `brake-assembly.mjs`, `brake-assembly.test.mjs`: hash-check the official Vishay STEP, generate the J3 mate/contact/cable/ring installation with explicitly provisional cooling/guard, and verify complete pin mapping, conductor endpoints and open M4 ring holes. No physical or thermal qualification is implied.
+- `encoder-bypass-policy.mjs`, `encoder-bypass-policy.test.mjs`: permit only the U18.11/C52.1 bottom-to-top path through its exact single 0.60/0.30 mm via; count the 1.6 mm barrel in the 5 mm budget and reject missing/extra/undersize/displaced vias. Native copper is independently measured by `check-native-decoupling.py`.
+
+The combined harness GLB is retained inside `harness-proposal.zip` to keep the raw GitHub import below its unchanged 24 MiB limit. Historical label screenshots are preserved byte-for-byte in `previews/native-labels-history.zip`.
+
+- `render-local-mechanical.mjs`: renders disposable copies of the exact source/routed JSON using hash-verified local mechanical GLBs in place of their registered immutable Git URLs. Rejects missing, duplicate or changed models; preserves published JSON and enables pre-publication validation. Release export still compares every final mesh vertex to the registered CAD. Remote URL/hash verification remains a separate post-push check.

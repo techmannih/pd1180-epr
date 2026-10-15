@@ -171,7 +171,7 @@ The design uses 24 default A4 sheets; surviving sheet positions retain their ori
 | 11. Brake Reference and Turn-on Threshold | U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V. |
 | 12. Overvoltage Inhibit and Brake Driver | U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load. |
 | 13. MCU Clock Memory and Debug | U16 STM32G0B1 provides USB diagnostics, supervised internal SPI ramp control. |
-| 14. Optional Shaft Encoder | U18 AS5047P and C52/C53 are centered bottom-side DNP footprints. |
+| 14. Optional Shaft Encoder | U18 AS5047P is centered on the bottom; C52/C53 are top-side. All three are DNP. |
 | 15. USB DATA and Attach Sense | J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port. |
 | 16. Home and Limits | Non-isolated 24 V HOME and left/right STOP conditioning. |
 | 17. Local Start Stop | SW2 and MCU-domain pull-up R133. |
@@ -204,7 +204,7 @@ Source errors and warnings both fail verification and block the release checks. 
 | Assembly side | Top only |
 | Solder mask / legend | Green / white |
 
-All fitted components and labelled service pads are on top. U18 is centered on the motor axis on the bottom, with C52/C53 nearby; all three footprints are DNP and excluded from assembly. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
+All fitted components and labelled service pads are on top. U18 alone is centered on the motor axis on the bottom, with C52/C53 on top; all three footprints are DNP and excluded from assembly. No bottom paste is required. The bottom carries the `ts` and `Made with tscircuit` board marking and remains available for copper routing. Bulk capacitors and through-hole headers may require selective or hand soldering. The encoder magnet gap and orientation require physical validation after this assembly-side change.
 
 The KiCad route passes connectivity, schematic parity, ERC and terminal-only Kelvin checks. Raw DRC retains 409 user-accepted text/silkscreen findings; only this exact signature is nonblocking. Nominal power-zone coverage is measured by routed length on the matching net/layer, independent of trace splitting. Clipped necks and temperature rise still need powered validation. The nominal 2.4 mm / 1 oz external-layer IPC-2221 estimate is 6.12 A at a 20 °C rise; it does not validate clipped pours or the thermal performance of a finished board.
 
@@ -320,7 +320,7 @@ The ordered [STEPPERONLINE 34HS31-6004S1](https://www.omc-stepperonline.com/down
 
 The motor has bare wire ends and needs a mating cable: **motor's 0.75 mm² leads → four TE 320559 splices → 16 AWG pigtails → four JST SVH-41T-P1.1 contacts in a VHR-4N housing → J2**. The 10 A catalogue rating applies to the specified header/16 AWG termination; it must not be claimed for a direct crimp onto the factory motor wires. This harness must be supplied separately from PCB assembly. [Motor harness and review closure](docs/motor-harness.md) gives the cavity map, wire colours, crimp requirements and remaining cable/assembly checks.
 
-U18 is centered on the motor axis, with C52/C53 nearby; all three are bottom-side DNP footprints and are excluded from fitted BOM/CPL and paste.
+U18 is centered on the bottom at the motor axis; C52/C53 are top-side; all three are DNP footprints and are excluded from fitted BOM/CPL and paste.
 
 ## Status, alarm and PD programming access
 

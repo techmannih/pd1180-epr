@@ -1,12 +1,12 @@
 {
   "baseline_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
-  "reason": "Previously accepted cosmetic findings only. Moving J1/J10 removes four prior findings; no new findings are accepted. Native electrical/parity/connectivity errors remain blocking.",
+  "reason": "Previously accepted cosmetic findings only. The encoder-capacitor move removes four more prior findings without adding any; electrical/parity/connectivity errors remain blocking.",
   "counts": {
     "text_height": 189,
-    "silk_overlap": 98,
-    "silk_over_copper": 118
+    "silk_overlap": 95,
+    "silk_over_copper": 117
   },
-  "signature": "0f69708fb9d7e5618cf320828821bba1fc3406f145e98ee490b20590a3e58fde",
+  "signature": "5cf7c6930af9e1a8c6496dea3f9f34fa838f1e192f02d555e31fc8475c7230ca",
   "fabrication_authorized": false,
   "user_accepted_cosmetic_findings": true,
   "previous_signature": "3c5bdd666fbfa3e465d86e9c93de4a234bfc7d244012686f71c20da5ab21e04e",
@@ -343,6 +343,105 @@
               "y": 97.650904
             },
             "uuid": "25915320-7b30-2181-1bf1-9622434cf53d"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_over_copper"
+      }
+    ],
+    "added": []
+  },
+  "encoder_top_change": {
+    "baseline_commit": "71c2efc3350f365382dd32ec3a0e6ecfd0fd9e17",
+    "previous_signature": "0f69708fb9d7e5618cf320828821bba1fc3406f145e98ee490b20590a3e58fde",
+    "removed": [
+      {
+        "description": "Silkscreen clearance",
+        "items": [
+          {
+            "description": "Segment of C52 on B.Silkscreen",
+            "pos": {
+              "x": 100.875,
+              "y": 104.125
+            },
+            "uuid": "608a1f92-be8d-46d4-bda6-18ba5c368a2e"
+          },
+          {
+            "description": "Reference field of U18",
+            "pos": {
+              "x": 100,
+              "y": 104.91
+            },
+            "uuid": "9fc88800-a084-505a-99a4-0258149ffedc"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_overlap"
+      },
+      {
+        "description": "Silkscreen clearance",
+        "items": [
+          {
+            "description": "Segment of C52 on B.Silkscreen",
+            "pos": {
+              "x": 99.125,
+              "y": 106.375
+            },
+            "uuid": "662ac313-7d1c-4b59-a525-590b3ce6245a"
+          },
+          {
+            "description": "Reference field of U18",
+            "pos": {
+              "x": 100,
+              "y": 104.91
+            },
+            "uuid": "9fc88800-a084-505a-99a4-0258149ffedc"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_overlap"
+      },
+      {
+        "description": "Silkscreen clearance",
+        "items": [
+          {
+            "description": "Reference field of C52",
+            "pos": {
+              "x": 98.625,
+              "y": 105.55
+            },
+            "uuid": "11577846-15f1-5c32-821c-4d27d1833bf2"
+          },
+          {
+            "description": "Reference field of U18",
+            "pos": {
+              "x": 100,
+              "y": 104.91
+            },
+            "uuid": "9fc88800-a084-505a-99a4-0258149ffedc"
+          }
+        ],
+        "severity": "warning",
+        "type": "silk_overlap"
+      },
+      {
+        "description": "Silkscreen clipped by solder mask",
+        "items": [
+          {
+            "description": "Reference field of U18",
+            "pos": {
+              "x": 100,
+              "y": 104.91
+            },
+            "uuid": "9fc88800-a084-505a-99a4-0258149ffedc"
+          },
+          {
+            "description": "Pad 1 [V3V3] of C52 on B.Cu",
+            "pos": {
+              "x": 100,
+              "y": 104.725
+            },
+            "uuid": "1c571040-764a-7561-2fc2-257e2a313fa3"
           }
         ],
         "severity": "warning",

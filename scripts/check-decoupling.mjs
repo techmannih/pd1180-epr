@@ -1,5 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
+import {encoderBypass} from './encoder-bypass-policy.mjs'
 const data=JSON.parse(await readFile('dist/index/circuit.json'))
 const parts=data.filter(x=>x.type==='source_component')
 const srcPorts=data.filter(x=>x.type==='source_port')
@@ -9,9 +10,27 @@ const pairs=JSON.parse(await readFile('docs/decoupling-targets.json'))
 const p=(name,pin)=>{const c=parts.find(x=>x.name===name);const sp=srcPorts.find(x=>x.source_component_id===c?.source_component_id&&x.pin_number===pin);return {component:pcbComponents.find(x=>x.source_component_id===c?.source_component_id),sp,pcb:pcbPorts.find(x=>x.source_port_id===sp?.source_port_id)}}
 const sourceTraces=data.filter(x=>x.type==='source_trace')
 const pcbTraces=data.filter(x=>x.type==='pcb_trace')
-const results=pairs.map(([ic,pin,cap,override])=>{const limit=override?.placement_limit_mm??3;if(override&&(!override.reason||!(limit>0)))throw new Error(`Invalid placement override for ${cap}`);const a=p(ic,pin),b=p(cap,1);const distance=a.pcb&&b.pcb?Math.hypot(a.pcb.x-b.pcb.x,a.pcb.y-b.pcb.y):Infinity;const st=sourceTraces.find(x=>x.name===`BYPASS_${cap}`);const tr=pcbTraces.find(x=>x.source_trace_id===st?.source_trace_id);const length=tr?.trace_length;return {ic,pin,capacitor:cap,layer:a.component?.layer,same_outer_layer:['top','bottom'].includes(a.component?.layer)&&a.component?.layer===b.component?.layer,manual_trace_length_mm:length,routed_length_pass:Number.isFinite(length)&&length<=5,connected:a.sp?.subcircuit_connectivity_map_key===b.sp?.subcircuit_connectivity_map_key,straight_line_mm:distance,placement_limit_mm:limit,placement_override_reason:override?.reason,routed_length_budget_mm:5,placement_pass:distance<=limit}})
+const results=pairs.map(([ic,pin,cap,override])=>{
+ const limit=override?.placement_limit_mm??3
+ if(override&&(!override.reason||!(limit>0)))throw new Error(`Invalid placement override for ${cap}`)
+ const a=p(ic,pin),b=p(cap,1)
+ const distance=a.pcb&&b.pcb?Math.hypot(a.pcb.x-b.pcb.x,a.pcb.y-b.pcb.y):Infinity
+ const st=sourceTraces.find(x=>x.name===`BYPASS_${cap}`)
+ const tr=pcbTraces.find(x=>x.source_trace_id===st?.source_trace_id)
+ const vias=data.filter(x=>x.type==='pcb_via'&&x.pcb_trace_id===tr?.pcb_trace_id)
+ const opposite=encoderBypass({ic,pin,cap,start:a.component?.layer,end:b.component?.layer,trace:tr,vias,
+   thickness:data.find(x=>x.type==='pcb_board')?.thickness,transition:override?.layer_transition})
+ const same=['top','bottom'].includes(a.component?.layer)&&a.component?.layer===b.component?.layer
+ const length=override?.layer_transition?opposite.length_mm:tr?.trace_length
+ return {ic,pin,capacitor:cap,layer:a.component?.layer,same_outer_layer:same,
+   approved_layer_transition:opposite.allowed,via_count:vias.length,manual_trace_length_mm:length,
+   routed_length_pass:Number.isFinite(length)&&length<=5,
+   connected:a.sp?.subcircuit_connectivity_map_key===b.sp?.subcircuit_connectivity_map_key&&vias.every(v=>v.subcircuit_connectivity_map_key===st?.subcircuit_connectivity_map_key),
+   straight_line_mm:distance,placement_limit_mm:limit,placement_override_reason:override?.reason,
+   routed_length_budget_mm:5,placement_pass:distance<=limit}
+})
 await writeFile('docs/decoupling-check.json',JSON.stringify({note:'Checks IC-to-cap placement and the explicit local power trace only. Ground return loop and all other copper still require routing review.',results},null,2))
-const failed=results.filter(r=>!r.same_outer_layer||!r.connected||!r.placement_pass||!r.routed_length_pass)
+const failed=results.filter(r=>(!r.same_outer_layer&&!r.approved_layer_transition)||!r.connected||!r.placement_pass||!r.routed_length_pass)
 console.log(JSON.stringify({checked:results.length,failed},null,2))
 if(failed.length)process.exitCode=1
 if (process.argv.includes('--native')) {
@@ -30,11 +49,15 @@ if (process.argv.includes('--native')) {
       native.results.some(r => !r.passed || !Number.isFinite(r.route_length_mm) || r.route_length_mm > 5)) {
     throw new Error('Native IC-to-capacitor paths are missing, too long, or incompletely checked')
   }
+  const encoder = native.results.find(r => r.ic === 'U18' && r.capacitor === 'C52')
+  if (encoder?.layer !== 'B.Cu' || JSON.stringify(encoder.layer_transition?.xy_mm) !== '[99.4,103.9]' ||
+      encoder.layer_transition?.barrel_mm !== 1.6 || encoder.layer_transition?.pad_mm !== 0.6 || encoder.layer_transition?.drill_mm !== 0.3)
+    throw new Error('Missing exact encoder via evidence')
   const bulk = native.bulk_results
   if (bulk?.length !== 1 || bulk[0].component !== 'BZ1' || bulk[0].capacitor !== 'C96' ||
       bulk[0].pin !== 1 || bulk[0].layer !== 'F.Cu' || !bulk[0].passed ||
       !Number.isFinite(bulk[0].route_length_mm) || bulk[0].route_length_mm > 7) {
     throw new Error('Native buzzer bulk path is missing or exceeds 7 mm')
   }
-  console.log(`Verified ${native.results.length} native same-layer bypass paths.`)
+  console.log(`Verified ${native.results.length} native bypass paths, including the single approved encoder transition.`)
 }

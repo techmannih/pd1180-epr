@@ -32,6 +32,7 @@ export const encodeGlb = (meshes, generator = 'Mechanical assembly; dimensions i
   for (const mesh of meshes) {
     const material = j.materials.length
     j.materials.push({ name: mesh.name, pbrMetallicRoughness: { baseColorFactor: mesh.color || [.35,.39,.44,1], metallicFactor: .1, roughnessFactor: .7 }, doubleSided: true })
+    if (mesh.color?.[3] < 1) j.materials.at(-1).alphaMode = 'BLEND'
     j.meshes.push({ name: mesh.name, primitives: [{ attributes: { POSITION: accessor(mesh.positions,'VEC3',5126) }, indices: accessor(mesh.indices,'SCALAR',5125), material }] })
     j.scenes[0].nodes.push(j.nodes.length); j.nodes.push({ name: mesh.name, mesh: j.meshes.length - 1 })
   }

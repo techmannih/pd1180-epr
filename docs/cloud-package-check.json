@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-14T17:07:54.665Z",
+  "checked_at": "2026-10-15T23:06:29.182Z",
   "main_entrypoint": "index.circuit.tsx",
   "preview_component_path": "release/circuit.json",
   "site_default_component_path": "release/circuit.json",
@@ -62,20 +62,22 @@
     "release/filled-copper-review.json",
     "release/replacement-catalog-evidence.json",
     "release/usb-access-check.json",
-    "release/usb-edge-eco.json"
+    "release/usb-edge-eco.json",
+    "release/brake-evidence.json",
+    "release/encoder-top-eco.json"
   ],
   "included_files": 80,
-  "included_bytes": 8345389,
-  "included_mebibytes": 7.96,
+  "included_bytes": 8387172,
+  "included_mebibytes": 8,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7742240
+      "bytes": 7771687
     },
     {
       "path": "index.circuit.tsx",
-      "bytes": 129767
+      "bytes": 129878
     },
     {
       "path": "bun.lock",
@@ -83,19 +85,23 @@
     },
     {
       "path": "README.md",
-      "bytes": 39907
+      "bytes": 39931
     },
     {
       "path": "AGENTS.md",
-      "bytes": 24293
+      "bytes": 25136
     },
     {
       "path": "release/reference-comparison.json",
-      "bytes": 14945
+      "bytes": 14956
     },
     {
       "path": "delivery-manifest.json",
-      "bytes": 14394
+      "bytes": 14856
+    },
+    {
+      "path": "imports/MotorAssemblyCad.ts",
+      "bytes": 14563
     },
     {
       "path": "imports/TMC5160A_TA_T.tsx",
@@ -104,37 +110,33 @@
     {
       "path": "board-diagnostics.tsx",
       "bytes": 12982
-    },
-    {
-      "path": "hardware-contract.json",
-      "bytes": 12915
     }
   ],
-  "github_import_files": 650,
-  "github_import_bytes": 25150033,
-  "github_import_mebibytes": 23.98,
+  "github_import_files": 697,
+  "github_import_bytes": 24803213,
+  "github_import_mebibytes": 23.65,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7742240
+      "bytes": 7771687
     },
     {
       "path": "release/pcb-3d.png",
-      "bytes": 1504541
+      "bytes": 1505878
     },
     {
       "path": "release/pcb-bottom.png",
-      "bytes": 1213908
-    },
-    {
-      "path": "engineering/mechanical/harness-proposal.glb",
-      "bytes": 995388
+      "bytes": 1209828
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1.glb",
       "bytes": 838276
+    },
+    {
+      "path": "engineering/mechanical/parts/J3_LPS300_manufacturer_part_1.glb",
+      "bytes": 825636
     },
     {
       "path": "checks/vendor/circuit-json-schematic-placement-analysis.browser.js",
@@ -149,12 +151,12 @@
       "bytes": 651976
     },
     {
-      "path": "previews/native-labels-after-pcb.png",
-      "bytes": 582824
+      "path": "release/kicad-drc.json",
+      "bytes": 270151
     },
     {
-      "path": "release/kicad-drc.json",
-      "bytes": 273223
+      "path": "release/schematics/mcu.svg",
+      "bytes": 251632
     }
   ],
   "errors": []

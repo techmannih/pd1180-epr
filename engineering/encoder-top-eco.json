@@ -1,0 +1,99 @@
+{
+  "baseline_commit": "71c2efc3350f365382dd32ec3a0e6ecfd0fd9e17",
+  "board": "dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb",
+  "board_sha256": "4e53cf5210003b327a1b4cd49f3c5c81ff3a0f5f44277b71c384c29bc95a5cb3",
+  "source_schematic_records_preserved": 3022,
+  "bottom_component_references": [
+    "U18"
+  ],
+  "top_encoder_capacitors": [
+    "C52",
+    "C53"
+  ],
+  "all_encoder_parts_dnp": true,
+  "cap_positions_source_mm": {
+    "C52": [
+      0,
+      -5.55
+    ],
+    "C53": [
+      3.3,
+      -7
+    ]
+  },
+  "bypass": {
+    "via_xy_source_mm": [
+      -0.6,
+      -3.9
+    ],
+    "via_pad_mm": 0.6,
+    "via_drill_mm": 0.3,
+    "source_path_including_barrel_mm": 3.8730224196376506,
+    "maximum_mm": 5
+  },
+  "native_changes": {
+    "modified": [
+      {
+        "type": "footprint",
+        "uuid": "\"44a8525c-034b-73fc-3e11-6a647f6e48c4\""
+      },
+      {
+        "type": "footprint",
+        "uuid": "\"731207c0-5d50-f541-478f-e2c231ced043\""
+      },
+      {
+        "type": "segment",
+        "uuid": "\"16172582-6387-4355-bc99-8e11b8b52e69\""
+      },
+      {
+        "type": "segment",
+        "uuid": "\"4ae88d7e-9d3c-4d7f-ac8d-6f8c88a136f8\""
+      },
+      {
+        "type": "segment",
+        "uuid": "\"b2eda73c-43d7-4cbc-87f9-896785ea013b\""
+      },
+      {
+        "type": "segment",
+        "uuid": "\"bbe84124-66aa-404a-a282-37a9bb64dbd4\""
+      },
+      {
+        "type": "segment",
+        "uuid": "\"ffec52ee-3f97-4eac-9520-fb8452ba1c68\""
+      }
+    ],
+    "added": [
+      {
+        "type": "segment",
+        "uuid": "\"2323228d-d47f-48db-8ca0-0377265820ef\""
+      },
+      {
+        "type": "via",
+        "uuid": "\"14f204bb-5e95-4469-affa-a918f7246544\""
+      }
+    ],
+    "removed": [
+      {
+        "type": "segment",
+        "uuid": "\"32e8a084-e5fd-42a0-8e97-a4f7d10e7ccf\""
+      },
+      {
+        "type": "segment",
+        "uuid": "\"b346ec7d-a6c4-4af1-b471-07debf75cddb\""
+      }
+    ]
+  },
+  "unrelated_native_projection_preserved": true,
+  "mounting_holes_preserved": true,
+  "qualification": "CAD and connectivity only; encoder/motor fit, actual supply ripple, mounting and powered operation remain unqualified",
+  "authorized_schematic_annotation_change": {
+    "before": "U18 AS5047P and C52/C53 are centered bottom-side DNP footprints.",
+    "after": "U18 AS5047P is centered on bottom; C52/C53 are top-side. All are DNP.",
+    "note": "Only encoder layer annotation updated; connectivity, symbols and layout preserved."
+  },
+  "native_reference_rotations_degrees": {
+    "C52": 270,
+    "C53": 0
+  },
+  "reference_sync": "Only the two moved footprint reference angles changed; every other native object and all copper remained identical."
+}

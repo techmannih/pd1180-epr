@@ -4,6 +4,7 @@ import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promi
 import { basename, join } from 'node:path'
 import JSZip from 'jszip'
 import { writeCloudViewerCircuit } from './generate-cloud-viewer.mjs'
+import { renderLocalMechanical } from './render-local-mechanical.mjs'
 
 const release = 'release'
 execFileSync('bun', ['scripts/export-assembly.mjs', '--check', 'dist/manufacturing'], { stdio: 'inherit' })
@@ -48,6 +49,9 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
 const copies = [
+  ['docs/brake-assembly.md', 'brake-assembly.md'],
+  ['engineering/mechanical/brake-evidence.json', 'brake-evidence.json'],
+  ['engineering/encoder-top-eco.json', 'encoder-top-eco.json'],
   ['docs/usb-access.md', 'usb-access.md'],
   ['docs/usb-access-check.json', 'usb-access-check.json'],
   ['engineering/usb-edge-eco.json', 'usb-edge-eco.json'],
@@ -113,18 +117,14 @@ execFileSync('bun', ['scripts/check-cloud-package.mjs'], { stdio: 'inherit' })
 // its old output and require a complete GLB before packaging it.
 const routedGlb = 'dist/release/3d.glb'
 await rm(routedGlb, { force: true })
-execFileSync('bunx', ['tsci', 'build', 'release/circuit.json', '--glbs', '--routing-disabled', '--disable-parts-engine'], {
-  stdio: 'inherit', timeout: 600_000,
-})
+await renderLocalMechanical('release/circuit.json', routedGlb, 'offline-routed')
 const glb = await readFile(routedGlb)
 if (glb.length < 12 || glb.toString('ascii', 0, 4) !== 'glTF' ||
     glb.readUInt32LE(4) !== 2 || glb.readUInt32LE(8) !== glb.length)
   throw new Error('Routed 3D export is missing or invalid')
 const motorAssemblyGlb = 'dist/motor-assembly/3d.glb'
 await rm(motorAssemblyGlb, { force: true })
-execFileSync('bunx', ['tsci', 'build', 'motor-assembly.circuit.tsx', '--glbs', '--routing-disabled', '--disable-parts-engine'], {
-  stdio: 'inherit', timeout: 600_000,
-})
+await renderLocalMechanical('dist/motor-assembly/circuit.json', motorAssemblyGlb, 'offline-assembly')
 execFileSync('bun', ['scripts/check-motor-assembly.mjs', routedGlb, motorAssemblyGlb], { stdio: 'inherit' })
 execFileSync('bun', ['scripts/check-harness-assembly.mjs', routedGlb], { stdio: 'inherit' })
 execFileSync('bun', ['scripts/check-cable-support.mjs'], { stdio: 'inherit' })
@@ -181,7 +181,7 @@ The power ECO uses TPS26630 1× latch-off limiting at nominal 3.607 A, sets moto
 
 The included \`pd1180-commissioning-firmware.zip\` contains a real STM32 image with USB diagnostics. Motor power and motion remain locked. It does not prove motor operation.
 
-J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 and its external input conditioning are removed; SW2 provides local START/STOP and SW1 remains RESET. U18 is centered on the bottom with nearby C52/C53; all three are DNP, excluded from fitted BOM/CPL and paste. All ${stock.parts.reduce((total, part) => total + part.quantity_per_board, 0)} fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
+J3 now includes the mating plug, paired cable, rings and provisional resistor/cooling installation; see \`brake-assembly.md\`. J2 is JST VH and requires the separate VHR-4N cable assembly specified in \`motor-harness.md\`. J7 and its external input conditioning are removed; SW2 provides local START/STOP and SW1 remains RESET. U18 alone is on the bottom; C52/C53 are on top; all three are DNP, excluded from fitted BOM/CPL and paste. All ${stock.parts.reduce((total, part) => total + part.quantity_per_board, 0)} fitted parts remain top-side. The ordered single-shaft motor has no qualified rear magnet interface.
 
 The requested delivery is a fully assembled, programmed and functionally tested PCBA. \`order-settings.json\` requests programming and functional testing, with provider acceptance still pending. U3's register-reviewed TI full-flash candidate is included in pd1180-ti-configuration.zip, with programming/readback pending. A qualified motor-enabled U16 image is still missing; the commissioning ZIP is not a substitute. Follow the repository README for wiring and diagnostic startup, and the included \`assembly.md\` for the provider request, first-article programming sequence and per-board acceptance requirements. Programming verification and the approved powered motor tests must pass before shipment. Blank or motion-locked boards do not satisfy ready-to-run delivery. No order or test service has been booked.
 
