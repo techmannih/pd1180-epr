@@ -12,3 +12,11 @@ Use `motor-assembly.circuit.tsx` for the current source preview. The routed nati
 8. No external STEP/DIR/enable or home/limit harness remains. SW2 requests the onboard SPI bench profile after qualification; SW1 resets the MCU. All three qualification flags are currently false.
 
 See [source/destination inventory](connector-harnesses.md), [mounting status](motor-assembly.md) and [firmware](../firmware/README.md). Required external sourcing still includes the EPR source/cable, exact wire colour SKUs, crimp tooling, brake cooling/install and programming fixture. No parts have been purchased by this work.
+
+## Equipment outside the 54-model CAD assembly
+
+The complete operating installation also needs the selected 48 V / 5 A EPR source, its mains cord and suitable supplied/detachable EPR output lead, plus qualified motor/PCB attachment, insulation/clearance and harness strain relief. The current source candidate is **Delta ADP-240KB BA**; its C6 inlet needs a matching **grounded Indian plug → IEC C5 mains cord**. Do not duplicate a suitable included USB-C lead. See [the external purchase list and source links](external-system.md) for per-unit quantities and unresolved selections.
+
+The nominal 10 Ω / 300 W resistor, rendered 80×80×30 mm cooling envelope and terminal guard do not establish actual pulse capacity, thermal performance or a purchase-ready mounting kit. Finalize those against the intended speed, load, stop time, repetition and ambient, then measure them.
+
+The programmer/pad fixtures, fixed-5 V programming supply, test instruments and diagnostic laptop/data cable are shared commissioning equipment. They are not additional permanent controllers. No external stepper driver, Arduino/Raspberry Pi or encoder magnet is required for the selected open-loop build. The [programming procedure](pd-programming.md) and [readiness checklist](readiness.md) require full U3/U16 readback, cold boot and staged supply/fault, motor, brake and thermal acceptance; the supplied firmware still blocks motion.
