@@ -15,10 +15,10 @@ The 51-part adapter/front-post/fastener/spacer/clamp assembly is withdrawn. No r
 
 The retained 19.5 mm PCB-bottom/rear-face gap is **only the previous preview separation**, not a fabricated stack or verified final mounting height. The board is not shown as mechanically secured. Bottom pin clearance, tool access and actual fastening still require physical verification.
 
-The active preview contains 15 named models: motor, J2 mating housing, four pigtails, four manufacturer TE320559 STEP bodies, four factory conductors and the factory cable jacket. Existing factory cable exit geometry remains; no new restraint bracket is assumed. See [connections](connector-harnesses.md).
+The active preview contains **54 named mechanical models**, covering the motor and J2 harness plus the J3 mating plug/contacts, two cables, ring terminals, manufacturer resistor body, nominal fasteners and provisional cooling/guard installation. The earlier 15-model motor/J2-only preview is historical. Existing factory cable exit geometry remains; no new motor restraint bracket is assumed. See [connections](connector-harnesses.md) and [brake assembly](brake-assembly.md).
 
-The centered underside AS5047P and its bypass capacitors stay doNotPlace. This single-shaft motor has no documented rotating rear interface for an encoder magnet; no holder or magnet is modeled.
+The centered AS5047P U18 is the only bottom-side footprint. Its bypass capacitors C52/C53 are on top; all three stay doNotPlace. This single-shaft motor has no documented rotating rear interface for an encoder magnet; no holder or magnet is modeled or required for the open-loop build.
 
-[Before](../previews/onboard-control-before.png) · [After](../previews/onboard-control-after.png). Both renders use the same camera. The after view uses current TSX source and does not claim refreshed manufacturing copper.
+[Historical before](../previews/onboard-control-before.png) · [Historical after](../previews/onboard-control-after.png). Both renders show the 2026-10-12 control ECO from the same camera. They predate the J3 assembly and encoder-capacitor move; open `motor-assembly.circuit.tsx` or the default routed 3D view for the current assembly.
 
 Checks cover physical 3D holes, manufacturer-axis alignment, J2 body/mating clearance, every exported mechanical transform and nominal wire clearance. They do not qualify screw engagement, clamp pull strength, crimp quality, thermal performance or powered operation.

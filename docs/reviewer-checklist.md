@@ -49,6 +49,7 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 - [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 63 via-in-pad locations with filled/capped processing.
 - [ ] All 44 final native same-side IC-to-capacitor paths and the separate buzzer bulk path pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
+- [ ] Close the confirmed U16 pin 8 OSC_IN 0.0636 mm pad entry and review the remaining strict-width markers against the 0.09 mm minimum; the committed minimum-connection rule is disabled. See [readiness](readiness.md#copper-width-review--2026-10-16). A connectivity/clearance pass does not close this separate fabrication hold.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
 - [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
 
@@ -94,4 +95,4 @@ Unused-SBU correction and TI export: inspect `engineering/unused-sbu-eco.json`, 
 - [ ] Review selected U17/R64/J1/J10 identities and stocked U16/U35 replacements and U37 reset network in [sourcing-resolution.md](sourcing-resolution.md); verify PCA9538 is used only with the buffered reset revision.
 - [ ] Complete the U3/U16 programming, full-capacity readback and cold-boot checklist in [readiness.md](readiness.md). Keep qualification flags false until supported by physical results.
 - [ ] Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md); record actual EPR source/cable and provisional J3 resistor/heatsink qualification.
-- [ ] Preserve the 404 silkscreen/text findings deferred by the user, and obtain fabricator printing disposition. This is not zero DRC.
+- [ ] Preserve the current 401 retained silkscreen/text findings and obtain fabricator printing disposition. The older 404/409/405 counts belong to historical revisions; cosmetic acceptance does not waive the separate copper-width finding.

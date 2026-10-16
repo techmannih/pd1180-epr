@@ -13,6 +13,8 @@ PD1180-EPR is an 85.9 × 85.9 mm, four-layer controller for the ordered STEPPERO
 
 **Status:** source, firmware, native PCB and 3D updated. Electrical connectivity, schematic parity and ERC pass; 401 user-accepted cosmetic DRC findings remain in the raw report. Motion and ordering remain locked; live sourcing and powered/mechanical qualification are open.
 
+**Additional copper-width hold:** the 2026-10-16 stricter review found a required U16 OSC_IN pad entry of 0.0636 mm against the stated 0.09 mm minimum. The original minimum-connection rule was disabled, so its connectivity/clearance pass does not close this issue. See [the current readiness record](docs/readiness.md#copper-width-review--2026-10-16); this documentation revision does not change copper or clear fabrication approval.
+
 **Reference review is still open:** [Line-by-line response and full comparison](docs/reference-review.md) records the added RGB, buzzer, independent power indication, dedicated probes and EEPROM isolation, plus unresolved programming/cable/fixture qualification. The feature-presence check is not a complete-parity claim.
 
 **Sourcing/programming hold:** exact fitted-part availability has not passed the repository review/order gate. TI full-flash programming, powered bridge/current/thermal tests and mechanical fastening remain unverified. No hardware operation is claimed.
@@ -35,7 +37,7 @@ The intended purchase is **PCB fabrication plus complete assembly, programming a
 | U3 PD-controller EEPROM | Approved TI-generated TPS26750 full-flash binary, SHA-256 and programming/readback record. **Candidate binary included; physical readback pending.** See `pd1180-ti-configuration.zip`; JSON is not firmware. |
 | U16 STM32 firmware | Board-specific, motor-enabled firmware with a recorded hash and validated motor/current settings. **Only motion-locked commissioning firmware is supplied today.** |
 | Functional acceptance | Board serial number, firmware/configuration hashes and measured rail, PD, motor, fault and thermal results. **All powered results pending.** |
-| External system | Confirmed motor, EPR source/cable, mating harnesses, brake resistor/heatsink, magnet and mounting hardware; these are outside the populated-PCB BOM. |
+| External system | Confirmed motor, EPR source with matching mains cord/output lead, J2/J3 mating harnesses, qualified brake resistor/cooling/guard, secure mounting, insulation and strain relief; these are outside the populated-PCB BOM. Encoder/magnet is optional and not required for the basic open-loop build. |
 
 First articles need staged engineering qualification using [the power-validation test matrix](docs/power-validation.md), followed by an agreed per-board acceptance test for the assembled batch. If the assembler does not provide programming or motor testing, arrange a separate commissioning provider before calling the delivery ready to run. The manufacturing request and pending programming fields are in [order-settings.json](release/order-settings.json); detailed acceptance requirements are in [assembly.md](docs/assembly.md).
 
@@ -44,6 +46,8 @@ The [provider request and first-article programming sequence](docs/assembly.md#r
 The [readback verification command](docs/pd-programming.md#save-and-verify-programming-readback) compares each board's U3/U16 dump with the registered image and saves serial-numbered evidence. It does not unlock motion or replace a powered test. The [unused-SBU correction](docs/pd-configuration-review.md) is applied and native-checked, with physical startup/fault validation pending.
 
 ## Connections and operation
+
+For the complete per-unit shopping list, shared programming/test equipment and purchase links, start with [external equipment](docs/external-system.md). **Delta ADP-240KB BA** is the current 48 V / 5 A EPR source candidate; it needs a matching grounded mains cord (Indian plug → IEC C5 for its C6 inlet) and a suitable supplied or detachable EPR output lead. **240 W is adapter capacity, not the motor's fixed consumption**; the board's protected motor path limits at nominal 3.607 A, about 173 W at 48 V before downstream losses. No adapter, cable or operating load has been qualified. J10 cannot power the motor; no external stepper driver or Arduino/Raspberry Pi is required by the onboard control architecture.
 
 The selected control path is **SW2 → STM32 → SPI → TMC5160 internal ramp → external bridges → J2 → motor**. No external controller, STEP/DIR/ENABLE cable or home/limit harness is included. J10 provides programming-provider diagnostics/setup access, not motor power. The firmware implements a bounded bench motion path but ships with all three qualification flags false; the supplied binary cannot spin the motor.
 
