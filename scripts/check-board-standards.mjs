@@ -18,6 +18,9 @@ const minimumViaDrill = standards.fabrication.minimum_via_drill_mm
 if (!Number.isFinite(minimumViaDrill) || minimumViaDrill < 0.3) errors.push('Via drill policy must enforce the user-required 0.30 mm minimum')
 const project = JSON.parse(await readFile(boardPath.replace(/\.kicad_pcb$/, '.kicad_pro'), 'utf8'))
 const projectRules = project.board?.design_settings?.rules
+for (const [key, minimum] of [['min_connection', standards.fabrication.minimum_connection_width_mm], ['min_groove_width', standards.fabrication.minimum_groove_width_mm]]) {
+  if (!Number.isFinite(minimum) || minimum < .09 || !Number.isFinite(projectRules?.[key]) || projectRules[key] < minimum) errors.push(`${key}: missing/disabled copper-width constraint`)
+}
 const requireDrill = (value, label) => {
   if (!Number.isFinite(value) || value < minimumViaDrill - 1e-9) errors.push(`${label}: via drill ${value} mm is below ${minimumViaDrill} mm`)
 }

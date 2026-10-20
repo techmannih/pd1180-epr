@@ -157,3 +157,7 @@ Engineering review and ordering are separate gates: `bun run review` validates t
 ## Current review authorization — 2026-10-13
 
 The user accepted native reference text size, overlaps and silk over copper, and requested one PR containing the remaining implementation and physical/procurement documentation. Retain the exact raw cosmetic baseline in `engineering/native-silk-hold.json`; do not suppress labels or waive electrical, connectivity, parity or ERC faults. Engineering review may record exact known stock shortages with `--review`; strict procurement/release still fails. Unknown identity/package/stock evidence remains a failure, and no substitute or order is authorized by this distinction. Physical measurements, purchases and motor qualification remain explicitly open in `docs/completion-handoff.md`.
+
+## Copper review correction — 2026-10-20
+
+The user authorized fixing the copper-pour geometry, narrow connections, active width constraints and associated analytical/release evidence, then opening a PR (no direct main push). Preserve schematic records, component identities/placement, four mounting holes, critical Kelvin terminal-only joins and firmware motion locks. The Kelvin-B high-sense PCB path may change locally to remove its sharp junction, with matching source path and keepout. Consolidate/chamfer overlapping power corridors; do not infer clipped-fill ampacity from nominal outline width. Require 0.09 mm minimum connection/groove rules and native copper checks. Physical thermal/EMC and procurement gates remain evidence-dependent.

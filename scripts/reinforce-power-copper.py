@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import collections
 from pathlib import Path
 
 import pcbnew
@@ -86,6 +87,54 @@ def add_corridor(board: pcbnew.BOARD, track: pcbnew.PCB_TRACK, priority: int) ->
         outline.Append(pcbnew.FromMM(x), pcbnew.FromMM(y))
     board.Add(zone)
 
+
+
+def consolidate_power_zones(board):
+    """Union same-net/layer corridor outlines before chamfering their boundaries.
+
+    Keepouts, pads and trace geometry remain authoritative during refill. Highest
+    existing group priority is retained; native DRC, Kelvin isolation and actual
+    filled-copper resistance must be revalidated because zone ownership may change.
+    Do not confuse the 2.4 mm nominal envelope with the clipped conductor width.
+    """
+    pcbnew.KIID.SeedGenerator(2026102001)
+    groups = collections.defaultdict(list)
+    for zone in board.Zones():
+        if (not zone.GetIsRuleArea() and zone.GetNetname() in POWER_NETS
+                and zone.GetAssignedPriority() >= 100):
+            groups[zone.GetNetname(), zone.GetLayer()].append(zone)
+    retained = []
+    # Retain native proxy handles until the board has been saved (KiCad/SWIG).
+    board._copper_zone_handles = retained
+    added = 0
+    for (net, layer), zones in sorted(groups.items()):
+        outline = pcbnew.SHAPE_POLY_SET()
+        priority = max(z.GetAssignedPriority() for z in zones)
+        for zone in zones:
+            outline.BooleanAdd(zone.Outline())
+        outline.Simplify()
+        retained.append(outline)
+        for zone in zones:
+            retained.append(zone)
+            board.Remove(zone)
+        for index in range(outline.OutlineCount()):
+            zone = pcbnew.ZONE(board)
+            zone.SetNet(board.FindNet(net))
+            zone.SetLayer(layer)
+            zone.SetLocalClearance(pcbnew.FromMM(CLEARANCE_MM))
+            zone.SetMinThickness(pcbnew.FromMM(0.20))
+            zone.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
+            zone.SetAssignedPriority(priority)
+            zone.SetIslandRemovalMode(pcbnew.ISLAND_REMOVAL_MODE_ALWAYS)
+            name = f"power:{net}:{board.GetLayerName(layer)}:{index}"
+            zone.SetZoneName(name)
+            zone.Outline().Append(outline.UnitSet(index))
+            zone.SetCornerSmoothingType(1)  # KiCad ZONE_SETTINGS::SMOOTHING_CHAMFER
+            zone.SetCornerRadius(pcbnew.FromMM(0.30))
+            board.Add(zone)
+            retained.append(zone)
+            added += 1
+    return {"removed": sum(map(len, groups.values())), "added": added}
 
 def copper_blockers(board: pcbnew.BOARD):
     layers = (pcbnew.F_Cu, pcbnew.In1_Cu, pcbnew.In2_Cu, pcbnew.B_Cu)
@@ -223,6 +272,7 @@ def main() -> None:
         add_corridor(board, track, index)
         added_corridors += 1
 
+    consolidated = consolidate_power_zones(board)
     added_vias, sparse_vias = add_parallel_vias(board)
     pcbnew.ZONE_FILLER(board).Fill(board.Zones())
     board.BuildConnectivity()
@@ -231,6 +281,7 @@ def main() -> None:
     print(
         {
             "power_corridors": added_corridors,
+            "consolidated_power_zones": consolidated,
             "corridors_omitted_for_clean_fill": len(SKIP_CORRIDOR_PRIORITIES),
             "parallel_vias_added": added_vias,
             "transitions_with_fewer_than_3_new_vias": sparse_vias,

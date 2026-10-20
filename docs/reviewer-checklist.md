@@ -2,6 +2,8 @@
 
 Start with `bun install --frozen-lockfile` and run `bun run review`. Machine checks produce evidence under `docs/`, `routing/` and `release/`; this checklist focuses reviewer time on design decisions and physical risks.
 
+For the 2026-10-20 copper revision, start with [copper-geometry-review.md](copper-geometry-review.md). Check the enabled 0.09 mm connection/groove constraints, actual refilled geometry, preserved Kelvin/USB/bypass paths, and before/after DC resistance screens. Nominal 2.4 mm pour envelopes and passing connectivity do not establish clipped-fill ampacity. The exact 401 cosmetic findings remain reported separately.
+
 ## Reference review closure
 
 - [ ] Review every row in [reference-review.md](reference-review.md), including the added RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or permission to resume review as complete.
@@ -94,4 +96,4 @@ Unused-SBU correction and TI export: inspect `engineering/unused-sbu-eco.json`, 
 - [ ] Review selected U17/R64/J1/J10 identities and stocked U16/U35 replacements and U37 reset network in [sourcing-resolution.md](sourcing-resolution.md); verify PCA9538 is used only with the buffered reset revision.
 - [ ] Complete the U3/U16 programming, full-capacity readback and cold-boot checklist in [readiness.md](readiness.md). Keep qualification flags false until supported by physical results.
 - [ ] Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md); record actual EPR source/cable and provisional J3 resistor/heatsink qualification.
-- [ ] Preserve the 404 silkscreen/text findings deferred by the user, and obtain fabricator printing disposition. This is not zero DRC.
+- [ ] Preserve the exact 401 accepted silkscreen/text findings in the current native baseline, and obtain fabricator printing disposition. This is not zero DRC.

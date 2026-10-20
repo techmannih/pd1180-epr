@@ -85,6 +85,8 @@ Object.assign(projectData.board.design_settings.rules, {
   min_hole_clearance: 0.13,
   min_through_hole_diameter: 0.3,
   min_track_width: 0.09,
+  min_connection: 0.09,
+  min_groove_width: 0.09,
   min_via_annular_width: 0.10,
   min_via_diameter: 0.5,
 })

@@ -48,13 +48,23 @@ test('stocked MCU/reset ECO rejects missing buffer, changed paste and restored l
   ]) {const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
 })
 
-test('USB edge ECO rejects altered pour outlines or a missing local addition', () => {
+test('USB edge ECO rejects restored superseded pours or a missing retained local addition', () => {
   const revision = placementRevisions(policy).find(r => r.modified.some(x => x.before[0] === 'zone'))
   expect(revision.modified.some(x => x.before[0] === 'zone')).toBe(true)
   for (const mutate of [
-    b => { const change = revision.modified.find(x => x.before[0] === 'zone'); const z = b.find(x => Array.isArray(x) && field(x, 'uuid')?.[1] === field(change.before, 'uuid')[1]); field(field(z, 'polygon'), 'pts')[1][1] = '99' },
-    b => { const id = field(revision.added[0], 'uuid')[1]; b.splice(b.findIndex(x => Array.isArray(x) && field(x, 'uuid')?.[1] === id), 1) },
+    b => { const change = revision.modified.find(x => x.before[0] === 'zone'); const z = b.find(x => Array.isArray(x) && field(x, 'uuid')?.[1] === field(change.before, 'uuid')[1]); if(z) field(field(z, 'polygon'), 'pts')[1][1] = '99'; else b.push(structuredClone(change.before)) },
+    b => { const retained=revision.added.find(a=>b.some(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===field(a,'uuid')[1])); expect(retained).toBeDefined(); const id=field(retained,'uuid')[1]; b.splice(b.findIndex(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id),1) },
   ]) { const b = structuredClone(original); mutate(b); expect(() => verifyNativeEco(b, policy)).toThrow() }
+})
+
+test('copper consolidation rejects altered boundaries, restored old zones and missing contact repairs',()=>{
+ const revision=placementRevisions(policy).at(-1)
+ expect(revision.reason).toContain('copper-only')
+ for(const mutate of [
+  b=>{const z=b.find(x=>x[0]==='zone'&&field(x,'name')?.[1]?.startsWith('"power:'));field(field(z,'polygon'),'pts')[1][1]='99'},
+  b=>b.push(structuredClone(revision.removed[0])),
+  b=>{const id=field(revision.added.find(x=>x[0]==='segment'),'uuid')[1];const i=b.findIndex(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id);expect(i).toBeGreaterThanOrEqual(0);b.splice(i,1)},
+ ]){const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
 })
 
 test('compressed placement restoration rejects corruption and ambiguous encodings', () => {

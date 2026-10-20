@@ -28,7 +28,8 @@ export function corridorCoverage(segments, zones) {
   for (const segment of segments) {
     const { start, end, layer, net } = segment
     const delta = subtract(end, start), length = Math.hypot(...delta)
-    const polygons = zones.filter(z => z.layer === layer && z.net === net).map(z => z.points)
+    const regions = zones.filter(z => z.layer === layer && z.net === net).map(z => [z.points, ...(z.holes || [])])
+    const polygons = regions.flat()
     const cuts = [0, 1]
     for (const polygon of polygons) {
       for (let i = 0; i < polygon.length; i++) {
@@ -45,7 +46,7 @@ export function corridorCoverage(segments, zones) {
     for (let i = 1; i < cuts.length; i++) {
       const midpoint = (cuts[i - 1] + cuts[i]) / 2
       const p = [start[0] + delta[0] * midpoint, start[1] + delta[1] * midpoint]
-      if (polygons.some(polygon => inside(p, polygon))) covered += length * (cuts[i] - cuts[i - 1])
+      if (regions.some(([outer, ...holes]) => inside(p, outer) && !holes.some(hole => inside(p, hole)))) covered += length * (cuts[i] - cuts[i - 1])
     }
   }
   return { total, covered, ratio: total ? covered / total : 1 }

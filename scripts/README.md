@@ -133,8 +133,8 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 
 - `check-inventory.mjs`: validates timestamped exact stock/package evidence. Default is a strict procurement gate; `--review` permits recorded insufficient quantities only, never unknown/mismatched parts. `check-stock.mjs`, `check-alternatives.mjs` and `check-assembly.mjs` support the same explicit review mode.
 
-- `check-copper-evidence.mjs`: checks all six filled-copper path screens at both mesh sizes against the current PCB and solver hashes; does not qualify temperature or current rating.
-- `copper-evidence.test.mjs`: rejects stale/mixed board hashes, missing meshes and invalid resistance evidence.
+- `check-copper-evidence.mjs`: checks six motor paths and the 18-path before/after motor/supply/shunt/brake comparison against the PCB and solver hashes; requires finer meshes where needed and guards resistance regressions. Does not qualify temperature or current rating.
+- `copper-evidence.test.mjs`: rejects stale/mixed board hashes, missing paths/meshes, unconverged results and resistance regressions.
 
 - `splice-model.mjs`, `splice-model.test.mjs`: import the official TE 320559 STEP from the archived manufacturer evidence, verify STEP/drawing hashes, axial origin and nominal dimensions, and translate its unscaled mesh into each J2 splice position. Regresses wrong dimensions, source corruption, mirrored placement and the four generated CAD parts. Nominal CAD does not qualify finished crimps.
 
@@ -149,3 +149,6 @@ Harness intermediate part data is deterministically stored in `engineering/mecha
 The combined harness GLB is retained inside `harness-proposal.zip` to keep the raw GitHub import below its unchanged 24 MiB limit. Historical label screenshots are preserved byte-for-byte in `previews/native-labels-history.zip`.
 
 - `render-local-mechanical.mjs`: renders disposable copies of the exact source/routed JSON using hash-verified local mechanical GLBs in place of their registered immutable Git URLs. Rejects missing, duplicate or changed models; preserves published JSON and enables pre-publication validation. Release export still compares every final mesh vertex to the registered CAD. Remote URL/hash verification remains a separate post-push check.
+
+- `refine-copper-geometry.py`: reproduces the 2026-10-20 copper-only ECO from hash-locked main 8139bca. Repairs U16 pad entry, Q5/U12 redundant corner contacts and the source-matched Kelvin-B bend; regenerates its pour keepout, consolidates/chamfers power zones and enables 0.09 mm connection/groove constraints. Requires fresh native DRC, Kelvin isolation and filled-copper screens before export.
+- `copper-geometry-policy.mjs`, `copper-geometry-policy.test.mjs`, `check-copper-geometry.mjs`: fail review when connection-width checking is disabled/suppressed, power zones lack the required clearance/fill/chamfer settings, legacy per-segment corridors return, or native copper findings remain. Existing exact cosmetic disposition stays separate.

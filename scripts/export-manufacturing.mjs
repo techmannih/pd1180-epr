@@ -41,7 +41,9 @@ const finalSchematic = join(project, `${boardBase}.kicad_sch`)
 await copyFile(boardPath, finalBoard)
 await copyFile(sourceProject, join(project, `${boardBase}.kicad_pro`))
 for (const file of await readdir(projectPath)) {
-  if (/\.kicad_(sch|pro)$/.test(file)) await copyFile(join(projectPath, file), join(project, file))
+  // The matching .kicad_pro was copied above. Do not package unrelated scratch
+  // project settings that happen to share the schematic staging directory.
+  if (/\.kicad_sch$/.test(file)) await copyFile(join(projectPath, file), join(project, file))
 }
 await access(finalSchematic)
 await run(kicad, [

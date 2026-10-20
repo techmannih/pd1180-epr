@@ -15,6 +15,11 @@ try {
   errors.push('Release BOM or component placements do not match the current source')
 }
 const checked = []
+for (const [source, delivered] of [
+  ['docs/copper-geometry-review.md', 'release/copper-geometry-review.md'],
+  ['engineering/copper-geometry-review.json', 'release/copper-geometry-review.json'],
+  ['docs/copper-contact-review.png', 'release/copper-contact-review.png'],
+]) if (!(await readFile(source)).equals(await readFile(delivered).catch(() => Buffer.alloc(0)))) errors.push(`${delivered}: stale copper review evidence`)
 
 // Wiring/purchase guidance must travel with the package and match the current
 // source documents, including the distinction between candidates and purchases.
