@@ -3,10 +3,41 @@ import { execFileSync } from 'node:child_process'
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { createCloudPackage, decodeArchive, selectCloudPaths, sha256, verifyCloudInventory, hostedBuildState } from './cloud-package.mjs'
+import { createCloudPackage, decodeArchive, selectCloudPaths, sha256, verifyCloudInventory, hostedBuildState, createCloudApiClient } from './cloud-package.mjs'
 
 const paths = ['index.circuit.tsx', 'motor-assembly.circuit.tsx', 'imports/Part.tsx', 'imports/Model.ts', 'release/circuit.json', 'package.json', 'bun.lock', 'tsconfig.json', 'tscircuit.config.json', 'tscircuit.config.ts']
 const config = { ignoredFiles: ['docs/**', 'scripts/**', 'release/*.zip', 'release/*.md'] }
+
+test('retries transient reads, but never repeats an uncertain mutation or authentication failure', async () => {
+  let calls = 0
+  const delays = []
+  const read = createCloudApiClient({
+    token: 'test-only',
+    wait: async (ms) => { delays.push(ms) },
+    fetcher: async () => {
+      calls++
+      if (calls === 1) throw new Error('ECONNRESET')
+      if (calls === 2) return new Response('', { status: 503 })
+      return Response.json({ ok: true })
+    },
+  })
+  expect(await read('package_builds/get', {})).toEqual({ ok: true })
+  expect(delays).toEqual([1000, 2000])
+  for (const route of ['package_releases/create', 'package_files/upload_archive', 'package_releases/update']) {
+    let writes = 0
+    const mutation = createCloudApiClient({ token: 'test-only', fetcher: async () => { writes++; throw new Error('ECONNRESET') } })
+    await expect(mutation(route, {})).rejects.toThrow('network request failed')
+    expect(writes).toBe(1)
+  }
+  let forbidden = 0
+  const auth = createCloudApiClient({ token: 'test-only', fetcher: async () => { forbidden++; return new Response('', { status: 403 }) } })
+  await expect(auth('package_files/list', {})).rejects.toThrow('HTTP 403')
+  expect(forbidden).toBe(1)
+  let unavailable = 0
+  const failed = createCloudApiClient({ token: 'test-only', wait: async () => {}, fetcher: async () => { unavailable++; throw new Error('offline') } })
+  await expect(failed('package_releases/get', {})).rejects.toThrow('network request failed')
+  expect(unavailable).toBe(4)
+})
 
 test('accepts only completed jobs with no errors, independently of stale display labels', () => {
   const complete = { build_in_progress: false, user_code_job_started_at: 'start', user_code_job_completed_at: 'end' }

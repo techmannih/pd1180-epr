@@ -81,3 +81,39 @@ export function hostedBuildState(build) {
   if (errors.length) throw new Error(`Hosted build failed (${errors.join(', ')})`)
   return build.build_in_progress === false && build.user_code_job_started_at && build.user_code_job_completed_at ? 'complete' : 'pending'
 }
+
+// Read endpoints use POST in this API. Retry only this explicit read allowlist;
+// an uncertain upload/create/promotion response must never repeat a mutation.
+export function createCloudApiClient({ token, fetcher = fetch, wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms)) }) {
+  const readRoutes = new Set(['package_releases/get', 'package_builds/get', 'package_files/list', 'package_files/get'])
+  return async (route, body, { allow404 = false } = {}) => {
+    const attempts = readRoutes.has(route) ? 4 : 1
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      let response
+      try {
+        response = await fetcher(`https://api.tscircuit.com/${route}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify(body),
+          redirect: 'error',
+          signal: AbortSignal.timeout(60_000),
+        })
+      } catch {
+        if (attempt + 1 < attempts) { await wait(1000 * 2 ** attempt); continue }
+        throw new Error(`${route}: network request failed; credentials and request body omitted. Rerun to inspect/reuse the existing release`)
+      }
+      if (allow404 && response.status === 404) return null
+      if (!response.ok) {
+        if ([429, 502, 503, 504].includes(response.status) && attempt + 1 < attempts) {
+          await response.body?.cancel()
+          await wait(1000 * 2 ** attempt)
+          continue
+        }
+        throw new Error(`${route}: HTTP ${response.status}; request body and credentials omitted`)
+      }
+      const result = await response.json()
+      if (result.ok === false) throw new Error(`${route}: ${result.error?.error_code || 'request failed'}`)
+      return result
+    }
+  }
+}

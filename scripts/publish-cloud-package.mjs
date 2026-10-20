@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { execFileSync } from 'node:child_process'
 import { resolve } from 'node:path'
-import { createCloudPackage, CLOUD_PACKAGE_NAME, sha256, verifyCloudInventory, hostedBuildState } from './cloud-package.mjs'
+import { createCloudPackage, CLOUD_PACKAGE_NAME, sha256, verifyCloudInventory, hostedBuildState, createCloudApiClient } from './cloud-package.mjs'
 
 // Reuse the normal local CLI login. Capture its credential privately; never
 // print it, put it in command arguments, or include it in the archive/report.
@@ -24,20 +24,7 @@ const packageNameWithVersion = `${CLOUD_PACKAGE_NAME}@${version}`
 const api = 'https://api.tscircuit.com'
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-async function request(route, body, { allow404 = false } = {}) {
-  const response = await fetch(`${api}/${route}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-    body: JSON.stringify(body),
-    redirect: 'error',
-    signal: AbortSignal.timeout(60_000),
-  })
-  if (allow404 && response.status === 404) return null
-  if (!response.ok) throw new Error(`${route}: HTTP ${response.status}; request body and credentials omitted`)
-  const result = await response.json()
-  if (result.ok === false) throw new Error(`${route}: ${result.error?.error_code || 'request failed'}`)
-  return result
-}
+const request = createCloudApiClient({ token })
 
 async function requireCurrentMain() {
   const response = await fetch('https://api.github.com/repos/techmannih/pd1180-epr/commits/main', {
