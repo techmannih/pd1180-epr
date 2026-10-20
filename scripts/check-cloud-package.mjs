@@ -28,6 +28,7 @@ const requiredIgnores = [
   'release/power-audit.json',
   'release/splice-evidence.json',
   'release/filled-copper-review.json',
+  'release/copper-geometry-review.json',
   'release/native-decoupling-check.json',
   'release/release-status.json',
   'release/schematic-style-check.json',

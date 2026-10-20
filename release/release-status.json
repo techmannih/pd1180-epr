@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "status": "stocked-controller-eco-engineering-review-order-held",
+  "status": "copper-geometry-reviewed-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -21,7 +21,7 @@
     "gerber_and_drill_package_generated": true,
     "bom_and_cpl_generated": true,
     "all_populated_parts_on_permitted_layers": true,
-    "live_lcsc_stock_check": true,
+    "live_lcsc_stock_check": false,
     "alternative_parts_review": false,
     "power_copper_analytical_check": true,
     "mounting_pattern_matches_ordered_motor_cad_axes": true,
@@ -31,7 +31,8 @@
     "driver_supply_and_protection_operating_limits_verified": true,
     "tps26631_imon_bypass_removed": true,
     "unused_sbu_source_and_native_correction_verified": true,
-    "kicad_drc_no_unaccepted_findings": true
+    "kicad_drc_no_unaccepted_findings": true,
+    "minimum_copper_connection_width_checked": true
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
@@ -51,6 +52,7 @@
   },
   "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
+    "2026-10-20 official stock evidence records zero available quantity for R60/C326731, BZ1/C391032, R65/C723637 and U6/C1850276. This copper revision does not substitute parts; refresh inventory and obtain an accepted sourcing path before ordering.",
     "Alternative-part stock/package evidence includes unavailable candidates; alternatives never authorize automatic substitution.",
     "Fabricator acceptance of filled/capped via-in-pad treatment and USB stackup/impedance remains unrecorded.",
     "Four existing holes are retained. Actual rear thread/depth, secure motor mounting, connector access and strain relief are unverified; the 3D view is alignment-only.",
@@ -63,20 +65,25 @@
   ],
   "current_stock_evidence": "docs/stock-report.json",
   "stock_summary": {
-    "checked_at": "2026-10-14T05:47:21.225Z",
-    "available": 85,
+    "checked_at": "2026-10-20T01:07:03.226Z",
+    "available": 81,
     "total": 85,
-    "unavailable_codes": [],
+    "unavailable_codes": [
+      "C326731",
+      "C391032",
+      "C723637",
+      "C1850276"
+    ],
     "not_reserved": true
   },
   "native_drc_summary": {
-    "violations": 409,
+    "violations": 401,
     "unconnected_items": 0,
     "schematic_parity": 0,
     "schematic_erc": 0,
     "review_only": true,
     "baseline": "engineering/native-silk-hold.json",
-    "user_accepted_cosmetic_findings": 409,
+    "user_accepted_cosmetic_findings": 401,
     "blocking_findings": 0
   }
 }

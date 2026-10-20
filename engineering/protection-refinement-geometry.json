@@ -1,7 +1,7 @@
 {
   "base_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
   "baseline_board_sha256": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
-  "current_board_sha256": "4e53cf5210003b327a1b4cd49f3c5c81ff3a0f5f44277b71c384c29bc95a5cb3",
+  "current_board_sha256": "55af343cea51bb0e6ccadbc54a40c706b5c0c1b672352221a93bd8b64a68eb69",
   "pad_net_changes": [
     {
       "reference": "J1",
@@ -72,20 +72,29 @@
     "hardware_qualified": false
   },
   "all_other_native_geometry_unchanged": true,
-  "usb_edge_eco": [
+  "local_geometry_revisions": [
     {
       "baseline_commit": "dbaad38cc4fd2e75c812b883c97df68a17f81a2b",
       "reason": "Move J1/J10 2 mm outward; preserve their attached local route topology and power pours, reconnect fixed pad anchors, reroute one inner shell-ground connection, trim three acute fill tips, and move the DATA label clear of the J10 shell pad. All other footprints, nets, holes and geometry unchanged.",
       "modified": 270,
-      "added": 4
+      "added": 4,
+      "removed": 0
     },
     {
       "modified": 7,
-      "added": 2
+      "added": 2,
+      "removed": 2
+    },
+    {
+      "baseline_commit": "8139bcaac0d26eefba43a5b7cb0ee2b7a01d2931",
+      "reason": "2026-10-20 copper-only revision: consolidate/chamfer power zones, enforce 0.09 mm neck/groove rules, repair U16 oscillator/Q5 gate/U12 ground and Kelvin-B corner contacts, thicken In1 GND fill minimum. Parts, footprints, holes and schematic unchanged.",
+      "modified": 8,
+      "added": 83,
+      "removed": 851
     }
   ],
   "derived_zone_fills_recomputed": true,
-  "policy_sha256": "df997cea154c76d64ac10e45cb04f4ebe7adfed10719d738686dd608801a8994",
-  "checker_sha256": "67c2fab8197260746b7dc7523438fd92573422cb906af1ea597b34d0adc26623",
+  "policy_sha256": "e856cd0ef3907208405b4fbffbb30daa688f60412be39b127a06e6e52eb102f5",
+  "checker_sha256": "01ae6c0d0173e4ae6ecc4e43f249afc3f52b2cc711a1b92cbcac1a9032c80d08",
   "hardware_qualified": false
 }

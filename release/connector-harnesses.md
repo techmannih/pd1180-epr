@@ -1,6 +1,6 @@
 # Connections in the onboard-control ECO
 
-J7 and its external STEP/DIR/ENABLE/home/limit path are removed from TSX. The matching native PCB has zero unconnected, schematic-parity and ERC findings. Its 404 native text/silkscreen findings are retained and explicitly accepted; unrelated DRC findings remain blocking. No new external controller is needed or selected to justify a spare connector.
+J7 and its external STEP/DIR/ENABLE/home/limit path are removed from TSX. The matching native PCB has zero unconnected, schematic-parity and ERC findings. Its 401 current native text/silkscreen findings are retained and explicitly accepted; unrelated DRC findings remain blocking. No new external controller is needed or selected to justify a spare connector.
 
 | Source | Destination | Connector and cable | Purpose / status |
 |---|---|---|---|

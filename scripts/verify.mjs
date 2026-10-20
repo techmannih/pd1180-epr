@@ -42,6 +42,8 @@ verifiedInputPaths.push('scripts/splice-model.mjs', 'scripts/splice-model.test.m
 verifiedInputPaths.push('docs/u16-footprint.md', 'engineering/u16-footprint-review.json', 'docs/u35-footprint.md', 'engineering/u35-footprint-review.json', 'engineering/stocked-controller-eco.json', 'scripts/design.test.mjs')
 verifiedInputPaths.push('scripts/check-usb-access.mjs', 'scripts/usb-access.test.mjs', 'engineering/usb-edge-eco.json', 'docs/usb-access.md')
 verifiedInputPaths.push('scripts/render-local-mechanical.mjs', 'scripts/brake-assembly.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'engineering/mechanical/brake-evidence.json', 'engineering/mechanical/Vishay-LPS300-manufacturer.zip', 'engineering/encoder-top-eco.json', 'docs/brake-assembly.md')
+verifiedInputPaths.push('scripts/copper-geometry-policy.mjs', 'scripts/check-copper-geometry.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/refine-copper-geometry.py')
+verifiedInputPaths.push('engineering/copper-geometry-review.json', 'docs/copper-geometry-review.md', 'docs/copper-contact-review.png', 'scripts/export-filled-power-copper.py', 'scripts/screen-filled-power-copper.py', 'scripts/test-filled-power-copper.py')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -64,7 +66,7 @@ const checks = [
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/copper-geometry-policy.test.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['usb-access', ['scripts/check-usb-access.mjs']],
@@ -80,6 +82,7 @@ const checks = [
   ['board-standards', ['run', 'check:standards']],
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
+  ...(routed ? [['copper-geometry', ['scripts/check-copper-geometry.mjs']]] : []),
   ...(routed ? [['kicad-drc', ['run', 'check:kicad-drc']]] : []),
   ...(routed ? [['critical-copper', ['run', 'check:critical-copper']]] : []),
   ...(routed ? [['usb-reference', ['run', 'check:usb-reference']]] : []),

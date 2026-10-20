@@ -2,6 +2,8 @@
 
 **Order hold remains. No assembled board has passed programming or powered qualification. Motion locks remain enabled.** Merging the design does not complete the checklist below. Check the timestamped [stock report](stock-report.json) and [verification result](verification.json) for the current revision.
 
+The 2026-10-20 [copper geometry review](copper-geometry-review.md) consolidates the power pours and closes all 17 findings exposed by enabling 0.09 mm connection-width checks. Native copper/clearance, connectivity, parity and ERC pass. These are CAD results, not a temperature-rise or motor-operation qualification. The fresh stock check records shortages for R60, BZ1, R65 and U6; no part substitution is included in this copper revision.
+
 ## Design and procurement
 
 | Item | Disposition | Evidence needed to close |
@@ -12,7 +14,7 @@
 | J1/J10 | Selected USB4105-GF-A-060 / C3025063; shared land pattern, shorter 0.60 mm shell stakes | Assembly process and connector retention acceptance on the 1.6 mm PCB |
 | U16, U35 | Selected STM32G0B1CEU6 / C2829190 (UFQFPN48) and PCA9538PWR / C201530 with U37 reset buffer | Refresh exact JLC stock including spares; use this complete PCB/BOM/firmware revision |
 | Placement | Three exact advisories reviewed against actual copper | Renew review if advice or layout changes |
-| Silkscreen/text | **User accepted the exact 409 cosmetic findings. Native labels retained; U16/U35 use generator anchors.** | Raw DRC still reports them; no zero-DRC claim or implicit fabricator acceptance |
+| Silkscreen/text | **The retained baseline now contains 401 cosmetic findings. Native labels are unchanged by the copper revision.** | Raw DRC still reports them; no zero-DRC claim or implicit fabricator acceptance |
 | Fabrication and mounting | ENIG and all 63 filled/capped via-in-pad locations specified; physical approvals pending | Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md) |
 
 The [sourcing review](sourcing-resolution.md) records why each replacement is acceptable or rejected. Stock is not reserved. These replacements address the former two-part shortage; current exact stock and assembler allocation still control procurement. Physical readiness remains separate.

@@ -23,6 +23,13 @@ test('unrelated zones cannot count as power reinforcement', () => {
   expect(corridorCoverage([segment(0, 10)], [zone(20, 30), zone(0, 10, 'GND'), zone(0, 10, 'MOTOR', 'B.Cu')]).covered).toBe(0)
 })
 
+test('consolidated zone cutouts do not count as reinforced copper', () => {
+  const outer = zone(0, 10)
+  outer.holes = [zone(3, 7).points]
+  expect(corridorCoverage([segment(0, 10)], [outer]).ratio).toBeCloseTo(.6)
+  expect(corridorCoverage([segment(0, 10)], [outer, zone(4, 6)]).ratio).toBeCloseTo(.8)
+})
+
 test('short via ties outside a drain pad are not thermal-pad ties', () => {
   const pads = [{ x: 10, y: 10, net: 'MOTOR' }]
   expect(isDrainThermalTie([9.5, 9.5], [10.5, 9.5], 'MOTOR', pads)).toBe(true)

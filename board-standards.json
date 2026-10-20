@@ -63,7 +63,9 @@
       "drill_mm": 0.3,
       "process": "epoxy filled and copper capped"
     },
-    "minimum_via_drill_mm": 0.3
+    "minimum_via_drill_mm": 0.3,
+    "minimum_connection_width_mm": 0.09,
+    "minimum_groove_width_mm": 0.09
   },
   "project_geometry": {
     "board_width_mm": 85.9,
@@ -125,7 +127,9 @@
     ],
     "nominal_power_corridor_width_mm": 2.4,
     "power_zone_clearance_mm": 0.16,
-    "route_fingerprint": "routing/fingerprint.json"
+    "route_fingerprint": "routing/fingerprint.json",
+    "power_zone_corner_chamfer_mm": 0.3,
+    "power_zone_minimum_fill_width_mm": 0.2
   },
   "release": {
     "required_files": [
@@ -220,7 +224,10 @@
       "release/usb-edge-eco.json",
       "release/brake-assembly.md",
       "release/brake-evidence.json",
-      "release/encoder-top-eco.json"
+      "release/encoder-top-eco.json",
+      "release/copper-geometry-review.md",
+      "release/copper-geometry-review.json",
+      "release/copper-contact-review.png"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",

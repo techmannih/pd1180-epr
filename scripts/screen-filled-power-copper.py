@@ -2,7 +2,7 @@ import json,sys,math,time
 import numpy as np
 from shapely.geometry import Polygon,Point
 from shapely.ops import unary_union
-from shapely import contains_xy
+from shapely import contains_xy,prepare
 from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.sparse.linalg import spsolve
@@ -21,6 +21,9 @@ bounds=unary_union(list(polys.values())).bounds
 xs=np.arange(math.floor(bounds[0]/step)*step-step,bounds[2]+step,step);ys=np.arange(math.floor(bounds[1]/step)*step-step,bounds[3]+step,step)
 X,Y=np.meshgrid(xs,ys);indices={};coords=[];n=0
 for l in layers:
+ # Cache the polygon edge index for repeated point-in-polygon queries. This
+ # changes evaluation cost only; the geometry, mesh and conductor model stay fixed.
+ prepare(polys[l])
  mask=contains_xy(polys[l],X,Y);idx=np.full(mask.shape,-1,dtype=np.int32);idx[mask]=np.arange(n,n+mask.sum());indices[l]=idx
  coords.extend(zip(X[mask],Y[mask]));n+=int(mask.sum())
 coords=np.array(coords);edges=[]
@@ -57,7 +60,7 @@ def terminals(spec):
  ref,pins=spec.split(':');pins=pins.split(',');out=[]
  for p in items:
   if p['kind']=='pad' and p['ref']==ref and p['pin'] in pins:
-   geo=geom(p);idx=indices[p['layer']];m=contains_xy(geo,X,Y)&(idx>=0);out.extend(idx[m].tolist())
+   geo=geom(p);prepare(geo);idx=indices[p['layer']];m=contains_xy(geo,X,Y)&(idx>=0);out.extend(idx[m].tolist())
  return np.unique(out)
 s=terminals(start);t=terminals(end)
 if not len(s) or not len(t):raise RuntimeError('No sampled terminal')

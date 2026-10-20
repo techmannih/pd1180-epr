@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { corridorCoverage, isDrainThermalTie, kicadPadPosition } from './power-copper-geometry.mjs'
+import { parseNative, field, uuid } from './native-eco-policy.mjs'
 
 const boardPath = process.argv[2] || 'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb'
 const source = await readFile(boardPath, 'utf8')
@@ -50,6 +51,11 @@ const netName = (form) => form.match(/\(net "([^"]+)"\)/)?.[1]
 const segments = forms('segment')
 const vias = forms('via')
 const zones = forms('zone')
+// Native zones serialize the outer boundary and each cutout as separate polygons.
+// Concatenating every xy would invent edges across holes in consolidated pours.
+const nativeZones = new Map(parseNative(source).filter(x => x[0] === 'zone').map(z => [uuid(z)?.replaceAll('"', ''), z]))
+const zoneContours = form => nativeZones.get(form.match(/\(uuid "?([^"\s)]+)"?\)/)?.[1])
+  .filter(x => x[0] === 'polygon').map(p => field(p, 'pts').slice(1).map(x => x.slice(1).map(Number)))
 const errors = []
 const nets = {}
 
@@ -98,13 +104,13 @@ for (const name of powerNets) {
     net: name, layer: form.match(/\(layer "([^"]+)"\)/)?.[1],
     start: form.match(/\(start ([-0-9.]+) ([-0-9.]+)\)/).slice(1).map(Number),
     end: form.match(/\(end ([-0-9.]+) ([-0-9.]+)\)/).slice(1).map(Number),
-  })), corridors.map(form => ({
-    net: name, layer: form.match(/\(layer "([^"]+)"\)/)?.[1],
-    points: [...form.split('(filled_polygon')[0].matchAll(/\(xy ([0-9.-]+) ([0-9.-]+)\)/g)].map(match => match.slice(1).map(Number)),
-  })))
+  })), corridors.map(form => {
+    const [points, ...holes] = zoneContours(form)
+    return { net: name, layer: form.match(/\(layer "([^"]+)"\)/)?.[1], points, holes }
+  }))
   const badClearance = corridors.filter((form) => Number(form.match(/\(clearance ([0-9.]+)\)/)?.[1] || 0) < 0.16)
   const badWidth = corridors.filter((form) => {
-    const points = [...form.matchAll(/\(xy ([0-9.-]+) ([0-9.-]+)\)/g)].map((match) => [Number(match[1]), Number(match[2])])
+    const [points] = zoneContours(form)
     if (!points.length) return true
     const xs = points.map(([x]) => x)
     const ys = points.map(([, y]) => y)
@@ -112,7 +118,7 @@ for (const name of powerNets) {
   })
   if (coverage.ratio < 0.75) errors.push(`${name}: only ${(coverage.ratio * 100).toFixed(1)}% of routed length lies in power corridors`)
   if (badClearance.length) errors.push(`${name}: ${badClearance.length} generated zones have less than 0.16 mm clearance`)
-  if (badWidth.length) errors.push(`${name}: ${badWidth.length} generated zones are narrower than 2.4 mm`)
+  if (badWidth.length) errors.push(`${name}: ${badWidth.length} nominal corridor envelopes span less than 2.4 mm`)
   if (layers.length > 1 && netVias.length < 4) errors.push(`${name}: multilayer route has only ${netVias.length} vias`)
   nets[name] = {
     routed_segments: netSegments.length,
@@ -142,6 +148,7 @@ const report = {
     copper_oz: 1,
     signal_minimum_mm: 0.09,
     power_corridor_nominal_width_mm: 2.4,
+    nominal_width_note: 'Outline-envelope intent only. This is not the minimum width of clipped copper; native connection-width DRC and actual-fill DC screens are separate checks.',
     power_corridor_clearance_mm: 0.16,
     parallel_via_size_mm: 0.6,
     parallel_via_drill_mm: 0.3,
