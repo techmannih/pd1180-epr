@@ -1,10 +1,18 @@
 import { mkdir, writeFile } from 'node:fs/promises'
+import { execFileSync } from 'node:child_process'
+import { resolve } from 'node:path'
 import { createCloudPackage, CLOUD_PACKAGE_NAME, sha256, verifyCloudInventory, hostedBuildState } from './cloud-package.mjs'
 
-// The token belongs in the process environment or a GitHub Actions secret,
-// never in an archive, command argument, report or request-error dump.
-const token = process.env.TSCIRCUIT_TOKEN
-if (!token) throw new Error('Set TSCIRCUIT_TOKEN from an authenticated tscircuit CLI session before publishing')
+// Reuse the normal local CLI login. Capture its credential privately; never
+// print it, put it in command arguments, or include it in the archive/report.
+let token = process.env.TSCIRCUIT_TOKEN
+if (!token) {
+  try {
+    const output = execFileSync(resolve('node_modules/.bin/tsci'), ['auth', 'print-token'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
+    token = output.match(/^Your Token:\s+(\S+)\s*$/)?.[1]
+  } catch { /* Report only the sign-in requirement, not subprocess output. */ }
+}
+if (!token) throw new Error('Run tsci auth login first, then rerun publish:cloud')
 const args = process.argv.slice(2)
 if (args.some((arg) => arg.startsWith('--') && arg !== '--latest')) throw new Error('Usage: bun scripts/publish-cloud-package.mjs [commit] [--latest]')
 const ref = args.find((arg) => !arg.startsWith('--')) || 'HEAD'
@@ -33,7 +41,7 @@ async function request(route, body, { allow404 = false } = {}) {
 
 async function requireCurrentMain() {
   const response = await fetch('https://api.github.com/repos/techmannih/pd1180-epr/commits/main', {
-    headers: { Accept: 'application/vnd.github+json' },
+    headers: { Accept: 'application/vnd.github+json', ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}) },
     signal: AbortSignal.timeout(30_000),
   })
   if (!response.ok || (await response.json()).sha !== manifest.commit_sha) throw new Error('--latest requires the current remote main commit')
@@ -106,11 +114,18 @@ for (const path of ['dist/index.js', 'dist/index.cjs', 'dist/index.d.ts']) {
 }
 const site = await fileText('dist/index.html')
 if (!site.includes('release/circuit.json')) throw new Error('Hosted site does not select the verified routed board')
+const imageUrl = new URL(`${api}/package_files/view`)
+imageUrl.search = new URLSearchParams({ package_release_id: id, file_path: 'dist/release/3d.png' }).toString()
+// Public image request: never forward the publishing token to a CDN redirect.
+const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(60_000) })
+if (!imageResponse.ok) throw new Error(`Hosted 3D preview is unavailable: HTTP ${imageResponse.status}`)
+const png = Buffer.from(await imageResponse.arrayBuffer())
+if (png.length < 24 || !png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) || !png.readUInt32BE(16) || !png.readUInt32BE(20)) throw new Error('Hosted 3D preview is not a valid PNG')
 if (promote) {
   await requireCurrentMain()
   await request('package_releases/update', { package_release_id: id, is_latest: true })
 }
 await mkdir('build/cloud-package', { recursive: true })
-const result = { url, package_release_id: id, commit: manifest.commit_sha, source_files: files.length, source_bytes: manifest.source_bytes, archive_bytes: archive.length, routed_records: built.length, routed_sha256: manifest.routed_sha256, source_hashes_verified: true, hosted_outputs_verified: true, promoted: promote }
+const result = { url, package_release_id: id, commit: manifest.commit_sha, source_files: files.length, source_bytes: manifest.source_bytes, archive_bytes: archive.length, routed_records: built.length, routed_sha256: manifest.routed_sha256, preview_png_bytes: png.length, source_hashes_verified: true, hosted_outputs_verified: true, promoted: promote }
 await writeFile(`build/cloud-package/${manifest.commit_sha}.hosted.json`, `${JSON.stringify(result, null, 2)}\n`)
 console.log(JSON.stringify(result, null, 2))

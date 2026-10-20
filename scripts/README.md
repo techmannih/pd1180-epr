@@ -82,7 +82,7 @@ The Python routing helpers are board-specific. Do not reuse their geometry on an
 - `cloud-package.test.mjs`: rejects excluded/missing inputs, unwanted documentation/secrets, incomplete remote inventories and uncommitted source leakage.
 - `prepare-cloud-package.mjs`: materializes the immutable input and archive under ignored `build/cloud-package/<commit>`.
 - `check-cloud-build.mjs`: checks every staged source hash and compares the complete built routed JSON with the committed viewer, alongside library and site outputs.
-- `publish-cloud-package.mjs`: publishes that archive to the existing NEMA34 package, checks remote source hashes and hosted outputs, and permits explicit latest promotion only for current remote main. Requires `TSCIRCUIT_TOKEN`; never logs the credential.
+- `publish-cloud-package.mjs`: publishes that archive to the existing NEMA34 package, checks remote source hashes and hosted outputs, and permits explicit latest promotion only for current remote main. Reuses normal local CLI login (or `TSCIRCUIT_TOKEN`); never logs the credential.
 
 See [cloud publishing](../docs/cloud-publishing.md) for the supported commands and the distinction from the unfiltered automatic GitHub importer.
 

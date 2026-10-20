@@ -34,9 +34,10 @@ bun scripts/check-cloud-build.mjs build/cloud-package/<commit>
 
 The `Filtered cloud package` workflow does that clean install/build and comparison on PRs and main. Its archive is available as an Actions artifact. It does not require a publishing credential.
 
-For hosted validation, use an authenticated tscircuit token in the `TSCIRCUIT_TOKEN` environment variable; never commit or print it:
+For hosted validation, use the normal local CLI login. The publisher reads that credential privately; no GitHub secret is required. `TSCIRCUIT_TOKEN` in the process environment is also supported; never commit or print it.
 
 ```sh
+tsci auth login
 bun run publish:cloud <commit>
 # After merge and successful verification, explicitly promote current main:
 bun run publish:cloud <main-commit> --latest
@@ -44,7 +45,7 @@ bun run publish:cloud <main-commit> --latest
 
 The publisher always targets the existing NEMA34 package, regardless of the historical npm name in `package.json`. A `-cloud.<commit>` release stays non-latest by default. A repeated command reuses the same commit-specific release and verifies its inventory; it does not silently overwrite a different version or retry failed builds indefinitely. Reports are saved under `build/cloud-package/`.
 
-The existing automatic GitHub importer is a separate path and does not become filtered just because this command exists. Its status can still fail independently. `Publish filtered cloud package` publishes the filtered snapshot after successful `Circuit checks` on a push to this repository's main branch. PR/fork checks cannot enter its credentialed job. It needs the repository secret `TSCIRCUIT_TOKEN`; absence fails explicitly instead of silently claiming publication. It can also be dispatched manually on main. Do not claim that merging this change modifies the hosting service.
+The existing automatic GitHub importer is a separate path and does not become filtered just because this command exists. Its status can still fail independently. Use `publish:cloud` locally after a reviewed main update to use this filtered delivery path. CI builds and verifies the upload artifact without publishing credentials. Do not claim that merging this change modifies the hosting service.
 
 ## Timeout evidence and limits
 
