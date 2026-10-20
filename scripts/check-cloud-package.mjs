@@ -1,6 +1,7 @@
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import runtimeConfig from '../tscircuit.config.ts'
+import { selectCloudPaths } from './cloud-package.mjs'
 
 const config = JSON.parse(await readFile('tscircuit.config.json', 'utf8'))
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
@@ -111,11 +112,16 @@ async function walk(directory) {
 await walk('.')
 
 // A GitHub import receives committed files, not ignored local check logs or
-// scratch outputs. Measure the Git index so the release gate matches that
-// payload exactly, then apply the importer's fixed dist/ZIP filter.
+// scratch outputs. This conservative upper bound excludes only dist/ZIPs;
+// the service also omits some extensions. It is not the filtered publisher's
+// actual payload and does not prove ignoredFiles was honored remotely.
 const gitFilesResult = Bun.spawnSync(['git', 'ls-files', '-z'])
 if (gitFilesResult.exitCode !== 0) throw new Error(gitFilesResult.stderr.toString())
 const trackedFiles = gitFilesResult.stdout.toString().split('\0').filter(Boolean)
+const filteredPublishPaths = selectCloudPaths(trackedFiles, config)
+let filteredPublishBytes = 0
+for (const path of filteredPublishPaths) filteredPublishBytes += (await stat(path)).size
+if (filteredPublishBytes > 10 * 1024 * 1024) errors.push('Filtered cloud publish inputs exceed 10 MiB')
 const sourceFiles = trackedFiles.filter((path) => path.endsWith('.tsx') || /^imports\/.*\.(ts|js|jsx)$/.test(path))
 const requiredViewerFiles = [...sourceFiles, 'release/circuit.json']
 const unavailableViewerFiles = requiredViewerFiles.filter((path) => shouldIgnore(path) || !isSelectable(path))
@@ -156,6 +162,9 @@ const report = {
   included_files: included.length,
   included_bytes: totalBytes,
   included_mebibytes: Number((totalBytes / 1024 / 1024).toFixed(2)),
+  filtered_publish_source_files: filteredPublishPaths.length,
+  filtered_publish_source_bytes: filteredPublishBytes,
+  github_import_measurement: 'Conservative tracked-file upper bound, not an observed or filtered upload',
   maximum_mebibytes: maximumPackageBytes / 1024 / 1024,
   largest_files: largestFiles,
   github_import_files: githubImportFiles.length,

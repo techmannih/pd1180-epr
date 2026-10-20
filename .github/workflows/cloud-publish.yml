@@ -1,0 +1,42 @@
+name: Publish filtered cloud package
+on:
+  workflow_run:
+    workflows: [Circuit checks]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: filtered-cloud-latest
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - name: Verify package isolation
+        run: bun test scripts/cloud-package.test.mjs
+      - name: Publish and verify current main before promoting it
+        env:
+          TSCIRCUIT_TOKEN: ${{ secrets.TSCIRCUIT_TOKEN }}
+        run: bun scripts/publish-cloud-package.mjs HEAD --latest
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: hosted-package-verification
+          path: build/cloud-package/*.hosted.json
+          if-no-files-found: ignore
+          retention-days: 14

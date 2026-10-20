@@ -1,0 +1,35 @@
+name: Filtered cloud package
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - name: Test archive isolation
+        run: bun test scripts/cloud-package.test.mjs
+      - name: Prepare immutable filtered input
+        run: bun scripts/prepare-cloud-package.mjs
+      - name: Build from only the uploaded source files
+        working-directory: build/cloud-package/${{ github.sha }}
+        run: |
+          bun install --frozen-lockfile
+          bun -e 'const config = await Bun.file("tscircuit.config.json").json(); const result = Bun.spawnSync(["sh", "-c", config.buildCommand], {env: {...process.env, PATH: `${process.cwd()}/node_modules/.bin:${process.env.PATH}`}, stdio: ["inherit", "inherit", "inherit"]}); process.exit(result.exitCode)'
+      - name: Verify every source hash and complete routed output
+        run: bun scripts/check-cloud-build.mjs "build/cloud-package/$GITHUB_SHA"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: filtered-cloud-package
+          path: |
+            build/cloud-package/*.json.gz
+            build/cloud-package/*.manifest.json
+          retention-days: 14
