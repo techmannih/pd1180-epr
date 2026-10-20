@@ -76,6 +76,16 @@ Every executable script is listed here so a reviewer can understand the release 
 
 The Python routing helpers are board-specific. Do not reuse their geometry on another board. The check patterns, failure behavior and documentation structure are reusable.
 
+### Filtered cloud publication
+
+- `cloud-package.mjs`: selects required source files from an immutable Git tree, enforces upload limits and hashes, and creates a single transactional gzip archive; retains every editable import and the complete routed/assembly viewer.
+- `cloud-package.test.mjs`: rejects excluded/missing inputs, unwanted documentation/secrets, incomplete remote inventories and uncommitted source leakage.
+- `prepare-cloud-package.mjs`: materializes the immutable input and archive under ignored `build/cloud-package/<commit>`.
+- `check-cloud-build.mjs`: checks every staged source hash and compares the complete built routed JSON with the committed viewer, alongside library and site outputs.
+- `publish-cloud-package.mjs`: publishes that archive to the existing NEMA34 package, checks remote source hashes and hosted outputs, and permits explicit latest promotion only for current remote main. Reuses normal local CLI login (or `TSCIRCUIT_TOKEN`); never logs the credential.
+
+See [cloud publishing](../docs/cloud-publishing.md) for the supported commands and the distinction from the unfiltered automatic GitHub importer.
+
 ### Filled-copper investigation
 
 - `export-filled-power-copper.py`: accepts `<board> <output.json>`. native KiCad/wx export of actual filled polygons, pads, tracks and plated transitions for critical power nets. Preserve the board SHA-256 in the output. Use KiCad's Python runtime after filling and passing DRC.
