@@ -1,6 +1,6 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
-**KiCad:** [download the complete verified native project](https://raw.githubusercontent.com/techmannih/pd1180-epr/952de54ca0b5dbe042d9ccc9a1a9ecf3e8f67779/release/pd1180-epr-r0.3-kicad.zip) and extract all files together. Fresh download checks: **0 DRC errors, 401 retained cosmetic warnings, 0 unconnected/parity/ERC**. The website's **Download → KiCad** regenerates a different, currently defective export. [Evidence and reproduction](https://github.com/techmannih/pd1180-epr/blob/main/docs/kicad-download.md). Ordering and motion remain held.
+**KiCad:** [download the complete verified native project](https://raw.githubusercontent.com/techmannih/pd1180-epr/952de54ca0b5dbe042d9ccc9a1a9ecf3e8f67779/release/pd1180-epr-r0.3-kicad.zip) and extract all files together. Fresh download checks: **0 DRC errors, 401 retained cosmetic warnings, 0 unconnected/parity/ERC**. Use this ZIP until [website native-download support](https://github.com/tscircuit/tscircuit.com/pull/5584) is merged/deployed and this board's descriptor is published; the generic export has documented conversion losses. [Evidence and reproduction](docs/kicad-download.md). Ordering and motion remain held.
 
 Current copper/rule revision: [source/native design-rule correction](docs/source-design-rules.md), with 0.15 mm minimum tracks, 0.30 mm GND clearance and 0.50 mm GND edge inset. Existing order/qualification holds remain.
 

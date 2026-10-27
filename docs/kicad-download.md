@@ -38,4 +38,16 @@ Website v0.3.95 (`a170e23e-c799-422d-b275-db5267c84ddf`) has the same main revis
 
 Restoring only global edge clearance removed the 17 error entries in a diagnostic copy, but did not restore these other losses.
 
-The [website download function](https://github.com/tscircuit/tscircuit.com/blob/main/src/lib/download-fns/download-kicad-files.ts) runs shared converters on Circuit JSON, not this native ZIP. Those converters need rule/zone/keepout, net-resolution and schematic-association fixes plus deployment. A board dependency change cannot update that website code. This change supplies a verified native handoff and download check; it does **not** fix or certify the generic button.
+The [website download function](https://github.com/tscircuit/tscircuit.com/blob/main/src/lib/download-fns/download-kicad-files.ts) runs shared converters on Circuit JSON, not this native ZIP. A board dependency change cannot update that website code. The generic conversion is **not** certified by the native project's passing checks.
+
+## Proposed website native-download path
+
+The routed viewer now advertises the immutable native ZIP in `source_project_metadata.native_kicad_project`. [Website PR #5584](https://github.com/tscircuit/tscircuit.com/pull/5584) and [schema PR #930](https://github.com/tscircuit/circuit-json/pull/930) implement the shared support. The website change must be merged/deployed and this board descriptor published before **Download → KiCad** uses it. Until then, use the direct ZIP link above; this repository alone cannot change the live button.
+
+The website implementation checks a SHA-256 binding to the current viewer and the exact downloaded ZIP, requires the native project entrypoints, and returns the original bytes. An advertised but stale, missing or corrupt archive raises an error instead of silently regenerating another project. Packages without a native descriptor keep their existing conversion path.
+
+`engineering/native-kicad-artifact.json` pins the source-circuit hash, immutable URL, archive digest and all 27 native member digests. Viewer generation compares the compiled source, actual routed PCB used by the importer, and every local native archive member against it before advertising the ZIP. A route-only change cannot advertise an older archive even if source is unchanged. Rebuilds that only change ZIP timestamps are allowed; source or project-member changes require a newly verified immutable archive and updated manifest. Never update this manifest merely to bypass a failed check.
+
+This avoids conversion loss for this package while preserving the full native PCB, rules, root schematic and 24 child schematics. It does not fix other packages' generic converters, suppress the 401 cosmetic warnings, or qualify powered hardware.
+
+The proposed website helper downloaded the real hosted ZIP on 2026-10-27 (CORS allowed). Fresh checks on those exact bytes again returned 0 DRC errors, 401 cosmetic warnings and zero unconnected/parity/ERC findings. The `website-native/` directory in the evidence archive contains the download metadata, all reports and 11 passing helper/action tests. The tests also confirm that the download action bypasses conversion only for a valid advertised native artifact.

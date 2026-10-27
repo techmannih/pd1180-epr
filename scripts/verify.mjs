@@ -45,6 +45,7 @@ verifiedInputPaths.push('scripts/render-local-mechanical.mjs', 'scripts/brake-as
 verifiedInputPaths.push('scripts/copper-geometry-policy.mjs', 'scripts/check-copper-geometry.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/refine-copper-geometry.py')
 verifiedInputPaths.push('engineering/copper-geometry-review.json', 'docs/copper-geometry-review.md', 'docs/copper-contact-review.png', 'scripts/export-filled-power-copper.py', 'scripts/screen-filled-power-copper.py', 'scripts/test-filled-power-copper.py')
 verifiedInputPaths.push('engineering/source-design-rule-eco.json', 'engineering/source-design-rule-delta.zip', 'scripts/apply-source-rule-eco.mjs', 'docs/source-design-rules.md', 'scripts/source-design-policy.mjs', 'scripts/source-design-policy.test.mjs', 'scripts/source_design_rules.py', 'scripts/test-source-design-rules.py', 'scripts/check-source-design-rules.mjs', 'scripts/add-board-planes.py', 'scripts/clean-silkscreen.py')
+verifiedInputPaths.push('scripts/native-kicad-artifact.mjs', 'scripts/native-kicad-artifact.test.mjs', 'engineering/native-kicad-artifact.json')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -58,6 +59,7 @@ const checks = [
   ['firmware', ['run', 'check:firmware']],
   ['firmware-target', ['run', 'check:firmware-target']],
   ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs']],
+  ['native-download-tests', ['test', 'scripts/kicad-download.test.mjs', 'scripts/native-kicad-artifact.test.mjs']],
   ['pd-image', ['scripts/check-pd-image.mjs']],
   ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
