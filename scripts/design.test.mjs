@@ -5,6 +5,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 import { circuitSourceHash } from './circuit-source-hash.mjs'
+import { createHash } from 'node:crypto'
+import { nativeKicadCircuitText } from './native-kicad-artifact.mjs'
 
 test('native evidence ignores only the CLI filesystem cache key', () => {
   const circuit = [{ type: 'pcb_trace', route: [{ x: 1, y: 2, width: 0.15 }] },
@@ -55,7 +57,7 @@ test('source model has no errors or warnings and uses physical component types',
 })
 
 // This integration test imports the complete routed KiCad board twice.
-test('hosted release ignores only the CLI cache key while preserving every source model record', async () => {
+test('hosted release binds the native archive and preserves source records across cache changes', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'pd1180-viewer-cache-'))
   try {
     const changedCache = structuredClone(data)
@@ -70,9 +72,16 @@ test('hosted release ignores only the CLI cache key while preserving every sourc
     const rebuilt = (await createCloudViewerCircuit({ sourceCircuitPath: alternateSource, assemblyCircuitPath: alternateAssembly })).circuit
     expect(rebuilt).toEqual(original)
     const copper = new Set(['pcb_trace', 'pcb_via', 'pcb_copper_pour'])
+    const artifact = JSON.parse(readFileSync('engineering/native-kicad-artifact.json'))
     const expectedModel = data.filter(row => !copper.has(row.type)).map(row => {
       const expected = structuredClone(row)
-      if (expected.type === 'source_project_metadata') delete expected.source_filesystem_md5_hash
+      if (expected.type === 'source_project_metadata') {
+        delete expected.source_filesystem_md5_hash
+        expected.native_kicad_project = {
+          url: artifact.url, sha256: artifact.sha256, project_file: artifact.project_file,
+          circuit_json_sha256: createHash('sha256').update(nativeKicadCircuitText(original)).digest('hex'),
+        }
+      }
       return expected
     })
     const mechanicalIds = new Set(original.filter(row => row.type === 'source_component' && row.ftype === 'subassembly').map(row => row.source_component_id))

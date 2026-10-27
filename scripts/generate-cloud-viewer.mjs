@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { basename } from 'node:path'
 import { isDeepStrictEqual } from 'node:util'
 import { KicadToCircuitJsonConverter } from 'kicad-to-circuit-json'
+import { attachNativeKicadArtifact } from './native-kicad-artifact.mjs'
 
 const DEFAULT_SOURCE = 'dist/index/circuit.json'
 const DEFAULT_ASSEMBLY = 'dist/motor-assembly/circuit.json'
@@ -43,11 +44,15 @@ export async function createCloudViewerCircuit({
   const assemblyCircuit = JSON.parse(await readFile(assemblyCircuitPath, 'utf8'))
   const mechanicalIds = assertAssemblyPreservesBoard(sourceCircuit, assemblyCircuit)
   const converter = new KicadToCircuitJsonConverter()
-  converter.addFile(basename(routedBoardPath), await readFile(routedBoardPath, 'utf8'))
+  const routedBoard = await readFile(routedBoardPath, 'utf8')
+  converter.addFile(basename(routedBoardPath), routedBoard)
   converter.runUntilFinished()
   const routedCircuit = converter.getOutput()
 
   const result = combineSourceAndRoutedCircuit(assemblyCircuit, routedCircuit)
+  await attachNativeKicadArtifact(result.circuit, sourceCircuit,
+    await readFile('release/pd1180-epr-r0.3-kicad.zip'),
+    JSON.parse(await readFile('engineering/native-kicad-artifact.json', 'utf8')), routedBoard)
   return {
     ...result,
     report: {
