@@ -50,6 +50,8 @@ await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
 const copies = [
   ['docs/copper-geometry-review.md', 'copper-geometry-review.md'],
+  ['docs/source-design-rules.md', 'source-design-rules.md'],
+  ['docs/source-design-rules-check.json', 'source-design-rules-check.json'],
   ['engineering/copper-geometry-review.json', 'copper-geometry-review.json'],
   ['docs/copper-contact-review.png', 'copper-contact-review.png'],
   ['docs/brake-assembly.md', 'brake-assembly.md'],

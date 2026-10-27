@@ -146,7 +146,7 @@ const report = {
     layers: 4,
     finished_thickness_mm: 1.6,
     copper_oz: 1,
-    signal_minimum_mm: 0.09,
+    signal_minimum_mm: standards.fabrication.minimum_trace_width_mm,
     power_corridor_nominal_width_mm: 2.4,
     nominal_width_note: 'Outline-envelope intent only. This is not the minimum width of clipped copper; native connection-width DRC and actual-fill DC screens are separate checks.',
     power_corridor_clearance_mm: 0.16,

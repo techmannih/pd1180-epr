@@ -1,5 +1,8 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile, rename } from 'node:fs/promises'
 import { parseKicadPcb, parseKicadSch } from 'kicadts'
+import { existsSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { sourceDesignPolicy } from './source-design-policy.mjs'
 import {
   CircuitJsonToKicadPcbConverter,
   CircuitJsonToKicadProConverter,
@@ -13,10 +16,27 @@ if (!outputDirectory) {
 
 await mkdir(outputDirectory, { recursive: true })
 const circuitJson = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
+const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
+const fabrication = standards.fabrication
+const sourcePolicy = sourceDesignPolicy(await readFile('index.circuit.tsx', 'utf8'))
+const sourceBoard = circuitJson.find(row => row.type === 'pcb_board')
+if (!(fabrication.minimum_trace_width_mm >= 0.15) || sourcePolicy.minimum_trace_width_mm !== fabrication.minimum_trace_width_mm || sourceBoard?.min_trace_width !== fabrication.minimum_trace_width_mm)
+  throw new Error('Source and native minimum trace width must agree at >=0.15 mm')
 
 const pcb = new CircuitJsonToKicadPcbConverter(circuitJson)
 pcb.runUntilFinished()
 const nativeBoard = parseKicadPcb(pcb.getOutputString())
+const groundZones = nativeBoard.zones.filter(zone => (zone.netName || zone.net) === sourcePolicy.ground_plane.net && !zone.keepout)
+if (!groundZones.length) throw new Error('Source GND pour missing from fresh native export')
+if (!(fabrication.ground_plane.clearance_mm >= .30) || !(fabrication.ground_plane.board_edge_margin_mm >= .50) || sourcePolicy.ground_plane.clearance_mm !== fabrication.ground_plane.clearance_mm || sourcePolicy.ground_plane.board_edge_margin_mm !== fabrication.ground_plane.board_edge_margin_mm)
+  throw new Error('Source GND pour and manufacturing policy differ')
+for (const zone of groundZones) {
+  // Supply the clearance omitted by the pinned converter. After export,
+  // reconstruct the exact edge inset using native KiCad outline geometry.
+  zone.connectPads.clearance = sourcePolicy.ground_plane.clearance_mm
+  zone.minThickness = fabrication.ground_plane.minimum_fill_width_mm
+  zone.name = 'GND_PLANE'
+}
 const partNumbers = new Map(circuitJson.filter(row => row.type === 'source_component' && row.manufacturer_part_number).map(row => [row.name, row.manufacturer_part_number]))
 function retainPartNumber(properties) {
   const reference = properties.find(property => property.key === 'Reference')?.value
@@ -81,12 +101,12 @@ projectData.board.design_settings.rules ??= {}
 projectData.board.design_settings.defaults ??= {}
 projectData.board.design_settings.defaults.zones ??= {}
 Object.assign(projectData.board.design_settings.rules, {
-  min_copper_edge_clearance: 0.2,
+  min_copper_edge_clearance: fabrication.minimum_copper_to_edge_mm,
   min_hole_clearance: 0.13,
   min_through_hole_diameter: 0.3,
-  min_track_width: 0.09,
-  min_connection: 0.09,
-  min_groove_width: 0.09,
+  min_track_width: fabrication.minimum_trace_width_mm,
+  min_connection: fabrication.minimum_connection_width_mm,
+  min_groove_width: fabrication.minimum_groove_width_mm,
   min_via_annular_width: 0.10,
   min_via_diameter: 0.5,
 })
@@ -99,8 +119,8 @@ Object.assign(projectData.board.design_settings.defaults.zones, {
 const defaultNetclass = projectData.net_settings.classes.find(({ name }) => name === 'Default')
 if (!defaultNetclass) throw new Error('KiCad Default netclass was not generated')
 Object.assign(defaultNetclass, {
-  clearance: 0.09,
-  track_width: 0.15,
+  clearance: fabrication.minimum_trace_space_mm,
+  track_width: fabrication.minimum_trace_width_mm,
   via_diameter: 0.5,
   via_drill: 0.3,
 })
@@ -108,6 +128,22 @@ await writeFile(
   `${outputDirectory}/pd1180-epr-r0.3.kicad_pro`,
   `${JSON.stringify(projectData, null, 2)}\n`,
 )
+
+// The source converter's inset can drift at polygon corners. Enforce the
+// policy against native Edge.Cuts rather than trusting nominal JSON margins.
+const macPython = '/Applications/KiCad/KiCad.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python3'
+const kicadPython = process.env.KICAD_PYTHON || (existsSync(macPython) ? macPython : 'python3')
+const boardPath = `${outputDirectory}/pd1180-epr-r0.3.kicad_pcb`
+const correctedPath = `${outputDirectory}/ground-policy-applied.kicad_pcb`
+for (const args of [
+  ['apply', boardPath, correctedPath],
+  ['check', correctedPath, `${outputDirectory}/source-design-rules.json`],
+]) {
+  const result = spawnSync(kicadPython, ['scripts/source_design_rules.py', ...args], {stdio:'inherit'})
+  if (result.error) throw result.error
+  if (result.status !== 0) throw new Error('Native source-rule enforcement failed; KiCad Python with pcbnew/wx is required')
+}
+await rename(correctedPath, boardPath)
 
 console.log(JSON.stringify({
   output_directory: outputDirectory,

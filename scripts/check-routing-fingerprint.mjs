@@ -22,6 +22,7 @@ const normalized = {
     thickness: row.thickness,
     layers: row.num_layers,
     outline: row.outline?.map(point),
+    design_rules: Object.fromEntries(Object.entries(row).filter(([key]) => key.startsWith('min_'))),
   })),
   components: circuit.filter((row) => row.type === 'source_component').map((row) => ({
     name: row.name,
@@ -63,7 +64,7 @@ const normalized = {
   })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))),
 }
 
-const routingInputs = ['routing/requirements.json', 'routing/critical-paths.json', 'routing/pin-escapes.json', 'scripts/prepare-routing-seed.py']
+const routingInputs = ['board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/prepare-routing-rules.py', 'scripts/add-board-planes.py', 'scripts/export-kicad-route.mjs', 'scripts/source-design-policy.mjs', 'scripts/source_design_rules.py', 'scripts/clean-silkscreen.py']
 const routingInputHashes = Object.fromEntries(await Promise.all(routingInputs.map(async (path) => [
   path, createHash('sha256').update(await readFile(path)).digest('hex'),
 ])))

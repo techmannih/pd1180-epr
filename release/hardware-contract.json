@@ -74,7 +74,7 @@
     "layers": 4,
     "finished_thickness_mm": 1.6,
     "copper_oz_all_layers": 1,
-    "minimum_trace_space_mm": 0.09,
+    "minimum_trace_space_mm": 0.1,
     "solder_mask": "green",
     "surface_finish": "ENIG",
     "power_corridor_nominal_width_mm": 2.4,
@@ -87,7 +87,15 @@
       "diameter": 0.6,
       "drill": 0.3
     },
-    "via_in_pad": "epoxy filled and copper capped for all 63 recorded via-in-pad locations; see docs/manufacturing-acceptance.md"
+    "via_in_pad": "epoxy filled and copper capped for all 62 recorded via-in-pad locations; see docs/manufacturing-acceptance.md",
+    "minimum_trace_width_mm": 0.15,
+    "ground_plane": {
+      "net": "GND",
+      "layer": "inner1",
+      "clearance_mm": 0.3,
+      "board_edge_margin_mm": 0.5,
+      "minimum_fill_width_mm": 0.25
+    }
   },
   "rated_targets": {
     "pd_contract_v": 48,

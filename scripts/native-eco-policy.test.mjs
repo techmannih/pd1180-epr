@@ -58,12 +58,12 @@ test('USB edge ECO rejects restored superseded pours or a missing retained local
 })
 
 test('copper consolidation rejects altered boundaries, restored old zones and missing contact repairs',()=>{
- const revision=placementRevisions(policy).at(-1)
- expect(revision.reason).toContain('copper-only')
+ const revision=placementRevisions(policy).find(r=>r.reason?.startsWith('2026-10-20 copper-only'))
+ expect(revision).toBeDefined()
  for(const mutate of [
   b=>{const z=b.find(x=>x[0]==='zone'&&field(x,'name')?.[1]?.startsWith('"power:'));field(field(z,'polygon'),'pts')[1][1]='99'},
   b=>b.push(structuredClone(revision.removed[0])),
-  b=>{const id=field(revision.added.find(x=>x[0]==='segment'),'uuid')[1];const i=b.findIndex(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id);expect(i).toBeGreaterThanOrEqual(0);b.splice(i,1)},
+  b=>{const id=field(revision.added.find(x=>x[0]==='segment'&&b.some(y=>Array.isArray(y)&&field(y,'uuid')?.[1]===field(x,'uuid')[1])),'uuid')[1];const i=b.findIndex(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id);expect(i).toBeGreaterThanOrEqual(0);b.splice(i,1)},
  ]){const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
 })
 
@@ -79,5 +79,15 @@ test('encoder top ECO rejects restored bottom stubs or changed local via geometr
   b=>b.push(structuredClone(revision.removed[0])),
   b=>{const id=field(revision.added.find(x=>x[0]==='via'),'uuid')[1];field(b.find(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id),'drill')[1]='0.2'},
   b=>{const f=b.find(x=>x[0]==='footprint'&&x.some(p=>p[0]==='property'&&p[1]==='"Reference"'&&p[2]==='"C52"'));field(f,'layer')[1]='"B.Cu"'},
+ ]){const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
+})
+
+test('source-rule correction rejects narrowed copper, ground-clearance rollback and lost USB reroutes',()=>{
+ const revision=placementRevisions(policy).find(r=>r.reason?.startsWith('2026-10-27:'))
+ expect(revision).toBeDefined()
+ for(const mutate of [
+  b=>{const s=b.find(x=>x[0]==='segment'&&field(x,'width')?.[1]==='0.15');field(s,'width')[1]='0.09'},
+  b=>{const z=b.find(x=>x[0]==='zone'&&field(x,'name')?.[1]==='"GND_PLANE"');field(field(z,'connect_pads'),'clearance')[1]='0.2'},
+  b=>{const id=field(revision.added.find(x=>field(x,'net')?.[1]==='"USB_DM"'),'uuid')[1];b.splice(b.findIndex(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id),1)},
  ]){const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
 })

@@ -15,7 +15,7 @@ The 2026-10-20 [copper geometry review](copper-geometry-review.md) consolidates 
 | U16, U35 | Selected STM32G0B1CEU6 / C2829190 (UFQFPN48) and PCA9538PWR / C201530 with U37 reset buffer | Refresh exact JLC stock including spares; use this complete PCB/BOM/firmware revision |
 | Placement | Three exact advisories reviewed against actual copper | Renew review if advice or layout changes |
 | Silkscreen/text | **The retained baseline now contains 401 cosmetic findings. Native labels are unchanged by the copper revision.** | Raw DRC still reports them; no zero-DRC claim or implicit fabricator acceptance |
-| Fabrication and mounting | ENIG and all 63 filled/capped via-in-pad locations specified; physical approvals pending | Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md) |
+| Fabrication and mounting | ENIG and all 62 filled/capped via-in-pad locations specified; physical approvals pending | Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md) |
 
 The [sourcing review](sourcing-resolution.md) records why each replacement is acceptable or rejected. Stock is not reserved. These replacements address the former two-part shortage; current exact stock and assembler allocation still control procurement. Physical readiness remains separate.
 

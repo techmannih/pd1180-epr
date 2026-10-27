@@ -3,6 +3,7 @@ import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { kicadPadPosition } from './power-copper-geometry.mjs'
 import { mountingAlignment } from './motor-mounting-geometry.mjs'
 import { assemblyPolicyErrors } from './assembly-policy.mjs'
+import { sourceDesignPolicyErrors } from './source-design-policy.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const circuit = JSON.parse(await readFile('dist/index/circuit.json', 'utf8'))
@@ -18,6 +19,13 @@ const minimumViaDrill = standards.fabrication.minimum_via_drill_mm
 if (!Number.isFinite(minimumViaDrill) || minimumViaDrill < 0.3) errors.push('Via drill policy must enforce the user-required 0.30 mm minimum')
 const project = JSON.parse(await readFile(boardPath.replace(/\.kicad_pcb$/, '.kicad_pro'), 'utf8'))
 const projectRules = project.board?.design_settings?.rules
+errors.push(...sourceDesignPolicyErrors(await readFile('index.circuit.tsx', 'utf8'), standards, pcbBoard, project))
+const minimumTraceWidth = standards.fabrication.minimum_trace_width_mm
+if (!Number.isFinite(minimumTraceWidth) || minimumTraceWidth < .15) errors.push('Track policy must enforce the user-required 0.15 mm minimum')
+if (!close(pcbBoard?.min_trace_width, minimumTraceWidth) || !close(projectRules?.min_track_width, minimumTraceWidth)) errors.push('Source/native minimum trace-width rules differ from board policy')
+for (const match of boardSource.matchAll(/\(segment\s[\s\S]*?\(width ([0-9.]+)\)/g)) {
+  if (Number(match[1]) < minimumTraceWidth - 1e-9) errors.push(`Native track width ${match[1]} mm is below ${minimumTraceWidth} mm`)
+}
 for (const [key, minimum] of [['min_connection', standards.fabrication.minimum_connection_width_mm], ['min_groove_width', standards.fabrication.minimum_groove_width_mm]]) {
   if (!Number.isFinite(minimum) || minimum < .09 || !Number.isFinite(projectRules?.[key]) || projectRules[key] < minimum) errors.push(`${key}: missing/disabled copper-width constraint`)
 }

@@ -50,13 +50,16 @@ def main() -> None:
     output = Path(sys.argv[2])
     data = source.read_text()
 
-    # Use the reviewed fabrication clearance, including the short dense-pad
-    # escapes already checked in native KiCad. Power zones retain 0.16 mm.
+    # Width and spacing are separate requirements. Never relax the source's
+    # minimum width to accommodate a previous dense escape.
     standards = json.loads(Path("board-standards.json").read_text())
     clearance_um = round(1000 * standards["fabrication"]["minimum_trace_space_mm"])
+    width_um = round(1000 * standards["fabrication"]["minimum_trace_width_mm"])
+    if width_um < 150:
+        raise SystemExit("Routing must enforce at least 0.15 mm trace width")
     data, replaced = re.subn(
         r"\(clearance (?:90|100|200)\)\n      \(clearance (?:22\.5|25|50) \(type smd_smd\)\)",
-        f"(clearance {clearance_um})\n      (clearance 22.5 (type smd_smd))",
+        f"(clearance {clearance_um})\n      (clearance {clearance_um} (type smd_smd))",
         data,
         count=1,
     )
@@ -81,7 +84,7 @@ def main() -> None:
     if missing:
         raise SystemExit(f"power nets missing from default class: {missing}")
     default_names = [name for name in names if unquoted(name) not in POWER_NETS]
-    default_body = re.sub(r"\(width (?:150|200)\)", "(width 150)", match.group("body"))
+    default_body = re.sub(r"\(width (?:150|200)\)", f"(width {width_um})", match.group("body"))
     default_body = re.sub(r"\(clearance (?:90|100|200)\)", f"(clearance {clearance_um})", default_body)
     default_class = (
         "    (class kicad_default "

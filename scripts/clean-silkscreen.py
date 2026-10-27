@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pcbnew
 import wx
+from source_design_rules import policy as design_policy
 
 
 def clip_passive_outlines(board, footprints):
@@ -100,21 +101,22 @@ def main() -> None:
     board = pcbnew.LoadBoard(str(args.board))
     footprints = list(board.GetFootprints())
     clipped, clipping_objects = clip_passive_outlines(board, footprints) if args.clip_passive_outlines else ([], None)
+    fabrication = design_policy()
     settings = board.GetDesignSettings()
     settings.m_AllowSoldermaskBridgesInFPs = True
-    settings.m_TrackMinWidth = pcbnew.FromMM(0.09)
+    settings.m_TrackMinWidth = pcbnew.FromMM(fabrication["minimum_trace_width_mm"])
     settings.m_ViasMinSize = pcbnew.FromMM(0.50)
     settings.m_MinThroughDrill = pcbnew.FromMM(0.30)
-    settings.m_CopperEdgeClearance = pcbnew.FromMM(0.20)
+    settings.m_CopperEdgeClearance = pcbnew.FromMM(fabrication["minimum_copper_to_edge_mm"])
     # USB4105's manufacturer footprint has 0.145 mm between the locating
     # NPTH and adjacent copper.  The value below covers that fixed geometry;
-    # ordinary routing still follows the 0.09 mm trace/space and 0.20 mm edge
-    # rules recorded in board-standards.json.
+    # ordinary routing follows the separate width, spacing and edge limits
+    # recorded in board-standards.json; silk cleanup must not lower them.
     settings.m_HoleClearance = pcbnew.FromMM(0.13)
     settings.m_MinSilkTextHeight = pcbnew.FromMM(0.80)
     netclass = settings.m_NetSettings.GetDefaultNetclass()
-    netclass.SetClearance(pcbnew.FromMM(0.09))
-    netclass.SetTrackWidth(pcbnew.FromMM(0.15))
+    netclass.SetClearance(pcbnew.FromMM(fabrication["minimum_trace_space_mm"]))
+    netclass.SetTrackWidth(pcbnew.FromMM(fabrication["minimum_trace_width_mm"]))
     netclass.SetViaDiameter(pcbnew.FromMM(0.50))
     netclass.SetViaDrill(pcbnew.FromMM(0.30))
     removed = []
@@ -156,7 +158,8 @@ def main() -> None:
         "silkscreen_text_resized": len(resized),
         "same_footprint_mask_bridges_allowed": True,
         "embedded_footprint_ids_normalized": embedded_footprints,
-        "minimum_trace_space_mm": 0.09,
+        "minimum_trace_width_mm": fabrication["minimum_trace_width_mm"],
+        "minimum_trace_space_mm": fabrication["minimum_trace_space_mm"],
         "usb_connector_npth_clearance_mm": 0.13,
         "clipped_passive_outline_segments": clipped,
     })

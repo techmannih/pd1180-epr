@@ -1,5 +1,7 @@
 # Copper geometry correction — 2026-10-20
 
+**Current revision:** see [source-design-rules.md](source-design-rules.md) for the 2026-10-27 source/native rule correction and current evidence. The discussion and image below describe the earlier 2026-10-20 consolidation; its original report is retained in Git history at a58e277.
+
 The original main board `8139bca` passed connectivity while its minimum connection-width rule was disabled. Enabling **0.09 mm** exposed **17 connection-width findings**. This revision repairs those findings and consolidates the power pours. It preserves all **3,023 schematic records, 281 footprints, placements, pad nets, board outline, four mounting holes and firmware motion locks**.
 
 ## What changed

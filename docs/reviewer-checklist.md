@@ -2,7 +2,7 @@
 
 Start with `bun install --frozen-lockfile` and run `bun run review`. Machine checks produce evidence under `docs/`, `routing/` and `release/`; this checklist focuses reviewer time on design decisions and physical risks.
 
-For the 2026-10-20 copper revision, start with [copper-geometry-review.md](copper-geometry-review.md). Check the enabled 0.09 mm connection/groove constraints, actual refilled geometry, preserved Kelvin/USB/bypass paths, and before/after DC resistance screens. Nominal 2.4 mm pour envelopes and passing connectivity do not establish clipped-fill ampacity. The exact 401 cosmetic findings remain reported separately.
+For the current source/native rule correction, start with [source-design-rules.md](source-design-rules.md): actual track width >=0.15 mm, GND clearance 0.30 mm and GND edge inset 0.50 mm. The 0.09 mm connection/groove checks remain separate. Inspect preserved Kelvin/bypass paths, the corrected USB return path and fresh 18-path DC comparison. The exact 401 cosmetic findings remain reported separately.
 
 ## Reference review closure
 
@@ -48,7 +48,7 @@ For the 2026-10-20 copper revision, start with [copper-geometry-review.md](coppe
 - [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
 - [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
 - [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
-- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 63 via-in-pad locations with filled/capped processing.
+- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 62 via-in-pad locations with filled/capped processing.
 - [ ] All 44 final native same-side IC-to-capacitor paths and the separate buzzer bulk path pass `check:decoupling --native`; see `native-decoupling-check.json`.
 - [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
 - [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.

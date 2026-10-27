@@ -153,7 +153,7 @@
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.09,
+        "min_track_width": 0.15,
         "min_via_annular_width": 0.1,
         "min_via_diameter": 0.5,
         "solder_mask_to_copper_clearance": 0.0,
@@ -277,10 +277,10 @@
     }
   },
   "head": {
-    "created": "2026-10-15T22:12:04.139Z",
+    "created": "2026-10-27T04:00:21.978Z",
     "generator": "circuit-json-to-kicad",
     "generator_version": "0.0.1",
-    "modified": "2026-10-15T22:12:04.139Z",
+    "modified": "2026-10-27T04:00:21.978Z",
     "project_name": "pd1180-epr-r0.3"
   },
   "libraries": {
@@ -294,7 +294,7 @@
   "net_settings": {
     "classes": [
       {
-        "clearance": 0.09,
+        "clearance": 0.1,
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
@@ -345,103 +345,103 @@
   },
   "sheets": [
     [
-      "705bf6a1-21fe-4e31-a2c0-bda25d73b37b",
+      "01f8306b-f459-4b8f-baa3-051cf4d85fe9",
       "Root"
     ],
     [
-      "2b878047-66c8-49a6-98c9-2c2705f245a8",
+      "d16ecabe-6140-4986-ab90-d55e6b958903",
       "USB-C PD POWER"
     ],
     [
-      "d93f6052-6ceb-4243-a365-6895842aa0b8",
+      "998bc724-237e-4eef-a6cf-77a9710ab953",
       "PD Controller and EEPROM"
     ],
     [
-      "348c2e31-c8c2-47ea-855d-ea74a6557cd4",
+      "0d53a0e8-e905-4072-b8c4-42bf5d72f530",
       "PD Backup Supply"
     ],
     [
-      "8c85a153-32ab-429e-8f24-1388995faec1",
+      "39476a8d-a00a-433f-86d1-e820c17303dd",
       "Motor Backup Supply"
     ],
     [
-      "07d49124-1aa3-4ad3-b5df-72f0c23ee773",
+      "39becfb3-eb49-449b-bfda-58288a1e47e0",
       "Logic Supply Selection and Power Permit"
     ],
     [
-      "c4aaf989-4cef-4ed5-b6b4-355990129347",
+      "42b298fd-1245-418b-9410-ed4eca2fe09f",
       "Protected 48 V Motor Bus"
     ],
     [
-      "a900abbd-a450-446c-9bed-bf13409b1f99",
+      "c118eb67-6068-441e-9d81-252655f56fab",
       "Motion Controller"
     ],
     [
-      "e72f0e24-266c-4cc3-bd36-65f6e8cd5928",
+      "4d5302e4-619f-444a-9419-8821a37a7825",
       "Onboard Motion and Hardware Enable"
     ],
     [
-      "3d733018-a1ca-4c8a-a234-07f635f06f21",
+      "a291e20d-22fd-4298-a180-8f6d2b3cc900",
       "Motor Phase A Power Bridge"
     ],
     [
-      "709e7fd8-e0b0-4e12-b786-c1310ced1c27",
+      "4f7a7528-001f-4aaf-bb49-39f2c7454615",
       "Motor Phase B Power Bridge"
     ],
     [
-      "6b7193a0-f21f-463e-9407-97d46ff5bc40",
+      "21a4a9f2-1dc1-4587-96fa-175eb77fc371",
       "Brake Reference and Turn-on Threshold"
     ],
     [
-      "5685ed83-a203-4df9-8e63-cd064478b5cb",
+      "b906c162-2837-4b03-a4c1-7c7126b09719",
       "Overvoltage Inhibit and Brake Driver"
     ],
     [
-      "415425bb-5a23-4069-937a-4953d9a72be2",
+      "9c8ece67-6314-4d21-8fbc-7e6df8f202b2",
       "MCU Clock Memory and Debug"
     ],
     [
-      "101f2470-2ef8-41d4-b31b-ed79166acd3f",
+      "214ed9bf-87c5-40f6-9e32-20be73f9db65",
       "Optional Shaft Encoder"
     ],
     [
-      "dbaad384-877b-452b-86eb-fae9c4623265",
+      "f89f0fb2-7ca5-472c-8050-91f485f28d09",
       "USB DATA and Attach Sense"
     ],
     [
-      "85156552-bd5c-4c32-82f6-4f230914b476",
+      "982ad937-5399-4c2a-bb35-4daf4af00282",
       "Local Start and Stop"
     ],
     [
-      "178e56e7-e916-4291-8aaf-cb2a24565fcb",
+      "45d0c212-7a32-44e0-82ad-df34ca550dca",
       "USB Logic Power"
     ],
     [
-      "25e53b79-36dd-4fb3-8b81-cf0a21d91e95",
+      "757667e2-f608-4ea2-b342-bb62bcf9539d",
       "Temperature and Bus Diagnostics"
     ],
     [
-      "e657dad1-2e0c-4cd9-babb-fb5792ed1c04",
+      "ba6589ba-f987-4a92-911d-e6dab1462fa2",
       "Phase Current Diagnostics"
     ],
     [
-      "58910b3e-315a-4aa9-ba57-f9803b6b443f",
+      "4745ff2b-95a8-459a-8723-0831583c1823",
       "Regulated Driver Supply"
     ],
     [
-      "a4873f34-bb34-4370-9bfd-ac182a5e373c",
+      "518ec986-383f-46c1-a3c7-3db855c237de",
       "Status and Independent Power Indication"
     ],
     [
-      "11b7adfe-de15-48ec-8a93-9d9d705c24c9",
+      "766524d8-beaa-4c75-836d-5413502cac4a",
       "Audible Fault Alarm"
     ],
     [
-      "0017556a-32b0-46c6-a964-962e36141d18",
+      "f3167a78-e61f-4240-9799-09aa33a48015",
       "PD Programming and Power Probes"
     ],
     [
-      "82935d6a-909b-4e5b-91b4-e2b1c4b10830",
+      "c35fc779-dce4-461b-95a8-8de0cede3cc6",
       "Brake Continuity Preflight"
     ]
   ],

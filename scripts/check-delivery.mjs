@@ -17,6 +17,8 @@ try {
 const checked = []
 for (const [source, delivered] of [
   ['docs/copper-geometry-review.md', 'release/copper-geometry-review.md'],
+  ['docs/source-design-rules.md', 'release/source-design-rules.md'],
+  ['docs/source-design-rules-check.json', 'release/source-design-rules-check.json'],
   ['engineering/copper-geometry-review.json', 'release/copper-geometry-review.json'],
   ['docs/copper-contact-review.png', 'release/copper-contact-review.png'],
 ]) if (!(await readFile(source)).equals(await readFile(delivered).catch(() => Buffer.alloc(0)))) errors.push(`${delivered}: stale copper review evidence`)
