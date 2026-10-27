@@ -12,4 +12,4 @@ const [board, project, drc, standards] = await Promise.all([
 assertReviewDrc(drc)
 const errors = copperGeometryErrors(board, project, drc, standards)
 if (errors.length) throw new Error(errors.join('\n'))
-console.log('Copper rules active at >=0.09 mm; consolidated/chamfered power zones; zero native copper-width/clearance/connectivity/parity findings. Existing cosmetic findings retained.')
+console.log('Filled-copper connection/groove rules active at >=0.09 mm (track width is checked separately at >=0.15 mm); consolidated/chamfered power zones; zero native copper-width/clearance/connectivity/parity findings. Existing cosmetic findings retained.')

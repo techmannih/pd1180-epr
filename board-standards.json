@@ -22,7 +22,7 @@
     "layers": 4,
     "finished_thickness_mm": 1.6,
     "copper_oz_all_layers": 1,
-    "minimum_trace_space_mm": 0.09,
+    "minimum_trace_space_mm": 0.1,
     "minimum_copper_to_edge_mm": 0.2,
     "minimum_silkscreen_text_height_mm": 0.8,
     "via_type": "through",
@@ -65,7 +65,15 @@
     },
     "minimum_via_drill_mm": 0.3,
     "minimum_connection_width_mm": 0.09,
-    "minimum_groove_width_mm": 0.09
+    "minimum_groove_width_mm": 0.09,
+    "minimum_trace_width_mm": 0.15,
+    "ground_plane": {
+      "net": "GND",
+      "layer": "inner1",
+      "clearance_mm": 0.3,
+      "board_edge_margin_mm": 0.5,
+      "minimum_fill_width_mm": 0.25
+    }
   },
   "project_geometry": {
     "board_width_mm": 85.9,
@@ -227,7 +235,9 @@
       "release/encoder-top-eco.json",
       "release/copper-geometry-review.md",
       "release/copper-geometry-review.json",
-      "release/copper-contact-review.png"
+      "release/copper-contact-review.png",
+      "release/source-design-rules.md",
+      "release/source-design-rules-check.json"
     ],
     "zip_files": [
       "release/pd1180-epr-r0.3-gerbers.zip",

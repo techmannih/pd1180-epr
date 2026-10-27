@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## Source design rule correction — 2026-10-27
+
+The user explicitly requires the existing source minimum trace width of 0.15 mm, GND pour clearance of 0.30 mm and GND pour board-edge margin of 0.50 mm to be enforced by the native generation scripts and actual routed board. Affected copper may be widened/rerouted; preserve unrelated schematic, footprints, mounting holes and safety functions. Do not lower these limits to obtain a passing DRC. Keep track width separate from spacing: native default copper spacing must match the compiled source's 0.10 mm setting. GND edge margin is pour-specific and does not silently change every copper-to-edge constraint. Validate source/native/published consistency and refilled native geometry before replacing release artifacts. Older 0.09 mm track-width overrides are superseded; historical reports are not evidence for this revision.
+
 This file is the first design instruction for any AI or reviewer working in this repository. Read `board-standards.json`, `hardware-contract.json`, `docs/reviewer-checklist.md` and `scripts/README.md` before changing the circuit, placement, routing or release files.
 
 ## Rule hierarchy

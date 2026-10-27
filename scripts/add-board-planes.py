@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import pcbnew
 import wx
+from source_design_rules import ground_outline, policy as design_policy
 
 
 PLANES = (("GND", pcbnew.In1_Cu), ("V3V3", pcbnew.In2_Cu))
@@ -27,6 +29,9 @@ def main() -> None:
         raise SystemExit(f"expected one board outline, found {outline.OutlineCount()}")
 
     net_by_name = {net.GetNetname(): net for net in board.GetNetInfo().NetsByName().values()}
+    fabrication = design_policy()
+    policy = fabrication['ground_plane']
+    inset = ground_outline(board, fabrication)
     added: list[dict[str, object]] = []
     for net_name, layer in PLANES:
         net = net_by_name.get(net_name)
@@ -35,9 +40,12 @@ def main() -> None:
         zone = pcbnew.ZONE(board)
         zone.SetLayer(layer)
         zone.SetNet(net)
-        zone.SetOutline(outline)
-        zone.SetLocalClearance(pcbnew.FromMM(0.20))
-        zone.SetMinThickness(pcbnew.FromMM(0.15))
+        is_ground = net_name == policy['net']
+        zone.Outline().Append(inset if is_ground else outline)
+        zone.SetLocalClearance(pcbnew.FromMM(policy['clearance_mm'] if is_ground else .20))
+        zone.SetMinThickness(pcbnew.FromMM(policy['minimum_fill_width_mm'] if is_ground else .15))
+        if is_ground:
+            zone.SetZoneName('GND_PLANE')
         zone.SetPadConnection(pcbnew.ZONE_CONNECTION_THERMAL)
         zone.SetThermalReliefGap(pcbnew.FromMM(0.25))
         zone.SetThermalReliefSpokeWidth(pcbnew.FromMM(0.30))

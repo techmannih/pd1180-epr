@@ -18,11 +18,17 @@ xy = lambda p: (pcbnew.ToMM(p.x), pcbnew.ToMM(p.y))
 tracks = list(board.GetTracks())
 vias = [t for t in tracks if isinstance(t, pcbnew.PCB_VIA)]
 ground_vias = [xy(v.GetPosition()) for v in vias if v.GetNetname() == 'GND']
-planes = [z.GetFilledPolysList(pcbnew.In2_Cu) for z in board.Zones()
-          if not z.GetIsRuleArea() and z.GetNetname() == 'GND' and z.IsOnLayer(pcbnew.In2_Cu)]
+ground_zones = [z for z in board.Zones() if not z.GetIsRuleArea() and z.GetNetname() == 'GND' and z.IsOnLayer(pcbnew.In2_Cu)]
+planes = [z.GetFilledPolysList(pcbnew.In2_Cu) for z in ground_zones]
+# Exclude only each signal's own unavoidable circular via antipad, derived
+# from real copper radius and plane clearance. Never excuse another net's gap.
+plane_clearance = max((pcbnew.ToMM(z.GetLocalClearance()) for z in ground_zones), default=0)
+if abs(plane_clearance - .30) > 1e-9: raise ValueError('USB reference plane must use the 0.30 mm ground policy')
 errors, results = [], []
 for net in nets:
-    transfers = [xy(v.GetPosition()) for v in vias if v.GetNetname() == net]
+    signal_vias = [v for v in vias if v.GetNetname() == net]
+    transfers = [xy(v.GetPosition()) for v in signal_vias]
+    antipads = [(xy(v.GetPosition()), v.GetWidth(pcbnew.In2_Cu)/2e6 + plane_clearance) for v in signal_vias]
     lengths, uncovered, samples = {}, [], 0
     for t in tracks:
         if isinstance(t, pcbnew.PCB_VIA) or t.GetNetname() != net:
@@ -37,7 +43,7 @@ for net in nets:
             ratio = min(1, i * .05 / length) if length else 0
             p = (a[0] + (b[0] - a[0]) * ratio, a[1] + (b[1] - a[1]) * ratio)
             # A through signal via necessarily has an antipad in the ground plane.
-            if any(math.dist(p, v) <= .45 for v in transfers):
+            if any(math.dist(p, v) <= radius + .001 for v, radius in antipads):
                 continue
             samples += 1
             point = pcbnew.VECTOR2I(pcbnew.FromMM(p[0]), pcbnew.FromMM(p[1]))
@@ -52,10 +58,11 @@ for net in nets:
         errors.append(f'{net}: a signal transition lacks ground stitching within 2 mm')
     results.append(dict(net=net, length_mm={k: round(v, 3) for k, v in lengths.items()},
         checked_samples=samples, uncovered_samples=uncovered,
-        maximum_ground_stitch_distance_mm=round(max(distances, default=0), 3)))
+        maximum_ground_stitch_distance_mm=round(max(distances, default=0), 3),
+        signal_via_antipads=[dict(xy_mm=v,radius_mm=radius) for v,radius in antipads]))
 report = dict(board_sha256=hashlib.sha256(args.board.read_bytes()).hexdigest(),
     checker_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-    sample_pitch_mm=.05, signal_via_antipad_exclusion_radius_mm=.45,
+    sample_pitch_mm=.05, ground_clearance_mm=plane_clearance, antipad_polygon_tolerance_mm=.001,
     maximum_ground_stitch_distance_mm=2, nets=results, errors=errors,
     limitation='Geometric return-path check for the full-speed interface; not an impedance, eye-diagram or USB compliance measurement.')
 args.output.write_text(json.dumps(report, indent=2) + '\n')

@@ -44,6 +44,7 @@ verifiedInputPaths.push('scripts/check-usb-access.mjs', 'scripts/usb-access.test
 verifiedInputPaths.push('scripts/render-local-mechanical.mjs', 'scripts/brake-assembly.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'engineering/mechanical/brake-evidence.json', 'engineering/mechanical/Vishay-LPS300-manufacturer.zip', 'engineering/encoder-top-eco.json', 'docs/brake-assembly.md')
 verifiedInputPaths.push('scripts/copper-geometry-policy.mjs', 'scripts/check-copper-geometry.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/refine-copper-geometry.py')
 verifiedInputPaths.push('engineering/copper-geometry-review.json', 'docs/copper-geometry-review.md', 'docs/copper-contact-review.png', 'scripts/export-filled-power-copper.py', 'scripts/screen-filled-power-copper.py', 'scripts/test-filled-power-copper.py')
+verifiedInputPaths.push('engineering/source-design-rule-eco.json', 'engineering/source-design-rule-delta.zip', 'scripts/apply-source-rule-eco.mjs', 'docs/source-design-rules.md', 'scripts/source-design-policy.mjs', 'scripts/source-design-policy.test.mjs', 'scripts/source_design_rules.py', 'scripts/test-source-design-rules.py', 'scripts/check-source-design-rules.mjs', 'scripts/add-board-planes.py', 'scripts/clean-silkscreen.py')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -80,6 +81,8 @@ const checks = [
   ['inventory-evidence', ['scripts/check-inventory.mjs', '--review']],
   ['assembly', ['run', 'check:assembly', '--review']],
   ['board-standards', ['run', 'check:standards']],
+  ['source-design-policy-tests', ['test', 'scripts/source-design-policy.test.mjs']],
+  ...(routed ? [['source-design-rules', ['scripts/check-source-design-rules.mjs']]] : []),
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
   ...(routed ? [['copper-geometry', ['scripts/check-copper-geometry.mjs']]] : []),

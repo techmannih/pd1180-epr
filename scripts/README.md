@@ -2,6 +2,10 @@
 
 Every executable script is listed here so a reviewer can understand the release pipeline without reverse-engineering the repository. `bun run check:script-catalog` fails when a script is added without documentation.
 
+The source rule consistency check is mandatory: `source-design-policy.mjs` reads the actual TSX board/GND attributes and compares compiled and native project settings; `source-design-policy.test.mjs` rejects the former 0.09 mm override and weakened GND limits. `source_design_rules.py` applies/audits the real GND outline against a 0.50 mm inset and 0.30 mm clearance and measures every native track against 0.15 mm. `check-source-design-rules.mjs` runs both source and native checks during routed verification. Width, spacing and a pour's edge margin are separate constraints.
+
+`test-source-design-rules.py` builds a disposable KiCad fixture: reject a 0.09 mm track and a 0.20 mm-clearance, non-inset ground zone; apply the GND policy without concealing the thin track; accept only after actual track geometry reaches 0.15 mm.
+
 | Script | Purpose |
 |---|---|
 | `add-board-planes.py` | Adds board-outline-conformal GND and V3V3 planes to the routed four-layer PCB. |
@@ -152,3 +156,7 @@ The combined harness GLB is retained inside `harness-proposal.zip` to keep the r
 
 - `refine-copper-geometry.py`: reproduces the 2026-10-20 copper-only ECO from hash-locked main 8139bca. Repairs U16 pad entry, Q5/U12 redundant corner contacts and the source-matched Kelvin-B bend; regenerates its pour keepout, consolidates/chamfers power zones and enables 0.09 mm connection/groove constraints. Requires fresh native DRC, Kelvin isolation and filled-copper screens before export.
 - `copper-geometry-policy.mjs`, `copper-geometry-policy.test.mjs`, `check-copper-geometry.mjs`: fail review when connection-width checking is disabled/suppressed, power zones lack the required clearance/fill/chamfer settings, legacy per-segment corridors return, or native copper findings remain. Existing exact cosmetic disposition stays separate.
+
+- `apply-source-rule-eco.mjs`: reads the checksum/CRC-checked `engineering/source-design-rule-delta.zip` and replays the exact 2026-10-27 copper delta only on hash-matched main a58e277 PCB/project, into a new directory. Preserves every non-copper record; verifies the complete unfilled result before writing. Refill/check with KiCad before use. See `docs/source-design-rules.md`.
+
+`export-kicad-route.mjs` requires KiCad Python (`KICAD_PYTHON`, or the detected macOS runtime) for exact ground-inset enforcement and a native geometry audit. It fails closed if the native runtime or requested rules are unavailable.

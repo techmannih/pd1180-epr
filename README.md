@@ -1,5 +1,7 @@
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
+Current copper/rule revision: [source/native design-rule correction](docs/source-design-rules.md), with 0.15 mm minimum tracks, 0.30 mm GND clearance and 0.50 mm GND edge inset. Existing order/qualification holds remain.
+
 Component names come from native footprint references, including SW1 and SW2; custom imports use `{NAME}`. Q5, L3, R4, C92, C89 and R9 use inward reference anchors to keep their names inside the board. No names are hidden or replaced with detached captions. [Edge labels before](previews/edge-labels-before.png) · [Edge labels after](previews/edge-labels-after.png). The earlier pre-label screenshot is preserved byte-for-byte in [native-reference history](previews/native-reference-history.zip).
 
 **Current protection and label revision:** unused U1 SBU wiring is corrected in source/native copper and a reviewed TI full-flash candidate is included. All native references remain visible and inside the outline. Native DRC retains 401 silkscreen/text findings, with zero unconnected items, parity issues and ERC violations. Review archives include these findings; fabrication and motor operation remain held. See [completion and acceptance](docs/completion-handoff.md), [readiness](docs/readiness.md) and [PD review](docs/pd-configuration-review.md).
