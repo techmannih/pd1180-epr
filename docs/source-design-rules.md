@@ -1,5 +1,7 @@
 # Source/native design-rule correction — 2026-10-27
 
+The current board additionally includes the [2026-10-28 parallel VMOTOR feed](copper-geometry-review.md). All rules below are unchanged and rechecked; the replay instructions here reconstruct the earlier rule correction, while the feed has its own main-952de54 baseline and replay command.
+
 The previous main PCB did not implement all of the rules already declared in `index.circuit.tsx`. Its native project allowed 0.09 mm tracks; the native GND plane builder used 0.20 mm clearance. A passing report under those settings did not prove compliance with the source's requirements. This revision corrects the repository scripts and actual copper. It does not attribute those mismatches solely to the website's KiCad exporter.
 
 | Constraint | Source, policy and delivered native PCB |

@@ -2,7 +2,7 @@
 
 **Order hold remains. No assembled board has passed programming or powered qualification. Motion locks remain enabled.** Merging the design does not complete the checklist below. Check the timestamped [stock report](stock-report.json) and [verification result](verification.json) for the current revision.
 
-The 2026-10-20 [copper geometry review](copper-geometry-review.md) consolidates the power pours and closes all 17 findings exposed by enabling 0.09 mm connection-width checks. Native copper/clearance, connectivity, parity and ERC pass. These are CAD results, not a temperature-rise or motor-operation qualification. The fresh stock check records shortages for R60, BZ1, R65 and U6; no part substitution is included in this copper revision.
+The [2026-10-28 parallel VMOTOR feed](copper-geometry-review.md) improves the modeled supply paths while retaining all original copper, the active source rules, zero native electrical errors and 401 cosmetic warnings. DC screening is not powered qualification. Fresh official available-order quantities are zero for U30 (C37593), U13/U14 (C105188), R60 (C326731), BZ1 (C391032), U6 (C1850276), U16 (C2829190), J1/J10 (C3025063). All 85 fitted part identities/packages were verified; no substitutions are included.
 
 ## Design and procurement
 

@@ -45,6 +45,7 @@ verifiedInputPaths.push('scripts/render-local-mechanical.mjs', 'scripts/brake-as
 verifiedInputPaths.push('scripts/copper-geometry-policy.mjs', 'scripts/check-copper-geometry.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/refine-copper-geometry.py')
 verifiedInputPaths.push('engineering/copper-geometry-review.json', 'docs/copper-geometry-review.md', 'docs/copper-contact-review.png', 'scripts/export-filled-power-copper.py', 'scripts/screen-filled-power-copper.py', 'scripts/test-filled-power-copper.py')
 verifiedInputPaths.push('engineering/source-design-rule-eco.json', 'engineering/source-design-rule-delta.zip', 'scripts/apply-source-rule-eco.mjs', 'docs/source-design-rules.md', 'scripts/source-design-policy.mjs', 'scripts/source-design-policy.test.mjs', 'scripts/source_design_rules.py', 'scripts/test-source-design-rules.py', 'scripts/check-source-design-rules.mjs', 'scripts/add-board-planes.py', 'scripts/clean-silkscreen.py')
+verifiedInputPaths.push('routing/power-feed.json', 'scripts/power-feed.mjs', 'scripts/power-feed.test.mjs', 'release/power-feed-review.webp')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -83,6 +84,7 @@ const checks = [
   ['board-standards', ['run', 'check:standards']],
   ['source-design-policy-tests', ['test', 'scripts/source-design-policy.test.mjs']],
   ...(routed ? [['source-design-rules', ['scripts/check-source-design-rules.mjs']]] : []),
+  ...(routed ? [['power-feed', ['scripts/power-feed.mjs']], ['power-feed-tests', ['test', 'scripts/power-feed.test.mjs']]] : []),
   ['local-copper', ['run', 'check:local-copper']],
   ['shorts', ['run', 'check:shorts']],
   ...(routed ? [['copper-geometry', ['scripts/check-copper-geometry.mjs']]] : []),

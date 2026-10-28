@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.4.1-ECO",
-  "status": "copper-geometry-reviewed-order-held",
+  "status": "parallel-vmotor-feed-reviewed-order-held",
   "fabrication_orderable": false,
   "production_released": false,
   "requirements": {
@@ -52,7 +52,7 @@
   },
   "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
-    "2026-10-20 official stock evidence records zero available quantity for R60/C326731, BZ1/C391032, R65/C723637 and U6/C1850276. This copper revision does not substitute parts; refresh inventory and obtain an accepted sourcing path before ordering.",
+    "2026-10-28 official available-order quantity is zero for U30 (C37593), U13/U14 (C105188), R60 (C326731), BZ1 (C391032), U6 (C1850276), U16 (C2829190), J1/J10 (C3025063). All 85 exact identities/packages were verified. This routing revision makes no substitutions; refresh stock and qualify a sourcing path before ordering.",
     "Alternative-part stock/package evidence includes unavailable candidates; alternatives never authorize automatic substitution.",
     "Fabricator acceptance of filled/capped via-in-pad treatment and USB stackup/impedance remains unrecorded.",
     "Four existing holes are retained. Actual rear thread/depth, secure motor mounting, connector access and strain relief are unverified; the 3D view is alignment-only.",
@@ -65,14 +65,17 @@
   ],
   "current_stock_evidence": "docs/stock-report.json",
   "stock_summary": {
-    "checked_at": "2026-10-20T01:07:03.226Z",
-    "available": 81,
+    "checked_at": "2026-10-28T01:35:08.203Z",
+    "available": 78,
     "total": 85,
     "unavailable_codes": [
+      "C37593",
+      "C105188",
       "C326731",
       "C391032",
-      "C723637",
-      "C1850276"
+      "C1850276",
+      "C2829190",
+      "C3025063"
     ],
     "not_reserved": true
   },
