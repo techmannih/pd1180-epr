@@ -160,3 +160,5 @@ The combined harness GLB is retained inside `harness-proposal.zip` to keep the r
 - `apply-source-rule-eco.mjs`: reads the checksum/CRC-checked `engineering/source-design-rule-delta.zip` and replays the exact 2026-10-27 copper delta only on hash-matched main a58e277 PCB/project, into a new directory. Preserves every non-copper record; verifies the complete unfilled result before writing. Refill/check with KiCad before use. See `docs/source-design-rules.md`.
 
 `export-kicad-route.mjs` requires KiCad Python (`KICAD_PYTHON`, or the detected macOS runtime) for exact ground-inset enforcement and a native geometry audit. It fails closed if the native runtime or requested rules are unavailable.
+
+- `power-feed.mjs`, `power-feed.test.mjs`: reproduce the exact seven 1.5 mm B.Cu VMOTOR feed additions from the hash-locked main PCB/project, and reject missing/narrowed/wrong-net feed copper or any unrelated original native-object change. `--apply BASELINE.kicad_pcb NEW_DIRECTORY` creates a review copy; refill and native DRC remain mandatory. Policy and exact segments are in `routing/power-feed.json`.

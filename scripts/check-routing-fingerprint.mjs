@@ -65,6 +65,7 @@ const normalized = {
 }
 
 const routingInputs = ['board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/prepare-routing-rules.py', 'scripts/add-board-planes.py', 'scripts/export-kicad-route.mjs', 'scripts/source-design-policy.mjs', 'scripts/source_design_rules.py', 'scripts/clean-silkscreen.py']
+routingInputs.push('routing/power-feed.json', 'scripts/power-feed.mjs')
 const routingInputHashes = Object.fromEntries(await Promise.all(routingInputs.map(async (path) => [
   path, createHash('sha256').update(await readFile(path)).digest('hex'),
 ])))
