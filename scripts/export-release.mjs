@@ -49,6 +49,9 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
 const copies = [
+  ['docs/usb-hole-clearance.md', 'usb-hole-clearance.md'],
+  ['docs/usb-hole-clearance.png', 'usb-hole-clearance.png'],
+  ['engineering/usb-hole-clearance.json', 'usb-hole-clearance.json'],
   ['routing/power-feed.json', 'power-feed.json'],
   ['docs/copper-geometry-review.md', 'copper-geometry-review.md'],
   ['docs/source-design-rules.md', 'source-design-rules.md'],

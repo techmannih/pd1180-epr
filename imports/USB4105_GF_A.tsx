@@ -39,6 +39,9 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
   ]
 }}
       manufacturerPartNumber="USB4105-GF-A-060"
+      // Hole-facing edge of pads 6/7/18/19 is shortened by 0.08 mm.
+      // Keep width, outer solder edge and all mechanical holes unchanged.
+      // See docs/usb-hole-clearance.md for this custom land-pattern review.
       footprint={<footprint insertionDirection="from_bottom">
         <hole pcbX="2.890012mm" pcbY="1.0646474mm" diameter="0.649986mm" />
 <hole pcbX="-2.890012mm" pcbY="1.0646474mm" diameter="0.649986mm" />
@@ -47,8 +50,8 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
 <platedhole  portHints={["pin3"]} pcbX="4.320032mm" pcbY="-2.6356246mm" holeWidth="0.700024mm" holeHeight="1.3999972mm" outerWidth="1.0999978mm" outerHeight="1.7999964mm" shape="pill" />
 <platedhole  portHints={["pin4"]} pcbX="-4.320032mm" pcbY="-2.6356246mm" holeWidth="0.700024mm" holeHeight="1.3999972mm" outerWidth="1.0999978mm" outerHeight="1.7999964mm" shape="pill" />
 <smtpad portHints={["pin5"]} pcbX="3.350006mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
-<smtpad portHints={["pin6"]} pcbX="3.050032mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
-<smtpad portHints={["pin7"]} pcbX="2.549906mm" pcbY="2.1098574mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
+<smtpad portHints={["pin6"]} pcbX="3.050032mm" pcbY="2.1496034mm" width="0.2999994mm" height="1.0700104mm" shape="rect" />
+<smtpad portHints={["pin7"]} pcbX="2.549906mm" pcbY="2.1498574mm" width="0.2999994mm" height="1.0700104mm" shape="rect" />
 <smtpad portHints={["pin8"]} pcbX="2.249932mm" pcbY="2.1098574mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
 <smtpad portHints={["pin9"]} pcbX="1.75006mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
 <smtpad portHints={["pin10"]} pcbX="1.24968mm" pcbY="2.1106194mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
@@ -59,8 +62,8 @@ export const USB4105_GF_A = (props: ChipProps<typeof pinLabels>) => {
 <smtpad portHints={["pin15"]} pcbX="-1.249934mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
 <smtpad portHints={["pin16"]} pcbX="-1.75006mm" pcbY="2.1106194mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
 <smtpad portHints={["pin17"]} pcbX="-2.249932mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
-<smtpad portHints={["pin18"]} pcbX="-2.549906mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
-<smtpad portHints={["pin19"]} pcbX="-3.050032mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
+<smtpad portHints={["pin18"]} pcbX="-2.549906mm" pcbY="2.1496034mm" width="0.2999994mm" height="1.0700104mm" shape="rect" />
+<smtpad portHints={["pin19"]} pcbX="-3.050032mm" pcbY="2.1496034mm" width="0.2999994mm" height="1.0700104mm" shape="rect" />
 <smtpad portHints={["pin20"]} pcbX="-3.350006mm" pcbY="2.1096034mm" width="0.2999994mm" height="1.1500104mm" shape="rect" />
 <fabricationnotepath route={[{"x":4.4699935999999525,"y":-1.5190659999998388},{"x":4.4699935999999525,"y":0.2778824000001805}]} />
 <fabricationnotepath route={[{"x":-4.469993600000066,"y":-3.7522085999999035},{"x":-4.469993600000066,"y":-5.254948799999966},{"x":4.4699935999999525,"y":-5.254948799999966},{"x":4.4699935999999525,"y":-3.7522085999999035}]} />

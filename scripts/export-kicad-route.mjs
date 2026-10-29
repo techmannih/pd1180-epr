@@ -102,7 +102,7 @@ projectData.board.design_settings.defaults ??= {}
 projectData.board.design_settings.defaults.zones ??= {}
 Object.assign(projectData.board.design_settings.rules, {
   min_copper_edge_clearance: fabrication.minimum_copper_to_edge_mm,
-  min_hole_clearance: 0.13,
+  min_hole_clearance: fabrication.minimum_copper_to_hole_mm,
   min_through_hole_diameter: 0.3,
   min_track_width: fabrication.minimum_trace_width_mm,
   min_connection: fabrication.minimum_connection_width_mm,

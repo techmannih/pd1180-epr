@@ -21,7 +21,7 @@ export function sourceDesignPolicy(text) {
     if (!/^\d+(?:\.\d+)?mm$/.test(value || '')) throw new Error(`${label} must be an explicit mm value for the design-rule audit`)
     return Number(value.slice(0, -2))
   }
-  return { minimum_trace_width_mm: mm(board.minTraceWidth, 'minTraceWidth'), ground_plane: {
+  return { minimum_trace_width_mm: mm(board.minTraceWidth, 'minTraceWidth'), minimum_copper_to_hole_mm: mm(board.minTraceToHoleEdgeClearance, 'minTraceToHoleEdgeClearance'), ground_plane: {
     net: pour.connectsTo?.replace(/^net\./, ''), layer: pour.layer,
     clearance_mm: mm(pour.clearance, 'GND clearance'), board_edge_margin_mm: mm(pour.boardEdgeMargin, 'GND edge margin'),
   } }
@@ -35,6 +35,10 @@ export function sourceDesignPolicyErrors(text, standards, compiledBoard, project
   if (!(policy.ground_plane?.board_edge_margin_mm >= .50)) errors.push('GND edge margin must be >=0.50 mm')
   requireEqual(source.minimum_trace_width_mm, policy.minimum_trace_width_mm, 'TSX/standards width')
   requireEqual(compiledBoard?.min_trace_width, policy.minimum_trace_width_mm, 'Compiled/standards width')
+  if (!(policy.minimum_copper_to_hole_mm >= .20)) errors.push('Copper-to-hole minimum must be >=0.20 mm')
+  requireEqual(source.minimum_copper_to_hole_mm, policy.minimum_copper_to_hole_mm, 'TSX/standards hole clearance')
+  requireEqual(compiledBoard?.min_trace_to_hole_edge_clearance, policy.minimum_copper_to_hole_mm, 'Compiled/standards hole clearance')
+  requireEqual(project.board?.design_settings?.rules?.min_hole_clearance, policy.minimum_copper_to_hole_mm, 'Native/standards hole clearance')
   requireEqual(project.board?.design_settings?.rules?.min_track_width, policy.minimum_trace_width_mm, 'Native/standards width')
   for (const key of ['clearance_mm', 'board_edge_margin_mm']) requireEqual(source.ground_plane[key], policy.ground_plane?.[key], `TSX/standards GND ${key}`)
   for (const key of ['net', 'layer']) if (source.ground_plane[key] !== policy.ground_plane?.[key]) errors.push(`GND ${key} differs from source`)

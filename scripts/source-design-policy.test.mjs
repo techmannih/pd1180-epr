@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs'
 import { sourceDesignPolicy, sourceDesignPolicyErrors, sourceDesignGeometryErrors } from './source-design-policy.mjs'
 const source = readFileSync('index.circuit.tsx', 'utf8')
 const standards = JSON.parse(readFileSync('board-standards.json'))
-const board = { min_trace_width: .15, min_trace_to_pad_edge_clearance: .10 }
-const project = { board: { design_settings: { rules: { min_track_width: .15 } } }, net_settings: { classes: [{ name: 'Default', clearance: .10 }] } }
+const board = { min_trace_width: .15, min_trace_to_pad_edge_clearance: .10, min_trace_to_hole_edge_clearance: .20 }
+const project = { board: { design_settings: { rules: { min_track_width: .15, min_hole_clearance: .20 } } }, net_settings: { classes: [{ name: 'Default', clearance: .10 }] } }
 test('source, compiled rules and native project agree on the requested limits', () => {
   expect(sourceDesignPolicyErrors(source, standards, board, project)).toEqual([])
   expect(sourceDesignPolicy(source).ground_plane).toEqual({net:'GND',layer:'inner1',clearance_mm:.30,board_edge_margin_mm:.50})
@@ -32,4 +32,10 @@ test('actual geometry evidence rejects stale hashes, narrow tracks and non-inset
   for (const change of [r=>r.board_sha256='old',r=>r.checker_sha256='old',r=>r.minimum_actual_track_width_mm=.09,r=>r.thin_track_uuids.push('thin'),r=>r.ground_zones[0].clearance_mm=.2,r=>r.ground_zones[0].outline_outside_required_inset_mm2=.01,r=>r.ground_zones=[]]) {
     const r=structuredClone(report);change(r);expect(sourceDesignGeometryErrors(r,standards,bindings)).not.toEqual([])
   }
+})
+
+test('reject a native 0.13 mm hole override and weakened compiled hole clearance', () => {
+  const p = structuredClone(project); p.board.design_settings.rules.min_hole_clearance = .13
+  expect(sourceDesignPolicyErrors(source, standards, board, p)).toContain('Native/standards hole clearance: 0.13 != 0.2')
+  expect(sourceDesignPolicyErrors(source, standards, {...board,min_trace_to_hole_edge_clearance:.13}, project)).toContain('Compiled/standards hole clearance: 0.13 != 0.2')
 })
