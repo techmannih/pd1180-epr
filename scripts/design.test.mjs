@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 import { circuitSourceHash } from './circuit-source-hash.mjs'
+import { checkPcbComponentsOutOfBoard } from '@tscircuit/checks'
 
 test('native evidence ignores only the CLI filesystem cache key', () => {
   const circuit = [{ type: 'pcb_trace', route: [{ x: 1, y: 2, width: 0.15 }] },
@@ -43,6 +44,30 @@ const port=(name,pin)=>ports.find(e=>e.source_component_id===comp(name)?.source_
 const key=(name,pin)=>port(name,pin)?.subcircuit_connectivity_map_key
 const netKey=name=>nets.find(e=>e.name===name)?.subcircuit_connectivity_map_key
 const on=(name,pin,net)=>expect(key(name,pin)).toBe(netKey(net))
+
+test('R3 pads and courtyard stay inside the curved board edge', () => {
+  const pcb = pcbComponents.find(row => row.source_component_id === comp('R3').source_component_id)
+  expect(pcb.is_allowed_to_be_off_board).not.toBe(true)
+  const footprint = data.filter(row => row.type === 'pcb_board' ||
+    row.source_component_id === comp('R3').source_component_id ||
+    row.pcb_component_id === pcb.pcb_component_id)
+  expect(footprint.filter(row => row.type === 'pcb_smtpad')).toHaveLength(2)
+  expect(footprint.filter(row => row.type === 'pcb_courtyard_rect')).toHaveLength(1)
+  expect(checkPcbComponentsOutOfBoard(footprint)).toEqual([])
+
+  // Reproduce the previous R3 placement using the real pads and courtyard.
+  const previous = structuredClone(footprint)
+  const deltaX = -28.55 - pcb.center.x
+  for (const row of previous) {
+    if (!row.type.startsWith('pcb_') || row.type === 'pcb_board') continue
+    if (row.center) row.center.x += deltaX
+    if (typeof row.x === 'number') row.x += deltaX
+  }
+  const errors = checkPcbComponentsOutOfBoard(previous)
+  expect(errors).toHaveLength(1)
+  expect(errors[0].pcb_component_id).toBe(pcb.pcb_component_id)
+  expect(errors[0].type).toBe('pcb_component_outside_board_error')
+})
 
 test('source model has no errors or warnings and uses physical component types', () => {
   expect(data.filter(row => row.type.endsWith('_error') || row.type.endsWith('_warning'))).toEqual([])

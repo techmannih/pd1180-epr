@@ -410,7 +410,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U3 > .pin8"
       maxVoltageRating="50V"
       connections={{ pin1: "net.PD_3V3", pin2: "net.GND" }} />
-    <resistor name="R3" schSheetName="usb-pd-policy" schSectionName="usb-pd_U3" schX={6.35} schY={2.55} pcbX={-28.55} pcbY={31}
+    <resistor name="R3" schSheetName="usb-pd-policy" schSectionName="usb-pd_U3" schX={6.35} schY={2.55} pcbX={-28.45} pcbY={31}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.EEP_SDA" }} pcbRotation={0} />
