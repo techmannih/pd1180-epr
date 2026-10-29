@@ -4,8 +4,9 @@ const pinLabels = {
   pin1: ["DP", "C_SBU1"],
   pin2: ["DM", "C_SBU2"],
   pin3: ["VBIAS"],
-  pin4: ["CC1", "C_CC1"],
-  pin5: ["CC2", "C_CC2"],
+  // Connector-side OVP pins must not share aliases with system-side pins 12/11.
+  pin4: ["C_CC1"],
+  pin5: ["C_CC2"],
   pin6: ["RPD_G2"],
   pin7: ["RPD_G1"],
   pin8: ["GND3"],

@@ -1,6 +1,6 @@
 # Script catalog
 
-`cc-protection-aliases.test.mjs` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. The repro commit marks the two erroneous connector/system CC net merges as expected failures; its stacked fix makes both ordinary passing regressions. It also protects the 12 existing, unique physical CC vias. Run `bun test scripts/cc-protection-aliases.test.mjs`.
+`cc-protection-aliases.test.mjs` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. Both must keep connector-side and protected-side CC nets separate. It also protects the 12 existing, unique physical CC vias. Run `bun test scripts/cc-protection-aliases.test.mjs`; CI runs it before the stock-dependent review.
 
 Every executable script is listed here so a reviewer can understand the release pipeline without reverse-engineering the repository. `bun run check:script-catalog` fails when a script is added without documentation.
 
