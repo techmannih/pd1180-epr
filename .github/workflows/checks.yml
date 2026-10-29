@@ -14,6 +14,8 @@ jobs:
         with:
           bun-version: 1.3.14
       - run: bun install --frozen-lockfile
+      - name: CC protection alias regression
+        run: bun test scripts/cc-protection-aliases.test.tsx
       - name: Placement regression without generated logs
         run: bun test scripts/placement-review.test.mjs
       - name: Check committed harness across runtimes

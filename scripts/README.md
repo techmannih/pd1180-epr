@@ -1,5 +1,7 @@
 # Script catalog
 
+`cc-protection-aliases.test.tsx` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. The repro commit marks the two erroneous connector/system CC net merges as expected failures; its stacked fix makes both ordinary passing regressions. It also protects the 12 existing, unique physical CC vias. Run `bun test scripts/cc-protection-aliases.test.tsx`.
+
 Every executable script is listed here so a reviewer can understand the release pipeline without reverse-engineering the repository. `bun run check:script-catalog` fails when a script is added without documentation.
 
 The source rule consistency check is mandatory: `source-design-policy.mjs` reads the actual TSX board/GND attributes and compares compiled and native project settings; `source-design-policy.test.mjs` rejects the former 0.09 mm override and weakened GND limits. `source_design_rules.py` applies/audits the real GND outline against a 0.50 mm inset and 0.30 mm clearance and measures every native track against 0.15 mm. `check-source-design-rules.mjs` runs both source and native checks during routed verification. Width, spacing and a pour's edge margin are separate constraints.
