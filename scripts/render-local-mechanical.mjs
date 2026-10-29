@@ -1,8 +1,12 @@
 import {readFile,writeFile,mkdir,rm,copyFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
-import {execFileSync} from 'node:child_process'
 import {dirname} from 'node:path'
 import {MECHANICAL_PARTS} from '../imports/MotorAssemblyCad.ts'
+import {convertCircuitJsonToGltf} from 'circuit-json-to-gltf'
+
+// Dense boards use eight-sided drills in the new renderer's default fast mode.
+// Keep the existing 0.05 mm mesh screen by requesting its high-quality mode.
+export const MECHANICAL_RENDER_OPTIONS = Object.freeze({format:'glb',boardDrillQuality:'high'})
 
 // Resolve only hash-verified mechanical URLs to their exact local bytes in a
 // disposable rendering copy. Published source/viewer JSON retains immutable
@@ -25,7 +29,8 @@ export async function renderLocalMechanical(input,output,name) {
  const dir=`build/${name}`,renderDir=`dist/build/${name}`,rendered=`${renderDir}/3d.glb`
  await mkdir(dir,{recursive:true});await rm(rendered,{force:true})
  await writeFile(`${dir}/circuit.json`,JSON.stringify(circuit))
- execFileSync('bunx',['tsci','build',`${dir}/circuit.json`,'--glbs','--routing-disabled','--disable-parts-engine'],{stdio:'inherit',timeout:600_000})
+ await mkdir(renderDir,{recursive:true})
+ await writeFile(rendered,Buffer.from(await convertCircuitJsonToGltf(circuit,MECHANICAL_RENDER_OPTIONS)))
  const glb=await readFile(rendered)
  if(glb.toString('ascii',0,4)!=='glTF'||glb.readUInt32LE(8)!==glb.length)throw Error('Invalid locally resolved GLB')
  if(sha(await readFile(input))!==sha(bytes))throw Error('Source changed during rendering')

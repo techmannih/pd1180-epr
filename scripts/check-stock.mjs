@@ -38,7 +38,9 @@ await Promise.all(Array.from({ length: 2 }, async () => {
     try {
       const evidence = await catalogEvidence(entry.lcsc)
       const {exact, official, checked_at} = evidence
-      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify(evidence, null, 2)+'\n')
+      // Preserve every evidence field without whitespace overhead in GitHub's
+      // size-limited import. stock-report.json remains the readable summary.
+      await writeFile(new URL(`../docs/stock-evidence/${entry.lcsc}.json`, import.meta.url), JSON.stringify(evidence)+'\n')
       const package_match = packagesMatch(entry.footprint, exact?.package)
       results.push({ ...entry, checked_at, url, index_status: evidence.index_status, search_error: evidence.search_error, official_error: evidence.official_error, official_url: official?.url ?? null, evidence_source: exact ? "jlcpcb-official" : null, warehouse_stock: exact?.warehouse_stock ?? null, available_order_quantity: exact?.available_order_quantity ?? null, mpn: exact?.mfr ?? null, package: exact?.package ?? null, package_match,
         description: exact?.description ?? null, stock: exact?.stock ?? null,
