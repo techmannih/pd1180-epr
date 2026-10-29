@@ -1,11 +1,25 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { parseNative, field, digest } from './native-eco-policy.mjs'
 import { kicadPadPosition } from './power-copper-geometry.mjs'
+import { checkCopperToBoardEdgeClearance } from '@tscircuit/checks'
+
+// Intentional shell/courtyard overhang must never exempt the electrical lands.
+export function usbCopperEdgeErrors(circuit, minimumClearance = 0.2) {
+  const ids = new Set(circuit.filter(row => row.type === 'source_component' && ['J1', 'J10'].includes(row.name)).map(row => row.source_component_id))
+  const placements = circuit.filter(row => row.type === 'pcb_component' && ids.has(row.source_component_id))
+  const pcbIds = new Set(placements.map(row => row.pcb_component_id))
+  const checked = circuit.filter(row => row.type === 'pcb_board' || ids.has(row.source_component_id) || pcbIds.has(row.pcb_component_id)).map(row => {
+    if (row.type === 'pcb_component') return { ...row, is_allowed_to_be_off_board: false }
+    if (row.type === 'pcb_board') return { ...row, min_board_edge_clearance: minimumClearance }
+    return row
+  })
+  return checkCopperToBoardEdgeClearance(checked)
+}
 
 // GCT USB4105 rev B4: front shell-stake centre to mating face = 2.60 mm.
 // Check the physical land datum, independently of the generic preview model.
 export function usbAccess(circuit, board, assembly) {
-  const errors = [], ports = []
+  const errors = usbCopperEdgeErrors(circuit).map(error => error.message), ports = []
   const pcb = circuit.find(x => x.type === 'pcb_board')
   const edge = Math.min(...pcb.outline.map(p => p.x))
   for (const [reference, y] of [['J1', 15], ['J10', 1]]) {

@@ -13,3 +13,11 @@ J2, J3 and their wiring are unchanged. External brake resistor/heatsink qualific
 The exact restoration objects use gzip/base64 inside the existing ECO policy to stay within the hosted GitHub import size limit. `placementRevisions()` verifies the decompressed SHA-256 before use; corruption, ambiguous encoding and changed board geometry all fail closed. The decoded JSON contains every original object and approved replacement hash; no evidence is dropped. Inspect it with `bun -e 'import {placementRevisions} from "./scripts/native-eco-policy.mjs"; console.log(JSON.stringify(placementRevisions(await Bun.file("engineering/unused-sbu-eco.json").json()), null, 2))'` from the repository root.
 
 The actual filled USB input copper from all four J1 VBUS lands to Q4 source lands was screened at 0.075 and 0.050 mm grids. The result is 13.4712 mΩ at 20 °C, with 0.062% mesh difference (about 0.337 W copper loss at 5 A). This excludes contacts, devices, temperature feedback and AC effects; it is not a temperature-rise or USB current-rating qualification. Details and assumptions are in `engineering/usb-edge-eco.json`.
+# Boundary-check model
+
+J1/J10 retain their reviewed positions and footprint geometry. Their shells and
+courtyards intentionally project beyond the board edge for plug access, so the
+two source instances use `allowOffBoard`. This is not a copper-clearance waiver:
+`usbCopperEdgeErrors` independently checks their electrical lands against the
+0.20 mm board-edge rule with the exemption removed. Regression tests reject a
+pad crossing the edge and any unrelated component receiving the exemption.

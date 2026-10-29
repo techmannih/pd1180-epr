@@ -41,7 +41,7 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
-| `check-stock.mjs` | Queries numeric JLCSearch identities and independently checks official JLC available-order quantities for the fitted BOM; index errors are recorded and cannot skip the official lookup. Missing official evidence or package expectations fail closed. |
+| `check-stock.mjs` | Queries numeric JLCSearch identities and independently checks official JLC available-order quantities for the fitted BOM; index errors are recorded and cannot skip the official lookup. Missing official evidence or package expectations fail closed. Raw evidence is compact JSON to fit the hosted import; the stock summary remains readable. |
 | `check-source-schematic.mjs` | Audits all retained default A4 schematic sheets, functional annotations, source-net fanout, the separate USB-C PD POWER and DATA paths, capacitor and test-point connectivity, and the exact intentional no-connect set. |
 | `check-toolchain.mjs` | Verifies the pinned Bun runtime, exact dependency versions and installed tscircuit toolchain. |
 | `clean-silkscreen.py` | Preserves native component references and their size. Optional `--clip-passive-outlines` trims R/C outline fragments away from solder lands and adjacent markings; native DRC remains mandatory. |
@@ -154,7 +154,7 @@ Harness intermediate part data is deterministically stored in `engineering/mecha
 
 The combined harness GLB is retained inside `harness-proposal.zip` to keep the raw GitHub import below its unchanged 24 MiB limit. Historical label screenshots are preserved byte-for-byte in `previews/native-labels-history.zip`.
 
-- `render-local-mechanical.mjs`: renders disposable copies of the exact source/routed JSON using hash-verified local mechanical GLBs in place of their registered immutable Git URLs. Rejects missing, duplicate or changed models; preserves published JSON and enables pre-publication validation. Release export still compares every final mesh vertex to the registered CAD. Remote URL/hash verification remains a separate post-push check.
+- `render-local-mechanical.mjs`: renders disposable copies of the exact source/routed JSON using hash-verified local mechanical GLBs in place of their registered immutable Git URLs. Explicitly requests high-quality drill meshes from the installed renderer so dense-board holes retain the existing 0.05 mm tessellation allowance. Rejects missing, duplicate or changed models; preserves published JSON and enables pre-publication validation. Release export still compares every final mesh vertex to the registered CAD. Remote URL/hash verification remains a separate post-push check.
 
 - `refine-copper-geometry.py`: reproduces the 2026-10-20 copper-only ECO from hash-locked main 8139bca. Repairs U16 pad entry, Q5/U12 redundant corner contacts and the source-matched Kelvin-B bend; regenerates its pour keepout, consolidates/chamfers power zones and enables 0.09 mm connection/groove constraints. Requires fresh native DRC, Kelvin isolation and filled-copper screens before export.
 - `copper-geometry-policy.mjs`, `copper-geometry-policy.test.mjs`, `check-copper-geometry.mjs`: fail review when connection-width checking is disabled/suppressed, power zones lack the required clearance/fill/chamfer settings, legacy per-segment corridors return, or native copper findings remain. Existing exact cosmetic disposition stays separate.
@@ -163,4 +163,8 @@ The combined harness GLB is retained inside `harness-proposal.zip` to keep the r
 
 `export-kicad-route.mjs` requires KiCad Python (`KICAD_PYTHON`, or the detected macOS runtime) for exact ground-inset enforcement and a native geometry audit. It fails closed if the native runtime or requested rules are unavailable.
 
-- `power-feed.mjs`, `power-feed.test.mjs`: reproduce the exact seven 1.5 mm B.Cu VMOTOR feed additions from the hash-locked main PCB/project, and reject missing/narrowed/wrong-net feed copper or any unrelated original native-object change. `--apply BASELINE.kicad_pcb NEW_DIRECTORY` creates a review copy; refill and native DRC remain mandatory. Policy and exact segments are in `routing/power-feed.json`.
+- `power-feed.mjs`, `power-feed.test.mjs`: reproduce the exact seven 1.5 mm B.Cu VMOTOR feed additions from the hash-locked main PCB/project, and reject missing/narrowed/wrong-net feed copper or any unrelated original native-object change. Exact later placement revisions, including the R3 boundary correction, are restored through hash-locked before/after objects before comparing the historical baseline. `--apply BASELINE.kicad_pcb NEW_DIRECTORY` creates a review copy; refill and native DRC remain mandatory. Policy and exact segments are in `routing/power-feed.json`.
+
+`check-usb-access.mjs` also checks J1/J10 copper-to-edge clearance independently
+of their intentional shell/courtyard overhang allowance; `usb-access.test.mjs`
+rejects displaced copper and off-board exemptions on unrelated components.

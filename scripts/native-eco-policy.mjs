@@ -22,7 +22,7 @@ export function placementRevisions(policy) {
 }
 // Restore each explicitly reviewed placement revision before applying the older
 // electrical ECO. This preserves the historical protected projection hash.
-function restorePlacementRevisions(board, revisions = []) {
+export function restorePlacementRevisions(board, revisions = []) {
   for (const revision of revisions.toReversed()) {
     const modified = new Map(revision.modified.map(x => [uuid(x.before), x]))
     const added = new Map(revision.added.map(x => [uuid(x), x]))

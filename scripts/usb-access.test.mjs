@@ -1,10 +1,22 @@
 import { test, expect } from 'bun:test'
 import { readFileSync } from 'node:fs'
-import { usbAccess } from './check-usb-access.mjs'
+import { usbAccess, usbCopperEdgeErrors } from './check-usb-access.mjs'
 import { parseNative, field } from './native-eco-policy.mjs'
 const source = JSON.parse(readFileSync('dist/index/circuit.json'))
 const board = parseNative(readFileSync('dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', 'utf8'))
 const assembly = JSON.parse(readFileSync('engineering/mechanical/assembly.json'))
+test('only USB shells may overhang; their copper still meets the board-edge rule', () => {
+  const names = new Map(source.filter(row => row.type === 'source_component').map(row => [row.source_component_id, row.name]))
+  expect(source.filter(row => row.type === 'pcb_component' && row.is_allowed_to_be_off_board).map(row => names.get(row.source_component_id)).sort()).toEqual(['J1', 'J10'])
+  expect(usbCopperEdgeErrors(source)).toEqual([])
+  for (const name of ['J1', 'J10']) {
+    const copy = structuredClone(source)
+    const component = copy.find(row => row.type === 'pcb_component' && names.get(row.source_component_id) === name)
+    const pad = copy.find(row => row.type === 'pcb_smtpad' && row.pcb_component_id === component.pcb_component_id)
+    pad.x = -42.95
+    expect(usbCopperEdgeErrors(copy).length).toBeGreaterThan(0)
+  }
+})
 test('both native USB mating faces clear the PCB edge', () => {
   const result = usbAccess(source, board, assembly)
   expect(result.errors).toEqual([])

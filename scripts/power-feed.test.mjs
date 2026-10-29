@@ -23,3 +23,9 @@ test('feed replay refuses a different board and the guard detects unrelated edit
   field(original, 'width')[1] = '0.09'
   expect(powerFeedErrors(copy, policy)).toContain('Unrelated native board geometry changed')
 })
+test('reviewed R3 placement cannot hide a further footprint change', () => {
+  const copy = structuredClone(board)
+  const r3 = copy.find(x => x[0] === 'footprint' && x.some(p => p[0] === 'property' && p[1] === '"Reference"' && p[2] === '"R3"'))
+  field(r3, 'at')[1] = String(Number(field(r3, 'at')[1]) + 0.01)
+  expect(powerFeedErrors(copy, policy)).toContain('Later placement differs from its exact reviewed geometry')
+})

@@ -30,7 +30,9 @@ for (const part of [...manifest.parts, ...(manifest.optional_parts ?? [])]) {
   part.rotation = position.rotation ?? 0
   part.layer = position.layer
 }
-await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
+// This is machine input; keep readable procurement guidance below while
+// avoiding duplicate whitespace in the size-limited hosted import.
+await writeFile(manifestPath, `${JSON.stringify(manifest)}\n`)
 
 const lines = [
   '# Procurement snapshot',

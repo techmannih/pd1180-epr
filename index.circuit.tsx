@@ -299,8 +299,10 @@ export const PD1180EPR = () => (
     <net name="DATA_CC2" isPowerNet={false} />
     <net name="USB_DATA_VBUS" isPowerNet={true} />
 
-    {/* Separate PD POWER and USB DATA ports; no shared VBUS or data paths. */}
+    {/* Edge-mounted USB shells/courtyards overhang for plug access. USB copper remains
+        inside the board with independently checked 0.20 mm edge clearance. */}
     <USB4105_GF_A name="J1" schSheetName="usb-pd" schSectionName="usb-pd_J1" schX={-8.5} schY={-2.95} pcbX={-38} pcbY={15}
+      allowOffBoard
       pcbRotation={270}
       schPinArrangement={{ rightSide: { pins: ["pin7", "pin15", "pin9", "pin11", "pin13", "pin12", "pin14", "pin10", "pin16"], direction: "top-to-bottom" }, bottomSide: { pins: ["pin5", "pin1"], direction: "left-to-right" } }}
       schWidth={1.521}
@@ -410,7 +412,7 @@ export const PD1180EPR = () => (
       decouplingFor=".U3 > .pin8"
       maxVoltageRating="50V"
       connections={{ pin1: "net.PD_3V3", pin2: "net.GND" }} />
-    <resistor name="R3" schSheetName="usb-pd-policy" schSectionName="usb-pd_U3" schX={6.35} schY={2.55} pcbX={-28.55} pcbY={31}
+    <resistor name="R3" schSheetName="usb-pd-policy" schSectionName="usb-pd_U3" schX={6.35} schY={2.55} pcbX={-28.45} pcbY={31}
       schRotation={-90}
       resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.PD_3V3", pin2: "net.EEP_SDA" }} pcbRotation={0} />
@@ -1186,6 +1188,7 @@ export const PD1180EPR = () => (
     {/* INTERFACES */}
 
     <USB4105_GF_A name="J10" schSheetName="usb-data" schSectionName="usb-data_J10" schX={-6.5} schY={1.3} pcbX={-38} pcbY={1} pcbRotation={270}
+      allowOffBoard
       schWidth={1.521}
       schPinArrangement={{ rightSide: { pins: ["pin7", "pin15", "pin9", "pin13", "pin12", "pin10", "pin16"], direction: "top-to-bottom" }, bottomSide: { pins: ["pin5", "pin1"], direction: "left-to-right" } }}
       schPinStyle={{ pin7: { topMargin: 0.1, bottomMargin: 0.1 }, pin15: { topMargin: 0.1, bottomMargin: 0.1 }, pin9: { topMargin: 0.1, bottomMargin: 0.1 }, pin13: { topMargin: 0.1, bottomMargin: 0.1 }, pin12: { topMargin: 0.1, bottomMargin: 0.1 }, pin10: { topMargin: 0.1, bottomMargin: 0.1 }, pin16: { topMargin: 0.1, bottomMargin: 0.1 } }}
