@@ -164,3 +164,5 @@ The combined harness GLB is retained inside `harness-proposal.zip` to keep the r
 `export-kicad-route.mjs` requires KiCad Python (`KICAD_PYTHON`, or the detected macOS runtime) for exact ground-inset enforcement and a native geometry audit. It fails closed if the native runtime or requested rules are unavailable.
 
 - `power-feed.mjs`, `power-feed.test.mjs`: reproduce the exact seven 1.5 mm B.Cu VMOTOR feed additions from the hash-locked main PCB/project, and reject missing/narrowed/wrong-net feed copper or any unrelated original native-object change. `--apply BASELINE.kicad_pcb NEW_DIRECTORY` creates a review copy; refill and native DRC remain mandatory. Policy and exact segments are in `routing/power-feed.json`.
+
+- `usb-hole-clearance.test.mjs`: compiles the actual USB4105 footprint, rejects copper within 0.20 mm of either locating hole and prevents restored 0.13 mm native overrides. Hole diameter/spacing controls protect connector fit.

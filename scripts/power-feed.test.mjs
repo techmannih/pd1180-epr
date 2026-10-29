@@ -23,3 +23,11 @@ test('feed replay refuses a different board and the guard detects unrelated edit
   field(original, 'width')[1] = '0.09'
   expect(powerFeedErrors(copy, policy)).toContain('Unrelated native board geometry changed')
 })
+
+test('later USB ECO cannot conceal another locating-hole or pad edit', () => {
+  const copy = structuredClone(board)
+  const fp = copy.find(x => x[0] === 'footprint' && x.some(v => Array.isArray(v) && v[0] === 'property' && v[1] === '"Reference"' && v[2] === '"J1"'))
+  const hole = fp.find(v => Array.isArray(v) && v[0] === 'pad' && v[2] === 'np_thru_hole')
+  field(hole, 'drill')[1] = '0.5'
+  expect(powerFeedErrors(copy, policy).length).toBeGreaterThan(0)
+})

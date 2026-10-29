@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
-import { digest, field, parseNative, uuid } from './native-eco-policy.mjs'
+import { digest, field, parseNative, uuid, restorePlacementRevisions } from './native-eco-policy.mjs'
 
 const policyPath = 'routing/power-feed.json'
 const nativeBoard = 'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb'
@@ -18,9 +19,20 @@ export function powerFeedErrors(board, policy) {
         field(segment, 'layer')?.[1] !== '"B.Cu"' || field(segment, 'net')?.[1] !== '"VMOTOR"')
       errors.push('Feed must be 1.5 mm native B.Cu VMOTOR tracks')
   }
-  // Removing ONLY the seven approved additions must recover the entire baseline.
-  // This includes every original trace, via, footprint, zone outline and keepout.
-  const original = board.filter(x => !Array.isArray(x) || !expected.has(uuid(x)))
+  // Remove the seven feed additions and restore any separately reviewed,
+  // exact USB footprint revision before checking the entire original baseline.
+  let original = board.filter(x => !Array.isArray(x) || !expected.has(uuid(x)))
+  // A later USB-only ECO must not invalidate the independent motor-feed guard.
+  // Restore ONLY exact hash-locked footprints, never arbitrary geometry.
+  if (policy.subsequent_geometry_review) {
+    try {
+      const review = JSON.parse(readFileSync(policy.subsequent_geometry_review))
+      const current = new Map(original.filter(Array.isArray).map(x => [uuid(x), x]))
+      const changes = review.revision.modified
+      if (!changes.every(c => digest(current.get(uuid(c.before))) === digest(c.before)))
+        original = restorePlacementRevisions(original, [review.revision])
+    } catch { errors.push('USB footprint revision differs from its exact reviewed geometry') }
+  }
   if (canonicalCopper(original) !== policy.baseline_canonical_unfilled_sha256)
     errors.push('Unrelated native board geometry changed')
   return errors
@@ -53,6 +65,6 @@ if (import.meta.main) {
   } else {
     const errors = powerFeedErrors(parseNative(await readFile(nativeBoard, 'utf8')), policy)
     if (errors.length) throw new Error(errors.join('\n'))
-    console.log('Parallel VMOTOR feed: seven 1.5 mm B.Cu tracks; all original native objects preserved.')
+    console.log('Parallel VMOTOR feed: seven 1.5 mm B.Cu tracks; original baseline preserved after restoring the exact reviewed USB footprint revision.')
   }
 }

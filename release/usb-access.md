@@ -1,5 +1,7 @@
 # USB edge placement
 
+This document records the earlier placement ECO. The later [locating-hole clearance correction](usb-hole-clearance.md) shortens eight pad edges while retaining the placement and mechanical-hole geometry below. Use its refreshed DC evidence for the current revision.
+
 J1 (EPR power) and J10 (USB data) move 2.00 mm outward, from TSX `pcbX=-36` to `-38`. Both retain their Y positions (15 / 1 mm), outward 270° orientation, exact GCT USB4105-GF-A-060 identity, footprint, pin nets and the user-selected CAD Y offset 1.075092 mm. The PCB outline and all four mounting holes remain unchanged. C5's existing native reference anchor is pinned in the source so adjacent USB movement cannot flip its automatic label placement. The DATA marking moves into the open gap above J10 to clear the shell land and neighbouring buzzer.
 
 Using the [GCT USB4105 drawing, revision B4](https://gct.co/files/drawings/usb4105.pdf), the front shell-stake centre is 2.60 mm behind the mating face. Both native mating faces are now at PCB X=-43.2356 mm; the PCB edge is X=-42.9500 mm. The nominal face therefore extends 0.2856 mm beyond the edge, replacing the previous 1.7144 mm recess. This calculation uses the native land geometry, independently of the generic 3D model.

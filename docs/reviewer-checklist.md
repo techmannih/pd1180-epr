@@ -4,7 +4,9 @@ Start with `bun install --frozen-lockfile` and run `bun run review`. Machine che
 
 For the current source/native rule correction, start with [source-design-rules.md](source-design-rules.md): actual track width >=0.15 mm, GND clearance 0.30 mm and GND edge inset 0.50 mm. The 0.09 mm connection/groove checks remain separate. Inspect preserved Kelvin/bypass paths, the corrected USB return path and fresh 18-path DC comparison. The exact 401 cosmetic findings remain reported separately.
 
-For the added parallel VMOTOR feed, review [the before/after native copper image and 18-path comparison](copper-geometry-review.md). Seven 1.5 mm B.Cu segments supplement the existing supply copper from C22 to Q6's thermal vias; their width is not a standalone full-current rating. The exact-change guard preserves all original native objects. DC resistance improvement does not qualify switching transients or temperature rise.
+For the added parallel VMOTOR feed, review [the before/after native copper image and 18-path comparison](copper-geometry-review.md). Seven 1.5 mm B.Cu segments supplement the existing supply copper from C22 to Q6's thermal vias; their width is not a standalone full-current rating. The exact-change guard preserves the original baseline after restoring the separately reviewed USB footprint revision. DC resistance improvement does not qualify switching transients or temperature rise.
+
+For J1/J10, review [the locating-hole clearance correction and before/after image](usb-hole-clearance.md). Eight solder lands are shortened on the hole-facing edge to satisfy the consistently enforced 0.20 mm copper-to-hole minimum; mechanical holes and connector placement are unchanged. Obtain assembler DFM and first-article solder-joint acceptance for this custom land pattern.
 
 ## Reference review closure
 

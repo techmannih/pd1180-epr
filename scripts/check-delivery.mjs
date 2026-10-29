@@ -16,6 +16,9 @@ try {
 }
 const checked = []
 for (const [source, delivered] of [
+  ['docs/usb-hole-clearance.md', 'release/usb-hole-clearance.md'],
+  ['docs/usb-hole-clearance.png', 'release/usb-hole-clearance.png'],
+  ['engineering/usb-hole-clearance.json', 'release/usb-hole-clearance.json'],
   ['docs/copper-geometry-review.md', 'release/copper-geometry-review.md'],
   ['docs/source-design-rules.md', 'release/source-design-rules.md'],
   ['docs/source-design-rules-check.json', 'release/source-design-rules-check.json'],

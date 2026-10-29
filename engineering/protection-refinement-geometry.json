@@ -1,7 +1,7 @@
 {
   "base_commit": "97ea91ed31722749aa81b6b1ec7ae394e83b2228",
   "baseline_board_sha256": "6d1e08d31ee2afef94bfec72ee2872a595be132f3a4a0a36cb0a85bfbce9e8f6",
-  "current_board_sha256": "61b7df45cbfda00fb0117309e192ad412028e2666f6f566213cd5dc20c5b11a8",
+  "current_board_sha256": "b5b8afa7d0ad4d04a5af99774cf79c52ceef02ae0dea99337f5de3e5603a5c5d",
   "pad_net_changes": [
     {
       "reference": "J1",
@@ -102,10 +102,17 @@
       "modified": 0,
       "added": 7,
       "removed": 0
+    },
+    {
+      "baseline_commit": "1b8b63f",
+      "reason": "USB locating-hole clearance: trim only the hole-facing edge by 0.08 mm on J1/J10 pads 6/7/18/19; mechanical holes, other pads, placement, copper and nets retained.",
+      "modified": 2,
+      "added": 0,
+      "removed": 0
     }
   ],
   "derived_zone_fills_recomputed": true,
-  "policy_sha256": "eeebc9f2abb7afbcaf3baa999fec7787ae41e689740f44519954950f3410f815",
+  "policy_sha256": "50871c40f99c53977c25bc6de6114ddf19e5efd30bcd1b0bd5e8d7f5a385afbe",
   "checker_sha256": "01ae6c0d0173e4ae6ecc4e43f249afc3f52b2cc711a1b92cbcac1a9032c80d08",
   "hardware_qualified": false
 }

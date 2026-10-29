@@ -1,23 +1,23 @@
 {
   "schema_version": 2,
   "algorithm": "sha256 of normalized topology, supplier identity, footprint geometry, placement and local copper; routing policy/seed inputs; plus reviewed KiCad board hash",
-  "input_sha256": "0ac9e30a65431cbea0af51352fd06380532a3193f7762fbf58c4d769dfa881e5",
+  "input_sha256": "eaea26d23f97d5b733bd42dcd23127542620ead3d3e2fffc05c905730ddb27a1",
   "routing_inputs": {
-    "board-standards.json": "67906bed10cec7db77f02777cb0cf52927d0e954ae41bcddad7a77493045620f",
+    "board-standards.json": "767c86abc7a68911528046975f72310e85402270379d157c7b0d5b4d7da830a5",
     "routing/requirements.json": "d137fc827206bffcb5bfcfce45bcbe6094d2a5a7d9ab496e7a656ab7fed06185",
     "routing/critical-paths.json": "f72cc36bb2551006cef6f84294c0bddbf7e5581931fa9eb2a029f1c087221ff0",
     "routing/pin-escapes.json": "8a5ab0389e27095df0fba24c0c9e96f0cf20be7680339dda9dc7a93874692cc9",
     "scripts/prepare-routing-seed.py": "862e7991c093988df2d68492ff2ca8e4867bf6bab12fba4b2e9986f7217c8a52",
     "scripts/prepare-routing-rules.py": "215a3147975805d290b4518c3beed18b13b9d0deaa91fe9bfde4caa0175457da",
     "scripts/add-board-planes.py": "b93d010fb866a9e164739433ffc8f19bac212b28c9c5ff5b99ae006212c9208c",
-    "scripts/export-kicad-route.mjs": "e9b430cb590cfb119e45de4f26128e605421edfade5afcdb731183250c9794a3",
-    "scripts/source-design-policy.mjs": "88ba35ba43c8c76fefba19be89ecc8c1851db74757a9e2d86f1ab04292f6c817",
+    "scripts/export-kicad-route.mjs": "fe6e02f1741e74ab93dbe0ed0d93351ca25fab22cae77ce189c88fb0c4cb1056",
+    "scripts/source-design-policy.mjs": "8e98a40d22021331b29c90399b22c1b2f51086167f682b0139bfb1f503586a84",
     "scripts/source_design_rules.py": "efb6a8c5d9d64b3b93596b7b7f0be617d149869f2c0befb4831481d039949660",
-    "scripts/clean-silkscreen.py": "7b0b331c68ea18e56ebf834349dfec3702ddb5274a3b129bfef4105af4567e4d",
-    "routing/power-feed.json": "6dbbd8e39d61255a2e2fc356f8d49ccd3ac9cab8b5a82eeb2443d0b77d258d88",
-    "scripts/power-feed.mjs": "4feef72d4d1aea281eee1c3d4e738c2fecd570a3f08d46c912beb68b11b5412b"
+    "scripts/clean-silkscreen.py": "c1b6043ba8e330b197d9221987fdf424c2422ad204040940b38b649f86497d06",
+    "routing/power-feed.json": "4b19713c9ce1c3109ada7c047d773351fab0951b091a00a304c944ec32f80313",
+    "scripts/power-feed.mjs": "8cd53b19b68cd0c4a4bbaf3e89f1cd21d0598bac8f67dd01d1f1fede68fbd432"
   },
-  "routed_board_sha256": "61b7df45cbfda00fb0117309e192ad412028e2666f6f566213cd5dc20c5b11a8",
+  "routed_board_sha256": "b5b8afa7d0ad4d04a5af99774cf79c52ceef02ae0dea99337f5de3e5603a5c5d",
   "counts": {
     "board": 1,
     "components": 277,
@@ -28,5 +28,5 @@
     "holes": 8,
     "local_copper": 66
   },
-  "reviewed_at": "2026-10-29T03:47:03.472Z"
+  "reviewed_at": "2026-10-29T04:26:08.343Z"
 }
