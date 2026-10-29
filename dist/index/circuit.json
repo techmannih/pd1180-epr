@@ -2472,10 +2472,9 @@
   {
     "type": "source_port",
     "source_port_id": "source_port_29",
-    "name": "CC1",
+    "name": "C_CC1",
     "pin_number": 4,
     "port_hints": [
-      "CC1",
       "C_CC1",
       "pin4",
       "4"
@@ -2487,10 +2486,9 @@
   {
     "type": "source_port",
     "source_port_id": "source_port_30",
-    "name": "CC2",
+    "name": "C_CC2",
     "pin_number": 5,
     "port_hints": [
-      "CC2",
       "C_CC2",
       "pin5",
       "5"
@@ -2738,17 +2736,7 @@
         "C43131250"
       ]
     },
-    "source_group_id": "source_group_0",
-    "internally_connected_source_port_ids": [
-      [
-        "source_port_29",
-        "source_port_37"
-      ],
-      [
-        "source_port_30",
-        "source_port_36"
-      ]
-    ]
+    "source_group_id": "source_group_0"
   },
   {
     "type": "source_port",
@@ -20811,26 +20799,6 @@
   {
     "type": "source_component_internal_connection",
     "source_component_internal_connection_id": "source_component_internal_connection_0",
-    "source_component_id": "source_component_4",
-    "subcircuit_id": "subcircuit_source_group_0",
-    "source_port_ids": [
-      "source_port_29",
-      "source_port_37"
-    ]
-  },
-  {
-    "type": "source_component_internal_connection",
-    "source_component_internal_connection_id": "source_component_internal_connection_1",
-    "source_component_id": "source_component_4",
-    "subcircuit_id": "subcircuit_source_group_0",
-    "source_port_ids": [
-      "source_port_30",
-      "source_port_36"
-    ]
-  },
-  {
-    "type": "source_component_internal_connection",
-    "source_component_internal_connection_id": "source_component_internal_connection_2",
     "source_component_id": "source_component_187",
     "subcircuit_id": "subcircuit_source_group_0",
     "source_port_ids": [
@@ -34545,8 +34513,8 @@
       "pin1": "DP",
       "pin2": "DM",
       "pin3": "VBIAS",
-      "pin4": "CC1",
-      "pin5": "CC2",
+      "pin4": "C_CC1",
+      "pin5": "C_CC2",
       "pin6": "RPD_G2",
       "pin7": "RPD_G1",
       "pin8": "GND3",
@@ -41807,7 +41775,7 @@
     "side_of_component": "left",
     "pin_number": 4,
     "true_ccw_index": 3,
-    "display_pin_label": "CC1",
+    "display_pin_label": "C_CC1",
     "is_connected": true,
     "schematic_sheet_id": "schematic_sheet_0"
   },
@@ -41825,7 +41793,7 @@
     "side_of_component": "left",
     "pin_number": 5,
     "true_ccw_index": 4,
-    "display_pin_label": "CC2",
+    "display_pin_label": "C_CC2",
     "is_connected": true,
     "schematic_sheet_id": "schematic_sheet_0"
   },
@@ -179973,6 +179941,6 @@
   },
   {
     "type": "source_project_metadata",
-    "source_filesystem_md5_hash": "c55ab3a1d9efd6b5ec1ffa1da5f74180"
+    "source_filesystem_md5_hash": "3e0ef758070957d38ac57f10965b5753"
   }
 ]

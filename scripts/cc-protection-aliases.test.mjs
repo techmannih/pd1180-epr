@@ -37,15 +37,30 @@ function ccConnections(circuit) {
   return connections
 }
 
-test.failing("actual U1 import keeps connector and protected CC nets separate", () => {
+test("actual U1 import keeps connector and protected CC nets separate", () => {
   expect(new Set(compiledConnections).size).toBe(4)
 })
 
-test.failing("published NEMA34 circuit keeps connector and protected CC nets separate", () => {
+test("published NEMA34 circuit keeps connector and protected CC nets separate", () => {
   expect(new Set(publishedConnections).size).toBe(4)
 })
 
+test("published U1 physical pins retain the intended connector and controller nets", () => {
+  const map = getFullConnectivityMapFromCircuitJson(published)
+  const u1 = published.find(row => row.type === "source_component" && row.name === "U1")
+  for (const [pin, name] of [[4, "CC1_CONN"], [7, "CC1_CONN"], [5, "CC2_CONN"], [6, "CC2_CONN"], [12, "CC1_PD"], [11, "CC2_PD"]]) {
+    const port = published.find(row => row.type === "source_port" && row.source_component_id === u1.source_component_id && row.pin_number === pin)
+    const net = published.find(row => row.type === "source_net" && row.name === name)
+    expect(port).toBeDefined()
+    expect(net).toBeDefined()
+    expect(map.getNetConnectedToId(port.source_port_id)).toBe(map.getNetConnectedToId(net.source_net_id))
+  }
+})
+
 test("published CC copper already has unique physical vias; do not delete real copper", () => {
+  const allVias = published.filter(row => row.type === "pcb_via")
+  expect(allVias).toHaveLength(643)
+  expect(new Set(allVias.map(row => `${row.x}:${row.y}`)).size).toBe(643)
   const nets = new Set(published.filter(row => row.type === "source_net" && /^CC[12]_(CONN|PD)$/.test(row.name)).map(row => row.source_net_id))
   const vias = published.filter(row => row.type === "pcb_via" && nets.has(row.source_net_id))
   expect(vias).toHaveLength(12)
