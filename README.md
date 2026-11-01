@@ -6,6 +6,8 @@ Start with [the redesign and evidence](docs/rp2040-redesign.md), [reviewer check
 
 The new commissioning firmware is an ARM RP2040 image with verified ELF/BIN/UF2 format and matching source hashes. Its four qualification locks remain false. Passing firmware tests or compiling the source does not establish PCB routing, USB compliance, motor torque, heatsink capacity or physical fit.
 
+`bun run dev` and the draft hosted preview open the current **unrouted** source, with a revision 0.5 DRAFT marking. The obsolete routed viewer is excluded from this branch's published source package. `bun run build` and the full review still require a newly verified native route; source-preview success does not satisfy either release gate.
+
 | Function | This design |
 | --- | --- |
 | U16 MCU / U17 boot storage | RP2040 / W25Q32JV, 4 MiB QSPI flash, 12 MHz crystal |

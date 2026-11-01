@@ -1,15 +1,16 @@
 {
-  "checked_at": "2026-11-01T02:43:00.143Z",
+  "checked_at": "2026-11-01T10:33:43.266Z",
+  "preview_is_unrouted_draft": true,
   "main_entrypoint": "index.circuit.tsx",
-  "preview_component_path": "release/circuit.json",
-  "site_default_component_path": "release/circuit.json",
-  "cloud_build_command": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build release/circuit.json --site --preview-images --use-cdn-javascript --concurrency 4",
+  "preview_component_path": "index.circuit.tsx",
+  "site_default_component_path": "index.circuit.tsx",
+  "cloud_build_command": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build index.circuit.tsx --site --routing-disabled --disable-parts-engine --preview-images --use-cdn-javascript --concurrency 4",
   "cloud_build_targets": [
     "index.circuit.tsx",
-    "release/circuit.json"
+    "index.circuit.tsx"
   ],
-  "hosted_preview_output": "dist/release/circuit.json",
-  "verified_preview_records": null,
+  "hosted_preview_output": "dist/index/circuit.json",
+  "verified_preview_records": 9112,
   "selectable_source_files": 67,
   "selectable_import_files": 61,
   "unavailable_viewer_files": [],
@@ -68,17 +69,14 @@
     "release/copper-geometry-review.json",
     "release/source-design-rules-check.json",
     "release/power-feed-review.webp",
-    "release/power-feed.json"
+    "release/power-feed.json",
+    "release/circuit.json"
   ],
-  "included_files": 84,
-  "included_bytes": 7766784,
-  "included_mebibytes": 7.41,
+  "included_files": 83,
+  "included_bytes": 599990,
+  "included_mebibytes": 0.57,
   "maximum_mebibytes": 20,
   "largest_files": [
-    {
-      "path": "release/circuit.json",
-      "bytes": 7167726
-    },
     {
       "path": "index.circuit.tsx",
       "bytes": 114202
@@ -89,7 +87,7 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 27601
+      "bytes": 28029
     },
     {
       "path": "imports/RP2040.tsx",
@@ -114,11 +112,15 @@
     {
       "path": "hardware-contract.json",
       "bytes": 13057
+    },
+    {
+      "path": "board-diagnostics.tsx",
+      "bytes": 12982
     }
   ],
   "github_import_files": 736,
-  "github_import_bytes": 25152335,
-  "github_import_mebibytes": 23.99,
+  "github_import_bytes": 25164511,
+  "github_import_mebibytes": 24,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [

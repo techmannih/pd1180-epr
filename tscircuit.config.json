@@ -1,14 +1,13 @@
 {
   "$schema": "https://cdn.jsdelivr.net/npm/@tscircuit/cli/types/tscircuit.config.schema.json",
   "mainEntrypoint": "index.circuit.tsx",
-  "previewComponentPath": "release/circuit.json",
-  "siteDefaultComponentPath": "release/circuit.json",
+  "previewComponentPath": "index.circuit.tsx",
+  "siteDefaultComponentPath": "index.circuit.tsx",
   "includeBoardFiles": [
     "**/*.tsx",
-    "imports/**/*.{ts,js,jsx}",
-    "release/circuit.json"
+    "imports/**/*.{ts,js,jsx}"
   ],
-  "buildCommand": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build release/circuit.json --site --preview-images --use-cdn-javascript --concurrency 4",
+  "buildCommand": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build index.circuit.tsx --site --routing-disabled --disable-parts-engine --preview-images --use-cdn-javascript --concurrency 4",
   "ignoredFiles": [
     ".github/**",
     "checks/**",
@@ -63,7 +62,8 @@
     "release/copper-geometry-review.json",
     "release/source-design-rules-check.json",
     "release/power-feed-review.webp",
-    "release/power-feed.json"
+    "release/power-feed.json",
+    "release/circuit.json"
   ],
   "build": {
     "workerTimeoutMs": 3600000,

@@ -11,20 +11,21 @@
   "hardware_tested": false,
   "fabrication_orderable": false,
   "merge_ready": false,
-  "reviewed_at": "2026-11-01T02:52:38.396366+00:00",
+  "reviewed_at": "2026-11-01T10:33:43.063426+00:00",
   "input_sha256": {
     "index.circuit.tsx": "ff21413ba2fdcc1a2cff15a7d592575b2adfa4802eb42fd8bab203a22365c9b8",
     "schematic-pages.tsx": "f602916228b5be8dc5513efead8f022b01f87eb2d2814b7339ec1d72f51dc1fd",
     "hardware-contract.json": "ece6bf448147d887ce949edab368e4dde266fcf256a248508977f2972446ccb0",
-    "board-standards.json": "8ae7aa748df299585e7d75264705d0c360da969d0a4afdb93dc8dfe6e0735697",
+    "board-standards.json": "22f9c586658a12f6a3cf4b86c7bb7a1e54f5130f979a80b5f69aa803a5ea6ef3",
     "docs/firmware-pinmap.json": "524bd8b69aca4df1a339e157e922df6da8b56e2a88dce8ccab199d965e74801a",
     "imports/RP2040.tsx": "d59d637ac9180cc52eec6bb54c696c80bccbf905a0e99f7ef6ce1254260ad2b0",
     "imports/DRV8462DDVR.tsx": "b8e609809cb225c4fadbb706c104f3bbd063c94903d810f4c4f07024322ea95c",
     "imports/AS5600_ASOM.tsx": "1a97d5f4939d2d0e7c94371808f9142c158af435b9db94839545388c5daa3199",
     "imports/X322512MSB4SI.tsx": "4b59a9f28983e9357188be9c65e6d5bff96b74d3d6eafa45dc857da768862a89",
-    "dist/index/circuit.json": "bb38835aa5034eadb770510d1c92ac279e016de0c4cba8c843602a3fa6716c3c",
-    "engineering/power-audit.json": "9fa2a5248e0fcf36ce9e40a4f23dfd69a153c6d5cab6f600a6acf475b8366602",
-    "release/pd1180-commissioning-firmware.zip": "b2df6fa96f05c81dcc288ebeb345b390ad2728dba485b3efd61fa3639855ee0e"
+    "dist/index/circuit.json": "143e5ba5739976a32f5d23e14c577c0b22da5f45b59b17a05ee63845c247d77a",
+    "engineering/power-audit.json": "9ba818e991e7d7074d644488770ec33f1d1466241f4c1afc22270f1038c443cf",
+    "release/pd1180-commissioning-firmware.zip": "b2df6fa96f05c81dcc288ebeb345b390ad2728dba485b3efd61fa3639855ee0e",
+    "board-markings.tsx": "cab440bd6089bbad83a4296e121a6368cd421b7e4dbf23c8b9ccc852d991a4ad"
   },
   "checks": {
     "typecheck": "pass",
@@ -158,7 +159,18 @@
       "errors": 0,
       "warnings": 0
     },
-    "compiler_console_warnings": "Layout-solver overlap warnings occur in the compiler console; compiled diagnostic records are zero and all 25 per-sheet viewer style checks pass. Raw build log included in review archive."
+    "compiler_console_warnings": "Layout-solver overlap warnings occur in the compiler console; compiled diagnostic records are zero and all 25 per-sheet viewer style checks pass. Raw build log included in review archive.",
+    "draft_site_build": {
+      "status": "pass",
+      "preview_entrypoint": "index.circuit.tsx",
+      "routing_disabled": true,
+      "includes_3d_png": true,
+      "scope": "current source preview only; not a routed manufacturing release",
+      "raw_logs_in_native_archive": [
+        "logs/draft-site-build.log",
+        "logs/draft-built-check.log"
+      ]
+    }
   },
   "native_cad": {
     "kind": "unrouted normalized source export",
@@ -168,7 +180,7 @@
     "note": "All eight observed errors are retained J1/J10 NPTH-to-pad clearances. These counts do not qualify the uncompleted route. DRC/ERC settings, ignored checks and raw reports are included with the review archive.",
     "normalized_erc_violations": 0,
     "archive": "engineering/rp2040-native-review.zip",
-    "archive_sha256": "11ea242d935416ecad0ebbd466ff7ae8f6940f223df8a2d49abe9e0dd0651450",
+    "archive_sha256": "287da52fb1ba58f6eee091de14b0df29ef5e9bf5e2222253ad6d8783a7f068c3",
     "drc_ignored_checks": [
       {
         "description": "Footprint has no courtyard defined",
@@ -228,14 +240,164 @@
     "top assembly with optional bottom U18 only"
   ],
   "open_items": [
-    "Complete native routing, ground returns, Kelvin paths, USB reference/impedance and power/thermal copper; rerun filled DRC, ERC, parity and release consistency",
+    "Complete native V3V3_MCU, SWCLK and IIN_MON connections, implement USB reference/impedance and current-carrying copper; rerun filled DRC/ERC/parity and release consistency",
     "Resolve or obtain a documented fabrication disposition for the eight J1/J10 hole-clearance errors; no rule relaxation applied",
-    "Regenerate the routed cloud viewer, final revision markings, matched manufacturing/BOM/CPL and delivery archive; existing release CAD and default routed viewer are historical",
+    "Regenerate the verified routed cloud viewer, matched manufacturing/BOM/CPL and delivery archive; current draft preview shows unrouted r0.5 source and excludes historical release CAD",
     "Review new driver switching/current model and regenerate affected simulations; historical TMC model is explicitly rejected",
     "Select and qualify DDV top heatsink/TIM and supported motor-current envelope",
     "J2/J3 spring-clamp choice and raw PD voltage ADC remain separate unresolved reviewer requirements",
     "Confirm rear fastener/depth and optional single-shaft encoder magnet attachment",
     "Refresh/reserve stock: R66, R60, BZ1 and J1/J10 unavailable; U7 has only four pieces for five-board batch",
     "TI EEPROM and RP2040 full-flash readback, cold boot, USB current, braking, thermal and fault tests on hardware"
-  ]
+  ],
+  "routed_candidate": {
+    "board_sha256": "77e44dfd754f690a7cb47f956ff8ab7a9d19bb1c2d501aa82244257b3d33c59f",
+    "board_file": "pd1180-epr-r0.3.kicad_pcb",
+    "kind": "incomplete routed engineering candidate; NOT FOR FABRICATION",
+    "fabrication_orderable": false,
+    "hardware_tested": false,
+    "errors": 8,
+    "error_types": {
+      "hole_clearance": 8
+    },
+    "warnings": 639,
+    "unconnected_items": 3,
+    "unconnected_details": [
+      {
+        "description": "Missing connection between items",
+        "items": [
+          {
+            "description": "Track [V3V3_MCU] on F.Cu, length 0.7201 mm",
+            "pos": {
+              "x": 80.74,
+              "y": 120.75
+            },
+            "uuid": "b09280d4-cf12-42b8-9475-5bec9df1623a"
+          },
+          {
+            "description": "Track [V3V3_MCU] on F.Cu, length 1.8097 mm",
+            "pos": {
+              "x": 84.912,
+              "y": 122.391
+            },
+            "uuid": "85321a3f-5b6b-4fca-a32e-5cdb674545b3"
+          }
+        ],
+        "severity": "error",
+        "type": "unconnected_items"
+      },
+      {
+        "description": "Missing connection between items",
+        "items": [
+          {
+            "description": "Pad 1 [SWCLK] of TP_SWCLK on F.Cu",
+            "pos": {
+              "x": 78.75,
+              "y": 135.8
+            },
+            "uuid": "6dacf5c0-6ed0-6081-4b4d-b6c227cb0d03"
+          },
+          {
+            "description": "Pad 24 [SWCLK] of U16 on F.Cu",
+            "pos": {
+              "x": 81.999998,
+              "y": 119.425063
+            },
+            "uuid": "0bd47560-768c-f540-1eba-8ae04bfdf500"
+          }
+        ],
+        "severity": "error",
+        "type": "unconnected_items"
+      },
+      {
+        "description": "Missing connection between items",
+        "items": [
+          {
+            "description": "Pad 13 [IIN_MON] of U6 on F.Cu",
+            "pos": {
+              "x": 102.249934,
+              "y": 73.058043
+            },
+            "uuid": "1c31880c-7915-f814-0e5d-78345c5b07ac"
+          },
+          {
+            "description": "Via [IIN_MON] on F.Cu - B.Cu",
+            "pos": {
+              "x": 103.423,
+              "y": 79.0
+            },
+            "uuid": "c55cdc71-8220-4d21-9cc9-0983aad16b42"
+          }
+        ],
+        "severity": "error",
+        "type": "unconnected_items"
+      }
+    ],
+    "parity_added_findings": 0,
+    "erc_violations": 0,
+    "checks": [
+      {
+        "check": "native-architecture",
+        "exit_code": 0
+      },
+      {
+        "check": "bypass",
+        "exit_code": 0
+      },
+      {
+        "check": "source-policy",
+        "exit_code": 0
+      },
+      {
+        "check": "critical",
+        "exit_code": 0
+      },
+      {
+        "check": "usb-reference",
+        "exit_code": 1
+      },
+      {
+        "check": "parity",
+        "exit_code": 0
+      },
+      {
+        "check": "erc",
+        "exit_code": 0
+      }
+    ],
+    "limitations": [
+      "Three connections remain incomplete; do not power the PCB.",
+      "No qualified high-current copper, USB return/impedance or DDV heatsink assembly.",
+      "Existing eight J1/J10 hole-clearance errors are retained; no rule relaxation."
+    ],
+    "erc_ignored_checks": [
+      {
+        "description": "Global label only appears once in the schematic",
+        "key": "single_global_label"
+      },
+      {
+        "description": "Four connection points are joined together",
+        "key": "four_way_junction"
+      },
+      {
+        "description": "SPICE model issue",
+        "key": "simulation_model_issue"
+      },
+      {
+        "description": "Library symbol issue",
+        "key": "lib_symbol_issues"
+      },
+      {
+        "description": "Footprint link issue",
+        "key": "footprint_link_issues"
+      },
+      {
+        "description": "Assigned footprint doesn't match footprint filters",
+        "key": "footprint_filter"
+      }
+    ],
+    "erc_note": "ERC uses the original normalized source project settings. A PCB save reset the project ERC library-link severities in the first run; its 516 library-link warnings are retained separately. No electrical ERC finding was ignored.",
+    "archive_directory": "routed-candidate/",
+    "archive": "engineering/rp2040-native-review.zip"
+  }
 }

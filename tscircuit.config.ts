@@ -7,7 +7,8 @@ export default {
     // Live supplier checks remain in the independent check:stock release gate.
     partsEngineDisabled: true,
     // Interactive previews use the same routing policy as build:preview.
-    // The final routed board is available as release/circuit.json.
+    // This redesign previews current source placement. release/circuit.json
+    // remains historical and is excluded until a new route is qualified.
     routingDisabled: true,
   } satisfies PlatformConfig,
 }
