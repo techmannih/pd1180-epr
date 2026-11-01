@@ -40,27 +40,22 @@ const pages = [
   [
     "motion",
     "Motion Controller",
-    "U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V.",
-    "Bootstrap, charge-pump and local bypass parts are shown with the controller."
+    "U7 DRV8462DDV integrates both power bridges; 48 V operation requires top-side cooling.",
+    "SPI configures current/decay; RP2040 supplies STEP/DIR. VREF is tied to DVDD."
   ],
   [
     "motion-enable",
     "Onboard Motion and Hardware Enable",
-    "STM32 commands U7 over SPI. U10/U11/U33 and Q14 retain hardware inhibits.",
+    "RP2040 commands U7. U10/U11/U33 gate active-high ENABLE; R55 holds it low.",
     "The driver remains inhibited until the hardware safety conditions permit motion."
   ],
   [
     "bridge-a",
-    "Motor Phase A Power Bridge",
-    "Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt.",
-    "J2 connects both motor windings. The 3.8 A RMS design ceiling is not a qualified setting."
+    "Motor Winding Connection",
+    "J2 connects the two motor windings through the retained diagnostic shunts.",
+    "Initial test current is below 0.8 A RMS nominal; rated motor current is not qualified."
   ],
-  [
-    "bridge-b",
-    "Motor Phase B Power Bridge",
-    "Q10/Q12 high-side and Q11/Q13 low-side switches form phase B.",
-    "R110 is the independent 33 mOhm shunt; preserve the Kelvin sense connections."
-  ],
+  null, // External phase B bridge removed.
   [
     "brake",
     "Brake Reference and Turn-on Threshold",
@@ -76,14 +71,14 @@ const pages = [
   [
     "mcu",
     "MCU Clock Memory and Debug",
-    "U16 STM32G0B1 commands the TMC5160 ramp generator over SPI; SW2 requests Start/Stop.",
-    "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
+    "U16 RP2040 generates STEP/DIR and configures DRV8462 over SPI0; SW2 requests Start/Stop.",
+    "U17 is 4 MB QSPI boot flash; Y1 is 12 MHz. BOOTSEL + reset supports ROM USB recovery."
   ],
   [
     "encoder",
     "Optional Shaft Encoder",
-    "U18 AS5047P is centered on bottom; C52/C53 are top-side. All are DNP.",
-    "SPI plus ABI test access; magnet interface for the ordered single-shaft motor is unqualified."
+    "U18 AS5600 is centered on bottom; C52/C53 are top-side. All are DNP.",
+    "I2C1 at 0x36 plus OUT probe; single-shaft motor magnet interface remains unqualified."
   ],
   [
     "usb-data",
@@ -95,7 +90,7 @@ const pages = [
   [
     "user-control",
     "Local Start and Stop",
-    "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power.",
+    "SW2 requests motion from the onboard RP2040. R133 pulls the input to MCU logic power.",
     "Debounce requires release before start; reset, power loss and faults never auto-start."
   ],
   null, // Removed interface sheet; retain subsequent approved sheet numbers.
@@ -105,7 +100,7 @@ const pages = [
     "usb-logic",
     "USB Logic Power",
     "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
-    "R119/R120 sense board supply on PB1. Industrial peripherals require board power."
+    "R119/R120 sense board supply on GP28. Industrial peripherals require board power."
   ],
   [
     "telemetry",
@@ -121,14 +116,14 @@ const pages = [
   ],
   [
     "driver-power",
-    "Regulated Driver Supply",
-    "U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15.",
-    "TMC5160 external supply range is 10-13 V; ripple and startup require bench validation."
+    "Brake Gate Supply",
+    "U34 is the retained 65 V buck supplying nominal 12 V to brake gate driver U15.",
+    "DRV8462 does not use this rail. Brake backup remains powered from VMOTOR."
   ],
   [
     "indicators",
     "Status and Independent Power Indication",
-    "U35 PCA9538 at 0x70; U37 buffers PC13 reset into PD_3V3 with default-low bias.",
+    "U35 PCA9538 at 0x70; U37 buffers GP12 reset into PD_3V3 with default-low bias.",
     "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
   ],
   [
@@ -146,6 +141,8 @@ const pages = [
   , ["brake-feedback", "Brake Continuity Preflight",
     "R134-R136 sense J3 return on U30 AIN2 before motion; C98 filters the ADC input.",
     "This check detects an absent resistor or stuck-on Q16; it does not prove braking current."]
+, ["mcu-power", "RP2040 Local Power", "U16: separate 100 nF bypasses serve each IOVDD/DVDD/ADC/USB rail pin.", "C102/C103 are 1 uF VREG input/output capacitors; all are on top."]
+  , ["motion-config", "DRV8462 Logic Bias", "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.", "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."]
 ] as const
 
 export const SchematicPages = () => <>

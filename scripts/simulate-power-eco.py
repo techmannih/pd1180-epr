@@ -246,6 +246,8 @@ def main():
     ap.add_argument('--library'); ap.add_argument('--csv-dir',type=Path); ap.add_argument('--check',action='store_true')
     args=ap.parse_args()
     audit=json.loads((REPO/'engineering/power-audit.json').read_text())
+    if audit.get('architecture') == 'RP2040_DRV8462DDV':
+        raise RuntimeError('Historical TMC current/corner model does not qualify DRV8462DDV; regenerate and review the driver-specific switching/current model before simulation release')
     if audit['input_sha256']['index.circuit.tsx'] != VERSION:
         raise RuntimeError('Refresh power-audit.json from the current source before simulating')
     model_hash=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()

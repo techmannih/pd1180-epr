@@ -33,6 +33,11 @@ test('a passing static cutoff screen does not establish brake-open safety', () =
 test('current board audit keeps full-current operation held after static checks pass', async () => {
   const r = await audit()
   expect(r.errors).toEqual([])
+  expect(r.architecture).toBe('RP2040_DRV8462DDV')
+  expect(r.calculations.commissioning_profile.trq_dac).toBe(27)
+  expect(r.calculations.current.qualified_target_rms_a).toBeNull()
+  expect(r.calculations.dissipation_w.ddv_two_phase_conduction_0v184_ohm_case).toBeCloseTo(13.248,3)
+  expect(r.calculations.thresholds_v.ddv_vm_operating_max).toBe(65)
   expect(r.full_current_operation_authorized).toBe(false)
   expect(r.powered_tests_performed).toBe(false)
   expect(r.operating_risks.find(x => x.id === 'brake-unavailable')?.status).toBe('open')

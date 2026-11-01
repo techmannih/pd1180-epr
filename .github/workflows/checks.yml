@@ -14,6 +14,17 @@ jobs:
         with:
           bun-version: 1.3.14
       - run: bun install --frozen-lockfile
+      - name: RP2040 source and driver safety checks
+        run: |
+          bunx tsci build index.circuit.tsx --routing-disabled --disable-parts-engine
+          bun run typecheck
+          bun run check:source-schematic
+          bun run check:firmware-pins
+          bun run check:firmware
+          bun run check:firmware-target
+          bun test scripts/rp2040-contract.test.mjs scripts/encoder-bypass-policy.test.mjs scripts/verify-programming.test.mjs
+          bun run check:decoupling
+          bun run check:schematic-style
       - name: CC protection alias regression
         run: bun test scripts/cc-protection-aliases.test.mjs
       - name: Placement regression without generated logs

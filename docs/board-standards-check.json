@@ -1,12 +1,12 @@
 {
-  "checked_at": "2026-10-29T12:30:04.606Z",
+  "checked_at": "2026-11-01T02:38:52.177Z",
   "policy": "board-standards.json",
   "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "geometry": {
     "width_mm": 85.9,
     "height_mm": 85.9,
     "layers": 4,
-    "schematic_sheets": 24,
+    "schematic_sheets": 25,
     "mounting_holes": 4,
     "mounting_hole_positions": [
       {
@@ -62,11 +62,11 @@
     "mechanical_reference": "engineering/mechanical/ordered-motor-pcb-reference.json"
   },
   "assembly": {
-    "pcb_component_records": 277,
+    "pcb_component_records": 258,
     "allowed_layers": [
       "top"
     ],
-    "bare_service_pads_checked": 19,
+    "bare_service_pads_checked": 20,
     "bottom_paste_present": false
   },
   "minimum_via_drill_mm": 0.3,
@@ -141,5 +141,9 @@
     "unconnected_items": 0
   },
   "warnings": [],
-  "errors": []
+  "errors": [
+    "TP_BOOTSEL: bare service pad missing from native PCB",
+    "Final thermal-via footprint references differ from policy",
+    "Expected 8 drain-pad thermal vias in total"
+  ]
 }

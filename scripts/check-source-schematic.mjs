@@ -117,11 +117,11 @@ const expectedSheetNames = [
   "indicators",
   "alarm",
   "pd-programming",
-  "brake-feedback"
+  "brake-feedback", "mcu-power", "motion-config"
 ]
-const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["inputs", "serial", "serial-rs232", "outputs"].includes(name)))
-check(sheets.length === 24, "24 A4 schematic sheets including brake preflight", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 24, "all schematic sheet names are unique")
+const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["inputs", "serial", "serial-rs232", "outputs", "bridge-b"].includes(name)))
+check(sheets.length === 25, "25 A4 sheets including RP2040 power and driver bias", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 25, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -162,7 +162,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 72, "72 high-level annotations on 24 sheets", {
+check(annotations.length === 75, "75 high-level annotations on 25 sheets", {
   actual: annotations.length,
 })
 
@@ -322,7 +322,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 163, "163 named source nets including buffered indicator reset", { actual: sourceNets.length })
+check(sourceNets.length === 147, "147 named source nets for the integrated-driver revision", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -357,9 +357,9 @@ const usbExpectedPins = [
   ["U1", 4, "CC1_CONN"], ["U1", 7, "CC1_CONN"], ["U1", 12, "CC1_PD"], ["U2", 24, "CC1_PD"],
   ["U1", 5, "CC2_CONN"], ["U1", 6, "CC2_CONN"], ["U1", 11, "CC2_PD"], ["U2", 25, "CC2_PD"],
   ["D15", 1, "USB_DP_CONN"],
-  ["R71", 1, "USB_DP_CONN"], ["R71", 2, "USB_DP"], ["U16", 34, "USB_DP"],
+  ["R71", 1, "USB_DP_CONN"], ["R71", 2, "USB_DP"], ["U16", 47, "USB_DP"],
   ["D15", 3, "USB_DM_CONN"],
-  ["R72", 1, "USB_DM_CONN"], ["R72", 2, "USB_DM"], ["U16", 33, "USB_DM"],
+  ["R72", 1, "USB_DM_CONN"], ["R72", 2, "USB_DM"], ["U16", 46, "USB_DM"],
   ...[7,8,17,18].map(pin => ["J10", pin, "USB_DATA_VBUS"]),
   ["J10",15,"DATA_CC1"], ["J10",9,"DATA_CC2"], ["R105",1,"DATA_CC1"], ["R106",1,"DATA_CC2"],
   ["R105",2,"GND"], ["R106",2,"GND"], ["R107",1,"USB_DATA_VBUS"], ["U22",2,"VMOTOR"],
@@ -396,7 +396,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 89, "89 capacitors including reset-buffer bypass and brake feedback filter", { actual: capacitors.length })
+check(capacitors.length === 92, "92 capacitors including RP2040 core/IO bypass", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -422,7 +422,7 @@ for (const testPoint of testPoints) {
     non_testpoint_peers: nonTestPointPeers.length,
   })
 }
-check(testPoints.length === 19, "19 test points audited", { actual: testPoints.length })
+check(testPoints.length === 20, "20 test points including BOOTSEL audited", { actual: testPoints.length })
 check(testPointIssues.length === 0, "every test point probes a shared functional net", {
   violations: testPointIssues,
 })
@@ -436,10 +436,10 @@ const expectedNoConnects = [
   "U23.4:NC", "U24.4:NC", "U25.4:NC", "U26.4:NC", "U27.4:NC",
   "U34.4:PG", "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
-  "U18.8:W", "U18.9:V", "U18.10:U",
+  "U18.5:PGO",
+  "U7.32:RSVD5", "U7.35:RSVD4", "U7.36:RSVD3", "U7.37:RSVD2", "U7.38:RSVD1",
   "U35.13:N_INT", "U37.1:NC",
-  "U16.2:PC14_OSC32_IN", "U16.3:PC15_OSC32_OUT", "U16.13:PA2", "U16.14:PA3", "U16.22:PB10", "U16.29:PA9", "U16.32:PA10", "U16.38:PD0", "U16.39:PD1", "U16.40:PD2", "U16.41:PD3",
-  "U16.25:PB13", "U16.26:PB14", "U16.27:PB15", "U16.31:PC7",
+  "U16.6:GPIO4", "U16.7:GPIO5", "U16.34:GPIO22", "U16.35:GPIO23", "U16.36:GPIO24", "U16.37:GPIO25",
 ].sort()
 const actualNoConnectPorts = sourcePorts.filter((port) => !port.subcircuit_connectivity_map_key)
 const actualNoConnects = actualNoConnectPorts.map(portLabel).sort()

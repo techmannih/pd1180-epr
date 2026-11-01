@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['AGENTS.md', 'board-diagnostics.tsx', 'schematic-pages.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+const verifiedInputPaths = ['scripts/verify.mjs', 'scripts/check-native-architecture.mjs', 'scripts/native-architecture.test.mjs', 'scripts/check-kicad-drc.mjs', 'AGENTS.md', 'board-diagnostics.tsx', 'schematic-pages.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-brake-sense.py', 'scripts/check-power-eco.py', 'scripts/simulate-power-eco.py', 'engineering/power-thermal-eco.json', 'scripts/check-protection-refinement.mjs', 'engineering/protection-refinement.json')
@@ -63,13 +63,14 @@ const checks = [
   ['pd-image', ['scripts/check-pd-image.mjs']],
   ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
+  ['native-architecture', ['scripts/check-native-architecture.mjs']],
   ['cloud-viewer', ['run', 'check:cloud-viewer']],
   ['source-schematic', ['run', 'check:source-schematic']],
   ['schematic-style', ['run', 'check:schematic-style']],
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/copper-geometry-policy.test.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/native-architecture.test.mjs', 'scripts/rp2040-contract.test.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['usb-access', ['scripts/check-usb-access.mjs']],
@@ -97,8 +98,15 @@ const checks = [
 ]
 await mkdir('docs/checks', {recursive: true})
 const results=[]
+const nativeChecks = new Set(['filled-copper-evidence','placement','decoupling','board-standards','source-design-rules','power-feed','local-copper','copper-geometry','kicad-drc','critical-copper','usb-reference','power-routing','routing-fingerprint'])
 for (const [name,args] of checks) {
   const log=`docs/checks/${name}.log`
+  if (nativeChecks.has(name) && results.some(r => r.name === 'native-architecture' && r.exit_code !== 0)) {
+    await writeFile(log, 'BLOCKED: committed native PCB does not match current source architecture. Historical native results were not used to qualify this revision. Regenerate the native route and rerun this check.\n')
+    results.push({name,exit_code:1,status:'fail',reason:'native-architecture mismatch; not run',seconds:0,log})
+    console.log(`${name}: BLOCKED (native architecture mismatch)`)
+    continue
+  }
   const started=Date.now()
   const exit_code=await new Promise((resolve,reject)=>{
     const stream=createWriteStream(log)
@@ -151,6 +159,6 @@ const verificationMarkdown = `# PD1180-EPR verification\n\n` +
   `- Prototype fabrication orderable: **${report.prototype_fabrication_orderable ? 'yes' : 'no'}**\n` +
   `- Production released: **no**\n` +
   `- Verified entry SHA-256: \`${report.entry_sha256}\`\n\n` +
-  `Production remains gated by PD programming/readback, qualified STM32 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
+  `Production remains gated by PD programming/readback, qualified RP2040/DRV8462 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
 await writeFile('verification.md', verificationMarkdown)
 if(results.some(r=>r.exit_code!==0))process.exitCode=1

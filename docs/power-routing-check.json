@@ -163,37 +163,6 @@
       "corridor_coverage_ratio": 0.953,
       "vias": 4
     },
-    "SENSE_A": {
-      "routed_segments": 52,
-      "thermal_via_tie_segments": 0,
-      "verified_sense_branch_segments": 16,
-      "corridor_eligible_segments": 36,
-      "segment_layers": [
-        "F.Cu",
-        "B.Cu",
-        "In2.Cu"
-      ],
-      "reinforced_corridors": 5,
-      "corridor_eligible_length_mm": 45.607,
-      "corridor_covered_length_mm": 45.607,
-      "corridor_coverage_ratio": 1,
-      "vias": 4
-    },
-    "SENSE_B": {
-      "routed_segments": 47,
-      "thermal_via_tie_segments": 0,
-      "verified_sense_branch_segments": 11,
-      "corridor_eligible_segments": 36,
-      "segment_layers": [
-        "F.Cu",
-        "In2.Cu"
-      ],
-      "reinforced_corridors": 2,
-      "corridor_eligible_length_mm": 46.525,
-      "corridor_covered_length_mm": 46.525,
-      "corridor_coverage_ratio": 1,
-      "vias": 5
-    },
     "BRAKE_RETURN": {
       "routed_segments": 40,
       "thermal_via_tie_segments": 4,
@@ -212,5 +181,7 @@
       "vias": 7
     }
   },
-  "errors": []
+  "errors": [
+    "Expected 8 thermal via-to-via tie segments, found 40"
+  ]
 }

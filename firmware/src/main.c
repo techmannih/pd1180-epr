@@ -1,6 +1,6 @@
 #include "board_pins.h"
 #include "control.h"
-#include "tmc5160_config.h"
+#include "drv8462.h"
 
 #include <stdio.h>
 
@@ -20,8 +20,8 @@ int main(void) {
   };
   if (!pd1180_control_arm(&control, &inputs)) return 1;
   for (unsigned elapsed = 0; elapsed < 350; elapsed += 10) pd1180_control_tick(&control, &inputs, 10);
-  printf("permit=%u run=%u tmc_registers=%zu mcu_run_pin=P%c%u\n",
-    control.power_permit, control.mcu_run, pd1180_tmc5160_boot_config_count,
-    PD1180_PIN_MCU_RUN.port, PD1180_PIN_MCU_RUN.bit);
+  printf("permit=%u run=%u bench_rms_ma=%u mcu_run_gpio=%u\n",
+    control.power_permit, control.mcu_run, DRV8462_BENCH_RMS_MA,
+    PD1180_PIN_MCU_RUN.gpio);
   return control.motor_commands_enabled ? 0 : 1;
 }

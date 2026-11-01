@@ -15,7 +15,7 @@ const powerNets = [
   'PD_VBUS', 'EFUSE_IN', 'VMOTOR',
   'MOTOR_A1', 'MOTOR_A2', 'MOTOR_B1', 'MOTOR_B2',
   'MOTOR_A1_OUT', 'MOTOR_B1_OUT',
-  'SENSE_A', 'SENSE_B', 'BRAKE_RETURN',
+  'BRAKE_RETURN',
 ]
 
 function forms(name) {

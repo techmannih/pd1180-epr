@@ -1,7 +1,10 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
-#include <IWatchdog.h>
+#include <hardware/watchdog.h>
+#include <hardware/sync.h>
+#include <pico/time.h>
+#include <Adafruit_TinyUSB.h>
 #include "usb_suspend.h"
 #include <stdio.h>
 #include <string.h>
@@ -12,31 +15,44 @@ extern "C" {
 #include "pd_contract.h"
 #include "telemetry.h"
 #include "power_domain.h"
-#include "tmc5160.h"
-#include "motor_service.h"
-#include "tmc5160_config.h"
-#include "local_motion.h"
+#include "drv8462.h"
+#include "as5600.h"
+#include "step_motion.h"
+
+
+
 }
 
 // Commissioning image: motor outputs stay locked until the new ECO has passed
 // route checks, programmed PD-image verification and powered bring-up.
-// U7 mode-pin contention is corrected in source; firmware does not assume the PCB was rebuilt.
+// Source and target are RP2040/DDV; release remains locked pending routing and physical validation.
 static constexpr bool motionWiringVerified = false;
 static constexpr bool pdImageVerified = false;
 static constexpr bool brakeHardwareVerified = false;
-static constexpr bool motionQualified = motionWiringVerified && pdImageVerified && brakeHardwareVerified;
+static constexpr bool rp2040UsbPowerVerified = false;
+static constexpr bool motionQualified = motionWiringVerified && pdImageVerified && brakeHardwareVerified && rp2040UsbPowerVerified;
 static pd1180_brake_preflight_t brakePreflight;
-static TwoWire pdBus(PB7, PB6);
-static SPIClass motorSpi(PA7, PA6, PA5);
+static TwoWire pdBus(i2c0, 20, 21);
+static TwoWire encoderBus(i2c1, 14, 15);
+static SPIClassRP2040 motorSpi(spi0, 16, 17, 18, 19);
 static bool spiStarted;
-static bool motorFrame(void *, const uint8_t tx[5], uint8_t rx[5]);
-static pd1180_motor_service_t motor = {};
-static auto &tmc = motor.driver;
-static auto &tmcStatus = motor.status;
-static constexpr uint16_t commissioningCurrentPermille = PD1180_BENCH_CURRENT_MAX_PERMILLE; // Start below 1 A RMS; tune on the bench.
+static bool motorFrame(void *, const uint8_t tx[2], uint8_t rx[2]);
+static drv8462_t driver = {};
+static drv8462_status_t driverStatus;
+static bool driverAttempted, driverAwake;
+static uint32_t driverWakeAt;
+static uint16_t currentMa;
+static as5600_sample_t encoderSample;
+static uint32_t lastEncoderPoll;
+static step_motion_t stepMotion;
+static repeating_timer_t stepTimer;
+static volatile bool stepTimerFault;
+static bool stepTimerReady;
+static bool desiredMotion, buttonCandidate=true, buttonStable=true, buttonReleased;
+static uint32_t buttonChanged;
 static uint32_t lastDriverPoll;
 static pd1180_control_t control;
-static pd1180_local_motion_t localMotion;
+
 static pd1180_inputs_t inputs;
 static pd1180_board_power_t boardPower;
 static bool peripheralsStarted, wasSuspended;
@@ -54,41 +70,70 @@ static uint8_t adcChannel;
 static constexpr uint16_t temperatureConfig = 0x08C0; // Two faults, active-low comparator, 8 Hz.
 static char response[384];
 static size_t responseLength, responseSent;
-static bool pdReadOk, usbStarted;
+static bool pdReadOk, usbStarted, usbInitialized;
 static char command[64];
 static size_t commandLength;
 static bool commandOverflow;
 
-static pin_size_t pin(board_pin_t p) {
-  return pinNametoDigitalPin(static_cast<PinName>(((p.port-'A')<<4) | p.bit));
+// The pinned core's weak yield calls a USB mutex before it is initialized.
+// Guard both TinyUSB service calls until DATA VBUS permits initialization.
+extern "C" void yield() {
+  if(usbInitialized) {TinyUSB_Device_Task(); TinyUSB_Device_FlushCDC();}
+}
+
+static pin_size_t pin(board_pin_t p) { return p.gpio; }
+static void stopSteps() {
+  const uint32_t flags=save_and_disable_interrupts();
+  step_motion_stop(&stepMotion);
+  gpio_put(PD1180_PIN_DRV_STEP.gpio,0);
+  restore_interrupts(flags);
+}
+static void cancelMotion() { stopSteps(); desiredMotion=false; buttonReleased=false; }
+static void resetDriver() {
+  drv8462_invalidate(&driver); driverStatus={}; driverAttempted=false;
+  driverAwake=false; gpio_put(PD1180_PIN_DRV_SLEEP_N.gpio,0);
+}
+static bool stepInterrupt(repeating_timer_t *) {
+  const bool ok=gpio_get(PD1180_PIN_MOTOR_PG.gpio) && gpio_get(PD1180_PIN_VMOTOR_OK.gpio) &&
+    gpio_get(PD1180_PIN_EFUSE_FAULT_N.gpio) && gpio_get(PD1180_PIN_DRV_FAULT_N.gpio) &&
+    gpio_get(PD1180_PIN_MCU_RUN.gpio);
+  const uint32_t now=time_us_32();
+  if(stepMotion.active && (!ok || now-stepMotion.lease_us>=25000u || now-stepMotion.last_us>100u)) {
+    stepTimerFault=true;
+    gpio_put(PD1180_PIN_MCU_RUN.gpio,0);
+    gpio_put(PD1180_PIN_POWER_PERMIT.gpio,0);
+  }
+  gpio_put(PD1180_PIN_DRV_STEP.gpio,step_motion_tick(&stepMotion,now,ok));
+  return true;
 }
 static void safeOutputs() {
   digitalWrite(pin(PD1180_PIN_MCU_RUN), LOW);
   digitalWrite(pin(PD1180_PIN_POWER_PERMIT), LOW);
-  digitalWrite(pin(PD1180_PIN_SD_MODE), LOW);
+  stopSteps();
 }
 static void output(board_pin_t p, bool high) {
   digitalWrite(pin(p), high ? HIGH : LOW); // Set latch before making pin an output.
   pinMode(pin(p), OUTPUT);
 }
 static const board_pin_t boardInputs[] = {PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,
-  PD1180_PIN_TMC_DIAG0,PD1180_PIN_TMC_DIAG1};
+  PD1180_PIN_DRV_FAULT_N,PD1180_PIN_DRV_HOME_N};
 static void releaseChipSelect(board_pin_t p) {
   digitalWrite(pin(p), HIGH);
-  pinMode(pin(p), OUTPUT_OPEN_DRAIN); // Only external board-domain pullups drive high.
+  pinMode(pin(p), INPUT); // External board-domain pullup; never back-power an absent rail.
 }
 static void invalidateTelemetry() {
   inputs = {};
   brakePreflight = {};
   adcChannel = 0;
-  pd1180_local_motion_cancel(&localMotion);
+  cancelMotion();
   temperatureConfigured = false;
   adcPending = false;
   adcValid[0] = adcValid[1] = adcValid[2] = phaseValid = pdReadOk = false;
   adcMv[0] = adcMv[1] = adcMv[2] = 0;
   phaseMa[0] = phaseMa[1] = 0;
   vmotorMv = 0;
-  pd1180_motor_service_reset(&motor);
+  resetDriver();
+  encoderSample={};
   pd1180_control_disarm(&control);
 }
 static void stopPeripherals() {
@@ -96,22 +141,24 @@ static void stopPeripherals() {
   // U35 RESET is hardware-gated: no I2C transaction is needed to silence BZ1.
   digitalWrite(pin(PD1180_PIN_STATUS_GPIO), LOW);
   indicatorsReady = indicatorResetReleased = false;
-  if (peripheralsStarted) pdBus.end();
+  if (peripheralsStarted) { pdBus.end(); encoderBus.end(); }
+  pinMode(pin(PD1180_PIN_ENC_SDA),INPUT); pinMode(pin(PD1180_PIN_ENC_SCL),INPUT);
   if (spiStarted) motorSpi.end();
   spiStarted=false;
-  releaseChipSelect(PD1180_PIN_TMC_CS_N);
+  releaseChipSelect(PD1180_PIN_DRV_CS_N);
   for (auto p : {PD1180_PIN_SPI_SCK, PD1180_PIN_SPI_MOSI, PD1180_PIN_SPI_MISO})
-    pinMode(pin(p), INPUT_ANALOG);
+    pinMode(pin(p), INPUT);
   // No internal pullups or push-pull highs may energize the dead board rail.
-  pinMode(pin(PD1180_PIN_PD_SCL), INPUT_ANALOG);
-  pinMode(pin(PD1180_PIN_PD_SDA), INPUT_ANALOG);
-  for (auto p : boardInputs) pinMode(pin(p), INPUT_ANALOG);
+  pinMode(pin(PD1180_PIN_PD_SCL), INPUT);
+  pinMode(pin(PD1180_PIN_PD_SDA), INPUT);
+  for (auto p : boardInputs) pinMode(pin(p), INPUT);
   peripheralsStarted = false;
   invalidateTelemetry();
 }
 static void startPeripherals() {
   for (auto p : boardInputs) pinMode(pin(p), INPUT);
-  pdBus.begin(); pdBus.setClock(100000);
+  pdBus.begin(); pdBus.setClock(100000); pdBus.setTimeout(5);
+  encoderBus.begin(); encoderBus.setClock(100000); encoderBus.setTimeout(5);
   peripheralsStarted = true;
   temperatureConfiguredAt = millis();
   indicatorAttemptAt = millis();
@@ -120,36 +167,78 @@ static void startPeripherals() {
 }
 // U7 needs VMOTOR as well as VCC_IO. Do not clock or drive its inputs when
 // the motor domain is absent, even if the encoder/board logic is powered.
-static bool motorFrame(void *, const uint8_t tx[5], uint8_t rx[5]) {
+static bool motorFrame(void *, const uint8_t tx[2], uint8_t rx[2]) {
   if (!spiStarted || !peripheralsStarted || !inputs.motor_power_good ||
       !inputs.vmotor_in_range || (usbStarted && usbIsSuspended())) return false;
-  motorSpi.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
-  digitalWrite(pin(PD1180_PIN_TMC_CS_N), LOW);
-  for (unsigned i=0;i<5;++i) rx[i]=motorSpi.transfer(tx[i]);
-  digitalWrite(pin(PD1180_PIN_TMC_CS_N), HIGH);
+  motorSpi.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE1));
+  digitalWrite(pin(PD1180_PIN_DRV_CS_N), LOW);
+  pinMode(pin(PD1180_PIN_DRV_CS_N),OUTPUT);
+  for (unsigned i=0;i<2;++i) rx[i]=motorSpi.transfer(tx[i]);
+  releaseChipSelect(PD1180_PIN_DRV_CS_N);
   motorSpi.endTransaction();
-  delayMicroseconds(2); // Explicit CS-high gap; ADI requires >=2 system clocks.
+  delayMicroseconds(2); // Explicit CS-high gap; TI timing table requires >=2 us.
   return true;
 }
 static void pollDriver(uint32_t now) {
+  inputs.driver_ready=false;
   if (!inputs.motor_power_good || !inputs.vmotor_in_range) {
-    if (spiStarted) motorSpi.end();
-    spiStarted=false; pd1180_motor_service_reset(&motor);
-    inputs.driver_ready=false;
-    for (auto p : {PD1180_PIN_SPI_SCK,PD1180_PIN_SPI_MOSI,PD1180_PIN_SPI_MISO})
-      pinMode(pin(p),INPUT_ANALOG);
+    digitalWrite(pin(PD1180_PIN_MCU_RUN),LOW); stopSteps(); resetDriver();
+    if(spiStarted) motorSpi.end();
+    spiStarted=false;
+    for(auto p:{PD1180_PIN_SPI_SCK,PD1180_PIN_SPI_MOSI,PD1180_PIN_SPI_MISO}) pinMode(pin(p),INPUT);
     return;
   }
-  if (!spiStarted) { motorSpi.begin(); spiStarted=true; }
-  if (now-lastDriverPoll<20u) return;
+  if(!driverAwake) {
+    digitalWrite(pin(PD1180_PIN_DRV_SLEEP_N),HIGH); driverWakeAt=now; driverAwake=true; return;
+  }
+  if(now-driverWakeAt<2u) return;
+  if(!spiStarted) {motorSpi.begin(); spiStarted=true;}
+  if(now-lastDriverPoll<20u) return;
   lastDriverPoll=now;
-  // Read-only in the unqualified commissioning image. Faults are not cleared
-  // automatically; every reset/power loss invalidates the configured state.
-  if (motionQualified) {
-    pd1180_motor_service(&motor,&control,&inputs,commissioningCurrentPermille);
-  } else {
-    pd1180_tmc_status(&tmc,&tmcStatus);
-    inputs.driver_ready=false;
+  if(!motionQualified) { drv8462_status(&driver,&driverStatus); return; }
+  if(!control.armed || !control.power_permit) {resetDriver();return;}
+  if(!driver.configured) {
+    if(driverAttempted) {control.fault_latched=true;return;}
+    driverAttempted=true;
+    currentMa=DRV8462_BENCH_RMS_MA*control.current_limit_permille/1000u;
+    if(!drv8462_configure(&driver,currentMa,!gpio_get(PD1180_PIN_MCU_RUN.gpio)) ||
+       !drv8462_enable(&driver,true)) {safeOutputs();control.fault_latched=true;return;}
+  }
+  const uint16_t requested=DRV8462_BENCH_RMS_MA*control.current_limit_permille/1000u;
+  if(requested!=currentMa && !drv8462_set_current(&driver,requested)) {
+    safeOutputs();control.fault_latched=true;return;
+  }
+  currentMa=requested;
+  inputs.driver_ready=drv8462_verify(&driver) && drv8462_status(&driver,&driverStatus) &&
+    digitalRead(pin(PD1180_PIN_DRV_FAULT_N))==HIGH;
+  if(!inputs.driver_ready) {safeOutputs();control.fault_latched=true;}
+}
+static bool encoderRead(void *, uint8_t reg, uint8_t *bytes, uint8_t count) {
+  encoderBus.beginTransmission(0x36); encoderBus.write(reg);
+  if(encoderBus.endTransmission(false)!=0 || encoderBus.requestFrom(0x36,(int)count,(int)true)!=count) return false;
+  for(uint8_t i=0;i<count;i++) bytes[i]=encoderBus.read();
+  return true;
+}
+static void pollEncoder(uint32_t now) {
+  if(now-lastEncoderPoll<100u) return;
+  lastEncoderPoll=now; as5600_sample(encoderRead,nullptr,&encoderSample);
+}
+static void serviceButton(uint32_t now) {
+  const bool pressed=digitalRead(pin(PD1180_PIN_USER_BUTTON_N))==LOW;
+  if(pressed!=buttonCandidate) {buttonCandidate=pressed;buttonChanged=now;}
+  if(now-buttonChanged>=30u && buttonStable!=pressed) {
+    buttonStable=pressed;
+    if(!pressed) buttonReleased=true;
+    else if(buttonReleased) {
+      buttonReleased=false;
+      if(!motionQualified || !stepTimerReady) return;
+      if(control.fault_latched) {
+        safeOutputs(); pd1180_control_disarm(&control);resetDriver();desiredMotion=false;
+        const uint32_t flags=save_and_disable_interrupts(); stepTimerFault=false; restore_interrupts(flags);
+      }
+      else if(desiredMotion) {desiredMotion=false;}
+      else if(pd1180_control_arm(&control,&inputs)) desiredMotion=true;
+    }
   }
 }
 static void reply(const char *text) {
@@ -235,7 +324,7 @@ static void pollIndicators(uint32_t now) {
       resetIndicators(now); return;
     }
   }
-  const bool fault = control.fault_latched || (tmcStatus.valid && tmcStatus.fault) ||
+  const bool fault = control.fault_latched || (driverStatus.valid && driverStatus.fault) ||
     (inputs.temperature_valid && inputs.temperature_deci_c >= 700);
   uint8_t value;
   if (fault) value = 0x06 | ((now % 2000u < 200u) ? 0x08 : 0); // Red; bounded chirp.
@@ -335,21 +424,21 @@ static void pollPower() {
     millis()-adcSampleAt[0]<=100u && millis()-adcSampleAt[2]<=100u,
     millis(), adcSampleAt[0], adcSampleAt[2], vmotorMv, static_cast<uint32_t>(adcMv[2])*991u/51u);
   inputs.watchdog_healthy = true;
-  inputs.driver_ready = motionQualified && tmc.configured &&
-    tmcStatus.valid && !tmcStatus.fault && millis()-lastDriverPoll<=40u;
+  inputs.driver_ready = motionQualified && driver.configured &&
+    driverStatus.valid && !driverStatus.fault && millis()-lastDriverPoll<=40u;
   inputs.stop_active = false; // External limit interface removed; local STOP uses the controlled ramp.
 }
 static void executeCommand() {
   command[commandLength]=0;
   if(!strcmp(command,"DISARM")) {
-    safeOutputs(); pd1180_local_motion_cancel(&localMotion); pd1180_control_disarm(&control); pd1180_motor_service_reset(&motor); reply("OK DISARM\r\n");
+    safeOutputs(); cancelMotion(); pd1180_control_disarm(&control); resetDriver(); reply("OK DISARM\r\n");
   } else if(!strcmp(command,"ARM")) {
     reply("BLOCKED: use local START/STOP; hardware qualification required\r\n");
   } else if(!strcmp(command,"DRIVER")) {
     char status[160];
-    snprintf(status,sizeof(status),"TMC_VALID=%u IOIN=%08lX GSTAT=%08lX DRV_STATUS=%08lX CONFIGURED=%u FAULT=%u\r\n",
-      tmcStatus.valid,static_cast<unsigned long>(tmcStatus.ioin),static_cast<unsigned long>(tmcStatus.gstat),
-      static_cast<unsigned long>(tmcStatus.drv_status),tmc.configured,tmcStatus.fault);
+    snprintf(status,sizeof(status),"DRV8462_VALID=%u FAULT=%02X DIAG1=%02X DIAG2=%02X CONFIGURED=%u ENCODER_VALID=%u ANGLE=%u\r\n",
+      driverStatus.valid,driverStatus.fault,driverStatus.diag1,driverStatus.diag2,driver.configured,
+      encoderSample.valid,encoderSample.angle);
     reply(status);
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
@@ -365,16 +454,18 @@ static void executeCommand() {
   } else reply("ERR unknown command\r\n");
 }
 void setup() {
-  tmc.frame=motorFrame;
-  output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_SD_MODE,false);
+  driver.frame=motorFrame;
+  output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_DRV_STEP,false); output(PD1180_PIN_DRV_DIR,false); output(PD1180_PIN_DRV_SLEEP_N,false);
   // Removed field-bus and unassigned general I/O pins remain in reset input state.
-  releaseChipSelect(PD1180_PIN_TMC_CS_N); releaseChipSelect(PD1180_PIN_ENC_CS_N); releaseChipSelect(PD1180_PIN_FLASH_CS_N);
+  releaseChipSelect(PD1180_PIN_DRV_CS_N); // QSPI belongs to the boot ROM/XIP controller; never bit-bang it.
   output(PD1180_PIN_STATUS_GPIO,false);
   pinMode(pin(PD1180_PIN_USER_BUTTON_N), INPUT); // R133 is on the MCU rail.
   analogReadResolution(12);
   pd1180_control_reset(&control);
-  IWatchdog.begin(250000); // 250 ms nominal; never serviced by interrupt handlers.
+  watchdog_enable(250,true); // 250 ms nominal; never serviced by interrupt handlers.
   initializeSuspendTimer();
+  stepTimerReady=add_repeating_timer_us(-20,stepInterrupt,nullptr,&stepTimer);
+  if(!stepTimerReady) stepTimerFault=true;
   stopPeripherals();
   lastTick=lastPoll=millis();
 }
@@ -390,7 +481,7 @@ void loop() {
       digitalWrite(pin(PD1180_PIN_STATUS_GPIO),LOW);
       wasSuspended=true;
     }
-    IWatchdog.reload();
+    watchdog_update();
     sleepWhileUsbSuspended();
     return;
   }
@@ -400,25 +491,30 @@ void loop() {
   if (peripheralsStarted && !boardReady) stopPeripherals();
   if (!peripheralsStarted && boardReady) startPeripherals();
   if (peripheralsStarted) {
-    pollTemperature(now); pollBusAdc(now); samplePhaseCurrent(now);
+    pollTemperature(now); pollBusAdc(now); samplePhaseCurrent(now); pollEncoder(now);
     if (!temperatureConfigured || now-lastTemperatureSample>500u) inputs.temperature_valid=false;
     if(now-lastPoll >= 50u) { lastPoll=now; pollPower(); }
     pollDriver(now);
   }
-  if(!usbStarted && vbusMv >= 4000u) { SerialUSB.begin(); usbStarted=true; }
+  if(!usbStarted && vbusMv >= 4000u) {
+    // NO_USB prevents the Arduino core attaching before our VBUS observation.
+    // Initialize once; later cable events only reconnect the same descriptors.
+    if(!usbInitialized) { TinyUSB_Device_Init(0); usbInitialized=true; }
+    TinyUSBDevice.attach(); usbStarted=true;
+  }
   if(usbStarted && vbusMv < 3000u) {
-    SerialUSB.end(); usbStarted=false; commandLength=0; commandOverflow=false;
+    TinyUSBDevice.detach(); usbStarted=false; commandLength=0; commandOverflow=false;
     responseLength=responseSent=0;
-    safeOutputs(); pd1180_local_motion_cancel(&localMotion); pd1180_control_disarm(&control);
+    safeOutputs(); cancelMotion(); pd1180_control_disarm(&control);
   }
   if(usbStarted) {
-    if (SerialUSB && responseSent<responseLength) {
-      const size_t count=min(responseLength-responseSent,static_cast<size_t>(SerialUSB.availableForWrite()));
-      if (count) responseSent+=SerialUSB.write(reinterpret_cast<const uint8_t *>(response)+responseSent,count);
+    if (Serial && responseSent<responseLength) {
+      const size_t count=min(responseLength-responseSent,static_cast<size_t>(Serial.availableForWrite()));
+      if (count) responseSent+=Serial.write(reinterpret_cast<const uint8_t *>(response)+responseSent,count);
     }
     // Bounded parser: oversized lines are discarded whole, never as command suffixes.
-    for(unsigned n=0; n<32 && SerialUSB.available(); ++n) {
-      const char c=static_cast<char>(SerialUSB.read());
+    for(unsigned n=0; n<32 && Serial.available(); ++n) {
+      const char c=static_cast<char>(Serial.read());
       if(c=='\r') continue;
       if(c=='\n') {
         if(commandOverflow) reply("ERR line too long\r\n");
@@ -437,14 +533,19 @@ void loop() {
   }
   if (motionQualified) {
     digitalWrite(pin(PD1180_PIN_POWER_PERMIT),control.power_permit?HIGH:LOW);
-    digitalWrite(pin(PD1180_PIN_SD_MODE),LOW); // TMC internal SPI ramp, never STEP/DIR.
+
     digitalWrite(pin(PD1180_PIN_MCU_RUN),control.mcu_run && inputs.driver_ready?HIGH:LOW);
   } else safeOutputs();
-  pd1180_local_motion_update(&localMotion,&control,&inputs,&tmc,
-    digitalRead(pin(PD1180_PIN_USER_BUTTON_N))==LOW,tick,
-    motionQualified && peripheralsStarted);
+  if(stepTimerFault) {safeOutputs(); control.fault_latched=true; desiredMotion=false;}
+  serviceButton(tick);
+  const uint32_t flags=save_and_disable_interrupts();
+  if(motionQualified && control.mcu_run && inputs.driver_ready && !control.fault_latched) {
+    step_motion_renew(&stepMotion,time_us_32(),desiredMotion);
+    if(!desiredMotion && stepMotion.speed_millihz==0) pd1180_control_disarm(&control);
+  } else step_motion_stop(&stepMotion);
+  restore_interrupts(flags);
   // Apply cancellations and transport/stop-timeout failures before any other work.
   if (!control.armed || control.fault_latched) safeOutputs();
   pollIndicators(tick);
-  IWatchdog.reload();
+  watchdog_update();
 }

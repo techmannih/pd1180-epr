@@ -1,0 +1,241 @@
+{
+  "revision": "0.5.0-RP2040-DRAFT",
+  "base_commit": "1c22abf6a9e15cc6d253b6396503ffc0e563f552",
+  "architecture": [
+    "RP2040",
+    "DRV8462DDVR",
+    "TPS26750SRSMR",
+    "AS5600-ASOM (optional DNP)"
+  ],
+  "status": "source-and-locked-firmware-implemented-native-route-incomplete",
+  "hardware_tested": false,
+  "fabrication_orderable": false,
+  "merge_ready": false,
+  "reviewed_at": "2026-11-01T02:52:38.396366+00:00",
+  "input_sha256": {
+    "index.circuit.tsx": "ff21413ba2fdcc1a2cff15a7d592575b2adfa4802eb42fd8bab203a22365c9b8",
+    "schematic-pages.tsx": "f602916228b5be8dc5513efead8f022b01f87eb2d2814b7339ec1d72f51dc1fd",
+    "hardware-contract.json": "ece6bf448147d887ce949edab368e4dde266fcf256a248508977f2972446ccb0",
+    "board-standards.json": "8ae7aa748df299585e7d75264705d0c360da969d0a4afdb93dc8dfe6e0735697",
+    "docs/firmware-pinmap.json": "524bd8b69aca4df1a339e157e922df6da8b56e2a88dce8ccab199d965e74801a",
+    "imports/RP2040.tsx": "d59d637ac9180cc52eec6bb54c696c80bccbf905a0e99f7ef6ce1254260ad2b0",
+    "imports/DRV8462DDVR.tsx": "b8e609809cb225c4fadbb706c104f3bbd063c94903d810f4c4f07024322ea95c",
+    "imports/AS5600_ASOM.tsx": "1a97d5f4939d2d0e7c94371808f9142c158af435b9db94839545388c5daa3199",
+    "imports/X322512MSB4SI.tsx": "4b59a9f28983e9357188be9c65e6d5bff96b74d3d6eafa45dc857da768862a89",
+    "dist/index/circuit.json": "bb38835aa5034eadb770510d1c92ac279e016de0c4cba8c843602a3fa6716c3c",
+    "engineering/power-audit.json": "9fa2a5248e0fcf36ce9e40a4f23dfd69a153c6d5cab6f600a6acf475b8366602",
+    "release/pd1180-commissioning-firmware.zip": "b2df6fa96f05c81dcc288ebeb345b390ad2728dba485b3efd61fa3639855ee0e"
+  },
+  "checks": {
+    "typecheck": "pass",
+    "source_schematic_assertions": {
+      "passed": 179,
+      "failed": 0
+    },
+    "schematic_style_issues": 0,
+    "source_design_tests": {
+      "passed": 28,
+      "hosted_release_test": "not included in this focused count; full release gate remains blocking"
+    },
+    "standalone_import_previews": {
+      "passed": 60,
+      "failed": 0
+    },
+    "local_bypass_paths": {
+      "passed": 54,
+      "scope": "power leg only; native return loops remain unqualified"
+    },
+    "firmware_host_and_target_power_tests": "pass",
+    "rp2040_arm_firmware_build": "pass; ELF/BIN/UF2 verified, four qualification locks false",
+    "power_audit_tests": {
+      "passed": 14,
+      "failed": 0,
+      "scope": "DC/tolerance/energy screen; not switching simulation or hardware proof"
+    },
+    "cloud_source_package": "pass",
+    "full_release_review": {
+      "passed": 32,
+      "failed_or_blocked": 17,
+      "source_changed_during_validation": [],
+      "failed_checks": [
+        {
+          "name": "native-architecture",
+          "reason": "see raw log",
+          "log": "docs/checks/native-architecture.log"
+        },
+        {
+          "name": "cloud-viewer",
+          "reason": "see raw log",
+          "log": "docs/checks/cloud-viewer.log"
+        },
+        {
+          "name": "topology-tests",
+          "reason": "see raw log",
+          "log": "docs/checks/topology-tests.log"
+        },
+        {
+          "name": "filled-copper-evidence",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/filled-copper-evidence.log"
+        },
+        {
+          "name": "power-simulation",
+          "reason": "see raw log",
+          "log": "docs/checks/power-simulation.log"
+        },
+        {
+          "name": "placement",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/placement.log"
+        },
+        {
+          "name": "decoupling",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/decoupling.log"
+        },
+        {
+          "name": "board-standards",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/board-standards.log"
+        },
+        {
+          "name": "source-design-rules",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/source-design-rules.log"
+        },
+        {
+          "name": "power-feed",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/power-feed.log"
+        },
+        {
+          "name": "local-copper",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/local-copper.log"
+        },
+        {
+          "name": "copper-geometry",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/copper-geometry.log"
+        },
+        {
+          "name": "kicad-drc",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/kicad-drc.log"
+        },
+        {
+          "name": "critical-copper",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/critical-copper.log"
+        },
+        {
+          "name": "usb-reference",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/usb-reference.log"
+        },
+        {
+          "name": "power-routing",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/power-routing.log"
+        },
+        {
+          "name": "routing-fingerprint",
+          "reason": "native-architecture mismatch; not run",
+          "log": "docs/checks/routing-fingerprint.log"
+        }
+      ],
+      "status": "failed; not qualified"
+    },
+    "topology_suite": {
+      "passed": 123,
+      "failed": 2,
+      "failures": [
+        "historical hosted model differs from new source",
+        "historical native thermal-via footprint set differs from new architecture"
+      ]
+    },
+    "compiled_netlist": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "compiler_console_warnings": "Layout-solver overlap warnings occur in the compiler console; compiled diagnostic records are zero and all 25 per-sheet viewer style checks pass. Raw build log included in review archive."
+  },
+  "native_cad": {
+    "kind": "unrouted normalized source export",
+    "electrical_hole_errors": 8,
+    "unconnected_items": 499,
+    "warnings": 637,
+    "note": "All eight observed errors are retained J1/J10 NPTH-to-pad clearances. These counts do not qualify the uncompleted route. DRC/ERC settings, ignored checks and raw reports are included with the review archive.",
+    "normalized_erc_violations": 0,
+    "archive": "engineering/rp2040-native-review.zip",
+    "archive_sha256": "11ea242d935416ecad0ebbd466ff7ae8f6940f223df8a2d49abe9e0dd0651450",
+    "drc_ignored_checks": [
+      {
+        "description": "Footprint has no courtyard defined",
+        "key": "missing_courtyard"
+      },
+      {
+        "description": "Track endpoint not centered on via",
+        "key": "track_not_centered_on_via"
+      },
+      {
+        "description": "Tuning profile track geometries",
+        "key": "tuning_profile_track_geometries"
+      },
+      {
+        "description": "Footprint doesn't match symbol's footprint filters",
+        "key": "footprint_filters_mismatch"
+      },
+      {
+        "description": "Footprint component type doesn't match footprint pads",
+        "key": "footprint_type_mismatch"
+      }
+    ],
+    "erc_ignored_checks": [
+      {
+        "description": "Global label only appears once in the schematic",
+        "key": "single_global_label"
+      },
+      {
+        "description": "Four connection points are joined together",
+        "key": "four_way_junction"
+      },
+      {
+        "description": "SPICE model issue",
+        "key": "simulation_model_issue"
+      },
+      {
+        "description": "Library symbol issue",
+        "key": "lib_symbol_issues"
+      },
+      {
+        "description": "Footprint link issue",
+        "key": "footprint_link_issues"
+      },
+      {
+        "description": "Assigned footprint doesn't match footprint filters",
+        "key": "footprint_filter"
+      }
+    ]
+  },
+  "retained": [
+    "48 V / 5 A EPR contract",
+    "U6 eFuse and independent hardware enable chain",
+    "U34/L3 BRAKE_12V for U15",
+    "J3 brake path",
+    "four existing mounting holes",
+    "J2 negative-Y cable-exit orientation",
+    "top assembly with optional bottom U18 only"
+  ],
+  "open_items": [
+    "Complete native routing, ground returns, Kelvin paths, USB reference/impedance and power/thermal copper; rerun filled DRC, ERC, parity and release consistency",
+    "Resolve or obtain a documented fabrication disposition for the eight J1/J10 hole-clearance errors; no rule relaxation applied",
+    "Regenerate the routed cloud viewer, final revision markings, matched manufacturing/BOM/CPL and delivery archive; existing release CAD and default routed viewer are historical",
+    "Review new driver switching/current model and regenerate affected simulations; historical TMC model is explicitly rejected",
+    "Select and qualify DDV top heatsink/TIM and supported motor-current envelope",
+    "J2/J3 spring-clamp choice and raw PD voltage ADC remain separate unresolved reviewer requirements",
+    "Confirm rear fastener/depth and optional single-shaft encoder magnet attachment",
+    "Refresh/reserve stock: R66, R60, BZ1 and J1/J10 unavailable; U7 has only four pieces for five-board batch",
+    "TI EEPROM and RP2040 full-flash readback, cold boot, USB current, braking, thermal and fault tests on hardware"
+  ]
+}

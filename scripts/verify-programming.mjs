@@ -33,25 +33,25 @@ export function compareReadback(image, dump, expectedHash, capacity, baseAddress
 }
 
 export async function loadProgrammingImage(kind, read = path => readFile(path)) {
-  if (kind === 'stm32') {
+  if (kind === 'rp2040') {
     const archivePath = 'release/pd1180-commissioning-firmware.zip'
     const archive = await JSZip.loadAsync(await read(archivePath), { checkCRC32: true })
     const manifest = JSON.parse(await archive.file('manifest.json').async('string'))
-    if (manifest.target !== 'STM32G0B1CEU6' || manifest.flash_address !== '0x08000000' ||
-        manifest.max_flash_bytes !== 524288 || manifest.image_type !== 'commissioning-diagnostics-only' ||
+    if (manifest.target !== 'RP2040 + W25Q32JV (4 MiB)' || manifest.flash_address !== '0x10000000' ||
+        manifest.max_flash_bytes !== 4194304 || manifest.image_type !== 'commissioning-diagnostics-only' ||
         manifest.motor_operation_enabled !== false)
-      throw new Error('Unexpected STM32 commissioning manifest')
+      throw new Error('Unexpected RP2040 commissioning manifest')
     if (!manifest.inputs || !Object.keys(manifest.inputs).length)
       throw new Error('Firmware manifest has no source identities')
     for (const [path, hash] of Object.entries(manifest.inputs)) {
-      if (sha256(await read(path)) !== hash) throw new Error(`Stale STM32 archive: ${path}`)
+      if (sha256(await read(path)) !== hash) throw new Error(`Stale RP2040 archive: ${path}`)
     }
     const image = await archive.file('firmware.bin').async('nodebuffer')
     if (image.length !== manifest.image_bytes) throw new Error('Firmware length differs from manifest')
-    return { image, hash: manifest.artifacts['firmware.bin'], capacity: 524288, base: 0x08000000,
+    return { image, hash: manifest.artifacts['firmware.bin'], capacity: 4194304, base: 0x10000000,
       source: archivePath, target: manifest.target, configuration_sha256: null }
   }
-  if (kind !== 'pd') throw new Error('Select --kind stm32 or --kind pd')
+  if (kind !== 'pd') throw new Error('Select --kind rp2040 or --kind pd')
   const configBytes = await read('docs/pd-configuration.json')
   const config = JSON.parse(configBytes)
   const image = config.eeprom?.image

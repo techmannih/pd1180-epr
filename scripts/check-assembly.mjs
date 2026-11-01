@@ -26,7 +26,7 @@ for(const pad of serviceTestpoints){
  if(fittedNames.has(pad.name))errors.push(`${pad.name}: bare service pad must not appear in the fitted BOM/CPL`)
  if(pad.supplier_part_numbers?.jlcpcb?.length)errors.push(`${pad.name}: bare service pad unexpectedly carries a JLC assembly code`)
 }
-if(serviceTestpoints.length!==19)errors.push(`Expected 19 bare service pads, found ${serviceTestpoints.length}`)
+if(serviceTestpoints.length!==20)errors.push(`Expected 20 bare service pads, found ${serviceTestpoints.length}`)
 const sourceIds=new Set(components.map(component=>component.source_component_id))
 const positions=json.filter(x=>x.type==='pcb_component'&&sourceIds.has(x.source_component_id))
 errors.push(...assemblyPolicyErrors(json,standards,fittedNames))

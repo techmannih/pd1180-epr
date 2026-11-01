@@ -50,7 +50,7 @@ if (process.argv.includes('--native')) {
     throw new Error('Native IC-to-capacitor paths are missing, too long, or incompletely checked')
   }
   const encoder = native.results.find(r => r.ic === 'U18' && r.capacitor === 'C52')
-  if (encoder?.layer !== 'B.Cu' || JSON.stringify(encoder.layer_transition?.xy_mm) !== '[99.4,103.9]' ||
+  if (encoder?.layer !== 'B.Cu' || JSON.stringify(encoder.layer_transition?.xy_mm) !== '[100.6,103.9]' ||
       encoder.layer_transition?.barrel_mm !== 1.6 || encoder.layer_transition?.pad_mm !== 0.6 || encoder.layer_transition?.drill_mm !== 0.3)
     throw new Error('Missing exact encoder via evidence')
   const bulk = native.bulk_results

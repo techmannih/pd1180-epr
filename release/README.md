@@ -1,3 +1,5 @@
+> **RP2040 redesign branch:** PCB/manufacturing/viewer archives here are historical STM32/TMC5160 artifacts and must not be ordered. Only the commissioning firmware ZIP has been rebuilt for RP2040. See `../docs/rp2040-redesign.md` and `../engineering/rp2040-redesign.json`.
+
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
 ## 0.4.1-ECO review handoff — powered validation pending

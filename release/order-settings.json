@@ -1,5 +1,5 @@
 {
-  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "service": "JLCPCB PCB + SMT assembly",
   "requested_delivery": "Fully populated, programmed and functionally tested PCBA for the confirmed motor/load",
   "additional_services": {
@@ -94,7 +94,7 @@
       "image": "pd1180-ti-configuration.zip",
       "sha256": "ae4222fe41cde5bb9704b4b949fb67aaf231fc897d429199420a99db725b5d18",
       "status": "image-prepared-physical-programming-readback-and-cold-boot-pending",
-      "interface": "EEP_SDA/EEP_SCL on TPS26750 I2Cc; separate from STM32 PD_SDA/PD_SCL. Fixture access, power and bus ownership require qualification.",
+      "interface": "EEP_SDA/EEP_SCL on TPS26750 I2Cc; separate from RP2040 PD_SDA/PD_SCL. Fixture access, power and bus ownership require qualification.",
       "archive_member": "fullFlash.bin",
       "image_bytes": 31552,
       "readback_bytes": 65536,
@@ -104,21 +104,21 @@
       "cold_boot_verified": false
     },
     "U16_mcu": {
-      "part": "STM32G0B1CEU6",
+      "part": "RP2040 + W25Q32JV 4 MiB",
       "requirement": "Program qualified motor-enabled firmware over SWD and verify/read back",
-      "raw_binary_flash_address": "0x08000000",
+      "raw_binary_flash_address": "0x10000000",
       "image": null,
       "sha256": null,
-      "status": "blocked-motor-qualified-image-pending",
+      "status": "blocked-rp2040-redesign-unqualified",
       "commissioning_only": "pd1180-commissioning-firmware.zip contains a diagnostics image with motor operation locked; it does not meet ready-to-run delivery acceptance",
       "commissioning_image": {
         "archive": "pd1180-commissioning-firmware.zip",
         "member": "firmware.bin",
-        "sha256": "cb0b82779725b35084cc24f1fe297299e0ea4df92fa35966ff744bfd5b1bba37",
-        "image_bytes": 58216,
+        "sha256": "81b0ba4ef0dbac24069c064820a82d8e3387d4d6656ccf8ddb9fb52dbb77e276",
+        "image_bytes": 88484,
         "motion_enabled": false
       },
-      "readback_bytes": 524288,
+      "readback_bytes": 4194304,
       "programmed": false,
       "readback_verified": false,
       "cold_boot_verified": false
@@ -134,5 +134,6 @@
     "first_article_qualification_status": "not-performed",
     "motor_load_envelope_approved": false,
     "shipment_rule": "Programming verification and the approved per-board powered motor/fault acceptance must pass for every serial number before shipment"
-  }
+  },
+  "redesign_status": "Unqualified RP2040/DDV architecture. Manufacturing files from parent are historical; no order authorized."
 }

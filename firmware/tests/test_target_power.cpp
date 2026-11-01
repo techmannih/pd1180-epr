@@ -9,10 +9,10 @@ void sleepWhileUsbSuspended() { ++sleeps; }
 
 static void advance(unsigned ms) { fakeNow+=ms; loop(); }
 static void expectSafe() {
-  for (auto p : {PD1180_PIN_MCU_RUN, PD1180_PIN_POWER_PERMIT, PD1180_PIN_SD_MODE})
+  for (auto p : {PD1180_PIN_MCU_RUN, PD1180_PIN_POWER_PERMIT, PD1180_PIN_DRV_SLEEP_N})
     assert(fakeLevels[pin(p)]==LOW);
-  for (auto p : {PD1180_PIN_TMC_CS_N, PD1180_PIN_ENC_CS_N, PD1180_PIN_FLASH_CS_N}) {
-    assert(fakeModes[pin(p)]==OUTPUT_OPEN_DRAIN);
+  for (auto p : {PD1180_PIN_DRV_CS_N}) {
+    assert(fakeModes[pin(p)]==INPUT);
     assert(fakeLevels[pin(p)]==HIGH);
   }
 }
@@ -56,12 +56,14 @@ int main() {
   pdBus.adcPresent=false; pdBus.adcFail=false; pdBus.transactions=0;
   invalidateTelemetry(); lastAdcPoll=0;
   fakeAdc[pin(PD1180_PIN_USB_VBUS_SENSE)]=279; // Approximately 5 V DATA supply.
-  setup(); advance(1);
+  setup(); assert(!TinyUSBDevice.initialized); yield(); assert(usbTasks==0); advance(1);
+  yield(); assert(usbTasks==1);
+  assert(TinyUSBDevice.attached);
   assert(usbStarted && !peripheralsStarted && !pdBus.started);
   assert(pdBus.transactions==0);
   expectSafe();
-  SerialUSB.input="ARM\n";advance(1);advance(1);
-  assert(SerialUSB.output.find("BLOCKED")!=std::string::npos);
+  Serial.input="ARM\n";advance(1);advance(1);
+  assert(Serial.output.find("BLOCKED")!=std::string::npos);
   expectSafe();
 
   fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=2048;
@@ -71,23 +73,27 @@ int main() {
   assert(!spiStarted && motorSpi.transactions==0);
   inputs.motor_power_good=inputs.vmotor_in_range=true;
   pollDriver(fakeNow+20);
-  assert(spiStarted && !tmcStatus.valid && !inputs.driver_ready);
-  inputs.motor_power_good=false; pollDriver(fakeNow+21);
-  assert(!spiStarted && fakeModes[pin(PD1180_PIN_SPI_MOSI)]==INPUT_ANALOG);
+  assert(driverAwake && !spiStarted);
+  pollDriver(fakeNow+22);
+  assert(spiStarted && driverStatus.fault && !inputs.driver_ready);
+  inputs.motor_power_good=false; pollDriver(fakeNow+23);
+  assert(!spiStarted && fakeModes[pin(PD1180_PIN_SPI_MOSI)]==INPUT);
+  encoderSample.valid=true;
   adcValid[0]=adcValid[2]=phaseValid=inputs.temperature_valid=true;
   brakePreflight.ready=inputs.brake_preflight_ok=true;
   fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=0;
   advance(1);
   assert(!peripheralsStarted && !pdBus.started && !adcValid[0] && !adcValid[2] && !brakePreflight.ready && !inputs.brake_preflight_ok && !phaseValid && !inputs.temperature_valid);
-  assert(fakeModes[pin(PD1180_PIN_PD_SCL)]==INPUT_ANALOG);
+  assert(!encoderSample.valid);
+  assert(fakeModes[pin(PD1180_PIN_PD_SCL)]==INPUT);
   expectSafe();
 
   fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=2048;
   advance(1);advance(20);assert(peripheralsStarted);
   commandLength=3; responseLength=10;
-  const auto reads=pdBus.transactions, reloads=IWatchdog.reloads;
+  const auto reads=pdBus.transactions, reloads=watchdogReloads;
   suspended=true;advance(1);
-  assert(sleeps==1 && IWatchdog.reloads==reloads+1);
+  assert(sleeps==1 && watchdogReloads==reloads+1);
   assert(pdBus.transactions==reads && !pdBus.started && !peripheralsStarted);
   assert(commandLength==0 && responseLength==0 && fakeLevels[pin(PD1180_PIN_STATUS_GPIO)]==LOW);
   expectSafe();
@@ -97,7 +103,18 @@ int main() {
 
   suspended=true;advance(1);
   fakeAdc[pin(PD1180_PIN_USB_VBUS_SENSE)]=0;advance(1);
-  assert(!usbStarted && !SerialUSB.started);
+  assert(!usbStarted && !TinyUSBDevice.attached);
   expectSafe();
+  // Timer/main-loop failure must latch a stop, never resume on the next lease.
+  suspended=false;
+  for(auto p:{PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_DRV_FAULT_N,PD1180_PIN_MCU_RUN}) fakeLevels[pin(p)]=HIGH;
+  fakeLevels[pin(PD1180_PIN_POWER_PERMIT)]=HIGH;
+  desiredMotion=true;
+  step_motion_renew(&stepMotion,time_us_32(),true);
+  fakeNow+=26;stepInterrupt(nullptr);
+  assert(stepTimerFault && !stepMotion.active);
+  assert(fakeLevels[pin(PD1180_PIN_MCU_RUN)]==LOW && fakeLevels[pin(PD1180_PIN_POWER_PERMIT)]==LOW);
+  advance(1); assert(control.fault_latched && !desiredMotion);
+  advance(1); assert(control.fault_latched && !stepMotion.active);
   puts("PASS: target USB-only startup, power loss/recovery, suspend/resume, detach and ARM lock");
 }

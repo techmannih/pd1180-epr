@@ -1,43 +1,41 @@
 {
-  "generated_at": "2026-10-29T12:26:05.954Z",
+  "generated_at": "2026-11-01T02:47:50.361Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "ade1c3f911f19df7a4b9d110cdd625df9654cc9fc68860eade41ea9b0a05db7d",
-    "bytes": 4480758
+    "sha256": "bb38835aa5034eadb770510d1c92ac279e016de0c4cba8c843602a3fa6716c3c",
+    "bytes": 4029412
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 10172,
-    "sheets": 24,
-    "source_components": 277,
-    "source_ports": 965,
-    "connected_source_ports": 914,
-    "intentional_no_connect_ports": 51,
-    "source_nets": 163,
+    "elements": 9112,
+    "sheets": 25,
+    "source_components": 258,
+    "source_ports": 866,
+    "connected_source_ports": 821,
+    "intentional_no_connect_ports": 45,
+    "source_nets": 147,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 89,
-    "test_points": 19,
-    "annotations": 72,
+    "capacitors": 92,
+    "test_points": 20,
+    "annotations": 75,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 62,
-    "3": 61,
-    "4": 16,
-    "5": 4,
-    "6": 2,
-    "8": 2,
+    "2": 55,
+    "3": 53,
+    "4": 18,
+    "5": 6,
+    "6": 3,
+    "8": 3,
     "9": 2,
-    "10": 3,
-    "12": 4,
-    "13": 2,
+    "10": 1,
     "18": 1,
     "25": 1,
-    "43": 1,
-    "59": 1,
-    "228": 1
+    "27": 2,
+    "56": 1,
+    "227": 1
   },
   "usb_c": {
     "connectors": [
@@ -264,7 +262,7 @@
       },
       {
         "ref": "U16",
-        "pin": 34,
+        "pin": 47,
         "net": "USB_DP"
       },
       {
@@ -284,7 +282,7 @@
       },
       {
         "ref": "U16",
-        "pin": 33,
+        "pin": 46,
         "net": "USB_DM"
       },
       {
@@ -375,24 +373,13 @@
     "J10.16:SBU2",
     "U1.1:DP",
     "U1.2:DM",
-    "U16.13:PA2",
-    "U16.14:PA3",
-    "U16.22:PB10",
-    "U16.25:PB13",
-    "U16.26:PB14",
-    "U16.27:PB15",
-    "U16.29:PA9",
-    "U16.2:PC14_OSC32_IN",
-    "U16.31:PC7",
-    "U16.32:PA10",
-    "U16.38:PD0",
-    "U16.39:PD1",
-    "U16.3:PC15_OSC32_OUT",
-    "U16.40:PD2",
-    "U16.41:PD3",
-    "U18.10:U",
-    "U18.8:W",
-    "U18.9:V",
+    "U16.34:GPIO22",
+    "U16.35:GPIO23",
+    "U16.36:GPIO24",
+    "U16.37:GPIO25",
+    "U16.6:GPIO4",
+    "U16.7:GPIO5",
+    "U18.5:PGO",
     "U2.10:N_I2Ct_IRQ",
     "U2.21:NC",
     "U2.28:PP5V1",
@@ -415,14 +402,25 @@
     "U6.21:N_C4",
     "U6.22:N_C3",
     "U6.23:N_C2",
-    "U6.24:N_C1"
+    "U6.24:N_C1",
+    "U7.32:RSVD5",
+    "U7.35:RSVD4",
+    "U7.36:RSVD3",
+    "U7.37:RSVD2",
+    "U7.38:RSVD1"
   ],
   "test_points": [
     {
+      "ref": "TP_BOOTSEL",
+      "net": "BOOTSEL_N",
+      "total_ports_on_net": 2,
+      "non_testpoint_peers": 1
+    },
+    {
       "ref": "TP_SWD_3V3",
       "net": "V3V3_MCU",
-      "total_ports_on_net": 12,
-      "non_testpoint_peers": 11
+      "total_ports_on_net": 27,
+      "non_testpoint_peers": 26
     },
     {
       "ref": "TP_SWDIO",
@@ -433,8 +431,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 228,
-      "non_testpoint_peers": 224
+      "total_ports_on_net": 227,
+      "non_testpoint_peers": 223
     },
     {
       "ref": "TP_SWCLK",
@@ -457,32 +455,32 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 59,
-      "non_testpoint_peers": 58
+      "total_ports_on_net": 56,
+      "non_testpoint_peers": 55
     },
     {
       "ref": "TP_ENC_A",
-      "net": "ENC_A",
-      "total_ports_on_net": 2,
-      "non_testpoint_peers": 1
+      "net": "ENC_SDA",
+      "total_ports_on_net": 4,
+      "non_testpoint_peers": 3
     },
     {
       "ref": "TP_ENC_B",
-      "net": "ENC_B",
-      "total_ports_on_net": 2,
-      "non_testpoint_peers": 1
+      "net": "ENC_SCL",
+      "total_ports_on_net": 4,
+      "non_testpoint_peers": 3
     },
     {
       "ref": "TP_ENC_I",
-      "net": "ENC_I",
+      "net": "ENC_OUT",
       "total_ports_on_net": 2,
       "non_testpoint_peers": 1
     },
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 228,
-      "non_testpoint_peers": 224
+      "total_ports_on_net": 227,
+      "non_testpoint_peers": 223
     },
     {
       "ref": "TP_PD_VREF",
@@ -493,8 +491,8 @@
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 228,
-      "non_testpoint_peers": 224
+      "total_ports_on_net": 227,
+      "non_testpoint_peers": 223
     },
     {
       "ref": "TP_EEP_SDA",
@@ -523,14 +521,14 @@
     {
       "ref": "TP_VMOTOR",
       "net": "VMOTOR",
-      "total_ports_on_net": 43,
-      "non_testpoint_peers": 42
+      "total_ports_on_net": 27,
+      "non_testpoint_peers": 26
     },
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 228,
-      "non_testpoint_peers": 224
+      "total_ports_on_net": 227,
+      "non_testpoint_peers": 223
     }
   ],
   "sheets": [
@@ -628,8 +626,8 @@
       ],
       "annotations": [
         "07 / Motion Controller",
-        "U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V.",
-        "Bootstrap, charge-pump and local bypass parts are shown with the controller."
+        "U7 DRV8462DDV integrates both power bridges; 48 V operation requires top-side cooling.",
+        "SPI configures current/decay; RP2040 supplies STEP/DIR. VREF is tied to DVDD."
       ]
     },
     {
@@ -642,36 +640,22 @@
       ],
       "annotations": [
         "08 / Onboard Motion and Hardware Enable",
-        "STM32 commands U7 over SPI. U10/U11/U33 and Q14 retain hardware inhibits.",
+        "RP2040 commands U7. U10/U11/U33 gate active-high ENABLE; R55 holds it low.",
         "The driver remains inhibited until the hardware safety conditions permit motion."
       ]
     },
     {
       "index": 9,
       "name": "bridge-a",
-      "display_name": "Motor Phase A Power Bridge",
+      "display_name": "Motor Winding Connection",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "09 / Motor Phase A Power Bridge",
-        "Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt.",
-        "J2 connects both motor windings. The 3.8 A RMS design ceiling is not a qualified setting."
-      ]
-    },
-    {
-      "index": 10,
-      "name": "bridge-b",
-      "display_name": "Motor Phase B Power Bridge",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "10 / Motor Phase B Power Bridge",
-        "Q10/Q12 high-side and Q11/Q13 low-side switches form phase B.",
-        "R110 is the independent 33 mOhm shunt; preserve the Kelvin sense connections."
+        "09 / Motor Winding Connection",
+        "J2 connects the two motor windings through the retained diagnostic shunts.",
+        "Initial test current is below 0.8 A RMS nominal; rated motor current is not qualified."
       ]
     },
     {
@@ -712,8 +696,8 @@
       ],
       "annotations": [
         "13 / MCU Clock Memory and Debug",
-        "U16 STM32G0B1 commands the TMC5160 ramp generator over SPI; SW2 requests Start/Stop.",
-        "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
+        "U16 RP2040 generates STEP/DIR and configures DRV8462 over SPI0; SW2 requests Start/Stop.",
+        "U17 is 4 MB QSPI boot flash; Y1 is 12 MHz. BOOTSEL + reset supports ROM USB recovery."
       ]
     },
     {
@@ -726,8 +710,8 @@
       ],
       "annotations": [
         "14 / Optional Shaft Encoder",
-        "U18 AS5047P is centered on bottom; C52/C53 are top-side. All are DNP.",
-        "SPI plus ABI test access; magnet interface for the ordered single-shaft motor is unqualified."
+        "U18 AS5600 is centered on bottom; C52/C53 are top-side. All are DNP.",
+        "I2C1 at 0x36 plus OUT probe; single-shaft motor magnet interface remains unqualified."
       ]
     },
     {
@@ -754,7 +738,7 @@
       ],
       "annotations": [
         "17 / Local Start and Stop",
-        "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power.",
+        "SW2 requests motion from the onboard RP2040. R133 pulls the input to MCU logic power.",
         "Debounce requires release before start; reset, power loss and faults never auto-start."
       ]
     },
@@ -769,7 +753,7 @@
       "annotations": [
         "21 / USB Logic Power",
         "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
-        "R119/R120 sense board supply on PB1. Industrial peripherals require board power."
+        "R119/R120 sense board supply on GP28. Industrial peripherals require board power."
       ]
     },
     {
@@ -803,15 +787,15 @@
     {
       "index": 24,
       "name": "driver-power",
-      "display_name": "Regulated Driver Supply",
+      "display_name": "Brake Gate Supply",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "24 / Regulated Driver Supply",
-        "U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15.",
-        "TMC5160 external supply range is 10-13 V; ripple and startup require bench validation."
+        "24 / Brake Gate Supply",
+        "U34 is the retained 65 V buck supplying nominal 12 V to brake gate driver U15.",
+        "DRV8462 does not use this rail. Brake backup remains powered from VMOTOR."
       ]
     },
     {
@@ -824,7 +808,7 @@
       ],
       "annotations": [
         "25 / Status and Independent Power Indication",
-        "U35 PCA9538 at 0x70; U37 buffers PC13 reset into PD_3V3 with default-low bias.",
+        "U35 PCA9538 at 0x70; U37 buffers GP12 reset into PD_3V3 with default-low bias.",
         "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
       ]
     },
@@ -869,6 +853,34 @@
         "R134-R136 sense J3 return on U30 AIN2 before motion; C98 filters the ADC input.",
         "This check detects an absent resistor or stuck-on Q16; it does not prove braking current."
       ]
+    },
+    {
+      "index": 29,
+      "name": "mcu-power",
+      "display_name": "RP2040 Local Power",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "29 / RP2040 Local Power",
+        "U16: separate 100 nF bypasses serve each IOVDD/DVDD/ADC/USB rail pin.",
+        "C102/C103 are 1 uF VREG input/output capacitors; all are on top."
+      ]
+    },
+    {
+      "index": 30,
+      "name": "motion-config",
+      "display_name": "DRV8462 Logic Bias",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "30 / DRV8462 Logic Bias",
+        "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.",
+        "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."
+      ]
     }
   ],
   "sheet_bounds": [
@@ -911,26 +923,20 @@
     {
       "index": 7,
       "name": "motion",
-      "elements": 237,
-      "coordinate_points_checked": 433
+      "elements": 143,
+      "coordinate_points_checked": 308
     },
     {
       "index": 8,
       "name": "motion-enable",
-      "elements": 83,
-      "coordinate_points_checked": 160
+      "elements": 52,
+      "coordinate_points_checked": 94
     },
     {
       "index": 9,
       "name": "bridge-a",
-      "elements": 222,
-      "coordinate_points_checked": 384
-    },
-    {
-      "index": 10,
-      "name": "bridge-b",
-      "elements": 207,
-      "coordinate_points_checked": 365
+      "elements": 19,
+      "coordinate_points_checked": 23
     },
     {
       "index": 11,
@@ -947,13 +953,13 @@
     {
       "index": 13,
       "name": "mcu",
-      "elements": 244,
-      "coordinate_points_checked": 432
+      "elements": 286,
+      "coordinate_points_checked": 450
     },
     {
       "index": 14,
       "name": "encoder",
-      "elements": 75,
+      "elements": 66,
       "coordinate_points_checked": 139
     },
     {
@@ -1015,6 +1021,18 @@
       "name": "brake-feedback",
       "elements": 34,
       "coordinate_points_checked": 43
+    },
+    {
+      "index": 29,
+      "name": "mcu-power",
+      "elements": 64,
+      "coordinate_points_checked": 248
+    },
+    {
+      "index": 30,
+      "name": "motion-config",
+      "elements": 46,
+      "coordinate_points_checked": 74
     }
   ],
   "checks": [
@@ -1022,8 +1040,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 277,
-        "schematic": 277
+        "source": 258,
+        "schematic": 258
       }
     },
     {
@@ -1042,9 +1060,9 @@
     },
     {
       "ok": true,
-      "message": "24 A4 schematic sheets including brake preflight",
+      "message": "25 A4 sheets including RP2040 power and driver bias",
       "details": {
-        "actual": 24
+        "actual": 25
       }
     },
     {
@@ -1304,8 +1322,8 @@
         "actual": 3,
         "texts": [
           "07 / Motion Controller",
-          "U7 TMC5160A drives the external bridges; nominal regulated driver supply is 12 V.",
-          "Bootstrap, charge-pump and local bypass parts are shown with the controller."
+          "U7 DRV8462DDV integrates both power bridges; 48 V operation requires top-side cooling.",
+          "SPI configures current/decay; RP2040 supplies STEP/DIR. VREF is tied to DVDD."
         ]
       }
     },
@@ -1342,7 +1360,7 @@
         "actual": 3,
         "texts": [
           "08 / Onboard Motion and Hardware Enable",
-          "STM32 commands U7 over SPI. U10/U11/U33 and Q14 retain hardware inhibits.",
+          "RP2040 commands U7. U10/U11/U33 gate active-high ENABLE; R55 holds it low.",
           "The driver remains inhibited until the hardware safety conditions permit motion."
         ]
       }
@@ -1379,9 +1397,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "09 / Motor Phase A Power Bridge",
-          "Q6/Q8 high-side and Q7/Q9 low-side switches form phase A; R109 is the Kelvin shunt.",
-          "J2 connects both motor windings. The 3.8 A RMS design ceiling is not a qualified setting."
+          "09 / Motor Winding Connection",
+          "J2 connects the two motor windings through the retained diagnostic shunts.",
+          "Initial test current is below 0.8 A RMS nominal; rated motor current is not qualified."
         ]
       }
     },
@@ -1392,44 +1410,6 @@
     {
       "ok": true,
       "message": "bridge-a explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet bridge-b"
-    },
-    {
-      "ok": true,
-      "message": "bridge-b keeps sheet index 10"
-    },
-    {
-      "ok": true,
-      "message": "bridge-b keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "bridge-b has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "10 / Motor Phase B Power Bridge",
-          "Q10/Q12 high-side and Q11/Q13 low-side switches form phase B.",
-          "R110 is the independent 33 mOhm shunt; preserve the Kelvin sense connections."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "bridge-b has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "bridge-b explains component roles"
     },
     {
       "ok": true,
@@ -1532,8 +1512,8 @@
         "actual": 3,
         "texts": [
           "13 / MCU Clock Memory and Debug",
-          "U16 STM32G0B1 commands the TMC5160 ramp generator over SPI; SW2 requests Start/Stop.",
-          "U17 is configuration storage. Y1, SW1 and the bare SWD/NRST pads support bring-up."
+          "U16 RP2040 generates STEP/DIR and configures DRV8462 over SPI0; SW2 requests Start/Stop.",
+          "U17 is 4 MB QSPI boot flash; Y1 is 12 MHz. BOOTSEL + reset supports ROM USB recovery."
         ]
       }
     },
@@ -1570,8 +1550,8 @@
         "actual": 3,
         "texts": [
           "14 / Optional Shaft Encoder",
-          "U18 AS5047P is centered on bottom; C52/C53 are top-side. All are DNP.",
-          "SPI plus ABI test access; magnet interface for the ordered single-shaft motor is unqualified."
+          "U18 AS5600 is centered on bottom; C52/C53 are top-side. All are DNP.",
+          "I2C1 at 0x36 plus OUT probe; single-shaft motor magnet interface remains unqualified."
         ]
       }
     },
@@ -1646,7 +1626,7 @@
         "actual": 3,
         "texts": [
           "17 / Local Start and Stop",
-          "SW2 requests motion from the onboard STM32. R133 pulls the input to MCU logic power.",
+          "SW2 requests motion from the onboard RP2040. R133 pulls the input to MCU logic power.",
           "Debounce requires release before start; reset, power loss and faults never auto-start."
         ]
       }
@@ -1685,7 +1665,7 @@
         "texts": [
           "21 / USB Logic Power",
           "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
-          "R119/R120 sense board supply on PB1. Industrial peripherals require board power."
+          "R119/R120 sense board supply on GP28. Industrial peripherals require board power."
         ]
       }
     },
@@ -1797,9 +1777,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "24 / Regulated Driver Supply",
-          "U34 is the 65 V buck supplying nominal 12 V to U7 VSA/12VOUT and U15.",
-          "TMC5160 external supply range is 10-13 V; ripple and startup require bench validation."
+          "24 / Brake Gate Supply",
+          "U34 is the retained 65 V buck supplying nominal 12 V to brake gate driver U15.",
+          "DRV8462 does not use this rail. Brake backup remains powered from VMOTOR."
         ]
       }
     },
@@ -1836,7 +1816,7 @@
         "actual": 3,
         "texts": [
           "25 / Status and Independent Power Indication",
-          "U35 PCA9538 at 0x70; U37 buffers PC13 reset into PD_3V3 with default-low bias.",
+          "U35 PCA9538 at 0x70; U37 buffers GP12 reset into PD_3V3 with default-low bias.",
           "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
         ]
       }
@@ -1965,9 +1945,85 @@
     },
     {
       "ok": true,
-      "message": "72 high-level annotations on 24 sheets",
+      "message": "known fixed geometry for sheet mcu-power"
+    },
+    {
+      "ok": true,
+      "message": "mcu-power keeps sheet index 29"
+    },
+    {
+      "ok": true,
+      "message": "mcu-power keeps fixed 297 x 210 frame",
       "details": {
-        "actual": 72
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "mcu-power has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "29 / RP2040 Local Power",
+          "U16: separate 100 nF bypasses serve each IOVDD/DVDD/ADC/USB rail pin.",
+          "C102/C103 are 1 uF VREG input/output capacitors; all are on top."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "mcu-power has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "mcu-power explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "known fixed geometry for sheet motion-config"
+    },
+    {
+      "ok": true,
+      "message": "motion-config keeps sheet index 30"
+    },
+    {
+      "ok": true,
+      "message": "motion-config keeps fixed 297 x 210 frame",
+      "details": {
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "motion-config has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "30 / DRV8462 Logic Bias",
+          "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.",
+          "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "motion-config has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "motion-config explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "75 high-level annotations on 25 sheets",
+      "details": {
+        "actual": 75
       }
     },
     {
@@ -1986,17 +2042,17 @@
     },
     {
       "ok": true,
-      "message": "163 named source nets including buffered indicator reset",
+      "message": "147 named source nets for the integrated-driver revision",
       "details": {
-        "actual": 163
+        "actual": 147
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 163,
-        "source_nets": 163
+        "connected_groups": 147,
+        "source_nets": 147
       }
     },
     {
@@ -2062,9 +2118,9 @@
     },
     {
       "ok": true,
-      "message": "89 capacitors including reset-buffer bypass and brake feedback filter",
+      "message": "92 capacitors including RP2040 core/IO bypass",
       "details": {
-        "actual": 89
+        "actual": 92
       }
     },
     {
@@ -2076,9 +2132,9 @@
     },
     {
       "ok": true,
-      "message": "19 test points audited",
+      "message": "20 test points including BOOTSEL audited",
       "details": {
-        "actual": 19
+        "actual": 20
       }
     },
     {
@@ -2103,24 +2159,13 @@
           "J10.16:SBU2",
           "U1.1:DP",
           "U1.2:DM",
-          "U16.13:PA2",
-          "U16.14:PA3",
-          "U16.22:PB10",
-          "U16.25:PB13",
-          "U16.26:PB14",
-          "U16.27:PB15",
-          "U16.29:PA9",
-          "U16.2:PC14_OSC32_IN",
-          "U16.31:PC7",
-          "U16.32:PA10",
-          "U16.38:PD0",
-          "U16.39:PD1",
-          "U16.3:PC15_OSC32_OUT",
-          "U16.40:PD2",
-          "U16.41:PD3",
-          "U18.10:U",
-          "U18.8:W",
-          "U18.9:V",
+          "U16.34:GPIO22",
+          "U16.35:GPIO23",
+          "U16.36:GPIO24",
+          "U16.37:GPIO25",
+          "U16.6:GPIO4",
+          "U16.7:GPIO5",
+          "U18.5:PGO",
           "U2.10:N_I2Ct_IRQ",
           "U2.21:NC",
           "U2.28:PP5V1",
@@ -2143,7 +2188,12 @@
           "U6.21:N_C4",
           "U6.22:N_C3",
           "U6.23:N_C2",
-          "U6.24:N_C1"
+          "U6.24:N_C1",
+          "U7.32:RSVD5",
+          "U7.35:RSVD4",
+          "U7.36:RSVD3",
+          "U7.37:RSVD2",
+          "U7.38:RSVD1"
         ],
         "actual": [
           "J1.10:SBU1",
@@ -2156,24 +2206,13 @@
           "J10.16:SBU2",
           "U1.1:DP",
           "U1.2:DM",
-          "U16.13:PA2",
-          "U16.14:PA3",
-          "U16.22:PB10",
-          "U16.25:PB13",
-          "U16.26:PB14",
-          "U16.27:PB15",
-          "U16.29:PA9",
-          "U16.2:PC14_OSC32_IN",
-          "U16.31:PC7",
-          "U16.32:PA10",
-          "U16.38:PD0",
-          "U16.39:PD1",
-          "U16.3:PC15_OSC32_OUT",
-          "U16.40:PD2",
-          "U16.41:PD3",
-          "U18.10:U",
-          "U18.8:W",
-          "U18.9:V",
+          "U16.34:GPIO22",
+          "U16.35:GPIO23",
+          "U16.36:GPIO24",
+          "U16.37:GPIO25",
+          "U16.6:GPIO4",
+          "U16.7:GPIO5",
+          "U18.5:PGO",
           "U2.10:N_I2Ct_IRQ",
           "U2.21:NC",
           "U2.28:PP5V1",
@@ -2196,7 +2235,12 @@
           "U6.21:N_C4",
           "U6.22:N_C3",
           "U6.23:N_C2",
-          "U6.24:N_C1"
+          "U6.24:N_C1",
+          "U7.32:RSVD5",
+          "U7.35:RSVD4",
+          "U7.36:RSVD3",
+          "U7.37:RSVD2",
+          "U7.38:RSVD1"
         ],
         "missing": [],
         "extra": []

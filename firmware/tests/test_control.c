@@ -101,8 +101,8 @@ int main(void) {
   put32(rdo,(9u<<28)|(500u<<10)|500u); pd[0]=64; assert(!pd1180_decode_contract(mode,pdo,rdo,power,pd).valid);
   pd[0]=0; power[0]=0; assert(!pd1180_decode_contract(mode,pdo,rdo,power,pd).valid);
   power[0]=13; mode[0]='P'; assert(!pd1180_decode_contract(mode,pdo,rdo,power,pd).valid);
-  assert(PD1180_PIN_POWER_PERMIT.port=='B' && PD1180_PIN_POWER_PERMIT.bit==5 && PD1180_PIN_POWER_PERMIT.package_pin==44);
-  assert(PD1180_PIN_PD_SCL.bit==6 && PD1180_PIN_PD_SDA.bit==7 && PD1180_PIN_VMOTOR_OK.bit==9);
+  assert(PD1180_PIN_POWER_PERMIT.gpio==10 && PD1180_PIN_POWER_PERMIT.package_pin==13);
+  assert(PD1180_PIN_PD_SCL.gpio==21 && PD1180_PIN_PD_SDA.gpio==20 && PD1180_PIN_VMOTOR_OK.gpio==8);
   puts("PASS: manual arm, 16 fault cases and thermal/telemetry boundaries, latched stop, stale timing, fixed PDO/RDO decoder, package pins");
   return 0;
 }

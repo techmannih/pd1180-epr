@@ -1,0 +1,103 @@
+# Historical checklist — not valid for RP2040 revision
+
+# PD1180-EPR reviewer checklist
+
+Start with `bun install --frozen-lockfile` and run `bun run review`. Machine checks produce evidence under `docs/`, `routing/` and `release/`; this checklist focuses reviewer time on design decisions and physical risks.
+
+For the current source/native rule correction, start with [source-design-rules.md](source-design-rules.md): actual track width >=0.15 mm, GND clearance 0.30 mm and GND edge inset 0.50 mm. The 0.09 mm connection/groove checks remain separate. Inspect preserved Kelvin/bypass paths, the corrected USB return path and fresh 18-path DC comparison. The exact 401 cosmetic findings remain reported separately.
+
+For the added parallel VMOTOR feed, review [the before/after native copper image and 18-path comparison](copper-geometry-review.md). Seven 1.5 mm B.Cu segments supplement the existing supply copper from C22 to Q6's thermal vias; their width is not a standalone full-current rating. The exact-change guard preserves all original native objects. DC resistance improvement does not qualify switching transients or temperature rise.
+
+## Reference review closure
+
+- [ ] Review every row in [reference-review.md](reference-review.md), including the added RGB/buzzer, independent power indication, power test pads and isolated EEPROM programming access. A feature-presence pass is not reference parity or permission to resume review as complete.
+- [ ] Use [connector-harnesses.md](connector-harnesses.md) for J2/J3 mating parts and termination; review the modeled envelopes in [complete-assembly.md](complete-assembly.md), then qualify insertion, latch/tool access and strain relief in the physical assembly.
+
+## Requirements and mechanics
+
+- [ ] Product revision, motor model, phase-current target and USB-C PD contract match `hardware-contract.json`.
+- [ ] Board outline matches the TMCM-1180 V1.1 stepped 85.9 × 85.9 mm perimeter and all four 4.2 mm mounting holes match the ordered 34HS31-6004S1 rear CAD axes in the mechanical reference; native drills agree. The alignment preview contains no qualified replacement mounting hardware.
+- [ ] Shaft axis, magnet gap, motor rear-face hardware, standoffs, cable exits and enclosure height have physical drawings or measurements.
+- [ ] All fitted parts and service pads are on top; bypass capacitors surround their ICs and U18 alone is bottom-side and C52/C53 are on top, all three DNP. Verify fitted BOM/CPL and paste exclude them; encoder magnetic fit remains unqualified.
+- [ ] J2 has the specified VHR-4N mating harness, correct winding colours/cavities and cable strain relief; inspect the insertion-envelope evidence and `docs/motor-harness.md`.
+- [ ] Tall bulk capacitors, connectors, brake resistor/heatsink, cable and motor are covered by the mechanical/assembly boundary.
+
+## Schematic
+
+- [ ] `bun run check:schematic-style` reports zero issues and `docs/checks/schematic-style.json` records zero issues for every viewer analysis category.
+- [ ] All 24 A4 sheets have a clear function, rail names, connector pin numbers and readable signal flow.
+- [ ] Imported pin numbering is checked against manufacturer drawings for USB-C, TPS26750, TPD4S480, TPS26630, TMC5160A, MOSFETs, shunts and connectors.
+- [ ] `docs/usb-pd-architecture.md` matches the compiled netlist: J1 carries EPR CC/VBUS, J10 carries USB 2.0 D+/D− with independent CC pulldowns, and only J10 VBUS feeds the attach divider. U22 retains motor-bus brake backup.
+- [ ] Reset defaults hold POWER_PERMIT, MCU_RUN and every external driver/output inactive.
+- [ ] PD contract, power-good, voltage window and fault signals gate the motor stage independently of a normal firmware command.
+- [ ] Every IC supply pin has local bypassing; bulk-capacitance, discharge and reverse-feed paths are explained.
+- [ ] Unused pins, shields, exposed pads, test points and external termination requirements are explicit.
+
+## Power, protection and thermal
+
+- [ ] Input/eFuse UVLO, OVP, inrush and current-limit calculations include tolerance and startup state.
+- [ ] TPS26630 `IIN_MON` and the independent VMOTOR divider reach ADS1115 channels 1/0 at address 0x49. STM32 PA0/PA1 read INA240 phase-current diagnostics; regulation remains on the TMC5160A's independent 33 mΩ shunts.
+- [ ] Kelvin branches join load/ground copper only at the designated shunt terminal; the final native critical-copper check passes. Inspect their lengths and switching-noise exposure as well as DRC.
+- [ ] TMP102 at 0x48 inhibits RUN_SAFE through U33. Verify ALERT polarity, 70 °C cutoff, 55 °C re-arm threshold, missing-sensor behavior and board-to-junction temperature correlation on hardware.
+- [ ] DATA USB alone powers MCU diagnostics through TPS2553, TLV755 and the second LM66100 OR. Verify board peripherals stay unpowered, chip-select/I²C pins do not backfeed, and suspend/resume invalidates old telemetry. Measure startup, pre-configuration, configured and suspend current; test both-source transitions and reverse current before claiming USB power compliance.
+- [ ] Phase-current programming, RMS/peak convention, shunt dissipation and current-sense polarity are consistent.
+- [ ] Regeneration energy, the 55 V VS operating limit and 10–13 V external VSA/12VOUT supply range and external brake resistor/heatsink pulse/average ratings are reviewed for the actual load.
+- [ ] Connector, cable, via and copper current ratings are checked at enclosure temperature.
+- [ ] USB detach, hard reset, cable fault, 3.3 V collapse and residual VMOTOR energy all lead to a safe state.
+
+## Placement and routing
+
+- [ ] Protection parts sit at the connector and high-current/charge-pump/bootstrap loops are compact.
+- [ ] Shunt sense connections are Kelvin-routed and cannot be bypassed by load copper.
+- [ ] Critical power nets meet the 2.4 mm corridor, 0.16 mm clearance and parallel-via policy.
+- [ ] Every via drill is at least 0.30 mm. Approved pad/drill pairs are 0.60/0.30 mm for power/general vias and 0.50/0.30 mm for dense signals; no smaller-drill exceptions.
+- [ ] Q4, Q6–Q13 and Q16 each retain exactly four 0.60/0.30 mm drain-pad thermal vias (40 total), with epoxy-filled and copper-capped via-in-pad processing in the quote.
+- [ ] U34 retains four 0.60/0.30 mm exposed-pad thermal vias. The current audit and quote cover all 62 via-in-pad locations with filled/capped processing.
+- [ ] All 44 final native same-side IC-to-capacitor paths and the separate buzzer bulk path pass `check:decoupling --native`; see `native-decoupling-check.json`.
+- [ ] Ground continuity, return paths, thermal-pad stitching, plane necks and copper-to-edge clearance are visually inspected.
+- [ ] USB D+/D− routing has a continuous reference path and the fabricator stack-up/impedance target is reviewed.
+- [ ] Product/revision, connector function, polarity/pin 1 and `Made with tscircuit` markings are readable and clear of pads/holes.
+
+## Sourcing and assembly
+
+- [ ] BOM manufacturer part number, package, polarity and exact LCSC code match each imported footprint.
+- [ ] Live stock is refreshed immediately before ordering; timestamped evidence is availability information, not a reservation.
+- [ ] Alternatives are checked for pinout, voltage/current/temperature rating, package, lifecycle and firmware impact.
+- [ ] JLC placement preview is manually reviewed for IC pin 1, diode/capacitor polarity, connector orientation, rotations and centroids.
+- [ ] Filled/capped via-in-pad, four layers, 1 oz copper, 1.6 mm thickness and top-side assembly are present in the quote.
+
+## Delivery and bring-up
+
+- [ ] Verify SD_MODE is low, U7 pins 17/18/23/24/25 are grounded, and SW2 PC6 drives only the qualified internal SPI ramp; see `step-dir-hardware-review.md`. A clean geometric DRC does not validate mode-dependent pin functions.
+
+- [ ] `bun run review` passes and `release/delivery-manifest.json` matches the exact release files.
+- [ ] Gerber, drill, BOM, CPL, KiCad, schematic, 3D, firmware contract and SHA-256 files open successfully.
+- [ ] Prototype-order gates and system-validation gates are reported separately.
+- [ ] TPS26750 full-flash image and STM32 firmware hashes are recorded before powered motor testing.
+- [ ] Bring-up begins current-limited without a motor, then validates rails, PD negotiation, protection, brake, gate drive, current regulation and thermal rise in stages.
+- [ ] Production status remains blocked until mechanical fit, programmed operation, thermal, fault, EMC/ESD and load testing have recorded evidence.
+
+Reviewer sign-off should record board revision, commit, release hashes, open risks and the exact evidence used. Do not sign off from screenshots alone.
+
+Engineering review and ordering are separate gates: `bun run review` validates the current source, CAD, firmware, stock and delivery artifacts while retaining any documented order hold. `bun run check:release` additionally requires `fabrication_orderable: true`; it must fail until the order hold is cleared with evidence. A passing review/CI run is not authorization to order or a claim of powered hardware qualification.
+
+## Diagnostics ECO acceptance
+
+- [ ] D16 RGB and D17 board-power indication are visible after full mechanical assembly; verify brightness at rail extremes.
+- [ ] BZ1 remains silent at reset, watchdog, loss of board power and failed I2C; verify the audible alarm and allocated 75 mA additional logic-rail design allocation.
+- [ ] U36 isolates both EEPROM wires when TP_PD_ISO is grounded. Follow [pd-programming.md](pd-programming.md), verify readback and cold APP boot with the approved TI image.
+- [ ] All 19 service pads are identified in the final fixture drawing; high-voltage probes cannot touch the logic programming contacts.
+
+- [ ] Review the power ECO: R25 4.99 kΩ, TPS26630 MODE open (1× latch-off), R61 16.2 kΩ / R66 1.2 kΩ, D20 cathode VMOTOR/anode BRAKE_RETURN, and R134/R135/R136/C98 to ADS1115 AIN2. Confirm startup and ADC-skew-aware runtime voltage monitoring, three locked qualification flags, 3.8 A ceiling and 0.827 A / 10 rpm initial profile.
+- [ ] Reproduce engineering/power-eco-simulation/results.json; healthy winding corner must pass while open-brake/full-load and 5 J / 20 ms cases remain explicitly unsafe. No source/heatsink/load hardware qualification is implied.
+
+- [ ] Confirm the 240-permille request guard cannot bypass the 0.827 A commissioning profile, all three qualification locks remain false, and regenerated delivery BOM/CPL/viewer match the current source. Review 14 behavioral cases and their unqualified assumptions.
+
+Unused-SBU correction and TI export: inspect `engineering/unused-sbu-eco.json`, `docs/pd-image-check.json`, `docs/pd-configuration-review.md` and `docs/placement-review.md`. Ordering remains held while procurement and hardware gates are open.
+
+## Post-merge sourcing and first-article handoff
+
+- [ ] Review selected U17/R64/J1/J10 identities and stocked U16/U35 replacements and U37 reset network in [sourcing-resolution.md](sourcing-resolution.md); verify PCA9538 is used only with the buffered reset revision.
+- [ ] Complete the U3/U16 programming, full-capacity readback and cold-boot checklist in [readiness.md](readiness.md). Keep qualification flags false until supported by physical results.
+- [ ] Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md); record actual EPR source/cable and provisional J3 resistor/heatsink qualification.
+- [ ] Preserve the exact 401 accepted silkscreen/text findings in the current native baseline, and obtain fabricator printing disposition. This is not zero DRC.

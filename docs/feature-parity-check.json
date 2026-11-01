@@ -46,11 +46,11 @@
       "evidence": "docs/verification.json"
     }
   ],
-  "checked_at": "2026-10-29T12:26:06.419Z",
+  "checked_at": "2026-11-01T02:47:51.413Z",
   "features": 11,
   "passing": 11,
   "assembly_layers": {
-    "top": 255
+    "top": 235
   },
   "usb_c_standard_connectors": [
     "J1",
@@ -70,15 +70,15 @@
       "feature": "eFuse, reverse blocking and independent USB DATA logic power",
       "components": 11,
       "nets": 7,
-      "evidence": "docs/design.md",
+      "evidence": "docs/rp2040-redesign.md",
       "pass": true
     },
     {
       "id": "motor_stage",
-      "feature": "TMC5160A and 100 V external MOSFET bridges",
-      "components": 12,
-      "nets": 6,
-      "evidence": "docs/power-routing-check.json",
+      "feature": "DRV8462DDVR integrated motor bridges; thermal qualification pending",
+      "components": 4,
+      "nets": 4,
+      "evidence": "engineering/rp2040-redesign.json",
       "pass": true
     },
     {
@@ -86,12 +86,12 @@
       "feature": "Independent overvoltage brake control and external resistor interface",
       "components": 6,
       "nets": 3,
-      "evidence": "docs/design.md",
+      "evidence": "docs/rp2040-redesign.md",
       "pass": true
     },
     {
       "id": "controller",
-      "feature": "STM32 control, flash and SWD programming",
+      "feature": "RP2040, QSPI boot flash, SWD and BOOTSEL",
       "components": 5,
       "nets": 3,
       "evidence": "docs/firmware-pinmap.json",
@@ -99,10 +99,10 @@
     },
     {
       "id": "encoder",
-      "feature": "Centered optional bottom-side AS5047P (DNP) with top ABI test access",
+      "feature": "Centered optional bottom-side AS5600 (DNP) with top I2C/OUT test access",
       "components": 4,
-      "nets": 4,
-      "evidence": "docs/design.md",
+      "nets": 3,
+      "evidence": "docs/rp2040-redesign.md",
       "pass": true
     },
     {
@@ -123,8 +123,8 @@
     },
     {
       "id": "local_control",
-      "feature": "Local START/STOP and independent reset; MCU-controlled SPI ramp",
-      "components": 9,
+      "feature": "Local START/STOP and independent reset; RP2040-generated STEP/DIR ramp",
+      "components": 8,
       "nets": 4,
       "evidence": "hardware-contract.json",
       "pass": true

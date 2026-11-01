@@ -99,12 +99,12 @@ def main():
         transition = options[0].get('layer_transition') if options else None
         via_evidence = None
         if transition:
-            assert (ic,pin,capacitor)==('U18',11,'C52')
+            assert (ic,pin,capacitor)==('U18',1,'C52')
             assert transition['from']=='bottom' and transition['to']=='top'
-            assert transition['native_xy_mm']==[99.4,103.9] and transition['source_xy_mm']==[-.6,-3.9]
+            assert transition['native_xy_mm']==[100.6,103.9] and transition['source_xy_mm']==[.6,-3.9]
             assert transition['pad_mm']==.6 and transition['drill_mm']==.3 and transition['maximum_vias']==1
             assert transition['barrel_mm']==1.6 and board.GetDesignSettings().GetBoardThickness()==1600000
-            vias=[t for t in all_tracks if isinstance(t,pcbnew.PCB_VIA) and math.dist(xy(t.GetPosition()),(99.4,103.9))<1e-6]
+            vias=[t for t in all_tracks if isinstance(t,pcbnew.PCB_VIA) and math.dist(xy(t.GetPosition()),(100.6,103.9))<1e-6]
             if len(vias)==1 and layer==pcbnew.B_Cu and footprints[capacitor].GetLayer()==pcbnew.F_Cu:
                 via=vias[0]
                 if via.GetNetCode()==start.GetNetCode()==end.GetNetCode() and all(via.GetWidth(ly)==600000 for ly in (pcbnew.F_Cu,pcbnew.In1_Cu,pcbnew.In2_Cu,pcbnew.B_Cu)) and via.GetDrillValue()==300000 and via.GetViaType()==pcbnew.VIATYPE_THROUGH:

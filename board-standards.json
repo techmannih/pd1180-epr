@@ -2,7 +2,7 @@
   "schema_version": 1,
   "purpose": "Reusable tscircuit board rules with explicit PD1180-EPR project overrides",
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
-  "revision": "0.4.1-ECO",
+  "revision": "0.5.0-RP2040-DRAFT",
   "assembly": {
     "populated_layers": [
       "top"
@@ -46,19 +46,11 @@
       "footprint": "CSD19534Q5A",
       "references": [
         "Q4",
-        "Q6",
-        "Q7",
-        "Q8",
-        "Q9",
-        "Q10",
-        "Q11",
-        "Q12",
-        "Q13",
         "Q16"
       ],
       "pad_number": "9",
       "vias_per_pad": 4,
-      "total_count": 40,
+      "total_count": 8,
       "pad_mm": 0.6,
       "drill_mm": 0.3,
       "process": "epoxy filled and copper capped"
@@ -79,7 +71,7 @@
     "board_width_mm": 85.9,
     "board_height_mm": 85.9,
     "schematic_sheet_size": "a4",
-    "schematic_sheet_count": 24,
+    "schematic_sheet_count": 25,
     "mounting_hole_count": 4,
     "mounting_hole_diameter_mm": 4.2,
     "mounting_holes_centered_mm": [
@@ -127,8 +119,6 @@
       "MOTOR_A2",
       "MOTOR_B1",
       "MOTOR_B2",
-      "SENSE_A",
-      "SENSE_B",
       "BRAKE_RETURN",
       "MOTOR_A1_OUT",
       "MOTOR_B1_OUT"
