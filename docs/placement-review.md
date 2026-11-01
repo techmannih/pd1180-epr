@@ -1,11 +1,14 @@
-# Review of the three orientation advisories
+# Review of the four RP2040 placement advisories
 
-The CLI's placement heuristic connects each port to the nearest same-net port and tests straight lines against the component centreline. It does not trace the finished multilayer copper. Its three suggestions are retained in `checks/placement-raw.log`; this review does not change component orientation or suppress native DRC.
+The CLI heuristic connects ports to the nearest same-net port and compares straight lines with component centrelines. Those lines do not represent finished multilayer copper. Fresh placement DRC reports **zero errors and zero warnings**, with four orientation suggestions retained separately in `checks/placement-raw.log`.
 
-| Part | Physical reason for retaining orientation | Regression evidence |
+| Part | Reason for retaining the current orientation | Native evidence |
 |---|---|---|
-| C23 | Polarized VMOTOR bulk capacitor: pin 1 at (127.100005,82.5) is VMOTOR; pin 2 is GND. It has existing B.Cu/In2.Cu power routing and reviewed pours. Rotating it requires rerouting power/polarity, not a cosmetic fix. | Unchanged pad polarity and native copper; power-routing and zero-unconnected DRC. |
-| R56 | RUN_BASE pull-down sits between its actual top-layer base route and GND. Nearest-port lines do not represent the routed branch to Q14. | Native pad/net, placement and branch geometry preserved; zero-unconnected DRC. |
-| C41 | U14.5 has a direct top-layer bypass path to C41.1 and a short ground branch/stitch at C41.2. Reversing the capacitor lengthens that local supply connection. | Native decoupling checker requires an actual same-side copper path ≤5 mm; unchanged ground branch and native DRC. |
+| C26 | DRV8462 VMOTOR bypass, pin 1 on VMOTOR and pin 2 on GND; the orientation follows its explicit U7.21 power path. | Native same-side bypass length 2.6982 mm, below 5 mm; source endpoint/layer and native connectivity checks pass. |
+| C41 | U14 brake/OVP supply bypass follows the explicit U14.5 top-layer connection. | Same-side power path 3.1323 mm, below 5 mm; native DRC/connectivity pass. |
+| C80 | ADS1115 U30 supply bypass follows its U30.8 top-layer connection. | Same-side power path 3.9594 mm, below 5 mm; native DRC/connectivity pass. |
+| R139 | The 1 kΩ BOOTSEL resistor separates FLASH_CS_N from the service pad BOOTSEL_N. This is a series boot strap, not a power bypass. Rotating it to optimize a straight nearest-port line is not required for its actual two-net routed connection. | Both distinct nets, 1 kΩ series isolation and RP2040 boot contract checked against compiled source; matched native connectivity and zero parity/open findings. |
 
-`check-placement.mjs` accepts only these exact three advisories with zero placement errors/warnings and a fresh native report with zero unconnected/parity issues and only the exact 401 retained native-reference findings. `native-eco-policy.mjs` protects every unrelated footprint/pad/track/zone outline against integrated main commit 97ea91e, including these branches. Focused negative tests reject changed advice, new errors, a narrowed C23 route, moved mounting hole and wrong U1 net. Electrical DRC, connectivity, parity and ERC remain blocking checks. The retained cosmetic findings and physical fabrication acceptance remain separately documented. New placement/copper changes require a new physical review. No powered or thermal measurement is inferred.
+The checker accepts only this exact list, zero placement errors/warnings, the current reviewed native geometry and fresh hash-bound DRC. It does not skip unknown advice or geometry changes. Native DRC retains exactly eight requested J1/J10 hole-clearance errors and 434 cosmetic warnings; there are zero other errors, unconnected or parity findings. ERC is checked separately. This is CAD review, not USB timing, thermal or powered validation.
+
+Historical STM32 ECO restoration is regression-tested against the exact main `1c22abf` fixture. It is not applied to the intentionally replaced RP2040 geometry. Current SBU/independent protection checks and the complete geometry fingerprint are separate mandatory checks.

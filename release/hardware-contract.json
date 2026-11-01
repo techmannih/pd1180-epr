@@ -1,8 +1,8 @@
 {
   "name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
-  "revision": "0.4.1-ECO",
-  "controller": "STM32G0B1CEU6",
-  "motor_driver": "TMC5160A with eight CSD19534Q5A MOSFETs",
+  "revision": "0.5.0-RP2040-DRAFT",
+  "controller": "RP2040 + W25Q32JV 4 MiB boot flash",
+  "motor_driver": "DRV8462DDVR, DDV top-cooled integrated dual H-bridge",
   "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
   "usb_ports": {
     "J1": "Dedicated 48 V / 5 A USB-C PD 3.1 EPR POWER sink; no USB data",
@@ -87,7 +87,7 @@
       "diameter": 0.6,
       "drill": 0.3
     },
-    "via_in_pad": "epoxy filled and copper capped for all 62 recorded via-in-pad locations; see docs/manufacturing-acceptance.md",
+    "via_in_pad": "Filled/capped required where vias enter solderable pads; the prior 62-location count is historical. New route/assembly count must be regenerated.",
     "minimum_trace_width_mm": 0.15,
     "ground_plane": {
       "net": "GND",
@@ -100,16 +100,18 @@
   "rated_targets": {
     "pd_contract_v": 48,
     "pd_contract_a": 5,
-    "motor_phase_rms_a": 3.8,
+    "motor_phase_rms_a": null,
     "motor": "34HS31-6004S1",
     "motor_rated_phase_a": 6,
-    "motor_current_note": "Conservative design ceiling for the ordered 6 A/phase motor: 3.8 A RMS target, GLOBALSCALER=139 gives 3.781 A nominal. The full-scale tolerance sensitivity peak is 5.671 A, below 6 A; this is not powered qualification. Initial commissioning uses IRUN=6, about 0.827 A RMS, 10 rpm and no attached load. Motion remains locked."
+    "motor_current_note": "No qualified run current. Commissioning code is limited to 800 mA RMS requested (~773 mA nominal after quantization), 1/16 microsteps, 10 RPM unloaded, with motion locked. Motor-rated operation needs current-definition review and DDV thermal/PCB qualification."
   },
   "reset_safe_outputs": {
     "POWER_PERMIT": 0,
     "MCU_RUN": 0,
-    "SD_MODE": 0,
-    "STATUS_GPIO": 0
+    "STATUS_GPIO": 0,
+    "DRV_SLEEP_N": 0,
+    "DRV_STEP": 0,
+    "DRV_DIR": 0
   },
   "connectors": {
     "J1": "USB PD POWER",
@@ -123,12 +125,12 @@
     "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
     "reverse_blocking": "Two cascaded status-interlocked LM66100 pairs; DATA and PD VBUS are never connected",
     "usb_default_budget": "Startup before enumeration and USB suspend current must be measured and qualified; the current limiter is overload protection, not a USB enumeration policy",
-    "usb_data_power": "USB DATA alone powers MCU setup/diagnostics. Flash, encoder and sensors require board V3V3. CDC advertises a bus-powered 500 mA configuration.",
+    "usb_data_power": "USB DATA can boot RP2040 and U17 from V3V3_MCU. Encoder, driver logic and other sensors require board V3V3. USB current remains unqualified.",
     "U25": "USB_DATA_VBUS -> TPS2553 U28 -> TLV75533 U25 -> V3V3_USB",
     "selection": "U26/U27 + R112: status-interlocked OR of board V3V3 and V3V3_USB into V3V3_MCU",
-    "board_presence": "R119/R120 10k/10k divider into STM32 PB1; 2.9\u20133.6 V qualified for 20 ms before peripheral access. PD IRQ removed; status remains polled.",
-    "suspend": "USB suspend disarms, invalidates telemetry, ends I2C, turns status low and enters STOP0. RTC/LSI wakes main every nominal 50 ms to service the 250 ms IWDG and sample DATA VBUS; USB resume/reset wakes normally. Physical current/timing validation remains open.",
-    "gpio_backfeed": "Chip selects use open-drain release into board-domain pullups; no high drive into unpowered peripherals. Peripheral inputs and I2C pins become analog/high impedance when board power is absent or USB suspended."
+    "board_presence": "R119/R120 10k/10k into RP2040 GP28; 2.9-3.6 V stable for 20 ms before board peripherals start.",
+    "suspend": "Disarm, invalidate telemetry, stop peripheral buses and hold status/reset low. RP2040 USB suspend current and timing are not yet qualified; no STM32 STOP0 claim applies.",
+    "gpio_backfeed": "Driver CS releases to a board-domain pullup; SPI floats when VMOTOR is absent. I2C/board inputs float when board power is absent. Dedicated QSPI remains on MCU power."
   },
   "diagnostics": {
     "temperature": {
@@ -149,8 +151,8 @@
       "output_offset_v": 1.65,
       "output_volts_per_ampere": 0.1,
       "mcu_channels": [
-        "PA0",
-        "PA1"
+        "GP26/ADC0",
+        "GP27/ADC1"
       ],
       "output_filter": {
         "series_ohm": 1000,
@@ -189,7 +191,7 @@
       "gpio_expander": "PCA9538PWR",
       "i2c_address": 112,
       "supply": "PD_3V3, shared with PD_SCL/PD_SDA pull-ups and reset buffer U37",
-      "reset": "PC13 / STATUS_GPIO with R132 10k pulldown drives U37 SN74LVC1G17DBVR input. PD_3V3-powered output U35_RESET_N has R137 47k pulldown. Assert low on MCU reset, rail loss, USB suspend or indicator bus failure; no direct MCU-rail drive into PCA9538 RESET.",
+      "reset": "RP2040 GP12 / STATUS_GPIO with R132 10k pulldown drives U37 SN74LVC1G17DBVR input. PD_3V3-powered output U35_RESET_N has R137 47k pulldown. Assert low on MCU reset, rail loss, USB suspend or indicator bus failure; no direct MCU-rail drive into PCA9538 RESET.",
       "ports": {
         "P0": "RGB red cathode through 1k",
         "P1": "RGB green cathode through 330 ohm",
@@ -255,12 +257,12 @@
     "programming_status": "TI Full Flash candidate generated and register-reviewed; fixture acceptance, programming/readback, cold boot and fault/PD qualification pending"
   },
   "local_control": {
-    "start_stop": "SW2, PC6 / USER_BUTTON_N, active-low with R133 10k pullup to V3V3_MCU",
+    "start_stop": "SW2, RP2040 GP11 / USER_BUTTON_N, active-low with R133 10k pullup to V3V3_MCU",
     "reset": "SW1 / NRST",
-    "motion_mode": "TMC5160 internal SPI ramp; SD_MODE low; unused U7 pins 17,18,23,24,25 grounded",
+    "motion_mode": "RP2040 STEP/DIR timer; DRV8462 SPI configuration, MODE=V3V3; hardware-gated active-high ENABLE",
     "qualification": "Motion inhibited until TI configuration and powered bridge validation exist",
     "external_command_interfaces": "None; J7 and STEP/DIR/ENABLE/home/limit conditioning removed",
-    "protection": "U10/U11/U33 and DRV_EN_N pullup retained; Q14 emitter grounded after removal of external-enable transistor Q15"
+    "protection": "U10/U11/U33 drive active-high U7 ENABLE / RUN_SAFE with R55 pulldown; nSLEEP and STEP have separate pulldowns. Q14 is removed."
   },
   "input_protection": {
     "reference": "U6",

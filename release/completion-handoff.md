@@ -1,3 +1,5 @@
+> Historical STM32/TMC5160 handoff. Do not use its passing checks, firmware or order files for the RP2040 redesign. See [current readiness](readiness.md) and [architecture evidence](rp2040-redesign.md).
+
 # Prototype completion and acceptance record
 
 The 2026-10-28 revision adds a parallel VMOTOR feed while preserving all original native objects, the existing STM32G0B1CEU6/PCA9538/U37 implementation and all firmware motion locks. Fresh native electrical checks pass; 401 cosmetic warnings remain. No physical test results exist. See [the routing comparison and exact limits](copper-geometry-review.md).

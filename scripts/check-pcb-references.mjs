@@ -7,7 +7,11 @@ const board=parseKicadPcb(await readFile(process.argv[2] || 'dist/manufacturing/
 const pattern=/^(?:U|R|C|D|Q|L|Y|J|SW|BZ)\d+$/
 const names=new Map(source.filter(r=>r.type==='source_component').map(r=>[r.source_component_id,r.name]))
 const components=new Map(source.filter(r=>r.type==='pcb_component').map(r=>[r.pcb_component_id,r]))
-const labels=source.filter(r=>['pcb_silkscreen_text','pcb_fabrication_note_text'].includes(r.type))
+// Informational fabrication annotations (for example a crystal's internally
+// connected pins) are not reference labels. A reference moved to fabrication
+// instead of silkscreen is still included and rejected below.
+const labels=source.filter(r=>r.type==='pcb_silkscreen_text' ||
+  (r.type==='pcb_fabrication_note_text' && pattern.test(r.text)))
 const errors=[];const evidence=[];const withoutText=[]
 const outline=source.find(r=>r.type==='pcb_board')?.outline
 if(!outline?.length)throw new Error('Board outline required for reference containment')

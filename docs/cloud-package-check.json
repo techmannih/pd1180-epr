@@ -1,16 +1,16 @@
 {
-  "checked_at": "2026-11-01T10:33:43.266Z",
-  "preview_is_unrouted_draft": true,
+  "checked_at": "2026-11-01T14:15:25.407Z",
+  "preview_is_unrouted_draft": false,
   "main_entrypoint": "index.circuit.tsx",
-  "preview_component_path": "index.circuit.tsx",
-  "site_default_component_path": "index.circuit.tsx",
-  "cloud_build_command": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build index.circuit.tsx --site --routing-disabled --disable-parts-engine --preview-images --use-cdn-javascript --concurrency 4",
+  "preview_component_path": "release/circuit.json",
+  "site_default_component_path": "release/circuit.json",
+  "cloud_build_command": "tsci build index.circuit.tsx --transpile --disable-parts-engine && tsci build release/circuit.json --site --routing-disabled --disable-parts-engine --preview-images --use-cdn-javascript --concurrency 4",
   "cloud_build_targets": [
     "index.circuit.tsx",
-    "index.circuit.tsx"
+    "release/circuit.json"
   ],
-  "hosted_preview_output": "dist/index/circuit.json",
-  "verified_preview_records": 9112,
+  "hosted_preview_output": "dist/release/circuit.json",
+  "verified_preview_records": 11027,
   "selectable_source_files": 67,
   "selectable_import_files": 61,
   "unavailable_viewer_files": [],
@@ -69,17 +69,20 @@
     "release/copper-geometry-review.json",
     "release/source-design-rules-check.json",
     "release/power-feed-review.webp",
-    "release/power-feed.json",
-    "release/circuit.json"
+    "release/power-feed.json"
   ],
-  "included_files": 83,
-  "included_bytes": 599990,
-  "included_mebibytes": 0.57,
+  "included_files": 86,
+  "included_bytes": 5820388,
+  "included_mebibytes": 5.55,
   "maximum_mebibytes": 20,
   "largest_files": [
     {
+      "path": "release/circuit.json",
+      "bytes": 5208510
+    },
+    {
       "path": "index.circuit.tsx",
-      "bytes": 114202
+      "bytes": 114413
     },
     {
       "path": "bun.lock",
@@ -87,7 +90,7 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 28029
+      "bytes": 28504
     },
     {
       "path": "imports/RP2040.tsx",
@@ -95,7 +98,7 @@
     },
     {
       "path": "delivery-manifest.json",
-      "bytes": 15970
+      "bytes": 16939
     },
     {
       "path": "release/reference-comparison.json",
@@ -112,29 +115,25 @@
     {
       "path": "hardware-contract.json",
       "bytes": 13057
-    },
-    {
-      "path": "board-diagnostics.tsx",
-      "bytes": 12982
     }
   ],
-  "github_import_files": 736,
-  "github_import_bytes": 25164511,
-  "github_import_mebibytes": 24,
+  "github_import_files": 743,
+  "github_import_bytes": 23209017,
+  "github_import_mebibytes": 22.13,
   "github_import_maximum_mebibytes": 24,
   "github_import_maximum_loose_file_mebibytes": 24,
   "github_import_largest_loose_files": [
     {
       "path": "release/circuit.json",
-      "bytes": 7167726
+      "bytes": 5208510
     },
     {
       "path": "release/pcb-3d.png",
-      "bytes": 1506339
+      "bytes": 1502289
     },
     {
       "path": "release/pcb-bottom.png",
-      "bytes": 1213169
+      "bytes": 1144173
     },
     {
       "path": "engineering/mechanical/34hs31-6004s1.glb",
@@ -161,8 +160,8 @@
       "bytes": 563636
     },
     {
-      "path": "release/kicad-drc.json",
-      "bytes": 270151
+      "path": "docs/rp2040-kicad-drc.png",
+      "bytes": 362674
     }
   ],
   "errors": []

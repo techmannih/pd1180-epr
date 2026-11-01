@@ -1,3 +1,5 @@
+> The historical correction below predates the RP2040 redesign. Current rule values remain enforced, but current native proof is `docs/source-design-rules-check.json`; its board hash must match the delivered PCB. The old protected-geometry hash does not qualify the new architecture.
+
 # Source/native design-rule correction — 2026-10-27
 
 The current board additionally includes the [2026-10-28 parallel VMOTOR feed](copper-geometry-review.md). All rules below are unchanged and rechecked; the replay instructions here reconstruct the earlier rule correction, while the feed has its own main-952de54 baseline and replay command.

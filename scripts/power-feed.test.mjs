@@ -5,15 +5,15 @@ import { parseNative, field, uuid } from './native-eco-policy.mjs'
 
 const policy = JSON.parse(readFileSync('routing/power-feed.json'))
 const board = parseNative(readFileSync('dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', 'utf8'))
-const ids = new Set(policy.segments.map(uuid))
+const ids = new Set((policy.architecture_baseline?.segments || policy.segments).map(uuid))
 
-test('delivered real board retains its entire original copper and the added feed', () => {
+test('delivered real board matches its checked architecture and retains the added feed', () => {
   expect(powerFeedErrors(board, policy)).toEqual([])
 })
 test('removing the parallel feed or narrowing it fails the board check', () => {
   expect(powerFeedErrors(board.filter(x => !Array.isArray(x) || !ids.has(uuid(x))), policy).length).toBeGreaterThan(0)
   const copy = structuredClone(board)
-  field(copy.find(x => Array.isArray(x) && ids.has(uuid(x))), 'width')[1] = '0.5'
+  field(copy.find(x => Array.isArray(x) && ids.has(uuid(x))), 'width')[1] = '0.09'
   expect(powerFeedErrors(copy, policy).length).toBeGreaterThan(0)
 })
 test('feed replay refuses a different board and the guard detects unrelated edits', () => {
@@ -23,9 +23,9 @@ test('feed replay refuses a different board and the guard detects unrelated edit
   field(original, 'width')[1] = '0.09'
   expect(powerFeedErrors(copy, policy)).toContain('Unrelated native board geometry changed')
 })
-test('reviewed R3 placement cannot hide a further footprint change', () => {
+test('architecture baseline cannot hide a further R3 footprint change', () => {
   const copy = structuredClone(board)
   const r3 = copy.find(x => x[0] === 'footprint' && x.some(p => p[0] === 'property' && p[1] === '"Reference"' && p[2] === '"R3"'))
   field(r3, 'at')[1] = String(Number(field(r3, 'at')[1]) + 0.01)
-  expect(powerFeedErrors(copy, policy)).toContain('Later placement differs from its exact reviewed geometry')
+  expect(powerFeedErrors(copy, policy)).toContain('Unrelated native board geometry changed')
 })

@@ -2,7 +2,7 @@
 
 RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the current redesign evidence](../engineering/rp2040-redesign.json) and [reviewer checklist](reviewer-checklist.md). Earlier STM32/TMC5160 release evidence does not establish this revision's readiness.
 
-1. Complete fresh native routing, DRC/ERC/parity, current/return/USB/thermal checks and matching manufacturing/viewer/assembly artifacts. Keep existing USB hole-clearance findings visible until accepted geometry/rules are established.
+1. Native routing is complete: 0 unconnected/parity/ERC findings, 8 retained J1/J10 hole errors and 434 cosmetic warnings. The exact USB-hole review exception is not fabrication acceptance. Fresh power-copper, bypass, Kelvin and USB-reference checks and matching artifacts are available; physical thermal/USB qualification remains open.
 2. Resolve exact live sourcing and top-cooled DDV heatsink/TIM. A 6 A motor rating is not a qualified current setting.
 3. Finalize secured rear mounting and connector/harness access. U18 remains optional DNP until the rear magnet attachment and airgap are qualified. Spring-clamp J2/J3 and separate raw PD_VBUS ADC remain open requirements.
 4. Program U3's reviewed TI EEPROM image using its isolated fixture, read the full 64 KiB back, compare the programmed image and confirm a cold APP boot/48 V EPR contract. See [PD programming](pd-programming.md).

@@ -29,7 +29,9 @@ const ercViolations = erc.sheets.flatMap((sheet) => {
 let dispositionError = null
 try { assertReviewDrc(drc) } catch (error) { dispositionError = error.message }
 const summary = {
-  accepted_cosmetic_findings: dispositionError ? 0 : violations.length,
+  accepted_cosmetic_findings: dispositionError ? 0 : violations.filter(v=>v.severity!=='error').length,
+  retained_usb_hole_errors: violations.filter(v=>v.type==='hole_clearance').length,
+  native_error_count: violations.filter(v=>v.severity==='error').length,
   blocking_error: dispositionError,
   drc_report: drcPath,
   erc_report: ercPath,

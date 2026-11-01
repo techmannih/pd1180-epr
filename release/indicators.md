@@ -2,7 +2,7 @@
 
 U35 is PCA9538PWR / C201530 at 7-bit address 0x70. U35, its C95 bypass and the PD_SCL/PD_SDA pullups use PD_3V3. A0/A1 are grounded. The RGB and alarm do not enable the motor.
 
-PC13 / STATUS_GPIO drives U37 SN74LVC1G17DBVR / C7836, a noninverting Schmitt buffer powered by PD_3V3 with C99 100 nF. U37 drives U35_RESET_N; R132 10 kΩ biases its input low and R137 47 kΩ biases its output low. TP_STATUS remains on the MCU side. MCU reset, power loss, USB suspend and failed indicator I2C therefore retain the existing active-low reset behavior.
+RP2040 GP12 / STATUS_GPIO drives U37 SN74LVC1G17DBVR / C7836, a noninverting Schmitt buffer powered by PD_3V3 with C99 100 nF. U37 drives U35_RESET_N; R132 10 kΩ biases its input low and R137 47 kΩ biases its output low. TP_STATUS remains on the MCU side. MCU reset, power loss, USB suspend and failed indicator I2C therefore retain the existing active-low reset behavior.
 
 This buffer is required by the [PCA9538 RESET erratum, §7.2.1.1](https://www.ti.com/lit/ds/symlink/pca9538.pdf): RESET must not be driven high from the independent V3V3_MCU rail while PD_3V3 is absent. The [SN74LVC1G17](https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf) has overvoltage-tolerant input and Ioff protection. Its output is sourced from the expander rail. At 3.6 V, R137 loads the high output by 77 µA; including RESET leakage, this stays below the 100 µA VOH test load, giving VCC − 0.1 V minimum. With U37 unpowered, its 10 µA maximum Ioff gives a 0.47 V resistor-only bound; this is bounded leakage, not a zero-current claim. Measure rail ramps, residual RESET voltage and injection on the first article, including slow brownout. Operation below each device's specified supply range is not qualified by this calculation.
 

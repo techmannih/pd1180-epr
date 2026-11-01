@@ -246,8 +246,11 @@ def main():
     ap.add_argument('--library'); ap.add_argument('--csv-dir',type=Path); ap.add_argument('--check',action='store_true')
     args=ap.parse_args()
     audit=json.loads((REPO/'engineering/power-audit.json').read_text())
-    if audit.get('architecture') == 'RP2040_DRV8462DDV':
-        raise RuntimeError('Historical TMC current/corner model does not qualify DRV8462DDV; regenerate and review the driver-specific switching/current model before simulation release')
+    integrated = audit.get('architecture') == 'RP2040_DRV8462DDV'
+    # This model screens the retained DC bus/brake/eFuse, not the bridge chopper.
+    # DRV8462 scenarios use explicit analysis currents, never the old TMC DAC ratio.
+    if audit.get('architecture') and not integrated:
+        raise RuntimeError('Unsupported simulation architecture')
     if audit['input_sha256']['index.circuit.tsx'] != VERSION:
         raise RuntimeError('Refresh power-audit.json from the current source before simulating')
     model_hash=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
@@ -255,14 +258,18 @@ def main():
     if args.check:
         r=json.loads((ROOT/'results.json').read_text())
         assert r['source_sha256']==VERSION and r['model_sha256']==model_hash and r['audit_parameters_sha256']==audit_hash, 'Stale simulation evidence'
+        assert r.get('architecture') == audit.get('architecture') and r.get('bridge_switching_qualified') is False
         assert r['hardware_qualified'] is False and not r['errors'] and all(r['checks'].values()) and len(r['cases'])==14
         for name,digest in r['deck_sha256'].items():
             assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest, 'Changed simulation deck: '+name
         print('Fourteen behavioral cases: source/model/audit-parameter/deck hashes and numerical checks verified; hardware remains unqualified.')
         return
     a=audit['calculations']; th=a['thresholds_v']
+    full_current = a['current']['analysis_case_rms_a'] if integrated else a['current']['sensitivity_max_rms_a']
+    commissioning_current = (a['commissioning_profile']['brake_open_sensitivity']['each_phase_instantaneous_current_a']
+                             if integrated else a['current']['sensitivity_max_rms_a']*7/32)
     corner=dict(kind='winding',cap=752e-6,initial=th['motor_cutoff_screen']['max'],
-        inductance=.0042,current=a['current']['sensitivity_max_rms_a'],
+        inductance=.0042,current=full_current,
         on=th['brake_on_screen']['max'],off=th['brake_off_screen']['max'])
     upstream=a['supply']['efuse_limit']['upstream_input_allocation_a']
     restricted=a['commissioning_profile']['brake_open_sensitivity']
@@ -273,7 +280,7 @@ def main():
            on=th['brake_on_screen']['nominal'],off=th['brake_off_screen']['nominal']),
       dict(corner,name='winding_corner_brake',brake=True),
       dict(corner,name='winding_corner_open',brake=False),
-      dict(corner,name='commissioning_corner_open',brake=False,current=a['current']['sensitivity_max_rms_a']*7/32),
+      dict(corner,name='commissioning_corner_open',brake=False,current=commissioning_current),
       dict(corner,name='winding_corner_recovery_100us',brake=True,lag=100e-6,initial_sense_v=48),
       dict(corner,name='restricted_open_with_rotor',brake=False,current=1.5,rotor_energy=rotor_energy),
       dict(corner,name='restricted_supply_loss_open',brake=False,current=1.5,rotor_energy=rotor_energy,initial=50.4),
@@ -287,10 +294,14 @@ def main():
       dict(name='input_old_2x_reference',kind='overload',ilim=18000/4020,pulse=2),
     ]
     spice=Spice(args.library); ROOT.mkdir(parents=True,exist_ok=True)
-    result={'source_sha256':VERSION,'model_type':'behavioral transient screen',
+    result={'source_sha256':VERSION,'architecture':audit.get('architecture'),'model_type':'DC-bus/brake/eFuse behavioral transient screen',
+      'bridge_switching_qualified':False,
+      'current_basis':{'nominal_rms_a':a['current']['programmed_rms_a'],'full_current_analysis_a_per_phase':full_current,
+          'commissioning_sensitivity_a_per_phase':commissioning_current,'tolerance_bound_guaranteed':False},
       'hardware_qualified':False,'simulator_version':spice.version,'model_sha256':model_hash,
       'audit_parameters_sha256':audit_hash,
-      'assumptions':['100% prescribed energy return; no full motor/bridge model',
+      'assumptions':['100% prescribed mechanical energy return; no full motor/bridge model',
+        'DRV8462 current regulation, SmartTune, dead time and integrated diode behavior are not modeled or qualified; phase-current initial conditions are explicit engineering scenarios, not guaranteed current limits',
         '10 mOhm bank ESR assumption; no capacitor ripple or thermal qualification',
         '2.2 uF lumped input capacitance, 100 mOhm source/cable resistance; revised input cases use 250 mA upstream, old reference uses 100 mA; not measured',
         'Ideal eFuse current envelope omits finite response, thermal shutdown and PD source dynamics',
@@ -323,7 +334,8 @@ def main():
     by={c['parameters']['name']:c['fine'] for c in result['cases']}
     # These are bounded model assertions, not a hardware acceptance certificate.
     checks={
-      'healthy_winding_corner_plus_0p5v_allocation_below_55v':by['winding_corner_brake']['bus_max_v']+.5<55,
+      ('unqualified_6a_case_lacks_0p5v_margin' if integrated else 'healthy_winding_corner_plus_0p5v_allocation_below_55v'):
+          (by['winding_corner_brake']['bus_max_v']+.5>=55 if integrated else by['winding_corner_brake']['bus_max_v']+.5<55),
       'commissioning_open_winding_plus_0p5v_allocation_below_55v':by['commissioning_corner_open']['bus_max_v']+.5<55,
       'new_steady_envelope_below_5a':by['input_new_1x_corner']['input_peak_a']<5,
       'new_10a_request_envelope_below_5a':by['input_new_1x_corner_10a']['input_peak_a']<5,
@@ -333,6 +345,13 @@ def main():
       'unapproved_5j_20ms_load_remains_unsafe':by['five_joules_20ms_stress']['bus_max_v']>55,
     }
     errors += [k for k,v in checks.items() if not v]
+    result['full_current_operation_authorized'] = False
+    result['open_qualification_findings'] = ([{
+        'case':'winding_corner_brake','phase_current_a':full_current,
+        'peak_bus_v':by['winding_corner_brake']['bus_max_v'],
+        'required_additional_margin_v':.5,'screen_limit_v':55,
+        'disposition':'6 A scenario fails the reserved bus-margin allocation; brake/current envelope must be revised and qualified before full-current operation. Commissioning locks remain enabled.'
+    }] if integrated else [])
     result.update(checks=checks,errors=errors,deck_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(ROOT.glob('*.cir'))})
     (ROOT/'results.json').write_text(json.dumps(result,indent=2)+'\n')
     if errors: raise RuntimeError(errors)

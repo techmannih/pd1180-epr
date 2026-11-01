@@ -108,11 +108,9 @@ def main() -> None:
     settings.m_ViasMinSize = pcbnew.FromMM(0.50)
     settings.m_MinThroughDrill = pcbnew.FromMM(0.30)
     settings.m_CopperEdgeClearance = pcbnew.FromMM(fabrication["minimum_copper_to_edge_mm"])
-    # USB4105's manufacturer footprint has 0.145 mm between the locating
-    # NPTH and adjacent copper.  The value below covers that fixed geometry;
-    # ordinary routing follows the separate width, spacing and edge limits
-    # recorded in board-standards.json; silk cleanup must not lower them.
-    settings.m_HoleClearance = pcbnew.FromMM(0.13)
+    # Keep the fabrication rule. The eight J1/J10 footprint findings are
+    # explicitly retained for review, never hidden by a global relaxation.
+    settings.m_HoleClearance = pcbnew.FromMM(0.20)
     settings.m_MinSilkTextHeight = pcbnew.FromMM(0.80)
     netclass = settings.m_NetSettings.GetDefaultNetclass()
     netclass.SetClearance(pcbnew.FromMM(fabrication["minimum_trace_space_mm"]))
@@ -160,7 +158,7 @@ def main() -> None:
         "embedded_footprint_ids_normalized": embedded_footprints,
         "minimum_trace_width_mm": fabrication["minimum_trace_width_mm"],
         "minimum_trace_space_mm": fabrication["minimum_trace_space_mm"],
-        "usb_connector_npth_clearance_mm": 0.13,
+        "hole_to_copper_clearance_mm": 0.20,
         "clipped_passive_outline_segments": clipped,
     })
 

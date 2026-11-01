@@ -1,3 +1,4 @@
+import { assertRetainedUsbHoles } from './silkscreen-review.mjs'
 import { field } from './native-eco-policy.mjs'
 
 export function copperGeometryErrors(board, project, drc, standards) {
@@ -10,7 +11,8 @@ export function copperGeometryErrors(board, project, drc, standards) {
   for (const key of ['connection_width','copper_sliver'])
     if (project.board?.design_settings?.rule_severities?.[key] === 'ignore' || drc.ignored_checks?.some(c => c.key === key)) errors.push(`${key} checking is ignored`)
   if (!['error','warning'].every(s => drc.included_severities?.includes(s))) errors.push('DRC must include errors and warnings')
-  const faults = drc.violations?.filter(v => !['text_height', 'silk_overlap', 'silk_over_copper'].includes(v.type))
+  try { assertRetainedUsbHoles((drc.violations || []).filter(v=>v.type==='hole_clearance')) } catch(error) { errors.push(error.message) }
+  const faults = drc.violations?.filter(v => !['text_height', 'silk_overlap', 'silk_over_copper','hole_clearance'].includes(v.type))
   if (!Array.isArray(faults) || faults.length || drc.unconnected_items?.length || drc.schematic_parity?.length) errors.push('Native copper/connection/parity findings remain')
   const power = new Set(standards.routing.critical_power_nets.map(n => JSON.stringify(n)))
   const zones = board.filter(x => Array.isArray(x) && x[0] === 'zone' && power.has(field(x, 'net')?.[1]) && Number(field(x, 'priority')?.[1]) >= 100)

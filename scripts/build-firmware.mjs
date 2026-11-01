@@ -44,7 +44,7 @@ if (!check) {
     flash_address:'0x10000000', vector_table_address:'0x10000100', initial_sp:`0x${sp.toString(16)}`, reset_vector:`0x${reset.toString(16)}`,
     max_flash_bytes:4194304, image_bytes:bin.length, inputs,
     artifacts:{'firmware.bin':sha(bin),'firmware.elf':sha(elf),'firmware.uf2':sha(uf2)},
-    unverified:['Native PCB routing/DRC/ERC and top-cooled DDV thermal assembly','USB enumeration, current and measured GPIO/timing on hardware','TI physical programming/readback and cold boot','Motor operation, braking, thermal/EMC and mounting validation']}
+    unverified:['Powered board operation and top-cooled DDV thermal assembly','USB enumeration, current and measured GPIO/timing on hardware','TI physical programming/readback and cold boot','Motor operation, braking, thermal/EMC and mounting validation']}
   const zip=new JSZip()
   zip.file('firmware.bin',bin);zip.file('firmware.elf',elf);zip.file('firmware.uf2',uf2)
   zip.file('manifest.json',JSON.stringify(manifest,null,2)+'\n')

@@ -8,7 +8,7 @@ const source = await readFile(boardPath, 'utf8')
 const sense = JSON.parse(await readFile('docs/critical-copper-check.json', 'utf8'))
 if (sense.board_sha256 !== createHash('sha256').update(source).digest('hex') || !Array.isArray(sense.errors) || sense.errors.length) throw new Error('Power audit requires current, passing native Kelvin isolation evidence')
 const brakeSense = JSON.parse(await readFile('docs/brake-sense-copper-check.json', 'utf8'))
-if (brakeSense.board_sha256 !== createHash('sha256').update(source).digest('hex') || brakeSense.checker_sha256 !== createHash('sha256').update(await readFile('scripts/check-brake-sense.py')).digest('hex') || !Array.isArray(brakeSense.errors) || brakeSense.errors.length || !brakeSense.segment_uuids?.length) throw new Error('Power audit requires current, passing brake-divider branch-removal evidence')
+if (brakeSense.board_sha256 !== createHash('sha256').update(source).digest('hex') || brakeSense.checker_sha256 !== createHash('sha256').update(await readFile('scripts/check-brake-sense.py')).digest('hex') || !Array.isArray(brakeSense.errors) || brakeSense.errors.length || !Array.isArray(brakeSense.segment_uuids) || (!brakeSense.segment_uuids.length && (brakeSense.routing_mode !== 'all-branches-checked-as-power' || brakeSense.minimum_track_width_mm < .5 || !(brakeSense.power_track_count > 0)))) throw new Error('Power audit requires current, passing brake-divider branch-removal evidence')
 const senseSegments = new Set([...sense.paths.flatMap(path => path.segment_uuids), ...brakeSense.segment_uuids])
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const powerNets = [

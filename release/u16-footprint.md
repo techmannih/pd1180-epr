@@ -1,3 +1,5 @@
+> Historical STM32/TMC5160 revision reference. MCU, driver, encoder and their qualification results do not describe the current RP2040 redesign; see [current architecture](rp2040-redesign.md).
+
 # U16 stocked MCU revision
 
 U16 is **ST STM32G0B1CEU6 / JLCPCB C2829190**, UFQFPN48, GP pinout, 512 KiB flash and 144 KiB SRAM. Do not substitute the `...U6N` alternate pinout or the former LQFP48 device onto this PCB.

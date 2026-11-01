@@ -125,7 +125,10 @@ const holeAlignment=mountingAlignment(motorAxes, contract.mechanical.mounting_ho
 mountingAlignment(motorAxes, source.filter(r => r.type==='pcb_hole' && !r.pcb_component_id).map((h,i) => ({name:`compiled H${i+1}`,x:h.x,y:h.y,diameter:h.hole_diameter})))
 const refs=new Set(source.filter(r=>r.type==='source_component').map(r=>r.name))
 const parts=board.meshes.filter(m=>refs.has(m.name))
-for(const ref of ['Q12','Q13','C5','R2','SW1','SW2']) if(!parts.some(m=>m.name===ref)) errors.push(`Missing component CAD: ${ref}`)
+// This revision replaces Q6-Q13 with U7's integrated bridges. Require the
+// actual MCU/flash/driver and retained independent safety switches in the mesh.
+for(const ref of ['U7','U16','U17','Q4','Q16','C5','R2','SW1','SW2']) if(!parts.some(m=>m.name===ref)) errors.push(`Missing component CAD: ${ref}`)
+for(const ref of ['Q6','Q7','Q8','Q9','Q10','Q11','Q12','Q13','Q14']) if(refs.has(ref)||board.meshes.some(m=>m.name===ref)) errors.push(`Obsolete external motor stage remains in CAD: ${ref}`)
 // A top-entry header must fit as a complete body, not just its solder lands.
 // Check the projected exported mesh envelope, including any CAD offsets.
 function segmentDistance(a,b,c,d) {

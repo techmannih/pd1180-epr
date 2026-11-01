@@ -54,32 +54,32 @@ With both sides joined, the paired 4.7 kΩ pullups give about 2.35 kΩ per line 
 
 ## Save and verify programming readback
 
-The provider must save the programmer's log and complete raw memory dump: U3 has 65,536 bytes starting at 0x0000; U16 has 524,288 bytes starting at 0x08000000. Keep the board serial, fixture/programmer identity, operator and programming timestamp with those files. A copied input binary is not a device readback.
+The provider must save the programmer's log and complete raw memory dump: U3 has 65,536 bytes starting at 0x0000; U16 boots from U17’s 4,194,304-byte external flash mapped at 0x10000000. Keep the board serial, fixture/programmer identity, operator and programming timestamp with those files. A copied input binary is not a device readback.
 
 From the repository root, compare a U16 dump with the current commissioning archive:
 
 ```sh
-bun scripts/verify-programming.mjs --kind stm32 --serial FIRST-ARTICLE-001 \
-  --operator 'provider engineer' --programmer 'ST-LINK serial / tool version' \
+bun scripts/verify-programming.mjs --kind rp2040 --serial FIRST-ARTICLE-001 \
+  --operator 'provider engineer' --programmer 'RP2040 programmer serial / tool version' \
   --readback /path/to/u16-readback.bin --output /path/to/u16-verification.json
 ```
 
 For U3, use the same command with `--kind pd` and the EEPROM dump. The reviewed TI Full Flash candidate is registered under `eeprom.image` in `pd-configuration.json`; its `path` is the release ZIP and `archive_member` is `fullFlash.bin`. Extract that member for the programmer, starting at address 0. It has 31,552 bytes, not the full EEPROM capacity. Read back all 65,536 device bytes for the comparator, which checks every programmed image byte and explicitly does not qualify the remaining tail. Never relabel a low-region export or requirements JSON to bypass that check. Archive the matching TI project export and tool version with the image. The file comparator checks identity and content; it cannot determine whether the TI settings are electrically correct.
 
-The command checks every image byte, rejects stale STM32 source identities, and refuses to overwrite an earlier report. Bytes beyond the image are recorded in the full dump hash but not accepted against an invented padding pattern. A successful comparison proves neither cold APP boot nor motor operation. Keep the separate cold-boot, EPR negotiation, safety-inhibit and motor test records required in `power-validation.md`.
+The command checks every image byte, rejects stale RP2040 source identities, and refuses to overwrite an earlier report. Bytes beyond the image are recorded in the full dump hash but not accepted against an invented padding pattern. A successful comparison proves neither cold APP boot nor motor operation. Keep the separate cold-boot, EPR negotiation, safety-inhibit and motor test records required in `power-validation.md`.
 
 The [unused-SBU correction](pd-configuration-review.md) is applied and native-checked. Its physical startup/fault validation remains open even after a successful memory comparison.
 
 ## Prepared TI image; physical programming pending
 
-Run `bun scripts/check-pd-image.mjs` before programming. Keep all three motion qualification flags false. Retain the complete EEPROM dump, programmer log, serial and SHA-256; verify `APP ` and register 0x06 = `PD118041`, then perform the stationary fault/negotiation sequence in `pd-configuration-review.md`. An exported binary is not a readback. TI tool import can reset role-dependent fields; use the archived reviewed binary or re-export and revalidate all fields. No hardware was flashed in this review.
+Run `bun scripts/check-pd-image.mjs` before programming. Keep all four motion qualification flags false. Retain the complete EEPROM dump, programmer log, serial and SHA-256; verify `APP ` and register 0x06 = `PD118041`, then perform the stationary fault/negotiation sequence in `pd-configuration-review.md`. An exported binary is not a readback. TI tool import can reset role-dependent fields; use the archived reviewed binary or re-export and revalidate all fields. No hardware was flashed in this review.
 
-## STM32 SWD programming and cold-boot acceptance
+## RP2040 programming and cold-boot acceptance
 
-1. Keep the motor disconnected and qualification locks enabled. Connect the labelled SWDIO, SWCLK, NRST and GND pads plus TP_SWD_3V3 as target-voltage reference. Verify pad identities against the current release; do not use USB VBUS as a logic reference. The ST-LINK/programmer must not supply power to the target.
-2. Power the MCU through the board's USB DATA input for this step. Confirm the 3.3 V MCU rail and connect under reset if required. Check the detected MCU identity and 512 KiB flash capacity against STM32G0B1CEU6; abort on a mismatch. Save the initial option-byte readout. Do not set irreversible protection or alter boot/BOR settings without a reviewed configuration.
-3. Check the commissioning archive's manifest/hash, program `firmware.bin` at 0x08000000 and run the programmer's verification. Save a separate raw device dump of **524,288 bytes from 0x08000000** and the tool log. Run `verify-programming.mjs --kind stm32` as shown above; archive the returned JSON with the board serial. Device option bytes are a separate record, not part of this main-flash dump.
-4. Turn off and disconnect J1, J10 and any programmer power path, then verify rail discharge. Remove active SWD drive; release TP_PD_ISO after EEPROM work. Cold boot on fixed 5 V at J1, confirm U2 APP/PD118041 and MCU diagnostics, and verify POWER_PERMIT/MCU_RUN stay inactive. Test USB DATA only separately: MCU diagnostics may run, but it must not energize VMOTOR or backfeed the PD rail.
-5. Record cold attach with each source, both-source attach/remove order, MCU reset/watchdog and USB suspend/resume. Then test the actual EPR source/cable and FLT/EPR_EN response according to the stationary matrix. A programmed-byte match and a successful debug reset do not close cold boot or power-sequencing acceptance.
+1. Keep the motor disconnected and all four qualification locks enabled. Verify SWDIO, SWCLK, GND, MCU 3.3 V reference and RUN/reset against the current pad map. Use an RP2040-compatible probe with target power output disabled, or BOOTSEL recovery through J10.
+2. Power through USB DATA and confirm the 3.3 V and 1.1 V rails. Verify RP2040 identity and U17's 4 MiB flash. For ROM USB boot, ground TP_BOOTSEL through its fitted resistor, pulse reset and release after enumeration. Do not short QSPI CS directly.
+3. Validate the archive manifest, program its UF2 through ROM USB or its ELF/BIN using an RP2040-aware programmer at **0x10000000**. Save a separate **4,194,304-byte** device dump from that address plus programmer log. Run the RP2040 comparator above; it verifies the entire image and records the full dump hash without inventing expected bytes outside the image.
+4. Disconnect J1, J10 and programmer power, verify discharge, release TP_PD_ISO and remove active debug drive. Cold boot on fixed 5 V J1; verify U2 APP mode/PD118041 and inactive POWER_PERMIT/MCU_RUN. Test USB DATA-only boot separately and verify no motor-bus energization or PD backfeed.
+5. Record both-source attach/remove orders, reset/watchdog, USB suspend/resume and then stationary EPR/fault checks. Byte comparison is not proof of cold boot, signal timing or motor operation.
 
-Record PASS/FAIL separately for **U3 programming, U3 full dump, U16 programming, U16 full dump, option-byte review, cold APP boot, marker identity, MCU boot, hardware inhibit and source sequencing**. Every physical result remains pending. See [readiness.md](readiness.md) for the ordered bring-up checklist.
+Record U3 programming/full dump, U16 programming/full dump, cold APP boot, configuration identity, MCU boot, inhibit and source sequencing separately. No physical result has been recorded. See [firmware instructions](../firmware/README.md) and [readiness](readiness.md).

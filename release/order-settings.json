@@ -1,5 +1,5 @@
 {
-  "product_name": "PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
+  "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "service": "JLCPCB PCB + SMT assembly",
   "requested_delivery": "Fully populated, programmed and functionally tested PCBA for the confirmed motor/load",
   "additional_services": {
@@ -10,7 +10,7 @@
     "shipment_acceptance": "HOLD: approved images, programming fixture/method, first-article qualification and per-board powered results are pending",
     "instructions": "Request programming and Function Test explicitly; service availability for this board and its 48 V motor/brake test must be accepted by the provider. No order has been placed."
   },
-  "revision": "0.4.1-ECO",
+  "revision": "0.5.0-RP2040-DRAFT",
   "pcb": {
     "dimensions_mm": [
       85.9,
@@ -23,7 +23,6 @@
       "outer": 1,
       "inner": 1
     },
-    "minimum_trace_space_mm": 0.09,
     "solder_mask": "green",
     "silkscreen": "white",
     "surface_finish": "ENIG",
@@ -33,24 +32,16 @@
     "thermal_via_in_pad": {
       "references": [
         "Q4",
-        "Q6",
-        "Q7",
-        "Q8",
-        "Q9",
-        "Q10",
-        "Q11",
-        "Q12",
-        "Q13",
         "Q16"
       ],
       "pad_number": "9 (drain exposed pad)",
       "vias_per_pad": 4,
-      "total_vias": 40,
+      "total_vias": 8,
       "via_pad_mm": 0.6,
       "finished_drill_mm": 0.3
     },
-    "via_in_pad_count": 62,
-    "via_in_pad_count_basis": "2026-10-27 source-rule ECO native board: finished-drill overlap with top paste lands; exact coordinates and board hash in engineering/top-side-placement.json power_eco_via_audit. Same 62 locations before/after this ECO; earlier 63-location inventory was stale. Includes 40 MOSFET drain-pad, four U34 thermal and four U16 ground-pad vias.",
+    "via_in_pad_count": 21,
+    "via_in_pad_count_basis": "Finished via drill intersects an F.Paste SMD land; exact final-board SHA-256 and coordinates in rp2040-via-in-pad.json. Apply filled/capped processing to every via-in-pad and specified thermal via.",
     "minimum_via_finished_drill_mm": 0.3,
     "driver_regulator_thermal_vias": {
       "reference": "U34",
@@ -70,7 +61,10 @@
       "coupon_required": true,
       "status": "pending-stackup-and-route-impedance-review",
       "copper_requirement": "1 oz outer AND inner; do not substitute a standard 0.5 oz inner stack-up"
-    }
+    },
+    "minimum_trace_width_mm": 0.15,
+    "minimum_copper_spacing_mm": 0.1,
+    "driver_top_cooling": "DRV8462DDV exposed TOP requires a qualified TIM/heatsink and end supports. No complete cooling assembly is approved; retained 1 oz stack is not qualified against TI 2 oz recommendation."
   },
   "assembly": {
     "side": "top",
@@ -83,8 +77,8 @@
       "C52",
       "C53"
     ],
-    "optional_unpopulated_policy": "Bottom footprints only; omit from fitted BOM/CPL and paste. No magnet interface is qualified on the ordered single-shaft motor.",
-    "fitted_component_count": 255,
+    "optional_unpopulated_policy": "U18 bottom; C52/C53 top. All three DNP, omitted from fitted BOM/CPL and paste. Rear magnet attachment unqualified.",
+    "fitted_component_count": 235,
     "external_motor_harness": "Separate VHR-4N / SVH-41T-P1.1 / 16 AWG cable assembly; see motor-harness.md. Not included automatically in PCB assembly."
   },
   "programming": {
@@ -135,5 +129,5 @@
     "motor_load_envelope_approved": false,
     "shipment_rule": "Programming verification and the approved per-board powered motor/fault acceptance must pass for every serial number before shipment"
   },
-  "redesign_status": "Unqualified RP2040/DDV architecture. Manufacturing files from parent are historical; no order authorized."
+  "redesign_status": "Current RP2040/DDV native CAD is verified with eight retained USB hole errors and cosmetic warnings. Fabrication and powered operation remain held."
 }
