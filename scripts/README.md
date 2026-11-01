@@ -1,6 +1,6 @@
 # Script catalog
 
-`cc-protection-aliases.test.mjs` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. Both must keep connector-side and protected-side CC nets separate. It also protects the 12 existing, unique physical CC vias. Run `bun test scripts/cc-protection-aliases.test.mjs`; CI runs it before the stock-dependent review.
+`cc-protection-aliases.test.mjs` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. Both must keep connector-side and protected-side CC nets separate. It also checks uniqueness of every physical via and the current native route's 11 CC vias (3 CC1_CONN, 2 CC2_CONN, 3 CC1_PD, 3 CC2_PD). Full native-to-viewer copper equality is independently checked by `check:cloud-viewer`. Run `bun test scripts/cc-protection-aliases.test.mjs`; both CI and the full local review include it.
 
 Every executable script is listed here so a reviewer can understand the release pipeline without reverse-engineering the repository. `bun run check:script-catalog` fails when a script is added without documentation.
 

@@ -59,10 +59,17 @@ test("published U1 physical pins retain the intended connector and controller ne
 
 test("published CC copper already has unique physical vias; do not delete real copper", () => {
   const allVias = published.filter(row => row.type === "pcb_via")
-  expect(allVias).toHaveLength(643)
-  expect(new Set(allVias.map(row => `${row.x}:${row.y}`)).size).toBe(643)
-  const nets = new Set(published.filter(row => row.type === "source_net" && /^CC[12]_(CONN|PD)$/.test(row.name)).map(row => row.source_net_id))
-  const vias = published.filter(row => row.type === "pcb_via" && nets.has(row.source_net_id))
-  expect(vias).toHaveLength(12)
-  expect(new Set(vias.map(row => `${row.x}:${row.y}`)).size).toBe(12)
+  // The RP2040 redesign replaces the former 643-via route. Check physical
+  // uniqueness independently of unrelated motor/MCU routing. check:cloud-viewer
+  // also requires every published copper item to match the current native PCB.
+  expect(allVias.length).toBeGreaterThan(0)
+  expect(new Set(allVias.map(row => `${row.x}:${row.y}`)).size).toBe(allVias.length)
+  const expectedCcVias = { CC1_CONN: 3, CC2_CONN: 2, CC1_PD: 3, CC2_PD: 3 }
+  for (const [name, count] of Object.entries(expectedCcVias)) {
+    const net = published.find(row => row.type === "source_net" && row.name === name)
+    expect(net).toBeDefined()
+    const vias = allVias.filter(row => row.source_net_id === net.source_net_id)
+    expect(vias).toHaveLength(count)
+    expect(new Set(vias.map(row => `${row.x}:${row.y}`)).size).toBe(count)
+  }
 })
