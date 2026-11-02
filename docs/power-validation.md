@@ -1,3 +1,15 @@
+# Current RP2040 / DRV8462 power-validation scope
+
+The current source, native CAD, locked firmware and behavioral models are documented in [rp2040-redesign.md](rp2040-redesign.md). Native DRC has eight retained USB hole-clearance errors, 434 cosmetic warnings, zero other errors, zero unconnected/parity findings and zero ERC findings. This is engineering evidence, not ordering or motor-operation approval.
+
+The commissioning request is 0.8 A RMS, quantized to approximately 0.773 A nominal, with a 10 rpm unloaded limit. All four qualification flags remain false. No motor current is physically qualified. The 6 A/phase winding corner reaches 54.858 V and fails the allocated 0.5 V system margin. Current simulations model the DC bus, brake and eFuse, not DRV8462 switching. Use current power-audit.json and engineering/power-eco-simulation/results.json; earlier TMC current/shunt/bridge calculations do not apply.
+
+Before operation: qualify DDV top-side heatsink/TIM/support and the actual PCB stack; inspect assembly; program/read back TI EEPROM and RP2040 flash; verify cold boot and rails; test hardware inhibit, USB current and power sequencing; verify current/STEP waveforms at stationary low current; then qualify unloaded movement, braking and thermal response against the actual load envelope. No earlier historical current limit authorizes this board.
+
+## Historical STM32/TMC validation record — superseded
+
+Everything below records the previous architecture and its earlier test matrix. It is retained as history only, not current programming or operating instructions.
+
 # Power validation and prototype order review
 
 **Status: 2026-10-13 power/thermal ECO; ordering and motion remain held. No PCB has been assembled or powered.** The current user authorization covers affected protection and firmware changes. The source, native checks, stock evidence and simulation results must match this revision; the tests below remain mandatory.

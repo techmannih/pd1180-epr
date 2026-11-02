@@ -47,6 +47,7 @@ export const BoardDiagnostics = () => (
     <trace name="BYPASS_C99" from=".U37 > .pin5" to=".C99 > .pin1" thickness="0.2mm" maxLength="5mm" pcbPath={[".C99 > .pin1"]} />
     <NH_B2020RGBA_HF name="D16" schPinArrangement={{ topSide: ["pin3"], leftSide: ["pin1", "pin4", "pin2"] }} schSheetName="indicators" schSectionName="indicators_U35" schX={1.5} schY={-1.2}
       pcbX={-40.25} pcbY={-18.0} pcbRotation={90} layer="top"
+      pcbSx={{ "& silkscreentext": { pcbX: 0.3302, pcbY: 0.9 } }}
       connections={{ pin1: "net.RGB_R_K", pin2: "net.RGB_B_K", pin3: "net.V3V3", pin4: "net.RGB_G_K" }} />
     <FUET_9650B_3V name="BZ1" schSheetName="alarm" schSectionName="alarm_BZ1" schX={0.75} schY={2.3}
       pcbX={-36.5} pcbY={-10.8} pcbRotation={0} layer="top"

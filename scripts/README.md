@@ -1,6 +1,6 @@
 # Script catalog
 
-`cc-protection-aliases.test.mjs` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. Both must keep connector-side and protected-side CC nets separate. It also protects the 12 existing, unique physical CC vias. Run `bun test scripts/cc-protection-aliases.test.mjs`; CI runs it before the stock-dependent review.
+`cc-protection-aliases.test.mjs` compiles the real U1 import and checks the published NEMA34 Circuit JSON with the connectivity-map library. Both must keep connector-side and protected-side CC nets separate. It also checks uniqueness of every physical via and the current native route's 11 CC vias (3 CC1_CONN, 2 CC2_CONN, 3 CC1_PD, 3 CC2_PD). Full native-to-viewer copper equality is independently checked by `check:cloud-viewer`. Run `bun test scripts/cc-protection-aliases.test.mjs`; both CI and the full local review include it.
 
 Every executable script is listed here so a reviewer can understand the release pipeline without reverse-engineering the repository. `bun run check:script-catalog` fails when a script is added without documentation.
 
@@ -11,8 +11,8 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | Script | Purpose |
 |---|---|
 | `add-board-planes.py` | Adds board-outline-conformal GND and V3V3 planes to the routed four-layer PCB. |
-| `build-firmware.mjs` | Builds and packages the pinned STM32 ARM commissioning image; --check proves source/artifact hashes match and motion remains locked. |
-| `check-operating-mode.mjs` | Verifies internal SPI-ramp mode, grounded unused U7 inputs, the local button and removal of external command interfaces. |
+| `build-firmware.mjs` | Builds and packages the pinned RP2040 ARM/UF2 commissioning image; --check proves source/artifact hashes match and motion remains locked. |
+| `check-operating-mode.mjs` | Checks the compiled RP2040/DDV net contract, boot-flash power, independent brake and enable chain, and qualification locks. |
 | `check-alternatives.mjs` | Rechecks reviewed LCSC alternative parts, their pinned live package names and intended package compatibility, then writes availability evidence. |
 | `check-assembly.mjs` | Enforces exact supplier identities, stock evidence, encoder position and permitted top/bottom placement. |
 | `check-board-standards.mjs` | Applies `board-standards.json` to geometry, vias, markings, sheets, DRC and assembly outputs, including paste-free bare probe pads. |
@@ -150,7 +150,7 @@ Harness intermediate part data is deterministically stored in `engineering/mecha
 - `usb-access.test.mjs`: rejects old recessed native USB placement, incorrect source orientation and an intersecting nominal motor/plug envelope; keeps physical-fit qualification false.
 
 - `brake-assembly.mjs`, `brake-assembly.test.mjs`: hash-check the official Vishay STEP, generate the J3 mate/contact/cable/ring installation with explicitly provisional cooling/guard, and verify complete pin mapping, conductor endpoints and open M4 ring holes. No physical or thermal qualification is implied.
-- `encoder-bypass-policy.mjs`, `encoder-bypass-policy.test.mjs`: permit only the U18.11/C52.1 bottom-to-top path through its exact single 0.60/0.30 mm via; count the 1.6 mm barrel in the 5 mm budget and reject missing/extra/undersize/displaced vias. Native copper is independently measured by `check-native-decoupling.py`.
+- `encoder-bypass-policy.mjs`, `encoder-bypass-policy.test.mjs`: permit only the U18.1/C52.1 bottom-to-top path through its exact single 0.60/0.30 mm via; count the 1.6 mm barrel in the 5 mm budget and reject missing/extra/undersize/displaced vias. Native copper is independently measured by `check-native-decoupling.py`.
 
 The combined harness GLB is retained inside `harness-proposal.zip` to keep the raw GitHub import below its unchanged 24 MiB limit. Historical label screenshots are preserved byte-for-byte in `previews/native-labels-history.zip`.
 
@@ -168,3 +168,11 @@ The combined harness GLB is retained inside `harness-proposal.zip` to keep the r
 `check-usb-access.mjs` also checks J1/J10 copper-to-edge clearance independently
 of their intentional shell/courtyard overhang allowance; `usb-access.test.mjs`
 rejects displaced copper and off-board exemptions on unrelated components.
+
+`rp2040-contract.mjs` validates the compiled DDV pinout, boot-flash supply, retained brake rail and hardware enables. `rp2040-contract.test.mjs` uses the real compiled board and rejects deliberately removed brake power, a DDW substitution, a wrong boot-flash rail and a bypassed ENABLE net. These checks do not establish routed PCB or thermal readiness.
+
+`check-native-architecture.mjs` rejects native PCB evidence containing removed components, missing components or package pins that differ from the compiled source. `native-architecture.test.mjs` covers stale package/removal/missing-footprint cases. The review records dependent native checks as blocked when this prerequisite fails; historical native results cannot qualify a replacement architecture.
+
+- `generate-design-manifest.mjs`: rebuilds fitted/optional part identities and placements from source declarations and compiled geometry. Uses independent `sourcing/package-contract.json` expectations; never accepts a package merely because the live API returns it. Run after source compilation and before stock/assembly checks.
+
+- `generate-copper-screens.mjs` (`<filled-copper.json> <output-directory>`): run the architecture-specific motor, supply and brake paths at 0.075/0.05 mm meshes, with 0.025/0.02 mm refinement when needed. Set `PYTHON` to an interpreter with the pinned geometry/scientific dependencies. Input is actual refilled native copper from `export-filled-power-copper.py`; output retains per-path DC results and source hashes. This does not qualify operating current or temperature.

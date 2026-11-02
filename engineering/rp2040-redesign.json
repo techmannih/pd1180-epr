@@ -1,0 +1,67 @@
+{
+  "revision": "0.5.0-RP2040-DRAFT",
+  "base_commit": "1c22abf6a9e15cc6d253b6396503ffc0e563f552",
+  "architecture": [
+    "RP2040",
+    "DRV8462DDVR",
+    "TPS26750SRSMR",
+    "AS5600-ASOM (optional DNP)"
+  ],
+  "status": "native-cad-verified-hardware-unqualified",
+  "hardware_tested": false,
+  "fabrication_orderable": false,
+  "reviewed_at": "2026-11-01T13:33:20.224310+00:00",
+  "native": {
+    "board_sha256": "4738c83bd7db689e0e135f7040ab4023b6d0a71505e1f883d22a976fe9be481b",
+    "raw_drc_sha256": "ba76155ba80da63005f7842371204b30493ce3e381ef8cc856bb4b550f0689e3",
+    "raw_erc_sha256": "d93f6803964ae5d32bbc206a9ddc8cc97590811e0f4efb1861d0e2746aba4f55",
+    "errors": 8,
+    "retained_usb_hole_errors": 8,
+    "other_errors": 0,
+    "warnings": 434,
+    "unconnected_items": 0,
+    "schematic_parity": 0,
+    "erc_findings": 0,
+    "archive": "engineering/rp2040-native-review.zip",
+    "gui_screenshot": "docs/rp2040-kicad-drc.png",
+    "gui_schematic_parity": "not run; CLI parity checked separately"
+  },
+  "input_sha256": {
+    "index.circuit.tsx": "efe65dc0bbe372d6463d07dcfe3ed281ec917f7db8d72772ba768391009b7d10",
+    "schematic-pages.tsx": "f602916228b5be8dc5513efead8f022b01f87eb2d2814b7339ec1d72f51dc1fd",
+    "hardware-contract.json": "ece6bf448147d887ce949edab368e4dde266fcf256a248508977f2972446ccb0",
+    "board-standards.json": "2d4f845d4ed646021ab9700e1c962a85c28bca0a2cd9867e2275cede4d297178",
+    "docs/firmware-pinmap.json": "524bd8b69aca4df1a339e157e922df6da8b56e2a88dce8ccab199d965e74801a",
+    "release/pd1180-commissioning-firmware.zip": "18d0f0c409c8900968b28c7592c12dfd055244238df5e9cdafd503694bf6b198"
+  },
+  "native_checks": {
+    "local_bypass_paths": 54,
+    "kelvin_terminal_only_branches": 4,
+    "usb_reference_paths": 4,
+    "power_copper_evidence": "engineering/rp2040-copper-evidence.zip",
+    "source_rules": "docs/source-design-rules-check.json",
+    "all_checks": "docs/verification.json"
+  },
+  "firmware": {
+    "compiled_architecture": "RP2040",
+    "image_bytes": 88484,
+    "physical_programming_verified": false,
+    "all_four_qualification_flags": false,
+    "nominal_commissioning_current_rms_a": 0.7733980419227863,
+    "commissioning_rpm_limit": 10
+  },
+  "remaining": [
+    "Eight J1/J10 hole-clearance errors remain as explicitly requested; this is an engineering review exception, not fabrication acceptance. Cosmetic silkscreen findings remain visible.",
+    "The 6 A/phase behavioral worst-case bus reaches 54.858 V and lacks the allocated 0.5 V margin below the 55 V system limit. Full-current running is unqualified; firmware motion remains locked.",
+    "DDV top-side heatsink/TIM/mechanical clearance and motor-current operating envelope are not qualified.",
+    "Exact stock is not reserved: latest evidence records shortages for R66, R60, BZ1, J1/J10 and U7 (four available for five boards). Refresh the entire fitted BOM before procurement.",
+    "Rear fastening, single-shaft encoder magnet attachment, WAGO/spring-clamp choice and actual harnesses require closure.",
+    "TI EEPROM and RP2040 flash programming/readback/cold boot, USB current, brake and loaded thermal/EMC tests require assembled hardware. All four firmware qualification locks remain false."
+  ],
+  "full_review": {
+    "command": "bun run review",
+    "report": "docs/verification.json",
+    "delivery_report": "docs/delivery-check.json",
+    "requirement": "All verification checks and release delivery integrity must pass. Read the current reports; this architecture summary is not a substitute for their results."
+  }
+}

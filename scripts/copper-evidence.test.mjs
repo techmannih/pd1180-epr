@@ -18,7 +18,7 @@ test('power comparison rejects missing paths, stale data, unconverged meshes and
     d=>d.dc_screen.after[0].board_sha256='old',
     d=>d.dc_screen.after[0].resistance_mohm_20c*=2,
     d=>d.dc_screen.before[0].resistance_mohm_20c=NaN,
-    d=>d.dc_screen.refined=[],
+    d=>{d.dc_screen.before[0].resistance_mohm_20c*=2;d.dc_screen.refined=[]},
   ]) {
     const d=structuredClone(report);mutate(d)
     expect(copperComparisonErrors(d,report.board_sha256)).not.toEqual([])

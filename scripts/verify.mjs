@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto'
 
 // Run every check, preserving each real exit status even when an earlier check fails.
 const routed = process.argv.includes('--routed')
-const verifiedInputPaths = ['AGENTS.md', 'board-diagnostics.tsx', 'schematic-pages.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
+const verifiedInputPaths = ['scripts/verify.mjs', 'scripts/check-native-architecture.mjs', 'scripts/native-architecture.test.mjs', 'scripts/check-kicad-drc.mjs', 'AGENTS.md', 'board-diagnostics.tsx', 'schematic-pages.tsx', 'index.circuit.tsx', 'board-markings.tsx', 'feature-parity.tsx', 'mounting-template.svg', 'package.json', 'hardware-contract.json', 'board-standards.json', 'routing/requirements.json', 'routing/critical-paths.json', 'scripts/critical_copper.py', 'scripts/check-critical-copper.mjs', 'tscircuit.config.json', 'tscircuit.config.ts', 'tsconfig.json', 'scripts/check-board-standards.mjs', 'scripts/check-schematic-style.mjs', 'scripts/via-net-identity.test.mjs', 'checks/vendor/circuit-json-schematic-placement-analysis.browser.js']
 verifiedInputPaths.push('routing/pin-escapes.json', 'scripts/prepare-routing-seed.py', 'scripts/check-routing-fingerprint.mjs', 'scripts/circuit-source-hash.mjs', 'scripts/reinforce-power-copper.py', 'scripts/check-release.mjs', 'scripts/release-gates.test.mjs', 'scripts/check-usb-reference.py', 'scripts/check-usb-reference.mjs')
 verifiedInputPaths.push('scripts/power-audit.mjs', 'scripts/power-audit.test.mjs', 'scripts/check-decoupling.mjs', 'scripts/check-native-decoupling.py', 'docs/decoupling-targets.json')
 verifiedInputPaths.push('scripts/check-brake-sense.py', 'scripts/check-power-eco.py', 'scripts/simulate-power-eco.py', 'engineering/power-thermal-eco.json', 'scripts/check-protection-refinement.mjs', 'engineering/protection-refinement.json')
@@ -29,13 +29,13 @@ verifiedInputPaths.push('engineering/onboard-control-eco.json', 'engineering/int
 verifiedInputPaths.push('scripts/check-mechanical-assets.mjs', 'scripts/export-previews.mjs')
 for (const file of (await readdir('engineering/mechanical/parts')).sort()) verifiedInputPaths.push(`engineering/mechanical/parts/${file}`)
 verifiedInputPaths.push('scripts/native-eco-policy.mjs', 'scripts/native-eco-policy.test.mjs', 'engineering/unused-sbu-eco.json', 'scripts/check-placement.mjs', 'scripts/placement-review.mjs', 'scripts/placement-review.test.mjs', 'docs/placement-review.md', 'scripts/jlc-stock.mjs', 'scripts/jlc-stock.test.mjs')
-verifiedInputPaths.push('scripts/fixtures/placement-reviewed.txt')
+verifiedInputPaths.push('scripts/fixtures/placement-reviewed.txt', 'scripts/fixtures/native-main-1c22abf.zip')
 verifiedInputPaths.push('scripts/pd-image-policy.mjs', 'scripts/check-pd-image.mjs', 'scripts/pd-image-policy.test.mjs', 'docs/pd-tool-project.json', 'firmware/pd/ti-configuration.zip')
 verifiedInputPaths.push('docs/readiness.md', 'docs/brake-integration.md', 'scripts/check-alternatives.mjs')
-verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-review.test.mjs', 'engineering/native-silk-hold.json', 'scripts/check-pcb-references.mjs', 'scripts/sync-pcb-references.py')
+verifiedInputPaths.push('scripts/silkscreen-review.mjs', 'scripts/silkscreen-review.test.mjs', 'engineering/native-silk-hold.json', 'engineering/usb-hole-hold.json', 'scripts/check-pcb-references.mjs', 'scripts/sync-pcb-references.py')
 verifiedInputPaths.push('scripts/check-inventory.mjs', 'docs/stock-report.json', 'docs/alternatives.json', 'firmware/tests/test_brake_preflight.c', 'firmware/README.md')
 verifiedInputPaths.push('docs/completion-handoff.md', 'engineering/mechanical/splice-evidence.json', 'engineering/mechanical/TE-320559-drawing.zip', 'engineering/filled-copper-review.json')
-verifiedInputPaths.push('scripts/check-copper-evidence.mjs', 'scripts/copper-evidence.test.mjs')
+verifiedInputPaths.push('scripts/check-copper-evidence.mjs', 'scripts/generate-copper-screens.mjs', 'scripts/copper-evidence.test.mjs')
 verifiedInputPaths.push('docs/sourcing-resolution.md', 'docs/manufacturing-acceptance.md', 'sourcing/procurement-open-items.csv', 'release/order-settings.json', 'engineering/sourcing-native-metadata.json')
 verifiedInputPaths.push('scripts/prepare-routing-rules.py', 'scripts/routing-rules.test.mjs')
 verifiedInputPaths.push('scripts/splice-model.mjs', 'scripts/splice-model.test.mjs', 'engineering/mechanical/harness-parts.zip')
@@ -45,8 +45,8 @@ verifiedInputPaths.push('scripts/render-local-mechanical.mjs', 'scripts/brake-as
 verifiedInputPaths.push('scripts/copper-geometry-policy.mjs', 'scripts/check-copper-geometry.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/refine-copper-geometry.py')
 verifiedInputPaths.push('engineering/copper-geometry-review.json', 'docs/copper-geometry-review.md', 'docs/copper-contact-review.png', 'scripts/export-filled-power-copper.py', 'scripts/screen-filled-power-copper.py', 'scripts/test-filled-power-copper.py')
 verifiedInputPaths.push('engineering/source-design-rule-eco.json', 'engineering/source-design-rule-delta.zip', 'scripts/apply-source-rule-eco.mjs', 'docs/source-design-rules.md', 'scripts/source-design-policy.mjs', 'scripts/source-design-policy.test.mjs', 'scripts/source_design_rules.py', 'scripts/test-source-design-rules.py', 'scripts/check-source-design-rules.mjs', 'scripts/add-board-planes.py', 'scripts/clean-silkscreen.py')
-verifiedInputPaths.push('routing/power-feed.json', 'scripts/power-feed.mjs', 'scripts/power-feed.test.mjs', 'release/power-feed-review.webp')
-verifiedInputPaths.push('engineering/r3-boundary-eco.json')
+verifiedInputPaths.push('routing/power-feed.json', 'scripts/power-feed.mjs', 'scripts/power-feed.test.mjs')
+verifiedInputPaths.push('engineering/r3-boundary-eco.json', 'scripts/cc-protection-aliases.test.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -63,13 +63,14 @@ const checks = [
   ['pd-image', ['scripts/check-pd-image.mjs']],
   ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
+  ['native-architecture', ['scripts/check-native-architecture.mjs']],
   ['cloud-viewer', ['run', 'check:cloud-viewer']],
   ['source-schematic', ['run', 'check:source-schematic']],
   ['schematic-style', ['run', 'check:schematic-style']],
   ['feature-parity', ['run', 'check:feature-parity']],
   ['normalize-svgs', ['run', 'normalize:svgs']],
   ['script-catalog', ['run', 'check:script-catalog']],
-  ['topology-tests', ['test', 'scripts/copper-geometry-policy.test.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
+  ['topology-tests', ['test', 'scripts/cc-protection-aliases.test.mjs', 'scripts/native-architecture.test.mjs', 'scripts/rp2040-contract.test.mjs', 'scripts/copper-geometry-policy.test.mjs', 'scripts/brake-assembly.test.mjs', 'scripts/encoder-bypass-policy.test.mjs', 'scripts/usb-access.test.mjs', 'scripts/routing-rules.test.mjs', 'scripts/splice-model.test.mjs', 'scripts/copper-evidence.test.mjs', 'scripts/silkscreen-review.test.mjs', 'scripts/native-eco-policy.test.mjs', 'scripts/placement-review.test.mjs', 'scripts/jlc-stock.test.mjs', 'scripts/assembly-glb.test.mjs', 'scripts/harness-geometry.test.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/motor-mounting-geometry.test.mjs', 'scripts/design.test.mjs', 'scripts/via-net-identity.test.mjs', 'scripts/power-copper-geometry.test.mjs', 'scripts/release-gates.test.mjs', 'scripts/power-audit.test.mjs', 'scripts/cloud-viewer-net-names.test.mjs']],
   ['netlist', ['run', 'check:netlist']],
   ['protection-refinement', ['scripts/check-protection-refinement.mjs']],
   ['usb-access', ['scripts/check-usb-access.mjs']],
@@ -97,8 +98,15 @@ const checks = [
 ]
 await mkdir('docs/checks', {recursive: true})
 const results=[]
+const nativeChecks = new Set(['filled-copper-evidence','placement','decoupling','board-standards','source-design-rules','power-feed','local-copper','copper-geometry','kicad-drc','critical-copper','usb-reference','power-routing','routing-fingerprint'])
 for (const [name,args] of checks) {
   const log=`docs/checks/${name}.log`
+  if (nativeChecks.has(name) && results.some(r => r.name === 'native-architecture' && r.exit_code !== 0)) {
+    await writeFile(log, 'BLOCKED: committed native PCB does not match current source architecture. Historical native results were not used to qualify this revision. Regenerate the native route and rerun this check.\n')
+    results.push({name,exit_code:1,status:'fail',reason:'native-architecture mismatch; not run',seconds:0,log})
+    console.log(`${name}: BLOCKED (native architecture mismatch)`)
+    continue
+  }
   const started=Date.now()
   const exit_code=await new Promise((resolve,reject)=>{
     const stream=createWriteStream(log)
@@ -151,6 +159,6 @@ const verificationMarkdown = `# PD1180-EPR verification\n\n` +
   `- Prototype fabrication orderable: **${report.prototype_fabrication_orderable ? 'yes' : 'no'}**\n` +
   `- Production released: **no**\n` +
   `- Verified entry SHA-256: \`${report.entry_sha256}\`\n\n` +
-  `Production remains gated by PD programming/readback, qualified STM32 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
+  `Production remains gated by PD programming/readback, qualified RP2040/DRV8462 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
 await writeFile('verification.md', verificationMarkdown)
 if(results.some(r=>r.exit_code!==0))process.exitCode=1

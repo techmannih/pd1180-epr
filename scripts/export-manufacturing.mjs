@@ -58,6 +58,9 @@ await run(kicad, [
   '--output', join(out, 'kicad-drc.json'),
   finalBoard,
 ])
+// KiCad --save-board rewrites ERC project severities. Restore the matched project
+// before schematic ERC; this preserves electrical checks and the existing embedded-library policy.
+await copyFile(sourceProject, join(project, `${boardBase}.kicad_pro`))
 assertReviewDrc(JSON.parse(await readFile(join(out,'kicad-drc.json'))),reviewSilk)
 await run(kicad, [
   'sch', 'erc',
@@ -98,7 +101,8 @@ for (const item of ercViolations) ercCounts[item.type] = (ercCounts[item.type] |
 const report = {
   generated_at: new Date().toISOString(),
   review_only: true,
-  accepted_cosmetic_findings: (drc.violations || []).length,
+  accepted_cosmetic_findings: (drc.violations || []).filter(v=>v.severity!=='error').length,
+  retained_usb_hole_errors: (drc.violations || []).filter(v=>v.type==='hole_clearance').length,
   fabrication_authorized: false,
   board_sha256: createHash('sha256').update(await readFile(finalBoard)).digest('hex'),
   drc_sha256: createHash('sha256').update(await readFile(join(out,'kicad-drc.json'))).digest('hex'),

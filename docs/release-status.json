@@ -1,20 +1,21 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
-  "revision": "0.4.1-ECO",
-  "status": "parallel-vmotor-feed-reviewed-order-held",
+  "revision": "0.5.0-RP2040-DRAFT",
+  "status": "cad-verified-hardware-unqualified",
   "fabrication_orderable": false,
   "production_released": false,
+  "architecture_review": "engineering/rp2040-redesign.json",
   "requirements": {
     "input": "USB-C PD 3.1 EPR 48 V / 5 A contract",
     "motor_bus_current_limit_nominal_a": 3.6072144288577155,
-    "motor_phase_current_target_rms_a": 3.8,
+    "motor_phase_current_target_rms_a": null,
     "board_size_mm": [
       85.9,
       85.9
     ],
     "assembly_side": "top-only",
     "ordered_motor": "34HS31-6004S1",
-    "motor_current_note": "Conservative 3.8 A RMS ceiling, 3.781 A programmed nominal; locked initial 0.827 A / 10 rpm unloaded profile. No powered motor setting qualified."
+    "motor_current_note": "Locked low-current commissioning only; no qualified run current."
   },
   "prototype_order_gates": {
     "kicad_drc_zero_unconnected_items": true,
@@ -36,7 +37,7 @@
   },
   "system_validation_gates": {
     "ti_pd_full_flash_image_generated_and_programmed": false,
-    "stm32_target_firmware_integrated_and_bench_tested": false,
+    "rp2040_target_firmware_integrated_and_bench_tested": false,
     "brake_resistor_heatsink_and_load_energy_validated": false,
     "motor_magnet_alignment_validated": false,
     "powered_bringup_thermal_and_emc_validation": false,
@@ -50,43 +51,41 @@
     "ti_pd_programming_and_readback_verified": false,
     "stocked_mcu_qfn_assembly_and_independent_rail_reset_qualified": false
   },
-  "architecture_review": "engineering/power-thermal-eco.json",
   "order_hold_reasons": [
-    "2026-10-28 official available-order quantity is zero for U30 (C37593), U13/U14 (C105188), R60 (C326731), BZ1 (C391032), U6 (C1850276), U16 (C2829190), J1/J10 (C3025063). All 85 exact identities/packages were verified. This routing revision makes no substitutions; refresh stock and qualify a sourcing path before ordering.",
-    "Alternative-part stock/package evidence includes unavailable candidates; alternatives never authorize automatic substitution.",
-    "Fabricator acceptance of filled/capped via-in-pad treatment and USB stackup/impedance remains unrecorded.",
-    "Four existing holes are retained. Actual rear thread/depth, secure motor mounting, connector access and strain relief are unverified; the 3D view is alignment-only.",
-    "TI candidate is generated and U1 unused-SBU correction is native-checked. Fixture, programming/readback, cold APP boot and FLT/EPR waveforms remain untested.",
-    "No assembled PCB has powered validation. USB startup/suspend/backfeed, supply/gate thresholds, bridge current, thermal equilibrium, brake faults and EMC require first-article evidence before running/shipping.",
-    "10 ohm / 300 W brake remains a candidate. Final load/RPM/stop duty, heatsink, guarding and resistor/harness temperatures are unqualified. Runtime voltage-continuity monitoring is implemented, but detection latency and energy absorption after a running cable open remain unqualified.",
-    "All three MCU motion/configuration/brake qualification flags remain false. A locked diagnostic image and successful CAD checks do not meet ready-to-run delivery.",
-    "TE 320559 nominal uncrimped CAD is sourced and modeled; actual finished-crimp dimensions, pull/insulation fit and retention remain unverified.",
-    "Stocked U16 UFQFPN48 requires the new PCB and assembler acceptance of its filled/capped ground vias and paste windowing. U37 reset isolation is design-reviewed; independent rails, slow brownout and first-article operation remain unmeasured."
+    "Eight J1/J10 hole-clearance errors remain as explicitly requested; this is an engineering review exception, not fabrication acceptance. Cosmetic silkscreen findings remain visible.",
+    "The 6 A/phase behavioral worst-case bus reaches 54.858 V and lacks the allocated 0.5 V margin below the 55 V system limit. Full-current running is unqualified; firmware motion remains locked.",
+    "DDV top-side heatsink/TIM/mechanical clearance and motor-current operating envelope are not qualified.",
+    "Exact stock is not reserved: latest evidence records shortages for R66, R60, BZ1, J1/J10 and U7 (four available for five boards). Refresh the entire fitted BOM before procurement.",
+    "Rear fastening, single-shaft encoder magnet attachment, WAGO/spring-clamp choice and actual harnesses require closure.",
+    "TI EEPROM and RP2040 flash programming/readback/cold boot, USB current, brake and loaded thermal/EMC tests require assembled hardware. All four firmware qualification locks remain false."
   ],
-  "current_stock_evidence": "docs/stock-report.json",
-  "stock_summary": {
-    "checked_at": "2026-10-28T01:35:08.203Z",
-    "available": 78,
-    "total": 85,
-    "unavailable_codes": [
-      "C37593",
-      "C105188",
-      "C326731",
-      "C391032",
-      "C1850276",
-      "C2829190",
-      "C3025063"
-    ],
-    "not_reserved": true
+  "historical_native_evidence": {
+    "revision": "0.4.1-ECO",
+    "valid_for_this_revision": false,
+    "summary": {
+      "violations": 401,
+      "unconnected_items": 0,
+      "schematic_parity": 0,
+      "schematic_erc": 0,
+      "review_only": true,
+      "baseline": "engineering/native-silk-hold.json",
+      "user_accepted_cosmetic_findings": 401,
+      "blocking_findings": 0
+    }
   },
   "native_drc_summary": {
-    "violations": 401,
+    "errors": 8,
+    "retained_usb_hole_errors": 8,
+    "other_errors": 0,
+    "warnings": 434,
     "unconnected_items": 0,
     "schematic_parity": 0,
     "schematic_erc": 0,
     "review_only": true,
     "baseline": "engineering/native-silk-hold.json",
-    "user_accepted_cosmetic_findings": 401,
-    "blocking_findings": 0
-  }
+    "usb_hole_baseline": "engineering/usb-hole-hold.json",
+    "fabrication_authorized": false
+  },
+  "native_cad_verified": true,
+  "prototype_gate_scope": "CAD and source/firmware implementation only, under the locked low-current commissioning envelope. The driver/protection gate does not qualify 6 A operation; the recorded 6 A energy-margin failure and all physical gates remain open. Exact USB-hole and cosmetic exceptions are engineering-review only."
 }

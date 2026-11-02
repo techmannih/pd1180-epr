@@ -71,7 +71,7 @@ test('R3 pads and courtyard stay inside the curved board edge', () => {
 
 test('source model has no errors or warnings and uses physical component types', () => {
   expect(data.filter(row => row.type.endsWith('_error') || row.type.endsWith('_warning'))).toEqual([])
-  for (const name of ['Q2', 'Q3', 'Q4', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10', 'Q11', 'Q12', 'Q13', 'Q16', 'Q26']) {
+  for (const name of ['Q2', 'Q3', 'Q4', 'Q16', 'Q26']) {
     expect(comp(name).ftype).toBe('simple_mosfet')
   }
   expect(comp('J2').ftype).toBe('simple_connector')
@@ -137,7 +137,7 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   expect(minimumCenterToEdge).toBeGreaterThan(7.9)
 })
 test('source connectivity does not short power, ground, or the switched motor rail',()=>{
-  const names=['USB_DATA_VBUS','GND','PD_VBUS','VMOTOR','V3V3','V3V3_PD','V3V3_MOTOR','LOGIC_OR_PRIORITY','VBUS_LV','PD_1V5','TMC_12V']
+  const names=['USB_DATA_VBUS','GND','PD_VBUS','VMOTOR','V3V3','V3V3_PD','V3V3_MOTOR','LOGIC_OR_PRIORITY','VBUS_LV','PD_1V5','BRAKE_12V']
   const keys=names.map(netKey)
   expect(keys.every(Boolean)).toBe(true)
   expect(new Set(keys).size).toBe(names.length)
@@ -187,14 +187,14 @@ test('separate Type-C receptacles carry EPR power and protected USB 2.0 data',()
   for(const [ref,net] of [['R105','DATA_CC1'],['R106','DATA_CC2']]) { on(ref,1,net);on(ref,2,'GND');expect(comp(ref).resistance).toBe(5100) }
   on('R107',1,'USB_DATA_VBUS');on('R107',2,'USB_VBUS_SENSE')
   on('R108',1,'USB_VBUS_SENSE');on('R108',2,'GND')
-  on('C72',1,'USB_VBUS_SENSE');on('C72',2,'GND');on('U16',19,'USB_VBUS_SENSE')
+  on('C72',1,'USB_VBUS_SENSE');on('C72',2,'GND');on('U16',41,'USB_VBUS_SENSE')
   expect(manifest.parts.find(p=>p.name==='R107').value).toBe('1M')
   expect(manifest.parts.find(p=>p.name==='R108').value).toBe('47k')
   expect(60*47000/(1000000+47000)).toBeLessThan(3.0)
   expect(5*47000/(1000000+47000)).toBeGreaterThan(0.2)
-  on('D15',1,'USB_DP_CONN');on('R71',1,'USB_DP_CONN');on('R71',2,'USB_DP');on('U16',34,'USB_DP')
-  on('D15',3,'USB_DM_CONN');on('R72',1,'USB_DM_CONN');on('R72',2,'USB_DM');on('U16',33,'USB_DM')
-  // TPS26750 USB_P/USB_N are unused because STM32 owns USB data; TI requires unused GPIO4/GPIO5 to GND.
+  on('D15',1,'USB_DP_CONN');on('R71',1,'USB_DP_CONN');on('R71',2,'USB_DP');on('U16',47,'USB_DP')
+  on('D15',3,'USB_DM_CONN');on('R72',1,'USB_DM_CONN');on('R72',2,'USB_DM');on('U16',46,'USB_DM')
+  // TPS26750 USB_P/USB_N are unused because RP2040 owns USB data; TI requires unused GPIO4/GPIO5 to GND.
   on('U2',22,'GND');on('U2',23,'GND')
   const independentSignals=['CC1_PD','CC2_PD','USB_DP','USB_DM'].map(netKey)
   expect(independentSignals.every(Boolean)).toBe(true)
@@ -206,21 +206,15 @@ test('logic boots upstream of the gated motor power path',()=>{
   on('U4',1,'PD_PATH_OK');on('U4',2,'POWER_PERMIT');on('U6',12,'EFUSE_EN')
   expect(manifest.parts.find(p=>p.name==='R14').value).toBe('10k')
 })
-test('hardware driver shutdown retains MCU, power-good, voltage-good and thermal inhibit',()=>{
-  on('U7',28,'DRV_EN_N');on('R37',1,'V3V3');on('R37',2,'DRV_EN_N')
+test('integrated driver retains independent hardware shutdown and both motor bridges',()=>{
+  on('U7',26,'RUN_SAFE');on('R55',1,'RUN_SAFE');on('R55',2,'GND')
+  on('U7',25,'DRV_SLEEP_N');on('R37',1,'DRV_SLEEP_N');on('R37',2,'GND')
   on('U10',1,'MCU_RUN');on('U10',2,'MOTOR_PG');on('U11',2,'VMOTOR_OK')
-  on('Q14',3,'DRV_EN_N');on('Q14',2,'GND');on('U33',1,'RUN_WINDOW_OK');on('U33',2,'TEMP_OK');on('U33',4,'RUN_SAFE')
-  expect(comp('Q15')).toBeUndefined()
-})
-test('both bridges have four external FETs and independent low-side shunts',()=>{
-  for(const [hi,lo,phase] of [[6,7,'A1'],[8,9,'A2'],[10,11,'B1'],[12,13,'B2']]){
-    for(const pin of [5,6,7,8,9])on('Q'+hi,pin,'VMOTOR')
-    for(const pin of [1,2,3])on('Q'+hi,pin,'MOTOR_'+phase)
-    for(const pin of [5,6,7,8,9])on('Q'+lo,pin,'MOTOR_'+phase)
-    for(const pin of [1,2,3])on('Q'+lo,pin,'SENSE_'+phase[0])
-  }
-  on('R109',1,'SENSE_A');on('R109',2,'GND');on('R110',1,'SENSE_B');on('R110',2,'GND')
-  on('U7',8,'SENSE_A');on('U7',9,'SENSE_B')
+  on('U33',1,'RUN_WINDOW_OK');on('U33',2,'TEMP_OK');on('U33',4,'RUN_SAFE')
+  for(const ref of ['Q6','Q7','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','R109','R110']) expect(comp(ref)).toBeUndefined()
+  for(const [pins,net] of [[[4,5,6],'MOTOR_B1'],[[7,8,9],'MOTOR_B2'],[[14,15,16],'MOTOR_A2'],[[17,18,19],'MOTOR_A1']])
+    for(const pin of pins) on('U7',pin,net)
+  for(const pin of [2,11,12,21]) on('U7',pin,'VMOTOR')
 })
 test('ADS1115 receives independent input-current and motor-bus voltage telemetry',()=>{
   on('U6',13,'IIN_MON');on('R26',1,'IIN_MON');on('U30',5,'IIN_MON')
@@ -231,11 +225,11 @@ test('brake dissipates downstream energy without feeding the USB supply',()=>{
   on('J3',1,'VMOTOR');on('J3',2,'BRAKE_RETURN');on('Q16',5,'BRAKE_RETURN');on('Q16',1,'GND')
   on('U13',3,'BRAKE_SENSE');on('U13',4,'VREF_2V5');on('U15',6,'BRAKE_ON')
 })
-test('MCU retains USB attach sense, data and SWD while removed interface pins are disconnected',()=>{
-  for(const [pin,net]of [[19,'USB_VBUS_SENSE'],[33,'USB_DM'],[34,'USB_DP'],[35,'SWDIO'],[36,'SWCLK']])on('U16',pin,net)
-  for(const pin of [2,3,13,14,22,29,32,38,39,40,41])expect(key('U16',pin)).toBeFalsy()
-  on('U16',49,'GND')
-  expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(49)
+test('RP2040 retains USB attach sense, data and SWD with unused GPIO disconnected',()=>{
+  for(const [pin,net]of [[41,'USB_VBUS_SENSE'],[46,'USB_DM'],[47,'USB_DP'],[25,'SWDIO'],[24,'SWCLK']])on('U16',pin,net)
+  for(const pin of [6,7,34,35,36,37])expect(key('U16',pin)).toBeFalsy()
+  on('U16',57,'GND');on('U16',19,'GND')
+  expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(57)
 })
 test('analytical limits have margin below the 5-A USB input contract',()=>{
   const limit=18000/comp('R25').resistance
@@ -247,7 +241,7 @@ test('analytical limits have margin below the 5-A USB input contract',()=>{
   expect(brakeOn).toBeGreaterThan(50.4)
   expect(brakeOn).toBeLessThan(54)
   expect(brakeOff).toBeLessThan(brakeOn)
-  expect(3.8**2*.033).toBeLessThan(3) // dissipation per phase shunt
+  expect(6**2*.005).toBeLessThan(.25) // retained diagnostic shunt, not driver current regulation
 })
 
 test('LM66100 status interlock keeps the dual 3.3-V ORing output continuous',()=>{
@@ -273,15 +267,18 @@ test('onboard control replaces every unsupported external command connection',()
   const eco=JSON.parse(readFileSync('engineering/onboard-control-eco.json'))
   for(const ref of eco.removed_components)expect(comp(ref)).toBeUndefined()
   for(const name of eco.removed_nets)expect(nets.some(n=>n.name===name)).toBe(false)
-  on('SW2',1,'USER_BUTTON_N');on('SW2',2,'GND');on('U16',30,'USER_BUTTON_N')
+  on('SW2',1,'USER_BUTTON_N');on('SW2',2,'GND');on('U16',14,'USER_BUTTON_N')
   on('R133',1,'V3V3_MCU');on('R133',2,'USER_BUTTON_N')
-  for(const p of [25,26,27,31])expect(key('U16',p)).toBeFalsy()
+  for(const p of [6,7,34,35,36,37])expect(key('U16',p)).toBeFalsy()
 })
-test('SPI ramp unused inputs are defined and separate from encoder outputs',()=>{
-  for(const p of [17,18,23,24,25])on('U7',p,'GND')
-  on('U18',6,'ENC_B');on('U18',7,'ENC_A');on('U18',14,'ENC_I')
+test('DRV8462 SPI configuration and AS5600 I2C encoder use independent interfaces',()=>{
+  on('U7',39,'V3V3');on('U7',33,'DRV_CS_N')
+  on('U7',29,'SPI_SCK');on('U7',30,'SPI_MOSI');on('U7',31,'SPI_MISO')
+  for(const pin of [32,35,36,37,38])expect(key('U7',pin)).toBeFalsy()
+  on('U18',6,'ENC_SDA');on('U18',7,'ENC_SCL');on('U18',3,'ENC_OUT');on('U18',8,'GND')
+  on('U16',17,'ENC_SDA');on('U16',18,'ENC_SCL')
+  expect(key('U18',5)).toBeFalsy()
 })
-
 
 test('DATA powers only logic through a current limiter, regulator and reverse-blocking OR',()=>{
   on('U28',1,'USB_DATA_VBUS');on('U28',3,'USB_DATA_VBUS');on('U28',6,'USB_LOGIC_5V')
@@ -293,7 +290,7 @@ test('DATA powers only logic through a current limiter, regulator and reverse-bl
   expect(new Set(['PD_VBUS','USB_DATA_VBUS','USB_LOGIC_5V','V3V3_USB','V3V3','V3V3_MCU','VMOTOR'].map(netKey)).size).toBe(7)
 })
 test('both winding shunts are in series and feed bidirectional phase diagnostics',()=>{
-  for(const [phase,shunt,amp,filter,adc,connectorPin] of [['A','R115','U31','R117',11,1],['B','R116','U32','R118',12,3]]){
+  for(const [phase,shunt,amp,filter,adc,connectorPin] of [['A','R115','U31','R117',38,1],['B','R116','U32','R118',39,3]]){
     on(shunt,1,`MOTOR_${phase}1`);on(shunt,2,`MOTOR_${phase}1_OUT`)
     on('J2',connectorPin,`MOTOR_${phase}1_OUT`)
     on(amp,8,`MOTOR_${phase}1`);on(amp,1,`MOTOR_${phase}1_OUT`)
@@ -320,9 +317,9 @@ test('TMP102 hardware alert inhibits the run chain independently of MCU_RUN',()=
 test('USB-only power is confined to the MCU and its local controls/decoupling',()=>{
   const mcuRail=netKey('V3V3_MCU')
   const attached=new Set(ports.filter(p=>p.subcircuit_connectivity_map_key===mcuRail).map(p=>components.find(c=>c.source_component_id===p.source_component_id).name))
-  expect([...attached].sort()).toEqual(['U16','U26','U27','C44','C45','C46','C47','R70','R133','TP_SWD_3V3'].sort())
-  for(const [ref,pin] of [['U31',6],['U32',6],['U18',11],['U17',8]])on(ref,pin,'V3V3')
-  on('U16',20,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
+  expect([...attached].sort()).toEqual(['U16','U17','U26','U27','C44','C45','C46','C47','C51','C100','C101','C102','C106','C107','C108','R70','R73','R133','TP_SWD_3V3'].sort())
+  for(const [ref,pin] of [['U31',6],['U32',6],['U18',1],['U18',2]])on(ref,pin,'V3V3')
+  on('U16',40,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
   on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')
   expect(key('U2',10)).toBeFalsy()
 })
@@ -375,42 +372,30 @@ test('EEPROM programming isolates both controller wires and never merges the pow
 })
 
 
-test('U16 matches ST UFQFPN48 GP lands with a grounded exposed pad', () => {
+test('RP2040 QFN has 56 peripheral lands and a grounded exposed pad with reduced paste', () => {
   const source = comp('U16')
-  expect(source.manufacturer_part_number).toBe('STM32G0B1CEU6')
-  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2829190'])
+  expect(source.manufacturer_part_number).toBe('RP2040')
+  expect(source.supplier_part_numbers.jlcpcb).toEqual(['C2040'])
   const pcb = pcbComponents.find(p => p.source_component_id === source.source_component_id)
   const pads = data.filter(p => p.type === 'pcb_smtpad' && p.pcb_component_id === pcb.pcb_component_id)
-  expect(pads.length).toBe(49)
-  for (let n = 1; n <= 48; n++) {
-    const sp = port('U16', n)
-    const pp = data.find(p => p.type === 'pcb_port' && p.source_port_id === sp.source_port_id)
-    const pad = pads.find(p => p.pcb_port_id === pp.pcb_port_id)
-    const i = (n - 1) % 12
-    const side = Math.floor((n - 1) / 12)
-    const [x, y] = [[-2.75 + i * 0.5, -3.375], [3.375, -2.75 + i * 0.5],
-      [2.75 - i * 0.5, 3.375], [-3.375, 2.75 - i * 0.5]][side]
-    expect(pad.x - pcb.center.x).toBeCloseTo(x, 6)
-    expect(pad.y - pcb.center.y).toBeCloseTo(y, 6)
-    expect(pad.shape).toBe('rect')
-    expect(Math.max(pad.width, pad.height)).toBeCloseTo(0.55, 6)
-    expect(Math.min(pad.width, pad.height)).toBeCloseTo(0.30, 6)
+  expect(pads.length).toBe(57)
+  for(let n=1;n<=56;n++){
+    const sourcePort=port('U16',n)
+    const pp=data.find(p=>p.type==='pcb_port'&&p.source_port_id===sourcePort.source_port_id)
+    const pad=pads.find(p=>p.pcb_port_id===pp.pcb_port_id)
+    const i=(n-1)%14, side=Math.floor((n-1)/14)
+    const [x,y]=[[-3.425,2.6-i*.4],[-2.6+i*.4,-3.425],[3.425,-2.6+i*.4],[2.6-i*.4,3.425]][side]
+    expect(pad.x-pcb.center.x).toBeCloseTo(x,3);expect(pad.y-pcb.center.y).toBeCloseTo(y,3)
+    expect(Math.min(pad.width,pad.height)).toBeCloseTo(.2,3)
+    expect(Math.max(pad.width,pad.height)).toBeCloseTo(.85,3)
   }
-  on('U16',49,'GND')
-  const ep = pads.find(p => p.port_hints?.includes('pin49')) || pads.find(p => p.width === 5.6)
-  expect(ep.width).toBe(5.6); expect(ep.height).toBe(5.6)
-  expect(ep.x).toBe(pcb.center.x); expect(ep.y).toBe(pcb.center.y)
-  const paste = data.filter(p => p.type === 'pcb_solder_paste' && p.pcb_smtpad_id === ep.pcb_smtpad_id)
-  expect(paste.length).toBe(1); expect(paste[0].width).toBe(4.6); expect(paste[0].height).toBe(4.6)
-  const target=JSON.parse(readFileSync('firmware/boards/pd1180.json'))
-  expect(target.build.mcu).toBe('stm32g0b1ceu6')
-  expect(target.build.extra_flags).toContain('ARDUINO_GENERIC_G0B1CEUX')
-  expect(target.upload.maximum_size).toBe(524288)
-  expect(target.upload.maximum_ram_size).toBe(147456)
-  const model = data.find(p => p.type === 'cad_component' && p.pcb_component_id === pcb.pcb_component_id)
-  expect(model.model_obj_url).toContain('uuid=16912e571dfb42a9a47b4df7b841ed45&pn=C2829190')
-  expect(model.rotation).toEqual({ x: 0, y: 0, z: 90 })
-  expect(data.filter(p => p.type === 'pcb_silkscreen_text' && p.pcb_component_id === pcb.pcb_component_id).map(p => p.text)).toEqual(['U16'])
+  on('U16',57,'GND')
+  const groundPort=port('U16',57)
+  const pp=data.find(p=>p.type==='pcb_port'&&p.source_port_id===groundPort.source_port_id)
+  const ep=pads.find(p=>p.pcb_port_id===pp.pcb_port_id)
+  expect(ep.width).toBeCloseTo(3.1,3);expect(ep.height).toBeCloseTo(3.1,3)
+  const paste=data.filter(p=>p.type==='pcb_solder_paste'&&p.pcb_smtpad_id===ep.pcb_smtpad_id)
+  expect(paste.length).toBe(1);expect(paste[0].width).toBeCloseTo(2.7,3);expect(paste[0].height).toBeCloseTo(2.7,3)
 })
 
 test('U35 keeps its TSSOP CAD, all 16 pin positions and C95 clearance', () => {

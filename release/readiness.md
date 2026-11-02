@@ -1,46 +1,14 @@
-# Board readiness — stocked U16/U35 revision
+# Redesign readiness — not orderable
 
-**Order hold remains. No assembled board has passed programming or powered qualification. Motion locks remain enabled.** Merging the design does not complete the checklist below. Check the timestamped [stock report](stock-report.json) and [verification result](verification.json) for the current revision.
+RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the current redesign evidence](../engineering/rp2040-redesign.json) and [reviewer checklist](reviewer-checklist.md). Earlier STM32/TMC5160 release evidence does not establish this revision's readiness.
 
-The [2026-10-28 parallel VMOTOR feed](copper-geometry-review.md) improves the modeled supply paths while retaining all original copper, the active source rules, zero native electrical errors and 401 cosmetic warnings. DC screening is not powered qualification. Fresh official available-order quantities are zero for U30 (C37593), U13/U14 (C105188), R60 (C326731), BZ1 (C391032), U6 (C1850276), U16 (C2829190), J1/J10 (C3025063). All 85 fitted part identities/packages were verified; no substitutions are included.
+1. Native routing is complete: 0 unconnected/parity/ERC findings, 8 retained J1/J10 hole errors and 434 cosmetic warnings. The exact USB-hole review exception is not fabrication acceptance. Fresh power-copper, bypass, Kelvin and USB-reference checks and matching artifacts are available; physical thermal/USB qualification remains open.
+2. Resolve exact live sourcing and top-cooled DDV heatsink/TIM. A 6 A motor rating is not a qualified current setting.
+3. Finalize secured rear mounting and connector/harness access. U18 remains optional DNP until the rear magnet attachment and airgap are qualified. Spring-clamp J2/J3 and separate raw PD_VBUS ADC remain open requirements.
+4. Program U3's reviewed TI EEPROM image using its isolated fixture, read the full 64 KiB back, compare the programmed image and confirm a cold APP boot/48 V EPR contract. See [PD programming](pd-programming.md).
+5. Program the new RP2040 firmware, read the complete 4 MiB external flash from 0x10000000, compare it using `verify-programming.mjs --kind rp2040`, and retain programmer/board-serial evidence. See [firmware instructions](../firmware/README.md). Do not use STM32 images or addresses.
+6. With motion locks still false, measure reset/enable states, rails, USB-only and dual-supply behavior, USB attach/suspend/detach current and all protection/fault responses.
+7. Qualify the actual 48 V / 5 A EPR adapter/cable, external J3 resistor/heatsink/guard, crimps, strain relief and load/stopping envelope. **10 Ω / 300 W remains provisional.**
+8. Only after recorded qualifications, authorize the low-current unloaded motor test, then braking, repeated-fault and thermal tests. The supplied firmware cannot enable motion; its four qualification flags stay false.
 
-## Design and procurement
-
-| Item | Disposition | Evidence needed to close |
-|---|---|---|
-| U1 unused SBU | Corrected in source and native PCB | First-article cold-start FLT/EPR waveforms |
-| R64 | Selected AR03BTCX4303 / C2984356; retains 430 kΩ, 0.1%, 25 ppm/°C, 0603 | Fresh inventory for the order; measured OVP threshold |
-| U17 | Selected W25Q32JVSSIM / C6000508; same SOIC-8-208mil | Fresh inventory including assembly attrition; single-SPI read/write test before using storage |
-| J1/J10 | Selected USB4105-GF-A-060 / C3025063; shared land pattern, shorter 0.60 mm shell stakes | Assembly process and connector retention acceptance on the 1.6 mm PCB |
-| U16, U35 | Selected STM32G0B1CEU6 / C2829190 (UFQFPN48) and PCA9538PWR / C201530 with U37 reset buffer | Refresh exact JLC stock including spares; use this complete PCB/BOM/firmware revision |
-| Placement | Three exact advisories reviewed against actual copper | Renew review if advice or layout changes |
-| Silkscreen/text | **The retained baseline now contains 401 cosmetic findings. Native labels are unchanged by the copper revision.** | Raw DRC still reports them; no zero-DRC claim or implicit fabricator acceptance |
-| Fabrication and mounting | ENIG and all 62 filled/capped via-in-pad locations specified; physical approvals pending | Complete [manufacturing/mechanical acceptance](manufacturing-acceptance.md) |
-
-The [sourcing review](sourcing-resolution.md) records why each replacement is acceptable or rejected. Stock is not reserved. These replacements address the former two-part shortage; current exact stock and assembler allocation still control procurement. Physical readiness remains separate.
-
-## Programming, readback and cold boot — all physical results pending
-
-- [ ] Record PCB serial/revision, release hashes, programmer/fixture identity and operator/date. Pass unpowered inspection; keep the motor disconnected.
-- [ ] **TI EEPROM U3:** validate the archived Full Flash image, isolate the I2Cc bus, program at address 0 with fixed 5 V at J1 and a 3.3 V open-drain fixture. Save the programmer log and **all 65,536 bytes** of device readback. Run the PD readback comparator and archive its result.
-- [ ] **STM32 U16:** program the commissioning diagnostics image over SWD at **0x08000000**, with target-voltage sensing and no programmer supply backfeed. Save the log, option-byte readout and **all 524,288 bytes** of main-flash readback; run the STM32 comparator. Keep readout protection disabled during qualification so verification is possible.
-- [ ] **Cold boot:** remove J1, J10 and programmer power, verify rail discharge, release EEPROM isolation and detach the active programming fixture. Power from fixed 5 V first. Prove TPS26750 `APP ` mode and customer marker `PD118041`; verify the MCU boots its intended diagnostics image and the motor remains inhibited. Repeat power sequencing/reset tests, then the EPR tests. Record scope captures and boot logs; a software reset alone is not a cold boot.
-
-Follow [the detailed programming procedure](pd-programming.md). The comparators require full-capacity dumps, compare every image byte and hash the entire dump. They do not claim that unprogrammed tail bytes or option bytes match an invented pattern, or that a file came from real hardware.
-
-## External equipment and powered qualification
-
-- [ ] Record the actual **48 V / 5 A EPR adapter and cable** model/serial, cable e-marker identity and negotiated contract. Test attach/detach, load steps, source shutdown and backfeed. A reference product or the motor's Amazon link is not evidence for the installed supply.
-- [ ] Retain **J3: pin 1 VMOTOR, pin 2 switched BRAKE_RETURN**. Qualify the external resistor, heatsink, wiring and guarding against the defined speed, inertia, stop time and repeated-stop duty. **10 Ω / 300 W remains provisional**; its nominal power rating depends on cooling. No operation with J3 open is supported by the current run policy.
-- [ ] Secure the actual motor/PCB and qualify the J2/J3 harnesses, crimps and strain relief before motion.
-- [ ] On the assembled board, complete **supply/gate/fault checks → low-current unloaded motor test → braking and thermal tests**, in that order. Archive currents, rail/gate peaks, temperatures, ambient, load and stop profiles against each board serial.
-
-The proposed first-motion envelope is about **0.827 A RMS, 10 rpm, 10 rpm/s, unloaded, 20–25°C**, after stationary checks. It is a test proposal, not a qualified rating. The [power-validation matrix](power-validation.md) defines acceptance/stop criteria. Keep all three firmware qualification flags false until the corresponding measured records support an explicitly reviewed test image. Do not unlock motion merely to make a test pass.
-
-Prototype fabrication, first powered motion, and ready-to-run shipment are separate decisions. The latter requires both programming records, cold boot, qualified external equipment and per-board powered acceptance; no provider or order has been booked.
-
-Runtime brake-voltage monitoring remains implemented with motion locked. It is not a backup energy absorber; full-current open-brake cases still exceed 55 V. See [completion and acceptance](completion-handoff.md).
-
-## USB edge access revision (2026-10-14)
-
-J1/J10 now sit 2 mm farther outward; the nominal mating faces extend 0.2856 mm beyond the board edge. Local native routing, matching manufacturing placements and the routed viewer are regenerated together. See [USB access evidence](usb-access.md). This resolves the recessed-port layout review item; actual cable/enclosure/mount fit and the existing programming, power, brake and thermal qualification items still require hardware evidence.
+None of these physical tests has been completed in this software task. A source build or successful image comparison is not permission to ship a running controller.

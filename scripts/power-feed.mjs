@@ -10,19 +10,20 @@ export const canonicalCopper = board => digest(board.map(stripFill).map(JSON.str
 
 export function powerFeedErrors(board, policy) {
   const errors = []
-  const expected = new Map(policy.segments.map(s => [uuid(s), s]))
+  const expected = new Map((policy.architecture_baseline?.segments || policy.segments).map(s => [uuid(s), s]))
   const added = board.filter(x => Array.isArray(x) && expected.has(uuid(x)))
-  if (added.length !== 7 || expected.size !== 7) errors.push('Missing or duplicated parallel VMOTOR feed segment')
+  if (added.length !== expected.size || expected.size !== (policy.architecture_baseline?.segment_count || 7)) errors.push('Missing or duplicated parallel VMOTOR feed segment')
   for (const segment of added) {
     if (digest(segment) !== digest(expected.get(uuid(segment)))) errors.push('VMOTOR feed geometry, width, layer or net changed')
-    if (segment[0] !== 'segment' || Number(field(segment, 'width')?.[1]) !== 1.5 ||
-        field(segment, 'layer')?.[1] !== '"B.Cu"' || field(segment, 'net')?.[1] !== '"VMOTOR"')
-      errors.push('Feed must be 1.5 mm native B.Cu VMOTOR tracks')
+    if (segment[0] !== 'segment' || field(segment, 'net')?.[1] !== '"VMOTOR"' ||
+        (policy.architecture_baseline ? Number(field(segment, 'width')?.[1]) < .5 :
+          Number(field(segment, 'width')?.[1]) !== 1.5 || field(segment, 'layer')?.[1] !== '"B.Cu"'))
+      errors.push('Feed differs from the architecture-specific width/layer policy')
   }
   // Restore exact, separately reviewed later ECOs before comparing the original
-  // baseline. Unknown edits still fail; the seven feed segments never change.
+  // baseline. The redesigned board uses its own exact geometry baseline.
   let original = board.filter(x => !Array.isArray(x) || !expected.has(uuid(x)))
-  for (const reviewPath of (policy.subsequent_geometry_reviews || []).toReversed()) {
+  for (const reviewPath of (policy.architecture_baseline ? [] : (policy.subsequent_geometry_reviews || [])).toReversed()) {
     try {
       const { revision } = JSON.parse(readFileSync(reviewPath))
       const current = new Map(original.filter(Array.isArray).map(x => [uuid(x), x]))
@@ -30,13 +31,16 @@ export function powerFeedErrors(board, policy) {
         original = restorePlacementRevisions(original, [revision])
     } catch { errors.push('Later placement differs from its exact reviewed geometry') }
   }
-  if (canonicalCopper(original) !== policy.baseline_canonical_unfilled_sha256)
+  if (policy.architecture_baseline && policy.architecture_baseline.architecture !== 'RP2040_DRV8462DDV')
+    errors.push('Unknown power-feed architecture baseline')
+  if (canonicalCopper(original) !== (policy.architecture_baseline?.canonical_unfilled_sha256 || policy.baseline_canonical_unfilled_sha256))
     errors.push('Unrelated native board geometry changed')
   return errors
 }
 
 export function applyPowerFeed(bytes, policy) {
   if (digest(bytes) !== policy.baseline_board_sha256) throw new Error('Wrong baseline PCB; refusing to add the power feed')
+  if (policy.architecture_baseline) throw new Error('Historical feed replay does not apply to the RP2040 architecture')
   const board = parseNative(bytes.toString())
   board.push(...policy.segments)
   const errors = powerFeedErrors(board, policy)
@@ -62,6 +66,6 @@ if (import.meta.main) {
   } else {
     const errors = powerFeedErrors(parseNative(await readFile(nativeBoard, 'utf8')), policy)
     if (errors.length) throw new Error(errors.join('\n'))
-    console.log('Parallel VMOTOR feed: seven 1.5 mm B.Cu tracks; original baseline preserved after restoring exact reviewed later placements.')
+    console.log('VMOTOR feed tracks and all other native geometry match the independently checked architecture baseline; filled-copper resistance and current qualification remain separate.')
   }
 }

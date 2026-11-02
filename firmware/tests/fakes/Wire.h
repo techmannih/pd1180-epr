@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <array>
 #include <vector>
+constexpr unsigned i2c0=0,i2c1=1;
 class TwoWire {
 public:
   bool started=false, indicatorPresent=false;
@@ -13,7 +14,8 @@ public:
   unsigned transactions=0, failIndicatorWrite=0, indicatorWrites=0;
   std::array<uint8_t,4> indicatorRegisters = {0, 0xFF, 0, 0xFF};
   std::vector<std::array<uint8_t,2>> indicatorLog;
-  TwoWire(unsigned,unsigned) {}
+  TwoWire(unsigned,unsigned,unsigned) {}
+  void setTimeout(unsigned) {}
   void begin() { started=true; }
   void end() { started=false; }
   void setClock(unsigned) {}

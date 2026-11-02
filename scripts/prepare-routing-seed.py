@@ -64,8 +64,17 @@ def main():
     args = parser.parse_args()
     app = wx.App(False)
     board = pcbnew.LoadBoard(str(args.source.resolve()))
-    if any(isinstance(track, pcbnew.PCB_VIA) for track in board.GetTracks()):
-        raise SystemExit("Use a fresh top-side source export; this command is not additive to an existing route")
+    # Source now contains the explicitly reviewed bottom-encoder bypass via.
+    # Accept only vias present in that fresh source; never add a seed to a route.
+    source = json.loads(Path("dist/index/circuit.json").read_text())
+    expected_vias = sorted((round(v["x"]+100, 5), round(100-v["y"], 5),
+                            round(v["outer_diameter"], 5), round(v["hole_diameter"], 5))
+                           for v in source if v["type"] == "pcb_via")
+    actual_vias = sorted((round(coordinates(v.GetPosition())[0], 5), round(coordinates(v.GetPosition())[1], 5),
+                         round(pcbnew.ToMM(v.GetWidth(pcbnew.F_Cu)), 5), round(pcbnew.ToMM(v.GetDrillValue()), 5))
+                        for v in board.GetTracks() if isinstance(v, pcbnew.PCB_VIA))
+    if actual_vias != expected_vias:
+        raise SystemExit("Use a fresh source export; native vias differ from the explicit source vias")
     footprints = {fp.GetReference(): fp for fp in board.GetFootprints()}
     policy = json.loads(Path("board-standards.json").read_text())["fabrication"]["thermal_via_in_pad"]
     thermal = []
@@ -87,13 +96,15 @@ def main():
     # the separately constrained input/supply bypasses in the source design.
     capacitors = [pair[2] for pair in json.loads(Path("docs/decoupling-targets.json").read_text())] + ["C13", "C64"]
     returns = []
+    non_ground_returns = []
     for reference in capacitors:
         footprint = footprints[reference]
         if footprint.GetLayer() != pcbnew.F_Cu:
             raise SystemExit(f"{reference}: expected top-side capacitor")
         pad = next(p for p in footprint.Pads() if p.GetNumber() == "2")
         if pad.GetNetname() != "GND":
-            raise SystemExit(f"{reference}: pin 2 is not the expected ground return")
+            non_ground_returns.append({"reference": reference, "net": pad.GetNetname(), "status": "local charge-pump/supply return requires separate routing review"})
+            continue
         x, y = coordinates(pad.GetPosition())
         cx, cy = coordinates(footprint.GetPosition())
         angle = math.atan2(y - cy, x - cx)
@@ -115,7 +126,7 @@ def main():
         add_track(board, pad.GetPosition(), candidate, pad.GetNet(), pcbnew.F_Cu, 0.2)
         returns.append({"reference": reference, "via": coordinates(candidate), "length_mm": math.dist((x, y), coordinates(candidate))})
 
-    # These checked escapes reserve the narrow corridors around the TMC5160
+    # These retained escapes reserve the reviewed PD/logic corridors
     # before general routing can block them. Positions remain pad-relative.
     routing = json.loads(Path("routing/pin-escapes.json").read_text())
     pads = {(fp.GetReference(), p.GetNumber()): p for fp in footprints.values() for p in fp.Pads()}
@@ -148,7 +159,7 @@ def main():
     pcbnew.SaveBoard(str(args.output.resolve()), board)
     report = {"thermal_vias": thermal, "capacitor_ground_returns": returns,
               "pin_escapes": routing["pin_escapes"], "mosfet_pad_links": routing["mosfet_pad_links"],
-              "native_drc_still_required": True}
+              "non_ground_returns": non_ground_returns, "native_drc_still_required": True}
     args.output.with_suffix(".seed.json").write_text(json.dumps(report, indent=2) + "\n")
     print(f"Added {len(thermal)} thermal vias and {len(returns)} local capacitor ground returns")
 

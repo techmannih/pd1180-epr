@@ -1,5 +1,5 @@
 {
-  "revision": "0.4.0-ECO",
+  "revision": "0.5.0-RP2040-DRAFT",
   "critical_nets": [
     "PD_VBUS",
     "EFUSE_IN",
@@ -8,8 +8,6 @@
     "MOTOR_A2",
     "MOTOR_B1",
     "MOTOR_B2",
-    "SENSE_A",
-    "SENSE_B",
     "BRAKE_RETURN",
     "MOTOR_A1_OUT",
     "MOTOR_B1_OUT"
@@ -29,7 +27,7 @@
     "violations": 0,
     "unconnected": 0
   },
-  "source": "docs/power-routing-check.json",
+  "source": "docs/rp2040-redesign.md (new route unqualified)",
   "kelvin_policy": "routing/critical-paths.json",
   "kelvin_terminal_only_connections_required": true
 }

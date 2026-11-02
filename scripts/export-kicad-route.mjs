@@ -53,10 +53,10 @@ for (const footprint of nativeBoard.footprints) {
   if (reference === 'U16') {
     const component = circuitJson.find(row => row.type === 'source_component' && row.name === reference)
     const placed = circuitJson.find(row => row.type === 'pcb_component' && row.source_component_id === component.source_component_id)
-    const copper = circuitJson.find(row => row.type === 'pcb_smtpad' && row.pcb_component_id === placed.pcb_component_id && row.port_hints?.includes('pin49'))
+    const copper = circuitJson.find(row => row.type === 'pcb_smtpad' && row.pcb_component_id === placed.pcb_component_id && row.port_hints?.includes('pin57'))
     const apertures = circuitJson.filter(row => row.type === 'pcb_solder_paste' && row.pcb_smtpad_id === copper?.pcb_smtpad_id)
     const aperture = apertures[0]
-    const pad = footprint.fpPads.find(p => p.number === '49')
+    const pad = footprint.fpPads.find(p => p.number === '57')
     if (!pad || apertures.length !== 1 || aperture.shape !== 'rect' || copper.shape !== 'rect' || aperture.x !== copper.x || aperture.y !== copper.y)
       throw new Error('U16 EP requires one centered rectangular source paste aperture')
     const margin = (aperture.width - copper.width) / 2
@@ -102,7 +102,8 @@ projectData.board.design_settings.defaults ??= {}
 projectData.board.design_settings.defaults.zones ??= {}
 Object.assign(projectData.board.design_settings.rules, {
   min_copper_edge_clearance: fabrication.minimum_copper_to_edge_mm,
-  min_hole_clearance: 0.13,
+  // Keep the USB NPTH/pad issue visible; no fabrication exception is approved.
+  min_hole_clearance: 0.20,
   min_through_hole_diameter: 0.3,
   min_track_width: fabrication.minimum_trace_width_mm,
   min_connection: fabrication.minimum_connection_width_mm,

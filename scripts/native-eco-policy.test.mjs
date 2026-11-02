@@ -1,7 +1,12 @@
 import { test, expect } from 'bun:test'
 import { readFileSync } from 'node:fs'
-import { parseNative, verifyNativeEco, field, placementRevisions } from './native-eco-policy.mjs'
-const original = parseNative(readFileSync('dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb','utf8'))
+import JSZip from 'jszip'
+import { parseNative, verifyNativeEco, field, placementRevisions, digest } from './native-eco-policy.mjs'
+// Historical ECO replay must use its actual reviewed STM32/TMC fixture.
+const archive = await JSZip.loadAsync(readFileSync(new URL('./fixtures/native-main-1c22abf.zip', import.meta.url)), {checkCRC32:true})
+const legacy = await archive.file('main.kicad_pcb').async('nodebuffer')
+if (digest(legacy) !== 'f219d77c182e901b39e0bb235a6bc4b01e54beb910b29f9aabf0aa6824c4d698') throw new Error('Historical native fixture changed')
+const original = parseNative(legacy.toString())
 const policy = JSON.parse(readFileSync('engineering/unused-sbu-eco.json'))
 test('approved unused-SBU correction preserves unrelated PCB', () => expect(verifyNativeEco(original,policy)).toBe(true))
 test('rejects restored SBU signal, changed capacitor route and moved mounting hole', () => {
@@ -90,4 +95,18 @@ test('source-rule correction rejects narrowed copper, ground-clearance rollback 
   b=>{const z=b.find(x=>x[0]==='zone'&&field(x,'name')?.[1]==='"GND_PLANE"');field(field(z,'connect_pads'),'clearance')[1]='0.2'},
   b=>{const id=field(revision.added.find(x=>field(x,'net')?.[1]==='"USB_DM"'),'uuid')[1];b.splice(b.findIndex(x=>Array.isArray(x)&&field(x,'uuid')?.[1]===id),1)},
  ]){const b=structuredClone(original);mutate(b);expect(()=>verifyNativeEco(b,policy)).toThrow()}
+})
+
+// Current protection is checked independently of the historical replay fixture.
+import { verifyRp2040Protection } from './check-protection-refinement.mjs'
+const current = parseNative(readFileSync('dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb','utf8'))
+const routePolicy = JSON.parse(readFileSync('routing/power-feed.json'))
+test('RP2040 redesign preserves SBU protection and rejects changed safety devices or copper', () => {
+  expect(verifyRp2040Protection(current, routePolicy)).toBe(true)
+  for (const mutate of [
+    b => { const f=b.find(x=>x[0]==='footprint'&&x.some(p=>p[0]==='property'&&p[2]==='"U1"')); field(f.find(p=>p[0]==='pad'&&p[1]==='"14"'),'net')[1]='"VMOTOR"' },
+    b => { const i=b.findIndex(x=>x[0]==='footprint'&&x.some(p=>p[0]==='property'&&p[2]==='"Q16"')); expect(i).toBeGreaterThanOrEqual(0); b.splice(i,1) },
+    b => { const s=b.find(x=>x[0]==='segment'); field(s,'width')[1]='0.09' },
+    b => { const f=b.find(x=>x[0]==='footprint'&&x.some(p=>p[0]==='pad'&&p[2]==='np_thru_hole')); field(f,'at')[1]='101' },
+  ]) { const b=structuredClone(current); mutate(b); expect(()=>verifyRp2040Protection(b,routePolicy)).toThrow() }
 })

@@ -30,8 +30,6 @@ POWER_NETS = {
     "MOTOR_A2",
     "MOTOR_B1",
     "MOTOR_B2",
-    "SENSE_A",
-    "SENSE_B",
     "BRAKE_RETURN",
 }
 

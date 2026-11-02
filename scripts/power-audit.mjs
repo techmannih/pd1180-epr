@@ -129,9 +129,8 @@ export function operatingErrors({ vsaOnMotorBus, brakeOn, motorCutoff, coordinat
 
 export async function audit() {
   const paths = ['index.circuit.tsx', 'dist/index/circuit.json', 'docs/design-manifest.json',
-    'hardware-contract.json', 'docs/motor-data.json', 'firmware/include/tmc5160_config.h',
-    'firmware/src/tmc5160.c', 'firmware/src/motor_service.c', 'firmware/target/main.cpp',
-    'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb', 'scripts/power-audit.mjs', 'firmware/src/control.c']
+    'hardware-contract.json', 'docs/motor-data.json', 'firmware/include/drv8462.h',
+    'firmware/src/drv8462.c', 'firmware/include/step_motion.h', 'firmware/target/main.cpp', 'scripts/power-audit.mjs', 'firmware/src/control.c']
   const bytes = Object.fromEntries(await Promise.all(paths.map(async p => [p, await readFile(p)])))
   const circuit = JSON.parse(bytes['dist/index/circuit.json'])
   const parts = Object.fromEntries(circuit.filter(p => p.type === 'source_component').map(p => [p.name, p]))
@@ -151,7 +150,7 @@ export async function audit() {
     return value
   }
   const sum = names => names.reduce((v, name) => v + resistance(name), 0)
-  const config = bytes['firmware/include/tmc5160_config.h'].toString()
+  const config = bytes['firmware/include/drv8462.h'].toString()+bytes['firmware/include/step_motion.h'].toString()
   const macro = name => {
     const value = config.match(new RegExp(`#define ${name} (\\d+)u`))
     if (!value) throw new Error(`Missing firmware macro ${name}`)
@@ -195,21 +194,23 @@ export async function audit() {
   const ilim = inputCurrentScreen(resistance('R25'),
     ilimPart.initial_tolerance_fraction + ilimPart.tcr_ppm_per_c * 1e-6 * ilimPart.temperature_excursion_c,
     inputProtection.upstream_input_current_allocation_a, contract.rated_targets.pd_contract_a)
-  const target = contract.rated_targets.motor_phase_rms_a
-  const rs = resistance('R109'), telemetryShunt = resistance('R115')
-  if (rs !== resistance('R110') || telemetryShunt !== resistance('R116')) throw new Error('Phase shunts differ; audit each phase separately')
-  const programmed = rmsCurrent(macro('PD1180_GLOBALSCALER'), macro('PD1180_IRUN'), rs)
+  // Deliberate 6 A RMS/phase thermal/energy case, not a qualified current or
+  // a claim that the motor nameplate uses the same RMS convention.
+  const target = motor.phase_current_a
+  const telemetryShunt = resistance('R115')
+  if (telemetryShunt !== resistance('R116')) throw new Error('Phase shunts differ; audit each phase separately')
+  const benchRequestedMa = macro('DRV8462_BENCH_RMS_MA')
+  const torqueCode = Math.floor(benchRequestedMa*362/10000)-1
+  const programmed = 10*(torqueCode+1)/256/Math.SQRT2
   const capacitance = name => {
     const value = part(name).capacitance
     if (!(value > 0)) throw new Error(`Missing capacitance for ${name}`)
     return value
   }
   const bulk = capacitance('C22') + capacitance('C23')
-  const benchPermille = macro('PD1180_BENCH_CURRENT_MAX_PERMILLE')
-  const benchIrun = Math.floor(32*benchPermille/1000)-1
-  const benchRms = rmsCurrent(macro('PD1180_GLOBALSCALER'), benchIrun, rs)
-  const benchRpm = macro('PD1180_BENCH_VMAX')*12e6/2**24*60/(200*256)
-  const benchAcceleration = macro('PD1180_BENCH_AMAX')*12e6**2/2**41*60/(200*256)
+  const benchRms = programmed
+  const benchRpm = macro('STEP_MOTION_MAX_MILLIHZ')/1000*60/(200*16)
+  const benchAcceleration = benchRpm // one-second ramp in step_motion.c
   const benchRotorEnergy = rotorKineticEnergy(motor.rotor_inertia_kg_m2, benchRpm)
   const benchWindingEnergy = motor.phase_inductance_h*benchRms**2
   // A separate deliberately pessimistic sensitivity, not a guaranteed bound:
@@ -225,7 +226,7 @@ export async function audit() {
   const componentNames = new Map(Object.values(parts).map(p => [p.source_component_id, p.name]))
   const brakeReturnReferences = [...new Set(circuit.filter(p => p.type === 'source_port' &&
     p.subcircuit_connectivity_map_key === netKey('BRAKE_RETURN')).map(p => componentNames.get(p.source_component_id)))].sort()
-  const vsaOnMotorBus = pinKey('U7', 4) === netKey('VMOTOR')
+  const vsaOnMotorBus = false // DRV8462DDV has no TMC VSA pin; retain the conservative 55 V bus screen
   const errors = operatingErrors({ vsaOnMotorBus, brakeOn, motorCutoff, coordinationGap })
   if (pinKey('U13',4) !== netKey('VREF_2V5') || pinKey('U14',3) !== netKey('VREF_2V5'))
     errors.push('Shared-reference coordination requires both U13 and U14 on the compiled U12 VREF_2V5 net')
@@ -233,21 +234,21 @@ export async function audit() {
     errors.push('Brake release lacks the allocated margin above a 5% high 48 V source')
   if (benchCutoffPeak === null || benchCutoffPeak + 0.5 > 54.75)
     errors.push('Restricted rotor-only energy screen lacks 0.25 V residual margin below 55 V after the 0.5 V transient allocation')
-  if (!(benchPermille > 0 && benchPermille <= 240) || benchIrun < 0)
-    errors.push('The unloaded commissioning profile must not permit a current request above 240 permille')
+  if (!(benchRequestedMa > 0 && benchRequestedMa <= 800) || torqueCode < 0 || torqueCode > 255)
+    errors.push('The unloaded commissioning profile must not permit a current request above 800 mA RMS')
+  if (part('U7').manufacturer_part_number !== 'DRV8462DDVR') errors.push('This audit requires the DDV integrated driver')
   if (part('U6').manufacturer_part_number !== 'TPS26630RGER') errors.push('U6 must use the reviewed 1x TPS26630RGER, not a 2x pulse-current variant')
   if (resistance('R25') !== ilimPart.ohm) errors.push('R25 differs from the reviewed input-current contract')
   if (ilim.remaining_contract_margin_a <= 0) errors.push('Input-current screen plus upstream allocation exceeds the PD contract')
-  if (programmed * 1.05 / 0.99 * Math.SQRT2 >= motor.phase_current_a) errors.push('Programmed sine-peak sensitivity exceeds ordered motor phase rating')
+  if (programmed * Math.SQRT2 >= motor.phase_current_a) errors.push('Nominal commissioning sine peak exceeds the motor phase rating')
   errors.push(...imonBypassErrors(circuit))
   // Allow a 5% high 48 V source plus 0.3 V noise margin without nuisance OVP.
   if (ovp.min < 48*1.05 + 0.3) errors.push('Input OVP lacks margin above a 5% high 48 V source')
   if (ovp.max + 0.5 >= 55) errors.push('Input OVP plus transient allowance exceeds the VS operating limit')
   errors.push(...supplyIsolationErrors(Object.fromEntries(
-    ['VMOTOR', 'TMC_12V', 'GND', 'DRIVER_BUCK_SW', 'DRIVER_BUCK_BOOT', 'DRIVER_BUCK_VCC', 'VREF_2V5', 'V3V3'].map(name => [name, netKey(name)]),
+    ['VMOTOR', 'BRAKE_12V', 'GND', 'DRIVER_BUCK_SW', 'DRIVER_BUCK_BOOT', 'DRIVER_BUCK_VCC', 'VREF_2V5', 'V3V3'].map(name => [name, netKey(name)]),
   )))
-  if (pinKey('C61', 1) !== netKey('TMC_12V')) errors.push('C61 local VSA bypass must be on TMC_12V')
-  for (const [name,pin,net] of [['U7',3,'TMC_12V'],['U7',4,'TMC_12V'],['U7',33,'VMOTOR'],['U34',2,'VMOTOR'],['U34',3,'VMOTOR'],['U34',5,'DRIVER_BUCK_FB'],['U34',8,'DRIVER_BUCK_SW'],['L3',1,'DRIVER_BUCK_SW'],['L3',2,'TMC_12V'],['U34',1,'GND'],['U34',6,'DRIVER_BUCK_VCC'],['U34',7,'DRIVER_BUCK_BOOT'],['U34',9,'GND'],['C86',1,'VMOTOR'],['C86',2,'GND'],['C87',1,'VMOTOR'],['C87',2,'GND'],['C88',1,'DRIVER_BUCK_VCC'],['C88',2,'GND'],['C89',1,'DRIVER_BUCK_BOOT'],['C89',2,'DRIVER_BUCK_SW'],['C90',1,'TMC_12V'],['C90',2,'GND'],['C91',1,'TMC_12V'],['C91',2,'GND'],['C92',1,'TMC_12V'],['C92',2,'GND'],['R121',1,'TMC_12V'],['R121',2,'DRIVER_BUCK_FB'],['R122',1,'DRIVER_BUCK_FB'],['R122',2,'GND'],['C93',1,'V3V3'],['C93',2,'GND'],['C94',1,'VREF_2V5'],['C94',2,'GND'],['D20',1,'VMOTOR'],['D20',2,'BRAKE_RETURN'],['R134',1,'BRAKE_RETURN'],['R134',2,'BRAKE_FB_MID'],['R135',1,'BRAKE_FB_MID'],['R135',2,'BRAKE_FB'],['R136',1,'BRAKE_FB'],['R136',2,'GND'],['C98',1,'BRAKE_FB'],['C98',2,'GND'],['U30',6,'BRAKE_FB'],['U12',1,'GND'],['U12',2,'GND'],['U12',3,'V3V3'],['U12',4,'V3V3'],['U12',5,'VREF_2V5'],['U12',6,'VREF_2V5']]) {
+  for (const [name,pin,net] of [['U7',2,'VMOTOR'],['U7',11,'VMOTOR'],['U7',12,'VMOTOR'],['U7',21,'VMOTOR'],['U15',1,'BRAKE_12V'],['U34',2,'VMOTOR'],['U34',3,'VMOTOR'],['U34',5,'DRIVER_BUCK_FB'],['U34',8,'DRIVER_BUCK_SW'],['L3',1,'DRIVER_BUCK_SW'],['L3',2,'BRAKE_12V'],['U34',1,'GND'],['U34',6,'DRIVER_BUCK_VCC'],['U34',7,'DRIVER_BUCK_BOOT'],['U34',9,'GND'],['C86',1,'VMOTOR'],['C86',2,'GND'],['C87',1,'VMOTOR'],['C87',2,'GND'],['C88',1,'DRIVER_BUCK_VCC'],['C88',2,'GND'],['C89',1,'DRIVER_BUCK_BOOT'],['C89',2,'DRIVER_BUCK_SW'],['C90',1,'BRAKE_12V'],['C90',2,'GND'],['C91',1,'BRAKE_12V'],['C91',2,'GND'],['C92',1,'BRAKE_12V'],['C92',2,'GND'],['R121',1,'BRAKE_12V'],['R121',2,'DRIVER_BUCK_FB'],['R122',1,'DRIVER_BUCK_FB'],['R122',2,'GND'],['C93',1,'V3V3'],['C93',2,'GND'],['C94',1,'VREF_2V5'],['C94',2,'GND'],['D20',1,'VMOTOR'],['D20',2,'BRAKE_RETURN'],['R134',1,'BRAKE_RETURN'],['R134',2,'BRAKE_FB_MID'],['R135',1,'BRAKE_FB_MID'],['R135',2,'BRAKE_FB'],['R136',1,'BRAKE_FB'],['R136',2,'GND'],['C98',1,'BRAKE_FB'],['C98',2,'GND'],['U30',6,'BRAKE_FB'],['U12',1,'GND'],['U12',2,'GND'],['U12',3,'V3V3'],['U12',4,'V3V3'],['U12',5,'VREF_2V5'],['U12',6,'VREF_2V5']]) {
     if (!netKey(net) || pinKey(name,pin) !== netKey(net)) errors.push(`${name}.${pin} must connect to ${net}`)
   }
   for (const [ref, ohms] of Object.entries({R25:4990, R61:16200, R66:1200, R134:4700, R135:4700, R136:510})) {
@@ -264,15 +265,16 @@ export async function audit() {
     min: 0.985 * (1 + resistance('R121')*0.98/(resistance('R122')*(1+precisionTolerance))),
     max: 1.025 * (1 + resistance('R121')*1.02/(resistance('R122')*(1-precisionTolerance))),
   }
-  if (driverRail.min < 10 || driverRail.max > 13) errors.push('External VSA + 12VOUT must remain between 10 and 13 V')
+  if (driverRail.min < 10 || driverRail.max > 13) errors.push('U15 brake gate supply must remain between 10 and 13 V')
   const inductance = inductanceHenries(part('L3').inductance)
   const minimumInductance = 0.625 * driverRail.max / 340000
   if (inductance * 0.8 < minimumInductance) errors.push('L3 is below the regulator minimum inductance at tolerance')
-  for (const cap of ['C32', 'C33', 'C34', 'C35']) {
-    if (capacitance(cap) < 470e-9) errors.push(`${cap}: use 470 nF for the MOSFET maximum gate charge of 22 nC`)
+  for (const [cap,minimum] of [['C25',100e-9],['C26',100e-9],['C29',1e-6],['C30',100e-9]]) {
+    if (capacitance(cap) < minimum*(1-1e-9)) errors.push(`${cap}: below the DDV recommended nominal capacitance`)
   }
   const report = {
-    schema_version: 1,
+    schema_version: 2,
+    architecture: 'RP2040_DRV8462DDV',
     checked_at: new Date().toISOString(),
     status: errors.length ? 'electrical-design-blocked' : 'screen-complete-hardware-unqualified',
     powered_tests_performed: false,
@@ -306,8 +308,9 @@ export async function audit() {
       motor_rotor_inertia_kg_m2: motor.rotor_inertia_kg_m2,
       external_load_inertia: null,
       motor_rpm_and_stop_time: null,
-      mosfet_hot_resistance_multiplier: 2,
-      mosfet_hot_multiplier_is_guaranteed: false,
+      ddv_hs_plus_ls_resistance_cases_ohm: [0.096,0.184],
+      full_current_analysis_case_rms_a: target,
+      full_current_analysis_case_is_qualified: false,
       switching_frequency_sensitivity_hz: [20000, 40000],
       missing_models: ['PCB thermal boundary conditions', 'MOSFET switching/dead-time losses', 'capacitor RMS ripple', 'motor iron/friction/load losses', 'source/cable transient response'],
     },
@@ -316,7 +319,7 @@ export async function audit() {
         scope: 'Unloaded rotor only; no coupling, driven load, gravity load or external back-drive',
         selection_basis: 'Retained low-energy commissioning choice; not copied from PD-1180 ratings',
         motor_operation_authorized: false,
-        max_requested_current_permille: benchPermille, irun: benchIrun,
+        max_requested_rms_ma: benchRequestedMa, trq_dac: torqueCode,
         nominal_rms_a: benchRms, nominal_sine_peak_a: benchRms*Math.SQRT2,
         nominal_speed_rpm: benchRpm, nominal_acceleration_rpm_per_s: benchAcceleration,
         nominal_ramp_stop_s: benchRpm/benchAcceleration,
@@ -332,7 +335,7 @@ export async function audit() {
           guaranteed_bound: false,
           note: 'Lossless energy screen only. The 1.5 A/phase and 15 rpm sensitivity is an engineering allocation requiring measurement; it does not close startup continuity, running brake failure or transient margin.' },
         note: 'Clock, current regulation, winding nonlinearity and speed are uncalibrated. No attached load is allowed in this prototype scope; unknown application inertia remains unknown in motor-data.json.' },
-      driver_supply: { volts: driverRail, external_operating_range_v:[10,13],
+      brake_gate_supply: { volts: driverRail, external_operating_range_v:[10,13],
         inductor_h: inductance, inductor_isat_25c_a:2.7, regulator_high_side_limit_max_a:2.4,
         inductor_minimum_at_minus_20_percent_h:inductance*0.8,
         regulator_minimum_inductance_h:minimumInductance,
@@ -360,23 +363,22 @@ export async function audit() {
         shared_reference_error_v: referenceOnlyError, each_comparator_error_screen_v: comparatorError,
         coordination_note: 'U13 and U14 share the same U12 output, verified in compiled connectivity. U12 error is common; comparator offset/CMRR/PSRR and resistor errors are independent. Independent absolute envelopes may overlap across different boards. Dynamic separation still requires measurement.',
         brake_off_above_high_source_and_noise_allocation: brakeOff.min-48*1.05-0.3,
-        motor_cutoff_screen: motorCutoff, vsa_operating_max: 50, vs_operating_max: 55,
+        motor_cutoff_screen: motorCutoff, retained_system_bus_screen_max: 55, ddv_vm_operating_max: 65,
         note: 'Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions.' },
-      current: { target_rms_a: target, sine_peak_a: target*Math.SQRT2, programmed_rms_a: programmed,
-        sensitivity_min_rms_a: programmed*0.95/1.01, sensitivity_max_rms_a: programmed*1.05/0.99,
+      current: { qualified_target_rms_a: null, analysis_case_rms_a: target, analysis_case_sine_peak_a: target*Math.SQRT2, programmed_rms_a: programmed,
+        sensitivity_min_rms_a: null, sensitivity_max_rms_a: null,
         motor_rated_phase_a: motor.phase_current_a, motor_qualified_driver_rms_a: motor.qualified_driver_rms_a,
         motor_rating_note: motor.current_rating_basis,
-        note: 'Existing board design-current screen, not an approved setting for the ordered motor. TMC ±5% is specified at full scale; applying it to GLOBALSCALER=139 is only a sensitivity calculation, not a guaranteed tolerance.' },
-      dissipation_w: { regulation_shunt_cycle_upper_bound_each: target**2*rs,
-        regulation_shunt_held_peak_upper_bound_each: 2*target**2*rs,
+        note: 'DRV8462DDV nominal current calculation uses VREF=3.3 V, KV=0.33 V/A and TRQ_DAC. No measured or guaranteed tolerance interval is asserted. The 6 A RMS analysis case is not motor authorization.' },
+      dissipation_w: { integrated_current_sensing: true,
         phase_telemetry_shunt_cycle_each: target**2*telemetryShunt,
         phase_telemetry_shunt_held_peak_each: 2*target**2*telemetryShunt,
-        eight_bridge_mosfets_conduction_25c_max_rds_total: 4*target**2*0.0151,
-        eight_bridge_mosfets_conduction_hot_sensitivity_total: 4*target**2*0.0151*2,
+        ddv_two_phase_conduction_0v096_ohm_case: 2*target**2*0.096,
+        ddv_two_phase_conduction_0v184_ohm_case: 2*target**2*0.184,
         efuse_at_nominal_limit_and_125c_max_ron: ilim.formula_nominal_a**2*0.053,
         two_motor_windings_25c: 2*target**2*motor.phase_resistance_25c_ohm,
         two_motor_windings_100c_linear_copper_sensitivity: 2*target**2*motor.phase_resistance_25c_ohm*(1+0.00393*75),
-        note: 'Loss estimates exclude switching losses and do not determine junction temperature. Low-side shunt current depends on decay duty; held-peak bound covers the high-current microstep.' },
+        note: 'Loss estimates exclude switching losses and do not determine junction temperature. DDV conduction cases require a top heatsink/TIM model; these are not junction-temperature predictions.' },
       inrush: { capacitance_f: bulk, stored_energy_at_48v_j: 0.5*bulk*48**2,
         charge_to_48v_c: bulk*48, nominal_ramp_ms: 48/slew.nominal*1000,
         initial_tolerance_ramp_ms: [48/slew.max*1000,48/slew.min*1000],
@@ -418,12 +420,12 @@ export async function audit() {
         note: 'Nominal transfer only; ADC/reference/gain errors, offset, common-mode switching and sampling require calibration.' },
     },
     errors,
-    outstanding: ['Measured VSA ripple and VS transient margin', 'Measured brake/cutoff tolerance coordination',
+    outstanding: ['Measured DRV8462 VM transient margin and DDV top-heatsink/TIM performance', 'Measured brake/cutoff tolerance coordination',
       'PD source/cable finite current-limit and fast-trip coordination; upstream current measurement', 'Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification',
       'TI-generated EEPROM image and approved configuration identity', 'Fabricator stack-up/impedance/filled-via approval',
       'Assembled-board current, thermal, USB, brake and fault measurements'],
     sources: {
-      tmc5160a: 'https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf#page=120',
+      drv8462: 'https://www.ti.com/lit/ds/symlink/drv8462.pdf',
       efuse: 'https://www.ti.com/lit/ds/symlink/tps2663.pdf#page=6',
       mosfet: 'https://www.ti.com/lit/ds/symlink/csd19534q5a.pdf#page=3',
       reference: 'https://www.ti.com/lit/ds/symlink/ref34.pdf',

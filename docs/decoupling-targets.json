@@ -40,36 +40,6 @@
     "C21"
   ],
   [
-    "U7",
-    3,
-    "C25"
-  ],
-  [
-    "U7",
-    5,
-    "C26"
-  ],
-  [
-    "U7",
-    29,
-    "C27"
-  ],
-  [
-    "U7",
-    20,
-    "C28"
-  ],
-  [
-    "U7",
-    33,
-    "C29"
-  ],
-  [
-    "U7",
-    4,
-    "C61"
-  ],
-  [
     "U10",
     5,
     "C38"
@@ -93,62 +63,6 @@
     "U15",
     1,
     "C43"
-  ],
-  [
-    "U16",
-    6,
-    "C44",
-    {
-      "placement_limit_mm": 3.7,
-      "reason": "UFQFPN48 lands move 0.875 mm inward from the previous LQFP row. C44/C45/C46 retain their proven ground returns and top-side branches; measured source paths remain 3.26/3.98/3.77 mm (all below the unchanged 5 mm native limit). This explicit 3.7 mm centre-distance bound preserves the local bypass placement without disturbing the adjacent crystal, USB and buzzer paths. Hardware rail ripple remains unqualified."
-    }
-  ],
-  [
-    "U16",
-    5,
-    "C45",
-    {
-      "placement_limit_mm": 3.7,
-      "reason": "UFQFPN48 lands move 0.875 mm inward from the previous LQFP row. C44/C45/C46 retain their proven ground returns and top-side branches; measured source paths remain 3.26/3.98/3.77 mm (all below the unchanged 5 mm native limit). This explicit 3.7 mm centre-distance bound preserves the local bypass placement without disturbing the adjacent crystal, USB and buzzer paths. Hardware rail ripple remains unqualified."
-    }
-  ],
-  [
-    "U16",
-    4,
-    "C46",
-    {
-      "placement_limit_mm": 3.7,
-      "reason": "UFQFPN48 lands move 0.875 mm inward from the previous LQFP row. C44/C45/C46 retain their proven ground returns and top-side branches; measured source paths remain 3.26/3.98/3.77 mm (all below the unchanged 5 mm native limit). This explicit 3.7 mm centre-distance bound preserves the local bypass placement without disturbing the adjacent crystal, USB and buzzer paths. Hardware rail ripple remains unqualified."
-    }
-  ],
-  [
-    "U17",
-    8,
-    "C51"
-  ],
-  [
-    "U18",
-    11,
-    "C52",
-    {
-      "reason": "Only U18 is allowed on the bottom. C52 retains its XY pad centers on top, joined through one 0.60/0.30 mm V3V3 via at source (-0.6,-3.9), native (99.4,103.9). The 5 mm budget includes the 1.6 mm board thickness; all ordinary bypasses remain on the IC side. Encoder supply/ground ripple still requires powered qualification.",
-      "layer_transition": {
-        "from": "bottom",
-        "to": "top",
-        "source_xy_mm": [
-          -0.6,
-          -3.9
-        ],
-        "native_xy_mm": [
-          99.4,
-          103.9
-        ],
-        "pad_mm": 0.6,
-        "drill_mm": 0.3,
-        "barrel_mm": 1.6,
-        "maximum_vias": 1
-      }
-    }
   ],
   [
     "U22",
@@ -253,5 +167,129 @@
     "U37",
     5,
     "C99"
+  ],
+  [
+    "U7",
+    11,
+    "C25"
+  ],
+  [
+    "U7",
+    21,
+    "C26"
+  ],
+  [
+    "U7",
+    43,
+    "C27"
+  ],
+  [
+    "U7",
+    42,
+    "C28"
+  ],
+  [
+    "U16",
+    1,
+    "C44"
+  ],
+  [
+    "U16",
+    10,
+    "C45"
+  ],
+  [
+    "U16",
+    22,
+    "C46"
+  ],
+  [
+    "U16",
+    33,
+    "C107"
+  ],
+  [
+    "U16",
+    42,
+    "C106"
+  ],
+  [
+    "U16",
+    48,
+    "C108"
+  ],
+  [
+    "U16",
+    49,
+    "C100"
+  ],
+  [
+    "U16",
+    43,
+    "C101"
+  ],
+  [
+    "U16",
+    44,
+    "C102"
+  ],
+  [
+    "U16",
+    45,
+    "C103"
+  ],
+  [
+    "U16",
+    23,
+    "C104"
+  ],
+  [
+    "U16",
+    50,
+    "C105"
+  ],
+  [
+    "U17",
+    8,
+    "C51"
+  ],
+  [
+    "U18",
+    1,
+    "C52",
+    {
+      "reason": "AS5600 bottom VDD pin reaches top C52 through one 0.60/0.30 mm via. Native route including 1.6 mm barrel still requires validation. C53 branches from C52 on top.",
+      "layer_transition": {
+        "from": "bottom",
+        "to": "top",
+        "source_xy_mm": [
+          0.6,
+          -3.9
+        ],
+        "native_xy_mm": [
+          100.6,
+          103.9
+        ],
+        "pad_mm": 0.6,
+        "drill_mm": 0.3,
+        "barrel_mm": 1.6,
+        "maximum_vias": 1
+      }
+    }
+  ],
+  [
+    "C52",
+    1,
+    "C53"
+  ],
+  [
+    "U7",
+    22,
+    "C29"
+  ],
+  [
+    "U7",
+    23,
+    "C30"
   ]
 ]

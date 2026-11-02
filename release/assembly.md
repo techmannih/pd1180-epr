@@ -4,11 +4,13 @@
 
 The requested deliverable is a fabricated, fully populated, programmed and functionally tested PCBA. Ordering remains on hold. `bun run check:release` checks the documented release gates; it is not a powered test. Follow [the README startup procedure](../README.md#connections-and-operation) and [power-validation.md](power-validation.md) for commissioning.
 
+The DDV driver requires a qualified top-side heatsink/TIM and end supports; none is approved yet. The retained 1 oz stack is not a demonstrated equivalent to TI’s 2 oz recommendation. J2/J3 spring-clamp replacement and separate raw PD_VBUS sensing remain open.
+
 ### Stack and placement
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes and 1 oz copper on all layers. The fabricator must confirm the USB impedance stack-up; current/thermal qualification remains pending.
-- Assembly is top-side only. All fitted components and service pads are on top. U18 alone is on the bottom; its C52/C53 bypass footprints are on top. All three are DNP and omitted from the fitted BOM/CPL and paste. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects are validated during mechanical bring-up.
-- The ten CSD19534Q5A drain pads contain four connected 0.60/0.30 mm through vias each (40 total), U34 has four exposed-pad thermal vias, and the new U16 ground pad has four. The final top-side route has 62 via drills overlapping top solder lands; exact locations are recorded in `engineering/top-side-placement.json` under `power_eco_via_audit`. Order epoxy-filled and copper-capped processing for every via-in-pad, with no finished via drill below 0.30 mm.
+- Assembly is top-side only. All fitted components and service pads are on top. U18 alone is on the bottom; its C52/C53 bypass footprints are on top. All three are DNP and omitted from the fitted BOM/CPL and paste. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects still require mechanical bring-up validation.
+- Every via-in-pad requires epoxy filling and copper capping. The current native inventory in `engineering/rp2040-via-in-pad.json` contains 21 via-drill intersections with top paste lands, including C103. Q4/Q16 retain eight drain thermal vias; U34 retains four thermal vias. Confirm the complete current Gerber/drill set with the fabricator; old 62-location/40-bridge-via inventories are superseded.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
 - Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
@@ -17,7 +19,7 @@ The requested deliverable is a fabricated, fully populated, programmed and funct
 | Connector | Pins in order |
 |---|---|
 | J1, PD POWER | Dedicated USB-C EPR power; 48 V / 5 A requested contract; no USB data |
-| J10, USB DATA | USB 2.0 to STM32 and separate current-limited logic supply; no motor power |
+| J10, USB DATA | USB 2.0 to RP2040 and separate current-limited logic supply; no motor power |
 | J2, motor | 1 A1, 2 A2, 3 B1, 4 B2 |
 | J3, external brake | 1 VMOTOR, 2 switched resistor return (not a permanent ground) |
 
@@ -25,7 +27,7 @@ Pin numbering follows the imported physical footprints. J7 and the industrial co
 
 ## Programming and external items
 
-Program U3 with the approved TI-generated TPS26750 full-flash image and U16 with board-specific firmware before motor bring-up. A register-reviewed TI full-flash candidate is included; physical programming/readback is pending. The supplied STM32 image remains for motion-locked commissioning only. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled top service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
+Program U3 with the approved TI-generated TPS26750 full-flash image and U16 with board-specific firmware before motor bring-up. A register-reviewed TI full-flash candidate is included; physical programming/readback is pending. The supplied RP2040 image remains for motion-locked commissioning only. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled top service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
 
 ### Programming and test work order
 
@@ -35,8 +37,8 @@ Supply the following before approving a ready-to-run batch:
 
 1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 63 filled/capped via-in-pad locations and the agreed stack-up.
 2. U3 **M24512-RMN6TP**: approved full-flash BIN, hash, reviewed EEPROM programming method and readback verification. [TI's EVM guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf) describes generating the full-flash binary. U36 separates U2's EEP_SDA/EEP_SCL I2Cc bus from U3's EEP_PROG_SDA/EEP_PROG_SCL programming pads. Ground TP_PD_ISO before fixed-5 V target power and keep programmer VCC off. Follow [pd-programming.md](pd-programming.md); the constructed fixture still needs qualification. SWD/J10 do not directly program this EEPROM.
-3. U16 **STM32G0B1CEU6**: qualified motor-enabled BIN/HEX, hash, SWD pad drawing, flash address `0x08000000` for a raw BIN, supply arrangement and readback procedure. The existing commissioning archive is suitable only for initial diagnostic testing. Do not substitute it as the final motor-operating image.
-4. Exact motor and brake load, qualified current/microstep settings, onboard motion limits and stop profile, actual 48 V EPR supply/cable, heatsink, enclosure and ambient limits. These must come from first-article qualification; the 3.8 A RMS design ceiling is not a measured motor rating.
+3. U16 **RP2040** plus U17 4 MiB QSPI boot flash: approved ELF/BIN/UF2, hash and SWD/BOOTSEL instructions. Raw BIN uses **0x10000000**. Save the full 4,194,304-byte readback and run the RP2040 comparator. The commissioning image remains motion-locked and is not a ready-to-run delivery image.
+4. Qualified motor/load envelope, current/microstep limits, stop profile, 48 V EPR source/cable, DDV top-side heatsink/TIM/support, brake, enclosure and ambient. The 0.773 A nominal commissioning setting is not a qualified operating current; 6 A operation remains blocked.
 5. An accepted fixture and test procedure: labelled J1 POWER/J10 DATA/J2 motor/J3 brake connections, current limiting, probes, controlled loads, expected readings, stop criteria and an operator demonstration. Agree who performs first-article qualification and who tests the remaining boards.
 
 ### Request to send to the assembly/test provider
@@ -48,9 +50,9 @@ This request is prepared but has **not been sent or accepted**. Provider/contact
 ### First-article programming sequence
 
 1. Approve the exact release manifest and record the board serial. Keep J2 disconnected and hardware enable inactive. The assembly/test provider must approve the fixture's power arrangement; do not connect two independent sources to one supply rail.
-2. Program the motion-locked STM32 commissioning image over SWD and verify it, following [firmware/README.md](../firmware/README.md). Capture `HELP`, `STATUS` and `DRIVER` responses; these are diagnostic evidence, not a motor test.
+2. Program the motion-locked RP2040 commissioning image over SWD and verify it, following [firmware/README.md](../firmware/README.md). Capture `HELP`, `STATUS` and `DRIVER` responses; these are diagnostic evidence, not a motor test.
 3. Program U3 with the **full-flash** binary generated for this board, verify its complete contents against that binary, then cold-start U2 and record its mode, identity, boot status and negotiated contract. Use the U36-isolated fixture sequence in [pd-programming.md](pd-programming.md). Verify both-wire isolation, target power loss and readback before accepting the fixture; assembled-board access is not yet demonstrated.
-4. TI's [SLVAFL1 §2.1–2.2](https://www.ti.com/lit/an/slvafl1/slvafl1.pdf) distinguishes initial full-flash programming from later host updates. The `FLrd`/`FLad`/`FLwd`/`FLvy` update sequence assumes a working application and initialized EEPROM regions. It is not an established blank-board programming path here. Do not load a low-region update file at EEPROM address zero or assume the STM32 commissioning image implements those commands.
+4. TI's [SLVAFL1 §2.1–2.2](https://www.ti.com/lit/an/slvafl1/slvafl1.pdf) distinguishes initial full-flash programming from later host updates. The `FLrd`/`FLad`/`FLwd`/`FLvy` update sequence assumes a working application and initialized EEPROM regions. It is not an established blank-board programming path here. Do not load a low-region update file at EEPROM address zero or assume the RP2040 commissioning image implements those commands.
 5. Complete the no-motor tests in [power-validation.md](power-validation.md), then have the qualification engineer produce and identify a controlled motor-test firmware build. Record every configuration change. Begin below 1 A RMS; increase current only after phase-current, gate and fault measurements pass. The existing commissioning image cannot execute this step.
 6. After the agreed motor/load envelope passes, approve the exact motor-enabled image and per-board test revision. Program and verify that image on every shipped board, repeat the acceptance tests, and deliver its hashes and operating settings with the board. A failed test returns to engineering; it never becomes a pass by removing the test or suppressing a protection.
 
@@ -76,7 +78,7 @@ The exact ordered STEPPERONLINE 34HS31-6004S1 CAD is available in `motor-assembl
 
 ## Imported-part corrections
 
-The STM32 component uses explicit ST UFQFPN48 lands, the GP pin map, a grounded exposed pad and a courtyard. CSD19534 drain thermal vias are implemented in the final KiCad route with explicit drain-net identities and bottom copper ties. Q2/Q3 use the exact CSD17484F4 PicoStar-3 land pattern and G/S/D pin map from the imported JLC part. BAV21 polarity is explicit, bulk capacitor pads carry polarity aliases, imported transistor symbols have reference text, and vertical headers specify top-side cable insertion.
+The RP2040 package has its own pin map, grounded exposed pad and local 1.1/3.3 V bypasses. U7 uses the 44-pin top-cooled DRV8462DDV footprint; DDW is not interchangeable. The eight external motor-bridge MOSFETs have been removed. Retained Q4/Q16 drain and U34 thermal vias require the stated filled/capped process. Verify all exact manufacturer lands and the current native BOM/CPL before assembly.
 
 ## PD power-path enable buffer
 

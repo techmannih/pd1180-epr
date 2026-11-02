@@ -21,7 +21,25 @@ for t in list(b.GetTracks()):
  else:take=t.GetWidth()<=200000
  if take:removed.append(t);b.Remove(t)
 segments=[t for t in removed if not isinstance(t,pcbnew.PCB_VIA)]
-if not segments:errors.append('No divider branch found')
+if not segments:
+ # This architecture routes the divider with the same >=0.50 mm copper (excluding proven drain via ties) as the
+ # brake net. No segment is exempted from the power-corridor check. Do not invent
+ # a thin sense branch or reuse historical branch UUIDs.
+ actual=list(b.GetTracks())
+ brake_tracks=[t for t in actual if t.GetNetname()=='BRAKE_RETURN' and not isinstance(t,pcbnew.PCB_VIA)]
+ vias=[t for t in actual if isinstance(t,pcbnew.PCB_VIA) and t.GetNetname()=='BRAKE_RETURN']
+ drain=pads[('Q16','9')].GetEffectiveShape(pcbnew.F_Cu)
+ def thermal_tie(t):
+  return t.GetLayer()==pcbnew.B_Cu and t.GetWidth()==250000 and abs(t.GetLength()-1000000)<2000 and all(drain.Collide(point,0) and any((via.GetPosition()-point).EuclideanNorm()<2000 and via.GetWidth(pcbnew.F_Cu)==600000 and via.GetDrillValue()==300000 for via in vias) for point in [t.GetStart(),t.GetEnd()])
+ thermal=[t for t in brake_tracks if thermal_tie(t)]
+ minimum=min((t.GetWidth()/1e6 for t in brake_tracks if t not in thermal),default=0)
+ if removed or minimum < .5:errors.append('Unclassified brake branch requires independent current-path review')
+ sha=lambda path:hashlib.sha256(Path(path).read_bytes()).hexdigest()
+ result={'board_sha256':sha(a.board),'checker_sha256':sha(__file__),'segment_uuids':[],
+   'routing_mode':'all-branches-checked-as-power','minimum_track_width_mm':minimum,
+   'power_track_count':len(brake_tracks),'thermal_tie_segments':[t.m_Uuid.AsString() for t in thermal],'removed_vias':0,
+   'reason':'No thin divider exception: every BRAKE_RETURN track is subject to the power corridor check.', 'errors':errors}
+ a.report.write_text(json.dumps(result,separators=(',',':'))+'\n');print(json.dumps(result));raise SystemExit(bool(errors))
 cli=os.environ.get('KICAD_CLI','/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli')
 with tempfile.TemporaryDirectory(prefix='brake-sense-') as tmp:
  out=Path(tmp)/a.board.name;pcbnew.SaveBoard(str(out),b)

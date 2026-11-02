@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { basename } from 'node:path'
 import { isDeepStrictEqual } from 'node:util'
 import { KicadToCircuitJsonConverter } from 'kicad-to-circuit-json'
+import { parseKicadPcb } from 'kicadts'
 
 const DEFAULT_SOURCE = 'dist/index/circuit.json'
 const DEFAULT_ASSEMBLY = 'dist/motor-assembly/circuit.json'
@@ -42,8 +43,10 @@ export async function createCloudViewerCircuit({
   const sourceCircuit = JSON.parse(await readFile(sourceCircuitPath, 'utf8'))
   const assemblyCircuit = JSON.parse(await readFile(assemblyCircuitPath, 'utf8'))
   const mechanicalIds = assertAssemblyPreservesBoard(sourceCircuit, assemblyCircuit)
+  const nativeText = await readFile(routedBoardPath, 'utf8')
+  assertNativePackagePinsMatch(sourceCircuit, nativeText)
   const converter = new KicadToCircuitJsonConverter()
-  converter.addFile(basename(routedBoardPath), await readFile(routedBoardPath, 'utf8'))
+  converter.addFile(basename(routedBoardPath), nativeText)
   converter.runUntilFinished()
   const routedCircuit = converter.getOutput()
 
@@ -60,6 +63,29 @@ export async function createCloudViewerCircuit({
       converter_warnings: converter.getWarnings(),
     },
   }
+}
+
+// Reject an obsolete architecture before an expensive full copper import. This
+// does not qualify the route: the existing net, port and geometry checks follow.
+export function assertNativePackagePinsMatch(source, nativeText) {
+  const names = new Map(source.filter(r=>r.type==='source_component').map(r=>[r.source_component_id,r.name]))
+  const pins = new Map()
+  for(const port of source.filter(r=>r.type==='source_port')) {
+    const name=names.get(port.source_component_id)
+    if(!pins.has(name)) pins.set(name,new Set())
+    pins.get(name).add(String(port.pin_number))
+  }
+  const seen=new Set()
+  for(const fp of parseKicadPcb(nativeText).footprints) {
+    const name=fp.properties.find(p=>p.key==='Reference')?.value
+    if(!name) continue // non-component mounting holes
+    if(!pins.has(name)) throw new Error(`Native board contains removed component ${name}; regenerate routing before publishing`)
+    const actual=[...new Set(fp.fpPads.map(p=>String(p.number)).filter(Boolean))].sort()
+    const expected=[...pins.get(name)].sort()
+    if(!isDeepStrictEqual(actual,expected)) throw new Error(`Native ${name} package pins differ from source; regenerate routing before publishing`)
+    seen.add(name)
+  }
+  for(const name of pins.keys()) if(!seen.has(name)) throw new Error(`Native board is missing ${name}; regenerate routing before publishing`)
 }
 
 // Every selectable mechanical part must be declared in the generated manifest.

@@ -8,7 +8,7 @@ const image = Buffer.from([0, 0x40, 2, 0x20, 0xc1, 0xb3, 0, 8])
 const dump = Buffer.concat([image, Buffer.alloc(128 - image.length, 0xff)])
 
 test('compares all programmed bytes and distinguishes the unexamined tail', () => {
-  const result = compareReadback(image, dump, hash(image), 128, 0x08000000)
+  const result = compareReadback(image, dump, hash(image), 128, 0x10000000)
   expect(result.image_bytes_match).toBe(true)
   expect(result.compared_bytes).toBe(8)
   expect(result.bytes_outside_image_compared).toBe(false)
@@ -18,8 +18,8 @@ test('compares all programmed bytes and distinguishes the unexamined tail', () =
 test('rejects first/last-byte corruption and reports the actual device address', () => {
   for (const index of [0, image.length - 1]) {
     const changed = Buffer.from(dump); changed[index] ^= 1
-    expect(() => compareReadback(image, changed, hash(image), 128, 0x08000000))
-      .toThrow(`0x${(0x08000000 + index).toString(16)}`)
+    expect(() => compareReadback(image, changed, hash(image), 128, 0x10000000))
+      .toThrow(`0x${(0x10000000 + index).toString(16)}`)
   }
 })
 
@@ -43,14 +43,14 @@ test('missing TI image or a low-region export cannot be treated as EEPROM firmwa
   await expect(loadProgrammingImage('pd', read)).rejects.toThrow('No reviewed TI full-flash')
 })
 
-test('STM32 image is rejected when its recorded source has changed', async () => {
-  const manifest = { target: 'STM32G0B1CEU6', flash_address: '0x08000000', max_flash_bytes: 524288,
+test('RP2040 image is rejected when its recorded source has changed', async () => {
+  const manifest = { target: 'RP2040 + W25Q32JV (4 MiB)', flash_address: '0x10000000', max_flash_bytes: 4194304,
     image_type: 'commissioning-diagnostics-only', motor_operation_enabled: false,
     image_bytes: image.length, artifacts: { 'firmware.bin': hash(image) }, inputs: { 'firmware/target/main.cpp': hash(Buffer.from('before')) } }
   const zip = new JSZip().file('manifest.json', JSON.stringify(manifest)).file('firmware.bin', image)
   const bytes = await zip.generateAsync({ type: 'nodebuffer' })
-  await expect(loadProgrammingImage('stm32', async path => path.endsWith('.zip') ? bytes : Buffer.from('after')))
-    .rejects.toThrow('Stale STM32 archive')
+  await expect(loadProgrammingImage('rp2040', async path => path.endsWith('.zip') ? bytes : Buffer.from('after')))
+    .rejects.toThrow('Stale RP2040 archive')
 })
 
 test('registered PD image identity is retained; wrong byte count is rejected', async () => {
@@ -72,10 +72,10 @@ test('registered TI ZIP loads its reviewed full-flash member', async () => {
   expect(image.base).toBe(0)
 })
 
-// The stocked CE MCU has four times the old CB flash capacity. A matching
+// The RP2040 uses 4 MiB external flash. A matching
 // image prefix in an old 128 KiB dump is not complete readback evidence.
-test('STM32 CE full readback rejects the old 128 KiB memory dump', async () => {
-  const full=Buffer.alloc(524288,0xff); image.copy(full)
-  expect(compareReadback(image,full,hash(image),524288,0x08000000).readback_bytes).toBe(524288)
-  expect(()=>compareReadback(image,full.subarray(0,131072),hash(image),524288,0x08000000)).toThrow('complete 524288-byte')
+test('RP2040 full readback rejects the old 128 KiB memory dump', async () => {
+  const full=Buffer.alloc(4194304,0xff); image.copy(full)
+  expect(compareReadback(image,full,hash(image),4194304,0x10000000).readback_bytes).toBe(4194304)
+  expect(()=>compareReadback(image,full.subarray(0,131072),hash(image),4194304,0x10000000)).toThrow('complete 4194304-byte')
 })

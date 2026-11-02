@@ -1,3 +1,5 @@
+> Historical STM32/TMC5160 revision reference. MCU, driver, encoder and their qualification results do not describe the current RP2040 redesign; see [current architecture](rp2040-redesign.md).
+
 # PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
 
 ## Electrical design and validation

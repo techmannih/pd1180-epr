@@ -21,7 +21,7 @@ inline uint32_t millis() { return fakeNow; }
 struct FakeSerial {
   bool started=false;
   std::string input, output;
-  void begin() { started=true; }
+  void begin(unsigned=115200) { started=true; }
   void end() { started=false; }
   explicit operator bool() const { return started; }
   int availableForWrite() { return 512; }
@@ -29,4 +29,6 @@ struct FakeSerial {
   int available() { return input.size(); }
   char read() { const auto c=input.front(); input.erase(0,1); return c; }
 };
-inline FakeSerial SerialUSB;
+inline FakeSerial Serial;
+inline void gpio_put(unsigned p,bool value) {fakeLevels[p]=value;}
+inline bool gpio_get(unsigned p) {return fakeLevels[p];}

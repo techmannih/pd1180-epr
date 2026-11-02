@@ -1,9 +1,15 @@
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import runtimeConfig from '../tscircuit.config.ts'
+import { checkRp2040Contract } from './rp2040-contract.mjs'
 
 const config = JSON.parse(await readFile('tscircuit.config.json', 'utf8'))
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'))
+const releaseStatus = JSON.parse(await readFile('docs/release-status.json', 'utf8'))
+const draftPreview = releaseStatus.status === 'architecture-redesign-unqualified' &&
+  releaseStatus.revision.endsWith('-DRAFT') && releaseStatus.fabrication_orderable === false &&
+  releaseStatus.production_released === false
+const expectedPreview = draftPreview ? 'index.circuit.tsx' : 'release/circuit.json'
 const ignored = config.ignoredFiles || []
 const requiredIgnores = [
   '.github/**',
@@ -52,8 +58,9 @@ for (const pattern of requiredIgnores) {
 }
 if (config.mainEntrypoint !== 'index.circuit.tsx') errors.push('mainEntrypoint must remain index.circuit.tsx')
 for (const key of ['previewComponentPath', 'siteDefaultComponentPath']) {
-  if (config[key] !== 'release/circuit.json') errors.push(`${key} must show the verified routed PCB`)
+  if (config[key] !== expectedPreview) errors.push(`${key} must show ${expectedPreview}; unqualified source previews cannot claim a routed release`)
 }
+if (draftPreview && !ignored.includes('release/circuit.json')) errors.push('Draft preview must exclude the obsolete routed viewer from the published source package')
 const buildCommands = (config.buildCommand || '').split('&&').map((command) => command.trim().split(/\s+/))
 const buildTargets = buildCommands.filter(([cli, action]) => cli === 'tsci' && action === 'build').map((args) => args[2])
 for (const target of new Set([config.mainEntrypoint, config.previewComponentPath, config.siteDefaultComponentPath])) {
@@ -61,19 +68,20 @@ for (const target of new Set([config.mainEntrypoint, config.previewComponentPath
 }
 if (buildTargets.some((target) => !['index.circuit.tsx', 'release/circuit.json'].includes(target))) errors.push('Cloud builds must explicitly target the source and routed JSON, without compiling every imported part')
 if (!buildCommands.some((args) => args[2] === config.mainEntrypoint && args.includes('--transpile'))) errors.push('The library must transpile the editable TSX source')
-if (!buildCommands.some((args) => args[2] === config.siteDefaultComponentPath && args.includes('--site'))) errors.push('The static site must be generated from the selected routed preview')
-const previewBuildOutput = `dist/${config.previewComponentPath}`
+if (!buildCommands.some((args) => args[2] === config.siteDefaultComponentPath && args.includes('--site'))) errors.push('The static site must be generated from the selected preview')
+const previewBuildOutput = draftPreview ? 'dist/index/circuit.json' : `dist/${config.previewComponentPath}`
 let verifiedPreviewRecords = null
 if (process.argv.includes('--built')) {
   try {
-    const source = JSON.parse(await readFile(config.previewComponentPath, 'utf8'))
+    const source = draftPreview ? null : JSON.parse(await readFile(config.previewComponentPath, 'utf8'))
     const built = JSON.parse(await readFile(previewBuildOutput, 'utf8'))
-    if (!Array.isArray(built) || !built.some((row) => row.type === 'pcb_trace') || !built.some((row) => row.type === 'schematic_component')) errors.push(`${previewBuildOutput} must contain the complete routed board and schematic`)
-    if (JSON.stringify(source) !== JSON.stringify(built)) errors.push(`${previewBuildOutput} differs from the verified routed preview`)
+    if (!Array.isArray(built) || !built.some((row) => row.type === 'pcb_trace') || !built.some((row) => row.type === 'schematic_component')) errors.push(`${previewBuildOutput} must contain PCB copper records and the schematic; route completeness is checked separately`)
+    if (draftPreview) errors.push(...checkRp2040Contract(built))
+    else if (JSON.stringify(source) !== JSON.stringify(built)) errors.push(`${previewBuildOutput} differs from the verified routed preview`)
     if (built.some((row) => row.type?.endsWith('_error') || row.error_type)) errors.push(`${previewBuildOutput} contains circuit errors`)
     verifiedPreviewRecords = built.length
     const site = await readFile('dist/index.html', 'utf8')
-    if (!site.includes(config.siteDefaultComponentPath)) errors.push('Generated static site does not reference the selected routed preview')
+    if (!site.includes(config.siteDefaultComponentPath)) errors.push('Generated static site does not reference the selected preview')
   } catch (error) {
     errors.push(`Hosted preview build output is unavailable: ${error.message}`)
   }
@@ -117,7 +125,7 @@ const gitFilesResult = Bun.spawnSync(['git', 'ls-files', '-z'])
 if (gitFilesResult.exitCode !== 0) throw new Error(gitFilesResult.stderr.toString())
 const trackedFiles = gitFilesResult.stdout.toString().split('\0').filter(Boolean)
 const sourceFiles = trackedFiles.filter((path) => path.endsWith('.tsx') || /^imports\/.*\.(ts|js|jsx)$/.test(path))
-const requiredViewerFiles = [...sourceFiles, 'release/circuit.json']
+const requiredViewerFiles = [...sourceFiles, ...(draftPreview ? [] : ['release/circuit.json'])]
 const unavailableViewerFiles = requiredViewerFiles.filter((path) => shouldIgnore(path) || !isSelectable(path))
 if (unavailableViewerFiles.length) errors.push(`Viewer must expose every TSX/import and the routed artifact: ${unavailableViewerFiles.join(', ')}`)
 for (const projectPath of trackedFiles) {
@@ -141,6 +149,7 @@ for (const file of githubImportFiles.filter((item) => item.bytes > maximumGitHub
 
 const report = {
   checked_at: new Date().toISOString(),
+  preview_is_unrouted_draft: draftPreview,
   main_entrypoint: config.mainEntrypoint,
   preview_component_path: config.previewComponentPath,
   site_default_component_path: config.siteDefaultComponentPath,

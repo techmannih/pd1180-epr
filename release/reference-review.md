@@ -1,3 +1,5 @@
+> Historical STM32/TMC5160 revision reference. MCU, driver, encoder and their qualification results do not describe the current RP2040 redesign; see [current architecture](rp2040-redesign.md).
+
 # NEMA17 / NEMA23 comparison and reviewer response
 
 **2026-10-12 implementation:** [product correction](product-eco.md) supersedes the old interface inventory. Dedicated CAN/RS485/RS232/general-I/O circuits and native copper are removed, and the J2/mounting model is revised. J7 is now removed and local START/STOP is implemented; the brake installation and physical qualification remain open.

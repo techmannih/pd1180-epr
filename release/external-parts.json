@@ -224,14 +224,14 @@
       "id": "programming",
       "item": "Programming service / tools",
       "quantity": "shared service",
-      "part_or_candidate": "ST STLINK-V3MINIE (SWD); Total Phase Aardvark I2C/SPI Host Adapter (EEPROM)",
+      "part_or_candidate": "Raspberry Pi Debug Probe / CMSIS-DAP (SWD) or BOOTSEL USB for RP2040; Total Phase Aardvark I2C/SPI Host Adapter (EEPROM)",
       "specification": "Qualified 3.3 V SWD and isolated EEPROM fixture; target power/readback as documented",
       "source": "Accepted programmer/fixture",
       "destination": "Top SWD and EEPROM pads",
       "purpose": "Program/verify U16 and U3",
       "need": "commissioning",
       "status": "TI candidate image generated; tools identified; provider, actual isolated pad fixture and full board readback still unqualified",
-      "manufacturer_url": "https://www.st.com/en/development-tools/stlink-v3minie.html",
+      "manufacturer_url": "https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html",
       "eeprom_tool_url": "https://www.totalphase.com/products/aardvark-i2cspi/"
     },
     {
@@ -330,7 +330,7 @@
       "item": "Optional encoder/magnet installation",
       "quantity": "optional set",
       "part_or_candidate": null,
-      "specification": "U18 AS5047P with C52/C53 plus compatible rotating magnet/holder",
+      "specification": "U18 AS5600 with C52/C53 plus compatible rotating magnet/holder",
       "source": "Qualified motor-side rotating target",
       "destination": "Centered bottom U18 footprint",
       "purpose": "Future position feedback",
@@ -338,5 +338,7 @@
       "status": "Do not fit/order for basic build; no qualified rear shaft/holder/gap; all three PCB footprints DNP",
       "manufacturer_url": ""
     }
-  ]
+  ],
+  "architecture_revision": "0.5.0-RP2040-DRAFT",
+  "ddv_top_heatsink_status": "Additional top heatsink/TIM required; no exact qualified assembly selected."
 }
