@@ -47,6 +47,7 @@ verifiedInputPaths.push('engineering/copper-geometry-review.json', 'docs/copper-
 verifiedInputPaths.push('engineering/source-design-rule-eco.json', 'engineering/source-design-rule-delta.zip', 'scripts/apply-source-rule-eco.mjs', 'docs/source-design-rules.md', 'scripts/source-design-policy.mjs', 'scripts/source-design-policy.test.mjs', 'scripts/source_design_rules.py', 'scripts/test-source-design-rules.py', 'scripts/check-source-design-rules.mjs', 'scripts/add-board-planes.py', 'scripts/clean-silkscreen.py')
 verifiedInputPaths.push('routing/power-feed.json', 'scripts/power-feed.mjs', 'scripts/power-feed.test.mjs')
 verifiedInputPaths.push('engineering/r3-boundary-eco.json', 'scripts/cc-protection-aliases.test.mjs')
+verifiedInputPaths.push('firmware/tests/test_pd_voltage.c', 'firmware/tests/test_target_power.cpp', 'firmware/tests/fakes/Wire.h', 'scripts/rp2040-contract.mjs', 'scripts/rp2040-contract.test.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],

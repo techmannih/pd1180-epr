@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## Reviewer integration — 2026-11-02
+
+After merging PR #21, the user requested a new PR for the remaining reviewer requirements: spring-clamp motor/brake terminals, separate raw PD voltage sensing, PD readiness diagnostics/interlocks, and motor-STEP-based assembly checks. These affected source, native PCB, firmware, assembly and documentation sections are reopened. Preserve the four motor mounting holes and bottom-only optional encoder. STEP alignment is evidence for geometry, not screw threads or permissible case-screw replacement. Do not invent fastening approval or unlock motion. The eight existing USB hole errors and cosmetic baseline remain visible; new electrical findings are not waived.
+
 ## Architecture reopened — 2026-11-01
 
 The user explicitly selected RP2040 + DRV8462DDVR + TPS26750 + AS5600 while retaining the 48 V / 5 A EPR contract, and requested a PR, not a direct main push. The affected MCU, clock/boot flash, driver/bridges, encoder, firmware and PCB sections are reopened. DDV is the top-cooled package: use its own pinout, not DDW. Preserve the independent eFuse, brake, hardware enable interlocks, four rear mounting holes and unrelated circuitry. Existing STM32/TMC release files, native copper and verification reports are historical until regenerated against this revision; they cannot qualify this redesign. Keep motion locked and ordering held until new CAD, firmware, thermal and physical checks have evidence. Do not make a passing source build stand in for native routing or powered qualification.

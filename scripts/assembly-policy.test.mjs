@@ -38,14 +38,15 @@ test('bare service pads remain on the PCB but require no placed part', () => {
   expect(assemblyPolicyErrors(circuit, standards, new Set([...fitted, 'TP_PD_GND'])).length).toBeGreaterThan(0)
 })
 
-test('motor harness uses the rated VH family and preserves manufacturer winding pairs', () => {
+test('motor harness uses the rated WAGO spring clamp and preserves manufacturer winding pairs', () => {
   const harness = JSON.parse(readFileSync('engineering/motor-harness.json'))
   const motor = JSON.parse(readFileSync('docs/motor-data.json'))
   const sources = circuit.filter(row => row.type === 'source_component')
   const j2 = sources.find(row => row.name === 'J2')
   expect(j2.manufacturer_part_number).toBe(harness.motor_connector.header)
-  expect(harness.motor_connector.mate).toBe('VHR-4N')
-  expect(harness.motor_connector.contacts).toBe('SVH-41T-P1.1')
+  expect(harness.motor_connector.mate).toBeNull()
+  expect(harness.motor_connector.contacts).toBeNull()
+  expect(harness.motor_connector.strip_length_mm).toEqual([8,9])
   expect(harness.motor_connector.termination_wire_awg).toBe(16)
   expect(harness.motor_connector.wire_colours).toEqual(['A+', 'A-', 'B+', 'B-'].map(phase => motor.wiring[phase]))
   for (const [pin, netName] of Object.entries(harness.motor_connector.pin_to_net)) {

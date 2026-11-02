@@ -13,10 +13,13 @@ export function checkRp2040Contract(circuit) {
   for(const [pin,name] of Object.entries(driver)) requireNet('U7',Number(pin),name)
   for(const pin of [32,35,36,37,38]) if(net('U7',pin)) errors.push(`DDV reserved pin ${pin} connected`)
   for(const ref of ['Q6','Q7','Q8','Q9','Q10','Q11','Q12','Q13','Q14','R109','R110']) if(components.has(ref)) errors.push(`Obsolete bridge part ${ref} remains`)
-  for(const [ref,mpn] of [['U7','DRV8462DDVR'],['U16','RP2040'],['U18','AS5600-ASOM'],['U2','TPS26750SRSMR']]) {
+  for(const [ref,mpn] of [['U7','DRV8462DDVR'],['U16','RP2040'],['U18','AS5600-ASOM'],['U2','TPS26750SRSMR'],['U38','INA237AIDGSR'],['J2','2601-3104'],['J3','236-402']]) {
     if(components.get(ref)?.manufacturer_part_number!==mpn) errors.push(`${ref}: wrong exact device/package`)
   }
   const connections=[
+    ['U38',1,'GND'],['U38',2,'GND'],['U38',4,'PD_SDA'],['U38',5,'PD_SCL'],['U38',6,'V3V3'],['U38',7,'GND'],['U38',8,'PD_VBUS'],['U38',9,'GND'],['U38',10,'GND'],
+    ['C109',1,'V3V3'],['C109',2,'GND'],
+    ['J2',5,'MOTOR_A1_OUT'],['J2',6,'MOTOR_A2'],['J2',7,'MOTOR_B1_OUT'],['J2',8,'MOTOR_B2'],['J3',3,'VMOTOR'],['J3',4,'BRAKE_RETURN'],
     ['U10',1,'MCU_RUN'],['U10',2,'MOTOR_PG'],['U10',4,'RUN_PG'],['U11',1,'RUN_PG'],['U11',2,'VMOTOR_OK'],['U11',4,'RUN_WINDOW_OK'],
     ['U33',1,'RUN_WINDOW_OK'],['U33',2,'TEMP_OK'],['U33',4,'RUN_SAFE'],['R55',1,'RUN_SAFE'],['R55',2,'GND'],
     // The removed TMC supplied this shared brake rail; its regulator must remain.

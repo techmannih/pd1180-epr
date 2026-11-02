@@ -1,29 +1,29 @@
-# RP2040 / DRV8462 native copper review
+# WAGO reviewer ECO: actual filled copper
 
-The baseline is the connected RP2040/DRV8462 route before reinforcement. It is not the old STM32/TMC5160 board. Final traces, filled zones, parallel phase vias and terminal-only Kelvin branches are checked against the actual exported native PCB. All four motor output nets have at least four power vias; the routed current paths are separately screened below.
+The comparison gate checks the **same new WAGO layout before and after reinforcement**. The separate PR #21 JST comparison is also shown; moved terminals lengthen several paths. A passing reinforcement gate does not mean every path improved versus the old connector layout.
 
-![Actual filled power copper by layer](copper-contact-review.png)
+Native KiCad: 8 retained USB hole-clearance errors, 451 cosmetic warnings, 0 other errors, 0 unconnected, 0 parity and 0 ERC. No electrical finding is waived. All 55 local bypass paths, four Kelvin branches and four USB reference paths are required to pass independently.
 
-Native KiCad reports **8 errors, all retained J1/J10 hole clearances**, **0 unconnected**, **0 parity**, and **0 ERC**. The 434 cosmetic warnings remain visible. No additional clearance, narrow-connection, dangling-track/via or hole-spacing findings remain. Track width ≥0.15 mm, GND clearance ≥0.30 mm, GND edge inset ≥0.50 mm, global copper-edge clearance 0.20 mm, and connection/groove width ≥0.09 mm are unchanged.
+![Actual filled copper by layer](copper-contact-review.png)
 
-All 54 bypass paths, four Kelvin terminal-only branches, USB reference/stitching and brake-current-path classifications pass. `routing/power-feed.json` binds the new architecture's exact VMOTOR tracks and remaining native geometry; its old seven-segment TMC recipe is historical and cannot be replayed onto this board.
+| Net / destination | WAGO before reinforcement mΩ | Final mΩ | PR #21 JST mΩ |
+|---|---:|---:|---:|
+| MOTOR_A1 → R115:1 | 9.148 | 8.489 | 9.148 |
+| MOTOR_B1 → R116:1 | 3.158 | 3.158 | 3.158 |
+| MOTOR_A1_OUT → J2:1 | 5.634 | 5.312 | 5.054 |
+| MOTOR_A2 → J2:2 | 21.495 | 21.495 | 13.130 |
+| MOTOR_B1_OUT → J2:3 | 10.833 | 7.881 | 5.737 |
+| MOTOR_B2 → J2:4 | 9.062 | 8.520 | 8.012 |
+| PD_VBUS → Q4:1,2,3 | 19.468 | 19.157 | 20.897 |
+| EFUSE_IN → U6:1,2 | 6.792 | 6.792 | 6.792 |
+| VMOTOR → U7:2,11,12,21 | 19.027 | 14.107 | 18.570 |
+| VMOTOR → J3:1 | 27.482 | 15.136 | 3.246 |
+| BRAKE_RETURN → Q16:9 | 25.591 | 6.970 | 1.410 |
 
-## Actual filled-copper DC comparison
+All 11 paths use 0.075/0.05 mm meshes; refine to 0.025/0.02 mm when needed for ≤3% adjacent-mesh convergence. Values above use the common 0.05 mm mesh. The independent A1 corridor priority and explicit transfer-via tie prevent new A2 reinforcement from cutting the pre-existing A1 copper.
 
-All 11 paths use 0.075 and 0.05 mm meshes, with 0.025/0.02 mm refinement where required to achieve ≤3% adjacent-mesh difference. The table uses the common 0.05 mm mesh. The raw baseline/final geometry, boards and numerical results are in `engineering/rp2040-copper-evidence.zip`.
+These are copper-only estimates at 20°C with 35 µm copper and assumed 20 µm via plating. Contacts, shunts, transistors, switching, thermal feedback and EMC are excluded. The longest motor output path is about 21.3 mΩ: about 0.013 W at nominal 0.773 A RMS, but 0.77 W at 6 A, before hot-copper and contact losses. This does not establish an allowable current or temperature. The phase-current and DDV cooling qualification remain open.
 
-| Net | Terminal path | Before mΩ | After mΩ | Change |
-|---|---|---:|---:|---:|
-| MOTOR_A1 | U7:17,18,19 → R115:1 | 29.364 | 9.148 | -68.8% |
-| MOTOR_B1 | U7:4,5,6 → R116:1 | 13.467 | 3.158 | -76.5% |
-| MOTOR_A1_OUT | R115:2 → J2:1 | 20.682 | 5.054 | -75.6% |
-| MOTOR_A2 | U7:14,15,16 → J2:2 | 46.140 | 13.130 | -71.5% |
-| MOTOR_B1_OUT | R116:2 → J2:3 | 27.027 | 5.737 | -78.8% |
-| MOTOR_B2 | U7:7,8,9 → J2:4 | 36.924 | 8.012 | -78.3% |
-| PD_VBUS | J1:7,8,17,18 → Q4:1,2,3 | 72.365 | 20.897 | -71.1% |
-| EFUSE_IN | Q4:9 → U6:1,2 | 15.773 | 6.792 | -56.9% |
-| VMOTOR | U6:17,18 → U7:2,11,12,21 | 68.928 | 18.570 | -73.1% |
-| VMOTOR | U6:17,18 → J3:1 | 9.368 | 3.246 | -65.3% |
-| BRAKE_RETURN | J3:2 → Q16:9 | 6.210 | 1.410 | -77.3% |
+The brake feed/return total is about 22.1 mΩ at 20°C (about 0.62 W at 5.3 A while braking). Brake duty and the resistor/heatsink remain unqualified; the clamps, wire installation and board temperature require measurement.
 
-These are 20°C copper-only estimates. They omit component/contact losses, temperature rise, switching and electromagnetic effects; they do not rate the board for 6 A. The motor-current envelope, DDV heatsink/TIM, retained 1 oz stack and external brake installation remain unqualified. Motion locks and the order hold remain enabled.
+Raw boards, actual filled polygons and per-path numerical results are in `engineering/rp2040-copper-evidence.zip`. `routing/power-feed.json` binds the independently checked new geometry. Track ≥0.15 mm, GND clearance ≥0.30 mm, GND inset ≥0.50 mm and global copper-edge rule 0.20 mm remain unchanged.

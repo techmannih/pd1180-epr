@@ -1,5 +1,5 @@
 {
-  "status": "Motor/PCB alignment and connected J2 harness preview; no mounting fasteners modeled or qualified",
+  "status": "STEP-based motor/PCB alignment with WAGO motor and brake harness; fastening and physical fit unqualified",
   "motor": {
     "name": "STEPPERONLINE 34HS31-6004S1",
     "step": "34HS31-6004S1.step",
@@ -71,7 +71,7 @@
     "rear_usable_depth_mm": null
   },
   "encoder": {
-    "sensor": "Optional U18 AS5047P, bottom side at PCB origin; C52/C53 on top; all three doNotPlace",
+    "sensor": "Optional U18 AS5600, bottom side at PCB origin; C52/C53 on top; all three doNotPlace",
     "preview_included": false,
     "status": "Unresolved for ordered single-shaft motor",
     "reason": "QSH-specific pilot, shaft holder and magnet stack withdrawn. Manufacturer confirmation of rotating rear-shaft access is required before a new attachment and working gap can be defined.",
@@ -85,7 +85,7 @@
     "Rear mounting thread, usable engagement and final clearance stack are unverified; no fastener or secure mount is claimed",
     "Motor body is 79.5 mm in STEP but 80 mm maximum in drawing; full tolerance stack remains to be reviewed",
     "Rear rotating-shaft access and magnet attachment are not established; no encoder hardware is modeled",
-    "6 A/phase must be translated to an approved driver current/hold waveform; external load inertia and stop profile remain unknown; manufacturer rotor inertia is 1400 g cm²",
+    "6 A/phase must be translated to an approved driver current/hold waveform; external load inertia and stop profile remain unknown; manufacturer rotor inertia is 1400 g cm\u00b2",
     "J2 harness has no new retention bracket; final strain-relief attachment requires physical verification"
   ],
   "sources": [
@@ -113,7 +113,7 @@
       "basis": "Complete projected supplier CAD envelope; top-entry B4P-VH connector body must remain inside the board perimeter."
     }
   ],
-  "runtime_assets_base_url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/d632f484ea1046071beb703e3e6297d63388f960/engineering/mechanical/parts",
+  "runtime_assets_base_url": "https://raw.githubusercontent.com/techmannih/pd1180-epr/6e9967a0e28f2f1596f1f83406638e25d07a82f8/engineering/mechanical/parts",
   "brake": {
     "reference": "J3",
     "assembly_modeled": true,

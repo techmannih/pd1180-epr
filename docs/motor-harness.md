@@ -1,53 +1,36 @@
-# Motor hookup and encoder review
+# Motor hookup and rear assembly
 
-Compared against Rishabh's [NEMA17 v1.0.42](https://tscircuit.com/imrishabh18/rp2040-motor-controller?version=1.0.42) and [NEMA23 v1.3.2](https://tscircuit.com/imrishabh18/nema-23-stepper-controller?version=1.3.2). Retrieved source hashes and the checked pin map are in [motor-harness.json](../engineering/motor-harness.json).
-
-| Review item | Implementation |
-|---|---|
-| Small centered bottom encoder, DNP | Retain AS5047P U18 at the motor axis `(0,0)` on bottom. U18/C52/C53 are `doNotPlace`; no fitted BOM/CPL or paste. R74 remains fitted on top to deselect the absent SPI device. |
-| Reference motor connector | NEMA17 uses JST PH, 2 mm; NEMA23 uses JST XH, 2.5 mm. J2 already uses JST VH, 3.96 mm, appropriate for reviewing this higher-current motor. |
-| A real connection to the motor | Specify the matching housing, contacts, pigtail and factory-cable splice below. A bare PCB header alone is not a complete cable assembly. |
-| Explain J2 and J7 | J2 carries only the four winding leads. J7 and its external control circuits are removed; local SW2 START/STOP uses onboard STM32 control. |
-| Extra connectors | J1 = EPR POWER; J10 = USB DATA; J3 = external regeneration resistor. SWD and encoder observation use service pads, not additional cable headers. |
-| Assembly clearance | Check the complete J2 body and a conservative vertical mating/insertion prism against component envelopes. Final cable bend, strain relief and fixture access still require physical approval. |
+J2 is **WAGO 2601-3104**, a four-pole lever-operated PCB spring clamp. J3 is **WAGO 236-402**, a two-pole tool-operated CAGE CLAMP for the external brake resistor. Both are top-mounted. No JST housing or socket contacts are needed. The motor terminal stays on the ordered motor's cable-exit side.
 
 ## Motor cable to J2
 
-The ordered **STEPPERONLINE 34HS31-6004S1** has a 1 m, four-core **0.75 mm²** factory cable with bare lead ends, not a supplied JST plug. Its manufacturer drawing A1510 rev 0 specifies the colours below. The square J2 PCB pad is pin 1. Identify the mating housing cavities from the JST drawing; the view into the plug is mirrored relative to the solder-side PCB view.
+The ordered **STEPPERONLINE 34HS31-6004S1** has a 1 m, four-core **0.75 mm²** cable. Manufacturer drawing A1510 rev 0 defines the winding colours. Match the numbered **wire entries**, not the eight solder tails: each pole has two PCB pins (1/5, 2/6, 3/7, 4/8).
 
-| J2 cavity | Board net | Motor winding | Factory wire |
+| J2 wire entry | Board net | Winding | Factory colour |
 |---:|---|---|---|
 | 1 | MOTOR_A1_OUT | A+ | Black |
 | 2 | MOTOR_A2 | A− | Green |
 | 3 | MOTOR_B1_OUT | B+ | Red |
 | 4 | MOTOR_B2 | B− | Blue |
 
-The connection is **motor factory cable → four insulated permanent splices → 16 AWG pigtail → crimp contacts in VHR-4N → top-entry J2**. This adds no extra board connector.
+The modeled harness retains **factory cable → four TE 320559 insulated splices → four Alpha Wire 3057 16 AWG pigtails → J2 spring clamps**. The splices support 0.3–1.42 mm². They join the modeled pigtails to the factory cable; they are not required by the spring-clamp principle. A direct factory-wire installation is within the WAGO stranded-wire range, but would need its own routing, cut-length and retention acceptance.
 
-| Harness item | Quantity | Specification |
-|---|---:|---|
-| Mating housing | 1 | Genuine JST **VHR-4N** |
-| Socket contact | 4 | JST **SVH-41T-P1.1**, for the 16 AWG pigtail; wire insulation OD 1.7–3.0 mm |
-| Pigtail | 4 conductors | 16 AWG stranded copper, ≥105 °C and ≥250 V insulation, matching Black/Green/Red/Blue labels; maker confirms actual conductor/insulation fit to JST tooling |
-| Insulated butt splice | 4 | TE **320559**, 0.3–1.42 mm² / 22–16 AWG; one factory conductor and one pigtail conductor per splice |
-| Strain relief | 1 set | Unresolved after withdrawal of the unsupported fixture; qualify a real retention method before physical assembly. Connector solder joints must not carry cable tension |
+For J2, strip **8–9 mm**, open the lever, insert one untinned stranded conductor fully and close the lever. Confirm no exposed copper or stray strands and perform a retention check. WAGO specifies **0.14–1.5 mm² stranded**, **10 A UL / 300 V** and **17.5 A IEC / 160 V**. Ratings do not qualify the motor's 6 A/phase operation or the board's thermal performance. See the [WAGO product](https://www.wago.com/global/pcb-terminal-blocks-and-pluggable-connectors/pcb-terminal-block/p/2601-3104) and [manufacturer datasheet](https://www1.futureelectronics.com/doc/WAGO/2601-3104.pdf).
 
-JST's standard VH header rating is **10 A with 16 AWG wire**. That condition is why the specified pigtail uses 16 AWG. Do not claim 10 A for a direct crimp onto the motor's 0.75 mm² leads. A direct-crimp alternative would use the applicable contact range and would need its own current/temperature qualification. The connector rating does not raise the motor rating or qualify a driver current. The current conservative ceiling is 3.8 A RMS (3.781 A programmed nominal); the supplied motion-locked initial profile is about 0.827 A RMS. Neither setting has passed powered qualification. See the [JST VH catalogue](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) and [TE splice specification](https://www.te.com/en/product-320559.html).
+The terminal body is nominally **16.58 mm** above the PCB, with vertical wire entry. The model reserves access above it and uses **175 mm** pigtail cuts including 12 mm termination/adjustment allowance. These are nominal CAD lengths, not approved production cuts. The modeled minimum bend radius is **23.876 mm**. Use the supplier's assembly instructions; qualify splice crimps, clamp retention, cable support and terminal temperature on the first article. Solder joints must not carry cable tension.
 
-The connector mates vertically from the populated side. Reserve 40 mm above the PCB at J2 for plugging and initial cable bend; route the loom outward around the motor, not through the PCB-to-motor gap. The catalogue mated connector height is 16.5 mm above the PCB. Revision B defines nominal 170/170/170/165 mm pigtail cuts and a 23.876 mm minimum bend radius; the harness maker must approve these on the first article; do not stretch the cable around a screw/post or across a sharp PCB edge.
+With power disconnected, black–green and red–blue must be the winding pairs (nominal 0.48 Ω per phase at 25 °C, excluding cable/contact/meter resistance). Different phases and the frame must be isolated. Never connect or disconnect windings while energized.
 
-Ask the harness maker to provide the completed cable as a separate line item. PCB assembly does not automatically include this cable, housing, contacts or motor. External harness inventory has not been reserved. Use the prescribed JST and TE tooling/application instructions, verify every cavity against the table, perform crimp pull tests and a continuity/shorts test, then label the finished cable. With power disconnected, black-to-green and red-to-blue must be the two winding pairs (nominal 0.48 Ω per phase at 25 °C, before cable/contact/test-lead resistance). Different phases and motor frame must be isolated. Never connect or disconnect J2 while the driver is energized.
+## Brake connection
 
-## J7 after interface cleanup
+J3 wire entry 1 is **VMOTOR**, entry 2 **BRAKE_RETURN**; solder pins 1/3 and 2/4 respectively are paired. Strip **5–6 mm** and operate the 236-series spring clamp with the specified tool. The reviewed 16 AWG conductor fits its **0.08–2.5 mm²** range. This is a 45° wire-entry terminal. It is not a plug-in JST connection. See [WAGO 236-402](https://www.wago.com/global/pcb-terminal-blocks-and-pluggable-connectors/pcb-terminal-block/p/236-402).
 
-J7, STEP/DIR/ENABLE/home/limit conditioning and their unused wires are removed. The STM32 now commands the TMC5160 internal SPI ramp from local SW2 START/STOP. The pre-existing protections remain; there is no external command harness. See [product correction](product-eco.md).
+Two Alpha3057 leads connect J3 to TE152883 M4 rings at the provisional Vishay LPS0300H10R0GB 10 Ω resistor. Nominal CAD cuts are **165 / 210 mm**, including 16 mm allowance; physical installation may require revision. The resistor is nonpolar; the model routes the two conductors without crossing. BRAKE_RETURN is switched by Q16 and is **not ground**. Cooling, guard, resistor duty and strain relief remain unqualified; see [brake integration](brake-integration.md).
 
-## Encoder boundary
+## Rear mounting and encoder
 
-Both reference boards leave the bottom sensor and two nearby capacitors unpopulated. This board now follows that assembly policy while retaining its existing SPI/ABI sensor interface. DNP means an optional, routed footprint, not an installed working encoder. All 252 fitted components and 19 service pads remain top-side.
+The four Ø4.2 mm PCB holes retain the exact rear axes from the ordered motor's [manufacturer STEP](https://files.omc-stepperonline.com/34HS31-6004S1.STEP), also preserved in the [hash-verified archive](../engineering/mechanical/34HS31-6004S1-manufacturer.zip). The rear-axis coordinates and transforms are in [ordered-motor-pcb-reference.json](../engineering/mechanical/ordered-motor-pcb-reference.json).
 
-The ordered motor is single-shaft. Its rear recess is not evidence of an accessible rotating shaft. A centered footprint does not create a magnet attachment: a compatible rear shaft/holder, diametric magnet, field strength and operating gap remain unresolved. Do not drill the motor, remove its case bolts or populate U18/C52/C53 on the assumption that the magnet will fit. Open-loop internal-ramp operation does not require this optional encoder; the supplied commissioning firmware remains motion-locked for the separately documented qualification reasons.
+The STEP confirms alignment, not accessory-thread size, usable engagement or permission to replace motor case bolts. The **19.5 mm** board-to-rear separation is a preview assumption. No mounting screws, spacer stack or mechanically secured assembly is claimed.
 
-## Remaining assembly gates
-
-The unsupported adapter, posts and fixture hardware have been removed. The existing four PCB holes remain unchanged. Rear thread/depth, fastening and cable retention are unverified; the model is an alignment preview. Motor electrical settings, TI PD programming, power/thermal/brake tests and pre-shipment motor-operation qualification remain in [power-validation.md](power-validation.md). No bench, crimp or physical-fit results are claimed by this review.
+**U18 AS5600** is centered on the bottom; its DNP capacitors C52/C53 remain on top. It uses I2C, not the earlier SPI/ABI sensor interface. The ordered single-shaft motor has no documented rotating rear magnet attachment. Leave the sensor DNP until magnet mounting, field and airgap are qualified. RP2040/DRV8462 motion remains locked independently of this optional encoder.

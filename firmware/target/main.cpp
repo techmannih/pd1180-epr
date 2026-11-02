@@ -13,6 +13,7 @@ extern "C" {
 #include "control.h"
 #include "brake_preflight.h"
 #include "pd_contract.h"
+#include "pd_voltage.h"
 #include "telemetry.h"
 #include "power_domain.h"
 #include "drv8462.h"
@@ -62,6 +63,8 @@ static uint32_t boardMv;
 static uint8_t pdMode[4], pdIdentity[8], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
 static uint32_t lastPoll, lastTick, lastGoodSample, vbusMv, vmotorMv;
 static uint32_t lastTemperaturePoll, lastTemperatureSample, temperatureConfiguredAt;
+static pd1180_pd_voltage_t pdVoltage;
+static uint32_t lastPdVoltagePoll;
 static uint32_t lastAdcPoll, lastPhaseSample, adcSampleAt[3];
 static uint16_t adcMv[3];
 static int32_t phaseMa[2];
@@ -123,6 +126,7 @@ static void releaseChipSelect(board_pin_t p) {
 }
 static void invalidateTelemetry() {
   inputs = {};
+  pdVoltage = {};
   brakePreflight = {};
   adcChannel = 0;
   cancelMotion();
@@ -399,6 +403,23 @@ static bool pdConfigurationMatches(const uint8_t *identity) {
   static constexpr uint8_t expected[8] = {'P','D','1','1','8','0','4','1'};
   return memcmp(identity, expected, sizeof(expected)) == 0;
 }
+static bool pdVoltageRead(void *, uint8_t reg, uint16_t *value) {
+  return readRegister(0x40,reg,*value);
+}
+static bool pdVoltageWrite(void *, uint8_t reg, uint16_t value) {
+  return writeRegister(0x40,reg,value);
+}
+static void pollPdVoltage(uint32_t now) {
+  if (now-lastPdVoltagePoll<10u) return;
+  lastPdVoltagePoll=now;
+  const pd1180_voltage_bus_t bus={pdVoltageRead,pdVoltageWrite,nullptr};
+  pd1180_pd_voltage_poll(&pdVoltage,&bus,now);
+}
+static void updatePdReady(uint32_t now) {
+  inputs.pd_power_good=peripheralsStarted && pdReadOk && now-lastGoodSample<=100u &&
+    inputs.epr_contract && pdConfigurationMatches(pdIdentity) &&
+    pd1180_pd_voltage_in_range(&pdVoltage,now);
+}
 static void pollPower() {
   vbusMv = dividerMillivolts(PD1180_PIN_USB_VBUS_SENSE,1000,47);
   vmotorMv = static_cast<uint32_t>(adcMv[0]) * 19u; // 360k / 20k divider, ADS1115 AIN0.
@@ -440,6 +461,15 @@ static void executeCommand() {
       driverStatus.valid,driverStatus.fault,driverStatus.diag1,driverStatus.diag2,driver.configured,
       encoderSample.valid,encoderSample.angle);
     reply(status);
+  } else if(!strcmp(command,"POWER")) {
+    updatePdReady(millis());
+    char status[240];
+    snprintf(status,sizeof(status),"PD_READY=%u PD_VBUS_MV=%lu PD_ADC_VALID=%u PD_ADC_AGE_MS=%lu CONTRACT_MV=%u CONTRACT_MA=%u MOTOR_PG=%u VMOTOR_MV=%lu\r\n",
+      inputs.pd_power_good,static_cast<unsigned long>(pdVoltage.millivolts),
+      pd1180_pd_voltage_fresh(&pdVoltage,millis()),
+      static_cast<unsigned long>(pdVoltage.valid?millis()-pdVoltage.sampled_at:UINT32_MAX),
+      inputs.contract_mv,inputs.contract_ma,inputs.motor_power_good,static_cast<unsigned long>(vmotorMv));
+    reply(status);
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
     snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BRAKE_OK=%u BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u INDICATORS_OK=%u BRINGUP_REQUIRED=%u\r\n",
@@ -450,7 +480,7 @@ static void executeCommand() {
       !motionQualified);
     reply(status);
   } else if(!strcmp(command,"HELP")) {
-    reply("PD1180 commissioning: STATUS, DRIVER, DISARM, ARM (blocked), HELP. No motion enabled.\r\n");
+    reply("PD1180 commissioning: STATUS, POWER, DRIVER, DISARM, ARM (blocked), HELP. No motion enabled.\r\n");
   } else reply("ERR unknown command\r\n");
 }
 void setup() {
@@ -491,7 +521,7 @@ void loop() {
   if (peripheralsStarted && !boardReady) stopPeripherals();
   if (!peripheralsStarted && boardReady) startPeripherals();
   if (peripheralsStarted) {
-    pollTemperature(now); pollBusAdc(now); samplePhaseCurrent(now); pollEncoder(now);
+    pollTemperature(now); pollBusAdc(now); pollPdVoltage(now); samplePhaseCurrent(now); pollEncoder(now);
     if (!temperatureConfigured || now-lastTemperatureSample>500u) inputs.temperature_valid=false;
     if(now-lastPoll >= 50u) { lastPoll=now; pollPower(); }
     pollDriver(now);
@@ -529,6 +559,7 @@ void loop() {
   const uint32_t tick=millis();
   if(tick-lastTick >= 10u) {
     inputs.sample_fresh=pdReadOk && tick-lastGoodSample<=100u;
+    updatePdReady(tick);
     pd1180_control_tick(&control,&inputs,tick-lastTick); lastTick=tick;
   }
   if (motionQualified) {

@@ -1,6 +1,6 @@
 # RP2040 / DRV8462 redesign
 
-Revision: 0.5.0-RP2040-DRAFT, based on main `1c22abf`. User-selected architecture: **RP2040 + DRV8462DDVR + TPS26750 + AS5600, retaining 48 V EPR**. Engineering changes only; no assembled motor operation or manufacturing approval is claimed.
+Revision: 0.5.0-RP2040-DRAFT, architecture introduced from `1c22abf`, with the reviewer ECO based on merged PR #21 (`64c14cd`). User-selected architecture: **RP2040 + DRV8462DDVR + TPS26750 + AS5600, retaining 48 V EPR**. Engineering changes only; no assembled motor operation or manufacturing approval is claimed.
 
 ## Electrical changes
 
@@ -9,7 +9,7 @@ Revision: 0.5.0-RP2040-DRAFT, based on main `1c22abf`. User-selected architectur
 - Motor enable is still gated by RUN_SAFE independently of STEP commands. The eFuse, thermal/voltage gates, brake Q16, freewheel clamp and brake-feedback monitor remain. U34 and L3 remain: their renamed BRAKE_12V output powers U15, even though the old TMC supply function is gone.
 - R115/R116 and INA240 phase-current diagnostics remain; DRV8462 regulates using its internal current sensing. Their four Kelvin branches pass native terminal-only isolation and pour-keepout checks.
 - U18 becomes AS5600, I²C address 0x36 on RP2040 I²C1. Its 5 V/3 V supply pins are tied to 3.3 V per the 3.3 V circuit, DIR is low, PGO is unconnected. It is **DNP**, centered on the motor axis on the bottom; both bypass capacitors stay on top. The single-shaft ordered motor has no qualified rear magnet installation. Firmware reports valid magnet/angle telemetry only, not closed-loop position control.
-- J1/J10, PD controller/configuration, four mounting holes, brake attachment and other unrelated circuits are retained. J2/J3 remain JST VH in this revision; the earlier spring-clamp requirement is still open. There is still no separate raw PD_VBUS ADC divider. Existing telemetry measures VMOTOR after the eFuse; this must not be described as raw input voltage sensing.
+- J1/J10, PD controller/configuration, four mounting holes, brake attachment and other unrelated circuits are retained. The reviewer ECO replaces J2/J3 with WAGO spring clamps and adds U38 INA237 raw PD_VBUS sensing. ADS1115 still measures protected VMOTOR separately.
 
 ## Firmware behavior
 
@@ -29,11 +29,11 @@ TI section 9.1 requires support at both ends of the IC, recommends less than 45 
 
 ## Native CAD and verification
 
-The current paired KiCad project has **0 unconnected items, 0 schematic-parity findings and 0 ERC findings**. Raw DRC retains **8 J1/J10 hole-clearance errors** at the user's explicit request, plus **434 cosmetic warnings** (180 text-height, 138 silkscreen overlaps and 116 silk-over-copper). This is not a zero-violation report or fabrication approval. No other native electrical/geometry finding is accepted.
+The current paired KiCad project has **0 unconnected items, 0 schematic-parity findings and 0 ERC findings**. Raw DRC retains **8 J1/J10 hole-clearance errors** at the user's explicit request, plus **451 cosmetic warnings** (181 text-height, 152 silkscreen overlaps and 118 silk-over-copper). This is not a zero-violation report or fabrication approval. No other native electrical/geometry finding is accepted.
 
-The [actual KiCad GUI screenshot](https://github.com/techmannih/pd1180-epr/blob/redesign/rp2040-integrated-48v/docs/rp2040-kicad-drc.png) was captured after refilling zones and enabling Report All Errors for Each Track on an exact copy of the delivered project. It shows 8 errors, 434 warnings and 0 unconnected items. GUI schematic parity says not run; the separate CLI run explicitly enables schematic parity and reports zero.
+The [actual KiCad GUI screenshot](rp2040-kicad-drc.png) was captured after refilling zones in the current delivered project. It shows 8 errors, 451 warnings and 0 unconnected items. GUI schematic parity says not run; the separate CLI run explicitly enables schematic parity and reports zero.
 
-All 54 local bypass power paths, four terminal-only Kelvin branches, four USB return-plane paths, source/native width and ground-spacing rules, and power-corridor checks pass on the exported board. The USB fanout uses a filled/capped via in C103's pad; assembly must retain the documented filled/capped via-in-pad process. Final copper is imported into the routed viewer, rather than rerouted by the hosted preview. See [copper evidence](copper-geometry-review.md), [raw manufacturing report](../dist/manufacturing/manufacturing-report.json) and [generated full verification](verification.json).
+All 55 local bypass power paths, four terminal-only Kelvin branches, four USB return-plane paths, source/native width and ground-spacing rules, and power-corridor checks pass on the exported board. The USB fanout uses a filled/capped via in C103's pad; assembly must retain the documented filled/capped via-in-pad process. Final copper is imported into the routed viewer, rather than rerouted by the hosted preview. See [copper evidence](copper-geometry-review.md), [raw manufacturing report](../dist/manufacturing/manufacturing-report.json) and [generated full verification](verification.json).
 
 The new DC-bus/brake/eFuse behavioral simulations are bound to this source. They do not model or qualify DRV8462 switching. The explicit 6 A/phase winding corner reaches **54.858 V**, leaving less than the allocated 0.5 V margin to the retained 55 V system review limit. Full-current operation is therefore unqualified; this finding is retained, not converted into a passing operating claim. The low-current sensitivity case is separate and is not a guaranteed current-tolerance bound.
 
@@ -47,3 +47,7 @@ Remaining product/hardware work is recorded in [readiness](readiness.md): qualif
 - [Raspberry Pi RP2040 datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf) and [hardware design guide](https://datasheets.raspberrypi.com/rp2040/hardware-design-with-rp2040.pdf): package pins, power, QSPI, crystal, USB, boot.
 - [AS5600 manufacturer page](https://ams-osram.com/products/sensors/position-sensors/ams-as5600-position-sensor): 3.3 V circuit, I²C and magnet validity.
 - [Ordered motor](https://www.omc-stepperonline.com/s-series-nema-34-stepper-motor-4-8nm-679-87oz-in-14mm-key-way-shaft-1m-cable-34hs31-6004s1): physical/rated motor, not measured controller performance.
+
+## Reviewer ECO after PR #21
+
+J2/J3 now use WAGO 2601-3104 and 236-402 spring clamps. U38 INA237 measures raw PD_VBUS before the eFuse, independently of ADS1115 VMOTOR. Firmware checks identity, configuration, fresh single-shot conversion completion and the 44–51 V engineering window before deriving PD_READY from the TPS contract. MOTOR_PG remains a separate hardware/firmware gate. See [completion handoff](completion-handoff.md) for diagnostics, exact wiring, physical acceptance and the motor STEP limitation.

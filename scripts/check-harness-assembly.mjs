@@ -63,7 +63,7 @@ for(const c of geometry.connectors.filter(c=>c.ports)) {
     const wire=geometry.wires.find(w=>w.name.startsWith(`${c.reference} cavity ${cavity.pin} `))
     if(!wire || Math.hypot(wire.points[0][0]-cavity.x,wire.points[0][1]-cavity.y)>.001)errors.push(`${c.reference} cavity ${cavity.pin} has no aligned lead`)
   }
-  if(p.rotation!==0)errors.push(`${c.reference} mating orientation changed`)
+  if(p.rotation!==layout.mates.find(m=>m.reference===c.reference).rotation)errors.push(`${c.reference} mating orientation changed`)
 }
 const bendChecks=geometry.wires.filter(w=>w.kind==='pigtail').map(w=>{
   let radius=Infinity

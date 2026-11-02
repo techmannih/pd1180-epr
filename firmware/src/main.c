@@ -8,7 +8,7 @@ int main(void) {
   pd1180_control_t control;
   pd1180_control_reset(&control);
   const pd1180_inputs_t inputs = {
-    .pd_app_mode = true,
+    .pd_power_good = true, .pd_app_mode = true,
     .epr_contract = true,
     .contract_mv = 48000,
     .contract_ma = 5000,

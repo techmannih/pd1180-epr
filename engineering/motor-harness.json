@@ -25,18 +25,15 @@
   },
   "motor_connector": {
     "reference": "J2",
-    "header": "B4P-VH(LF)(SN)",
-    "pitch_mm": 3.96,
-    "mate": "VHR-4N",
-    "contacts": "SVH-41T-P1.1",
-    "contact_quantity": 4,
+    "header": "2601-3104",
+    "pitch_mm": 3.5,
+    "mate": null,
+    "contacts": null,
+    "contact_quantity": 0,
     "termination_wire_awg": 16,
-    "wire_insulation_diameter_mm": [
-      1.7,
-      3.0
-    ],
+    "wire_insulation_diameter_mm": null,
     "rating_a_at_specified_wire": 10,
-    "rating_v": 250,
+    "rating_v": 300,
     "wire_colours": [
       "black",
       "green",
@@ -55,22 +52,31 @@
       0.3,
       1.42
     ],
-    "connection_status": "Defined harness; not supplied with PCB assembly. Harness maker must confirm crimp/insulation dimensions and provide continuity/pull-test records.",
-    "current_note": "JST 10 A applies to the standard header with 16 AWG termination, not directly to the motor factory 0.75 mm\u00b2 wire. Motor current is still governed by its qualification; no 10 A motor rating is implied."
+    "connection_status": "Four stripped pigtails clamp directly into J2; no mating housing or terminal crimp. Splice crimps, exposed-copper length, retention and continuity require first-article acceptance.",
+    "current_note": "10 A UL rating; 17.5 A IEC nominal. 16 AWG pigtails are within the specified stranded range; qualify temperature rise at the intended motor current.",
+    "strip_length_mm": [
+      8,
+      9
+    ],
+    "termination": "WAGO lever-operated spring clamp, one stripped stranded conductor per pole",
+    "supported_stranded_mm2": [
+      0.14,
+      1.5
+    ]
   },
   "mating_access": {
     "reference": "J2",
-    "half_width_mm": 8.39,
-    "half_depth_mm": 10.5,
-    "bottom_above_pcb_mm": 3.2,
+    "half_width_mm": 8.7,
+    "half_depth_mm": 8.5,
+    "bottom_above_pcb_mm": 16.6,
     "top_above_pcb_mm": 40,
     "minimum_gap_mm": 0.1,
-    "basis": "Conservative vertical insertion prism: 15.78 mm housing width plus 0.5 mm per side, full 10.5 mm housing depth reserved on both sides of pin row, and 40 mm height allowance. Nominal mated height is 16.5 mm. Final wire bend/tool clearance requires physical approval."
+    "basis": "Conservative space above the lever-operated WAGO terminal for wire insertion and lever actuation. Nominal body height 16.58 mm; mechanical tool/finger access and wire bends require physical checks."
   },
   "required_connectors": {
     "J1": "USB-C EPR motor power; requested separate POWER input",
     "J10": "USB DATA/setup/diagnostics; separate from EPR input",
-    "J2": "Four motor winding leads; JST VH high-current keyed harness",
+    "J2": "Four motor winding leads; WAGO 2601-3104 lever-operated spring clamp",
     "J3": "External braking resistor required by the retained regenerative brake stage"
   },
   "optional_encoder": {
@@ -85,7 +91,7 @@
       0,
       0
     ],
-    "sensor": "AS5047P-ATSM; retained SPI/ABI wiring",
+    "sensor": "AS5600-ASOM; I2C angle readout, optional and DNP",
     "blocked_by": "Ordered single-shaft motor has no documented rear magnet interface; sensor fitting requires a qualified magnet/holder/air gap.",
     "reference_layers": {
       "U18": "bottom",
@@ -94,7 +100,7 @@
     }
   },
   "sources": [
-    "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf",
+    "https://www.wago.com/global/pcb-terminal-blocks-and-pluggable-connectors/pcb-terminal-block/p/2601-3104",
     "https://www.te.com/en/product-320559.html",
     "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
   ],

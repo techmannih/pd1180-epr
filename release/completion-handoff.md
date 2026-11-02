@@ -1,65 +1,39 @@
-> Historical STM32/TMC5160 handoff. Do not use its passing checks, firmware or order files for the RP2040 redesign. See [current readiness](readiness.md) and [architecture evidence](rp2040-redesign.md).
+# Reviewer ECO and physical acceptance
 
-# Prototype completion and acceptance record
+The current controller uses **RP2040, DRV8462DDVR, TPS26750 and optional AS5600**. The reviewer ECO adds **U38 INA237 raw-PD sensing** and **WAGO spring-clamp J2/J3**. Earlier STM32/TMC5160 binaries, current-register settings and passing reports are historical. Use the matching current source, native board, BOM, firmware and release manifest together.
 
-The 2026-10-28 revision adds a parallel VMOTOR feed while preserving all original native objects, the existing STM32G0B1CEU6/PCA9538/U37 implementation and all firmware motion locks. Fresh native electrical checks pass; 401 cosmetic warnings remain. No physical test results exist. See [the routing comparison and exact limits](copper-geometry-review.md).
+## Reviewer requirements
 
-## Current revision and retained protections
-
-- Brake feedback continues during RUN. The ADC multiplexes bus and brake-return conversions, normally up to 40 ms apart. A low return can therefore accompany an older 48 V bus sample during normal Q16 switching. Both channels must be valid and no older than 100 ms. The first mismatching observation starts a fixed 100 ms retry window regardless of the stored bus value, allowing a complete new ADC scan. Only a distinct fresh healthy pair within ±10% at 44–50.4 V clears the pending mismatch. Repeated polls, continued bad pairs, or just one updated channel cannot renew the deadline. Invalid/stale ADC or a bus outside 44–55 V faults immediately at the next check. The separate 44–51 V motor-bus interlock remains active. Checks run every 50 ms, followed by the 10 ms control tick. The 60 ms ADC scan, first detection, 100 ms retry and polling phase can accumulate to roughly 270 ms plus conversion/filter/I2C timing; this is not a guaranteed 100 ms disconnect-to-inhibit response. Measure the actual bound before enabling motion. A brake pulse that prevents a healthy pair for the whole retry window deliberately inhibits motion. The control state machine removes RUN/power permission on failure and requires deliberate rearm.
-- Host regressions cover running cable-open, reconnection, stale/duplicate conversions, the bounded observation gap, no preflight qualification and timer wrap. The ARM target is rebuilt from the updated source. The archived image still cannot enable motion.
-- The exact 401 current native-reference text findings are accepted according to the user's instruction. Every raw KiCad finding remains in the package. Changed finding identities, shorts, unconnected items, parity errors and ERC failures are rejected. Native reference names are retained. U16 now uses the ST UFQFPN48 lands and grounded exposed pad; U35 retains its TSSOP lands and existing C95 placement. U37/C99/R137 implement independent-rail reset. Four holes and unrelated components/copper are unchanged.
-- All 85 fitted part identities/packages were checked on 2026-10-28. U30, U13/U14, R60, BZ1, U6, U16 and J1/J10 currently have zero official available-order quantity. Unknown stock, package mismatch and failed engineering checks remain blocking; stock is unreserved. Strict release still requires the documented manufacturing and hardware acceptance.
-- All 18 motor, supply, shunt and brake paths are re-screened at 0.075/0.05 mm against the current native PCB, with 0.025 mm refinement where required. Results remain DC analytical estimates, excluding device/contact losses and thermal qualification.
-- All four TE320559 splice cylinders are replaced by the manufacturer C-320559 AE STEP, translated without scaling. Nominal length is 32.131 mm (drawing: 1.265 in / 32.13 mm maximum) and nominal maximum diameter is 5.6134 mm. The current V6 drawing and STEP are archived with SHA-256 evidence. Geometry regressions check all four exported bodies against the STEP; conservative harness-clearance checks pass. The uncrimped CAD does not qualify finished-crimp dimensions or physical retention.
-- Stock checks query the numeric index first and always attempt the official exact-part lookup, even if the index fails. Only official available-order evidence can pass; a failed lookup or zero quantity cannot fall back to cached index stock. Regression tests exercise those failure paths.
-- Exact coloured Alpha3057 wire SKUs, EPR/data cable candidates and programming-tool candidates are specified in [external-system.md](external-system.md). These are identified products, not purchased or physically qualified items.
-
-## Connections and purchases
-
-There are **two VH wire harness connections, J2 and J3**, plus **two USB receptacles, J1 POWER and J10 DATA**. Calling the whole PCB a two-connector board would be inaccurate.
-
-| Connection | Exact purpose and termination | External item / remaining acceptance |
+| Requirement | Implementation | Remaining physical evidence |
 |---|---|---|
-| J2 pins 1/2/3/4 | Motor A+/A−/B+/B−; black/green/red/blue, respectively | Ordered 34HS31-6004S1; VHR-4N, four SVH-41T-P1.1 contacts, Alpha3057 16 AWG pigtails and four TE320559 splices. CAD cuts 170/170/170/165 mm include 12 mm allowance. Verify phase continuity, factory insulation OD, crimp tooling/pull test and first-article length/retention. |
-| J3.1 → resistor → J3.2 | VMOTOR → external resistor → BRAKE_RETURN/Q16. J3.2 is not permanent ground. | VHR-2N, two SVH-41T-P1.1 contacts, paired Alpha3057 conductors, candidate TE152883 M4 rings and Vishay LPS0300H10R0GB 10 Ω resistor. Final cable length, heatsink, guard and mounting depend on the installation. |
-| J1 POWER | Negotiated 48 V / 5 A USB PD 3.1 EPR input | Framework 240 W adapter is a documented candidate, not a qualified/purchased source. Record exact supplied cable identity, EPR/5 A capability, PDO negotiation, droop and overload response. |
-| J10 DATA | Optional setup, status and diagnostics; SW2 supplies the local motion request | Select an actual USB data cable/host and verify plug access, enumeration, startup/suspend current and reverse blocking. Laptop USB does not power this motor. |
-| SWD / EEPROM pads | Temporary manufacturing/programming fixture | ST-LINK-compatible SWD fixture and separately isolated U3 programming fixture, verified readback, no competing power sources. See `pd-programming.md`. |
+| Read POWER_GOOD | Existing eFuse MOTOR_PG reaches RP2040 GP6 and the hardware enable chain. Firmware PD_READY additionally requires a fresh valid TPS sink/EPR 48 V / 5 A contract and fresh measured raw PD voltage in the 44–51 V engineering window. | Startup, cable loss, renegotiation and fault timing on actual hardware. PD_READY is derived status, not an added TPS GPIO. |
+| PD voltage via ADC | U38 INA237, I2C 0x40, senses PD_VBUS before the eFuse; 85 V bus range. ADS1115 retains VMOTOR/brake sensing after protection. | Compare both rails against a calibrated meter over startup and fault cases. |
+| Spring clamp, not JST | J2 WAGO 2601-3104, four poles; J3 WAGO 236-402, two poles. Each pole has two solder tails; no separate plugs/socket contacts. | Wire strip, insertion, pull/continuity, access, restraint and temperature acceptance. |
+| Rear mounting | Four existing Ø4.2 mm holes aligned to the ordered 34HS31-6004S1 manufacturer STEP axes. | STEP does not specify accessory threads, usable engagement or approved case-bolt replacement. No screw/spacer stack is approved. |
 
-SW1 is RESET. SW2 requests START/STOP only after qualification; it is not an emergency-stop or gravity-load holding system. Optional U18 stays bottom DNP; C52/C53 stay DNP on top. No encoder, rear magnet, CAN/RS485/RS232 controller, J7 harness or bus terminators are needed for the selected open-loop profile.
+`POWER` reports raw PD millivolts/validity/age, contract voltage/current, PD_READY, MOTOR_PG and protected VMOTOR separately. A stale ADC register cannot qualify readiness: firmware requires completion of a newly triggered bus conversion, configuration readback, identity and timing checks. Sensor/I2C loss removes the ready condition. Physical MOTOR_PG, voltage/temperature gates and brake supervision remain independent requirements.
 
-The 300 W resistor is a **candidate cooling class**, not a universal motor requirement or a free-air rating. At 53 V/10 Ω its instantaneous dissipation is 280.9 W. The datasheet's 300 W rating requires case temperature ≤85°C; 50°C ambient at 280.9 W continuous requires combined interface/heatsink resistance ≤0.125°C/W. This installation is not sized without duty/load data. J3 cannot be removed on the assumption that a slow motor does not need protection. See [brake installation and calculations](brake-integration.md) and [external sourcing list](external-parts.json).
+## External connections
 
-## Exact assembly allocation
-
-The current [official stock snapshot](stock-report.json) controls. The five-board lot needs five each of U16 **C2829190 / STM32G0B1CEU6 / UFQFPN48**, U35 **C201530 / PCA9538PWR / TSSOP16** and new U37 **C7836 / SN74LVC1G17DBVR / SOT23-5**, plus assembler spares. The former two-part shortage is addressed by these replacements; inventory has not been reserved and may change. Use the updated Gerber/BOM/CPL/firmware set together. An old LQFP board cannot accept the new QFN MCU, and an old direct-reset board cannot accept PCA9538 without the reset ECO.
-
-## Physical work and evidence needed
-
-| Stage | Required evidence before advancing |
+| Connection | Wiring |
 |---|---|
-| Before ordering | Refresh and allocate the exact selected inventory; obtain fabricator acceptance of the actual stackup/USB impedance and filled/capped via-in-pad process. Measure the actual motor rear holes/thread/depth and define secure attachment using the retained four PCB holes. Do not reuse motor tie bolts or add guessed hardware. |
-| Harness first article | Verify delivered lead insulation against the current TE application drawing, finished splice envelope, crimp/pull/insulation tests, winding mapping, connector insertion/tool clearance, cable bend/retention and final cut lengths. Current Rev V6 and AE STEP are archived; inspect the finished crimp rather than treating nominal uncrimped CAD as an acceptance gauge. |
-| Stationary electrical | Serial-number the PCB. Record BOM/revision, firmware/PD-image hashes and readback; inspect before power. With the bridge inhibited, measure source negotiation, all rails, USB power states/backfeed, eFuse response, brake/cutoff thresholds and fault/restart paths. |
-| First motion | Only after stationary checks and a qualified brake installation: securely mounted **unloaded** motor, 20–25°C, nominal 10 rpm, 10 rpm/s, IRUN=6 / GS=139 (about 0.827 A RMS). Capture phase current, gates, VMOTOR and brake waveforms. These are proposed qualification limits, not tested ratings. |
-| Brake fault | First inject feedback/open faults with the motor inhibited. A controlled running-open test needs the restricted energy envelope and independent test-rig overvoltage containment. Measure ADC/filter/scheduler detection delay, inhibit timing and peak VMOTOR. Require the 55 V operating limit with the project's transient margin; if it fails, keep motion disabled and revise protection. Do not simply unplug the brake during a high-energy run. |
-| Thermal and application | Measure winding, shunt, MOSFET, connector, capacitor, board and resistor temperatures, capacitor ripple and Q16/D20 overshoot. Define load inertia, maximum RPM, deceleration, repeated-stop duty and ambient before raising current/speed. Complete EMI/EMC and fault validation for that envelope. |
+| J2 entries 1/2/3/4 | Black/green/red/blue = A+/A−/B+/B−. Modeled factory cable → four TE320559 splices → four Alpha3057 16 AWG pigtails → WAGO clamp. Strip 8–9 mm. Nominal pigtail cuts 175 mm each, including allowance. |
+| J3 entry 1 → resistor → entry 2 | VMOTOR → red lead → resistor → black lead → BRAKE_RETURN/Q16. Strip 5–6 mm at WAGO; TE152883 rings at the resistor. Nominal cuts 165/210 mm include allowance. BRAKE_RETURN is not ground. |
+| J1 POWER | Actual single-port 48 V / 5 A EPR source and 5 A EPR cable; verify negotiated contract. |
+| J10 DATA | USB data host/cable for diagnostics; it does not supply motor power. |
+| Programming pads / BOOTSEL | RP2040 CMSIS-DAP/SWD or BOOTSEL programming and isolated TI EEPROM fixture. Use current programming/readback instructions. |
 
-Runtime voltage monitoring does not absorb energy, detect the resistor's resistance/cooling capacity, or provide independent hardware redundancy. The full-current open-brake simulation still exceeds the driver's operating limit. General full-current/load operation remains held until energy containment and thermal performance are demonstrated. Physical tests must record date, operator, equipment, serial numbers, measured values/waveforms and a pass/fail disposition; empty templates are not pass results.
+See [motor harness](motor-harness.md), [brake assembly](brake-assembly.md) and [external system](external-system.md). Nominal CAD cut lengths must be checked on the first article. No external inventory is reserved.
 
-## Reproduce the handoff
+## Acceptance sequence
 
-`bun run review` refreshes stock evidence, runs the source/native/firmware checks and regenerates previews/release artifacts. It may pass with the recorded procurement hold. `bun run check:stock`, `bun run check:assembly` and `bun run check:release` remain strict; they do not authorize ordering while shortages or other holds remain. `docs/verification.json`, the raw DRC/ERC reports and `delivery-manifest.json` identify the actual reviewed artifacts.
+1. Refresh exact live stock for the intended lot. Resolve the eight retained USB hole-clearance errors with manufacturing approval or a reviewed geometry correction. Review the raw cosmetic findings, stackup, impedance and filled/capped via-in-pad requirements.
+2. Finalize secure rear attachment and cable restraint. The 19.5 mm rear spacing is only the existing preview separation. Verify tooling/lever access and the completed harness, not just the uncrimped CAD.
+3. Flash/read back TI EEPROM, verify a cold APP boot and actual 48 V EPR contract. Program/read back the full 4 MiB RP2040 external flash at 0x10000000; retain board serial, binary hashes and programmer records.
+4. With motion inhibited, inspect and measure reset/enable states, all rails, USB source combinations/backfeed, PD_READY/MOTOR_PG, ADC accuracy/freshness and fault/restart behavior.
+5. Qualify the actual brake resistor, cooling, guard and containment. **10 Ω / 300 W remains provisional**, dependent on case temperature and stopping duty. Runtime voltage sensing does not absorb energy or qualify cooling.
+6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The current DRV8462 bench target is 800 mA RMS and maximum 10 rpm; these are proposed test limits, not validated performance. All firmware qualification flags remain false.
 
-The four existing mounting holes, power bridge/brake circuits, USB connector model offset, other components and unrelated copper remain protected. Only the selected MCU/expander, new reset network and affected local fanout change. Physical CAD, current-stock and programming checks remain distinct from powered acceptance.
+Record measured waveforms, temperatures, timing, load inertia, maximum RPM, deceleration, repetition and ambient before expanding the operating envelope. U18 stays bottom DNP until a rotating rear magnet attachment, field and airgap are qualified; C52/C53 stay DNP on top. No powered, thermal, crimp or mechanically secured fit result is claimed by software checks.
 
-Sourcing replacements from PR #4 are included: R64 C2984356, U17 C6000508 and J1/J10 C3025063. See [sourcing resolution](sourcing-resolution.md). U17 has limited stock; USB -060 shorter stakes still need assembly/retention acceptance. No inventory is reserved.
-
-## USB edge-placement update
-
-J1 and J10 move 2 mm outward, with local power/USB/shell-ground routing updated and the DATA marking relocated into the gap above J10. Native electrical DRC, unconnected, parity and ERC counts are zero; the accepted cosmetic set decreases from 409 to 405 without new findings. The source schematic, exact USB parts, all other component/pad geometry and four mounting holes are preserved. [USB access](usb-access.md) explains the drawing-based 0.2856 mm face overhang and remaining physical-fit limits. Use the regenerated manufacturing ZIP, BOM and CPL together.
-
-## Encoder and brake assembly revision — 2026-10-16
-
-U18 is the only bottom-side footprint. C52/C53 move to top; all three remain DNP. The local 0.60/0.30 mm via gives a 3.873 mm encoder bypass path including the board thickness. Four old cosmetic findings disappear (401 remain); no new cosmetic or electrical/parity/ERC findings are accepted. J3 now includes a nominal complete cable/resistor installation in CAD. Cooling/guard are provisional, not thermally qualified. See [brake assembly](brake-assembly.md).
+Run `bun run review` for reproducible engineering checks and delivery generation. Read the exact current DRC/ERC/verification reports and hashes; an accepted engineering review with explicit holds is not an order approval or a ready-to-run controller.

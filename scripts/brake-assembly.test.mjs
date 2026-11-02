@@ -11,10 +11,10 @@ test('J3 has two complete correctly mapped conductors, preserving J2',()=>{
  expect(geometry.connectors.map(c=>c.reference)).toEqual(['J2','J3'])
  const wires=geometry.wires.filter(w=>w.reference==='J3')
  expect(wires.map(w=>w.net)).toEqual(['VMOTOR','BRAKE_RETURN'])
- expect(wires.map(w=>w.cut_length_mm)).toEqual([150,115])
+ for(const w of wires) expect(w.cut_length_mm).toBeGreaterThan(w.nominal_path_length_mm+15)
  const mate=geometry.connectors.find(c=>c.reference==='J3')
  for(const [i,w] of wires.entries()){
-  expect(w.source).toBe(`J3:${i+1} / SVH-41T-P1.1`)
+  expect(w.source).toBe(`J3:${i+1} / WAGO 236-402 spring clamp`)
   expect(w.points[0].slice(0,2)).toEqual([mate.ports[i].x,mate.ports[i].y])
   const [sx,sy]=cfg.resistor_terminals_step_xy_mm[i]
   const expected=[sy,cfg.resistor_center_y_mm-sx-16.45,cfg.resistor_base_z_mm+.2+25.9+2]

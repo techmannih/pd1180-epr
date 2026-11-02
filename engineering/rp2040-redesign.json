@@ -1,6 +1,6 @@
 {
   "revision": "0.5.0-RP2040-DRAFT",
-  "base_commit": "1c22abf6a9e15cc6d253b6396503ffc0e563f552",
+  "base_commit": "64c14cd3ed08117739cbb702cdb95ec5db25f2f2",
   "architecture": [
     "RP2040",
     "DRV8462DDVR",
@@ -10,32 +10,33 @@
   "status": "native-cad-verified-hardware-unqualified",
   "hardware_tested": false,
   "fabrication_orderable": false,
-  "reviewed_at": "2026-11-01T13:33:20.224310+00:00",
+  "reviewed_at": "2026-11-02T16:40:05.949018+00:00",
   "native": {
-    "board_sha256": "4738c83bd7db689e0e135f7040ab4023b6d0a71505e1f883d22a976fe9be481b",
-    "raw_drc_sha256": "ba76155ba80da63005f7842371204b30493ce3e381ef8cc856bb4b550f0689e3",
-    "raw_erc_sha256": "d93f6803964ae5d32bbc206a9ddc8cc97590811e0f4efb1861d0e2746aba4f55",
+    "board_sha256": "0455d7ba01ada4b5635d61e988f82bd3ad80fb59acb2ac50367179bc6c4703c6",
+    "raw_drc_sha256": "c8128d0cef5d792ab026fcd7b91368ddcc850450c8735d56836f9e9602964d38",
+    "raw_erc_sha256": "ced879dc6d560fcd17f6786b1756d82c11e15bea66ae1c6e1aa85bd880f6871d",
     "errors": 8,
     "retained_usb_hole_errors": 8,
     "other_errors": 0,
-    "warnings": 434,
+    "warnings": 451,
     "unconnected_items": 0,
     "schematic_parity": 0,
     "erc_findings": 0,
     "archive": "engineering/rp2040-native-review.zip",
     "gui_screenshot": "docs/rp2040-kicad-drc.png",
-    "gui_schematic_parity": "not run; CLI parity checked separately"
+    "gui_schematic_parity": "not run; CLI parity checked separately",
+    "gui_screenshot_sha256": "f0ee2b8764c4873bc82dec732e67034222df76d20a3a330419961ae538d6702e"
   },
   "input_sha256": {
-    "index.circuit.tsx": "efe65dc0bbe372d6463d07dcfe3ed281ec917f7db8d72772ba768391009b7d10",
-    "schematic-pages.tsx": "f602916228b5be8dc5513efead8f022b01f87eb2d2814b7339ec1d72f51dc1fd",
-    "hardware-contract.json": "ece6bf448147d887ce949edab368e4dde266fcf256a248508977f2972446ccb0",
-    "board-standards.json": "2d4f845d4ed646021ab9700e1c962a85c28bca0a2cd9867e2275cede4d297178",
+    "index.circuit.tsx": "a02d66b585fc360c4f60fe90243c2358dc54233923517949d5bc416cc3d0f4ef",
+    "schematic-pages.tsx": "8c6694ef855240ce773125d5bf4dfbc3ddb5230bf6c9699cbdc164d9e503ee60",
+    "hardware-contract.json": "b50e576d9a44f89087493fdfa0a687421293fd1ff20e62292bb38abbe4c49900",
+    "board-standards.json": "830a77bcd601bff9bc15396c779f198749cf011aadf6e96775718f8158ee8144",
     "docs/firmware-pinmap.json": "524bd8b69aca4df1a339e157e922df6da8b56e2a88dce8ccab199d965e74801a",
-    "release/pd1180-commissioning-firmware.zip": "18d0f0c409c8900968b28c7592c12dfd055244238df5e9cdafd503694bf6b198"
+    "release/pd1180-commissioning-firmware.zip": "6571e1775cffbdd4cfb3a291a731d23a01b6ff6e14e0fc337b55714a6f82e698"
   },
   "native_checks": {
-    "local_bypass_paths": 54,
+    "local_bypass_paths": 55,
     "kelvin_terminal_only_branches": 4,
     "usb_reference_paths": 4,
     "power_copper_evidence": "engineering/rp2040-copper-evidence.zip",
@@ -44,7 +45,7 @@
   },
   "firmware": {
     "compiled_architecture": "RP2040",
-    "image_bytes": 88484,
+    "image_bytes": 89316,
     "physical_programming_verified": false,
     "all_four_qualification_flags": false,
     "nominal_commissioning_current_rms_a": 0.7733980419227863,
@@ -55,7 +56,7 @@
     "The 6 A/phase behavioral worst-case bus reaches 54.858 V and lacks the allocated 0.5 V margin below the 55 V system limit. Full-current running is unqualified; firmware motion remains locked.",
     "DDV top-side heatsink/TIM/mechanical clearance and motor-current operating envelope are not qualified.",
     "Exact stock is not reserved: latest evidence records shortages for R66, R60, BZ1, J1/J10 and U7 (four available for five boards). Refresh the entire fitted BOM before procurement.",
-    "Rear fastening, single-shaft encoder magnet attachment, WAGO/spring-clamp choice and actual harnesses require closure.",
+    "Rear fastening, single-shaft encoder magnet attachment and physical acceptance of the selected WAGO clamps, actual harnesses and PD_READY/ADC fault behavior require closure.",
     "TI EEPROM and RP2040 flash programming/readback/cold boot, USB current, brake and loaded thermal/EMC tests require assembled hardware. All four firmware qualification locks remain false."
   ],
   "full_review": {
@@ -63,5 +64,13 @@
     "report": "docs/verification.json",
     "delivery_report": "docs/delivery-check.json",
     "requirement": "All verification checks and release delivery integrity must pass. Read the current reports; this architecture summary is not a substitute for their results."
+  },
+  "reviewer_eco": {
+    "raw_pd_sensor": "INA237AIDGSR, 85 V, I2C 0x40",
+    "motor_terminal": "WAGO 2601-3104",
+    "brake_terminal": "WAGO 236-402",
+    "pd_power_good": "Derived PD_READY from fresh TPS contract plus independent fresh raw PD ADC; physical eFuse MOTOR_PG retained",
+    "motor_step": "engineering/mechanical/34HS31-6004S1-manufacturer.zip",
+    "mounting_qualified": false
   }
 }

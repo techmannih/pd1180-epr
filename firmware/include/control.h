@@ -8,6 +8,7 @@ typedef struct {
   bool epr_contract;
   uint16_t contract_mv;
   uint16_t contract_ma;
+  bool pd_power_good; // Fresh raw PD voltage + live 48 V/5 A contract/identity.
   bool pd_fault;
   bool efuse_fault;
   bool motor_power_good;

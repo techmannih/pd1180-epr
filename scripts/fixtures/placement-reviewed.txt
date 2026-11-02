@@ -1,15 +1,15 @@
-placement summary: 4 suboptimal orientations
+placement summary: 6 suboptimal orientations
 
 worst issues:
-1. C41 connections cross the routing path between its pads. Suggested move: rotate C41 180 degrees.
-2. C26 connections cross the routing path between its pads. Suggested move: rotate C26 180 degrees.
-3. R139 connections cross the routing path between its pads. Suggested move: rotate R139 180 degrees.
-4. C80 connections cross the routing path between its pads. Suggested move: rotate C80 180 degrees.
+1. R64 connections cross the routing path between its pads. Suggested move: rotate R64 180 degrees.
+2. R65 connections cross the routing path between its pads. Suggested move: rotate R65 180 degrees.
+3. C26 connections cross the routing path between its pads. Suggested move: rotate C26 180 degrees.
+4. R139 connections cross the routing path between its pads. Suggested move: rotate R139 180 degrees.
+5. C80 connections cross the routing path between its pads. Suggested move: rotate C80 180 degrees.
 
 board top-layer utilization:
-- occupied: 40.343% (2976.799mm^2 of 7378.81mm^2)
-- empty spaces over 5% of board area:
-  - 5.953% (439.25mm^2); bounds=(minX=28.95mm, maxX=42.95mm, minY=-20.25mm, maxY=11.125mm)
+- occupied: 43.161% (3184.768mm^2 of 7378.81mm^2)
+- empty spaces over 5% of board area: none
 
 board-edge status:
 - J1: 1.414mm inside left edge
@@ -95,13 +95,13 @@ board-edge status:
 - C20: 19.475mm inside top edge
 - C21: 12.575mm inside top edge
 - C22: 10.7mm inside top edge
-- C23: 9.8mm inside right edge
+- C23: 19.65mm inside right edge
 - R31: 15.475mm inside top edge
 - R32: 24.475mm inside top edge
 - R33: 21.975mm inside top edge
 - C24: 21.225mm inside top edge
 - U7: 16.35mm inside right edge
-- J2: 4.1mm inside bottom edge
+- J2: 1.75mm inside bottom edge
 - U10: 32.7mm inside bottom edge
 - U11: 27.7mm inside bottom edge
 - C38: 32.475mm inside bottom edge
@@ -127,24 +127,24 @@ board-edge status:
 - R62: 21.225mm inside bottom edge
 - R63: 24.225mm inside bottom edge
 - C40: 21.475mm inside bottom edge
-- U14: 11.7mm inside bottom edge
+- U14: 10.95mm inside bottom edge
 - R64: 14.475mm inside bottom edge
-- R65: 9.875mm inside bottom edge
+- R65: 9.475mm inside bottom edge
 - R66: 8.225mm inside bottom edge
 - R67: 16.475mm inside bottom edge
-- C41: 9.475mm inside bottom edge
+- C41: 10.225mm inside bottom edge
 - U15: 15.265mm inside top edge
 - C42: 6.225mm inside top edge
 - C43: 19.725mm inside top edge
 - R68: 12.725mm inside top edge
 - R69: 9.525mm inside top edge
 - Q16: 6.264mm inside top edge
-- J3: 5.2mm inside top edge
+- J3: 3.95mm inside right edge
 - D20: 1.65mm inside top edge
 - R134: 4.575mm inside bottom edge
 - R135: 1.575mm inside bottom edge
 - R136: 1.225mm inside bottom edge
-- C98: 4.225mm inside bottom edge
+- C98: 4.975mm inside bottom edge
 - C25: 14.25mm inside right edge
 - C26: 14.25mm inside right edge
 - C27: 26.225mm inside right edge
@@ -226,6 +226,8 @@ board-edge status:
 - U33: 34.8mm inside right edge
 - R114: 15.225mm inside right edge
 - U30: 35.03mm inside top edge
+- U38: 10.05mm inside left edge
+- C109: 12.975mm inside left edge
 - U31: 15.761mm inside bottom edge
 - R115: 21.599mm inside bottom edge
 - R117: 13.225mm inside bottom edge
@@ -236,7 +238,7 @@ board-edge status:
 - C80: 35.475mm inside top edge
 - C81: 17.725mm inside bottom edge
 - C82: 12.475mm inside right edge
-- C83: 13.275mm inside bottom edge
+- C83: 9.975mm inside bottom edge
 - C84: 13.275mm inside bottom edge
 - C85: 35.625mm inside top edge
 - U35: 5.005mm inside right edge
@@ -272,12 +274,18 @@ board-edge status:
 - R132: 1.725mm inside right edge
 
 flagged components:
-- C41
+- R64
   source placement: placement_mode=none
-  resolved placement: center=(1.5mm, -33mm) on top; bounds=(minX=0.275mm, maxX=2.725mm, minY=-33.475mm, maxY=-32.525mm); size=(width=2.45mm, height=0.95mm); anchor_alignment="center"
+  resolved placement: center=(-1mm, -28mm) on top; bounds=(minX=-2.225mm, maxX=0.225mm, minY=-28.475mm, maxY=-27.525mm); size=(width=2.45mm, height=0.95mm); anchor_alignment="center"
+  board edge status: 14.475mm inside bottom edge
+  issues:
+  - R64 connections cross the routing path between its pads. Suggested move: rotate R64 180 degrees.
+- R65
+  source placement: placement_mode=none
+  resolved placement: center=(1.25mm, -32.25mm) on top; bounds=(minX=0.775mm, maxX=1.725mm, minY=-33.475mm, maxY=-31.025mm); size=(width=0.95mm, height=2.45mm); anchor_alignment="center"
   board edge status: 9.475mm inside bottom edge
   issues:
-  - C41 connections cross the routing path between its pads. Suggested move: rotate C41 180 degrees.
+  - R65 connections cross the routing path between its pads. Suggested move: rotate R65 180 degrees.
 - C26
   source placement: placement_mode=none
   resolved placement: center=(28mm, 2.5mm) on top; bounds=(minX=27.3mm, maxX=28.7mm, minY=1.075mm, maxY=3.925mm); size=(width=1.4mm, height=2.85mm); anchor_alignment="center"
@@ -296,6 +304,12 @@ flagged components:
   board edge status: 35.475mm inside top edge
   issues:
   - C80 connections cross the routing path between its pads. Suggested move: rotate C80 180 degrees.
+- C83
+  source placement: placement_mode=none
+  resolved placement: center=(20mm, -31.75mm) on top; bounds=(minX=19.525mm, maxX=20.475mm, minY=-32.975mm, maxY=-30.525mm); size=(width=0.95mm, height=2.45mm); anchor_alignment="center"
+  board edge status: 9.975mm inside bottom edge
+  issues:
+  - C83 connections cross the routing path between its pads. Suggested move: rotate C83 180 degrees.
 
 placement drc:
 Errors: 0

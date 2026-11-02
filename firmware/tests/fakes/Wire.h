@@ -7,6 +7,9 @@ constexpr unsigned i2c0=0,i2c1=1;
 class TwoWire {
 public:
   bool started=false, indicatorPresent=false;
+  bool pdVoltagePresent=false, pdVoltageFail=false, pdVoltageReady=true;
+  uint16_t pdVoltageConfig=0, pdVoltageAdc=0, pdVoltageRaw=15360, pdVoltageStatus=1;
+  unsigned pdVoltageTriggers=0;
   bool adcPresent=false, adcReady=true, adcFail=false;
   uint16_t adcConfig=0;
   std::array<uint16_t,4> adcRaw = {20210, 8000, 19762, 0};
@@ -22,6 +25,16 @@ public:
   void beginTransmission(unsigned a) { ++transactions; address=a; buffer.clear(); }
   void write(uint8_t value) { buffer.push_back(value); }
   int endTransmission(bool=true) {
+    if (address==0x40 && pdVoltagePresent && !pdVoltageFail && !buffer.empty()) {
+      selected=buffer[0];
+      if (buffer.size()==3) {
+        const uint16_t word=static_cast<uint16_t>(buffer[1]<<8)|buffer[2];
+        if(selected==0) pdVoltageConfig=word;
+        else if(selected==1) {pdVoltageAdc=word; ++pdVoltageTriggers;}
+        else return 1;
+      }
+      return 0;
+    }
     if (address==0x49 && adcPresent && !adcFail && !buffer.empty()) {
       selected=buffer[0];
       if (buffer.size()==3 && selected==1) {
@@ -44,6 +57,15 @@ public:
   }
   size_t requestFrom(int a,int count,int) {
     adcReadBytes=0;
+    if (a==0x40 && pdVoltagePresent && !pdVoltageFail && count==2) {
+      switch(selected) {
+        case 0:adcWord=pdVoltageConfig;break;case 1:adcWord=pdVoltageAdc;break;
+        case 5:adcWord=pdVoltageRaw;break;case 0x3E:adcWord=0x5449;break;
+        case 0x0B:adcWord=pdVoltageStatus|(pdVoltageReady?2u:0u);break;
+        default:return 0;
+      }
+      adcReadBytes=2;return 2;
+    }
     if (a==0x49 && adcPresent && !adcFail && count==2) {
       adcWord=selected==1 ? ((adcConfig&0x7FFFu)|(adcReady?0x8000u:0u)) : adcRaw[((adcConfig>>12)&7u)-4u];
       adcReadBytes=2; return 2;
