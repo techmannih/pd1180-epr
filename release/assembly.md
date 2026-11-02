@@ -4,15 +4,15 @@
 
 The requested deliverable is a fabricated, fully populated, programmed and functionally tested PCBA. Ordering remains on hold. `bun run check:release` checks the documented release gates; it is not a powered test. Follow [the README startup procedure](../README.md#connections-and-operation) and [power-validation.md](power-validation.md) for commissioning.
 
-The DDV driver requires a qualified top-side heatsink/TIM and end supports; none is approved yet. The retained 1 oz stack is not a demonstrated equivalent to TI’s 2 oz recommendation. J2/J3 spring-clamp replacement and separate raw PD_VBUS sensing remain open.
+The DDV driver requires a qualified top-side heatsink/TIM and end supports; none is approved yet. The retained 1 oz stack is not a demonstrated equivalent to TI’s 2 oz recommendation. J2/J3 WAGO spring clamps and U38 INA237 raw PD_VBUS sensing are implemented; their physical acceptance remains open.
 
 ### Stack and placement
 
 - 85.9 × 85.9 mm, 1.6 mm, four-layer board with four 4.2 mm mounting holes and 1 oz copper on all layers. The fabricator must confirm the USB impedance stack-up; current/thermal qualification remains pending.
 - Assembly is top-side only. All fitted components and service pads are on top. U18 alone is on the bottom; its C52/C53 bypass footprints are on top. All three are DNP and omitted from the fitted BOM/CPL and paste. The encoder is centered on the intended motor shaft. Magnet dimensions, air gap, alignment and stray-field effects still require mechanical bring-up validation.
-- Every via-in-pad requires epoxy filling and copper capping. The current native inventory in `engineering/rp2040-via-in-pad.json` contains 21 via-drill intersections with top paste lands, including C103. Q4/Q16 retain eight drain thermal vias; U34 retains four thermal vias. Confirm the complete current Gerber/drill set with the fabricator; old 62-location/40-bridge-via inventories are superseded.
+- Every via-in-pad requires epoxy filling and copper capping. The current native inventory in `engineering/rp2040-via-in-pad.json` contains 27 via-drill intersections with top paste lands, including C103. Q4/Q16 retain eight drain thermal vias; U34 retains four thermal vias. Confirm the complete current Gerber/drill set with the fabricator; old 62-location/40-bridge-via inventories are superseded.
 - Check the imported land patterns, solder-mask/paste openings and manufacturer package drawings. JLC/EasyEDA data are a starting point, not a substitute for footprint review.
-- Bulk capacitors and JST headers are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
+- Bulk capacitors and WAGO J2/J3 terminals are through-hole; clarify hand/wave/selective assembly with the assembler. Check capacitor polarity and the 25 mm capacitor height.
 
 ### Connector pinout
 
@@ -23,7 +23,7 @@ The DDV driver requires a qualified top-side heatsink/TIM and end supports; none
 | J2, motor | 1 A1, 2 A2, 3 B1, 4 B2 |
 | J3, external brake | 1 VMOTOR, 2 switched resistor return (not a permanent ground) |
 
-Pin numbering follows the imported physical footprints. J7 and the industrial command/transceiver interfaces are removed in the selected onboard-control design. Use the J2/J3 cavity map in [connector-harnesses.md](connector-harnesses.md); housings, contacts, cable and strain relief are separate procurement items. J6/J9 are retired; do not use their historical pinouts.
+Pin numbering follows the imported physical footprints. J7 and the industrial command/transceiver interfaces are removed in the selected onboard-control design. Use the J2/J3 cavity map in [connector-harnesses.md](connector-harnesses.md); cables, resistor terminals and strain relief are separate procurement items; WAGO does not need mating housings or socket contacts. J6/J9 are retired; do not use their historical pinouts.
 
 ## Programming and external items
 
@@ -35,7 +35,7 @@ JLCPCB currently offers [programming](https://jlcpcb.com/help/article/pcba-progr
 
 Supply the following before approving a ready-to-run batch:
 
-1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 63 filled/capped via-in-pad locations and the agreed stack-up.
+1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 27 filled/capped via-in-pad locations and the agreed stack-up.
 2. U3 **M24512-RMN6TP**: approved full-flash BIN, hash, reviewed EEPROM programming method and readback verification. [TI's EVM guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf) describes generating the full-flash binary. U36 separates U2's EEP_SDA/EEP_SCL I2Cc bus from U3's EEP_PROG_SDA/EEP_PROG_SCL programming pads. Ground TP_PD_ISO before fixed-5 V target power and keep programmer VCC off. Follow [pd-programming.md](pd-programming.md); the constructed fixture still needs qualification. SWD/J10 do not directly program this EEPROM.
 3. U16 **RP2040** plus U17 4 MiB QSPI boot flash: approved ELF/BIN/UF2, hash and SWD/BOOTSEL instructions. Raw BIN uses **0x10000000**. Save the full 4,194,304-byte readback and run the RP2040 comparator. The commissioning image remains motion-locked and is not a ready-to-run delivery image.
 4. Qualified motor/load envelope, current/microstep limits, stop profile, 48 V EPR source/cable, DDV top-side heatsink/TIM/support, brake, enclosure and ambient. The 0.773 A nominal commissioning setting is not a qualified operating current; 6 A operation remains blocked.
@@ -43,7 +43,7 @@ Supply the following before approving a ready-to-run batch:
 
 ### Request to send to the assembly/test provider
 
-> Please quote fabrication, complete top-side assembly, programming and pre-shipment functional testing for PD1180-EPR r0.4. Include the through-hole headers/bulk capacitors and the specified filled/capped vias. Please confirm whether your team can commission a 48 V USB-PD EPR controller and qualify its external-MOSFET stepper stage with a supplied motor, brake resistor/heatsink and load fixture. The design target is 5.5 A RMS per phase; that is not yet a qualified operating rating. First-article engineering qualification must precede approval of the motor-enabled firmware and batch acceptance procedure. Each shipped assembly must have verified U3/U16 programming, a controlled STEP/DIR run in both directions and the agreed power/fault tests, with serial-numbered records. Do not ship a blank or motion-locked assembly as ready to run. Please identify the programming interfaces, fixture requirements, first-article test owner, cost and lead time before acceptance. The TI image and final operating envelope are still being prepared; the present package is for engineering review, not production authorization.
+> Please quote fabrication, complete top-side assembly, programming and pre-shipment functional testing for the current PD1180-EPR RP2040/DRV8462DDV revision. Include through-hole WAGO terminals/bulk capacitors and all 27 filled/capped via-in-pad locations. Please confirm support for a 48 V USB-PD EPR controller, integrated stepper driver, external brake/cooling and qualified motor fixture. There is no approved operating-current rating; the initial proposed test is 0.8 A RMS requested / 10 rpm unloaded, with motion currently locked. First-article qualification must precede approval of a motor-enabled image and batch acceptance. Each shipped board needs full U3/U17 programming/readback, cold boot, approved motor/brake/fault tests and serial-numbered records. Please identify fixture requirements, first-article owner, cost and lead time. The registered TI candidate image is included; physical programming and the final operating envelope remain open. This is an engineering review package, not production authorization.
 
 This request is prepared but has **not been sent or accepted**. Provider/contact, actual motor/load, maximum speed, stopping profile, supply/cable and brake cooling must be supplied before the work order can be completed.
 
@@ -53,7 +53,7 @@ This request is prepared but has **not been sent or accepted**. Provider/contact
 2. Program the motion-locked RP2040 commissioning image over SWD and verify it, following [firmware/README.md](../firmware/README.md). Capture `HELP`, `STATUS` and `DRIVER` responses; these are diagnostic evidence, not a motor test.
 3. Program U3 with the **full-flash** binary generated for this board, verify its complete contents against that binary, then cold-start U2 and record its mode, identity, boot status and negotiated contract. Use the U36-isolated fixture sequence in [pd-programming.md](pd-programming.md). Verify both-wire isolation, target power loss and readback before accepting the fixture; assembled-board access is not yet demonstrated.
 4. TI's [SLVAFL1 §2.1–2.2](https://www.ti.com/lit/an/slvafl1/slvafl1.pdf) distinguishes initial full-flash programming from later host updates. The `FLrd`/`FLad`/`FLwd`/`FLvy` update sequence assumes a working application and initialized EEPROM regions. It is not an established blank-board programming path here. Do not load a low-region update file at EEPROM address zero or assume the RP2040 commissioning image implements those commands.
-5. Complete the no-motor tests in [power-validation.md](power-validation.md), then have the qualification engineer produce and identify a controlled motor-test firmware build. Record every configuration change. Begin below 1 A RMS; increase current only after phase-current, gate and fault measurements pass. The existing commissioning image cannot execute this step.
+5. Complete the no-motor tests in [power-validation.md](power-validation.md), then have the qualification engineer produce and identify a controlled motor-test firmware build. Record every configuration change. Begin with the proposed 0.8 A RMS request / 10 rpm unloaded profile; any increase needs a separate phase-current, thermal, brake and fault review. The existing commissioning image cannot execute this step.
 6. After the agreed motor/load envelope passes, approve the exact motor-enabled image and per-board test revision. Program and verify that image on every shipped board, repeat the acceptance tests, and deliver its hashes and operating settings with the board. A failed test returns to engineering; it never becomes a pass by removing the test or suppressing a protection.
 
 ### Acceptance record
@@ -66,7 +66,7 @@ No hardware results exist yet. Complete first-article qualification using every 
 | Programming | U3/U16 identity, exact image hashes, successful verify/readback and reset behavior recorded |
 | Power and USB | Required rails within qualified limits, negotiated 48 V / 5 A contract, no unintended enable, USB diagnostics and source transitions working |
 | Motor operation | Controlled STEP/DIR test in both directions at the approved current/speed/load; record measured phase current and driver status |
-| Inhibits and stop | Hardware enable, limits, watchdog/reset and the approved fault tests inhibit motion; no automatic re-arm |
+| Inhibits and stop | Hardware enable, bus/temperature limits, watchdog/reset and the approved fault tests inhibit motion; no automatic re-arm |
 | Thermal/brake | Test at the qualified load/duty/ambient using the approved resistor/heatsink; record bus peak and temperatures against approved limits |
 | Handoff | Board serial, inspector/tester, date, instruments, results, firmware/configuration hashes and PASS/FAIL; retain supporting traces/video |
 
@@ -74,7 +74,7 @@ Blank devices, a programmed-but-motion-locked image, a USB-only demo, or an asse
 
 The [specified J2 motor harness](motor-harness.md), EPR charger, EPR cable, motor and external braking resistor/heatsink are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
 
-The exact ordered STEPPERONLINE 34HS31-6004S1 CAD is available in `motor-assembly.circuit.tsx` through `assembly.subassembly`. Direct rear mounting and rotating-shaft access are not established. [Motor assembly](motor-assembly.md) records the proposed front-flange-supported adapter, 10 mm nominal motor-to-PCB gap, screw clearances and unresolved encoder attachment. Approve the shared front interface, tolerances and support strength before fabrication. The former QSH-specific magnet/holder proposal is withdrawn. Do not treat the PD86 mounting-template match as proof of fit to this motor.
+The ordered STEPPERONLINE 34HS31-6004S1 manufacturer STEP is archived and used by `motor-assembly.circuit.tsx`. Four unchanged PCB holes align with the rear axes. No adapter, replacement case bolts or spacer stack is approved; the current 19.5 mm separation is only a preview. The user has no rear thread/engagement measurements available. See [motor assembly](motor-assembly.md) and [manufacturing acceptance](manufacturing-acceptance.md). Optional encoder magnet attachment on the single-shaft motor remains unresolved.
 
 ## Imported-part corrections
 
@@ -92,4 +92,4 @@ U22, L2 and U24 provide motor-side logic backup; U5, L1 and U23 provide PD-side 
 
 Verify the new top-side D16/D17/BZ1/Q26/U35/U36 parts and their polarity against the source/BOM, with R126 = 1 kΩ and R127 = 100 kΩ. Check the 19 bare service contacts against the fixture map in [pd-programming.md](pd-programming.md). The indicators consume board V3V3 and do not imply motor permission or correct PD programming. Verify RGB visibility, power indication, fault chirps, silent reset and the combined rail current using [indicators.md](indicators.md). Record these tests with the per-board firmware/configuration hashes.
 
-Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 62 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. **10 Ω/300 W remains provisional; motion locks remain enabled.**
+Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 27 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. **10 Ω/300 W remains provisional; motion locks remain enabled.**

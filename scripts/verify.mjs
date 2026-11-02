@@ -48,6 +48,7 @@ verifiedInputPaths.push('engineering/source-design-rule-eco.json', 'engineering/
 verifiedInputPaths.push('routing/power-feed.json', 'scripts/power-feed.mjs', 'scripts/power-feed.test.mjs')
 verifiedInputPaths.push('engineering/r3-boundary-eco.json', 'scripts/cc-protection-aliases.test.mjs')
 verifiedInputPaths.push('firmware/tests/test_pd_voltage.c', 'firmware/tests/test_target_power.cpp', 'firmware/tests/fakes/Wire.h', 'scripts/rp2040-contract.mjs', 'scripts/rp2040-contract.test.mjs')
+verifiedInputPaths.push('scripts/manufacturing-handoff.mjs', 'scripts/manufacturing-handoff.test.mjs', 'docs/thermal-qualification.md', 'docs/power-validation.md')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -62,6 +63,8 @@ const checks = [
   ['firmware-target', ['run', 'check:firmware-target']],
   ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs']],
   ['pd-image', ['scripts/check-pd-image.mjs']],
+  ['manufacturing-handoff', ['scripts/manufacturing-handoff.mjs']],
+  ['manufacturing-handoff-tests', ['test', 'scripts/manufacturing-handoff.test.mjs']],
   ['operating-mode', ['run', 'check:operating-mode']],
   ['preview', ['run', 'build:preview']],
   ['native-architecture', ['scripts/check-native-architecture.mjs']],

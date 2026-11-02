@@ -37,3 +37,7 @@ See [motor harness](motor-harness.md), [brake assembly](brake-assembly.md) and [
 Record measured waveforms, temperatures, timing, load inertia, maximum RPM, deceleration, repetition and ambient before expanding the operating envelope. U18 stays bottom DNP until a rotating rear magnet attachment, field and airgap are qualified; C52/C53 stay DNP on top. No powered, thermal, crimp or mechanically secured fit result is claimed by software checks.
 
 Run `bun run review` for reproducible engineering checks and delivery generation. Read the exact current DRC/ERC/verification reports and hashes; an accepted engineering review with explicit holds is not an order approval or a ready-to-run controller.
+
+## Thermal and manufacturing handoff update
+
+Use [thermal qualification](thermal-qualification.md) for the TI EVM heatsink reference, explicit cooling calculations, physical acceptance sequence and open 6 A bus-margin finding. [Manufacturing acceptance](manufacturing-acceptance.md) now follows the current RP2040/WAGO revision. Rear thread/usable engagement measurements are not available, so no screw/spacer set is approved. Full-current operation, cooling assembly and physical testing remain open; software checks do not close them.

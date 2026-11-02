@@ -1,28 +1,40 @@
-# Sourcing replacements — 2026-10-14
+# Current sourcing and replacement history
 
-Five boards need five of each IC/resistor and ten USB receptacles, before assembler attrition. [Catalog evidence](../sourcing/replacement-catalog-evidence.json) records exact public JLC identities and available-order quantities. Refresh the release stock report immediately before ordering; no inventory was purchased or reserved.
+The current source manifest and exact live `stock-report.json` control ordering. Historical observations below do not reserve stock. The configured lot is five boards, before provider attrition; J1 and J10 require ten USB receptacles.
 
-| Reference | Previous identity | Selected identity | Review |
-|---|---|---|---|
-| R64 | RT0603BRD07430KL / C861400 | **Viking AR03BTCX4303 / C2984356** | 430 kΩ, 0.1%, 25 ppm/°C, 100 mW, 75 V, 0603; unchanged OVP calculation and land pattern |
-| U17 | W25Q32JVSSIQ / C179173 | **Winbond W25Q32JVSSIM / C6000508** | Same 32 Mbit, 2.7–3.6 V, industrial SOIC-8-208mil pinout; M/Q behavior reviewed below |
-| J1/J10 | USB4105-GF-A / C3020560 | **GCT USB4105-GF-A-060 / C3025063** | Same contact positions, polarity and PCB land pattern; 48 V/5 A retained; shell stakes change from 0.95 to 0.60 mm |
-| U16 | STM32G0B1CBT6 / C2847904 | **STM32G0B1CEU6 / C2829190** | Same GP peripheral assignment; new UFQFPN48 footprint/ground pad/local routing and 512 KiB firmware/readback target |
-| U35 | TCA9538PWR / C2652286 | **PCA9538PWR / C201530** | Same TSSOP16 lands and base register map; mandatory U37 PD_3V3-domain reset buffer, C99 bypass and R137 pulldown added |
+## Codes for the user's stock check
 
-[Viking AR datasheet, rev F6](https://www.viking.com.tw/Templates/att/AR_Series%20Data%20Sheet%20%28Edition%20REV.F6%29.pdf?lng=en): `03` is 0603, `B` is 0.1%, `C` is 25 ppm/°C, `X` is the 1/10 W option, `4303` is 430 kΩ. Its 75 V limit and temperature range cover the existing resistor screen. This substitution does not change brake/OVP thresholds or approve higher bus voltage.
+| Reference | JLCPCB code | Exact selected part | Five-board quantity |
+|---|---|---|---:|
+| R66 | C136970 | RT0603BRD071K2L, 1.2 kΩ 0.1% 0603 | 5 |
+| R60 | C326731 | RT0603BRD07180KL, 180 kΩ 0.1% 0603 | 5 |
+| BZ1 | C391032 | FUET-9650B-3V | 5 |
+| J1/J10 | C3025063 | USB4105-GF-A-060 | 10 |
+| U7 | C29780285 | DRV8462DDVR, HTSSOP-44 DDV | 5 |
 
-[Winbond's M/Q explanation](https://www.winbond.com/hq/support/faq/technical/?__locale=en) and the [W25Q32JV manufacturer datasheet](https://datasheet.lcsc.com/datasheet/pdf/a0a57990083dbaa836cd5aa8d7b11749.pdf?productCode=C2999380) establish that M has programmable QE, initially zero, and different identification behavior. This board uses single SPI; pin 3 /WP and pin 7 /HOLD are tied to V3V3. Current motion/diagnostics firmware only releases FLASH_CS_N and does not depend on flash ID or stored settings. Future storage code must recognize the selected M part's ID and explicitly review status/QE handling; do not reuse an IQ-only ID check. First-article storage read/write is required before storage becomes a relied-on function. Only nine pieces were observed; assembler attrition may exceed that margin.
+These were short in the prior refresh (U7 four available, the other codes zero available-order quantity). Consult the timestamped fresh report for current stock, not this historical observation. Use **Available Order Qty**, bounded by warehouse stock; a larger warehouse/index count alone is not orderable inventory. Obtain supplier attrition/allocation before payment. The user is checking these codes; no substitution or purchase is implied.
+
+## Current identities
+
+| Reference | Selected identity | Assembly/electrical constraint |
+|---|---|---|
+| U16 | RP2040 / C2040 | LQFN-56(7×7), current QSPI boot architecture; older STM32 is not fitted |
+| U17 | W25Q32JVSSIM / C6000508 | Required 4 MiB QSPI boot flash on V3V3_MCU; full flash readback and cold boot required |
+| U7 | DRV8462DDVR / C29780285 | DDV top-cooled pinout; do not substitute DDW |
+| U35 | PCA9538PWR / C201530 | Retain U37 PD_3V3-domain reset buffer, C99 and R137 |
+| U37 | SN74LVC1G17DBVR / C7836 | Reset-domain isolation; do not omit |
+| R64 | AR03BTCX4303 / C2984356 | 430 kΩ, 0.1%, 0603; preserve threshold tolerance |
+| J2 | WAGO 2601-3104 / C20252915 | Four entries/eight tails, 3.5 mm pitch, direct wire clamp |
+| J3 | WAGO 236-402 / C3819425 | Two entries/four tails, 5 mm pitch, direct wire clamp |
+| U38 | INA237AIDGSR / C2864837 | Raw PD_VBUS ADC, 85 V input capability, VSSOP-10 |
+
+The prior `replacement-catalog-evidence.json`, `stocked-controller-eco.json` and dated U16 review document the former revision only. They do not override the current fitted manifest. `procurement-open-items.csv` now names current parts and unresolved allocation/process work.
+
+The former single-SPI settings-flash explanation no longer applies: U17 now boots RP2040 through QSPI. Its M-suffix identification/status behavior must remain compatible with the pinned boot stage. Current source/firmware contract checks cover QSPI wiring and the 4 MiB configuration; physical cold boot/readback is still required. See [U16/boot-flash contract](u16-footprint.md).
 
 [GCT drawing USB4105, rev B4](https://gct.co/files/drawings/usb4105.pdf) shows a common PCB layout and the stake-length ordering option. Existing pad positions/nets and both CC paths are retained, including the doubled VBUS/GND lands. The -060 version is electrically selected; shorter stakes need reflow/joint and retention acceptance for this 1.6 mm board. The existing generic-family 3D model conservatively shows 0.95 mm stakes and is explicitly not an exact mechanical-fit approval. No cable/load retention claim follows from the drawing. The -120 candidate had zero available-order quantity.
 
 [TI PCA9538 §7.2.1.1](https://www.ti.com/lit/ds/symlink/pca9538.pdf) documents RESET-to-VCC injection when RESET exceeds VCC. The previous direct PC13 / V3V3_MCU connection was therefore correctly rejected as a drop-in. This authorized revision fixes that circuit: U37 SN74LVC1G17DBVR / C7836 is powered by PD_3V3, C99 bypasses it and R137 pulls the buffered U35_RESET_N low. R132 keeps the MCU-side input low during reset. Review [the independent-rail reset analysis](indicators.md); do not fit PCA9538 on an older board that lacks this buffer.
-
-U16 STM32G0B1CEU6 is a package change, not an assembly-only substitution. Use the regenerated Gerbers/BOM/CPL and CE firmware archive together. [The footprint and memory contract](u16-footprint.md) document the exposed ground pad, GP pinout and full 512 KiB readback. No N-suffix MCU is approved.
-
-## Inventory and allocation
-
-The initial replacement screen found 306 orderable U16, 3,982 U35 and 13,507 U37 pieces. The current `stock-report.json` controls every order decision; it must prove all fitted identities and the assembler's required spares. No parts were ordered, reserved or allocated. [Procurement handoff](../sourcing/procurement-open-items.csv) records the new identities and remaining allocation/process acceptance. A passing stock query does not close fabrication, programming or powered qualification.
 
 ## Additional U35 candidate screened
 
