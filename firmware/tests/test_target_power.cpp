@@ -22,6 +22,24 @@ int main() {
   for (unsigned i=0;i<sizeof(identity);i++) {identity[i]^=1; assert(!pdConfigurationMatches(identity)); identity[i]^=1;}
   memset(identity,0,sizeof(identity)); assert(!pdConfigurationMatches(identity));
   assert(!pdImageVerified && !motionQualified);
+  // Real target call sites: raw PD measurement is independent of VMOTOR and
+  // a valid PDO alone must not assert PD_READY. Neither eFuse PG nor ADC alone is enough.
+  pdBus.pdVoltagePresent=true;
+  pdReadOk=peripheralsStarted=inputs.epr_contract=true;
+  memcpy(pdIdentity,identity,sizeof(identity)); // identity was deliberately cleared above
+  memcpy(pdIdentity,"PD118041",8);
+  lastGoodSample=20;
+  fakeNow=10;pollPdVoltage(10);updatePdReady(10);assert(!inputs.pd_power_good);
+  fakeNow=20;pollPdVoltage(20);updatePdReady(20);
+  assert(pdVoltage.millivolts==48000 && inputs.pd_power_good && !inputs.motor_power_good);
+  inputs.epr_contract=false;updatePdReady(20);assert(!inputs.pd_power_good);
+  inputs.epr_contract=true;pdReadOk=false;updatePdReady(20);assert(!inputs.pd_power_good);
+  pdReadOk=true;updatePdReady(121);assert(!inputs.pd_power_good);
+  lastGoodSample=121;updatePdReady(121);assert(!inputs.pd_power_good); // ADC itself is stale.
+  fakeNow=40;pollPdVoltage(40);pdBus.pdVoltageFail=true;
+  fakeNow=50;pollPdVoltage(50);updatePdReady(50);assert(!pdVoltage.valid && !inputs.pd_power_good);
+  pdBus.pdVoltageFail=false;pdBus.pdVoltagePresent=false;
+  invalidateTelemetry();peripheralsStarted=false;lastPdVoltagePoll=0;fakeNow=0;
   // Exercise the actual mux scan and target call site: bus=200 ms, return=240
   // ms. Q16 goes low after the bus reading; the next scan recovers at 300 ms.
   pdBus.adcPresent=true;
@@ -84,7 +102,7 @@ int main() {
   fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=0;
   advance(1);
   assert(!peripheralsStarted && !pdBus.started && !adcValid[0] && !adcValid[2] && !brakePreflight.ready && !inputs.brake_preflight_ok && !phaseValid && !inputs.temperature_valid);
-  assert(!encoderSample.valid);
+  assert(!encoderSample.valid && !pdVoltage.valid && !inputs.pd_power_good);
   assert(fakeModes[pin(PD1180_PIN_PD_SCL)]==INPUT);
   expectSafe();
 

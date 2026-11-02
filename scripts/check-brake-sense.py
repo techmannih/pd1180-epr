@@ -12,7 +12,8 @@ import pcbnew,wx
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('board',type=Path);p.add_argument('report',type=Path);a=p.parse_args()
 app=wx.App(False);b=pcbnew.LoadBoard(str(a.board.resolve()));errors=[]
 pads={(f.GetReference(),q.GetNumber()):q for f in b.GetFootprints() for q in f.Pads() if q.GetNetname()=='BRAKE_RETURN'}
-expected={('R134','1'),('D20','2'),('J3','2'),*[('Q16',str(n)) for n in range(5,10)]}
+# WAGO 236-402 pole 2 has two solder tails (2 and 4); both are brake power endpoints.
+expected={('R134','1'),('D20','2'),('J3','2'),('J3','4'),*[('Q16',str(n)) for n in range(5,10)]}
 if set(pads)!=expected:errors.append('BRAKE_RETURN endpoint set changed; reassess current paths')
 removed=[]
 for t in list(b.GetTracks()):

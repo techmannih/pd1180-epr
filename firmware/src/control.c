@@ -20,7 +20,7 @@ void pd1180_control_disarm(pd1180_control_t *state) {
 }
 
 static bool safe_contract(const pd1180_inputs_t *in) {
-  return in->pd_app_mode && in->epr_contract && in->contract_mv == REQUIRED_CONTRACT_MV &&
+  return in->pd_power_good && in->pd_app_mode && in->epr_contract && in->contract_mv == REQUIRED_CONTRACT_MV &&
     in->contract_ma == REQUIRED_CONTRACT_MA && in->configuration_verified && in->sample_fresh &&
     in->motion_wiring_verified && !in->pd_fault && !in->efuse_fault &&
     in->watchdog_healthy && !in->stop_active && in->temperature_valid &&

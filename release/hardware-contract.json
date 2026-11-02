@@ -216,18 +216,15 @@
   "motor_harness": {
     "definition": "engineering/motor-harness.json",
     "reference": "J2",
-    "header": "B4P-VH(LF)(SN)",
-    "pitch_mm": 3.96,
-    "mate": "VHR-4N",
-    "contacts": "SVH-41T-P1.1",
-    "contact_quantity": 4,
+    "header": "2601-3104",
+    "pitch_mm": 3.5,
+    "mate": null,
+    "contacts": null,
+    "contact_quantity": 0,
     "termination_wire_awg": 16,
-    "wire_insulation_diameter_mm": [
-      1.7,
-      3.0
-    ],
+    "wire_insulation_diameter_mm": null,
     "rating_a_at_specified_wire": 10,
-    "rating_v": 250,
+    "rating_v": 300,
     "wire_colours": [
       "black",
       "green",
@@ -246,8 +243,17 @@
       0.3,
       1.42
     ],
-    "connection_status": "Defined harness; not supplied with PCB assembly. Harness maker must confirm crimp/insulation dimensions and provide continuity/pull-test records.",
-    "current_note": "JST 10 A applies to the standard header with 16 AWG termination, not directly to the motor factory 0.75 mm\u00b2 wire. Motor current is still governed by its qualification; no 10 A motor rating is implied."
+    "connection_status": "Four stripped pigtails clamp directly into J2; no mating housing or terminal crimp. Splice crimps, exposed-copper length, retention and continuity require first-article acceptance.",
+    "current_note": "10 A UL rating; 17.5 A IEC nominal. 16 AWG pigtails are within the specified stranded range; qualify temperature rise at the intended motor current.",
+    "strip_length_mm": [
+      8,
+      9
+    ],
+    "termination": "WAGO lever-operated spring clamp, one stripped stranded conductor per pole",
+    "supported_stranded_mm2": [
+      0.14,
+      1.5
+    ]
   },
   "pd_programming": {
     "definition": "docs/pd-programming.md",
@@ -306,5 +312,14 @@
       "tcr_ppm_per_c": 25
     },
     "continuity_scope": "Startup: three fresh distinct bus/return pairs. RUN: both ADC timestamps checked; mismatches get one fixed 100 ms retry window for multiplexed sampling skew, with stale ADC and hard bus range faults immediate at the next check. Physical detection/inhibit latency is unqualified; no brake-current, resistance or backup energy proof."
+  },
+  "raw_pd_voltage": {
+    "sensor": "U38 INA237AIDGSR",
+    "i2c_address": "0x40",
+    "bus_input": "PD_VBUS before eFuse",
+    "max_bus_voltage_v": 85,
+    "adc": "16-bit, 3.125 mV/LSB, fresh single-shot bus conversion",
+    "readiness": "APP/sink/EPR/48 V 5 A contract AND fresh 44\u201351 V measured raw PD bus; physical MOTOR_PG independently required",
+    "qualification": "Firmware bench model tested; actual powered measurements and timing unqualified"
   }
 }

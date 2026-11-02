@@ -23,3 +23,13 @@ test('reject a disconnected brake supply, wrong DDW driver, wrong boot-flash rai
     rows=>{const c=rows.find(r=>r.type==='source_component'&&r.name==='U7'); rows.find(r=>r.type==='source_port'&&r.source_component_id===c.source_component_id&&r.pin_number===26).subcircuit_connectivity_map_key='bypassed'},
   ]) {const rows=structuredClone(source);mutate(rows);expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)}
 })
+
+test('raw PD measurement and both tails of every spring-clamp pole cannot silently change nets',()=>{
+  for(const [ref,pin] of [['U38',8],['U38',6],['U38',4],['U38',5],['J2',5],['J2',6],['J2',7],['J2',8],['J3',3],['J3',4]]) {
+    const rows=structuredClone(source)
+    const id=rows.find(r=>r.type==='source_component'&&r.name===ref).source_component_id
+    const port=rows.find(r=>r.type==='source_port'&&r.source_component_id===id&&r.pin_number===pin)
+    port.subcircuit_connectivity_map_key='wrong-rail-or-tail'
+    expect(checkRp2040Contract(rows).some(e=>e.startsWith(`${ref}.${pin}:`))).toBe(true)
+  }
+})

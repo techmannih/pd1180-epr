@@ -1,7 +1,7 @@
 {
   "manufacturing_drills": {
     "path": "dist/manufacturing/gerbers/pd1180-epr-r0.3-NPTH.drl",
-    "sha256": "bffca36d025e192578186bdae6485c6721dc97fd176f632baa1a5dbe6a7e801e",
+    "sha256": "262008ec19116e1053ecec711a750ede2e301c3a309eaa89e1949de351ce866d",
     "holes": [
       {
         "name": "H1",
@@ -64,81 +64,81 @@
       "reference": "J2",
       "body_bounds_pcb_mm": {
         "min": [
-          3.879999446868897,
-          -42.400000190734865
+          2.5749502182006836,
+          -42.410004234313966
         ],
         "max": [
-          19.720000553131104,
-          -33.69999990463257
+          18.824949741363525,
+          -29.660004234313966
         ]
       },
-      "minimum_board_edge_mm": 0.5499998092651381,
+      "minimum_board_edge_mm": 0.5399957656860366,
       "minimum_required_board_edge_mm": 0.5,
       "minimum_required_component_gap_mm": 0.5,
       "nearest_components": [
         {
+          "reference": "C83",
+          "projected_envelope_gap_mm": 0.7500502467155457
+        },
+        {
+          "reference": "R117",
+          "projected_envelope_gap_mm": 0.8319726033583476
+        },
+        {
           "reference": "R65",
-          "projected_envelope_gap_mm": 0.6749998927116394
+          "projected_envelope_gap_mm": 0.8999502062797546
+        },
+        {
+          "reference": "R136",
+          "projected_envelope_gap_mm": 1.1499502062797546
         },
         {
           "reference": "C98",
-          "projected_envelope_gap_mm": 0.9549994349479682
-        },
-        {
-          "reference": "C41",
-          "projected_envelope_gap_mm": 1.6037528348929935
-        },
-        {
-          "reference": "C99",
-          "projected_envelope_gap_mm": 2.231260285976293
-        },
-        {
-          "reference": "U14",
-          "projected_envelope_gap_mm": 2.2499872207641616
+          "projected_envelope_gap_mm": 1.2749502062797546
         }
       ]
     }
   ],
   "motor_connector_mating_access": {
     "reference": "J2",
-    "half_width_mm": 8.39,
-    "half_depth_mm": 10.5,
-    "bottom_above_pcb_mm": 3.2,
+    "half_width_mm": 8.7,
+    "half_depth_mm": 8.5,
+    "bottom_above_pcb_mm": 16.6,
     "top_above_pcb_mm": 40,
     "minimum_gap_mm": 0.1,
-    "basis": "Conservative vertical insertion prism: 15.78 mm housing width plus 0.5 mm per side, full 10.5 mm housing depth reserved on both sides of pin row, and 40 mm height allowance. Nominal mated height is 16.5 mm. Final wire bend/tool clearance requires physical approval.",
+    "basis": "Conservative space above the lever-operated WAGO terminal for wire insertion and lever actuation. Nominal body height 16.58 mm; mechanical tool/finger access and wire bends require physical checks.",
     "bounds_display_mm": {
       "min": [
-        -20.19,
-        4,
-        -48.1
+        -19.7,
+        17.400000000000002,
+        -46.1
       ],
       "max": [
-        -3.41,
+        -2.3000000000000007,
         40.8,
-        -27.1
+        -29.1
       ]
     },
     "nearest": [
       {
         "reference": "U31",
-        "gap_mm": 1.4999999523162844
-      },
-      {
-        "reference": "U12",
-        "gap_mm": 1.9309310245131535
-      },
-      {
-        "reference": "U14",
-        "gap_mm": 1.9509169578552248
+        "gap_mm": 14.991082019695476
       },
       {
         "reference": "U32",
-        "gap_mm": 2.350765802233147
+        "gap_mm": 15.166493995687896
       },
       {
-        "reference": "C93",
-        "gap_mm": 2.5999999761581423
+        "reference": "U12",
+        "gap_mm": 15.279309035094423
+      },
+      {
+        "reference": "U14",
+        "gap_mm": 15.94009723099939
+      },
+      {
+        "reference": "R117",
+        "gap_mm": 15.999999976158144
       }
     ],
     "scope": "Conservative insertion envelope; final cable bend, crimp tooling and strain relief require physical approval."
@@ -193,15 +193,14 @@
       "axis_offset_mm": 2.806551131218832e-7
     }
   ],
-  "board_glb_sha256": "6ac17b632d00b3ad73755f75e9a57ffcb5ace2816b953652fa42d00fdbc7772f",
+  "board_glb_sha256": "e86d0cc47563202211c449b9d375deb1cdf2118e559450d748b222a7a046f321",
   "motor_glb_sha256": "58c1dc543cfc05583ffebd5db7cb66036269adcbbc6b11f0184318a4c2c9d87f",
   "motor_step_sha256": "675e55f1d50271255bbd058d8c2e867ecced44b194ded1586c63da77ce1c8a19",
-  "spec_sha256": "0af8a2022ee7328cd063eb3a54a426d00089a0bbe1f28f7e0ae0870c1e6588a3",
-  "component_models_checked": 234,
+  "spec_sha256": "307cd615df1fec1477713cc8aab87121225cc13b0bbb315bd53274257c7db7b5",
+  "component_models_checked": 236,
   "assembly_alignment": {
     "maximum_vertex_offset_mm": {
       "stepperonline_34HS31_6004S1": 0,
-      "J2_VHR_4N_mating_housing": 0,
       "motor_factory_cable_jacket_rerouted": 0,
       "J2_cavity_1_black_Alpha3057_16AWG": 0,
       "TE320559_splice_1": 0,
@@ -215,9 +214,6 @@
       "J2_cavity_4_blue_Alpha3057_16AWG": 0,
       "TE320559_splice_4": 0,
       "motor_blue_lead_to_splice_4": 0,
-      "J3_VHR_2N_catalogue_housing_envelope": 0,
-      "J3_SVH_41T_P1_1_contact_1_nominal_envelope": 0,
-      "J3_SVH_41T_P1_1_contact_2_nominal_envelope": 0,
       "J3_LPS300_manufacturer_part_1": 0,
       "J3_LPS300_manufacturer_part_2": 0,
       "J3_LPS300_manufacturer_part_3": 0,
@@ -251,11 +247,11 @@
       "J3_provisional_guard_side_41": 0,
       "J3_provisional_guard_rear": 0,
       "J3_provisional_guard_roof": 0,
-      "J3_provisional_guard_slotted_front__33_5": 0,
-      "J3_provisional_guard_slotted_front_0": 0,
-      "J3_provisional_guard_slotted_front_33": 0
+      "J3_provisional_guard_slotted_front__40_000": 0,
+      "J3_provisional_guard_slotted_front_2_292": 0,
+      "J3_provisional_guard_slotted_front_20_451": 0
     },
-    "assembly_glb_sha256": "04ab3cfd6e0894e697dd423a7be4d642f194bf8c1c462078944820a402569778",
+    "assembly_glb_sha256": "6f17cb2ecc9dbf76bcfaa87d21d488d70079f5825218887b480ecdffcd9c02c2",
     "motor_bounds_display_mm": {
       "min": [
         -43,

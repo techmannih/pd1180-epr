@@ -1,41 +1,43 @@
 {
-  "generated_at": "2026-11-01T14:23:41.757Z",
+  "generated_at": "2026-11-02T16:41:58.417Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "e164e452cebd67d57bb36fe8c7d7ecf1b1cb1681027b6a220a24b1531ff477a5",
-    "bytes": 4030761
+    "sha256": "c6f5c88446d23017d10cd2032fc7b0c1c41a35d9db67dd32ef7ce7a6db3f0c09",
+    "bytes": 4118181
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9112,
-    "sheets": 25,
-    "source_components": 258,
-    "source_ports": 866,
-    "connected_source_ports": 821,
-    "intentional_no_connect_ports": 45,
+    "elements": 9263,
+    "sheets": 26,
+    "source_components": 260,
+    "source_ports": 884,
+    "connected_source_ports": 838,
+    "intentional_no_connect_ports": 46,
     "source_nets": 147,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 92,
+    "capacitors": 93,
     "test_points": 20,
-    "annotations": 75,
+    "annotations": 78,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
     "2": 55,
-    "3": 53,
+    "3": 51,
     "4": 18,
-    "5": 6,
-    "6": 3,
-    "8": 3,
-    "9": 2,
+    "5": 8,
+    "6": 1,
+    "7": 2,
+    "8": 2,
+    "9": 3,
     "10": 1,
-    "18": 1,
+    "19": 1,
     "25": 1,
-    "27": 2,
-    "56": 1,
-    "227": 1
+    "27": 1,
+    "28": 1,
+    "58": 1,
+    "233": 1
   },
   "usb_c": {
     "connectors": [
@@ -396,6 +398,7 @@
     "U34.4:PG",
     "U35.13:N_INT",
     "U37.1:NC",
+    "U38.3:ALERT",
     "U6.11:MODE",
     "U6.19:N_C6",
     "U6.20:N_C5",
@@ -431,8 +434,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 227,
-      "non_testpoint_peers": 223
+      "total_ports_on_net": 233,
+      "non_testpoint_peers": 229
     },
     {
       "ref": "TP_SWCLK",
@@ -455,8 +458,8 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3",
-      "total_ports_on_net": 56,
-      "non_testpoint_peers": 55
+      "total_ports_on_net": 58,
+      "non_testpoint_peers": 57
     },
     {
       "ref": "TP_ENC_A",
@@ -479,8 +482,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 227,
-      "non_testpoint_peers": 223
+      "total_ports_on_net": 233,
+      "non_testpoint_peers": 229
     },
     {
       "ref": "TP_PD_VREF",
@@ -491,8 +494,8 @@
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 227,
-      "non_testpoint_peers": 223
+      "total_ports_on_net": 233,
+      "non_testpoint_peers": 229
     },
     {
       "ref": "TP_EEP_SDA",
@@ -515,20 +518,20 @@
     {
       "ref": "TP_PD_VBUS",
       "net": "PD_VBUS",
-      "total_ports_on_net": 18,
-      "non_testpoint_peers": 17
+      "total_ports_on_net": 19,
+      "non_testpoint_peers": 18
     },
     {
       "ref": "TP_VMOTOR",
       "net": "VMOTOR",
-      "total_ports_on_net": 27,
-      "non_testpoint_peers": 26
+      "total_ports_on_net": 28,
+      "non_testpoint_peers": 27
     },
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 227,
-      "non_testpoint_peers": 223
+      "total_ports_on_net": 233,
+      "non_testpoint_peers": 229
     }
   ],
   "sheets": [
@@ -881,6 +884,20 @@
         "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.",
         "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."
       ]
+    },
+    {
+      "index": 31,
+      "name": "pd-voltage",
+      "display_name": "Raw PD Supply Monitor",
+      "frame": [
+        297,
+        210
+      ],
+      "annotations": [
+        "31 / Raw PD Supply Monitor",
+        "U38 INA237 measures PD_VBUS before the eFuse; I2C address 0x40, bus-voltage ADC only.",
+        "PD_READY requires live 48 V/5 A status and fresh voltage; MOTOR_PG remains a separate hardware input."
+      ]
     }
   ],
   "sheet_bounds": [
@@ -935,8 +952,8 @@
     {
       "index": 9,
       "name": "bridge-a",
-      "elements": 19,
-      "coordinate_points_checked": 23
+      "elements": 23,
+      "coordinate_points_checked": 31
     },
     {
       "index": 11,
@@ -947,8 +964,8 @@
     {
       "index": 12,
       "name": "brake-ovp",
-      "elements": 129,
-      "coordinate_points_checked": 271
+      "elements": 134,
+      "coordinate_points_checked": 282
     },
     {
       "index": 13,
@@ -1033,6 +1050,12 @@
       "name": "motion-config",
       "elements": 46,
       "coordinate_points_checked": 74
+    },
+    {
+      "index": 31,
+      "name": "pd-voltage",
+      "elements": 35,
+      "coordinate_points_checked": 70
     }
   ],
   "checks": [
@@ -1040,8 +1063,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 258,
-        "schematic": 258
+        "source": 260,
+        "schematic": 260
       }
     },
     {
@@ -1060,9 +1083,9 @@
     },
     {
       "ok": true,
-      "message": "25 A4 sheets including RP2040 power and driver bias",
+      "message": "26 A4 sheets including raw PD voltage sensing",
       "details": {
-        "actual": 25
+        "actual": 26
       }
     },
     {
@@ -2021,9 +2044,47 @@
     },
     {
       "ok": true,
-      "message": "75 high-level annotations on 25 sheets",
+      "message": "known fixed geometry for sheet pd-voltage"
+    },
+    {
+      "ok": true,
+      "message": "pd-voltage keeps sheet index 31"
+    },
+    {
+      "ok": true,
+      "message": "pd-voltage keeps fixed 297 x 210 frame",
       "details": {
-        "actual": 75
+        "actual": [
+          297,
+          210
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "pd-voltage has 3 explanatory annotations",
+      "details": {
+        "actual": 3,
+        "texts": [
+          "31 / Raw PD Supply Monitor",
+          "U38 INA237 measures PD_VBUS before the eFuse; I2C address 0x40, bus-voltage ADC only.",
+          "PD_READY requires live 48 V/5 A status and fresh voltage; MOTOR_PG remains a separate hardware input."
+        ]
+      }
+    },
+    {
+      "ok": true,
+      "message": "pd-voltage has numbered sheet heading"
+    },
+    {
+      "ok": true,
+      "message": "pd-voltage explains component roles"
+    },
+    {
+      "ok": true,
+      "message": "78 high-level annotations on 26 sheets",
+      "details": {
+        "actual": 78
       }
     },
     {
@@ -2118,9 +2179,9 @@
     },
     {
       "ok": true,
-      "message": "92 capacitors including RP2040 core/IO bypass",
+      "message": "93 capacitors including INA237 supply bypass",
       "details": {
-        "actual": 92
+        "actual": 93
       }
     },
     {
@@ -2182,6 +2243,7 @@
           "U34.4:PG",
           "U35.13:N_INT",
           "U37.1:NC",
+          "U38.3:ALERT",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",
@@ -2229,6 +2291,7 @@
           "U34.4:PG",
           "U35.13:N_INT",
           "U37.1:NC",
+          "U38.3:ALERT",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",

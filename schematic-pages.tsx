@@ -143,6 +143,7 @@ const pages = [
     "This check detects an absent resistor or stuck-on Q16; it does not prove braking current."]
 , ["mcu-power", "RP2040 Local Power", "U16: separate 100 nF bypasses serve each IOVDD/DVDD/ADC/USB rail pin.", "C102/C103 are 1 uF VREG input/output capacitors; all are on top."]
   , ["motion-config", "DRV8462 Logic Bias", "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.", "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."]
+  , ["pd-voltage", "Raw PD Supply Monitor", "U38 INA237 measures PD_VBUS before the eFuse; I2C address 0x40, bus-voltage ADC only.", "PD_READY requires live 48 V/5 A status and fresh voltage; MOTOR_PG remains a separate hardware input."]
 ] as const
 
 export const SchematicPages = () => <>

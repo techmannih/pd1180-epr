@@ -2,44 +2,44 @@
   "bend_checks": [
     {
       "name": "J2 cavity 1 black Alpha3057_16AWG",
-      "minimum_sampled_radius_mm": 25.8546106323086,
+      "minimum_sampled_radius_mm": 28.0526542964772,
       "required_mm": 23.876,
-      "cut_length_mm": 170
+      "cut_length_mm": 175
     },
     {
       "name": "J2 cavity 2 green Alpha3057_16AWG",
-      "minimum_sampled_radius_mm": 26.369755689051132,
+      "minimum_sampled_radius_mm": 28.584713274795817,
       "required_mm": 23.876,
-      "cut_length_mm": 170
+      "cut_length_mm": 175
     },
     {
       "name": "J2 cavity 3 red Alpha3057_16AWG",
-      "minimum_sampled_radius_mm": 26.774442783373917,
+      "minimum_sampled_radius_mm": 28.981450747038735,
       "required_mm": 23.876,
-      "cut_length_mm": 170
+      "cut_length_mm": 175
     },
     {
       "name": "J2 cavity 4 blue Alpha3057_16AWG",
-      "minimum_sampled_radius_mm": 27.051104550099762,
+      "minimum_sampled_radius_mm": 29.223891147767983,
+      "required_mm": 23.876,
+      "cut_length_mm": 175
+    },
+    {
+      "name": "J3 cavity 1 red Alpha3057_16AWG",
+      "minimum_sampled_radius_mm": 27.99999029687634,
       "required_mm": 23.876,
       "cut_length_mm": 165
     },
     {
-      "name": "J3 cavity 1 red Alpha3057_16AWG",
-      "minimum_sampled_radius_mm": 27.99999792908684,
-      "required_mm": 23.876,
-      "cut_length_mm": 150
-    },
-    {
       "name": "J3 cavity 2 black Alpha3057_16AWG",
-      "minimum_sampled_radius_mm": 24.875776940706405,
+      "minimum_sampled_radius_mm": 27.99999029687634,
       "required_mm": 23.876,
-      "cut_length_mm": 115
+      "cut_length_mm": 210
     }
   ],
-  "glb_sha256": "d6b8e63adbc5b9638cf1fa3be7393d2a2c82a191b59461ad3e7d1c2bb86e62f2",
-  "board_glb_sha256": "6ac17b632d00b3ad73755f75e9a57ffcb5ace2816b953652fa42d00fdbc7772f",
-  "layout_sha256": "97d802f99f93773ce3cdf37f4a5ec74183b77d036c1bcff7cf4fa2e20e5b5d15",
+  "glb_sha256": "8e71a0df0d9de687fe8f1c1b41385d78c68c84f25c996e4298d130386301a7b0",
+  "board_glb_sha256": "e86d0cc47563202211c449b9d375deb1cdf2118e559450d748b222a7a046f321",
+  "layout_sha256": "af1d6cb55aa0a6fade5251b6aaa23722ea38ed1947570782d76e6775f62abc9c",
   "connectors_checked": 2,
   "wire_segments_checked": 751,
   "minimum_required_nominal_clearance_mm": 0.2,
@@ -51,124 +51,56 @@
   "mates": [
     {
       "reference": "J2",
-      "part": "VHR-4N",
+      "part": "2601-3104",
       "nearest": [
         {
-          "name": "U14",
-          "gap_mm": 2.1280402754721695
+          "name": "C83",
+          "gap_mm": 0.44999998807907104
+        },
+        {
+          "name": "R117",
+          "gap_mm": 0.5762811646133296
         },
         {
           "name": "R65",
-          "gap_mm": 2.5999999761581423
-        },
-        {
-          "name": "C98",
-          "gap_mm": 2.7803281915159066
+          "gap_mm": 1.199999988079071
         }
       ]
     },
     {
       "reference": "J3",
-      "part": "VHR-2N",
+      "part": "236-402",
       "nearest": [
         {
-          "name": "C21",
-          "gap_mm": 2.469817824904273
+          "name": "C23",
+          "gap_mm": 0.8501521110534682
         },
         {
-          "name": "R4",
-          "gap_mm": 2.5999999761581423
+          "name": "R114",
+          "gap_mm": 2.0499999880790725
         },
         {
-          "name": "Q4",
-          "gap_mm": 2.6155015518698015
+          "name": "C26",
+          "gap_mm": 2.6030030733750587
         }
       ]
     }
   ],
   "bodies": [
     {
-      "name": "J2 VHR-4N catalogue housing envelope",
-      "nearest": [
-        {
-          "name": "U14",
-          "gap_mm": 2.1280402754721695
-        },
-        {
-          "name": "R65",
-          "gap_mm": 2.5999999761581423
-        },
-        {
-          "name": "C98",
-          "gap_mm": 2.7803281915159066
-        }
-      ]
-    },
-    {
-      "name": "J3 VHR-2N catalogue housing envelope",
-      "nearest": [
-        {
-          "name": "C21",
-          "gap_mm": 2.469817824904273
-        },
-        {
-          "name": "R4",
-          "gap_mm": 2.5999999761581423
-        },
-        {
-          "name": "Q4",
-          "gap_mm": 2.6155015518698015
-        }
-      ]
-    },
-    {
-      "name": "J3 SVH-41T-P1.1 contact 1 nominal envelope",
-      "nearest": [
-        {
-          "name": "Q4",
-          "gap_mm": 4.613034271011221
-        },
-        {
-          "name": "C91",
-          "gap_mm": 4.8137372968403005
-        },
-        {
-          "name": "C92",
-          "gap_mm": 5.6305528049326865
-        }
-      ]
-    },
-    {
-      "name": "J3 SVH-41T-P1.1 contact 2 nominal envelope",
-      "nearest": [
-        {
-          "name": "Q16",
-          "gap_mm": 4.613034271011221
-        },
-        {
-          "name": "R4",
-          "gap_mm": 5.795310578097806
-        },
-        {
-          "name": "C21",
-          "gap_mm": 6.4097555614122514
-        }
-      ]
-    },
-    {
       "name": "J3 LPS300 manufacturer resistor envelope",
       "nearest": [
         {
           "name": "C92",
-          "gap_mm": 74.98141852856179
+          "gap_mm": 109.22894819852176
         },
         {
           "name": "R4",
-          "gap_mm": 75.01743545590168
+          "gap_mm": 109.26969214537904
         },
         {
           "name": "Q5",
-          "gap_mm": 75.02864058721876
+          "gap_mm": 109.31742576239287
         }
       ]
     },
@@ -177,15 +109,15 @@
       "nearest": [
         {
           "name": "C92",
-          "gap_mm": 63.21956283298523
+          "gap_mm": 98.00746463812727
         },
         {
           "name": "R4",
-          "gap_mm": 63.26227646153458
+          "gap_mm": 98.0528715656057
         },
         {
           "name": "Q5",
-          "gap_mm": 63.32677352661792
+          "gap_mm": 98.1390998136919
         }
       ]
     },
@@ -194,15 +126,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "L3",
-          "gap_mm": 65.86095203604845
+          "gap_mm": 100.19563366949946
         },
         {
           "name": "Q5",
-          "gap_mm": 67.74116174059704
+          "gap_mm": 101.04388977526526
         }
       ]
     },
@@ -211,15 +143,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
-        },
-        {
-          "name": "L3",
-          "gap_mm": 64.30524865678763
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "Q5",
-          "gap_mm": 64.90542757737457
+          "gap_mm": 99.16510069551707
+        },
+        {
+          "name": "L3",
+          "gap_mm": 99.17996273516715
         }
       ]
     },
@@ -228,15 +160,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "Q5",
-          "gap_mm": 63.23420011384585
+          "gap_mm": 98.07938993992636
         },
         {
           "name": "C92",
-          "gap_mm": 63.84082255892385
+          "gap_mm": 98.40935232486798
         }
       ]
     },
@@ -244,16 +176,16 @@
       "name": "J3 provisional heatsink fin 4",
       "nearest": [
         {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 97.54532279919935
+        },
+        {
           "name": "C92",
-          "gap_mm": 62.71722749771389
+          "gap_mm": 97.6841882036187
         },
         {
           "name": "Q5",
-          "gap_mm": 62.80003809928894
-        },
-        {
-          "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.80003809928894
         }
       ]
     },
@@ -261,16 +193,16 @@
       "name": "J3 provisional heatsink fin 5",
       "nearest": [
         {
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 97.54532279919935
+        },
+        {
           "name": "C92",
-          "gap_mm": 62.64543578745382
+          "gap_mm": 97.63811051531056
         },
         {
           "name": "R4",
-          "gap_mm": 62.67499998807907
-        },
-        {
-          "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.67499998807907
         }
       ]
     },
@@ -279,15 +211,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "R4",
-          "gap_mm": 63.116227099915356
+          "gap_mm": 97.95870621079897
         },
         {
           "name": "C92",
-          "gap_mm": 63.51575099926002
+          "gap_mm": 98.19878117879061
         }
       ]
     },
@@ -296,15 +228,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "R4",
-          "gap_mm": 64.79782498752186
+          "gap_mm": 99.05053317513766
         },
         {
           "name": "C92",
-          "gap_mm": 65.62050460793486
+          "gap_mm": 99.57309187225232
         }
       ]
     },
@@ -313,15 +245,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
-        },
-        {
-          "name": "C22",
-          "gap_mm": 67.55017786026002
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "R4",
-          "gap_mm": 67.64508942191544
+          "gap_mm": 100.93615864527672
+        },
+        {
+          "name": "C92",
+          "gap_mm": 101.72807196147973
         }
       ]
     },
@@ -330,15 +262,15 @@
       "nearest": [
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 62.84974144735999
+          "gap_mm": 97.54532279919935
         },
         {
           "name": "C22",
-          "gap_mm": 68.1138882837279
+          "gap_mm": 102.92236990735476
         },
         {
           "name": "R4",
-          "gap_mm": 71.5189354135278
+          "gap_mm": 103.57223625011625
         }
       ]
     },
@@ -346,16 +278,16 @@
       "name": "J3 resistor mount M4x25 screw 1",
       "nearest": [
         {
-          "name": "L3",
-          "gap_mm": 100.72415304528515
+          "name": "Q5",
+          "gap_mm": 135.44368356680613
         },
         {
-          "name": "Q5",
-          "gap_mm": 100.8414039529145
+          "name": "L3",
+          "gap_mm": 135.65343714785809
         },
         {
           "name": "C92",
-          "gap_mm": 101.5973824701533
+          "gap_mm": 135.96241438274996
         }
       ]
     },
@@ -364,15 +296,15 @@
       "nearest": [
         {
           "name": "L3",
-          "gap_mm": 104.176652842689
+          "gap_mm": 138.10964847122017
         },
         {
           "name": "Q5",
-          "gap_mm": 105.1163638339756
+          "gap_mm": 138.52960915496354
         },
         {
           "name": "C92",
-          "gap_mm": 105.93310683733222
+          "gap_mm": 139.1063374696122
         }
       ]
     },
@@ -381,15 +313,15 @@
       "nearest": [
         {
           "name": "R4",
-          "gap_mm": 102.53142504436462
+          "gap_mm": 136.67458842372162
         },
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 103.14363770974921
+          "gap_mm": 136.96207504269202
         },
         {
           "name": "C92",
-          "gap_mm": 103.28421043308903
+          "gap_mm": 137.2274685505297
         }
       ]
     },
@@ -398,15 +330,15 @@
       "nearest": [
         {
           "name": "C22",
-          "gap_mm": 104.46436343883599
+          "gap_mm": 139.23475025617498
         },
         {
           "name": "R4",
-          "gap_mm": 106.79872714830482
+          "gap_mm": 139.77917627337627
         },
         {
           "name": "C92",
-          "gap_mm": 107.51847805939983
+          "gap_mm": 140.31740135923854
         }
       ]
     },
@@ -414,16 +346,16 @@
       "name": "J3 TE152883 ring 1 nominal envelope",
       "nearest": [
         {
-          "name": "L3",
-          "gap_mm": 120.93325636654954
+          "name": "C22",
+          "gap_mm": 119.28367733929927
         },
         {
-          "name": "Q5",
-          "gap_mm": 121.23188524699934
+          "name": "R4",
+          "gap_mm": 120.88092537667424
         },
         {
           "name": "C92",
-          "gap_mm": 121.51610232365535
+          "gap_mm": 121.20525204764469
         }
       ]
     },
@@ -431,16 +363,16 @@
       "name": "J3 TE152883 insulated barrel 1 nominal envelope",
       "nearest": [
         {
-          "name": "L3",
-          "gap_mm": 112.82840951995414
+          "name": "C22",
+          "gap_mm": 110.92862651824585
         },
         {
-          "name": "Q5",
-          "gap_mm": 113.27926909090583
+          "name": "R4",
+          "gap_mm": 113.09263070647279
         },
         {
           "name": "C92",
-          "gap_mm": 113.66025305244135
+          "gap_mm": 113.48437391969433
         }
       ]
     },
@@ -448,16 +380,16 @@
       "name": "J3 terminal M4 lock washer 1",
       "nearest": [
         {
-          "name": "L3",
-          "gap_mm": 124.96826235287783
+          "name": "C22",
+          "gap_mm": 123.36019370386374
         },
         {
-          "name": "Q5",
-          "gap_mm": 125.24420410351105
+          "name": "R4",
+          "gap_mm": 124.87132665183009
         },
         {
           "name": "C92",
-          "gap_mm": 125.51690015258599
+          "gap_mm": 125.18403342245465
         }
       ]
     },
@@ -465,16 +397,16 @@
       "name": "J3 terminal M4x6 screw 1",
       "nearest": [
         {
-          "name": "L3",
-          "gap_mm": 124.27467767687656
+          "name": "C22",
+          "gap_mm": 123.31686447864843
         },
         {
-          "name": "Q5",
-          "gap_mm": 124.40317573702336
+          "name": "R4",
+          "gap_mm": 124.03261098869501
         },
         {
           "name": "C92",
-          "gap_mm": 124.6755931358479
+          "gap_mm": 124.35761215784696
         }
       ]
     },
@@ -482,16 +414,16 @@
       "name": "J3 TE152883 ring 2 nominal envelope",
       "nearest": [
         {
-          "name": "C22",
-          "gap_mm": 85.41125938286977
+          "name": "Q5",
+          "gap_mm": 154.3313729203879
         },
         {
-          "name": "R4",
-          "gap_mm": 89.55416305652994
+          "name": "L3",
+          "gap_mm": 154.35787151536994
         },
         {
           "name": "C92",
-          "gap_mm": 90.01090558334072
+          "gap_mm": 154.51509027901798
         }
       ]
     },
@@ -499,16 +431,16 @@
       "name": "J3 TE152883 insulated barrel 2 nominal envelope",
       "nearest": [
         {
-          "name": "C22",
-          "gap_mm": 77.22142015662666
+          "name": "L3",
+          "gap_mm": 146.08302433253613
         },
         {
-          "name": "R4",
-          "gap_mm": 82.39656012810909
+          "name": "Q5",
+          "gap_mm": 146.15640756641523
         },
         {
           "name": "C92",
-          "gap_mm": 82.95452443323991
+          "gap_mm": 146.41005130777395
         }
       ]
     },
@@ -516,16 +448,16 @@
       "name": "J3 terminal M4 lock washer 2",
       "nearest": [
         {
-          "name": "C22",
-          "gap_mm": 89.46633411756952
+          "name": "Q5",
+          "gap_mm": 158.3891199813679
         },
         {
-          "name": "R4",
-          "gap_mm": 93.38414330400272
+          "name": "L3",
+          "gap_mm": 158.42527133899935
         },
         {
           "name": "C92",
-          "gap_mm": 93.82053199547657
+          "gap_mm": 158.56620769859586
         }
       ]
     },
@@ -533,16 +465,16 @@
       "name": "J3 terminal M4x6 screw 2",
       "nearest": [
         {
-          "name": "C22",
-          "gap_mm": 89.02647268389968
+          "name": "Q5",
+          "gap_mm": 157.93978781958947
         },
         {
-          "name": "R4",
-          "gap_mm": 91.8913206642358
+          "name": "L3",
+          "gap_mm": 158.09338787918813
         },
         {
           "name": "C92",
-          "gap_mm": 92.34848090527251
+          "gap_mm": 158.11570858034784
         }
       ]
     },
@@ -551,15 +483,15 @@
       "nearest": [
         {
           "name": "L3",
-          "gap_mm": 66.90085945977899
+          "gap_mm": 100.18595210804237
         },
         {
           "name": "Q5",
-          "gap_mm": 70.35686663867435
+          "gap_mm": 102.13271439730971
         },
         {
-          "name": "C89",
-          "gap_mm": 71.95040390574036
+          "name": "Motor body conservative envelope (factory leads excluded)",
+          "gap_mm": 103.19442814415902
         }
       ]
     },
@@ -568,15 +500,15 @@
       "nearest": [
         {
           "name": "C22",
-          "gap_mm": 66.97575078555484
+          "gap_mm": 101.48528781802291
         },
         {
           "name": "Motor body conservative envelope (factory leads excluded)",
-          "gap_mm": 72.27786659828858
+          "gap_mm": 103.19442814415902
         },
         {
-          "name": "C42",
-          "gap_mm": 74.25921237047477
+          "name": "R4",
+          "gap_mm": 105.14736383234461
         }
       ]
     },
@@ -585,15 +517,15 @@
       "nearest": [
         {
           "name": "C92",
-          "gap_mm": 143.8391918934313
+          "gap_mm": 178.60140851783714
         },
         {
           "name": "R4",
-          "gap_mm": 143.8822978017499
+          "gap_mm": 178.64592248320972
         },
         {
           "name": "Q5",
-          "gap_mm": 143.94895707252104
+          "gap_mm": 178.7241027651747
         }
       ]
     },
@@ -602,66 +534,66 @@
       "nearest": [
         {
           "name": "C22",
-          "gap_mm": 75.41464950453287
+          "gap_mm": 107.24216432965973
         },
         {
           "name": "L3",
-          "gap_mm": 81.13915507274524
+          "gap_mm": 110.20463914580392
         },
         {
           "name": "Q5",
-          "gap_mm": 82.76204696671194
+          "gap_mm": 111.04305059331925
         }
       ]
     },
     {
-      "name": "J3 provisional guard slotted front -33.5",
-      "nearest": [
-        {
-          "name": "L3",
-          "gap_mm": 64.07202977069365
-        },
-        {
-          "name": "Q5",
-          "gap_mm": 65.79331450702183
-        },
-        {
-          "name": "C92",
-          "gap_mm": 67.26792047146508
-        }
-      ]
-    },
-    {
-      "name": "J3 provisional guard slotted front 0",
+      "name": "J3 provisional guard slotted front -40.000",
       "nearest": [
         {
           "name": "C92",
-          "gap_mm": 63.428803587607966
+          "gap_mm": 97.42676587592219
         },
         {
           "name": "Q5",
-          "gap_mm": 63.461009920381635
+          "gap_mm": 97.5043520102223
         },
         {
           "name": "R4",
-          "gap_mm": 63.46192262031208
+          "gap_mm": 97.53483422921482
         }
       ]
     },
     {
-      "name": "J3 provisional guard slotted front 33",
+      "name": "J3 provisional guard slotted front 2.292",
       "nearest": [
+        {
+          "name": "R4",
+          "gap_mm": 97.48180071502823
+        },
+        {
+          "name": "C92",
+          "gap_mm": 97.54946640818574
+        },
+        {
+          "name": "Q5",
+          "gap_mm": 97.95540890688959
+        }
+      ]
+    },
+    {
+      "name": "J3 provisional guard slotted front 20.451",
+      "nearest": [
+        {
+          "name": "R4",
+          "gap_mm": 99.47719404545435
+        },
+        {
+          "name": "C92",
+          "gap_mm": 100.1164717618639
+        },
         {
           "name": "C22",
-          "gap_mm": 65.55017786026002
-        },
-        {
-          "name": "R4",
-          "gap_mm": 68.37483544447988
-        },
-        {
-          "name": "C92",
-          "gap_mm": 69.57853925281378
+          "gap_mm": 100.55017786026002
         }
       ]
     }
@@ -688,16 +620,16 @@
       "name": "J2 cavity 1 black Alpha3057_16AWG",
       "nearest": [
         {
-          "name": "C98",
-          "gap_mm": 14.483379782015385
-        },
-        {
-          "name": "U14",
-          "gap_mm": 14.845038458905226
-        },
-        {
           "name": "R65",
-          "gap_mm": 14.87949086610368
+          "gap_mm": 14.25735284320275
+        },
+        {
+          "name": "U12",
+          "gap_mm": 14.614282980310765
+        },
+        {
+          "name": "C98",
+          "gap_mm": 14.784877169772145
         }
       ]
     },
@@ -739,16 +671,16 @@
       "name": "J2 cavity 2 green Alpha3057_16AWG",
       "nearest": [
         {
+          "name": "U31",
+          "gap_mm": 14.083802838379112
+        },
+        {
+          "name": "U12",
+          "gap_mm": 15.338022420786132
+        },
+        {
           "name": "R65",
-          "gap_mm": 15.481695490536989
-        },
-        {
-          "name": "U14",
-          "gap_mm": 15.648060945313361
-        },
-        {
-          "name": "C98",
-          "gap_mm": 15.679314395575567
+          "gap_mm": 15.524846000814957
         }
       ]
     },
@@ -791,15 +723,15 @@
       "nearest": [
         {
           "name": "U31",
-          "gap_mm": 16.3422415767919
+          "gap_mm": 13.834262033650564
         },
         {
           "name": "C83",
-          "gap_mm": 16.39272749919023
+          "gap_mm": 15.216962447446686
         },
         {
-          "name": "C99",
-          "gap_mm": 16.68653885165412
+          "name": "R117",
+          "gap_mm": 15.700004308948305
         }
       ]
     },
@@ -841,16 +773,16 @@
       "name": "J2 cavity 4 blue Alpha3057_16AWG",
       "nearest": [
         {
-          "name": "C99",
-          "gap_mm": 15.258687763024234
-        },
-        {
-          "name": "U37",
-          "gap_mm": 15.700438548676036
+          "name": "U31",
+          "gap_mm": 13.834262033650564
         },
         {
           "name": "C83",
-          "gap_mm": 16.14865150131699
+          "gap_mm": 14.096331594920066
+        },
+        {
+          "name": "R117",
+          "gap_mm": 14.613654700630548
         }
       ]
     },
@@ -892,16 +824,16 @@
       "name": "J3 cavity 1 red Alpha3057_16AWG",
       "nearest": [
         {
+          "name": "J3 provisional guard slotted front 20.451",
+          "gap_mm": 2.124101078458824
+        },
+        {
+          "name": "J3 provisional guard slotted front 2.292",
+          "gap_mm": 2.162127984762053
+        },
+        {
           "name": "J3 LPS300 manufacturer resistor envelope",
-          "gap_mm": 0.8062
-        },
-        {
-          "name": "J3 SVH-41T-P1.1 contact 2 nominal envelope",
-          "gap_mm": 1.3165679999999997
-        },
-        {
-          "name": "J3 provisional guard slotted front 0",
-          "gap_mm": 1.7170792876222718
+          "gap_mm": 3.68498058535121
         }
       ]
     },
@@ -909,16 +841,16 @@
       "name": "J3 cavity 2 black Alpha3057_16AWG",
       "nearest": [
         {
-          "name": "J3 SVH-41T-P1.1 contact 1 nominal envelope",
-          "gap_mm": 1.3165679999999997
-        },
-        {
           "name": "J3 LPS300 manufacturer resistor envelope",
-          "gap_mm": 3.6849805853512234
+          "gap_mm": 0.8062
         },
         {
-          "name": "J3 provisional guard slotted front 0",
-          "gap_mm": 7.8777196204770625
+          "name": "J3 provisional guard slotted front 2.292",
+          "gap_mm": 1.2105285696841794
+        },
+        {
+          "name": "J3 provisional guard slotted front -40.000",
+          "gap_mm": 1.2363874659153682
         }
       ]
     }

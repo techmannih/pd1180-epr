@@ -1,10 +1,38 @@
 {
-  "board_sha256": "4738c83bd7db689e0e135f7040ab4023b6d0a71505e1f883d22a976fe9be481b",
+  "board_sha256": "0455d7ba01ada4b5635d61e988f82bd3ad80fb59acb2ac50367179bc6c4703c6",
   "method": "Finished circular via drill intersects an F.Paste SMD land on the exact native PCB; all intersections require filled/capped processing.",
-  "count": 21,
+  "count": 27,
   "process": "epoxy filled and copper capped",
   "fabricator_accepted": false,
   "vias": [
+    {
+      "uuid": "8f326d2c-03e9-4b88-b7e7-2e6c27518ddc",
+      "x_mm": 69.3,
+      "y_mm": 91.95,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SCL",
+      "pads": [
+        {
+          "reference": "U38",
+          "pad": "5"
+        }
+      ]
+    },
+    {
+      "uuid": "e8c31dca-20df-4aff-84b8-ffe62f3f9426",
+      "x_mm": 70.75,
+      "y_mm": 84.85,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "V3V3",
+      "pads": [
+        {
+          "reference": "C109",
+          "pad": "1"
+        }
+      ]
+    },
     {
       "uuid": "8bcd727a-6c3c-4e9c-a7eb-dfa2959eb4a4",
       "x_mm": 72.975,
@@ -174,6 +202,34 @@
       ]
     },
     {
+      "uuid": "29ffb346-8def-4f2a-a46b-64cb289eb668",
+      "x_mm": 99.5346,
+      "y_mm": 137.11,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.6,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "C98",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "e568dd8f-c2da-4170-8f39-7db24de7f967",
+      "x_mm": 100.1,
+      "y_mm": 73.25,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.6,
+      "net": "VMOTOR",
+      "pads": [
+        {
+          "reference": "U6",
+          "pad": "17"
+        }
+      ]
+    },
+    {
       "uuid": "41d27599-5067-45bd-894e-b4c7aba54eb7",
       "x_mm": 102.3,
       "y_mm": 73.325,
@@ -240,6 +296,34 @@
         {
           "reference": "Q16",
           "pad": "9"
+        }
+      ]
+    },
+    {
+      "uuid": "59654406-616b-4a09-bc38-16fe57ce8913",
+      "x_mm": 117.3,
+      "y_mm": 61.2,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.6,
+      "net": "VMOTOR",
+      "pads": [
+        {
+          "reference": "D20",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "26c80f4a-3f7f-4118-b087-5c8db1ec910b",
+      "x_mm": 120.0,
+      "y_mm": 130.6,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "C83",
+          "pad": "2"
         }
       ]
     },

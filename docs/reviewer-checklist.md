@@ -14,7 +14,8 @@ Revision 0.5.0-RP2040-DRAFT. Begin with [the redesign](rp2040-redesign.md) and [
 - [ ] Regenerate matched manufacturing files, BOM/CPL, routed viewer, assembly CAD and release hashes. Source/release mismatches must keep the full review gate red.
 - [ ] Refresh official JLC stock/package for the exact fitted BOM. DRV8462DDVR quantity was insufficient for the configured batch; availability is not reserved.
 - [ ] Qualify motor-side connector/wire entry, rear screws/depth/insulation, heatsink clearance and mechanical security. Existing holes match the motor CAD, not an accepted fastening assembly.
-- [ ] Close the earlier spring-clamp J2/J3 requirement, raw PD_VBUS ADC requirement and reviewer POWER_GOOD meaning; they are not completed by this MCU/driver migration.
+- [x] Reviewer ECO implements WAGO spring-clamp J2/J3, separate raw PD_VBUS ADC (INA237), and separately reported derived PD_READY plus physical MOTOR_PG.
+- [ ] Verify those paths and terminal/harness access on assembled hardware; derived PD_READY is not a newly added TPS GPIO.
 - [ ] Program/read back TI EEPROM and RP2040 flash, verify cold boot and fault outputs, then staged low-current motor, brake and thermal tests. No 6 A operation until qualified.
 
 Run `bun run review` before any handoff as a completed board. It must remain blocking while any affected CAD/release check is stale or failing. Use [firmware instructions](../firmware/README.md) for the new commissioning image; the old STM32 programming address/image is invalid for U16.

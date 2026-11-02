@@ -143,37 +143,11 @@
       "manufacturer_url": "https://www.startech.com/en-ca/cables/cc1m80gusb4cable"
     },
     {
-      "id": "j2-housing",
-      "item": "J2 mating housing",
-      "quantity": 1,
-      "part_or_candidate": "JST VHR-4N",
-      "specification": "4 cavities, VH 3.96 mm",
-      "source": "Four crimped pigtails",
-      "destination": "J2 B4P-VH(LF)(SN)",
-      "purpose": "Keyed winding connection",
-      "need": "j2-harness",
-      "status": "Identified; supplier stock and physical acceptance pending",
-      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
-    },
-    {
-      "id": "j2-contacts",
-      "item": "J2 contacts",
-      "quantity": 4,
-      "part_or_candidate": "JST SVH-41T-P1.1",
-      "specification": "16 AWG termination; insulation OD 1.7-3.0 mm",
-      "source": "16 AWG pigtails",
-      "destination": "VHR-4N cavities 1/2/3/4",
-      "purpose": "Contact each winding conductor",
-      "need": "j2-harness",
-      "status": "Identified; tooling/pull tests and stock pending",
-      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
-    },
-    {
       "id": "j2-wire",
       "item": "J2 pigtail conductors",
       "quantity": 4,
       "part_or_candidate": "Alpha Wire 3057 BK005 / GR005 / RD005 / BL005",
-      "specification": "16 AWG 26/30 stranded; 300 V; UL1569 105 C; OD 2.3368 +/- 0.0508 mm; cuts 170/170/170/165 mm including 12 mm allowance",
+      "specification": "16 AWG 26/30 stranded; 300 V; UL1569 105 C; OD 2.3368 +/- 0.0508 mm; cuts 175/175/175/175 mm including 12 mm allowance",
       "source": "Motor-side TE320559 splices",
       "destination": "J2 contacts",
       "purpose": "Join factory motor leads to the specified VH termination",
@@ -261,32 +235,6 @@
       "manufacturer_url": "https://www.vishay.com/docs/50052/lps300.pdf"
     },
     {
-      "id": "j3-housing",
-      "item": "J3 mating housing",
-      "quantity": 1,
-      "part_or_candidate": "JST VHR-2N",
-      "specification": "2 cavities, VH 3.96 mm",
-      "source": "Two brake conductors",
-      "destination": "J3 B2P-VH(LF)(SN)",
-      "purpose": "Detachable qualified brake load",
-      "need": "Required for the current commissioning profile; installation and powered qualification pending",
-      "status": "Identified for provision; fit only with approved brake installation; stock pending",
-      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
-    },
-    {
-      "id": "j3-contacts",
-      "item": "J3 contacts",
-      "quantity": 2,
-      "part_or_candidate": "JST SVH-41T-P1.1",
-      "specification": "16 AWG termination; insulation OD 1.7-3.0 mm",
-      "source": "Brake cable",
-      "destination": "VHR-2N cavities 1/2",
-      "purpose": "Carry VMOTOR and switched return",
-      "need": "Required for the current commissioning profile; installation and powered qualification pending",
-      "status": "Tooling, temperature and stock qualification pending",
-      "manufacturer_url": "https://www.jst-mfg.com/product/pdf/eng/eVH.pdf"
-    },
-    {
       "id": "j3-wire",
       "item": "Brake conductors",
       "quantity": 2,
@@ -340,5 +288,6 @@
     }
   ],
   "architecture_revision": "0.5.0-RP2040-DRAFT",
-  "ddv_top_heatsink_status": "Additional top heatsink/TIM required; no exact qualified assembly selected."
+  "ddv_top_heatsink_status": "Additional top heatsink/TIM required; no exact qualified assembly selected.",
+  "onboard_termination_note": "J2 WAGO 2601-3104 and J3 WAGO 236-402 are in the PCB BOM, not extra external plugs. No JST housings or contacts are required."
 }

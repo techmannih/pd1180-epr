@@ -2,7 +2,7 @@
   (version 20250114)
   (generator circuit-json-to-kicad)
   (generator_version 0.0.1)
-  (uuid ce0ae787-fdb8-464c-afba-47224e58c8a2)
+  (uuid aca5d076-07d6-4446-b5ad-fc06568a4da8)
   (paper
     A4
   )
@@ -35,7 +35,7 @@
           )
         )
       )
-      (property "Footprint" "TS-1088-AR02016"
+      (property "Footprint" "tscircuit:TS-1088-AR02016"
         (id 2)
         (at -1.778 0 90)
         (effects
@@ -255,7 +255,7 @@
           )
         )
       )
-      (property "Footprint" "resistor_res0603"
+      (property "Footprint" "tscircuit:resistor_res0603"
         (id 2)
         (at -1.778 0 90)
         (effects
@@ -654,7 +654,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid f3e1fc11-4aca-4840-a0b4-b4764a60fe6d)
+    (uuid 3a579c19-8a53-4bff-976b-47c5925887ee)
     (fields_autoplaced no)
     (property "Reference" "SW2"
       (id 0)
@@ -707,14 +707,14 @@
       )
     )
     (pin "1"
-      (uuid e195fed3-3fa2-4fc8-a6ff-c8caaa29998a)
+      (uuid b70a755d-b8bc-4959-b66f-c1cadfb652f9)
     )
     (pin "2"
-      (uuid 809a98b1-6346-4f2a-ad33-bc73c0c8c93b)
+      (uuid 341a24e7-4a67-4b0f-943b-5d9896511c7f)
     )
     (instances
       (project ""
-        (path "/597c9ebb-3d71-4e95-bb7e-931901f80b2b/c80aaa8d-424c-4033-b54f-3a17a5f1bb72"
+        (path "/27450076-ef88-425c-83e2-e34449aad48d/cd01c643-ba88-4fea-a765-a5af65dc6907"
           (reference "SW2")
           (unit 1)
         )
@@ -729,7 +729,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid 876ca3be-0586-4f24-85f6-83b50f3b2d2c)
+    (uuid a9252de1-84a8-46b2-8caf-864b2b89076f)
     (fields_autoplaced no)
     (property "Reference" "R133"
       (id 0)
@@ -782,14 +782,14 @@
       )
     )
     (pin "1"
-      (uuid be2b1e59-fae9-4e53-958e-682c33407db5)
+      (uuid 2439dc40-9fbc-40be-8c79-e554efd2e6a9)
     )
     (pin "2"
-      (uuid 4d63cb7a-5300-4782-b1cc-e6815e55aa6b)
+      (uuid b073bcf3-bb20-4087-ad6d-a5d4d1de788e)
     )
     (instances
       (project ""
-        (path "/597c9ebb-3d71-4e95-bb7e-931901f80b2b/c80aaa8d-424c-4033-b54f-3a17a5f1bb72"
+        (path "/27450076-ef88-425c-83e2-e34449aad48d/cd01c643-ba88-4fea-a765-a5af65dc6907"
           (reference "R133")
           (unit 1)
         )
@@ -804,7 +804,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 86ff2c79-a117-4f4a-8cca-d5f8f664fec3)
+    (uuid 4c77eb36-bcbd-46ab-b31d-ed531bf47b90)
   )
   (text "SW2 requests motion from the onboard RP2040. R133 pulls the input to MCU logic power."
     (at 151.8 9.224999999999994 0)
@@ -814,7 +814,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 5761f0cd-ff00-4869-87e8-26b6aadbf7d5)
+    (uuid 77ac7d8e-8408-48cc-add3-1aac6a9c9345)
   )
   (text "Debounce requires release before start; reset, power loss and faults never auto-start."
     (at 151.8 19.724999999999994 0)
@@ -824,7 +824,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 6b0e984b-39e4-49d8-946a-db3a49628c36)
+    (uuid 4f1f5af9-081d-459e-b965-c2af9b64973a)
   )
   (text "USER_BUTTON_N"
     (at 147.6 102.44999999999999 -90)
@@ -834,7 +834,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 1b58b45a-fbd1-4fdd-83fa-774e8f68c9ce)
+    (uuid 5ca77888-763d-47e3-9d09-6863e840d263)
   )
   (global_label "USER_BUTTON_N"
     (shape passive)

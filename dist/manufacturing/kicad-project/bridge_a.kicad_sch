@@ -2,12 +2,12 @@
   (version 20250114)
   (generator circuit-json-to-kicad)
   (generator_version 0.0.1)
-  (uuid d7336220-69eb-4224-8345-149a89b36c4b)
+  (uuid 9efb858e-9e8d-4fdd-9822-b9fcbff07e30)
   (paper
     A4
   )
   (lib_symbols
-    (symbol "Device:J_B4P-VH_LF_SN"
+    (symbol "Device:J_2601-3104"
       (pin_numbers
         (hide no)
       )
@@ -35,7 +35,7 @@
           )
         )
       )
-      (property "Footprint" "B4P-VH_LF_SN"
+      (property "Footprint" "tscircuit:2601-3104"
         (id 2)
         (at -1.778 0 90)
         (effects
@@ -85,14 +85,14 @@
           (hide yes)
         )
       )
-      (symbol "J_B4P-VH_LF_SN_0_1"
+      (symbol "J_2601-3104_0_1"
         (polyline
           (pts
-            (xy -9.000000000000002 -4.500000000000001)
-            (xy 9.000000000000002 -4.500000000000001)
-            (xy 9.000000000000002 4.500000000000001)
-            (xy -9.000000000000002 4.500000000000001)
-            (xy -9.000000000000002 -4.500000000000001)
+            (xy -9.000000000000002 -7.5)
+            (xy 9.000000000000002 -7.5)
+            (xy 9.000000000000002 7.5)
+            (xy -9.000000000000002 7.5)
+            (xy -9.000000000000002 -7.5)
           )
           (stroke
             (width 0.254)
@@ -103,11 +103,11 @@
           )
         )
       )
-      (symbol "J_B4P-VH_LF_SN_1_1"
+      (symbol "J_2601-3104_1_1"
         (pin passive line
-          (at -15.24 1.27 0)
+          (at -15.24 5.08 0)
           (length 6)
-          (name "1"
+          (name "T1_A"
             (effects
               (font
                 (size 1.27 1.27)
@@ -123,9 +123,9 @@
           )
         )
         (pin passive line
-          (at -15.24 -1.27 0)
+          (at -15.24 1.27 0)
           (length 6)
-          (name "2"
+          (name "T2_A"
             (effects
               (font
                 (size 1.27 1.27)
@@ -141,9 +141,9 @@
           )
         )
         (pin passive line
-          (at 15.24 -1.27 180)
+          (at -15.24 -1.27 0)
           (length 6)
-          (name "3"
+          (name "T3_A"
             (effects
               (font
                 (size 1.27 1.27)
@@ -159,9 +159,9 @@
           )
         )
         (pin passive line
-          (at 15.24 1.27 180)
+          (at -15.24 -5.08 0)
           (length 6)
-          (name "4"
+          (name "T4_A"
             (effects
               (font
                 (size 1.27 1.27)
@@ -176,23 +176,95 @@
             )
           )
         )
+        (pin passive line
+          (at 15.24 -5.08 180)
+          (length 6)
+          (name "T1_B"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "5"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 15.24 -1.27 180)
+          (length 6)
+          (name "T2_B"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "6"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 15.24 1.27 180)
+          (length 6)
+          (name "T3_B"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "7"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
+        (pin passive line
+          (at 15.24 5.08 180)
+          (length 6)
+          (name "T4_B"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+          (number "8"
+            (effects
+              (font
+                (size 1.27 1.27)
+              )
+            )
+          )
+        )
       )
       (embedded_fonts no)
     )
   )
   (symbol
-    (lib_id "Device:J_B4P-VH_LF_SN")
+    (lib_id "Device:J_2601-3104")
     (at 148.59 105.41 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid decfed42-b9be-4103-af98-1f7d17fc685a)
+    (uuid 1e20e3e6-81b3-4bd3-9b22-7d7580f4ca71)
     (fields_autoplaced no)
     (property "Reference" "J2"
       (id 0)
-      (at 139.5 98.54999999999998 0)
+      (at 139.5 95.55000000000001 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -200,9 +272,9 @@
         (justify left)
       )
     )
-    (property "Value" "B4P-VH(LF)(SN)"
+    (property "Value" "2601-3104"
       (id 1)
-      (at 139.5 111.45000000000003 0)
+      (at 139.5 114.45 0)
       (effects
         (font
           (size 1.27 1.27)
@@ -210,7 +282,7 @@
         (justify left)
       )
     )
-    (property "Footprint" "B4P-VH_LF_SN"
+    (property "Footprint" "2601-3104"
       (id 2)
       (at 146.722 105 90)
       (effects
@@ -241,20 +313,32 @@
       )
     )
     (pin "1"
-      (uuid 43af4ccb-60e6-4018-aa0a-7ac6b0295c48)
+      (uuid 5b6e2c91-4fd9-4092-a376-94d10bda32a9)
     )
     (pin "2"
-      (uuid 4b9473fb-1f49-424f-8215-c24e68607964)
+      (uuid ef7575fd-61ca-4b4e-8221-8c70c3596b29)
     )
     (pin "3"
-      (uuid bf40126a-6007-4f8c-81ff-bf76d518df51)
+      (uuid 5c5dfceb-91c5-4966-908b-7b0a5a16e28b)
     )
     (pin "4"
-      (uuid 64806c86-b095-4e96-a4b2-9e70caf294f9)
+      (uuid d2f6d5e2-87e2-4fa7-b6dc-4089aa55f671)
+    )
+    (pin "5"
+      (uuid a80e12ee-701b-4ab1-8793-e886d0ffb668)
+    )
+    (pin "6"
+      (uuid ded6cda4-6e11-4136-a820-4c8d863a890d)
+    )
+    (pin "7"
+      (uuid 7c7733be-38d4-492a-849f-0aeaba82b637)
+    )
+    (pin "8"
+      (uuid b0a3c239-586f-45e7-9a0e-0925bb423993)
     )
     (instances
       (project ""
-        (path "/597c9ebb-3d71-4e95-bb7e-931901f80b2b/3c40ce40-f52c-4a1c-a59a-5ce8cc7aedfb"
+        (path "/27450076-ef88-425c-83e2-e34449aad48d/bff07448-9276-468f-bc35-1daacb9dcee9"
           (reference "J2")
           (unit 1)
         )
@@ -269,7 +353,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 72aec5d9-508d-472f-b6d3-fb00c940e3f9)
+    (uuid 60860732-64d4-4791-8c8d-6b25fe1f6530)
   )
   (text "J2 connects the two motor windings through the retained diagnostic shunts."
     (at 65.55 -138.75 0)
@@ -279,7 +363,7 @@
         (color 0 0 0 1)
       )
     )
-    (uuid 4b68997c-3704-448b-bcca-f1062929ae8a)
+    (uuid 2ce7ae48-eaae-4962-b37e-5cbb9d242833)
   )
   (text "Initial test current is below 0.8 A RMS nominal; rated motor current is not qualified."
     (at 65.55 -128.25 0)
@@ -289,55 +373,11 @@
         (color 0 0 0 1)
       )
     )
-    (uuid b39ef3a8-4271-4f73-8b64-99a4804ea9bf)
-  )
-  (text "MOTOR_A1_OUT"
-    (at 132 102.60000000000001 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid 8333e86a-42dc-485d-9519-7c8e3ff9e4f2)
-  )
-  (text "MOTOR_A2"
-    (at 132 105.6 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify right)
-    )
-    (uuid 7f329579-49fc-489b-8a81-a4ce3f94488b)
-  )
-  (text "MOTOR_B1_OUT"
-    (at 165 105.6 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify left)
-    )
-    (uuid 322398c2-a795-469f-a645-3e240f62ca7e)
-  )
-  (text "MOTOR_B2"
-    (at 165 102.60000000000001 0)
-    (effects
-      (font
-        (size 1.27 1.27)
-        (color 0 0 0 1)
-      )
-      (justify left)
-    )
-    (uuid 56a9de29-c82f-41e2-bb2d-cc1dd77ea2cc)
+    (uuid f4310f6b-cde6-423e-b039-80143ec57d8f)
   )
   (global_label "MOTOR_A1_OUT"
     (shape passive)
-    (at 133.35 104.14 0)
+    (at 133.35 100.33 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -349,7 +389,7 @@
   )
   (global_label "MOTOR_A2"
     (shape passive)
-    (at 133.35 106.67999999999999 0)
+    (at 133.35 104.14 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -361,7 +401,7 @@
   )
   (global_label "MOTOR_B1_OUT"
     (shape passive)
-    (at 163.83 106.67999999999999 0)
+    (at 133.35 106.67999999999999 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -373,7 +413,7 @@
   )
   (global_label "MOTOR_B2"
     (shape passive)
-    (at 163.83 104.14 0)
+    (at 133.35 110.49 0)
     (effects
       (font
         (size 1.27 1.27)
@@ -381,6 +421,54 @@
       (hide yes)
     )
     (uuid 32b3b047-cfb1-4091-9cb5-90772714e9a8)
+    (fields_autoplaced no)
+  )
+  (global_label "MOTOR_A1_OUT"
+    (shape passive)
+    (at 163.83 110.49 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid 775e0446-08d7-4a5c-aaba-2eed59f2f5ec)
+    (fields_autoplaced no)
+  )
+  (global_label "MOTOR_A2"
+    (shape passive)
+    (at 163.83 106.67999999999999 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid a8bb8441-2ca6-499b-a3de-c9d122379d7c)
+    (fields_autoplaced no)
+  )
+  (global_label "MOTOR_B1_OUT"
+    (shape passive)
+    (at 163.83 104.14 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid 640b780a-a38d-432c-99c1-2bd42c3f44c9)
+    (fields_autoplaced no)
+  )
+  (global_label "MOTOR_B2"
+    (shape passive)
+    (at 163.83 100.33 0)
+    (effects
+      (font
+        (size 1.27 1.27)
+      )
+      (hide yes)
+    )
+    (uuid fb9039ee-fb21-41b9-bfb5-90ef00663009)
     (fields_autoplaced no)
   )
 )

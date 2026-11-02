@@ -117,11 +117,11 @@ const expectedSheetNames = [
   "indicators",
   "alarm",
   "pd-programming",
-  "brake-feedback", "mcu-power", "motion-config"
+  "brake-feedback", "mcu-power", "motion-config", "pd-voltage"
 ]
 const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["inputs", "serial", "serial-rs232", "outputs", "bridge-b"].includes(name)))
-check(sheets.length === 25, "25 A4 sheets including RP2040 power and driver bias", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 25, "all schematic sheet names are unique")
+check(sheets.length === 26, "26 A4 sheets including raw PD voltage sensing", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === 26, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -162,7 +162,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 75, "75 high-level annotations on 25 sheets", {
+check(annotations.length === 78, "78 high-level annotations on 26 sheets", {
   actual: annotations.length,
 })
 
@@ -396,7 +396,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 92, "92 capacitors including RP2040 core/IO bypass", { actual: capacitors.length })
+check(capacitors.length === 93, "93 capacitors including INA237 supply bypass", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -438,7 +438,7 @@ const expectedNoConnects = [
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
   "U18.5:PGO",
   "U7.32:RSVD5", "U7.35:RSVD4", "U7.36:RSVD3", "U7.37:RSVD2", "U7.38:RSVD1",
-  "U35.13:N_INT", "U37.1:NC",
+  "U35.13:N_INT", "U37.1:NC", "U38.3:ALERT",
   "U16.6:GPIO4", "U16.7:GPIO5", "U16.34:GPIO22", "U16.35:GPIO23", "U16.36:GPIO24", "U16.37:GPIO25",
 ].sort()
 const actualNoConnectPorts = sourcePorts.filter((port) => !port.subcircuit_connectivity_map_key)

@@ -2,9 +2,9 @@
 
 RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the current redesign evidence](../engineering/rp2040-redesign.json) and [reviewer checklist](reviewer-checklist.md). Earlier STM32/TMC5160 release evidence does not establish this revision's readiness.
 
-1. Native routing is complete: 0 unconnected/parity/ERC findings, 8 retained J1/J10 hole errors and 434 cosmetic warnings. The exact USB-hole review exception is not fabrication acceptance. Fresh power-copper, bypass, Kelvin and USB-reference checks and matching artifacts are available; physical thermal/USB qualification remains open.
+1. Native routing is complete: 0 unconnected/parity/ERC findings, 8 retained J1/J10 hole errors and 451 cosmetic warnings. The exact USB-hole review exception is not fabrication acceptance. Fresh power-copper, bypass, Kelvin and USB-reference checks and matching artifacts are available; physical thermal/USB qualification remains open.
 2. Resolve exact live sourcing and top-cooled DDV heatsink/TIM. A 6 A motor rating is not a qualified current setting.
-3. Finalize secured rear mounting and connector/harness access. U18 remains optional DNP until the rear magnet attachment and airgap are qualified. Spring-clamp J2/J3 and separate raw PD_VBUS ADC remain open requirements.
+3. Finalize secured rear mounting and connector/harness access. U18 remains optional DNP until the rear magnet attachment and airgap are qualified. WAGO spring-clamp J2/J3 and U38 INA237 raw PD_VBUS sensing are implemented in the reviewer ECO. Their powered and physical acceptance remains open.
 4. Program U3's reviewed TI EEPROM image using its isolated fixture, read the full 64 KiB back, compare the programmed image and confirm a cold APP boot/48 V EPR contract. See [PD programming](pd-programming.md).
 5. Program the new RP2040 firmware, read the complete 4 MiB external flash from 0x10000000, compare it using `verify-programming.mjs --kind rp2040`, and retain programmer/board-serial evidence. See [firmware instructions](../firmware/README.md). Do not use STM32 images or addresses.
 6. With motion locks still false, measure reset/enable states, rails, USB-only and dual-supply behavior, USB attach/suspend/detach current and all protection/fault responses.

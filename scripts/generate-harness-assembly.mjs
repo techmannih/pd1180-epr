@@ -18,16 +18,13 @@ const colors={black:[.04,.04,.045,1],green:[.06,.42,.12,1],red:[.7,.06,.05,1],bl
 const mate=layout.mates.find(m=>m.reference==='J2')
 const s=circuit.find(r=>r.type==='source_component'&&r.name==='J2')
 const pcb=circuit.find(r=>r.type==='pcb_component'&&r.source_component_id===s.source_component_id)
-const ports=circuit.filter(r=>r.type==='pcb_port'&&r.pcb_component_id===pcb.pcb_component_id).map(p=>({...p,pin:Number(circuit.find(s=>s.type==='source_port'&&s.source_port_id===p.source_port_id)?.pin_number)})).sort((a,b)=>a.pin-b.pin)
-if(pcb.rotation!==0||ports.length!==4||ports.some((p,i)=>p.pin!==i+1))throw new Error('J2 mating orientation/pin count changed')
-const height=top+mate.mated_height_mm,bottom=height-mate.height_mm
-const shape=subtract(cuboid({center:[pcb.center.x,pcb.center.y,(bottom+height)/2],size:[mate.width_mm,mate.depth_mm,mate.height_mm]}),...ports.map(p=>cuboid({center:[p.x,p.y,(bottom+height)/2],size:[3.1,3.1,mate.height_mm+2]})))
-const positions=[],indices=[]
-for(const poly of geom3.toPolygons(shape)){const f=positions.length/3;for(const v of poly.vertices)positions.push(...v);for(let i=1;i<poly.vertices.length-1;i++)indices.push(f,f+i,f+i+1)}
-meshes.push({name:'J2_VHR_4N_mating_housing',positions,indices,color:[.88,.87,.78,1]})
-const bounds={min:[pcb.center.x-mate.width_mm/2,pcb.center.y-mate.depth_mm/2,bottom],max:[pcb.center.x+mate.width_mm/2,pcb.center.y+mate.depth_mm/2,height]}
-bodies.push({name:'J2 VHR-4N catalogue housing envelope',bounds})
-connectors.push({reference:'J2',part:'VHR-4N',bounds,ports:ports.map(p=>({pin:p.pin,x:p.x,y:p.y,wire_exit_z:height})),mated_height_mm:mate.mated_height_mm})
+const electricalPorts=circuit.filter(r=>r.type==='pcb_port'&&r.pcb_component_id===pcb.pcb_component_id)
+if(pcb.rotation!==mate.rotation||electricalPorts.length!==8)throw new Error('J2 spring-clamp orientation/pin count changed')
+const height=top+mate.entry_z_mm
+const ports=mate.entry_x_mm.map((x,i)=>({pin:i+1,x:pcb.center.x+x,y:pcb.center.y+mate.entry_y_mm}))
+const bounds={min:[pcb.center.x-mate.width_mm/2,pcb.center.y-4.81,top],max:[pcb.center.x+mate.width_mm/2,pcb.center.y+7.94,top+mate.height_mm]}
+// The actual WAGO body is part of the PCB model. No separate plug/contact mesh.
+connectors.push({reference:'J2',part:mate.part,bounds,ports:ports.map(p=>({...p,wire_exit_z:height})),mated_height_mm:mate.mated_height_mm,rotation:mate.rotation,termination:'stripped conductor in spring clamp'})
 function wire(name,points,radius,color,connection,meta={}){
  meshes.push(tube(name,points,radius,color));wires.push({name,reference:'J2',connection,points,radius_mm:radius,...meta})
 }
@@ -48,7 +45,7 @@ for(const p of ports){
  points.push([x,y,z])
  const connection=`J2 pin ${p.pin}`
  const length=points.slice(1).reduce((n,v,k)=>n+distance(v,points[k]),0)
- wire(`J2 cavity ${p.pin} ${color} Alpha3057_16AWG`,points,mate.wire_od_mm/2,colors[color],connection,{kind:'pigtail',net:motorHarness.motor_connector.pin_to_net[p.pin],source:`J2:${p.pin} / SVH-41T-P1.1`,destination:`TE320559_${p.pin}:pigtail`,nominal_path_length_mm:length,cut_length_mm:Math.ceil((length+12)/5)*5,termination_and_adjustment_allowance_mm:12,minimum_bend_radius_mm:mc.pigtail_minimum_bend_radius_mm,cut_length_status:'CAD nominal, first-article termination/fit approval required'})
+ wire(`J2 cavity ${p.pin} ${color} Alpha3057_16AWG`,points,mate.wire_od_mm/2,colors[color],connection,{kind:'pigtail',net:motorHarness.motor_connector.pin_to_net[p.pin],source:`J2:${p.pin} / WAGO 2601-3104 spring clamp`,destination:`TE320559_${p.pin}:pigtail`,nominal_path_length_mm:length,cut_length_mm:Math.ceil((length+12)/5)*5,termination_and_adjustment_allowance_mm:12,minimum_bend_radius_mm:mc.pigtail_minimum_bend_radius_mm,cut_length_status:'CAD nominal, first-article termination/fit approval required'})
  const end=[x,y,z-mc.splice_length_envelope_mm]
  meshes.push(positionSplice(spliceModel,[x,y,z],`TE320559_splice_${p.pin}`))
  wires.push({name:`TE320559_splice_${p.pin}`,reference:'J2',connection,points:[[x,y,z],end],radius_mm:spliceModel.radius,kind:'splice',nominal_cad_length_mm:spliceModel.length,nominal_cad_diameter_mm:spliceModel.radius*2,step_sha256:spliceModel.step_sha256,physical_crimp_envelope_verified:false})

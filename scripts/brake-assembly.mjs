@@ -13,10 +13,10 @@ export async function addBrakeAssembly({layout,circuit,top,meshes,bodies,wires,c
  const cfg=layout.brake,mate=layout.mates.find(m=>m.reference==='J3')
  const src=circuit.find(r=>r.type==='source_component'&&r.name==='J3')
  const pcb=circuit.find(r=>r.type==='pcb_component'&&r.source_component_id===src?.source_component_id)
- const ports=circuit.filter(r=>r.type==='pcb_port'&&r.pcb_component_id===pcb?.pcb_component_id).map(p=>({...p,pin:Number(circuit.find(s=>s.type==='source_port'&&s.source_port_id===p.source_port_id)?.pin_number)})).sort((a,b)=>a.pin-b.pin)
- if(pcb?.layer!=='top'||pcb.rotation!==0||ports.length!==2||ports.some((p,i)=>p.pin!==i+1))throw Error('J3 pin/placement contract changed')
+ const electricalPorts=circuit.filter(r=>r.type==='pcb_port'&&r.pcb_component_id===pcb?.pcb_component_id).map(p=>({...p,pin:Number(circuit.find(s=>s.type==='source_port'&&s.source_port_id===p.source_port_id)?.pin_number)})).sort((a,b)=>a.pin-b.pin)
+ if(pcb?.layer!=='top'||pcb.rotation!==mate.rotation||electricalPorts.length!==4)throw Error('J3 pin/placement contract changed')
  const nets=['VMOTOR','BRAKE_RETURN']
- for(const p of ports){const sp=circuit.find(s=>s.type==='source_port'&&s.source_port_id===p.source_port_id),n=circuit.find(s=>s.type==='source_net'&&s.name===nets[p.pin-1]);if(sp.subcircuit_connectivity_map_key!==n?.subcircuit_connectivity_map_key)throw Error('J3 brake polarity/net mismatch')}
+ for(const p of electricalPorts){const sp=circuit.find(s=>s.type==='source_port'&&s.source_port_id===p.source_port_id),n=circuit.find(s=>s.type==='source_net'&&s.name===nets[(p.pin-1)%2]);if(sp.subcircuit_connectivity_map_key!==n?.subcircuit_connectivity_map_key)throw Error('J3 brake polarity/net mismatch')}
  function solid(name,shape,color,meta={}){
   const positions=[],indices=[]
   for(const poly of geom3.toPolygons(shape)){const f=positions.length/3;for(const p of poly.vertices)positions.push(...p);for(let i=1;i<poly.vertices.length-1;i++)indices.push(f,f+i,f+i+1)}
@@ -24,14 +24,10 @@ export async function addBrakeAssembly({layout,circuit,top,meshes,bodies,wires,c
   const bounds={min:[0,1,2].map(k=>Math.min(...positions.filter((_,i)=>i%3===k))),max:[0,1,2].map(k=>Math.max(...positions.filter((_,i)=>i%3===k)))}
   bodies.push({name,reference:'J3',bounds,...meta});return bounds
  }
- const metal=[.65,.67,.68,1],black=[.06,.06,.065,1],height=top+mate.mated_height_mm,bottom=height-mate.height_mm
- const bounds=solid('J3 VHR-2N catalogue housing envelope',subtract(cuboid({center:[pcb.center.x,pcb.center.y,(bottom+height)/2],size:[mate.width_mm,mate.depth_mm,mate.height_mm]}),...ports.map(p=>cuboid({center:[p.x,p.y,(bottom+height)/2],size:[3.1,3.1,mate.height_mm+2]}))),[.88,.87,.78,1],{kind:'mate'})
- connectors.push({reference:'J3',part:'VHR-2N',bounds,ports:ports.map(p=>({pin:p.pin,x:p.x,y:p.y,wire_exit_z:height})),mated_height_mm:mate.mated_height_mm})
- for(const p of ports){
-  solid(`J3 SVH-41T-P1.1 contact ${p.pin} nominal envelope`,union(
-   subtract(cuboid({center:[p.x,p.y,bottom+4.5],size:[2.8,2.8,5]}),cuboid({center:[p.x,p.y,bottom+4.5],size:[2.4,2.4,6]})),
-   subtract(cylinder({center:[p.x,p.y,height-3.5],radius:1.45,height:6,segments:16}),cylinder({center:[p.x,p.y,height-3.5],radius:1.2,height:7,segments:16}))),metal,{kind:'contact',connection:`J3 pin ${p.pin}`})
- }
+ const metal=[.65,.67,.68,1],black=[.06,.06,.065,1],height=top+mate.entry_z_mm
+ const ports=mate.entry_x_mm.map((x,i)=>({pin:i+1,x:pcb.center.x-x,y:pcb.center.y-mate.entry_y_mm}))
+ const bounds={min:[pcb.center.x-mate.width_mm/2,pcb.center.y-mate.depth_mm/2,top],max:[pcb.center.x+mate.width_mm/2,pcb.center.y+mate.depth_mm/2,top+mate.height_mm]}
+ connectors.push({reference:'J3',part:mate.part,bounds,ports:ports.map(p=>({...p,wire_exit_z:height})),mated_height_mm:mate.mated_height_mm,rotation:mate.rotation,termination:'stripped conductor in spring clamp'})
  const evidence=JSON.parse(await readFile('engineering/mechanical/brake-evidence.json'))
  const bytes=await readFile(evidence.archive),sha=b=>createHash('sha256').update(b).digest('hex')
  if(sha(bytes)!==evidence.archive_sha256)throw Error('Brake manufacturer archive changed')
@@ -67,13 +63,15 @@ export async function addBrakeAssembly({layout,circuit,top,meshes,bodies,wires,c
   const washerZ=tz+cfg.ring_tongue_thickness_mm+.4
   solid(`J3 terminal M4 lock washer ${p.pin}`,subtract(cylinder({center:[tx,ty,washerZ],radius:4,height:.8,segments:24}),cylinder({center:[tx,ty,washerZ],radius:2.15,height:1,segments:24})),metal,{kind:'terminal hardware',connection})
   solid(`J3 terminal M4x6 screw ${p.pin}`,union(cylinder({center:[tx,ty,washerZ+.4-3],radius:2,height:6,segments:16}),cylinder({center:[tx,ty,washerZ+2.4],radius:3.5,height:4,segments:6})),metal,{kind:'terminal hardware',connection})
-  const r=cfg.bend_radius_mm,points=[[p.x,p.y,height-.5],[p.x,p.y,axisZ-r]]
-  for(let k=1;k<=64;k++){const a=Math.PI*k/128;points.push([p.x,p.y+r*(1-Math.cos(a)),axisZ-r+r*Math.sin(a)])}
-  const y0=p.y+r
+  const r=cfg.bend_radius_mm,startZ=height-.5,arcZ=axisZ-r*(1-Math.SQRT1_2),arcY=p.y+(arcZ-startZ)
+  const points=[[p.x,p.y,startZ],[p.x,arcY,arcZ]]
+  // 45-degree clamp exit, then a tangent arc to the horizontal cable run.
+  for(let k=1;k<=64;k++){const a=Math.PI/4+Math.PI*k/256;points.push([p.x,arcY+r*(Math.SQRT1_2-Math.cos(a)),arcZ+r*(Math.sin(a)-Math.SQRT1_2)])}
+  const y0=arcY+r*Math.SQRT1_2
   for(let k=1;k<=96;k++){const t=k/96,s=t*t*(3-2*t);points.push([p.x+(tx-p.x)*s,y0+(back-y0)*t,axisZ])}
   const name=`J3 cavity ${p.pin} ${p.pin===1?'red':'black'} Alpha3057_16AWG`,length=points.slice(1).reduce((sum,p,i)=>sum+distance(p,points[i]),0)
   meshes.push(tube(name,points,cfg.wire_od_max_mm/2,p.pin===1?[.7,.06,.05,1]:black))
-  wires.push({name,reference:'J3',connection,points,radius_mm:cfg.wire_od_max_mm/2,kind:'pigtail',net:nets[p.pin-1],source:`J3:${p.pin} / SVH-41T-P1.1`,destination:`LPS300 terminal ${p.pin} / TE152883`,minimum_bend_radius_mm:cfg.minimum_bend_radius_mm,nominal_path_length_mm:length,cut_length_mm:Math.ceil((length+16)/5)*5,termination_and_adjustment_allowance_mm:16,cut_length_status:'CAD nominal only; qualify first-article strips, crimp and installation length'})
+  wires.push({name,reference:'J3',connection,points,radius_mm:cfg.wire_od_max_mm/2,kind:'pigtail',net:nets[p.pin-1],source:`J3:${p.pin} / WAGO 236-402 spring clamp`,destination:`LPS300 terminal ${p.pin} / TE152883`,minimum_bend_radius_mm:cfg.minimum_bend_radius_mm,nominal_path_length_mm:length,cut_length_mm:Math.ceil((length+16)/5)*5,termination_and_adjustment_allowance_mm:16,cut_length_status:'CAD nominal only; qualify first-article strips, crimp and installation length'})
  }
  // A guard envelope makes the exposed-ring boundary visible. Slots deliberately
  // clear both cable paths. Material, mounting and cooling airflow are unqualified.
@@ -81,6 +79,16 @@ export async function addBrakeAssembly({layout,circuit,top,meshes,bodies,wires,c
  for(const x of [-41,41])solid(`J3 provisional guard side ${x}`,cuboid({center:[x,cy,39],size:[2,84,38]}),guard,{kind:'guard'})
  solid('J3 provisional guard rear',cuboid({center:[0,cy+41,39],size:[80,2,38]}),guard,{kind:'guard'})
  solid('J3 provisional guard roof',cuboid({center:[0,cy,59],size:[84,84,2]}),guard,{kind:'guard'})
- for(const [x,w] of [[-33.5,13],[0,12],[33,14]])solid(`J3 provisional guard slotted front ${x}`,cuboid({center:[x,cy-41,39],size:[w,2,38]}),guard,{kind:'guard'})
+ const frontY=cy-41,slots=wires.filter(w=>w.reference==='J3'&&w.kind==='pigtail').map(w=>{
+  const i=w.points.findIndex((p,i)=>i&&w.points[i-1][1]<=frontY&&p[1]>=frontY)
+  if(i<1)throw Error('Brake cable does not cross guard entry plane')
+  const a=w.points[i-1],b=w.points[i],t=(frontY-a[1])/(b[1]-a[1]),x=a[0]+t*(b[0]-a[0])
+  return [x-3.5,x+3.5]
+ }).sort((a,b)=>a[0]-b[0])
+ let left=-40
+ for(const [lo,hi] of [...slots,[40,40]]){
+  if(lo>left)solid(`J3 provisional guard slotted front ${left.toFixed(3)}`,cuboid({center:[(left+lo)/2,frontY,39],size:[lo-left,2,38]}),guard,{kind:'guard'})
+  left=Math.max(left,hi)
+ }
  return {resistor_step_sha256:evidence.cad.sha256,thermal_qualified:false}
 }

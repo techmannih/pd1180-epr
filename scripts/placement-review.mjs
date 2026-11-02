@@ -1,4 +1,4 @@
-export const reviewed = ['C26','C41','C80','R139']
+export const reviewed = ['C26','C80','C83','R139','R64','R65']
 export function placementAdvisories(output, status) {
   if (!/^placement drc:\s*Errors: 0\s*Warnings: 0\s*$/m.test(output)) throw new Error('Placement DRC contains unexpected errors/warnings')
   const advice = [...output.matchAll(/^  - (\w+) connections cross the routing path between its pads\. Suggested move: rotate \1 180 degrees\.$/gm)].map(m=>m[1]).sort()
