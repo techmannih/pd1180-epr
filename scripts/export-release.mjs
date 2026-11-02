@@ -79,6 +79,7 @@ const copies = [
   ['engineering/filled-copper-review.json', 'filled-copper-review.json'],
   ['docs/sourcing-resolution.md', 'sourcing-resolution.md'],
   ['docs/manufacturing-acceptance.md', 'manufacturing-acceptance.md'],
+  ['docs/thermal-qualification.md', 'thermal-qualification.md'],
   ['sourcing/replacement-catalog-evidence.json', 'replacement-catalog-evidence.json'],
   ['sourcing/procurement-open-items.csv', 'procurement-open-items.csv'],
   ['docs/placement-review.md', 'placement-review.md'],

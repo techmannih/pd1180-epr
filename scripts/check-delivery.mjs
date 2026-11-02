@@ -2,13 +2,14 @@ import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { access, readFile, stat, writeFile } from 'node:fs/promises'
 import JSZip from 'jszip'
+import { manufacturingHandoffErrors, readManufacturingHandoff } from './manufacturing-handoff.mjs'
 import { validatePdImage } from './pd-image-policy.mjs'
 import { createCloudViewerCircuit } from './generate-cloud-viewer.mjs'
 
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
 const hashes = JSON.parse(await readFile('release/sha256.json', 'utf8'))
 const manifest = JSON.parse(await readFile('release/delivery-manifest.json', 'utf8'))
-const errors = []
+const errors = manufacturingHandoffErrors(await readManufacturingHandoff('release'))
 try {
   execFileSync('bun', ['scripts/export-assembly.mjs', '--check', 'release'], { stdio: 'pipe' })
 } catch {
@@ -29,7 +30,7 @@ for (const [source, delivered] of [
 
 // Wiring/purchase guidance must travel with the package and match the current
 // source documents, including the distinction between candidates and purchases.
-for (const name of ['rp2040-redesign.md', 'assembly.md', 'power-validation.md', 'pd-programming.md', 'brake-assembly.md', 'usb-access.md', 'usb-access-check.json', 'external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md', 'completion-handoff.md', 'sourcing-resolution.md', 'manufacturing-acceptance.md', 'u16-footprint.md', 'u35-footprint.md']) {
+for (const name of ['rp2040-redesign.md', 'assembly.md', 'power-validation.md', 'pd-programming.md', 'brake-assembly.md', 'usb-access.md', 'usb-access-check.json', 'external-system.md', 'external-parts.json', 'brake-integration.md', 'pd-configuration.json', 'pd-configuration-review.md', 'pd-image-check.json', 'readiness.md', 'placement-review.md', 'completion-handoff.md', 'sourcing-resolution.md', 'manufacturing-acceptance.md', 'thermal-qualification.md', 'u16-footprint.md', 'u35-footprint.md']) {
   const current = await readFile(`docs/${name}`, 'utf8')
   const delivered = await readFile(`release/${name}`, 'utf8').catch(() => '')
   if (current !== delivered) errors.push(`release/${name}: differs from current source guidance`)

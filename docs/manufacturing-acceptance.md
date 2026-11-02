@@ -1,42 +1,48 @@
 # Manufacturing and mechanical acceptance
 
-**Prepared requirements; supplier and physical acceptance remain pending.** Keep the four existing PCB holes and all unrelated copper; the reviewed U16/U35 ECO and J1/J10 USB edge placement are documented in their respective evidence files. Record the exact release hash, provider, drawing revision, approver/date and evidence for each row. A public capability page confirms an offered process, not acceptance of this board.
+**Engineering review package; fabrication and motor operation remain held.** Use the current RP2040 / DRV8462DDVR / TPS26750 release, with U38 raw-PD sensing and WAGO J2/J3. Record release hash, supplier, drawing revision, operator/date and evidence for each acceptance. A catalogue capability is not this board's manufacturing approval.
 
-| Area | Requirement for this board | Closure record |
+## Current fabrication instructions
+
+| Area | Requirement | Acceptance evidence |
 |---|---|---|
-| PCB/process | 85.9 × 85.9 mm stepped outline, 4 layers, 1.6 mm, **1 oz on every copper layer**, green mask, white silk, **ENIG**, top assembly, electrical test | Accepted fabrication drawing/quote with all parameters, including 0.09 mm trace/space |
-| Via-in-pad | **62 locations**, including 40 MOSFET drain-pad vias and four U34 thermal vias and four U16 ground-pad vias; **epoxy filled and copper capped**, minimum finished via drill 0.30 mm | Provider accepts coordinate list and native board; inspect planarity and first-article solder joints |
-| USB | 90 Ω differential target, project acceptance ±10%; review USB_DP/DM and USB_DP_CONN/DM_CONN against selected stack-up | Stack-up ID with copper/dielectric thickness and material, field-solver report for actual width/gap/plane geometry, coupon/TDR result and USB test |
-| USB receptacles | C3025063 / USB4105-GF-A-060; 0.60 mm shell stakes on 1.6 mm board | Agreed reflow/joint inspection and cable mating/retention result; shorter stakes are not assumed to protrude through the board |
-| Motor mounting | Four unchanged 4.2 mm holes aligned to manufacturer STEP axes; no replacement posts/fixture invented | Actual motor rear-thread size/pitch, usable depth, approved engagement/torque and fastener drawing; physical secure assembly and clearance evidence |
-| J2/J3 harness | Correct JST VH mates/contacts, phase/polarity, crimp tooling, insulation and strain relief | First-article dimension, crimp/pull, retention, continuity and temperature records |
+| PCB | 85.9 × 85.9 mm stepped outline; four layers; 1.6 mm; 1 oz on every layer; ENIG; top assembly | Supplier accepts the actual stack-up, electrical test and drawing |
+| Copper | Minimum track **0.15 mm**; copper spacing **0.10 mm**; global copper-to-edge **0.20 mm** | Retain source/native rules; do not substitute defaults |
+| GND inner plane | Clearance **0.30 mm**, edge inset **0.50 mm** | Independent of the global edge rule |
+| Via-in-pad | **27 locations**, epoxy filled and copper capped | Coordinate list and board hash in `rp2040-via-in-pad.json`; inspect planarity and joints |
+| Fitted assembly | **237 components**, all top; U18 bottom DNP, C52/C53 top DNP | Matching BOM/CPL/Gerbers; selective or hand soldering of WAGO terminals and tall parts agreed |
+| USB receptacles | C3025063 / USB4105-GF-A-060; 0.60 mm stakes on a 1.6 mm board | Joint/retention acceptance; stakes need not protrude through the board |
+| USB routing | 90 Ω differential design target, ±10% project tolerance | Selected stack-up, actual geometry field-solver result and coupon/TDR plus functional USB test |
+| Driver cooling | DDV exposed **top** pad, TIM, heatsink and mechanically supported contact | See `thermal-qualification.md`; no approved cooling assembly or full-current rating yet |
+| Motor mounting | Four unchanged Ø4.2 mm holes aligned to manufacturer STEP axes | Actual rear threads, engagement and fastening load path still unconfirmed |
+| J2/J3 harnesses | WAGO direct wire termination; no mating housings/socket contacts | Strip, retention, continuity, strain relief, access and temperature records |
 
-[JLC's via-covering specification](https://jlcpcb.com/help/article/pcb-via-covering) supports filled/capped processing; ordinary tenting or solder-mask plugging does not meet this request. Identify vias separately from component plated holes and mounting holes: connector holes must remain open. The precise 62-location list is in `engineering/top-side-placement.json`, `power_eco_via_audit`; the stocked MCU changes to UFQFPN48 with a grounded exposed pad and four ground vias. The exact local copper changes are recorded in `engineering/stocked-controller-eco.json` and `engineering/usb-edge-eco.json`; the protection policy proves unrelated geometry is unchanged.
+The exact via list, including U38/C109 and C103 signal fanout locations, supersedes historical inventories. Keep connector plated holes and motor mounting holes open. [JLC's via-covering specification](https://jlcpcb.com/help/article/pcb-via-covering) distinguishes filled/capped processing from ordinary tenting or mask plugging.
 
-[JLC stack-up data](https://jlcpcb.com/impedance) offers constructions including examples with **0.5 oz inner copper**. Those examples cannot silently replace our 1 oz inner requirement. `order-settings.json` deliberately leaves stack-up ID and field-solver approval blank. The existing USB check proves ground-reference continuity, not 90 Ω impedance. Do not assign a standard stack-up name or permit fabrication-side trace edits without checking the actual route. The accepted stack-up may require a separately reviewed USB route adjustment.
+[JLC stack-up data](https://jlcpcb.com/impedance) must be matched to the actual four-layer requirement. Do not substitute 0.5 oz inner copper or change to 2 oz outer copper without a reviewed geometry/impedance/process update. TI recommends 2 oz outer layers for DRV8462; the retained 1 oz design has no full-current thermal qualification. Ground-reference continuity is not an impedance measurement.
+
+## Native findings and retained holds
+
+Read the current `kicad-drc.json` rather than a historical screenshot. The reviewed baseline has **eight J1/J10 hole-clearance errors and 451 cosmetic warnings**, with zero unconnected, schematic-parity and ERC findings. Those retained errors are permitted for engineering review only. Obtain explicit fabricator acceptance or a reviewed footprint correction before ordering; do not lower rules merely to obtain zero errors. Cosmetic review must also ensure safety/polarity markings remain legible.
 
 ## Mounting measurements
 
-The STEP alignment and 4.2 mm PCB drill do **not** specify a motor screw thread. Inspect the actual 34HS31-6004S1 rear features and obtain manufacturer fastening limits. Do not remove structural motor tie bolts or assume a blind hole's full measured depth is usable thread. Record pitch, usable engagement, bottoming clearance, under-head length, board/contact clearances and fastening load path. Check that the retained 19.5 mm preview gap can be securely realized; the preview itself supplies no support. No motor run is permitted with an unsupported PCB or loose harness.
+The manufacturer STEP and Ø4.2 mm PCB drill do not specify an accessory screw thread. As of this handoff the user has no physical measurements available. Do not remove structural tie bolts or assume the rear case screws can support accessories. Record thread size/pitch, usable engagement, bottoming clearance, permitted torque, under-head length and approved load path. Confirm motor-to-board insulation, through-hole solder-tail clearance and retention. The **19.5 mm preview gap is not a selected spacer height**. No screw/spacer set is approved.
 
 ## Harness acceptance
 
-J2 uses B4P-VH, VHR-4N and **SVH-41T-P1.1** contacts with Alpha 3057 16 AWG pigtails. Check wire outside diameter and strip/crimp dimensions against the [JST VH catalogue](https://www.jst-mfg.com/product/pdf/eng/eVH.pdf) and the selected tool's instructions. Verify every latch engages and each conductor matches [connector-harnesses.md](connector-harnesses.md). Proposed 170/170/170/165 mm cuts require physical fit approval.
+J2 is **WAGO 2601-3104**: four wire entries, eight solder tails, pairs 1/5, 2/6, 3/7 and 4/8. Use black/green/red/blue Alpha 3057 16 AWG pigtails, nominal **175 mm each**, with 8–9 mm strip at WAGO. J3 is **WAGO 236-402**: entries 1 and 2, pairs 1/3 and 2/4, 5–6 mm strip. J3 red/black cuts are nominal **165/210 mm**. BRAKE_RETURN is switched, not ground. Actual cut lengths require a first article. See `connector-harnesses.md` and `motor-harness.md`.
 
-[TE 320559](https://www.te.com/en/product-320559.html) accepts 22–16 AWG / 0.3–1.42 mm² conductors and specifies 3.18 mm compatible insulation diameter and 32.13 mm length. Each splice joins one 0.75 mm² motor lead to one 16 AWG pigtail, one conductor per end. **3.18 mm is a wire-insulation limit, not the splice's outside diameter.** The manufacturer AE STEP and current Rev V6 drawing are now archived; the actual nominal 5.6134 mm diameter / 32.131 mm CAD body replaces the old 5 mm cylinder. CAD clearance passes with that larger body, but still measure the finished crimp and its tolerances before approving physical fit.
+Four [TE 320559](https://www.te.com/en/product-320559.html) butt splices join individual 0.75 mm² motor leads to 16 AWG pigtails, one conductor per end. The accepted wire range is 22–16 AWG / 0.3–1.42 mm²; the 3.18 mm insulation limit is not splice diameter. Archived CAD nominal body diameter/length are 5.6134/32.131 mm. Inspect finished crimps, not just uncrimped CAD. Use [TE 114-2157](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocFormat=pdf&DocLang=English&DocNm=114-2157&DocType=Specification+Or+Standard&PartCntxt=320559) and the exact tool instructions for strip/crimp/pull criteria; destructive tests use coupons. Inspect strand insertion and clamp retention, keep insulation out of the clamp contact and copper enclosed, and qualify wire/terminal temperatures.
 
-Use the applicable [TE 114-2157 crimp specification](https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocFormat=pdf&DocLang=English&DocNm=114-2157&DocType=Specification+Or+Standard&PartCntxt=320559) and exact tool instruction. Record strip length, conductor/insulation crimp inspection and the specified tensile criterion/result for each wire size. Do not invent a generic pull-force pass threshold. Use coupons for destructive pull tests. Check assembled insulation, bend/strain relief, winding continuity and connector/crimp temperatures at the qualified current.
+J3 uses two TE 152883 M4 rings at the provisional resistor. Cooling, terminal guard and strain relief are separate required assembly items. WAGO terminal installation does not remove these requirements.
 
-The user deferred the retained silkscreen/text corrections (401 remain after the encoder-capacitor move, which removed four more old findings without adding any). Preserve raw findings and obtain the provider's printing disposition separately; this document does not approve clipped safety/polarity markings or claim zero native DRC. Electrical connectivity, parity and ERC must remain zero.
+## Components and programming
 
-## U16 land pattern
+U16 is **RP2040 / C2040, LQFN-56(7×7)** with an exposed ground land. U17 is **W25Q32JVSSIM / C6000508, SOIC-8-208mil**, on V3V3_MCU and the QSPI boot bus. Approve the actual stencil and joints from the current Gerbers; do not reuse older MCU stencil/programming instructions. See `u16-footprint.md`.
 
-U16 is STM32G0B1CEU6 in UFQFPN48 with 0.30 × 0.55 mm peripheral lands, 0.50 mm pitch, a 5.60 × 5.60 mm exposed ground land and a 4.60 × 4.60 mm nominal paste aperture. The former LQFP48 land pattern does not apply to this revision. Confirm stencil windowing, filled/capped ground vias and QFN solder-joint acceptance. See [U16 evidence](u16-footprint.md).
+U35 remains PCA9538PWR with U37 PD_3V3-domain reset buffering. Its supplier-style TSSOP-16 land pattern requires the acceptance described in `u35-footprint.md`.
 
-## U35 footprint acceptance
+Program U3 with the registered TI image, read the full **65,536-byte EEPROM**, then verify a cold APP boot and actual EPR contract. Program U16's external flash with the current RP2040 image and read back **4,194,304 bytes from 0x10000000**. All four motion qualification flags remain false. The included diagnostics image is not a ready-to-run deliverable. Secure installation, voltage/fault tests and qualified low-current/braking/thermal tests must precede a motor-enabled image.
 
-The selected 0.34 × 1.73 mm capsule lands use the supplier-style 5.73 mm row-centre spacing. TI PW0016A shows an example with 0.45 × 1.50 mm lands and 5.8 mm spacing. Verify stencil/solder-joint suitability; the `dfn16` generator does not change the actual TSSOP-16 body. C95 retains the placement already approved on main. See [U35 evidence](u35-footprint.md).
-
-U16 is now STM32G0B1CEU6 in UFQFPN48, not the former LQFP48. Use only the regenerated Gerbers/BOM/CPL together. Approve the 5.60 mm exposed ground land, 4.60 mm nominal paste aperture, filled/capped ground vias, stencil windowing and QFN joint inspection. The electrical target uses 512 KiB flash; programming/readback must use the updated commissioning bundle.
-
-USB cable access: see [USB edge review](usb-access.md). Both nominal mating faces extend 0.2856 mm beyond the PCB edge. Qualify actual cable insertion, enclosure opening and strain relief against the final mechanical stack.
+Both USB mating faces nominally extend 0.2856 mm beyond the board edge; qualify real plug/enclosure access using `usb-access.md`.

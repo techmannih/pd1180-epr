@@ -12,3 +12,7 @@ RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the
 8. Only after recorded qualifications, authorize the low-current unloaded motor test, then braking, repeated-fault and thermal tests. The supplied firmware cannot enable motion; its four qualification flags stay false.
 
 None of these physical tests has been completed in this software task. A source build or successful image comparison is not permission to ship a running controller.
+
+## Thermal and manufacturing handoff update
+
+Use [thermal qualification](thermal-qualification.md) for the TI EVM heatsink reference, explicit cooling calculations, physical acceptance sequence and open 6 A bus-margin finding. [Manufacturing acceptance](manufacturing-acceptance.md) now follows the current RP2040/WAGO revision. Rear thread/usable engagement measurements are not available, so no screw/spacer set is approved. Full-current operation, cooling assembly and physical testing remain open; software checks do not close them.

@@ -2,7 +2,7 @@
 
 # External equipment, connections and assembly sides
 
-Applies to the revision 0.4.1 ECO plus PR #2 safety refinement and ordered **STEPPERONLINE 34HS31-6004S1**. This is a wiring and procurement plan, not evidence of powered operation. The supplied firmware remains motion-locked; TI PD programming, the operating envelope, mechanical attachment and first-article tests are still open.
+Applies to the current RP2040 / DRV8462 / raw-PD-sensing / WAGO revision and ordered **STEPPERONLINE 34HS31-6004S1**. This is a wiring and procurement plan, not evidence of powered operation. The supplied firmware remains motion-locked; TI PD programming, the operating envelope, mechanical attachment and first-article tests are still open.
 
 ## What connects, why, when and where
 
@@ -15,9 +15,9 @@ Applies to the revision 0.4.1 ECO plus PR #2 safety refinement and ordered **STE
 | SW1 RESET | Resets the MCU; must not restart motion automatically | Accessible top-side PCB switch | Already on PCB; reset is not a substitute for qualifying deceleration and regeneration |
 | External brake assembly | Dissipates returned energy during the current conservative commissioning profile | J3 pin 1 VMOTOR → resistor → J3 pin 2 BRAKE_RETURN → Q16 → GND | Required for the current commissioning profile; startup continuity sensing must pass. Empty J3 provides no resistor dissipation. See [brake decision and procedure](brake-integration.md) |
 | SWD / EEPROM fixture | Programs and verifies the board before motor operation | Programmer → labelled top service pads; isolated EEPROM sequence in [PD programming](pd-programming.md) | Qualified provider/tooling needed; no permanent loose service wires in the product |
-| Optional encoder | Future position feedback, only after a compatible magnet installation is established | U18 alone on bottom; C52/C53 on top; PCB SPI/ABI connections | All three DNP. No encoder or magnet needed for the chosen open-loop control architecture |
+| Optional encoder | Future position feedback, only after a compatible magnet installation is established | U18 alone on bottom; C52/C53 on top; I2C ENC_SDA/ENC_SCL and optional ENC_OUT | All three DNP. No encoder or magnet needed for the chosen open-loop control architecture |
 
-The local-control architecture requires no external command harness. J2/J3 board headers are already PCB BOM items; the mating housings and contacts below are separate.
+The local-control architecture requires no external command harness. J2/J3 WAGO terminals are PCB BOM items; wires enter their clamps directly. No separate mating housings or socket contacts are required.
 
 ## External purchase and service list
 
@@ -28,7 +28,7 @@ Quantities are per motor/controller unless stated. **Identified manufacturer par
 | Basic system | Motor ×1 | STEPPERONLINE **34HS31-6004S1**, [user's Amazon item](https://www.amazon.com/dp/B091C83HWF), [manufacturer drawing](https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf) | User reports already ordered; do not order another. Confirm received label and winding pairs |
 | Basic system | EPR source ×1 | 48 V / 5 A on the selected output, compatible with this sink | Framework Power Adapter 240 W is the candidate; purchase and qualification remain unresolved. Verify actual source capabilities and negotiation |
 | Basic system | EPR USB-C cable ×1 | 5 A, EPR-rated, electronically marked; source → J1 | [StarTech CC1M80GUSB4CABLE](https://www.startech.com/en-ca/cables/cc1m80gusb4cable), 1 m, 240 W EPR / 5 A / e-marker candidate; qualify actual source/sink negotiation and plug access |
-| J2 harness | Four coloured conductors | Alpha **3057** 16 AWG family; black/green/red/blue. Proposed cuts **170/170/170/165 mm**, including 12 mm allowance | Exact stranded-wire codes: **3057 BK005 / GR005 / RD005 / BL005** (100 ft spools). Have the harness supplier cut traceable material; do not buy four full spools per motor. Lengths still require first-article approval; stock is not reserved |
+| J2 harness | Four coloured conductors | Alpha **3057** 16 AWG family; black/green/red/blue. Proposed cuts **175/175/175/175 mm**, including 12 mm allowance | Exact stranded-wire codes: **3057 BK005 / GR005 / RD005 / BL005** (100 ft spools). Have the harness supplier cut traceable material; do not buy four full spools per motor. Lengths still require first-article approval; stock is not reserved |
 | J2 harness | Insulated butt splices ×4 | TE **320559**, [manufacturer](https://www.te.com/en/product-320559.html) | Connect each factory 0.75 mm² lead to its own 16 AWG pigtail. Actual manufacturer AE STEP now modeled: nominal 32.131 mm length / 5.6134 mm diameter. Current V6 drawing archived; finished crimp still requires physical acceptance |
 | Physical installation | Cable retention and board attachment | Must suit the received motor, existing four PCB holes, solder-tail clearance and actual cable path | **Unselected**. Confirm motor accessory threads and engagement before selecting mounting hardware |
 | Commissioning | USB data cable ×1 and host | Actual host connector → USB-C J10; data-capable | USB-C host candidate: [StarTech USB2CC2M](https://www.startech.com/en-us/cables/usb2cc2m), 2 m, 480 Mbit/s USB 2.0. For **J10 DATA only**, not the 48 V EPR input. Match the actual host socket; existing qualified data cable may be reused |
@@ -48,11 +48,11 @@ The current TSX, compiled routed viewer and fitted placement file agree:
 | Reference | Location and purpose | Fitted? |
 |---|---|---|
 | U18 AS5600 | Bottom at PCB `(0, 0)`, centered on the proposed motor axis for a motor-side magnetic target | **No — doNotPlace** |
-| C52 100 nF | Bottom at `(0, −5.55)` mm; local encoder supply bypass | **No — doNotPlace** |
-| C53 1 µF | Bottom at `(3.3, −5.3)` mm; additional encoder supply decoupling | **No — doNotPlace** |
-| All 252 fitted components | Top, including J2, J3, switches and driver circuitry | **Yes — top-only BOM/CPL** |
+| C52 100 nF | Top at `(0, −5.55)` mm; local encoder supply bypass | **No — doNotPlace** |
+| C53 1 µF | Top at `(3, −4.5)` mm; additional encoder supply decoupling | **No — doNotPlace** |
+| All 237 fitted components | Top, including J2, J3, switches and driver circuitry | **Yes — top-only BOM/CPL** |
 
-U18 faces the motor-side magnetic target at the shaft axis. C52/C53 are on the same side to keep its bypass connections local. All three remain optional and unpopulated. R74 remains on top to keep the absent encoder deselected on SPI.
+U18 faces the motor-side magnetic target at the shaft axis. C52/C53 are on top; the optional bypass routing is reviewed in encoder-top-eco.json. All three remain optional and unpopulated. The AS5600 uses I2C; the former SPI encoder and R74 are removed.
 
 The metal below J2 is the **solder tails of the top-mounted through-hole connector**. Those pins pass through plated holes; they are not a second bottom-side component. Copper tracks, vias, solder joints and unpopulated footprints can also exist on the underside of a top-assembled PCB. Keep electrical clearance between these exposed features and the metal motor; the preview gap is not proof of a secured or insulated installation.
 
@@ -71,7 +71,7 @@ A single START/STOP button suits this bounded local bench-control interface; [TI
 5. Only after the qualification gates pass, use an identified motor-test firmware build and staged unloaded tests; then add the approved load. Capture bus peaks during commanded stops, faults, reset and power loss, plus current and temperatures. Speed alone does not decide whether J3 is needed.
 6. Normal local START/STOP uses SW2 after qualified power-up. The current shipped commissioning binary cannot perform this step. No laptop motion-control application or external command connector is required by the selected architecture.
 
-The main ECO adds D20 cable-inductance recirculation and the R134/R135/R136/C98 divider into U30 AIN2. Three distinct fresh samples check continuity with motor-bus power permitted and the bridge inhibited. During RUN, fresh voltage-continuity checks now latch invalid/stale feedback, with the bounded braking observation interval described in `brake-integration.md`. This does not prove resistance, cooling, fault-response timing or regenerated-energy containment. The firmware retains all three false qualification locks.
+The main ECO adds D20 cable-inductance recirculation and the R134/R135/R136/C98 divider into U30 AIN2. Three distinct fresh samples check continuity with motor-bus power permitted and the bridge inhibited. During RUN, fresh voltage-continuity checks now latch invalid/stale feedback, with the bounded braking observation interval described in `brake-integration.md`. This does not prove resistance, cooling, fault-response timing or regenerated-energy containment. The firmware retains all four false qualification locks.
 
 ## Exact wire and programming-tool candidates
 

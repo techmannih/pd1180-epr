@@ -149,8 +149,8 @@
       "part_or_candidate": "Alpha Wire 3057 BK005 / GR005 / RD005 / BL005",
       "specification": "16 AWG 26/30 stranded; 300 V; UL1569 105 C; OD 2.3368 +/- 0.0508 mm; cuts 175/175/175/175 mm including 12 mm allowance",
       "source": "Motor-side TE320559 splices",
-      "destination": "J2 contacts",
-      "purpose": "Join factory motor leads to the specified VH termination",
+      "destination": "J2 WAGO 2601-3104 clamp entries",
+      "purpose": "Join factory motor leads to the selected direct spring-clamp termination",
       "need": "j2-harness",
       "status": "Exact 100 ft spool SKUs identified; procure cut lengths from traceable stock; stock and first-article fit unqualified",
       "manufacturer_url": "https://www.alphawire.com/en/products/wire/hook-up-wire/premium/3057"
@@ -178,7 +178,7 @@
       "destination": "PCB/harness mounting points, still unqualified",
       "purpose": "Secure board and prevent cable loads on solder joints",
       "need": "basic-system",
-      "status": "Unselected; withdrawn adapter/posts/clamps are not purchase items",
+      "status": "No rear thread/engagement measurements available; fastener/spacer set and DDV heatsink supports unapproved. Withdrawn adapters/posts are not purchase items.",
       "manufacturer_url": ""
     },
     {
@@ -285,9 +285,35 @@
       "need": "optional-feedback",
       "status": "Do not fit/order for basic build; no qualified rear shaft/holder/gap; all three PCB footprints DNP",
       "manufacturer_url": ""
+    },
+    {
+      "id": "driver-heatsink",
+      "item": "DRV8462DDV top heatsink and end supports",
+      "quantity": "1 installation",
+      "part_or_candidate": "ATS-TI10P-519-C1-R3 (TI VEVM reference only)",
+      "specification": "Heatsink contact on DDV exposed top through TIM; support both IC ends; production load below 45 N per TI. No approved fit/airflow curve on this PCB.",
+      "source": "U7 exposed top pad",
+      "destination": "Qualified external thermal path and approved mechanical supports",
+      "purpose": "Remove integrated-bridge losses without loading the package or shorting nearby copper",
+      "need": "Before motor-operation qualification",
+      "status": "Candidate identified in TI MD041A(001) BOM; not fitted in assembly CAD or selected for purchase; dimensions, attachment, actual thermal resistance and motor clearance remain unqualified",
+      "manufacturer_url": "https://www.ti.com/tool/DRV8462VEVM"
+    },
+    {
+      "id": "driver-tim",
+      "item": "Driver thermal interface compound",
+      "quantity": "Amount per qualified bond-line process",
+      "part_or_candidate": "Arctic Silver Ceramique 2 (candidate)",
+      "specification": "Nonstructural compound; actual contact area, thickness and thermal resistance require qualification; see thermal-qualification.md",
+      "source": "DRV8462DDV top pad",
+      "destination": "Approved driver heatsink",
+      "purpose": "Conduct heat across the package-to-sink interface",
+      "need": "Before motor-operation qualification",
+      "status": "Candidate only; not an adhesive or proof of cooling. Procurement and installed interface resistance unverified.",
+      "manufacturer_url": "https://arcticsilver.com/cmq2.html"
     }
   ],
   "architecture_revision": "0.5.0-RP2040-DRAFT",
-  "ddv_top_heatsink_status": "Additional top heatsink/TIM required; no exact qualified assembly selected.",
+  "ddv_top_heatsink_status": "TI VEVM ATS-TI10P-519-C1-R3 and Ceramique 2 TIM references identified; see thermal-qualification.md. No qualified or mechanically approved assembly selected.",
   "onboard_termination_note": "J2 WAGO 2601-3104 and J3 WAGO 236-402 are in the PCB BOM, not extra external plugs. No JST housings or contacts are required."
 }
