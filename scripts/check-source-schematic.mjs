@@ -88,40 +88,23 @@ const portLabel = (port) => {
 const peerLabels = (key) =>
   (connectedPortGroups.get(key) || []).map((port) => portLabel(port)).sort()
 
+
+// This reviewer revision is schematic-only: compare every compiled electrical
+// and PCB record with the independently compiled main-branch baseline.
+const schematicReviewBaseline = JSON.parse(await readFile("engineering/schematic-review-baseline.json", "utf8"))
+const stableJson = value => Array.isArray(value) ? value.map(stableJson) : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, stableJson(value[key])])) : value
+const physicalRecords = circuit.filter(row => !row.type.startsWith("schematic_") && !["source_project_metadata", "cli_module_to_static_asset"].includes(row.type))
+const physicalHash = createHash("sha256").update(JSON.stringify(stableJson(physicalRecords))).digest("hex")
+check(physicalHash === schematicReviewBaseline.baseline_non_schematic_sha256, "electrical and PCB records unchanged from reviewed main baseline", { baseline_commit: schematicReviewBaseline.baseline_commit, actual: physicalHash })
+const architectureText = await readFile("docs/usb-pd-architecture.md", "utf8")
+const unexplainedIcs = sourceComponents.filter(row => /^U[0-9]+$/.test(row.name) && !architectureText.includes(`| ${row.name} |`))
+check(unexplainedIcs.length === 0, "power review documents every IC's purpose", { missing: unexplainedIcs.map(row => row.name) })
+
 // 1. Sheet inventory, immutable dimensions, and explanatory annotations.
-const expectedSheetNames = [
-  "usb-pd",
-  "usb-pd-policy",
-  "logic-power",
-  "logic-backup",
-  "logic-selection",
-  "motor-power",
-  "motion",
-  "motion-enable",
-  "bridge-a",
-  "bridge-b",
-  "brake",
-  "brake-ovp",
-  "mcu",
-  "encoder",
-  "usb-data",
-  "inputs",
-  "user-control",
-  "serial",
-  "serial-rs232",
-  "outputs",
-  "usb-logic",
-  "telemetry",
-  "phase-current",
-  "driver-power",
-  "indicators",
-  "alarm",
-  "pd-programming",
-  "brake-feedback", "mcu-power", "motion-config", "pd-voltage"
-]
-const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]).filter(([name]) => !["inputs", "serial", "serial-rs232", "outputs", "bridge-b"].includes(name)))
-check(sheets.length === 26, "26 A4 sheets including raw PD voltage sensing", { actual: sheets.length })
-check(new Set(sheets.map((sheet) => sheet.name)).size === 26, "all schematic sheet names are unique")
+const expectedSheetNames = ["usb-pd", "logic-power", "motor-power", "motion", "brake", "mcu", "usb-data", "telemetry", "indicators"]
+const expectedSheetGeometry = Object.fromEntries(expectedSheetNames.map((name, index) => [name, [index + 1, 297, 210, 3]]))
+check(sheets.length === expectedSheetNames.length, "nine functional A4 sheets", { actual: sheets.length })
+check(new Set(sheets.map((sheet) => sheet.name)).size === expectedSheetNames.length, "all schematic sheet names are unique")
 
 const annotations = schematicTexts.filter(
   (text) => !text.schematic_component_id && Number(text.font_size) >= 0.23,
@@ -162,7 +145,7 @@ for (const sheet of sheets) {
     annotations: sheetAnnotations.map((item) => item.text),
   })
 }
-check(annotations.length === 78, "78 high-level annotations on 26 sheets", {
+check(annotations.length === expectedSheetNames.length * 3, "three high-level annotations on each functional sheet", {
   actual: annotations.length,
 })
 

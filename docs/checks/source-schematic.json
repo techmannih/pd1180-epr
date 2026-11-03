@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-11-02T19:15:53.696Z",
+  "generated_at": "2026-11-03T16:49:44.816Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "73a69cd6717a785d4bc4a1e37db31d2f7568cd9546eb596c70e3b0b7d82b2a19",
-    "bytes": 4118181
+    "sha256": "b7d70be4536b9c3513601667cad9bd80878dea22bb12a19e64fe5fa160e6cfb2",
+    "bytes": 4104247
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9263,
-    "sheets": 26,
+    "elements": 9223,
+    "sheets": 9,
     "source_components": 260,
     "source_ports": 884,
     "connected_source_ports": 838,
@@ -18,7 +18,7 @@
     "minimum_ports_per_connected_net": 2,
     "capacitors": 93,
     "test_points": 20,
-    "annotations": 78,
+    "annotations": 27,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
@@ -538,365 +538,127 @@
     {
       "index": 1,
       "name": "usb-pd",
-      "display_name": "USB-C PD POWER",
+      "display_name": "USB-C EPR input and negotiation",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "01 / USB-C PD POWER",
-        "J1: 48 V / 5 A EPR power only; USB DATA is on J10.",
-        "U1 protects CC/VBUS. Q1 controls protected VBUS; C1/C2 provide local bypass."
+        "01 / USB-C EPR input and negotiation",
+        "J1 / U1: protected POWER port. U2 TPS26750: 48 V / 5 A sink. U3: configuration EEPROM.",
+        "Q1 limits protected VBUS; Q2/Q3 translate POWER_PATH_EN. DATA USB is on sheet 7."
       ]
     },
     {
       "index": 2,
-      "name": "usb-pd-policy",
-      "display_name": "PD Controller and EEPROM",
+      "name": "logic-power",
+      "display_name": "Logic supply and source selection",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "02 / PD Controller and EEPROM",
-        "U2 TPS26750 negotiates EPR; U3 stores the board-specific TI configuration.",
-        "Q2/Q3 translate PD path control. TI image and powered qualification remain required."
+        "02 / Logic supply and source selection",
+        "U5: PD input to 3.3 V. U22: motor-bus backup to 3.3 V. U23/U24: reverse-blocking selection.",
+        "Backup keeps brake control powered during PD loss. U4: PD_PATH_OK AND POWER_PERMIT -> EFUSE_EN."
       ]
     },
     {
       "index": 3,
-      "name": "logic-power",
-      "display_name": "PD Backup Supply",
+      "name": "motor-power",
+      "display_name": "Protected motor bus and enable interlocks",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "03 / PD Backup Supply",
-        "U5 converts PD VBUS to V3V3_PD; L1 and its feedback/bypass network are shown here.",
-        "Input spans default USB 5 V through the specified 48 V EPR operating target."
+        "03 / Protected motor bus and enable interlocks",
+        "Q4/Q5: reverse blocking. U6: latching eFuse / input-current limit. C22/C23: motor energy storage.",
+        "U10/U11/U33: MCU_RUN AND MOTOR_PG AND VMOTOR_OK AND TEMP_OK -> RUN_SAFE. Default OFF."
       ]
     },
     {
       "index": 4,
-      "name": "logic-backup",
-      "display_name": "Motor Backup Supply",
+      "name": "motion",
+      "display_name": "Integrated motor driver and winding feedback",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "04 / Motor Backup Supply",
-        "U22 converts VMOTOR to V3V3_MOTOR for brake-control backup after PD loss.",
-        "L2, feedback and local bypass remain on the motor supply domain."
+        "04 / Integrated motor driver and winding feedback",
+        "U7 DRV8462DDVR: two internal bridges, SPI setup, STEP/DIR control. J2: WAGO winding terminal.",
+        "U31/U32: instantaneous phase-current diagnostics, not RMS control. DDV requires qualified top cooling."
       ]
     },
     {
       "index": 5,
-      "name": "logic-selection",
-      "display_name": "Logic Supply Selection and Power Permit",
+      "name": "brake",
+      "display_name": "Independent regeneration brake and overvoltage cutoff",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "05 / Logic Supply Selection and Power Permit",
-        "U23/U24 and R111 form the status-interlocked reverse-blocked board supply.",
-        "U4 combines PD path status with POWER_PERMIT to control the eFuse enable."
+        "05 / Independent regeneration brake and overvoltage cutoff",
+        "U12: 2.5 V reference. U13: brake near 52 V. U14: inhibit near 53.21 V. U15/Q16: brake switch.",
+        "U34/L3: 12 V brake gate supply, NOT motor-driver power. J3: external resistor; 10 ohm / 300 W provisional."
       ]
     },
     {
       "index": 6,
-      "name": "motor-power",
-      "display_name": "Protected 48 V Motor Bus",
+      "name": "mcu",
+      "display_name": "RP2040, boot memory and local controls",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "06 / Protected 48 V Motor Bus",
-        "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
-        "Nominal 1x current limit 3.607 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
+        "06 / RP2040, boot memory and local controls",
+        "U16: STEP/DIR, USB diagnostics and power supervision. U17: 4 MiB QSPI boot flash. Y1: 12 MHz.",
+        "SW1: reset. SW2: START/STOP request. TP_BOOTSEL + reset: ROM USB recovery. Motion stays locked."
       ]
     },
     {
       "index": 7,
-      "name": "motion",
-      "display_name": "Motion Controller",
+      "name": "usb-data",
+      "display_name": "USB DATA and independent MCU power",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "07 / Motion Controller",
-        "U7 DRV8462DDV integrates both power bridges; 48 V operation requires top-side cooling.",
-        "SPI configures current/decay; RP2040 supplies STEP/DIR. VREF is tied to DVDD."
+        "07 / USB DATA and independent MCU power",
+        "J10 / D15: protected USB 2.0 DATA. U28: input current limit. U25: DATA 5 V to 3.3 V LDO.",
+        "U26/U27: board / DATA supply selection into V3V3_MCU. DATA never feeds VMOTOR; no PD on J10."
       ]
     },
     {
       "index": 8,
-      "name": "motion-enable",
-      "display_name": "Onboard Motion and Hardware Enable",
+      "name": "telemetry",
+      "display_name": "Supply telemetry and PD programming access",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "08 / Onboard Motion and Hardware Enable",
-        "RP2040 commands U7. U10/U11/U33 gate active-high ENABLE; R55 holds it low.",
-        "The driver remains inhibited until the hardware safety conditions permit motion."
+        "08 / Supply telemetry and PD programming access",
+        "U29: temperature. U30: VMOTOR, input-current and brake-return ADC. U38: raw PD_VBUS ADC.",
+        "U36: isolates EEPROM programming bus. Fixed 5 V fixture only; TP_PD_VREF is sense-only. See programming guide."
       ]
     },
     {
       "index": 9,
-      "name": "bridge-a",
-      "display_name": "Motor Winding Connection",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "09 / Motor Winding Connection",
-        "J2 connects the two motor windings through the retained diagnostic shunts.",
-        "Initial test current is below 0.8 A RMS nominal; rated motor current is not qualified."
-      ]
-    },
-    {
-      "index": 11,
-      "name": "brake",
-      "display_name": "Brake Reference and Turn-on Threshold",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "11 / Brake Reference and Turn-on Threshold",
-        "U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V.",
-        "External braking resistor and heatsink sizing depends on stored mechanical energy."
-      ]
-    },
-    {
-      "index": 12,
-      "name": "brake-ovp",
-      "display_name": "Overvoltage Inhibit and Brake Driver",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "12 / Overvoltage Inhibit and Brake Driver",
-        "U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load.",
-        "Brake control remains powered from the protected motor bus through the backup supply."
-      ]
-    },
-    {
-      "index": 13,
-      "name": "mcu",
-      "display_name": "MCU Clock Memory and Debug",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "13 / MCU Clock Memory and Debug",
-        "U16 RP2040 generates STEP/DIR and configures DRV8462 over SPI0; SW2 requests Start/Stop.",
-        "U17 is 4 MB QSPI boot flash; Y1 is 12 MHz. BOOTSEL + reset supports ROM USB recovery."
-      ]
-    },
-    {
-      "index": 14,
-      "name": "encoder",
-      "display_name": "Optional Shaft Encoder",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "14 / Optional Shaft Encoder",
-        "U18 AS5600 is centered on bottom; C52/C53 are top-side. All are DNP.",
-        "I2C1 at 0x36 plus OUT probe; single-shaft motor magnet interface remains unqualified."
-      ]
-    },
-    {
-      "index": 15,
-      "name": "usb-data",
-      "display_name": "USB DATA and Attach Sense",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "15 / USB DATA and Attach Sense",
-        "J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port.",
-        "D15 protects D+/D-/CC. R107/R108/C72 sense DATA VBUS; DATA cannot feed VMOTOR."
-      ]
-    },
-    {
-      "index": 17,
-      "name": "user-control",
-      "display_name": "Local Start and Stop",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "17 / Local Start and Stop",
-        "SW2 requests motion from the onboard RP2040. R133 pulls the input to MCU logic power.",
-        "Debounce requires release before start; reset, power loss and faults never auto-start."
-      ]
-    },
-    {
-      "index": 21,
-      "name": "usb-logic",
-      "display_name": "USB Logic Power",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "21 / USB Logic Power",
-        "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
-        "R119/R120 sense board supply on GP28. Industrial peripherals require board power."
-      ]
-    },
-    {
-      "index": 22,
-      "name": "telemetry",
-      "display_name": "Temperature and Bus Diagnostics",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "22 / Temperature and Bus Diagnostics",
-        "U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus.",
-        "Sensor addresses are 0x48 and 0x49. Temperature correlation requires load testing."
-      ]
-    },
-    {
-      "index": 23,
-      "name": "phase-current",
-      "display_name": "Phase Current Diagnostics",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "23 / Phase Current Diagnostics",
-        "U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V.",
-        "Nominal 100 mV/A about 1.65 V; instantaneous diagnostics, not a short-circuit trip."
-      ]
-    },
-    {
-      "index": 24,
-      "name": "driver-power",
-      "display_name": "Brake Gate Supply",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "24 / Brake Gate Supply",
-        "U34 is the retained 65 V buck supplying nominal 12 V to brake gate driver U15.",
-        "DRV8462 does not use this rail. Brake backup remains powered from VMOTOR."
-      ]
-    },
-    {
-      "index": 25,
       "name": "indicators",
-      "display_name": "Status and Independent Power Indication",
+      "display_name": "Indicators, alarm and optional encoder",
       "frame": [
         297,
         210
       ],
       "annotations": [
-        "25 / Status and Independent Power Indication",
-        "U35 PCA9538 at 0x70; U37 buffers GP12 reset into PD_3V3 with default-low bias.",
-        "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
-      ]
-    },
-    {
-      "index": 26,
-      "name": "alarm",
-      "display_name": "Audible Fault Alarm",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "26 / Audible Fault Alarm",
-        "BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp.",
-        "The alarm defaults off. Motor protection remains independent of the audible indication."
-      ]
-    },
-    {
-      "index": 27,
-      "name": "pd-programming",
-      "display_name": "PD Programming and Power Probes",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "27 / PD Programming and Power Probes",
-        "U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded.",
-        "Use fixed 5 V fixture power and a 3.3 V open-drain programmer; VREF is sense-only."
-      ]
-    },
-    {
-      "index": 28,
-      "name": "brake-feedback",
-      "display_name": "Brake Continuity Preflight",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "28 / Brake Continuity Preflight",
-        "R134-R136 sense J3 return on U30 AIN2 before motion; C98 filters the ADC input.",
-        "This check detects an absent resistor or stuck-on Q16; it does not prove braking current."
-      ]
-    },
-    {
-      "index": 29,
-      "name": "mcu-power",
-      "display_name": "RP2040 Local Power",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "29 / RP2040 Local Power",
-        "U16: separate 100 nF bypasses serve each IOVDD/DVDD/ADC/USB rail pin.",
-        "C102/C103 are 1 uF VREG input/output capacitors; all are on top."
-      ]
-    },
-    {
-      "index": 30,
-      "name": "motion-config",
-      "display_name": "DRV8462 Logic Bias",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "30 / DRV8462 Logic Bias",
-        "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.",
-        "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."
-      ]
-    },
-    {
-      "index": 31,
-      "name": "pd-voltage",
-      "display_name": "Raw PD Supply Monitor",
-      "frame": [
-        297,
-        210
-      ],
-      "annotations": [
-        "31 / Raw PD Supply Monitor",
-        "U38 INA237 measures PD_VBUS before the eFuse; I2C address 0x40, bus-voltage ADC only.",
-        "PD_READY requires live 48 V/5 A status and fresh voltage; MOTOR_PG remains a separate hardware input."
+        "09 / Indicators, alarm and optional encoder",
+        "U35: RGB / buzzer I2C outputs. U37: reset-domain buffer. Q26: buzzer switch. D17: board-power LED.",
+        "U18 AS5600 + C52/C53: optional DNP. Only U18 is on bottom; no qualified rear magnet / closed-loop control."
       ]
     }
   ],
@@ -904,158 +666,56 @@
     {
       "index": 1,
       "name": "usb-pd",
-      "elements": 129,
-      "coordinate_points_checked": 276
+      "elements": 366,
+      "coordinate_points_checked": 781
     },
     {
       "index": 2,
-      "name": "usb-pd-policy",
-      "elements": 243,
-      "coordinate_points_checked": 523
+      "name": "logic-power",
+      "elements": 263,
+      "coordinate_points_checked": 593
     },
     {
       "index": 3,
-      "name": "logic-power",
-      "elements": 89,
-      "coordinate_points_checked": 203
+      "name": "motor-power",
+      "elements": 316,
+      "coordinate_points_checked": 599
     },
     {
       "index": 4,
-      "name": "logic-backup",
-      "elements": 89,
-      "coordinate_points_checked": 213
+      "name": "motion",
+      "elements": 312,
+      "coordinate_points_checked": 564
     },
     {
       "index": 5,
-      "name": "logic-selection",
-      "elements": 91,
-      "coordinate_points_checked": 185
+      "name": "brake",
+      "elements": 318,
+      "coordinate_points_checked": 649
     },
     {
       "index": 6,
-      "name": "motor-power",
-      "elements": 237,
-      "coordinate_points_checked": 448
+      "name": "mcu",
+      "elements": 357,
+      "coordinate_points_checked": 719
     },
     {
       "index": 7,
-      "name": "motion",
-      "elements": 143,
-      "coordinate_points_checked": 308
+      "name": "usb-data",
+      "elements": 255,
+      "coordinate_points_checked": 558
     },
     {
       "index": 8,
-      "name": "motion-enable",
-      "elements": 52,
-      "coordinate_points_checked": 94
+      "name": "telemetry",
+      "elements": 163,
+      "coordinate_points_checked": 316
     },
     {
       "index": 9,
-      "name": "bridge-a",
-      "elements": 23,
-      "coordinate_points_checked": 31
-    },
-    {
-      "index": 11,
-      "name": "brake",
-      "elements": 79,
-      "coordinate_points_checked": 154
-    },
-    {
-      "index": 12,
-      "name": "brake-ovp",
-      "elements": 134,
-      "coordinate_points_checked": 282
-    },
-    {
-      "index": 13,
-      "name": "mcu",
-      "elements": 286,
-      "coordinate_points_checked": 450
-    },
-    {
-      "index": 14,
-      "name": "encoder",
-      "elements": 66,
-      "coordinate_points_checked": 139
-    },
-    {
-      "index": 15,
-      "name": "usb-data",
-      "elements": 143,
-      "coordinate_points_checked": 323
-    },
-    {
-      "index": 17,
-      "name": "user-control",
-      "elements": 14,
-      "coordinate_points_checked": 17
-    },
-    {
-      "index": 21,
-      "name": "usb-logic",
-      "elements": 114,
-      "coordinate_points_checked": 235
-    },
-    {
-      "index": 22,
-      "name": "telemetry",
-      "elements": 84,
-      "coordinate_points_checked": 155
-    },
-    {
-      "index": 23,
-      "name": "phase-current",
-      "elements": 98,
-      "coordinate_points_checked": 158
-    },
-    {
-      "index": 24,
-      "name": "driver-power",
-      "elements": 79,
-      "coordinate_points_checked": 194
-    },
-    {
-      "index": 25,
       "name": "indicators",
-      "elements": 143,
-      "coordinate_points_checked": 269
-    },
-    {
-      "index": 26,
-      "name": "alarm",
-      "elements": 64,
-      "coordinate_points_checked": 126
-    },
-    {
-      "index": 27,
-      "name": "pd-programming",
-      "elements": 76,
-      "coordinate_points_checked": 143
-    },
-    {
-      "index": 28,
-      "name": "brake-feedback",
-      "elements": 34,
-      "coordinate_points_checked": 43
-    },
-    {
-      "index": 29,
-      "name": "mcu-power",
-      "elements": 64,
-      "coordinate_points_checked": 248
-    },
-    {
-      "index": 30,
-      "name": "motion-config",
-      "elements": 46,
-      "coordinate_points_checked": 74
-    },
-    {
-      "index": 31,
-      "name": "pd-voltage",
-      "elements": 35,
-      "coordinate_points_checked": 70
+      "elements": 265,
+      "coordinate_points_checked": 525
     }
   ],
   "checks": [
@@ -1083,9 +743,24 @@
     },
     {
       "ok": true,
-      "message": "26 A4 sheets including raw PD voltage sensing",
+      "message": "electrical and PCB records unchanged from reviewed main baseline",
       "details": {
-        "actual": 26
+        "baseline_commit": "34aca1af8736b482bd8edf86ec449a56c15d50c1",
+        "actual": "6cccbc12995ec8d62a1749aab18db9dc2690576ce320acb4267c2af9fa23a056"
+      }
+    },
+    {
+      "ok": true,
+      "message": "power review documents every IC's purpose",
+      "details": {
+        "missing": []
+      }
+    },
+    {
+      "ok": true,
+      "message": "nine functional A4 sheets",
+      "details": {
+        "actual": 9
       }
     },
     {
@@ -1116,9 +791,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "01 / USB-C PD POWER",
-          "J1: 48 V / 5 A EPR power only; USB DATA is on J10.",
-          "U1 protects CC/VBUS. Q1 controls protected VBUS; C1/C2 provide local bypass."
+          "01 / USB-C EPR input and negotiation",
+          "J1 / U1: protected POWER port. U2 TPS26750: 48 V / 5 A sink. U3: configuration EEPROM.",
+          "Q1 limits protected VBUS; Q2/Q3 translate POWER_PATH_EN. DATA USB is on sheet 7."
         ]
       }
     },
@@ -1132,49 +807,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet usb-pd-policy"
-    },
-    {
-      "ok": true,
-      "message": "usb-pd-policy keeps sheet index 2"
-    },
-    {
-      "ok": true,
-      "message": "usb-pd-policy keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "usb-pd-policy has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "02 / PD Controller and EEPROM",
-          "U2 TPS26750 negotiates EPR; U3 stores the board-specific TI configuration.",
-          "Q2/Q3 translate PD path control. TI image and powered qualification remain required."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "usb-pd-policy has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "usb-pd-policy explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet logic-power"
     },
     {
       "ok": true,
-      "message": "logic-power keeps sheet index 3"
+      "message": "logic-power keeps sheet index 2"
     },
     {
       "ok": true,
@@ -1192,9 +829,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "03 / PD Backup Supply",
-          "U5 converts PD VBUS to V3V3_PD; L1 and its feedback/bypass network are shown here.",
-          "Input spans default USB 5 V through the specified 48 V EPR operating target."
+          "02 / Logic supply and source selection",
+          "U5: PD input to 3.3 V. U22: motor-bus backup to 3.3 V. U23/U24: reverse-blocking selection.",
+          "Backup keeps brake control powered during PD loss. U4: PD_PATH_OK AND POWER_PERMIT -> EFUSE_EN."
         ]
       }
     },
@@ -1208,87 +845,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet logic-backup"
-    },
-    {
-      "ok": true,
-      "message": "logic-backup keeps sheet index 4"
-    },
-    {
-      "ok": true,
-      "message": "logic-backup keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "logic-backup has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "04 / Motor Backup Supply",
-          "U22 converts VMOTOR to V3V3_MOTOR for brake-control backup after PD loss.",
-          "L2, feedback and local bypass remain on the motor supply domain."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "logic-backup has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "logic-backup explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet logic-selection"
-    },
-    {
-      "ok": true,
-      "message": "logic-selection keeps sheet index 5"
-    },
-    {
-      "ok": true,
-      "message": "logic-selection keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "logic-selection has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "05 / Logic Supply Selection and Power Permit",
-          "U23/U24 and R111 form the status-interlocked reverse-blocked board supply.",
-          "U4 combines PD path status with POWER_PERMIT to control the eFuse enable."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "logic-selection has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "logic-selection explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet motor-power"
     },
     {
       "ok": true,
-      "message": "motor-power keeps sheet index 6"
+      "message": "motor-power keeps sheet index 3"
     },
     {
       "ok": true,
@@ -1306,9 +867,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "06 / Protected 48 V Motor Bus",
-          "Q4/Q5 provide reverse blocking; U6 is the eFuse and input-current monitor.",
-          "Nominal 1x current limit 3.607 A. C22/C23 are motor bulk; R31-R33/C24 monitor voltage."
+          "03 / Protected motor bus and enable interlocks",
+          "Q4/Q5: reverse blocking. U6: latching eFuse / input-current limit. C22/C23: motor energy storage.",
+          "U10/U11/U33: MCU_RUN AND MOTOR_PG AND VMOTOR_OK AND TEMP_OK -> RUN_SAFE. Default OFF."
         ]
       }
     },
@@ -1326,7 +887,7 @@
     },
     {
       "ok": true,
-      "message": "motion keeps sheet index 7"
+      "message": "motion keeps sheet index 4"
     },
     {
       "ok": true,
@@ -1344,9 +905,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "07 / Motion Controller",
-          "U7 DRV8462DDV integrates both power bridges; 48 V operation requires top-side cooling.",
-          "SPI configures current/decay; RP2040 supplies STEP/DIR. VREF is tied to DVDD."
+          "04 / Integrated motor driver and winding feedback",
+          "U7 DRV8462DDVR: two internal bridges, SPI setup, STEP/DIR control. J2: WAGO winding terminal.",
+          "U31/U32: instantaneous phase-current diagnostics, not RMS control. DDV requires qualified top cooling."
         ]
       }
     },
@@ -1360,87 +921,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet motion-enable"
-    },
-    {
-      "ok": true,
-      "message": "motion-enable keeps sheet index 8"
-    },
-    {
-      "ok": true,
-      "message": "motion-enable keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "motion-enable has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "08 / Onboard Motion and Hardware Enable",
-          "RP2040 commands U7. U10/U11/U33 gate active-high ENABLE; R55 holds it low.",
-          "The driver remains inhibited until the hardware safety conditions permit motion."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "motion-enable has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "motion-enable explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet bridge-a"
-    },
-    {
-      "ok": true,
-      "message": "bridge-a keeps sheet index 9"
-    },
-    {
-      "ok": true,
-      "message": "bridge-a keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "bridge-a has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "09 / Motor Winding Connection",
-          "J2 connects the two motor windings through the retained diagnostic shunts.",
-          "Initial test current is below 0.8 A RMS nominal; rated motor current is not qualified."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "bridge-a has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "bridge-a explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet brake"
     },
     {
       "ok": true,
-      "message": "brake keeps sheet index 11"
+      "message": "brake keeps sheet index 5"
     },
     {
       "ok": true,
@@ -1458,9 +943,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "11 / Brake Reference and Turn-on Threshold",
-          "U12 is the 2.5 V reference. U13 commands braking at nominal 52.0 V.",
-          "External braking resistor and heatsink sizing depends on stored mechanical energy."
+          "05 / Independent regeneration brake and overvoltage cutoff",
+          "U12: 2.5 V reference. U13: brake near 52 V. U14: inhibit near 53.21 V. U15/Q16: brake switch.",
+          "U34/L3: 12 V brake gate supply, NOT motor-driver power. J3: external resistor; 10 ohm / 300 W provisional."
         ]
       }
     },
@@ -1474,49 +959,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet brake-ovp"
-    },
-    {
-      "ok": true,
-      "message": "brake-ovp keeps sheet index 12"
-    },
-    {
-      "ok": true,
-      "message": "brake-ovp keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "brake-ovp has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "12 / Overvoltage Inhibit and Brake Driver",
-          "U14 inhibits motion at nominal 53.21 V; U15/Q16 switch the external J3 brake load.",
-          "Brake control remains powered from the protected motor bus through the backup supply."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "brake-ovp has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "brake-ovp explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet mcu"
     },
     {
       "ok": true,
-      "message": "mcu keeps sheet index 13"
+      "message": "mcu keeps sheet index 6"
     },
     {
       "ok": true,
@@ -1534,9 +981,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "13 / MCU Clock Memory and Debug",
-          "U16 RP2040 generates STEP/DIR and configures DRV8462 over SPI0; SW2 requests Start/Stop.",
-          "U17 is 4 MB QSPI boot flash; Y1 is 12 MHz. BOOTSEL + reset supports ROM USB recovery."
+          "06 / RP2040, boot memory and local controls",
+          "U16: STEP/DIR, USB diagnostics and power supervision. U17: 4 MiB QSPI boot flash. Y1: 12 MHz.",
+          "SW1: reset. SW2: START/STOP request. TP_BOOTSEL + reset: ROM USB recovery. Motion stays locked."
         ]
       }
     },
@@ -1550,49 +997,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet encoder"
-    },
-    {
-      "ok": true,
-      "message": "encoder keeps sheet index 14"
-    },
-    {
-      "ok": true,
-      "message": "encoder keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "encoder has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "14 / Optional Shaft Encoder",
-          "U18 AS5600 is centered on bottom; C52/C53 are top-side. All are DNP.",
-          "I2C1 at 0x36 plus OUT probe; single-shaft motor magnet interface remains unqualified."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "encoder has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "encoder explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet usb-data"
     },
     {
       "ok": true,
-      "message": "usb-data keeps sheet index 15"
+      "message": "usb-data keeps sheet index 7"
     },
     {
       "ok": true,
@@ -1610,9 +1019,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "15 / USB DATA and Attach Sense",
-          "J10 supplies USB 2.0 DATA and independent MCU logic power; no PD on this port.",
-          "D15 protects D+/D-/CC. R107/R108/C72 sense DATA VBUS; DATA cannot feed VMOTOR."
+          "07 / USB DATA and independent MCU power",
+          "J10 / D15: protected USB 2.0 DATA. U28: input current limit. U25: DATA 5 V to 3.3 V LDO.",
+          "U26/U27: board / DATA supply selection into V3V3_MCU. DATA never feeds VMOTOR; no PD on J10."
         ]
       }
     },
@@ -1626,87 +1035,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet user-control"
-    },
-    {
-      "ok": true,
-      "message": "user-control keeps sheet index 17"
-    },
-    {
-      "ok": true,
-      "message": "user-control keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "user-control has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "17 / Local Start and Stop",
-          "SW2 requests motion from the onboard RP2040. R133 pulls the input to MCU logic power.",
-          "Debounce requires release before start; reset, power loss and faults never auto-start."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "user-control has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "user-control explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet usb-logic"
-    },
-    {
-      "ok": true,
-      "message": "usb-logic keeps sheet index 21"
-    },
-    {
-      "ok": true,
-      "message": "usb-logic keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "usb-logic has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "21 / USB Logic Power",
-          "U28 limits DATA power; U25 regulates V3V3_USB. U26/U27 reverse-block the MCU rail.",
-          "R119/R120 sense board supply on GP28. Industrial peripherals require board power."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "usb-logic has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "usb-logic explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet telemetry"
     },
     {
       "ok": true,
-      "message": "telemetry keeps sheet index 22"
+      "message": "telemetry keeps sheet index 8"
     },
     {
       "ok": true,
@@ -1724,9 +1057,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "22 / Temperature and Bus Diagnostics",
-          "U29 TMP102 senses temperature; U33 provides hardware inhibit. U30 ADS1115 monitors the bus.",
-          "Sensor addresses are 0x48 and 0x49. Temperature correlation requires load testing."
+          "08 / Supply telemetry and PD programming access",
+          "U29: temperature. U30: VMOTOR, input-current and brake-return ADC. U38: raw PD_VBUS ADC.",
+          "U36: isolates EEPROM programming bus. Fixed 5 V fixture only; TP_PD_VREF is sense-only. See programming guide."
         ]
       }
     },
@@ -1740,87 +1073,11 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet phase-current"
-    },
-    {
-      "ok": true,
-      "message": "phase-current keeps sheet index 23"
-    },
-    {
-      "ok": true,
-      "message": "phase-current keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "phase-current has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "23 / Phase Current Diagnostics",
-          "U31/U32 INA240A1 measure the two 5 mOhm inline shunts at 20 V/V.",
-          "Nominal 100 mV/A about 1.65 V; instantaneous diagnostics, not a short-circuit trip."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "phase-current has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "phase-current explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet driver-power"
-    },
-    {
-      "ok": true,
-      "message": "driver-power keeps sheet index 24"
-    },
-    {
-      "ok": true,
-      "message": "driver-power keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "driver-power has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "24 / Brake Gate Supply",
-          "U34 is the retained 65 V buck supplying nominal 12 V to brake gate driver U15.",
-          "DRV8462 does not use this rail. Brake backup remains powered from VMOTOR."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "driver-power has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "driver-power explains component roles"
-    },
-    {
-      "ok": true,
       "message": "known fixed geometry for sheet indicators"
     },
     {
       "ok": true,
-      "message": "indicators keeps sheet index 25"
+      "message": "indicators keeps sheet index 9"
     },
     {
       "ok": true,
@@ -1838,9 +1095,9 @@
       "details": {
         "actual": 3,
         "texts": [
-          "25 / Status and Independent Power Indication",
-          "U35 PCA9538 at 0x70; U37 buffers GP12 reset into PD_3V3 with default-low bias.",
-          "D17 shows board V3V3 independently of firmware; USB-only MCU power is distinct."
+          "09 / Indicators, alarm and optional encoder",
+          "U35: RGB / buzzer I2C outputs. U37: reset-domain buffer. Q26: buzzer switch. D17: board-power LED.",
+          "U18 AS5600 + C52/C53: optional DNP. Only U18 is on bottom; no qualified rear magnet / closed-loop control."
         ]
       }
     },
@@ -1854,237 +1111,9 @@
     },
     {
       "ok": true,
-      "message": "known fixed geometry for sheet alarm"
-    },
-    {
-      "ok": true,
-      "message": "alarm keeps sheet index 26"
-    },
-    {
-      "ok": true,
-      "message": "alarm keeps fixed 297 x 210 frame",
+      "message": "three high-level annotations on each functional sheet",
       "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "alarm has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "26 / Audible Fault Alarm",
-          "BZ1 active buzzer is driven by Q26 with a gate pulldown and D18 clamp.",
-          "The alarm defaults off. Motor protection remains independent of the audible indication."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "alarm has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "alarm explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet pd-programming"
-    },
-    {
-      "ok": true,
-      "message": "pd-programming keeps sheet index 27"
-    },
-    {
-      "ok": true,
-      "message": "pd-programming keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "pd-programming has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "27 / PD Programming and Power Probes",
-          "U36 isolates both PD EEPROM I2Cc wires when TP_PD_ISO is grounded.",
-          "Use fixed 5 V fixture power and a 3.3 V open-drain programmer; VREF is sense-only."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "pd-programming has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "pd-programming explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet brake-feedback"
-    },
-    {
-      "ok": true,
-      "message": "brake-feedback keeps sheet index 28"
-    },
-    {
-      "ok": true,
-      "message": "brake-feedback keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "brake-feedback has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "28 / Brake Continuity Preflight",
-          "R134-R136 sense J3 return on U30 AIN2 before motion; C98 filters the ADC input.",
-          "This check detects an absent resistor or stuck-on Q16; it does not prove braking current."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "brake-feedback has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "brake-feedback explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet mcu-power"
-    },
-    {
-      "ok": true,
-      "message": "mcu-power keeps sheet index 29"
-    },
-    {
-      "ok": true,
-      "message": "mcu-power keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "mcu-power has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "29 / RP2040 Local Power",
-          "U16: separate 100 nF bypasses serve each IOVDD/DVDD/ADC/USB rail pin.",
-          "C102/C103 are 1 uF VREG input/output capacitors; all are on top."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "mcu-power has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "mcu-power explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet motion-config"
-    },
-    {
-      "ok": true,
-      "message": "motion-config keeps sheet index 30"
-    },
-    {
-      "ok": true,
-      "message": "motion-config keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "motion-config has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "30 / DRV8462 Logic Bias",
-          "U7: CS, nFAULT and HOME use board-domain pullups; STEP/DIR/nSLEEP/ENABLE default low.",
-          "DDV top-cooled pinout is different from DDW. Keep thermal assembly unqualified until tested."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "motion-config has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "motion-config explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "known fixed geometry for sheet pd-voltage"
-    },
-    {
-      "ok": true,
-      "message": "pd-voltage keeps sheet index 31"
-    },
-    {
-      "ok": true,
-      "message": "pd-voltage keeps fixed 297 x 210 frame",
-      "details": {
-        "actual": [
-          297,
-          210
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "pd-voltage has 3 explanatory annotations",
-      "details": {
-        "actual": 3,
-        "texts": [
-          "31 / Raw PD Supply Monitor",
-          "U38 INA237 measures PD_VBUS before the eFuse; I2C address 0x40, bus-voltage ADC only.",
-          "PD_READY requires live 48 V/5 A status and fresh voltage; MOTOR_PG remains a separate hardware input."
-        ]
-      }
-    },
-    {
-      "ok": true,
-      "message": "pd-voltage has numbered sheet heading"
-    },
-    {
-      "ok": true,
-      "message": "pd-voltage explains component roles"
-    },
-    {
-      "ok": true,
-      "message": "78 high-level annotations on 26 sheets",
-      "details": {
-        "actual": 78
+        "actual": 27
       }
     },
     {

@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## Reviewer schematic and power audit — 2026-11-03
+
+The user requested the latest Seve review be addressed and directed MCU power behaviour to follow the NEMA14/17/23 references. Fresh published sources show NEMA23 v1.4.7 and NEMA14 RP2040 v1.13.2 support PD plus DATA logic power; NEMA17 v1.0.48 uses DATA-only. Retain the former dual-source behaviour and document the distinction. Reopen schematic placement, grouping, page count, annotations, architecture documents and their checks for a readable functional review. Preserve PCB geometry, electrical connectivity and all independent protections unless an evidence-backed electrical correction is separately required. Keep DRV8462DDVR: DDWR has a lower current rating and a different pin/thermal arrangement. Provide a new PR, not a main push; no physical qualification or motion unlock is implied.
+
 ## Reviewer integration — 2026-11-02
 
 After merging PR #21, the user requested a new PR for the remaining reviewer requirements: spring-clamp motor/brake terminals, separate raw PD voltage sensing, PD readiness diagnostics/interlocks, and motor-STEP-based assembly checks. These affected source, native PCB, firmware, assembly and documentation sections are reopened. Preserve the four motor mounting holes and bottom-only optional encoder. STEP alignment is evidence for geometry, not screw threads or permissible case-screw replacement. Do not invent fastening approval or unlock motion. The eight existing USB hole errors and cosmetic baseline remain visible; new electrical findings are not waived.

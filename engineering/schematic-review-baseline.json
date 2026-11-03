@@ -1,0 +1,18 @@
+{
+  "baseline_commit": "34aca1af8736b482bd8edf86ec449a56c15d50c1",
+  "algorithm": "SHA-256 of JSON.stringify with recursively sorted object keys; record order retained. Exclude only schematic_* records, source_project_metadata filesystem cache and cli_module_to_static_asset metadata.",
+  "baseline_non_schematic_sha256": "6cccbc12995ec8d62a1749aab18db9dc2690576ce320acb4267c2af9fa23a056",
+  "record_count": 6596,
+  "baseline_native_board_sha256": "0455d7ba01ada4b5635d61e988f82bd3ad80fb59acb2ac50367179bc6c4703c6",
+  "scope": "Schematic organisation and documents only. All compiled source electrical records and PCB geometry must compare exactly. Native metadata may change when paired to new sheet hierarchy; copper requires a separate native geometry comparison.",
+  "native_verification": {
+    "paired_board_sha256": "0455d7ba01ada4b5635d61e988f82bd3ad80fb59acb2ac50367179bc6c4703c6",
+    "byte_identical_to_baseline": true,
+    "unconnected_items": 0,
+    "schematic_parity_issues": 0,
+    "erc_violations": 0,
+    "retained_hole_clearance_errors": 8,
+    "retained_cosmetic_warnings": 451,
+    "fabrication_authorized": false
+  }
+}

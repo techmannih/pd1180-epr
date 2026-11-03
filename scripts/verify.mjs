@@ -49,6 +49,7 @@ verifiedInputPaths.push('routing/power-feed.json', 'scripts/power-feed.mjs', 'sc
 verifiedInputPaths.push('engineering/r3-boundary-eco.json', 'scripts/cc-protection-aliases.test.mjs')
 verifiedInputPaths.push('firmware/tests/test_pd_voltage.c', 'firmware/tests/test_target_power.cpp', 'firmware/tests/fakes/Wire.h', 'scripts/rp2040-contract.mjs', 'scripts/rp2040-contract.test.mjs')
 verifiedInputPaths.push('scripts/manufacturing-handoff.mjs', 'scripts/manufacturing-handoff.test.mjs', 'docs/thermal-qualification.md', 'docs/power-validation.md')
+verifiedInputPaths.push('docs/usb-pd-architecture.md', 'docs/reference-review.md', 'engineering/reviewer-power-reference.json', 'engineering/schematic-review-baseline.json', 'scripts/check-source-schematic.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],

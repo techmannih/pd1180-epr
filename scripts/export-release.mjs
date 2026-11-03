@@ -49,6 +49,9 @@ await writeFile(join(sourcing, 'external-items.csv'), csv([
 await copyFile('docs/stock-report.json', join(sourcing, 'stock-snapshot.json'))
 
 const copies = [
+  ['docs/usb-pd-architecture.md', 'usb-pd-architecture.md'],
+  ['engineering/reviewer-power-reference.json', 'reviewer-power-reference.json'],
+  ['engineering/schematic-review-baseline.json', 'schematic-review-baseline.json'],
   ['docs/rp2040-redesign.md', 'rp2040-redesign.md'],
   ['engineering/rp2040-redesign.json', 'rp2040-redesign.json'],
   ['engineering/rp2040-native-review.zip', 'rp2040-native-review.zip'],

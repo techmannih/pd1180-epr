@@ -1,59 +1,110 @@
-# USB-C PD, USB data and current-sense architecture
+# Power architecture and component review
 
-The r0.4 ECO separates PD POWER J1 from USB DATA J10, preserving the original motor-bus backup supply. `scripts/design.test.mjs` checks physical numbered-pin connections in `dist/index/circuit.json`.
+Current design: RP2040, DRV8462DDVR, TPS26750, WAGO J2/J3, optional AS5600. This document replaces the obsolete STM32/TMC5160 description. The nine source schematic pages follow the signal and power paths below. Native electrical checks and physical qualification remain separate.
 
-## Two independent USB-C ports
+## Reference-board decision
 
-J1 and J10 use tscircuit's standard USB-C connector with the exact C3025063 USB4105-GF-A-060 part on the reviewed shared USB4105 land pattern. J1 VBUS is PD_VBUS and J10 VBUS is USB_DATA_VBUS; they are never joined. J1 D+/D− pins are NC. Its SBU contacts and U1 connector-side SBU pins are NC; U1 system-side SBU pins 14/15 are grounded. J10 powers setup/diagnostics independently through U28 TPS2553 and U25 TLV755. It cannot energize VMOTOR.
+The public sources retrieved on 2026-11-03 do **not** all use DATA-only MCU power:
 
-U5 derives board logic from PD_VBUS before the eFuse; U22 retains VMOTOR-fed brake backup. U23/U24 OR these supplies into V3V3. U26/U27 combine board V3V3 and DATA-derived V3V3_USB into a separate V3V3_MCU rail. Only STM32, its reset pullup, bypass/bulk capacitors and SWD supply reference use this output. Industrial transceivers, flash, encoder and sensors cannot draw their supply from DATA. R119/R120 sense board V3V3 on PB1; the unused U2 IRQ is NC and PD state is polled. Chip selects are released open-drain into board-domain pullups; peripheral inputs and I²C are high impedance with board power absent.
+| Reference | Observed MCU power path |
+|---|---|
+| [NEMA23 v1.4.7](https://tscircuit.com/imrishabh18/nema-23-stepper-controller) | `VFUSED -> U_PD_LOGIC AP63205 -> PD_LOGIC_5V -> D_PD_LOGIC -> VSYS`; the existing DATA diode also feeds VSYS. PWR or DATA can power logic. |
+| [NEMA17 v1.0.48](https://tscircuit.com/imrishabh18/rp2040-motor-controller) | DATA powers the MCU. The published README explicitly requires DATA power for the PD-voltage alarm. |
+| [NEMA14 RP2040 v1.13.2](https://tscircuit.com/AnasSarkiz/NEMA14_RP2040) | `PD_VBUS -> D_PD -> LOGIC_IN` and `DATA_VBUS -> D_DATA -> LOGIC_IN`; U_BUCK supplies V3V3. Both sources are supported. |
 
-R113 limits DATA overload current; it does not enforce USB power states. Firmware advertises a bus-powered 500 mA configuration, disarms on suspend, clears commands and stale telemetry, quiesces GPIO/I²C and enters STOP0. RTC wakes the main loop every nominal 50 ms for VBUS sampling and IWDG service. USB resume/reset wakes normally; full clocks return before servicing pending USB interrupts. See `firmware/README.md` for the implementation and mandatory current, wake-latency, detach, inrush, reverse-current and supply-handover bench checks. The 2.5 mA suspend limit is not yet a measured result.
+The user's request to follow the reference boards is implemented as **retaining the NEMA23/NEMA14 dual-source behaviour**, not silently removing standalone operation. Our dedicated J1 remains POWER-only: NEMA23's newer USB data mux is not a requirement for this board. The references' lower-voltage regulators and motor-current ratings cannot be copied onto a 48 V / 6 A-phase motor design. Exact release IDs and selected source hashes are in `engineering/reviewer-power-reference.json`.
 
-## Power Delivery path
+## Supplies and what each one powers
 
-```text
-J1 CC1/CC2
-  -> U1 TPD4S480 CC short-to-VBUS protection
-  -> CC1_PD / CC2_PD
-  -> U2 TPS26750 pins 24/25
-  -> configured sink-only 48 V / 5 A EPR negotiation
+```mermaid
+flowchart LR
+  J1["J1: PD POWER 5 V startup / 48 V EPR"] --> U5["U5 + L1: 3.3 V buck"]
+  J1 --> Protection["Q4/Q5 + U6: reverse block / eFuse"]
+  Protection --> VM["VMOTOR"]
+  VM --> U7["U7: integrated motor bridges"]
+  VM --> U22["U22 + L2: backup 3.3 V buck"]
+  U5 --> OR1["U23/U24: reverse-blocked selection"]
+  U22 --> OR1
+  OR1 --> Board["V3V3: sensing / logic / brake comparator"]
+  VM --> U34["U34 + L3: 12 V buck"]
+  U34 --> U15["U15: brake gate driver"]
+  Board --> Brake["U12/U13: independent brake threshold"]
+  Brake --> U15
+  U15 --> Q16["Q16 + J3 resistor: dissipate returned energy"]
+  Board --> OR2["U26/U27: reverse-blocked MCU supply"]
+  J10["J10: DATA 5 V"] --> U28["U28: current limit"]
+  U28 --> U25["U25: 3.3 V LDO"]
+  U25 --> OR2
+  OR2 --> MCU["V3V3_MCU: RP2040 + QSPI flash"]
 ```
 
-The TPS26750 is the dedicated PD controller. TI specifies EPR sink support at 28 V, 36 V and 48 V and shows the PD exchange on CC. U2's optional `USB_P`/`USB_N` pins do not carry board USB data; pins 22 and 23 are grounded as TI requires for unused GPIO4/GPIO5. `POWER_PATH_EN` drives the exact two-NMOS buffer from TI Figure 8-5: R9 (0 Ω) drives Q2, R11 pulls Q2's drain up to `PD_3V3`, R12 (0 Ω) drives Q3, and R13 pulls `PD_PATH_OK` up to `PD_3V3`. Q2/Q3 are the CSD17484F4 devices used by the TPS26750 EVM. `PD_PATH_OK` is then combined with the MCU permit before the TPS26631 eFuse can energize the motor bus.
+U5, U22 and U34 are **LMR36510 step-down bucks**, not buck-boost converters. U25 is an LDO; U23/U24/U26/U27 are ideal-diode devices, not voltage converters. J1 and J10 VBUS are never joined. U34 powers the **brake** gate driver, not DRV8462, which has its own charge pump.
 
-The board still requires a reviewed TI-generated full-flash configuration image in U3. A blank image leaves the design in SafeMode and does not negotiate 48 V.
+| State | Intended electrical behaviour; bench verification still required |
+|---|---|
+| DATA only | RP2040 and its flash boot for USB recovery/diagnostics. Board sensors, motor and brake rails are off. GPIO/buses must not back-power them. |
+| PD only | U5 powers board logic and MCU. TPS26750 must report a valid configured EPR contract before firmware can request motor power. USB must not attach without DATA VBUS. Local START/STOP is supported only after qualification locks are legitimately cleared. |
+| PD and DATA | Reverse-blocked selection prevents one input feeding the other. Supply handover/inrush and USB current require measurement. |
+| PD removed while motor bus is charged or regenerating | U22 maintains comparator/control power from VMOTOR; U34 maintains brake gate power. The motor is inhibited, while the independent brake can dissipate energy. Backup availability and transient timing are not yet hardware-proven. |
 
-## USB 2.0 data and attach path
+Removing U22 without another motor-bus-powered brake-control path can disable the comparator while returned energy remains. Removing U34 disables the present Q16 gate-drive solution. A shared converter or a different brake switch is a separate power/thermal redesign, not a safe deletion to reduce a chip count.
 
-J10 DP1/DP2 share USB_DP_CONN; DM1/DM2 share USB_DM_CONN. D15 USBLC6-4SC6 protects both data lines and both CC lines, with pin2 GND and pin5 DATA VBUS. R71/R72 remain the 22 Ω series links to U16. C73 provides the 100 nF TVS VBUS bypass. J10 CC1 and CC2 each have their own 5.1 kΩ pulldown; they are not joined to the PD controller.
+## Driver variant decision
 
-J10 VBUS feeds R107 1 MΩ / R108 47 kΩ with C72 100 nF, and U16 PB0 senses their junction. At 5 V, nominal ADC voltage is 0.224 V. Firmware scales the divider, enables USB above 4.0 V VBUS, and detaches below 3.0 V. Validate thresholds, ADC error and attach/detach timing on hardware. PD VBUS presence alone must never enable the USB pull-up.
+[TI DRV8462](https://www.ti.com/lit/ds/symlink/drv8462.pdf) specifies DDW at 5 A full-scale / 3.5 A RMS and DDV at 10 A full-scale / 7 A RMS, subject to thermal design. DDW has its exposed thermal pad underneath; DDV has it on top, and the pin maps differ. They are not interchangeable on this PCB.
 
-## Motor current and voltage feedback
+Retain **DRV8462DDVR** for the ordered 34HS31-6004S1 motor's 6 A/phase target. A cheaper DDWR could operate the motor at reduced current, but does not preserve that target. Neither the motor's phase label nor DDV's headline rating establishes an approved operating RMS current. Firmware remains locked at the restricted commissioning configuration; see [thermal qualification](thermal-qualification.md). No supplier screenshot is treated as a current price/stock reservation.
 
-- U6 TPS26631 pin 13 produces `IIN_MON`; R26 converts it to a voltage and U30 ADS1115 channel 1 reads it.
-- The independent VMOTOR divider R31/R32/R33 produces `VMON_ADC`; U30 channel 0 reads it at ±4.096 V full scale. U30 address is 0x49; conversion validity and freshness are checked before motor permission.
-- R109 and R110 are independent 33 mΩ, 3 W low-side phase shunts connected to TMC5160A `SRAH` and `SRBH` inputs for phase-current regulation.
-- R115/R116 are 5 mΩ, 1 W series shunts in the A1/B1 motor leads. U31/U32 INA240A1 (gain 20) feed STM32 PA0/PA1 through 1 kΩ/10 nF filters. Nominal output is 1.65 V + 0.1 V/A, giving 0.872–2.428 V at the ±7.78 A peak of a 5.5 A RMS sine wave. Each shunt dissipates 0.151 W at 5.5 A RMS. These are calculated targets; ADC reference/zero calibration, PWM settling, negative transients, overload and temperature must be measured. Current firmware reports instantaneous samples, not calibrated RMS current.
-- The TMC5160A is intentionally an external-bridge controller. Q6–Q13 are its two full MOSFET bridges, not manual substitutes for an integrated output stage.
-- Firmware must calibrate input-current telemetry and configure TMC5160A current scaling, gate drive and chopper behavior for the actual motor. The netlist proves the paths exist; powered validation proves accuracy and stability.
+## Every IC's purpose
 
-## Temperature and commissioning behavior
+| Ref | Device | Purpose and reason for retention |
+|---|---|---|
+| U1 | TPD4S480 | USB-C CC short-to-VBUS protection and EPR front-end control. Unused system-side SBU pins grounded as reviewed. |
+| U2 | TPS26750 | Sink-only 48 V / 5 A EPR negotiation and power-path command; needs the verified U3 configuration. |
+| U3 | M24512 | 64 KiB PD boot/configuration EEPROM; independent of MCU flash. |
+| U4 | SN74LVC1G08 | AND of PD_PATH_OK and MCU POWER_PERMIT; prevents eFuse enable from either alone. |
+| U5 | LMR36510 | PD input to 3.3 V, before the eFuse, so logic can boot before motor power is enabled. |
+| U6 | TPS26630 | Input current limiting, undervoltage/overvoltage protection, fault latch and power-good indication. |
+| U7 | DRV8462DDVR | Integrated dual H-bridge, current regulation, STEP/DIR and SPI; top cooling remains unqualified. |
+| U10 | SN74LVC1G08 | MCU_RUN AND physical MOTOR_PG. |
+| U11 | SN74LVC1G08 | Adds independent VMOTOR_OK to the enable chain. |
+| U12 | REF3425 | Stable 2.5 V reference for the brake and overvoltage comparators. |
+| U13 | TLV3201 | Independent brake turn-on comparator near 52 V; works without a firmware brake command. |
+| U14 | TLV3201 | Independent motor-overvoltage inhibit near 53.21 V. |
+| U15 | UCC27511 | Drives Q16's gate from BRAKE_12V for controlled resistor switching. |
+| U16 | RP2040 | USB diagnostics, STEP/DIR, SPI setup and supervision; firmware qualification locks retained. |
+| U17 | W25Q32JV, 4 MiB | RP2040 QSPI boot/program storage, powered on the MCU rail. |
+| U18 | AS5600, DNP | Optional magnetic-angle telemetry. No validated rear magnet and no closed-loop motion claim. |
+| U22 | LMR36510 | VMOTOR-derived 3.3 V backup for brake/control during PD loss. |
+| U23 | LM66100 | Reverse-blocked PD-derived board-logic supply path. |
+| U24 | LM66100 | Reverse-blocked motor-backup logic path; interlocked with U23. |
+| U25 | TLV75533 | DATA-port 5 V to independent MCU 3.3 V. |
+| U26 | LM66100 | Board supply path into the MCU rail, with reverse blocking. |
+| U27 | LM66100 | DATA-derived supply path into the MCU rail, with reverse blocking. |
+| U28 | TPS2553 | DATA-port overload current limiting; not a substitute for USB enumeration/suspend current compliance. |
+| U29 | TMP102 | Board-temperature telemetry and TEMP_OK hardware inhibit. Board temperature is not driver junction temperature. |
+| U30 | ADS1115 | Protected VMOTOR, input-current-monitor and brake-return ADC channels. |
+| U31 | INA240A1 | Phase-A inline-shunt diagnostic amplifier. |
+| U32 | INA240A1 | Phase-B inline-shunt diagnostic amplifier. Neither channel is the driver's current regulator. |
+| U33 | SN74LVC1G08 | Adds TEMP_OK to RUN_WINDOW_OK, producing active-high RUN_SAFE. |
+| U34 | LMR36510 | VMOTOR to 12 V for brake gate driver U15. Not a legacy external motor-bridge supply. |
+| U35 | PCA9538 | I2C RGB and buzzer outputs. Hardware protection does not depend on the indicator bus. |
+| U36 | SN74LVC2G66 | Isolates the PD controller's EEPROM bus for fixture programming. |
+| U37 | SN74LVC1G17 | Reset-domain buffer for U35; protects the independent supply/reset relationship. |
+| U38 | INA237 | Raw PD_VBUS ADC before the eFuse; 85 V bus capability, separate from VMOTOR measurement. |
 
-U29 TMP102 monitors board temperature near the bridge. Its active-low open-drain ALERT feeds U33, which combines TEMP_OK with the existing watchdog/voltage-window result before RUN_SAFE. Firmware configures a 70 °C threshold and 55 °C hysteresis, reads back the configuration, rejects stale/invalid samples and requests progressive current reduction above 60 °C. Board temperature is not a direct MOSFET junction measurement. The commissioning image keeps motor outputs disabled until the TI configuration and physical motion validation gates are satisfied; it does not claim that a current request has been applied to an energized driver.
+## Enable equations and default states
 
-The external TMC5160A bridges remain the approved architecture. DRV8462 in the DDV package is a redesign candidate, not an interchangeable replacement; the lower-current DDW/DDW-family reference stage must not be copied into this 5.5 A RMS target without a new power/thermal review.
+`EFUSE_EN = PD_PATH_OK AND POWER_PERMIT`
 
-## Primary references
+`RUN_SAFE = MCU_RUN AND MOTOR_PG AND VMOTOR_OK AND TEMP_OK`
 
-- [Texas Instruments TPS26750 product page](https://www.ti.com/product/TPS26750)
-- [Texas Instruments TPS26750 datasheet](https://www.ti.com/lit/ds/symlink/tps26750.pdf)
-- [Texas Instruments TPS26750 EVM user guide](https://www.ti.com/lit/ug/slvucp8a/slvucp8a.pdf)
-- [Texas Instruments CSD17484F4 datasheet](https://www.ti.com/lit/ds/symlink/csd17484f4.pdf)
-- [Texas Instruments TPD4S480 datasheet](https://www.ti.com/lit/ds/symlink/tpd4s480.pdf)
-- [ST USBLC6-4 datasheet](https://www.st.com/resource/en/datasheet/usblc6-4.pdf)
-- [STMicroelectronics STM32G0B1CB datasheet](https://www.st.com/resource/en/datasheet/stm32g0b1cb.pdf)
-- [USB-IF USB Type-C cable and connector specification](https://www.usb.org/document-library/usb-type-cr-cable-and-connector-specification-release-20)
+U4 is an input-power permission gate; U10/U11/U33 gate the motor driver. They are not four copies of the same function. Pull-downs hold the driver disabled and the permit inactive during reset. MCU fault handling remains additional to the hardware inhibit path. Consolidating gates into one package is possible only after checking placement, power domains, fault behaviour and rerouting; deleting gates or relying solely on software is not this review's solution.
 
-The PD controller, EEPROM image, cable, source, protection network and powered measurements must all be reviewed before claiming EPR operation on assembled hardware.
+PD_READY is a **derived firmware status**: fresh U38 conversion plus a live configured APP/sink/EPR 48 V / 5 A contract. MOTOR_PG is a separate physical eFuse signal. Stale ADC, sensor loss, invalid configuration, supply faults or an uncleared qualification gate prevent motion.
+
+## Review and validation limits
+
+Read the source-generated `release/schematics/*.svg` pages in order, with the component table and the two enable equations. The paired native KiCad schematic is currently a verification artifact: `normalize-kicad-parity.mjs` snaps its pin coordinates and assigns hidden net labels for parity/ERC. Use the visible source schematics for human circuit review; a zero-error native verification artifact is not proof of drawing readability. The topology, board placement, footprint/pin identities, copper and protection thresholds are preserved by this schematic cleanup. The source/native comparison must prove that statement; a style-analysis pass alone does not prove human readability.
+
+The eight known USB hole-clearance errors, cosmetic findings, unresolved sourcing, rear fastening, thermal/brake limits, actual programming/readback and powered tests remain visible. A readable schematic and a successful DRC run do not qualify the assembly.
