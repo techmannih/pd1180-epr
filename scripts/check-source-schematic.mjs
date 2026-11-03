@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto"
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname } from "node:path"
+import { circuitSourceHash } from "./circuit-source-hash.mjs"
 
 const circuitPath = process.argv[2] || "dist/index/circuit.json"
 const reportPath = process.argv[3] || "docs/checks/source-schematic.json"
@@ -94,7 +95,9 @@ const peerLabels = (key) =>
 const schematicReviewBaseline = JSON.parse(await readFile("engineering/schematic-review-baseline.json", "utf8"))
 const stableJson = value => Array.isArray(value) ? value.map(stableJson) : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, stableJson(value[key])])) : value
 const physicalRecords = circuit.filter(row => !row.type.startsWith("schematic_") && !["source_project_metadata", "cli_module_to_static_asset"].includes(row.type))
-const physicalHash = createHash("sha256").update(JSON.stringify(stableJson(physicalRecords))).digest("hex")
+// Reuse the native checker normalization: only derived trace_length is rounded
+// to 1e-12 mm. Linux/macOS differ by one ULP; all actual copper stays exact.
+const physicalHash = circuitSourceHash(stableJson(physicalRecords))
 check(physicalHash === schematicReviewBaseline.baseline_non_schematic_sha256, "electrical and PCB records unchanged from reviewed main baseline", { baseline_commit: schematicReviewBaseline.baseline_commit, actual: physicalHash })
 const architectureText = await readFile("docs/usb-pd-architecture.md", "utf8")
 const unexplainedIcs = sourceComponents.filter(row => /^U[0-9]+$/.test(row.name) && !architectureText.includes(`| ${row.name} |`))

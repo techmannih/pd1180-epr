@@ -21,6 +21,17 @@ test('native evidence ignores only the CLI filesystem cache key', () => {
 })
 
 test('native evidence tolerates derived length rounding but detects copper changes', () => {
+  // Actual macOS/Linux pairs, including PR #24 workflow 41679486520.
+  const crossPlatformLengths = [
+    [1.9498573488665445, 1.9498573488665447],
+    [1.3870242929152334, 1.3870242929152332],
+    [2.3614712022848914, 2.361471202284891],
+    [1.5851258021515604, 1.5851258021515602],
+  ]
+  for (const [mac, linux] of crossPlatformLengths) {
+    expect(circuitSourceHash([{type: 'pcb_trace', trace_length: mac}]))
+      .toBe(circuitSourceHash([{type: 'pcb_trace', trace_length: linux}]))
+  }
   const trace = { type: 'pcb_trace', trace_length: 1.9498573488665445,
     route: [{ x: 1, y: 2, width: 0.15 }, { x: 2, y: 3, width: 0.15 }] }
   const hash = circuitSourceHash([trace])
