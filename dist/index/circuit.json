@@ -165120,13 +165120,13 @@
   },
   {
     "type": "source_project_metadata",
-    "source_filesystem_md5_hash": "bc3f458763fe45f57b2c7f80934b53dc"
+    "source_filesystem_md5_hash": "87bcd2d34a7ad89608f042dafd9b9102"
   },
   {
     "type": "system_block_page",
     "system_block_page_id": "system_block_page_0",
     "name": "system-overview",
-    "display_name": "1. Start here: power and motion",
+    "display_name": "NEMA34 System Overview",
     "description": "Orange dashed arrows carry power; blue arrows carry signals. Read the PD input, motor supply and motor drive first. Details are on pages 2–4.",
     "width": 439,
     "height": 236.5
@@ -165538,7 +165538,7 @@
     "type": "system_block_page",
     "system_block_page_id": "system_block_page_1",
     "name": "logic-power",
-    "display_name": "2. What powers each circuit",
+    "display_name": "Power Distribution",
     "description": "The PD and DATA inputs are not joined. U5/U22/U34 are step-down bucks, not buck-boosts. VMOTOR backup keeps the independent brake powered during PD loss.",
     "width": 479.5,
     "height": 325
@@ -166048,7 +166048,7 @@
     "type": "system_block_page",
     "system_block_page_id": "system_block_page_2",
     "name": "protection",
-    "display_name": "3. What allows or stops motion",
+    "display_name": "Protection and Interlocks",
     "description": "Power permission and driver enable are separate gates. The brake responds to bus voltage independently of firmware. Nominal thresholds still need bench verification.",
     "width": 521.5,
     "height": 294
@@ -166510,7 +166510,7 @@
     "type": "system_block_page",
     "system_block_page_id": "system_block_page_3",
     "name": "control-telemetry",
-    "display_name": "4. What the controller reads and controls",
+    "display_name": "Control and Telemetry",
     "description": "PD_READY is firmware-derived from the EPR contract and fresh U38 raw-voltage data. It is not the hardware eFuse MOTOR_PG. Optional encoder is telemetry only.",
     "width": 352,
     "height": 262

@@ -11,10 +11,10 @@ The four pages answer four review questions, in order:
 
 | Page | Review question |
 | --- | --- |
-| 1. Start here: power and motion | Where do power and commands enter, and where do motor/brake energy go? |
-| 2. What powers each circuit | Why are there three bucks, an LDO and supply-selection devices? What works with DATA alone or after PD loss? |
-| 3. What allows or stops motion | What must be true before input power and motor drive are enabled? How does the independent brake respond? |
-| 4. What the controller reads and controls | Which chip measures raw PD voltage, protected voltage, current and temperature? What does RP2040 control? |
+| NEMA34 System Overview | Where do power and commands enter, and where do motor/brake energy go? |
+| Power Distribution | Why are there three bucks, an LDO and supply-selection devices? What works with DATA alone or after PD loss? |
+| Protection and Interlocks | What must be true before input power and motor drive are enabled? How does the independent brake respond? |
+| Control and Telemetry | Which chip measures raw PD voltage, protected voltage, current and temperature? What does RP2040 control? |
 
 Start with the seven functional blocks on page 1. Follow the PD input to the
 protected motor supply and driver, then the separate controller and brake paths.

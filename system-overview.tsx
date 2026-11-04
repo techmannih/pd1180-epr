@@ -4,7 +4,7 @@ const Block = systemblock.component
 /** Review interfaces only; electrical connections remain in index.circuit.tsx. */
 export const SystemOverview = () => (
   <>
-    <systemblock.page name="system-overview" displayName="1. Start here: power and motion" direction="right"
+    <systemblock.page name="system-overview" displayName="NEMA34 System Overview" direction="right"
       description="Orange dashed arrows carry power; blue arrows carry signals. Read the PD input, motor supply and motor drive first. Details are on pages 2–4.">
       <Block name="pd" displayName="J1 / USB-C PD EPR"
           description={"U1 + U2 · 48 V / 5 A request"}
@@ -39,7 +39,7 @@ export const SystemOverview = () => (
       <systemblock.connection from="bus" to="brake" kind="power" label="Bus energy" />
     </systemblock.page>
 
-    <systemblock.page name="logic-power" displayName="2. What powers each circuit" direction="right"
+    <systemblock.page name="logic-power" displayName="Power Distribution" direction="right"
       description="The PD and DATA inputs are not joined. U5/U22/U34 are step-down bucks, not buck-boosts. VMOTOR backup keeps the independent brake powered during PD loss.">
       <systemblock.group name="sources" displayName="3.3 V sources">
         <Block name="pd-buck" displayName="PD → 3.3 V"
@@ -85,7 +85,7 @@ export const SystemOverview = () => (
       <systemblock.connection from="brake-buck" to="brake-driver" kind="power" label="12 V" />
     </systemblock.page>
 
-    <systemblock.page name="protection" displayName="3. What allows or stops motion" direction="right"
+    <systemblock.page name="protection" displayName="Protection and Interlocks" direction="right"
       description="Power permission and driver enable are separate gates. The brake responds to bus voltage independently of firmware. Nominal thresholds still need bench verification.">
       <systemblock.group name="motion-permission" displayName="Power permission and motor enable">
         <Block name="pd" displayName="PD path ready"
@@ -130,7 +130,7 @@ export const SystemOverview = () => (
       <systemblock.connection from="threshold" to="brake" label="BRAKE_ON" />
     </systemblock.page>
 
-    <systemblock.page name="control-telemetry" displayName="4. What the controller reads and controls" direction="right"
+    <systemblock.page name="control-telemetry" displayName="Control and Telemetry" direction="right"
       description="PD_READY is firmware-derived from the EPR contract and fresh U38 raw-voltage data. It is not the hardware eFuse MOTOR_PG. Optional encoder is telemetry only.">
       <systemblock.group name="sensing" displayName="Supply + motor sensing">
         <Block name="pd" displayName="PD contract"
