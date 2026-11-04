@@ -931,7 +931,7 @@ export const PD1180EPR = () => (
       capacitance="4.7uF" footprint="1206" supplierPartNumbers={{ jlcpcb: ["C51205"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
-      connections={{ pin1: "net.V3V3_MCU", pin2: "net.GND" }} schSheetName="mcu" schX={-0.29999999999999893} schY={-6.1} />
+      connections={{ pin1: "net.V3V3_MCU", pin2: "net.GND" }} schSheetName="mcu"  schX={1} schY={-6.1} />
     <resistor name="R70" schSectionName="mcu_U16" pcbX={-10.5} pcbY={-11.0}
       schRotation={-90}
       resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }}
@@ -992,7 +992,7 @@ export const PD1180EPR = () => (
       maxDecouplingTraceLength="30mm"
       decouplingFor=".U17 > .pin8"
       maxVoltageRating="50V"
-      connections={{"pin1":"net.V3V3_MCU","pin2":"net.GND"}} pcbRotation={270} schSheetName="mcu" schX={1} schY={-6.1} />
+      connections={{"pin1":"net.V3V3_MCU","pin2":"net.GND"}} pcbRotation={270} schSheetName="mcu" schX={-0.29999999999999893} schY={-6.1} />
 
     {/* ENCODER */}
     <AS5600_ASOM name="U18" kicadFootprintMetadata={{ footprintName: "AS5600-ASOM" }} schSectionName="encoder_U18" pcbX={0} pcbY={0} pcbRotation={0} layer="bottom" doNotPlace

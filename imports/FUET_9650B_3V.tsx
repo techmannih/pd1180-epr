@@ -24,7 +24,7 @@ export const FUET_9650B_3V = (props: ChipProps<typeof pinLabels>) => {
           <schematicpath points={[{"x":0,"y":0.24},{"x":0,"y":-0.04}]} strokeColor="#880000" />
           <schematicpath points={[{"x":0,"y":-0.04},{"x":0.2,"y":-0.04}]} strokeColor="#880000" />
           <schematicpath points={[{"x":0,"y":0.24},{"x":0.2,"y":0.24}]} strokeColor="#880000" />
-          <schematictext schX={0.08} schY={0.6} text="{NAME}" fontSize={0.2} anchor="bottom_center" />
+          <schematictext schX={0.08} schY={0.4} text="{NAME}" fontSize={0.2} anchor="bottom_center" />
         </symbol>
       }
       supplierPartNumbers={{
