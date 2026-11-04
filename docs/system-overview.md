@@ -11,7 +11,7 @@ The four pages answer four review questions, in order:
 
 | Page | Review question |
 | --- | --- |
-| NEMA34 System Overview | Where do power and commands enter, and where do motor/brake energy go? |
+| Motor Controller Architecture | Where do power and commands enter, and where do motor/brake energy go? |
 | Power Distribution | Why are there three bucks, an LDO and supply-selection devices? What works with DATA alone or after PD loss? |
 | Protection and Interlocks | What must be true before input power and motor drive are enabled? How does the independent brake respond? |
 | Control and Telemetry | Which chip measures raw PD voltage, protected voltage, current and temperature? What does RP2040 control? |

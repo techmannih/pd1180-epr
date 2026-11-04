@@ -4,7 +4,7 @@ const Block = systemblock.component
 /** Review interfaces only; electrical connections remain in index.circuit.tsx. */
 export const SystemOverview = () => (
   <>
-    <systemblock.page name="system-overview" displayName="NEMA34 System Overview" direction="right"
+    <systemblock.page name="system-overview" displayName="Motor Controller Architecture" direction="right"
       description="Orange dashed arrows carry power; blue arrows carry signals. Read the PD input, motor supply and motor drive first. Details are on pages 2–4.">
       <Block name="pd" displayName="J1 / USB-C PD EPR"
           description={"U1 + U2 · 48 V / 5 A request"}
