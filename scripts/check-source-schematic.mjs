@@ -94,7 +94,7 @@ const peerLabels = (key) =>
 // and PCB record with the independently compiled main-branch baseline.
 const schematicReviewBaseline = JSON.parse(await readFile("engineering/schematic-review-baseline.json", "utf8"))
 const stableJson = value => Array.isArray(value) ? value.map(stableJson) : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, stableJson(value[key])])) : value
-const physicalRecords = circuit.filter(row => !row.type.startsWith("schematic_") && !["source_project_metadata", "cli_module_to_static_asset"].includes(row.type))
+const physicalRecords = circuit.filter(row => !row.type.startsWith("schematic_") && !row.type.startsWith("system_block_") && !["source_project_metadata", "cli_module_to_static_asset"].includes(row.type))
 // Reuse the native checker normalization: only derived trace_length is rounded
 // to 1e-12 mm. Linux/macOS differ by one ULP; all actual copper stays exact.
 const physicalHash = circuitSourceHash(stableJson(physicalRecords))

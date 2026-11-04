@@ -23,7 +23,7 @@
     "check:routing": "tsci check routing-difficulty dist/index/circuit.json",
     "check:shorts": "tsci check shorts dist/index/circuit.json",
     "start": "bun run dev",
-    "build:preview": "tsci build index.circuit.tsx --svgs --routing-disabled --disable-parts-engine && tsci build motor-assembly.circuit.tsx --routing-disabled --disable-parts-engine",
+    "build:preview": "tsci build index.circuit.tsx --svgs --routing-disabled --disable-parts-engine && tsci build motor-assembly.circuit.tsx --routing-disabled --disable-parts-engine && bun scripts/system-overview.mjs",
     "check:stock": "bun scripts/check-stock.mjs",
     "check:alternatives": "bun scripts/check-alternatives.mjs",
     "sync:docs": "bun scripts/sync-generated-docs.mjs",
@@ -76,7 +76,10 @@
     "check:review": "bun scripts/check-release.mjs --review && bun run check:delivery",
     "check:usb-reference": "bun scripts/check-usb-reference.mjs",
     "check:power-audit": "bun scripts/power-audit.mjs --check",
-    "check:power-simulation": "python3 scripts/simulate-power-eco.py --check"
+    "check:power-simulation": "python3 scripts/simulate-power-eco.py --check",
+    "export:system": "bun scripts/system-overview.mjs",
+    "check:system": "bun scripts/check-system-overview.mjs",
+    "dev:system": "tsci dev release/circuit.json"
   },
   "devDependencies": {
     "@jscad/modeling": "2.13.0",
@@ -88,8 +91,13 @@
     "kicad-to-circuit-json": "0.0.142",
     "occt-import-js": "0.0.23",
     "polygon-clipping": "0.15.7",
-    "tscircuit": "0.0.3062",
-    "typescript": "5.9.2"
+    "tscircuit": "0.0.3084",
+    "typescript": "5.9.2",
+    "system-block-core": "npm:@tscircuit/core@0.0.2268",
+    "system-block-svg": "npm:circuit-to-svg@0.0.455",
+    "circuit-json": "0.0.542",
+    "@tscircuit/props": "0.0.717",
+    "schematic-symbols": "0.0.248"
   },
   "keywords": [
     "tscircuit",

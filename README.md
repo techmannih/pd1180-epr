@@ -1,5 +1,9 @@
 # NEMA34 48 V EPR controller — RP2040 redesign
 
+Start here: [system block diagrams and operating sequence](docs/system-overview.md).
+
+![NEMA34 system overview](docs/system-blocks/system-overview.svg)
+
 **Design revision 0.5.0-RP2040-DRAFT. Not ready to order or run a motor.** The source now uses RP2040, DRV8462DDVR with integrated power bridges, TPS26750 for the retained 48 V / 5 A EPR input, and an optional AS5600. The reviewer ECO follows merged PR #21 (`64c14cd`) and retains that 48 V architecture. Hardware is not qualified.
 
 Start with [the nine-sheet power/component review](docs/usb-pd-architecture.md), [current reference-board decisions](docs/reference-review.md), [the redesign and evidence](docs/rp2040-redesign.md), [reviewer checklist](docs/reviewer-checklist.md) and [firmware instructions](firmware/README.md). `index.circuit.tsx` is the current schematic/placement source. The native route, manufacturing archive, copper analyses and routed viewer are regenerated for RP2040/DRV8462. Native KiCad reports 0 unconnected/parity/ERC findings, with the 8 requested J1/J10 hole errors and 451 cosmetic warnings retained. **The review exception does not authorize ordering.**
