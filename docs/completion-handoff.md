@@ -2,6 +2,10 @@
 
 The current controller uses **RP2040, DRV8462DDVR, TPS26750 and optional AS5600**. The reviewer ECO adds **U38 INA237 raw-PD sensing** and **WAGO spring-clamp J2/J3**. Earlier STM32/TMC5160 binaries, current-register settings and passing reports are historical. Use the matching current source, native board, BOM, firmware and release manifest together.
 
+## Schematic and power review
+
+The 2026-11-03 review consolidates the source into nine functional A4 sheets. [Power architecture](usb-pd-architecture.md) explains all 33 ICs, the independent brake supplies and the driver-current trade-off. [Pinned reference releases](../engineering/reviewer-power-reference.json) show NEMA23/NEMA14 support dual-source logic power; NEMA17 is DATA-only. This revision retains the former behaviour and DDVR. Electrical/PCB records are checked against main commit `34aca1a`; this is a schematic/documentation change, not a new hardware qualification.
+
 ## Reviewer requirements
 
 | Requirement | Implementation | Remaining physical evidence |

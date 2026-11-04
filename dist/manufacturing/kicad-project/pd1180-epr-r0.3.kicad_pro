@@ -277,10 +277,10 @@
     }
   },
   "head": {
-    "created": "2026-11-02T15:57:46.425Z",
+    "created": "2026-11-03T16:21:44.611Z",
     "generator": "circuit-json-to-kicad",
     "generator_version": "0.0.1",
-    "modified": "2026-11-02T15:57:46.425Z",
+    "modified": "2026-11-03T16:21:44.611Z",
     "project_name": "pd1180-epr-r0.3"
   },
   "libraries": {
@@ -345,112 +345,44 @@
   },
   "sheets": [
     [
-      "194f7b35-ef74-48cc-a1b8-264c170a4bd8",
+      "f9743c3b-0cb6-4754-80a3-a6158403122a",
       "Root"
     ],
     [
-      "bd569e64-bb90-4c66-bf30-351243439ed7",
-      "USB-C PD POWER"
+      "87e0685a-73e1-4247-8082-64783d4c1e8c",
+      "USB-C EPR input and negotiation"
     ],
     [
-      "5fb343d1-dd44-47b5-9131-beab196e5d19",
-      "PD Controller and EEPROM"
+      "e0a84f06-3110-4f53-8edb-d3ba6b4cbfe1",
+      "Logic supply and source selection"
     ],
     [
-      "5a3bd03a-2708-4424-b406-2069f327a3af",
-      "PD Backup Supply"
+      "6499ef61-62a0-401b-a8c5-46ae3ecb55b4",
+      "Protected motor bus and enable interlocks"
     ],
     [
-      "b3de8544-60cb-416a-9321-bd6635cb7651",
-      "Motor Backup Supply"
+      "de8ff1e1-26ff-40b7-b77c-bdf2b69daa61",
+      "Integrated motor driver and winding feedback"
     ],
     [
-      "cbd2b1aa-a21b-422b-9e09-06447c8a1482",
-      "Logic Supply Selection and Power Permit"
+      "b3d78830-1aba-4f03-9ddd-9ecb07ecfb60",
+      "Independent regeneration brake and overvoltage cutoff"
     ],
     [
-      "9a891739-81b6-4f65-8cbd-c32f88001267",
-      "Protected 48 V Motor Bus"
+      "db9be223-8f99-42bd-a062-56248de12130",
+      "RP2040, boot memory and local controls"
     ],
     [
-      "d933cf49-46c5-49ca-9535-4482f565933b",
-      "Motion Controller"
+      "d8258ad2-3d3e-4cf5-88ac-3599c893f258",
+      "USB DATA and independent MCU power"
     ],
     [
-      "7c88383f-7563-4bee-9621-3e7544c53a40",
-      "Onboard Motion and Hardware Enable"
+      "c61f4b17-69ce-433c-8fc9-909176f35878",
+      "Supply telemetry and PD programming access"
     ],
     [
-      "8996895b-34df-4b6a-b233-526df67dcf08",
-      "Motor Winding Connection"
-    ],
-    [
-      "397d75db-77c7-444d-87a8-46e3836c1118",
-      "Brake Reference and Turn-on Threshold"
-    ],
-    [
-      "e0b758c3-f742-48f8-85f4-f43fe65e660c",
-      "Overvoltage Inhibit and Brake Driver"
-    ],
-    [
-      "dc449c4b-0ae0-4093-958e-518ac89427d8",
-      "MCU Clock Memory and Debug"
-    ],
-    [
-      "1e75a618-3cd5-42ba-9202-c05839fc61a9",
-      "Optional Shaft Encoder"
-    ],
-    [
-      "09c457bf-4051-4af8-9a57-4790396e0119",
-      "USB DATA and Attach Sense"
-    ],
-    [
-      "96a573db-2e02-46e4-aca7-d6655f659a5b",
-      "Local Start and Stop"
-    ],
-    [
-      "c7d5abc1-1e1e-4f6c-935b-0da2f8a15cd0",
-      "USB Logic Power"
-    ],
-    [
-      "e44481e0-9173-42bf-a133-df76fbc20f75",
-      "Temperature and Bus Diagnostics"
-    ],
-    [
-      "5ea2e328-2538-437c-b869-e7cf87446b4a",
-      "Phase Current Diagnostics"
-    ],
-    [
-      "3c2e4ad4-eb51-4ffe-9d7b-f5f255a12270",
-      "Brake Gate Supply"
-    ],
-    [
-      "c3c03431-5bc3-4d01-88f4-75410c6a229d",
-      "Status and Independent Power Indication"
-    ],
-    [
-      "a7c1f3de-65a0-4357-8540-9c22e7e1c256",
-      "Audible Fault Alarm"
-    ],
-    [
-      "3bacdf97-7907-4d26-b15b-8802da549bcd",
-      "PD Programming and Power Probes"
-    ],
-    [
-      "2eb87764-3007-479b-a47f-0a3880efa9e6",
-      "Brake Continuity Preflight"
-    ],
-    [
-      "659f8cd4-b13c-46a0-8c08-c81b443c233f",
-      "RP2040 Local Power"
-    ],
-    [
-      "498883ad-6582-488e-99bb-f33dfbd93222",
-      "DRV8462 Logic Bias"
-    ],
-    [
-      "26be378a-024a-447c-8a43-3b4312adff7c",
-      "Raw PD Supply Monitor"
+      "7449a5cb-d8fa-4f74-9673-a9b5d171ac13",
+      "Indicators, alarm and optional encoder"
     ]
   ],
   "text_variables": {},

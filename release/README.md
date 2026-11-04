@@ -24,7 +24,7 @@ Legacy archive/KiCad basenames retain the r0.3 suffix for pipeline compatibility
 
 The native reports contain 459 raw PCB DRC findings (eight retained J1/J10 hole-clearance errors plus 451 cosmetic warnings; no other native errors), 0 unconnected items, 0 schematic-parity issues and 0 schematic ERC violations. See `kicad-drc.json` and `kicad-erc.json`. Live JLCSearch plus exact-ID official catalog evidence covers all 82 unique populated LCSC codes. Reset circuitry is designed to inhibit motor power with blank U3/U16; this has not been measured on hardware. 48 V EPR requires a TI-generated TPS26750 full-flash image, and motor operation requires programmed RP2040 firmware plus staged powered validation.
 
-The tscircuit viewer-equivalent schematic style result is recorded across all 26 sheets; see `schematic-style-check.json`. `circuit.json` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
+The tscircuit viewer-equivalent schematic style result is recorded across all 9 sheets; see `schematic-style-check.json`. `circuit.json` preserves that source schematic/3D model and replays the exact verified KiCad traces, vias and copper pours in the hosted PCB viewer without rerunning the cloud autorouter.
 
 External equipment and candidates are listed in [external-system.md](external-system.md) and [external-parts.json](external-parts.json); the current profile requires a qualified brake assembly.
 
