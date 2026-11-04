@@ -165120,7 +165120,7 @@
   },
   {
     "type": "source_project_metadata",
-    "source_filesystem_md5_hash": "f88258cd8a92a234c3bb352388afc50b"
+    "source_filesystem_md5_hash": "bc3f458763fe45f57b2c7f80934b53dc"
   },
   {
     "type": "system_block_page",
@@ -165128,62 +165128,35 @@
     "name": "system-overview",
     "display_name": "1. Start here: power and motion",
     "description": "Orange dashed arrows carry power; blue arrows carry signals. Read the PD input, motor supply and motor drive first. Details are on pages 2–4.",
-    "width": 180,
-    "height": 124
+    "width": 439,
+    "height": 236.5
   },
   {
     "type": "system_block_group",
     "system_block_group_id": "system_block_group_0",
     "system_block_page_id": "system_block_page_0",
-    "name": "inputs",
-    "display_name": "USB inputs",
+    "name": "power-stage",
+    "display_name": "Protected motor power + regenerative braking",
     "center": {
-      "x": -62,
-      "y": 21.5
+      "x": 6,
+      "y": -40.25
     },
-    "width": 52,
-    "height": 81
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_1",
-    "system_block_page_id": "system_block_page_0",
-    "name": "control-domain",
-    "display_name": "Power and control",
-    "center": {
-      "x": 0,
-      "y": 21.5
-    },
-    "width": 52,
-    "height": 81
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_2",
-    "system_block_page_id": "system_block_page_0",
-    "name": "motor-domain",
-    "display_name": "Motor and brake",
-    "center": {
-      "x": 62,
-      "y": 1
-    },
-    "width": 52,
-    "height": 122
+    "width": 207,
+    "height": 140
   },
   {
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_0",
     "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_0",
     "name": "pd",
-    "display_name": "PD power · J1",
-    "description": "48 V / 5 A EPR request\nU2 TPS26750 + U1 protection",
+    "display_name": "J1 / USB-C PD EPR",
+    "description": "U1 + U2 · 48 V / 5 A request",
     "center": {
-      "x": -62,
-      "y": 42
+      "x": -187.5,
+      "y": -15.25
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_0",
       "pcb_component_4",
@@ -165196,16 +165169,15 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_1",
     "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_0",
     "name": "data",
-    "display_name": "USB data · J10",
-    "description": "USB diagnostics + MCU power\nDATA alone cannot run the motor",
+    "display_name": "J10 / USB data",
+    "description": "5 V input · diagnostics + MCU power",
     "center": {
-      "x": -62,
-      "y": -2
+      "x": -187.5,
+      "y": 98.25
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_192",
       "pcb_component_199",
@@ -165216,16 +165188,34 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_2",
     "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_1",
-    "name": "bus",
-    "display_name": "Motor supply",
-    "description": "U6 eFuse + Q4/Q5\nLimits input; blocks reverse flow",
+    "name": "control",
+    "display_name": "U16 / RP2040",
+    "description": "U17 flash · motion locks enabled",
     "center": {
-      "x": 0,
-      "y": 42
+      "x": -52.55000000000001,
+      "y": 75.25
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
+    "pcb_component_ids": [
+      "pcb_component_160",
+      "pcb_component_181"
+    ]
+  },
+  {
+    "type": "system_block_component",
+    "system_block_component_id": "system_block_component_3",
+    "system_block_page_id": "system_block_page_0",
+    "system_block_group_id": "system_block_group_0",
+    "name": "bus",
+    "display_name": "U6 / Protected motor supply",
+    "description": "eFuse + Q4/Q5 reverse blocking",
+    "center": {
+      "x": -52.55000000000001,
+      "y": -60.75
+    },
+    "width": 53.9,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_64",
       "pcb_component_65",
@@ -165234,37 +165224,36 @@
   },
   {
     "type": "system_block_component",
-    "system_block_component_id": "system_block_component_3",
+    "system_block_component_id": "system_block_component_4",
     "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_1",
-    "name": "control",
-    "display_name": "Controller · U16",
-    "description": "RP2040 + U17 flash\nMotion locked pending bench tests",
+    "system_block_group_id": "system_block_group_0",
+    "name": "driver",
+    "display_name": "U7 / DRV8462DDVR",
+    "description": "Integrated bridges + current control",
     "center": {
-      "x": 0,
-      "y": -2
+      "x": 63.69999999999999,
+      "y": -12.25
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
-      "pcb_component_160",
-      "pcb_component_181"
+      "pcb_component_88"
     ]
   },
   {
     "type": "system_block_component",
-    "system_block_component_id": "system_block_component_4",
+    "system_block_component_id": "system_block_component_5",
     "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_2",
+    "system_block_group_id": "system_block_group_0",
     "name": "brake",
-    "display_name": "Brake output · J3",
-    "description": "Near 52 V: Q16 switches resistor\nExternal 10 Ω / 300 W provisional",
+    "display_name": "J3 / External brake resistor",
+    "description": "Q16 · ~52 V clamp · rating provisional",
     "center": {
-      "x": 62,
-      "y": 42
+      "x": 63.69999999999999,
+      "y": -72.25
     },
-    "width": 46,
-    "height": 26,
+    "width": 55.6,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_106",
       "pcb_component_109",
@@ -165276,36 +165265,17 @@
   },
   {
     "type": "system_block_component",
-    "system_block_component_id": "system_block_component_5",
-    "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_2",
-    "name": "driver",
-    "display_name": "Motor drive · U7",
-    "description": "DRV8462DDVR\nBuilt-in bridges; current control",
-    "center": {
-      "x": 62,
-      "y": -2
-    },
-    "width": 46,
-    "height": 26,
-    "pcb_component_ids": [
-      "pcb_component_88"
-    ]
-  },
-  {
-    "type": "system_block_component",
     "system_block_component_id": "system_block_component_6",
     "system_block_page_id": "system_block_page_0",
-    "system_block_group_id": "system_block_group_2",
     "name": "motor",
-    "display_name": "Motor output · J2",
-    "description": "WAGO → external NEMA34\n34HS31-6004S1; current unqualified",
+    "display_name": "J2 / NEMA34 motor",
+    "description": "WAGO · 34HS31-6004S1",
     "center": {
-      "x": 62,
-      "y": -44
+      "x": 187.5,
+      "y": -12.25
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_89"
     ]
@@ -165315,64 +165285,68 @@
     "system_block_connection_id": "system_block_connection_0",
     "system_block_page_id": "system_block_page_0",
     "from_system_block_component_id": "system_block_component_0",
-    "to_system_block_component_id": "system_block_component_2",
+    "to_system_block_component_id": "system_block_component_3",
     "label": "PD input",
     "direction": "forward",
     "is_signal": false,
     "is_power": true,
     "route": [
       {
-        "x": -39,
-        "y": 42
+        "x": -172.46703296703296,
+        "y": -27.25
       },
       {
-        "x": -23,
-        "y": 42
+        "x": -130.5,
+        "y": -60.75
+      },
+      {
+        "x": -97.5,
+        "y": -60.75
+      },
+      {
+        "x": -79.5,
+        "y": -60.75
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": 46
+      "x": -130.5,
+      "y": -55.75
     }
   },
   {
     "type": "system_block_connection",
     "system_block_connection_id": "system_block_connection_1",
     "system_block_page_id": "system_block_page_0",
-    "from_system_block_component_id": "system_block_component_2",
-    "to_system_block_component_id": "system_block_component_5",
+    "from_system_block_component_id": "system_block_component_3",
+    "to_system_block_component_id": "system_block_component_4",
     "label": "Motor bus / regen",
     "direction": "both",
     "is_signal": false,
     "is_power": true,
     "route": [
       {
-        "x": 0,
-        "y": 29
+        "x": -29.47,
+        "y": -48.75
       },
       {
-        "x": 0,
-        "y": 20
+        "x": 5.150000000000006,
+        "y": -30.75
       },
       {
-        "x": 62,
-        "y": 20
-      },
-      {
-        "x": 62,
-        "y": 11
+        "x": 39.69999999999999,
+        "y": -19.833262169086254
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 23
+      "x": 5.150000000000006,
+      "y": -25.75
     }
   },
   {
     "type": "system_block_connection",
     "system_block_connection_id": "system_block_connection_2",
     "system_block_page_id": "system_block_page_0",
-    "from_system_block_component_id": "system_block_component_5",
+    "from_system_block_component_id": "system_block_component_4",
     "to_system_block_component_id": "system_block_component_6",
     "label": "Two windings",
     "direction": "both",
@@ -165380,17 +165354,25 @@
     "is_power": true,
     "route": [
       {
-        "x": 62,
-        "y": -15
+        "x": 87.69999999999999,
+        "y": -12.25
       },
       {
-        "x": 62,
-        "y": -31
+        "x": 109.5,
+        "y": -12.25
+      },
+      {
+        "x": 136.5,
+        "y": -12.25
+      },
+      {
+        "x": 163.5,
+        "y": -12.25
       }
     ],
     "label_anchor_center": {
-      "x": 74,
-      "y": -23
+      "x": 136.5,
+      "y": -7.25
     }
   },
   {
@@ -165398,32 +165380,32 @@
     "system_block_connection_id": "system_block_connection_3",
     "system_block_page_id": "system_block_page_0",
     "from_system_block_component_id": "system_block_component_0",
-    "to_system_block_component_id": "system_block_component_3",
-    "label": "Logic power (p.2)",
+    "to_system_block_component_id": "system_block_component_2",
+    "label": "Via regulators (p.2)",
     "direction": "forward",
     "is_signal": false,
     "is_power": true,
     "route": [
       {
-        "x": -62,
-        "y": 29
+        "x": -176.28688524590166,
+        "y": -3.25
       },
       {
-        "x": -62,
-        "y": 20
+        "x": -130.5,
+        "y": 45.75
       },
       {
-        "x": -16,
-        "y": 20
+        "x": -97.5,
+        "y": 45.75
       },
       {
-        "x": -16,
-        "y": 11
+        "x": -70.83474576271186,
+        "y": 63.25
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": 23
+      "x": -130.5,
+      "y": 50.75
     }
   },
   {
@@ -165431,25 +165413,33 @@
     "system_block_connection_id": "system_block_connection_4",
     "system_block_page_id": "system_block_page_0",
     "from_system_block_component_id": "system_block_component_1",
-    "to_system_block_component_id": "system_block_component_3",
+    "to_system_block_component_id": "system_block_component_2",
     "name": "data-power",
-    "label": "3.3 V",
+    "label": "Via LDO (p.2)",
     "direction": "forward",
     "is_signal": false,
     "is_power": true,
     "route": [
       {
-        "x": -39,
-        "y": 3
+        "x": -164.31355932203388,
+        "y": 86.25
       },
       {
-        "x": -23,
-        "y": 3
+        "x": -130.5,
+        "y": 68.75
+      },
+      {
+        "x": -97.5,
+        "y": 68.75
+      },
+      {
+        "x": -76.55000000000001,
+        "y": 71.77947719688544
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": 7
+      "x": -130.5,
+      "y": 73.75
     }
   },
   {
@@ -165457,7 +165447,7 @@
     "system_block_connection_id": "system_block_connection_5",
     "system_block_page_id": "system_block_page_0",
     "from_system_block_component_id": "system_block_component_1",
-    "to_system_block_component_id": "system_block_component_3",
+    "to_system_block_component_id": "system_block_component_2",
     "name": "data-link",
     "label": "USB",
     "direction": "both",
@@ -165465,67 +165455,83 @@
     "is_power": false,
     "route": [
       {
-        "x": -39,
-        "y": -7
+        "x": -163.5,
+        "y": 98.46052631578948
       },
       {
-        "x": -23,
-        "y": -7
+        "x": -130.5,
+        "y": 98.75
+      },
+      {
+        "x": -97.5,
+        "y": 98.75
+      },
+      {
+        "x": -75.50319148936171,
+        "y": 87.25
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": -11
+      "x": -130.5,
+      "y": 103.75
     }
   },
   {
     "type": "system_block_connection",
     "system_block_connection_id": "system_block_connection_6",
     "system_block_page_id": "system_block_page_0",
-    "from_system_block_component_id": "system_block_component_3",
-    "to_system_block_component_id": "system_block_component_5",
-    "label": "Commands",
+    "from_system_block_component_id": "system_block_component_2",
+    "to_system_block_component_id": "system_block_component_4",
+    "label": "STEP/DIR + SPI",
     "direction": "forward",
     "is_signal": true,
     "is_power": false,
     "route": [
       {
-        "x": 23,
-        "y": -2
+        "x": -43.439473684210526,
+        "y": 63.25
       },
       {
-        "x": 39,
-        "y": -2
+        "x": 5.150000000000006,
+        "y": -0.75
+      },
+      {
+        "x": 39.69999999999999,
+        "y": -7.536080273270713
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 2
+      "x": 5.150000000000006,
+      "y": 4.25
     }
   },
   {
     "type": "system_block_connection",
     "system_block_connection_id": "system_block_connection_7",
     "system_block_page_id": "system_block_page_0",
-    "from_system_block_component_id": "system_block_component_2",
-    "to_system_block_component_id": "system_block_component_4",
+    "from_system_block_component_id": "system_block_component_3",
+    "to_system_block_component_id": "system_block_component_5",
     "label": "Bus energy",
     "direction": "forward",
     "is_signal": false,
     "is_power": true,
     "route": [
       {
-        "x": 23,
-        "y": 42
+        "x": -25.600000000000023,
+        "y": -66.1213171577123
       },
       {
-        "x": 39,
-        "y": 42
+        "x": 5.150000000000006,
+        "y": -72.25
+      },
+      {
+        "x": 35.89999999999998,
+        "y": -72.25
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 46
+      "x": 5.150000000000006,
+      "y": -67.25
     }
   },
   {
@@ -165534,75 +165540,75 @@
     "name": "logic-power",
     "display_name": "2. What powers each circuit",
     "description": "The PD and DATA inputs are not joined. U5/U22/U34 are step-down bucks, not buck-boosts. VMOTOR backup keeps the independent brake powered during PD loss.",
-    "width": 180,
-    "height": 124
+    "width": 479.5,
+    "height": 325
+  },
+  {
+    "type": "system_block_group",
+    "system_block_group_id": "system_block_group_1",
+    "system_block_page_id": "system_block_page_1",
+    "name": "sources",
+    "display_name": "3.3 V sources",
+    "center": {
+      "x": -189.75,
+      "y": 46
+    },
+    "width": 84,
+    "height": 217
+  },
+  {
+    "type": "system_block_group",
+    "system_block_group_id": "system_block_group_2",
+    "system_block_page_id": "system_block_page_1",
+    "name": "board-domain",
+    "display_name": "Board supply",
+    "center": {
+      "x": 11.25,
+      "y": 90.5
+    },
+    "width": 210,
+    "height": 122
   },
   {
     "type": "system_block_group",
     "system_block_group_id": "system_block_group_3",
     "system_block_page_id": "system_block_page_1",
-    "name": "sources",
-    "display_name": "3.3 V sources",
+    "name": "mcu-domain",
+    "display_name": "MCU supply",
     "center": {
-      "x": -62,
-      "y": 1
+      "x": 132,
+      "y": -24.5
     },
-    "width": 52,
-    "height": 122
+    "width": 199.5,
+    "height": 76
   },
   {
     "type": "system_block_group",
     "system_block_group_id": "system_block_group_4",
     "system_block_page_id": "system_block_page_1",
-    "name": "board-domain",
-    "display_name": "Board supply",
-    "center": {
-      "x": 31,
-      "y": 43.5
-    },
-    "width": 114,
-    "height": 37
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_5",
-    "system_block_page_id": "system_block_page_1",
-    "name": "mcu-domain",
-    "display_name": "MCU supply",
-    "center": {
-      "x": 31,
-      "y": -0.5
-    },
-    "width": 114,
-    "height": 37
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_6",
-    "system_block_page_id": "system_block_page_1",
     "name": "brake-domain",
     "display_name": "Brake gate supply",
     "center": {
-      "x": 31,
-      "y": -42
+      "x": -120.75,
+      "y": -116.5
     },
-    "width": 114,
-    "height": 36
+    "width": 222,
+    "height": 76
   },
   {
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_7",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_3",
+    "system_block_group_id": "system_block_group_1",
     "name": "pd-buck",
     "display_name": "PD → 3.3 V",
-    "description": "J1 → U5 + L1 buck\nBoots before motor power is on",
+    "description": "U5 + L1 · PD input buck",
     "center": {
-      "x": -62,
-      "y": 42
+      "x": -189.75,
+      "y": 116.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_0",
       "pcb_component_34",
@@ -165613,16 +165619,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_8",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_3",
+    "system_block_group_id": "system_block_group_1",
     "name": "backup",
     "display_name": "Motor bus → 3.3 V",
-    "description": "VMOTOR → U22 + L2 buck\nBrake-logic backup if PD is lost",
+    "description": "U22 + L2 · backup during PD loss",
     "center": {
-      "x": -62,
-      "y": -2
+      "x": -189.75,
+      "y": 56.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_66",
       "pcb_component_46",
@@ -165633,16 +165639,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_9",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_3",
+    "system_block_group_id": "system_block_group_1",
     "name": "data",
     "display_name": "DATA → 3.3 V",
-    "description": "J10 → U28 current limit\nU25 LDO; no PD negotiation",
+    "description": "U28 current limit + U25 LDO",
     "center": {
-      "x": -62,
-      "y": -44
+      "x": -189.75,
+      "y": -24.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_192",
       "pcb_component_199",
@@ -165653,16 +165659,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_10",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_4",
+    "system_block_group_id": "system_block_group_2",
     "name": "board-or",
     "display_name": "Board supply selection",
-    "description": "U23 / U24 ideal diodes\nSelect power; prevent backfeed",
+    "description": "U23 / U24 · reverse-blocking selection",
     "center": {
-      "x": 0,
-      "y": 42
+      "x": -51.75,
+      "y": 86.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_58",
       "pcb_component_59"
@@ -165672,16 +165678,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_11",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_4",
+    "system_block_group_id": "system_block_group_2",
     "name": "sensing",
     "display_name": "Board logic",
-    "description": "Sensors, run gates, comparators\nDATA alone does not power these",
+    "description": "Sensors, run gates and comparators",
     "center": {
-      "x": 62,
-      "y": 42
+      "x": 74.25,
+      "y": 113.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_106",
       "pcb_component_109",
@@ -165695,16 +165701,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_12",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_5",
+    "system_block_group_id": "system_block_group_3",
     "name": "mcu-or",
     "display_name": "MCU supply selection",
-    "description": "U26 / U27 ideal diodes\nBoard power OR DATA power",
+    "description": "U26 / U27 · board OR DATA power",
     "center": {
-      "x": 0,
-      "y": -2
+      "x": 74.25,
+      "y": -24.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_201",
       "pcb_component_202"
@@ -165714,16 +165720,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_13",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_5",
+    "system_block_group_id": "system_block_group_3",
     "name": "mcu",
     "display_name": "MCU + flash",
-    "description": "U16 RP2040 + U17\nDATA-only diagnostics possible",
+    "description": "U16 RP2040 + U17 flash",
     "center": {
-      "x": 62,
-      "y": -2
+      "x": 189.75,
+      "y": -24.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_160",
       "pcb_component_181"
@@ -165733,16 +165739,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_14",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_6",
+    "system_block_group_id": "system_block_group_4",
     "name": "brake-buck",
     "display_name": "Motor bus → 12 V",
-    "description": "VMOTOR → U34 + L3 buck\nBrake gate power during PD loss",
+    "description": "U34 + L3 · buck from VMOTOR",
     "center": {
-      "x": 0,
-      "y": -44
+      "x": -189.75,
+      "y": -116.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_95",
       "pcb_component_96"
@@ -165752,16 +165758,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_15",
     "system_block_page_id": "system_block_page_1",
-    "system_block_group_id": "system_block_group_6",
+    "system_block_group_id": "system_block_group_4",
     "name": "brake-driver",
     "display_name": "Brake gate driver",
-    "description": "U15 drives Q16\nSeparate from the motor bridges",
+    "description": "U15 drives Q16 · independent of MCU",
     "center": {
-      "x": 62,
-      "y": -44
+      "x": -51.75,
+      "y": -116.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_121",
       "pcb_component_126"
@@ -165779,17 +165785,29 @@
     "is_power": true,
     "route": [
       {
-        "x": -39,
-        "y": 42
+        "x": -165.75,
+        "y": 116.5
       },
       {
-        "x": -23,
-        "y": 42
+        "x": -147.75,
+        "y": 116.5
+      },
+      {
+        "x": -120.75,
+        "y": 116.5
+      },
+      {
+        "x": -93.75,
+        "y": 116.5
+      },
+      {
+        "x": -68.55000000000001,
+        "y": 98.5
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": 46
+      "x": -120.75,
+      "y": 121.5
     }
   },
   {
@@ -165804,25 +165822,29 @@
     "is_power": true,
     "route": [
       {
-        "x": -62,
-        "y": 11
+        "x": -165.75,
+        "y": 56.5
       },
       {
-        "x": -62,
-        "y": 20
+        "x": -147.75,
+        "y": 56.5
       },
       {
-        "x": -16,
-        "y": 20
+        "x": -120.75,
+        "y": 56.5
       },
       {
-        "x": -16,
-        "y": 29
+        "x": -93.75,
+        "y": 56.5
+      },
+      {
+        "x": -68.55000000000001,
+        "y": 74.5
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": 23
+      "x": -120.75,
+      "y": 61.5
     }
   },
   {
@@ -165837,25 +165859,45 @@
     "is_power": true,
     "route": [
       {
-        "x": -62,
-        "y": -31
+        "x": -165.75,
+        "y": -24.5
       },
       {
-        "x": -62,
-        "y": -23
+        "x": -147.75,
+        "y": -24.5
       },
       {
-        "x": -16,
-        "y": -23
+        "x": -120.75,
+        "y": -24.5
       },
       {
-        "x": -16,
-        "y": -15
+        "x": -93.75,
+        "y": -24.5
+      },
+      {
+        "x": -51.75,
+        "y": -24.5
+      },
+      {
+        "x": -9.75,
+        "y": -24.5
+      },
+      {
+        "x": 11.25,
+        "y": -24.5
+      },
+      {
+        "x": 32.25,
+        "y": -24.5
+      },
+      {
+        "x": 50.25,
+        "y": -24.5
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": -20
+      "x": -51.75,
+      "y": -19.5
     }
   },
   {
@@ -165870,17 +165912,29 @@
     "is_power": true,
     "route": [
       {
-        "x": 0,
-        "y": 29
+        "x": -34.94999999999999,
+        "y": 74.5
       },
       {
-        "x": 0,
-        "y": 11
+        "x": -9.75,
+        "y": 56.5
+      },
+      {
+        "x": 11.25,
+        "y": 56.5
+      },
+      {
+        "x": 32.25,
+        "y": 56.5
+      },
+      {
+        "x": 68.02777777777777,
+        "y": -12.5
       }
     ],
     "label_anchor_center": {
-      "x": 10,
-      "y": 21.5
+      "x": 11.25,
+      "y": 61.5
     }
   },
   {
@@ -165895,17 +165949,25 @@
     "is_power": true,
     "route": [
       {
-        "x": 23,
-        "y": -2
+        "x": 98.25,
+        "y": -24.5
       },
       {
-        "x": 39,
-        "y": -2
+        "x": 116.25,
+        "y": -24.5
+      },
+      {
+        "x": 141,
+        "y": -24.5
+      },
+      {
+        "x": 165.75,
+        "y": -24.5
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 2
+      "x": 141,
+      "y": -19.5
     }
   },
   {
@@ -165920,17 +165982,29 @@
     "is_power": true,
     "route": [
       {
-        "x": 23,
-        "y": 42
+        "x": -33.08333333333334,
+        "y": 98.5
       },
       {
-        "x": 39,
-        "y": 42
+        "x": -9.75,
+        "y": 113.5
+      },
+      {
+        "x": 11.25,
+        "y": 113.5
+      },
+      {
+        "x": 32.25,
+        "y": 113.5
+      },
+      {
+        "x": 50.25,
+        "y": 113.5
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 46
+      "x": 11.25,
+      "y": 118.5
     }
   },
   {
@@ -165945,17 +166019,29 @@
     "is_power": true,
     "route": [
       {
-        "x": 23,
-        "y": -44
+        "x": -165.75,
+        "y": -116.5
       },
       {
-        "x": 39,
-        "y": -44
+        "x": -147.75,
+        "y": -116.5
+      },
+      {
+        "x": -120.75,
+        "y": -116.5
+      },
+      {
+        "x": -93.75,
+        "y": -116.5
+      },
+      {
+        "x": -75.75,
+        "y": -116.5
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": -40
+      "x": -120.75,
+      "y": -111.5
     }
   },
   {
@@ -165964,75 +166050,49 @@
     "name": "protection",
     "display_name": "3. What allows or stops motion",
     "description": "Power permission and driver enable are separate gates. The brake responds to bus voltage independently of firmware. Nominal thresholds still need bench verification.",
-    "width": 180,
-    "height": 124
+    "width": 521.5,
+    "height": 294
   },
   {
     "type": "system_block_group",
-    "system_block_group_id": "system_block_group_7",
-    "system_block_page_id": "system_block_page_2",
-    "name": "power-permission",
-    "display_name": "Power permission",
-    "center": {
-      "x": 0,
-      "y": 43.5
-    },
-    "width": 176,
-    "height": 37
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_8",
+    "system_block_group_id": "system_block_group_5",
     "system_block_page_id": "system_block_page_2",
     "name": "motion-permission",
-    "display_name": "Motor enable",
+    "display_name": "Power permission and motor enable",
     "center": {
       "x": 0,
-      "y": -0.5
+      "y": 46
     },
-    "width": 176,
-    "height": 37
+    "width": 505.5,
+    "height": 186
   },
   {
     "type": "system_block_group",
-    "system_block_group_id": "system_block_group_9",
-    "system_block_page_id": "system_block_page_2",
-    "name": "limits-domain",
-    "display_name": "Hardware sensing",
-    "center": {
-      "x": -62,
-      "y": -42
-    },
-    "width": 52,
-    "height": 36
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_10",
+    "system_block_group_id": "system_block_group_6",
     "system_block_page_id": "system_block_page_2",
     "name": "independent-brake",
     "display_name": "Independent brake",
     "center": {
-      "x": 31,
-      "y": -42
+      "x": -159.75,
+      "y": -101
     },
-    "width": 114,
-    "height": 36
+    "width": 186,
+    "height": 76
   },
   {
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_16",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_7",
+    "system_block_group_id": "system_block_group_5",
     "name": "pd",
     "display_name": "PD path ready",
-    "description": "U2 status via Q2 / Q3\nPD_PATH_OK is a hardware input",
+    "description": "U2 status via Q2 / Q3",
     "center": {
-      "x": -62,
-      "y": 42
+      "x": -210.75,
+      "y": -9
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_5",
       "pcb_component_25",
@@ -166043,16 +166103,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_17",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_7",
+    "system_block_group_id": "system_block_group_5",
     "name": "permit",
     "display_name": "Power gate · U4",
-    "description": "PD_PATH_OK AND POWER_PERMIT\nBoth required to enable eFuse",
+    "description": "PD_PATH_OK AND POWER_PERMIT",
     "center": {
-      "x": 0,
-      "y": 42
+      "x": -108.75,
+      "y": 2.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_30"
     ]
@@ -166061,16 +166121,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_18",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_7",
+    "system_block_group_id": "system_block_group_5",
     "name": "efuse",
     "display_name": "Input protection · U6",
-    "description": "Limits current / input voltage\nReports physical MOTOR_PG",
+    "description": "Current / voltage limits + MOTOR_PG",
     "center": {
-      "x": 62,
-      "y": 42
+      "x": 5.25,
+      "y": 2.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_66"
     ]
@@ -166079,16 +166139,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_19",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_8",
+    "system_block_group_id": "system_block_group_5",
     "name": "mcu",
     "display_name": "Firmware permission",
-    "description": "U16 checks contract + sensors\nQualification locks must clear",
+    "description": "U16 · contract, sensors, qualification",
     "center": {
-      "x": -62,
-      "y": -2
+      "x": -210.75,
+      "y": 51.5
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_160"
     ]
@@ -166097,16 +166157,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_20",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_8",
+    "system_block_group_id": "system_block_group_5",
     "name": "run",
     "display_name": "Run gates · U10/11/33",
     "description": "MCU_RUN AND MOTOR_PG AND\nVMOTOR_OK AND TEMP_OK",
     "center": {
-      "x": 0,
-      "y": -2
+      "x": 114.75,
+      "y": 63
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_90",
       "pcb_component_91",
@@ -166117,16 +166177,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_21",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_8",
+    "system_block_group_id": "system_block_group_5",
     "name": "driver",
     "display_name": "Driver enable · U7",
-    "description": "RUN_SAFE low disables bridges\nSTEP/DIR + sleep also use MCU",
+    "description": "RUN_SAFE low → bridges disabled",
     "center": {
-      "x": 62,
-      "y": -2
+      "x": 210.75,
+      "y": 63
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_88"
     ]
@@ -166135,16 +166195,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_22",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_9",
+    "system_block_group_id": "system_block_group_5",
     "name": "limits",
     "display_name": "Hardware limits",
-    "description": "U12/U14: overvoltage ~53.21 V\nU29: board-temperature inhibit",
+    "description": "U12/U14 voltage limit + U29 temperature",
     "center": {
-      "x": -62,
-      "y": -44
+      "x": 5.25,
+      "y": 101
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_106",
       "pcb_component_115",
@@ -166155,16 +166215,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_23",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_10",
+    "system_block_group_id": "system_block_group_6",
     "name": "threshold",
     "display_name": "Brake threshold",
-    "description": "U12 reference + U13 comparator\nBus near 52 V → BRAKE_ON",
+    "description": "U12 / U13 · bus near 52 V",
     "center": {
-      "x": 0,
-      "y": -44
+      "x": -210.75,
+      "y": -101
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_106",
       "pcb_component_109"
@@ -166174,16 +166234,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_24",
     "system_block_page_id": "system_block_page_2",
-    "system_block_group_id": "system_block_group_10",
+    "system_block_group_id": "system_block_group_6",
     "name": "brake",
     "display_name": "Brake switch · J3",
-    "description": "U15 + Q16 → external resistor\nNo MCU command needed",
+    "description": "U15 + Q16 · no MCU command needed",
     "center": {
-      "x": 62,
-      "y": -44
+      "x": -108.75,
+      "y": -101
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_121",
       "pcb_component_126",
@@ -166202,17 +166262,21 @@
     "is_power": false,
     "route": [
       {
-        "x": -39,
-        "y": 42
+        "x": -186.75,
+        "y": -9
       },
       {
-        "x": -23,
-        "y": 42
+        "x": -159.75,
+        "y": -9
+      },
+      {
+        "x": -132.75,
+        "y": -2.911764705882348
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": 46
+      "x": -159.75,
+      "y": -4
     }
   },
   {
@@ -166227,25 +166291,21 @@
     "is_power": false,
     "route": [
       {
-        "x": -62,
-        "y": 11
+        "x": -186.75,
+        "y": 42.55882352941177
       },
       {
-        "x": -62,
-        "y": 20
+        "x": -159.75,
+        "y": 32.5
       },
       {
-        "x": -16,
-        "y": 20
-      },
-      {
-        "x": -16,
-        "y": 29
+        "x": -129.15,
+        "y": 14.5
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": 23
+      "x": -159.75,
+      "y": 37.5
     }
   },
   {
@@ -166260,17 +166320,25 @@
     "is_power": false,
     "route": [
       {
-        "x": 23,
-        "y": 42
+        "x": -84.75,
+        "y": 2.5
       },
       {
-        "x": 39,
-        "y": 42
+        "x": -66.75,
+        "y": 2.5
+      },
+      {
+        "x": -42.75,
+        "y": 2.5
+      },
+      {
+        "x": -18.75,
+        "y": 2.5
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 46
+      "x": -42.75,
+      "y": 7.5
     }
   },
   {
@@ -166285,25 +166353,21 @@
     "is_power": false,
     "route": [
       {
-        "x": 62,
-        "y": 29
+        "x": 29.25,
+        "y": 2.5
       },
       {
-        "x": 62,
-        "y": 20
+        "x": 60,
+        "y": 2.5
       },
       {
-        "x": 16,
-        "y": 20
-      },
-      {
-        "x": 16,
-        "y": 11
+        "x": 103.8904958677686,
+        "y": 51
       }
     ],
     "label_anchor_center": {
-      "x": 39,
-      "y": 23
+      "x": 60,
+      "y": 7.5
     }
   },
   {
@@ -166318,17 +166382,41 @@
     "is_power": false,
     "route": [
       {
-        "x": -39,
-        "y": -2
+        "x": -186.75,
+        "y": 56.91176470588235
       },
       {
-        "x": -23,
-        "y": -2
+        "x": -159.75,
+        "y": 63
+      },
+      {
+        "x": -108.75,
+        "y": 63
+      },
+      {
+        "x": -66.75,
+        "y": 63
+      },
+      {
+        "x": -42.75,
+        "y": 63
+      },
+      {
+        "x": 5.25,
+        "y": 63
+      },
+      {
+        "x": 60,
+        "y": 63
+      },
+      {
+        "x": 90.75,
+        "y": 63
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": 2
+      "x": -42.75,
+      "y": 68
     }
   },
   {
@@ -166343,25 +166431,21 @@
     "is_power": false,
     "route": [
       {
-        "x": -44,
-        "y": -31
+        "x": 29.25,
+        "y": 101
       },
       {
-        "x": -44,
-        "y": -23
+        "x": 60,
+        "y": 101
       },
       {
-        "x": -16,
-        "y": -23
-      },
-      {
-        "x": -16,
-        "y": -15
+        "x": 97.46052631578948,
+        "y": 75
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": -21
+      "x": 60,
+      "y": 106
     }
   },
   {
@@ -166376,17 +166460,21 @@
     "is_power": false,
     "route": [
       {
-        "x": 23,
-        "y": -2
+        "x": 138.75,
+        "y": 63
       },
       {
-        "x": 39,
-        "y": -2
+        "x": 162.75,
+        "y": 63
+      },
+      {
+        "x": 186.75,
+        "y": 63
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 2
+      "x": 162.75,
+      "y": 68
     }
   },
   {
@@ -166401,17 +166489,21 @@
     "is_power": false,
     "route": [
       {
-        "x": 23,
-        "y": -44
+        "x": -186.75,
+        "y": -101
       },
       {
-        "x": 39,
-        "y": -44
+        "x": -159.75,
+        "y": -101
+      },
+      {
+        "x": -132.75,
+        "y": -101
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": -40
+      "x": -159.75,
+      "y": -96
     }
   },
   {
@@ -166420,62 +166512,49 @@
     "name": "control-telemetry",
     "display_name": "4. What the controller reads and controls",
     "description": "PD_READY is firmware-derived from the EPR contract and fresh U38 raw-voltage data. It is not the hardware eFuse MOTOR_PG. Optional encoder is telemetry only.",
-    "width": 180,
-    "height": 124
+    "width": 352,
+    "height": 262
   },
   {
     "type": "system_block_group",
-    "system_block_group_id": "system_block_group_11",
+    "system_block_group_id": "system_block_group_7",
     "system_block_page_id": "system_block_page_3",
-    "name": "sensors",
+    "name": "sensing",
     "display_name": "Supply + motor sensing",
     "center": {
-      "x": -62,
-      "y": 1
+      "x": -126,
+      "y": 25
     },
-    "width": 52,
-    "height": 122
+    "width": 84,
+    "height": 196
   },
   {
     "type": "system_block_group",
-    "system_block_group_id": "system_block_group_12",
+    "system_block_group_id": "system_block_group_8",
     "system_block_page_id": "system_block_page_3",
-    "name": "controller",
-    "display_name": "Controller + buttons",
+    "name": "outputs",
+    "display_name": "Motion + status interfaces",
     "center": {
-      "x": 0,
-      "y": 21.5
+      "x": 126,
+      "y": 6
     },
-    "width": 52,
-    "height": 81
-  },
-  {
-    "type": "system_block_group",
-    "system_block_group_id": "system_block_group_13",
-    "system_block_page_id": "system_block_page_3",
-    "name": "interfaces",
-    "display_name": "Outputs + feedback",
-    "center": {
-      "x": 62,
-      "y": 1
-    },
-    "width": 52,
-    "height": 122
+    "width": 84,
+    "height": 196
   },
   {
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_25",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_11",
+    "system_block_group_id": "system_block_group_7",
     "name": "pd",
     "display_name": "PD contract",
-    "description": "U2 TPS26750 + U3 EEPROM\nU36 isolates EEPROM programming",
+    "description": "U2 + U3 EEPROM + U36 isolation",
     "center": {
-      "x": -62,
-      "y": 42
+      "x": -126,
+      "y": 85
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_5",
       "pcb_component_17",
@@ -166486,16 +166565,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_26",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_11",
+    "system_block_group_id": "system_block_group_7",
     "name": "voltage",
     "display_name": "Voltage / brake ADCs",
-    "description": "U38: raw PD before eFuse\nU30: VMOTOR, IMON, brake return",
+    "description": "U38 raw PD · U30 VMOTOR / brake / IMON",
     "center": {
-      "x": -62,
-      "y": -2
+      "x": -126,
+      "y": 25
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_214",
       "pcb_component_213"
@@ -166505,16 +166584,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_27",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_11",
+    "system_block_group_id": "system_block_group_7",
     "name": "feedback",
     "display_name": "Current + temperature",
-    "description": "U31/U32: phase-current sense\nU29: board temperature (I2C)",
+    "description": "U31/U32 current sense · U29 temperature",
     "center": {
-      "x": -62,
-      "y": -44
+      "x": -126,
+      "y": -35
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_216",
       "pcb_component_219",
@@ -166527,16 +166606,15 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_28",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_12",
     "name": "controls",
     "display_name": "Local buttons",
-    "description": "SW1: RESET; SW2: START/STOP\nMotion locks still apply",
+    "description": "SW1 RESET · SW2 START/STOP",
     "center": {
-      "x": 0,
-      "y": 42
+      "x": -126,
+      "y": -111
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_172",
       "pcb_component_173"
@@ -166546,16 +166624,15 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_29",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_12",
     "name": "mcu",
-    "display_name": "Controller · U16",
-    "description": "PD_READY: contract + fresh ADC\nMOTOR_PG: separate eFuse signal",
+    "display_name": "U16 / RP2040",
+    "description": "PD_READY = contract + fresh PD ADC",
     "center": {
-      "x": 0,
-      "y": -2
+      "x": -3,
+      "y": 6
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_160"
     ]
@@ -166564,16 +166641,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_30",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_13",
+    "system_block_group_id": "system_block_group_8",
     "name": "driver",
     "display_name": "Motor driver · U7",
-    "description": "SPI setup + STEP/DIR + sleep\nnFAULT / HOME feedback",
+    "description": "DRV8462 · nFAULT / HOME feedback",
     "center": {
-      "x": 62,
-      "y": 42
+      "x": 126,
+      "y": 6
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_88"
     ]
@@ -166582,16 +166659,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_31",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_13",
+    "system_block_group_id": "system_block_group_8",
     "name": "indicators",
     "display_name": "Status outputs",
-    "description": "U35/U37 → RGB LED + buzzer\nIndication only; not protection",
+    "description": "U35/U37 · RGB LED + buzzer",
     "center": {
-      "x": 62,
-      "y": -2
+      "x": 126,
+      "y": 66
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_229",
       "pcb_component_230",
@@ -166603,16 +166680,16 @@
     "type": "system_block_component",
     "system_block_component_id": "system_block_component_32",
     "system_block_page_id": "system_block_page_3",
-    "system_block_group_id": "system_block_group_13",
+    "system_block_group_id": "system_block_group_8",
     "name": "encoder",
     "display_name": "Optional encoder · U18",
-    "description": "AS5600 angle telemetry (DNP)\nMagnet mounting not qualified",
+    "description": "AS5600 · DNP, magnet unqualified",
     "center": {
-      "x": 62,
-      "y": -44
+      "x": 126,
+      "y": -54
     },
-    "width": 46,
-    "height": 26,
+    "width": 48,
+    "height": 24,
     "pcb_component_ids": [
       "pcb_component_184"
     ]
@@ -166629,25 +166706,25 @@
     "is_power": false,
     "route": [
       {
-        "x": -62,
-        "y": 29
+        "x": -102,
+        "y": 85
       },
       {
-        "x": -62,
-        "y": 20
+        "x": -84,
+        "y": 85
       },
       {
-        "x": -16,
-        "y": 20
+        "x": -55.5,
+        "y": 85
       },
       {
-        "x": -16,
-        "y": 11
+        "x": -10.974683544303787,
+        "y": 18
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": 23
+      "x": -55.5,
+      "y": 90
     }
   },
   {
@@ -166662,17 +166739,25 @@
     "is_power": false,
     "route": [
       {
-        "x": -39,
-        "y": -2
+        "x": -102,
+        "y": 25
       },
       {
-        "x": -23,
-        "y": -2
+        "x": -84,
+        "y": 25
+      },
+      {
+        "x": -55.5,
+        "y": 25
+      },
+      {
+        "x": -27,
+        "y": 14.685714285714283
       }
     ],
     "label_anchor_center": {
-      "x": -31,
-      "y": 2
+      "x": -55.5,
+      "y": 30
     }
   },
   {
@@ -166687,25 +166772,25 @@
     "is_power": false,
     "route": [
       {
-        "x": -62,
-        "y": -31
+        "x": -102,
+        "y": -35
       },
       {
-        "x": -62,
-        "y": -23
+        "x": -84,
+        "y": -35
       },
       {
-        "x": -16,
-        "y": -23
+        "x": -55.5,
+        "y": -35
       },
       {
-        "x": -16,
-        "y": -15
+        "x": -18.365853658536594,
+        "y": -6
       }
     ],
     "label_anchor_center": {
-      "x": -39,
-      "y": -20
+      "x": -55.5,
+      "y": -30
     }
   },
   {
@@ -166720,25 +166805,25 @@
     "is_power": false,
     "route": [
       {
-        "x": 16,
-        "y": -15
+        "x": 8.099999999999994,
+        "y": -6
       },
       {
-        "x": 16,
-        "y": -23
+        "x": 52.5,
+        "y": -54
       },
       {
-        "x": 62,
-        "y": -23
+        "x": 84,
+        "y": -54
       },
       {
-        "x": 62,
-        "y": -31
+        "x": 102,
+        "y": -54
       }
     ],
     "label_anchor_center": {
-      "x": 39,
-      "y": -20
+      "x": 52.5,
+      "y": -49
     }
   },
   {
@@ -166753,25 +166838,25 @@
     "is_power": false,
     "route": [
       {
-        "x": 16,
-        "y": 11
+        "x": 21,
+        "y": 6
       },
       {
-        "x": 16,
-        "y": 20
+        "x": 52.5,
+        "y": 6
       },
       {
-        "x": 62,
-        "y": 20
+        "x": 84,
+        "y": 6
       },
       {
-        "x": 62,
-        "y": 29
+        "x": 102,
+        "y": 6
       }
     ],
     "label_anchor_center": {
-      "x": 39,
-      "y": 23
+      "x": 52.5,
+      "y": 11
     }
   },
   {
@@ -166786,17 +166871,25 @@
     "is_power": false,
     "route": [
       {
-        "x": 23,
-        "y": -2
+        "x": 8.099999999999994,
+        "y": 18
       },
       {
-        "x": 39,
-        "y": -2
+        "x": 52.5,
+        "y": 66
+      },
+      {
+        "x": 84,
+        "y": 66
+      },
+      {
+        "x": 102,
+        "y": 66
       }
     ],
     "label_anchor_center": {
-      "x": 31,
-      "y": 2
+      "x": 52.5,
+      "y": 71
     }
   },
   {
@@ -166811,17 +166904,25 @@
     "is_power": false,
     "route": [
       {
-        "x": 0,
-        "y": 29
+        "x": -102,
+        "y": -111
       },
       {
-        "x": 0,
-        "y": 11
+        "x": -84,
+        "y": -111
+      },
+      {
+        "x": -55.5,
+        "y": -111
+      },
+      {
+        "x": -8.384615384615387,
+        "y": -6
       }
     ],
     "label_anchor_center": {
-      "x": 15,
-      "y": 25.5
+      "x": -55.5,
+      "y": -106
     }
   }
 ]

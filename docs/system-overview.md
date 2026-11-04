@@ -18,8 +18,9 @@ The four pages answer four review questions, in order:
 
 Start with the seven functional blocks on page 1. Follow the PD input to the
 protected motor supply and driver, then the separate controller and brake paths.
-Named, shaded groups separate USB inputs, power/control and motor/brake circuits,
-following the functional grouping in the reviewer's RVboy example. These are
+The power-stage group follows the PD-to-motor path, with the controller above
+and the brake on a separate branch. The telemetry page puts RP2040 between
+sensors and outputs, following the chart style of the reviewer's RVboy example. These are
 explanatory boundaries, not galvanic-isolation or physical PCB boundaries.
 Component references connect the overview to the detailed schematic. `PD_READY`
 is firmware-derived; the physical eFuse `MOTOR_PG` is a different signal.
@@ -83,15 +84,17 @@ the isolated renderer and appends only `system_block_*` records. It does not
 generate replacement footprints or electrical connections. Tests reject missing
 or ambiguous component links and prove all non-system records are preserved.
 
-The compact layout in `system-overview.tsx` uses native `systemblock.group`
-sections, a consistent three-column grid, short descriptions and orthogonal arrows.
-Since this core's JSX API has no
-manual-position properties, the generator applies those positions only to the
-system records after core resolves their component associations. It rejects
-stale layouts, blocks outside their group, detached endpoints and arrows crossing
-blocks. The same geometry
-is used by the live System tab and the exported SVGs; no SVG-only styling is
-needed for readable text. Each page was visually reviewed at 900 px width.
+The pages use the native core's graph layout and `systemblock.group` boundaries.
+Short node labels identify each function and its ICs; arrows carry power or
+interface names. The overview follows the motor-power flow, the control page
+centres on RP2040, and the independent brake stays separate from the enable
+logic. Detailed operating conditions are described above and in the linked
+architecture document instead of filling the diagram with text.
+
+No fixed grid, manual coordinates or post-render geometry overrides are applied.
+The same native layout is used in the live System tab and exported SVGs. All four
+pages were visually reviewed for readable labels, grouping and unobstructed
+connections.
 
 This is a review aid. Existing USB hole-clearance findings, sourcing and physical
 qualification holds remain; firmware motion locks are still enabled.
