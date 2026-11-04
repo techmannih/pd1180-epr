@@ -7,6 +7,23 @@ Start with [the complete system](system-blocks/system-overview.svg), then open
 Blue arrows are signals; dashed orange arrows are power. Two arrowheads indicate
 two-way communication or returned motor energy, not two separate supplies.
 
+The four pages answer four review questions, in order:
+
+| Page | Review question |
+| --- | --- |
+| 1. Start here: power and motion | Where do power and commands enter, and where do motor/brake energy go? |
+| 2. What powers each circuit | Why are there three bucks, an LDO and supply-selection devices? What works with DATA alone or after PD loss? |
+| 3. What allows or stops motion | What must be true before input power and motor drive are enabled? How does the independent brake respond? |
+| 4. What the controller reads and controls | Which chip measures raw PD voltage, protected voltage, current and temperature? What does RP2040 control? |
+
+Start with the seven functional blocks on page 1. Follow the PD input to the
+protected motor supply and driver, then the separate controller and brake paths.
+Named, shaded groups separate USB inputs, power/control and motor/brake circuits,
+following the functional grouping in the reviewer's RVboy example. These are
+explanatory boundaries, not galvanic-isolation or physical PCB boundaries.
+Component references connect the overview to the detailed schematic. `PD_READY`
+is firmware-derived; the physical eFuse `MOTOR_PG` is a different signal.
+
 ![NEMA34 system overview](system-blocks/system-overview.svg)
 
 ## How the board operates
@@ -41,6 +58,9 @@ qualified magnet mounting or closed-loop motion claim. See
 The default routed `release/circuit.json` contains the four native
 `system_block_page` records plus their blocks, routes and actual PCB-component
 associations. Use the **System** tab and page selector in a supporting viewer.
+On tscircuit.com it appears immediately after **Files**, but only when the
+selected release contains the diagrams. While PR #25 is open, select its PR
+preview version rather than the default main release.
 Local preview: `bun run dev:system`. The SVG links above remain usable even if a
 website deployment has not yet enabled its System tab.
 
@@ -62,6 +82,16 @@ The diagram generator seeds only existing source/PCB component identities into
 the isolated renderer and appends only `system_block_*` records. It does not
 generate replacement footprints or electrical connections. Tests reject missing
 or ambiguous component links and prove all non-system records are preserved.
+
+The compact layout in `system-overview.tsx` uses native `systemblock.group`
+sections, a consistent three-column grid, short descriptions and orthogonal arrows.
+Since this core's JSX API has no
+manual-position properties, the generator applies those positions only to the
+system records after core resolves their component associations. It rejects
+stale layouts, blocks outside their group, detached endpoints and arrows crossing
+blocks. The same geometry
+is used by the live System tab and the exported SVGs; no SVG-only styling is
+needed for readable text. Each page was visually reviewed at 900 px width.
 
 This is a review aid. Existing USB hole-clearance findings, sourcing and physical
 qualification holds remain; firmware motion locks are still enabled.
