@@ -8,7 +8,12 @@ else if (Bun.version !== expectedBun) errors.push(`Bun ${Bun.version} does not m
 
 for (const [group, dependencies] of Object.entries({ dependencies: packageJson.dependencies || {}, devDependencies: packageJson.devDependencies || {}, overrides: packageJson.overrides || {} })) {
   for (const [name, version] of Object.entries(dependencies)) {
-    if (!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version)) errors.push(`${group}.${name} is not pinned to an exact version: ${version}`)
+    const alias = version.match(/^npm:((?:@[^/]+\/)?[^@]+)@(\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?)$/)
+    if (!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version) && !alias) errors.push(`${group}.${name} is not pinned to an exact version: ${version}`)
+    if (alias) {
+      const installed = JSON.parse(await readFile(`node_modules/${name}/package.json`, 'utf8'))
+      if (installed.name !== alias[1] || installed.version !== alias[2]) errors.push(`Installed alias ${name} does not match ${version}`)
+    }
   }
 }
 

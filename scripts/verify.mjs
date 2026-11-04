@@ -50,6 +50,7 @@ verifiedInputPaths.push('engineering/r3-boundary-eco.json', 'scripts/cc-protecti
 verifiedInputPaths.push('firmware/tests/test_pd_voltage.c', 'firmware/tests/test_target_power.cpp', 'firmware/tests/fakes/Wire.h', 'scripts/rp2040-contract.mjs', 'scripts/rp2040-contract.test.mjs')
 verifiedInputPaths.push('scripts/manufacturing-handoff.mjs', 'scripts/manufacturing-handoff.test.mjs', 'docs/thermal-qualification.md', 'docs/power-validation.md')
 verifiedInputPaths.push('docs/usb-pd-architecture.md', 'docs/reference-review.md', 'engineering/reviewer-power-reference.json', 'engineering/schematic-review-baseline.json', 'scripts/check-source-schematic.mjs')
+verifiedInputPaths.push('system-overview.tsx', 'scripts/system-overview.mjs', 'scripts/system-overview.test.mjs', 'scripts/check-system-overview.mjs')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],
@@ -70,6 +71,8 @@ const checks = [
   ['preview', ['run', 'build:preview']],
   ['native-architecture', ['scripts/check-native-architecture.mjs']],
   ['cloud-viewer', ['run', 'check:cloud-viewer']],
+  ['system-overview', ['run', 'check:system']],
+  ['system-overview-tests', ['test', 'scripts/system-overview.test.mjs']],
   ['source-schematic', ['run', 'check:source-schematic']],
   ['schematic-style', ['run', 'check:schematic-style']],
   ['feature-parity', ['run', 'check:feature-parity']],

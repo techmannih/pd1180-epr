@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## System overview — 2026-11-04
+
+The user requested native system block diagrams following tscircuit/docs#980. Keep the existing board core and schematic-symbol compatibility pins: the newer full-core render changes solder-paste and schematic data. Use the separately pinned `system-block-core` and `system-block-svg` only for diagram metadata, resolving associations against existing PCB identities. `build:preview` appends the same `system_block_*` records to source and assembly outputs; `build:pcb` refreshes the routed default viewer. Preserve every non-system record and the user's latest schematic edits. Run `check:system` and the real-board preservation tests. This adds reviewer communication, not hardware qualification or motion permission.
+
 ## Reviewer schematic and power audit — 2026-11-03
 
 The user requested the latest Seve review be addressed and directed MCU power behaviour to follow the NEMA14/17/23 references. Fresh published sources show NEMA23 v1.4.7 and NEMA14 RP2040 v1.13.2 support PD plus DATA logic power; NEMA17 v1.0.48 uses DATA-only. Retain the former dual-source behaviour and document the distinction. Reopen schematic placement, grouping, page count, annotations, architecture documents and their checks for a readable functional review. Preserve PCB geometry, electrical connectivity and all independent protections unless an evidence-backed electrical correction is separately required. Keep DRV8462DDVR: DDWR has a lower current rating and a different pin/thermal arrangement. Provide a new PR, not a main push; no physical qualification or motion unlock is implied.
