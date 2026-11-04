@@ -23,6 +23,7 @@ export const INA237AIDGSR = (props: ChipProps<typeof pinLabels>) => {
     <chip
       pinLabels={pinLabels}
       pinAttributes={pinAttributes}
+      schWidth={1.326}
       supplierPartNumbers={{
   "jlcpcb": [
     "C2864837"

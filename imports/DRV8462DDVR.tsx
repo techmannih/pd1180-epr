@@ -58,6 +58,7 @@ export const DRV8462DDVR = (props: ChipProps<typeof pinLabels>) => {
     <chip
       pinLabels={pinLabels}
       pinAttributes={pinAttributes}
+      schWidth={1.49}
       supplierPartNumbers={{
   "jlcpcb": [
     "C29780285"
