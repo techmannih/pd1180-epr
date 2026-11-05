@@ -43,6 +43,6 @@ if (import.meta.main) {
     console.error(errors.join('\n'))
     process.exitCode = 1
   } else if (reviewOnly && !status.fabrication_orderable) {
-    console.log(`Engineering review package verified. ORDER HOLD remains:\n${status.order_hold_reasons.map(reason => ` - ${reason}`).join('\n')}`)
+    console.log(`Engineering review package verified. Fabrication, installation and post-assembly actions:\n${status.order_hold_reasons.map(reason => ` - ${reason}`).join('\n')}`)
   } else console.log('Prototype order gates passed; physical system qualification remains independently recorded.')
 }

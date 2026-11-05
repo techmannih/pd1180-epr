@@ -26,7 +26,7 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | `check-feature-parity.mjs` | Reports component/net presence separately from open reference-board functions in `engineering/reference-comparison.json`; never treats a presence pass as complete parity. Verifies the product feature contract against compiled components, nets and evidence, enforces tscircuit's standard USB-C connector model, and checks permitted assembly layers. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, current-source BOM/CPL, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
-| `check-firmware.mjs` | Builds and runs safety-state/TMC tests plus target power/suspend and indicator reset, alarm, brownout and I2C-failure regressions. |
+| `check-firmware.mjs` | Builds and runs safety-state/DRV8462 tests plus target power/suspend and indicator reset, alarm, brownout and I2C-failure regressions. |
 | `check-import-previews.mjs` | Executes every imported TSX as a standalone viewer entrypoint and requires both PCB and schematic component output without component-creation failures. |
 | `check-kicad-drc.mjs` | Fails on any final KiCad PCB DRC violation, unconnected item, schematic-parity issue or nested schematic ERC violation. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
@@ -40,8 +40,8 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | `simulate-power-eco.py` (`--check` validates committed source/model/audit-parameter/deck hashes without ngspice) | Runs current-source behavioral ngspice winding/regen and 1x versus 2x input-limit screens at two timesteps; emits decks and results in engineering/power-eco-simulation. Requires ngspice shared library; optional --csv-dir preserves raw waveforms outside the release. Includes explicit unsafe load/fault cases and never qualifies hardware. |
 | `power-audit.test.mjs` | Rejects merged/missing supply nets, non-numeric inductance and IMON bypass capacitors including renamed references/net aliases; regresses operating-limit and tolerance calculations. |
 | `check-power-routing.mjs` | Audits final KiCad power corridors, clearances, layers, via counts and analytical current screen. |
-| `release-gates.test.mjs` | Proves held designs remain reviewable but not orderable, and both modes reject failed or stale evidence. |
-| `check-release.mjs` | Checks engineering evidence and unchanged inputs; default mode enforces the order hold. `--review` permits a verified review package with explicit hold reasons while never permitting failed CAD checks. |
+| `release-gates.test.mjs` | Proves review and order-acceptance modes remain distinct and both reject failed or stale evidence. |
+| `check-release.mjs` | Checks engineering evidence and unchanged inputs; default mode enforces every recorded acceptance gate. `--review` reports the verified engineering package and separate fabrication/installation/measurement actions, while still rejecting failed CAD checks. |
 | `check-schematic-style.mjs` | Runs the same placement/style analyzer used by the tscircuit schematic viewer, records per-sheet evidence and fails unless the issue count is zero. |
 | `check-routing-fingerprint.mjs` | Guards saved routing against unreviewed topology, footprint, placement, source copper, routing-policy or seed-generator changes. |
 | `check-script-catalog.mjs` | Ensures this catalog mentions every `.mjs` and `.py` script. |
@@ -57,7 +57,7 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | `export-previews.mjs` | Renders top PCB and all functional schematic sheets. |
 | `export-release.mjs` | Rejects stale manufacturing BOM/CPL, includes sourcing and manufacturing acceptance/readiness documents, checks the hosted package size, regenerates routed-board and motor assembly GLBs, checks geometry/axis alignment, then builds synchronized release manifests, sourcing tables and hashes. |
 | `export-silkscreen-evidence.py` | Records every visible final KiCad top/bottom silkscreen label and its physical text size. |
-| `generate-firmware-pins.mjs` | Generates the STM32 pin header from the hardware pin contract or checks it for drift. |
+| `generate-firmware-pins.mjs` | Generates the RP2040 pin header from the hardware pin contract or checks it for drift. |
 | `generate-cloud-viewer.mjs` | Verifies that the motor assembly preserves every source board record, then combines its board/motor CAD with routed KiCad traces, vias and pours for deterministic hosted PCB viewing. Removes floating-point recentering noise at KiCad's nanometre coordinate precision and omits the CLI's filesystem cache key, which includes generated release/report files; source and copper provenance remain enforced by SHA-256 inputs, routing fingerprint and delivery hashes. |
 | `generate-motor-assembly.mjs` | Converts the hash-locked motor STEP and connected J2 harness into individual GLBs. Existing PCB holes are retained; unsupported mounting hardware is not generated. |
 | `check-motor-assembly.mjs` | Checks complete J2 CAD-body containment and adjacent-component clearance; verifies unchanged hole alignment/drills, CAD height axis and exported assembly orientation; rejects removed mounting hardware returning to the active model. Accepts board GLB and optional assembly GLB paths. Writes docs/motor-assembly-check.json; does not certify physical/magnetic fit. |
@@ -80,7 +80,7 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | `reinforce-power-copper.py` | Adds clearance-aware power corridors and parallel transfer vias to the final KiCad route. |
 | `refresh-routed-preview.mjs` | Builds the latest source, checks local route continuity and the saved PCB fingerprint/DRC, refreshes the routed viewer without changing schematic records, and updates only its delivery hashes. Does not approve a new manufacturing release. |
 | `remove-isolated-zones.py` | Removes generated copper islands that do not connect to the intended net. |
-| `sync-generated-docs.mjs` | Synchronizes generated manifest and pin/placement documentation. |
+| `sync-generated-docs.mjs` | Synchronizes the generated placement manifest and exact-part procurement snapshot. |
 | `verify.mjs` | Fails on any generated source error or warning, hashes source imports and schematic-page definitions, runs independent checks, preserves logs and writes root Markdown plus machine-readable verification summaries. |
 | `via-net-identity.test.mjs` | Verifies the exact final KiCad drain-pad thermal-via count, dimensions, layers and net identity for every CSD19534Q5A, and enforces the user-required 0.30 mm minimum via drill in the native board, compiled source and KiCad rules. |
 
@@ -153,7 +153,7 @@ Harness intermediate part data is deterministically stored in `engineering/mecha
 - `check-usb-access.mjs`: measures both USB mating faces from native shell-stake lands and the GCT drawing; checks source placement, PCB edge and nominal motor/plug envelope without claiming physical fit.
 - `usb-access.test.mjs`: rejects old recessed native USB placement, incorrect source orientation and an intersecting nominal motor/plug envelope; keeps physical-fit qualification false.
 
-- `brake-assembly.mjs`, `brake-assembly.test.mjs`: hash-check the official Vishay STEP, generate the J3 mate/contact/cable/ring installation with explicitly provisional cooling/guard, and verify complete pin mapping, conductor endpoints and open M4 ring holes. No physical or thermal qualification is implied.
+- `brake-assembly.mjs`, `brake-assembly.test.mjs`: hash-check the official Vishay STEP, generate the J3 WAGO wire/cable/ring installation with conceptual cooling/guard, and verify complete pin mapping, conductor endpoints and open M4 ring holes. No physical or thermal qualification is implied.
 - `encoder-bypass-policy.mjs`, `encoder-bypass-policy.test.mjs`: permit only the U18.1/C52.1 bottom-to-top path through its exact single 0.60/0.30 mm via; count the 1.6 mm barrel in the 5 mm budget and reject missing/extra/undersize/displaced vias. Native copper is independently measured by `check-native-decoupling.py`.
 
 The combined harness GLB is retained inside `harness-proposal.zip` to keep the raw GitHub import below its unchanged 24 MiB limit. Historical label screenshots are preserved byte-for-byte in `previews/native-labels-history.zip`.
@@ -182,3 +182,5 @@ rejects displaced copper and off-board exemptions on unrelated components.
 - `generate-copper-screens.mjs` (`<filled-copper.json> <output-directory>`): run the architecture-specific motor, supply and brake paths at 0.075/0.05 mm meshes, with 0.025/0.02 mm refinement when needed. Set `PYTHON` to an interpreter with the pinned geometry/scientific dependencies. Input is actual refilled native copper from `export-filled-power-copper.py`; output retains per-path DC results and source hashes. This does not qualify operating current or temperature.
 
 - `manufacturing-handoff.mjs`, `manufacturing-handoff.test.mjs`: validate current assembly counts, native via inventory, track/space rules, flash programming, WAGO termination and user stock-code instructions. Regress stale STM32/JST instructions and counts that byte-integrity checks alone cannot detect. Used by verify and delivered-package checks.
+
+- `commissioning-profile.mjs`, `commissioning-profile.test.mjs`: validate operator-supplied, board-bound prerequisites and actual full memory dump bytes for stationary or bounded motor-test builds. No hardware approval is fabricated. `build-firmware.mjs --profile ... --record ... --out ...` produces a separate, hash-bound test archive; the normal release remains diagnostics-only.

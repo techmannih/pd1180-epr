@@ -7,7 +7,7 @@
     "programming_requested": true,
     "functional_test_requested": true,
     "assembler_scope_confirmed": false,
-    "shipment_acceptance": "HOLD: approved images, programming fixture/method, first-article qualification and per-board powered results are pending",
+    "shipment_acceptance": "Agree provider versus receiving-team test scope; retain exact programmed-image readbacks, first-article measurements and the agreed per-board acceptance records.",
     "instructions": "Request programming and Function Test explicitly; service availability for this board and its 48 V motor/brake test must be accepted by the provider. No order has been placed."
   },
   "revision": "0.5.0-RP2040-DRAFT",
@@ -64,7 +64,7 @@
     },
     "minimum_trace_width_mm": 0.15,
     "minimum_copper_spacing_mm": 0.1,
-    "driver_top_cooling": "DRV8462DDV exposed TOP requires a qualified TIM/heatsink and end supports. No complete cooling assembly is approved; retained 1 oz stack is not qualified against TI 2 oz recommendation."
+    "driver_top_cooling": "DRV8462DDV exposed TOP: fit selected Same Sky HSB14-353518 / Ceramique 2 with supported contact at both IC ends. See thermal-qualification.md for fit and measurement requirements. Retained 1 oz copper needs its own current/thermal measurements; TI recommends 2 oz."
   },
   "assembly": {
     "side": "top",
@@ -99,17 +99,17 @@
     },
     "U16_mcu": {
       "part": "RP2040 + W25Q32JV 4 MiB",
-      "requirement": "Program qualified motor-enabled firmware over SWD and verify/read back",
+      "requirement": "Program the included RP2040 diagnostic image first; build separate serial-bound stationary-power and bounded-motor profiles following commissioning.md, with full readback after each programming step.",
       "raw_binary_flash_address": "0x10000000",
       "image": null,
       "sha256": null,
-      "status": "blocked-rp2040-redesign-unqualified",
-      "commissioning_only": "pd1180-commissioning-firmware.zip contains a diagnostics image with motor operation locked; it does not meet ready-to-run delivery acceptance",
+      "status": "diagnostics-prepared-application-profile-selected-after-measurements",
+      "commissioning_only": "Included diagnostics keep motor outputs inhibited. Explicit power-test and bench-test builds use hashed board/serial prerequisite records; follow commissioning.md for local START, limits and post-assembly measurements.",
       "commissioning_image": {
         "archive": "pd1180-commissioning-firmware.zip",
         "member": "firmware.bin",
-        "sha256": "f737e222ca25ee420b6768ac0269da00f091233e21c89284d764c4a2fadf9ad0",
-        "image_bytes": 89892,
+        "sha256": "eaa89c1e50b8465f7ca7853da5e84ea82796154cd7952ab7a548d9465ab306e1",
+        "image_bytes": 90120,
         "motion_enabled": false
       },
       "readback_bytes": 4194304,
@@ -120,14 +120,15 @@
   },
   "functional_test": {
     "status": "not-performed",
-    "qualification_procedure": "power-validation.md",
+    "qualification_procedure": "commissioning.md",
     "per_board_acceptance_procedure_approved": false,
     "required_record": "Board serial/revision, both image hashes, programming verification, qualified motor/load/settings, measured rails/PD/current/temperature/brake response, inhibit tests, operator/date and PASS/FAIL",
     "blank_or_motion_locked_delivery_acceptable_as_ready_to_run": false,
     "provider_contact": null,
     "first_article_qualification_status": "not-performed",
     "motor_load_envelope_approved": false,
-    "shipment_rule": "Programming verification and the approved per-board powered motor/fault acceptance must pass for every serial number before shipment"
+    "shipment_rule": "Record programming/readback and the agreed per-board tests for each serial; identify any receiving-team commissioning stages explicitly in the delivery scope.",
+    "extended_validation_procedure": "power-validation.md"
   },
-  "redesign_status": "DATA-only ECO native CAD verified with explicit USB-hole/cosmetic exceptions; fabrication and powered operation remain held."
+  "redesign_status": "DATA-only source, firmware and native CAD verified; eight USB-hole errors and cosmetic findings remain recorded for fabricator disposition. Supplied diagnostic and bounded test profiles support post-assembly commissioning."
 }

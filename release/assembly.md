@@ -2,9 +2,9 @@
 
 ## Assembly
 
-The requested deliverable is a fabricated, fully populated, programmed and functionally tested PCBA. Ordering remains on hold. `bun run check:release` checks the documented release gates; it is not a powered test. Follow [the README startup procedure](../README.md#connections-and-operation) and [power-validation.md](power-validation.md) for commissioning.
+Use this guide to prepare the PCB/PCBA order and the subsequent installation, programming and first-article tests. The release package contains matched fabrication files, assembly data, software and verification evidence. [Commissioning](commissioning.md) gives the executable post-assembly sequence; `bun run check:release` enforces the recorded acceptance gates.
 
-The DDV driver requires a qualified top-side heatsink/TIM and end supports; none is approved yet. The retained 1 oz stack is not a demonstrated equivalent to TI’s 2 oz recommendation. J2/J3 WAGO spring clamps and U38 INA237 raw PD_VBUS sensing are implemented; their physical acceptance remains open.
+J2/J3 WAGO spring clamps and U38 INA237 raw PD_VBUS sensing are implemented. Selected first-article cooling parts are listed in [thermal qualification](thermal-qualification.md); install supported DDV top-side contact and record physical fit/temperature. The retained 1 oz stack requires its own current/thermal measurements; TI’s 2 oz recommendation is a different construction.
 
 ### Stack and placement
 
@@ -25,56 +25,41 @@ The DDV driver requires a qualified top-side heatsink/TIM and end supports; none
 
 Pin numbering follows the imported physical footprints. J7 and the industrial command/transceiver interfaces are removed in the selected onboard-control design. Use the J2/J3 cavity map in [connector-harnesses.md](connector-harnesses.md); cables, resistor terminals and strain relief are separate procurement items; WAGO does not need mating housings or socket contacts. J6/J9 are retired; do not use their historical pinouts.
 
-## Programming and external items
+## Programming and first-article work order
 
-Program U3 with the approved TI-generated TPS26750 full-flash image and U16 with board-specific firmware before motor bring-up. A register-reviewed TI full-flash candidate is included; physical programming/readback is pending. The supplied RP2040 image remains for motion-locked commissioning only. Keep POWER_PERMIT and MCU_RUN low in blank/reset/fault states. SWD is a 3.3 V interface provided on labelled top service pads; use a pogo fixture with the adjacent 3.3 V and ground pads.
+Provide the matching release manifest, Gerbers/drills, top BOM/CPL, native reports, TI configuration archive and RP2040 diagnostic archive. The assembly team follows [commissioning](commissioning.md), which includes the separate board-bound stationary-power and bounded-motor build commands.
 
-### Programming and test work order
+| Stage | Files and actions | Record |
+|---|---|---|
+| Fabrication and assembly | Confirm stack-up/USB impedance, ENIG, all 66 filled/capped via-in-pad locations, through-hole WAGO terminals and tall capacitors; review the eight USB hole findings and critical markings | Supplier disposition, revision/hash, inspection results |
+| Parts and installation | Allocate the exact BOM quantities; fit driver cooler/TIM/support, J3 resistor/cooler/guard, motor restraint and strain relief | Parts identities, fit, fastening and continuity checks |
+| TI programming | Program U3 M24512-RMN6TP with the registered full-flash image through the U36-isolated fixture | Complete **65,536-byte EEPROM readback**, image comparison, cold APP boot and actual EPR contract |
+| MCU programming | Program RP2040/U17 with the diagnostic ELF/BIN/UF2 using SWD/BOOTSEL; raw BIN starts at **0x10000000** | Complete **4,194,304-byte QSPI readback**, image comparison, board serial and `PROFILE`/`POWER`/`STATUS`/`DRIVER` responses |
+| Stationary supply test | Complete the diagnostic prerequisite record, build/read back `power-test`, then local START with J2 disconnected and J3 fitted | eFuse ramp, protected VMOTOR, MOTOR_PG, ADC readings and fault response; ENABLE/STEP stay low, bus switches off after 30 s |
+| First motor test | Add stationary-test, installed-cooling and motor-restraint records; build/read back `bench-test` | <=800 mA RMS request (~773 mA nominal), 10 rpm unloaded, 10 s run and one-second stop ramp; record phase current, bus peak and temperatures |
+| Application profile | Use first-article measurements to choose the intended current, load, duty and stopping envelope | Reviewed operating settings, repeatable per-board procedure and exact image hashes |
 
-JLCPCB currently offers [programming](https://jlcpcb.com/help/article/pcba-programming-service) and [functional testing](https://jlcpcb.com/help/article/functional-test-service) for **Standard PCBA**, subject to review of the customer's files, interfaces and test method. Programming takes place after assembly. Request these services explicitly and obtain acceptance for this board's 48 V motor/brake test and fixture; no service has been booked or confirmed here.
+The normal firmware ZIP is the diagnostic image, with its four qualification flags false. Test profiles are already implemented and built explicitly from the operator's board-bound records; they do not require the future motor/thermal test to have passed before its first run. Every image boots disarmed. The standard bench image has no reverse or arbitrary-current/speed command.
 
-Supply the following before approving a ready-to-run batch:
+### Programming fixture
 
-1. Exact board revision and release hashes; matching top BOM/CPL; complete through-hole/tall-part assembly scope; 66 filled/capped via-in-pad locations and the agreed stack-up.
-2. U3 **M24512-RMN6TP**: approved full-flash BIN, hash, reviewed EEPROM programming method and readback verification. [TI's EVM guide](https://www.ti.com/lit/ug/slvucp8/slvucp8.pdf) describes generating the full-flash binary. U36 separates U2's EEP_SDA/EEP_SCL I2Cc bus from U3's EEP_PROG_SDA/EEP_PROG_SCL programming pads. Ground TP_PD_ISO before fixed-5 V target power and keep programmer VCC off. Follow [pd-programming.md](pd-programming.md); the constructed fixture still needs qualification. SWD/J10 do not directly program this EEPROM.
-3. U16 **RP2040** plus U17 4 MiB QSPI boot flash: approved ELF/BIN/UF2, hash and SWD/BOOTSEL instructions. Raw BIN uses **0x10000000**. Save the full 4,194,304-byte readback and run the RP2040 comparator. The commissioning image remains motion-locked and is not a ready-to-run delivery image.
-4. Qualified motor/load envelope, current/microstep limits, stop profile, 48 V EPR source/cable, DDV top-side heatsink/TIM/support, brake, enclosure and ambient. The 0.773 A nominal commissioning setting is not a qualified operating current; 6 A operation remains blocked.
-5. An accepted fixture and test procedure: labelled J1 POWER/J10 DATA/J2 motor/J3 brake connections, current limiting, probes, controlled loads, expected readings, stop criteria and an operator demonstration. Agree who performs first-article qualification and who tests the remaining boards.
+Follow [PD programming](pd-programming.md) and [firmware programming](../firmware/README.md). Ground TP_PD_ISO before fixed-5 V target power to isolate U2's I2Cc bus from the U3 programming pads. Keep programmer VCC off and verify both-wire isolation and target power loss. SWD/J10 do not directly program the PD EEPROM. Use the **full-flash** binary at EEPROM address zero; TI's host-update commands assume an initialized working application and are a different procedure.
 
-### Request to send to the assembly/test provider
+Keep J2 disconnected for initial programming and diagnostic supply checks. Program test images with PD removed, perform a fresh full readback and cold boot, and compare `PROFILE` with the board record before local START. Keep the raw device dumps and programmer logs alongside the comparator result.
 
-> Please quote fabrication, complete top-side assembly, programming and pre-shipment functional testing for the current PD1180-EPR RP2040/DRV8462DDV revision. Include through-hole WAGO terminals/bulk capacitors and all 66 filled/capped via-in-pad locations. Please confirm support for a 48 V USB-PD EPR controller, integrated stepper driver, external brake/cooling and qualified motor fixture. There is no approved operating-current rating; the initial proposed test is 0.8 A RMS requested / 10 rpm unloaded, with motion currently locked. First-article qualification must precede approval of a motor-enabled image and batch acceptance. Each shipped board needs full U3/U17 programming/readback, cold boot, approved motor/brake/fault tests and serial-numbered records. Please identify fixture requirements, first-article owner, cost and lead time. The registered TI candidate image is included; physical programming and the final operating envelope remain open. This is an engineering review package, not production authorization.
+### Assembly/test-provider brief
 
-This request is prepared but has **not been sent or accepted**. Provider/contact, actual motor/load, maximum speed, stopping profile, supply/cable and brake cooling must be supplied before the work order can be completed.
+> Please quote fabrication, complete top-side assembly and programming for the supplied PD1180-EPR RP2040/DRV8462DDV revision. Include WAGO terminals, tall capacitors and the 66 filled/capped via-in-pad locations. Review the stack-up/USB impedance, eight USB hole-clearance findings and critical markings with the supplied acceptance record. Program and read back the TI EEPROM and RP2040 diagnostic images. The provided commissioning procedure then builds a 30-second stationary-power profile and a <=800 mA RMS request / 10 rpm / 10-second unloaded motor profile against serial-numbered prerequisite records. Please identify the fixture, installation, test-service scope, costs and lead time, and retain image hashes and measurement records for each tested board.
 
-### First-article programming sequence
+This is a prepared brief; no supplier service has been booked. [JLC programming](https://jlcpcb.com/help/article/pcba-programming-service) and [functional testing](https://jlcpcb.com/help/article/functional-test-service) require provider review of the actual interface, files and fixture. Agree whether the provider or the receiving team performs each post-assembly stage.
 
-1. Approve the exact release manifest and record the board serial. Keep J2 disconnected and hardware enable inactive. The assembly/test provider must approve the fixture's power arrangement; do not connect two independent sources to one supply rail.
-2. Program the motion-locked RP2040 commissioning image over SWD and verify it, following [firmware/README.md](../firmware/README.md). Capture `HELP`, `STATUS` and `DRIVER` responses; these are diagnostic evidence, not a motor test.
-3. Program U3 with the **full-flash** binary generated for this board, verify its complete contents against that binary, then cold-start U2 and record its mode, identity, boot status and negotiated contract. Use the U36-isolated fixture sequence in [pd-programming.md](pd-programming.md). Verify both-wire isolation, target power loss and readback before accepting the fixture; assembled-board access is not yet demonstrated.
-4. TI's [SLVAFL1 §2.1–2.2](https://www.ti.com/lit/an/slvafl1/slvafl1.pdf) distinguishes initial full-flash programming from later host updates. The `FLrd`/`FLad`/`FLwd`/`FLvy` update sequence assumes a working application and initialized EEPROM regions. It is not an established blank-board programming path here. Do not load a low-region update file at EEPROM address zero or assume the RP2040 commissioning image implements those commands.
-5. Complete the no-motor tests in [power-validation.md](power-validation.md), then have the qualification engineer produce and identify a controlled motor-test firmware build. Record every configuration change. Begin with the proposed 0.8 A RMS request / 10 rpm unloaded profile; any increase needs a separate phase-current, thermal, brake and fault review. The existing commissioning image cannot execute this step.
-6. After the agreed motor/load envelope passes, approve the exact motor-enabled image and per-board test revision. Program and verify that image on every shipped board, repeat the acceptance tests, and deliver its hashes and operating settings with the board. A failed test returns to engineering; it never becomes a pass by removing the test or suppressing a protection.
+### Installation and acceptance record
 
-### Acceptance record
+Use [thermal installation](thermal-qualification.md) for the selected first-article driver cooler/TIM and brake resistor/cooler, support and guard requirements. The selected **10 Ω / 300 W Vishay resistor** uses its specified case-temperature rating; that rating is not the continuous dissipation of the assembled cooler. Record physical fit and measured temperatures during the staged tests.
 
-No hardware results exist yet. Complete first-article qualification using every applicable row in [power-validation.md](power-validation.md). From that qualified design, approve a repeatable per-board test covering:
+The EPR adapter/cable, [J2 harness](motor-harness.md), ordered motor, J3 resistor/cooling, guard, fastening and programming fixture are external assembly items. Confirm their exact supply and assembly scope separately from the PCB BOM. The motor STEP establishes the four rear axes; measure thread/engagement and solder-tail clearance before selecting screws/spacers. The model's 19.5 mm gap is a preview dimension. Optional U18/C52/C53 stay DNP; rear magnet installation is an optional extension.
 
-| Per-board evidence | Acceptance requirement |
-|---|---|
-| Assembly inspection | Correct revision/parts, polarity, solder joints, filled/capped lands and all ordered through-hole parts fitted |
-| Programming | U3/U16 identity, exact image hashes, successful verify/readback and reset behavior recorded |
-| Power and USB | Required rails within qualified limits, negotiated 48 V / 5 A contract, no unintended enable, USB diagnostics and source transitions working |
-| Motor operation | Controlled STEP/DIR test in both directions at the approved current/speed/load; record measured phase current and driver status |
-| Inhibits and stop | Hardware enable, bus/temperature limits, watchdog/reset and the approved fault tests inhibit motion; no automatic re-arm |
-| Thermal/brake | Test at the qualified load/duty/ambient using the approved resistor/heatsink; record bus peak and temperatures against approved limits |
-| Handoff | Board serial, inspector/tester, date, instruments, results, firmware/configuration hashes and PASS/FAIL; retain supporting traces/video |
-
-Blank devices, a programmed-but-motion-locked image, a USB-only demo, or an assembly photograph do not meet the requested ready-to-run acceptance. Keep shipment acceptance pending until the agreed tests pass; do not replace missing results with a CAD check. Factory testing against a qualified fixture also does not establish operation with an unspecified motor or load.
-
-The [specified J2 motor harness](motor-harness.md), EPR charger, EPR cable, motor and external braking resistor/heatsink are not assembled PCB components. Their final part numbers and load-dependent ratings are release gates. All populated PCB parts have timestamped JLCSearch evidence; external-brake stock is still unverified.
-
-The ordered STEPPERONLINE 34HS31-6004S1 manufacturer STEP is archived and used by `motor-assembly.circuit.tsx`. Four unchanged PCB holes align with the rear axes. No adapter, replacement case bolts or spacer stack is approved; the current 19.5 mm separation is only a preview. The user has no rear thread/engagement measurements available. See [motor assembly](motor-assembly.md) and [manufacturing acceptance](manufacturing-acceptance.md). Optional encoder magnet attachment on the single-shaft motor remains unresolved.
+For each assembled board record its serial, release/image hashes, operator, instruments and date. Capture assembly inspection, complete device readbacks, cold boot, actual supply contract, voltage/current readings, interlock and stop response, and the motor/brake temperature traces appropriate to the selected profile. These records are filled after assembly; the software verification report describes automated checks only.
 
 ## Imported-part corrections
 
@@ -92,4 +77,4 @@ U22, L2 and U24 provide motor-side logic backup; U5, L1 and U23 provide PD-side 
 
 Verify the new top-side D16/D17/BZ1/Q26/U35/U36 parts and their polarity against the source/BOM, with R126 = 1 kΩ and R127 = 100 kΩ. Check the 19 bare service contacts against the fixture map in [pd-programming.md](pd-programming.md). The indicators consume board V3V3 and do not imply motor permission or correct PD programming. Verify RGB visibility, power indication, fault chirps, silent reset and the combined rail current using [indicators.md](indicators.md). Record these tests with the per-board firmware/configuration hashes.
 
-Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 66 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. **10 Ω/300 W remains provisional; motion locks remain enabled.**
+Complete the serial-numbered programming/readback and cold-boot checklist in [readiness.md](readiness.md), then the supply/fault → low-current motion → brake/thermal sequence. Follow [manufacturing-acceptance.md](manufacturing-acceptance.md) for ENIG, all 66 filled/capped via-in-pad locations, stack-up, shorter USB stakes, actual mounting and harness acceptance. The default image supplies diagnostics; the recorded stationary-power and bounded-motor profiles support the following post-assembly tests.

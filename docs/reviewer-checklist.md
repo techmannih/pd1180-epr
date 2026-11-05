@@ -1,22 +1,33 @@
-# RP2040 / DRV8462 reviewer checklist
+# NEMA34 implementation and handoff checklist
 
-Revision 0.5.0-RP2040-DRAFT. Begin with [the redesign](rp2040-redesign.md) and [exact evidence](../engineering/rp2040-redesign.json). No ordering or motor-operation approval is recorded.
+Current architecture: RP2040 / DRV8462DDVR / TPS26750, DATA-only MCU power. Use the matching [verification report](verification.json) and [native summary](verification.md), together with the nine schematic sheets and four [System diagrams](system-overview.md).
 
-- [ ] Read the nine functional sheets alongside [every IC’s purpose and power paths](usb-pd-architecture.md). Compare the [reference power-source evidence](../engineering/reviewer-power-reference.json). This revision follows the user-selected DATA-only MCU supply; U39/U40 isolate board-powered inputs and U41 switches sensor power during suspend.
-- [ ] Check the exact DDV 44-pin table, integrated bridges, VREF/DVDD, MODE, reserved pins and both charge-pump paths against TI's DRV8462 datasheet. DDW is not an interchangeable substitute.
-- [ ] Review RP2040 power pins/EP57, core/VREG bypass, 12 MHz crystal, QSPI boot flash on the independent MCU rail, USB series resistors and BOOTSEL/SWD access.
-- [ ] Reproduce the compiled electrical and firmware pin contracts and host tests. Verify register readback, safe startup, power loss, stalled-loop/STEP lease fault latching and explicit restart.
-- [ ] Review the independent RUN_SAFE chain and retained U34/L3 BRAKE_12V supply to U15. Brake/OVP/eFuse/thermal protection must not be bypassed by MCU code.
-- [ ] Verify all four qualification flags remain false, including after USB ARM. Record actual USB startup/configured/suspend current and detach behavior before enabling that flag.
-- [ ] Verify AS5600 SDA/SCL use I²C1, 3.3 V wiring and magnet-valid status. U18/C52/C53 remain DNP; only U18 may be on the bottom. Do not claim closed-loop operation.
-- [ ] Verify fresh source build/style, native export, filled-zone DRC, ERC, schematic parity, local bypass/return loops and zero unconnected items. Older board reports are historical.
-- [ ] Finish routed current-carrying copper, shunt Kelvin branches, USB reference/impedance, thermal via/process and top-cooled DDV heatsink/TIM analysis. Source paths are not an ampacity qualification.
-- [ ] Preserve 0.15 mm tracks, 0.10 mm spacing, 0.30 mm GND clearance, 0.50 mm GND inset and 0.20 mm global copper-edge rule. Resolve USB hole-to-pad manufacturing acceptance separately; do not hide it by lowering a global rule.
-- [ ] Regenerate matched manufacturing files, BOM/CPL, routed viewer, assembly CAD and release hashes. Source/release mismatches must keep the full review gate red.
-- [ ] Refresh official JLC stock/package for the exact fitted BOM. DRV8462DDVR quantity was insufficient for the configured batch; availability is not reserved.
-- [ ] Qualify motor-side connector/wire entry, rear screws/depth/insulation, heatsink clearance and mechanical security. Existing holes match the motor CAD, not an accepted fastening assembly.
-- [x] Reviewer ECO implements WAGO spring-clamp J2/J3, separate raw PD_VBUS ADC (INA237), and separately reported derived PD_READY plus physical MOTOR_PG.
-- [ ] Verify those paths and terminal/harness access on assembled hardware; derived PD_READY is not a newly added TPS GPIO.
-- [ ] Program/read back TI EEPROM and RP2040 flash, verify cold boot and fault outputs, then staged low-current motor, brake and thermal tests. No 6 A operation until qualified.
+## Implemented and checked in the repository
 
-Run `bun run review` before any handoff as a completed board. It must remain blocking while any affected CAD/release check is stale or failing. Use [firmware instructions](../firmware/README.md) for the new commissioning image; the old STM32 programming address/image is invalid for U16.
+- [x] RP2040 power/clock/boot-flash pin contracts, USB, BOOTSEL and SWD access.
+- [x] DRV8462 DDV-specific 44-pin map, integrated H-bridges, timer STEP/DIR and SPI configuration/readback.
+- [x] DATA-only MCU supply, U39/U40 board-signal isolation and U41 sensor suspend control.
+- [x] WAGO J2/J3 terminals, raw PD_VBUS INA237 ADC and separate ADS1115 VMOTOR/brake readings.
+- [x] Derived PD_READY plus physical MOTOR_PG; independent RUN_SAFE, brake supply and hardware protection paths.
+- [x] Diagnostic, 30-second stationary-power and bounded-motor software profiles; reset/fault inhibition, readback freshness and deliberate restart tests.
+- [x] Native route, bypass/Kelvin paths, USB ground reference and analytical power-copper checks; 0 unconnected/parity/ERC findings. Eight USB hole errors and 475 cosmetic warnings are recorded separately.
+- [x] Source/native 0.15 mm tracks, 0.10 mm spacing, 0.30 mm GND clearance, 0.50 mm GND inset and 0.20 mm global edge rule.
+- [x] Matched routed viewer, manufacturing files, BOM/CPL and release hashes, verified by the release pipeline.
+- [x] Four mounting axes aligned to the ordered motor STEP; only optional DNP encoder U18 on the bottom.
+
+## Fabrication and installation actions
+
+- [ ] Obtain the exact fitted-part quantities using the latest [sourcing report](procurement.md); record allocation for insufficient rows.
+- [ ] Record supplier acceptance of stack-up/USB impedance, 66 filled/capped via-in-pad locations, USB hole geometry and critical markings.
+- [ ] Fit the selected driver cooler/TIM with end support, brake cooler/guard, harnesses and strain relief; inspect tool/bend clearance.
+- [ ] Measure rear thread/depth and select secure motor/board fastening and insulation. The STEP axes do not specify screw engagement.
+
+## Tests after assembly
+
+- [ ] Program and fully read back the TI EEPROM and RP2040 flash; record cold boot and actual EPR contract.
+- [ ] Measure USB startup/configured/suspend current, DATA/PD transitions, reset and sensor discharge/wake behaviour.
+- [ ] Run the stationary supply/fault profile, then the bounded unloaded motor profile from [commissioning](commissioning.md).
+- [ ] Record phase current, bus/brake waveforms, temperatures and stops to define the intended load/current/duty envelope.
+- [ ] If fitting the optional encoder later, qualify its magnet mounting/airgap and telemetry separately.
+
+Run `bun run review` for a software/CAD handoff. Checks continue to reject stale or failed evidence. The physical checklist is completed by the assembly/test team using serial-numbered measurements.

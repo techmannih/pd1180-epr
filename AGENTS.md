@@ -1,5 +1,13 @@
 # PCB design and release rules
 
+## Repository wording and handoff — 2026-11-06
+
+The user requests current, constructive order/assembly preparation rather than blanket readiness labels. Keep implementation results, fabrication/installation actions and post-assembly measurements distinct. Correct stale STM32/TMC/JST instructions in active guides. Preserve dated historical evidence, actual DRC/stock/simulation findings and all machine acceptance gates; wording cleanup does not authorize changing a result, bypassing a protection or claiming physical acceptance. Update generated prose and release mirrors consistently in the existing PR. Earlier dated decisions below describe their revision; the latest applicable user instruction takes precedence.
+
+## Commissioning software and installation — 2026-11-05
+
+The user requests completed software and installation preparation, with physical testing performed by the team after assembly. Separate those phases and avoid blanket order/run-readiness claims. Explicit, board-bound stationary and low-current commissioning build profiles are authorized; keep the default shipping/diagnostics image inhibited. Do not mark inspections, readback, cold boot, mechanical fit or powered results as measured by this coding task. Preserve hardware interlocks and bounded current/speed/time, raw eight USB hole exceptions and cosmetic findings. No supplier messages or purchases. Add this work in a PR after the merged #26 revision.
+
 ## DATA-only MCU and fabrication handoff — 2026-11-05
 
 The user explicitly selected DATA-only MCU power, superseding the dual-source choice below. Reopen the affected source, firmware, routing, assembly and power-domain contracts. Remove the PD-to-MCU supply path and prevent PD-powered signals from back-powering the unpowered RP2040. Retain independent motor-bus brake power and hardware shutdown. Update the System diagrams and use absolute reviewer documentation links that also work on tscircuit.com. Complete evidence-backed cooling/brake and fabrication deliverables, but never label supplier acceptance, physical fastening or powered thermal tests as passed without evidence. Deliver in a new PR; preserve unrelated copper, the four mounting holes, and the visible eight USB hole-clearance exceptions. No motion unlock or procurement is authorized.

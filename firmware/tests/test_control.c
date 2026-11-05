@@ -69,11 +69,27 @@ int main(void) {
   pd1180_control_disarm(&s); i=valid_inputs(); i.brake_preflight_ok=false;
   assert(pd1180_control_arm(&s,&i)); ticks(&s,&i,40);
   assert(s.power_permit && !s.mcu_run); /* Power is needed for the brake test. */
-  ticks(&s,&i,80); assert(s.fault_latched && !s.power_permit);
+  ticks(&s,&i,400); assert(s.fault_latched && !s.power_permit);
+  // Real C18 ramp plus three distinct ADC pairs and motor settling exceeds 1 s.
+  pd1180_control_reset(&s); i=valid_inputs();
+  i.motor_power_good=i.vmotor_in_range=i.driver_ready=i.brake_preflight_ok=false;
+  assert(pd1180_control_arm(&s,&i)); ticks(&s,&i,145);
+  assert(s.power_permit && !s.mcu_run && !s.fault_latched);
+  i.motor_power_good=i.vmotor_in_range=true; ticks(&s,&i,5);
+  i.driver_ready=true; ticks(&s,&i,20); i.brake_preflight_ok=true;
+  ticks(&s,&i,20); assert(s.mcu_run && !s.fault_latched);
+  // Stationary profile never enables bridges, even with every input healthy.
+  pd1180_control_reset(&s); i=valid_inputs(); i.power_test_only=true;
+  assert(pd1180_control_arm(&s,&i)); ticks(&s,&i,500);
+  assert(s.power_permit && !s.mcu_run && !s.motor_commands_enabled);
+  ticks(&s,&i,2510); assert(!s.power_permit && s.fault_latched);
+  pd1180_control_reset(&s); i=valid_inputs(); i.power_test_only=true;
+  assert(pd1180_control_arm(&s,&i)); ticks(&s,&i,100);
+  i.motor_power_good=false; ticks(&s,&i,1); assert(!s.power_permit && s.fault_latched);
   running(&s,&i); pd1180_control_tick(&s,&i,1000); assert(!s.mcu_run && s.fault_latched);
   pd1180_control_disarm(&s); assert(!s.power_permit && !s.mcu_run);
   i=valid_inputs(); i.motor_power_good=false; assert(pd1180_control_arm(&s,&i));
-  ticks(&s,&i,120); assert(!s.power_permit && s.fault_latched);
+  ticks(&s,&i,420); assert(!s.power_permit && s.fault_latched);
   pd1180_control_disarm(&s);
   i=valid_inputs(); i.motion_wiring_verified=false; assert(!pd1180_control_arm(&s,&i));
   running(&s,&i); i.temperature_deci_c=650;

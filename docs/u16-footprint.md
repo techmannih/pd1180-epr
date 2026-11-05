@@ -8,6 +8,6 @@ Supply contracts: RP2040 I/O/USB/ADC and regulator input use V3V3_MCU; its regul
 
 Use the current `pd1180-commissioning-firmware.zip`, with the registered hashes and source identity. The raw application address is **0x10000000**. Complete external-flash readback is **4,194,304 bytes**; follow `pd-programming.md` and `firmware/README.md`, including the erased tail and device/operator evidence. Do not flash a previous STM32 image or use its address, memory size or pinout.
 
-All four qualification flags remain false. The commissioning image can diagnose the board but cannot authorize motor operation. Optional AS5600 U18 is bottom DNP; C52/C53 are top DNP. The native board's eight retained USB hole errors and cosmetic findings remain separate manufacturing holds.
+The default diagnostic image keeps all four qualification flags false. Separate board-bound stationary-power and bounded-motor profiles are available; follow [commissioning](commissioning.md) for prerequisites, builds and readback. Optional AS5600 U18 is bottom DNP; C52/C53 are top DNP. The native board's eight retained USB hole errors and cosmetic findings are listed for the manufacturer’s process/marking review.
 
 Historical `engineering/u16-footprint-review.json` and `engineering/stocked-controller-eco.json` describe the superseded MCU ECO. They must not be used as assembly instructions for this revision. Current architecture evidence is `rp2040-redesign.json`, `rp2040-via-in-pad.json`, the manifest and the paired native project.

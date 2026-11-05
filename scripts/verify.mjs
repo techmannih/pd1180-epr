@@ -23,6 +23,7 @@ async function hashInputs() {
 }
 verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/normalize-kicad-parity.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs', 'scripts/check-delivery.mjs', 'scripts/check-stock.mjs', 'docs/external-system.md', 'docs/external-parts.json')
 verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
+verifiedInputPaths.push('scripts/commissioning-profile.mjs', 'scripts/commissioning-profile.test.mjs', 'docs/commissioning.md', 'engineering/commissioning-record.template.json')
 verifiedInputPaths.push('scripts/verify-programming.mjs', 'scripts/verify-programming.test.mjs', 'docs/pd-configuration-review.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 verifiedInputPaths.push('engineering/onboard-control-eco.json', 'engineering/interface-cleanup.json', 'engineering/mechanical/assembly-parts.json', 'engineering/mechanical/34hs31-6004s1-routed-cable.glb', 'scripts/check-cable-support.mjs')
@@ -64,7 +65,7 @@ const checks = [
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['firmware-target', ['run', 'check:firmware-target']],
-  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs']],
+  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs', 'scripts/commissioning-profile.test.mjs']],
   ['pd-image', ['scripts/check-pd-image.mjs']],
   ['manufacturing-handoff', ['scripts/manufacturing-handoff.mjs']],
   ['manufacturing-handoff-tests', ['test', 'scripts/manufacturing-handoff.test.mjs']],
@@ -165,9 +166,7 @@ const verificationMarkdown = `# PD1180-EPR verification\n\n` +
   results.map((result) => `| ${result.name} | ${result.status.toUpperCase()} | ${result.seconds.toFixed(1)} s | \`${result.log}\` |`).join('\n') +
   `\n\n- Routed KiCad board verified: **${report.routed_board_verified ? 'yes' : 'no'}**\n` +
   `- Source errors/warnings: **${messageCount}**\n` +
-  `- Prototype fabrication orderable: **${report.prototype_fabrication_orderable ? 'yes' : 'no'}**\n` +
-  `- Production released: **no**\n` +
   `- Verified entry SHA-256: \`${report.entry_sha256}\`\n\n` +
-  `Production remains gated by PD programming/readback, qualified RP2040/DRV8462 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
+  `Use [assembly instructions](docs/assembly.md) for fabrication/process acceptance, parts allocation and installation; use [commissioning](docs/commissioning.md) for programming/readback, cold boot and staged powered measurements after assembly. Exact acceptance states and native findings remain in [docs/release-status.json](docs/release-status.json).\n`
 await writeFile('verification.md', verificationMarkdown)
 if(results.some(r=>r.exit_code!==0))process.exitCode=1

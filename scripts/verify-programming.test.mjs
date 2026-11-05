@@ -79,3 +79,21 @@ test('RP2040 full readback rejects the old 128 KiB memory dump', async () => {
   expect(compareReadback(image,full,hash(image),4194304,0x10000000).readback_bytes).toBe(4194304)
   expect(()=>compareReadback(image,full.subarray(0,131072),hash(image),4194304,0x10000000)).toThrow('complete 4194304-byte')
 })
+
+
+test('explicit test archives preserve profile, limits and PCB identity', async()=>{
+  const board='a'.repeat(64),source=Buffer.from('source')
+  const manifest={target:'RP2040 + W25Q32JV (4 MiB)',flash_address:'0x10000000',max_flash_bytes:4194304,
+    image_type:'commissioning-bench-test',motor_operation_enabled:true,image_bytes:image.length,
+    artifacts:{'firmware.bin':hash(image)},inputs:{'source':hash(source)},
+    commissioning:{profile:'bench-test',board_serial:'TEST',board_sha256:board,record_sha256:'b'.repeat(64)},
+    limits:{rms_request_ma:800,rpm:10,run_ms:10000,stationary_power_ms:30000}}
+  async function load() {
+    const bytes=await new JSZip().file('manifest.json',JSON.stringify(manifest)).file('firmware.bin',image).generateAsync({type:'nodebuffer'})
+    return loadProgrammingImage('rp2040',async path=>path==='bench.zip'?bytes:path==='source'?source:Buffer.from(JSON.stringify({native_review_summary:{board_sha256:board}})),'bench.zip')
+  }
+  expect((await load()).commissioning.board_serial).toBe('TEST')
+  manifest.limits.rms_request_ma=6000;await expect(load()).rejects.toThrow('bounded test');manifest.limits.rms_request_ma=800
+  manifest.commissioning.profile='power-test';await expect(load()).rejects.toThrow('bounded test');manifest.commissioning.profile='bench-test'
+  manifest.commissioning.board_sha256='c'.repeat(64);await expect(load()).rejects.toThrow('different PCB')
+})

@@ -3,24 +3,44 @@ import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { resolve } from 'node:path'
 import JSZip from 'jszip'
+import { parseArgs } from 'node:util'
+import { loadCommissioningRecord } from './commissioning-profile.mjs'
 const sha = (data) => createHash('sha256').update(data).digest('hex')
-const check = process.argv.includes('--check')
-const paths = ['firmware/platformio.ini', 'firmware/README.md', 'docs/firmware-pinmap.json', 'scripts/build-firmware.mjs']
+const {values}=parseArgs({options:{check:{type:'boolean'},profile:{type:'string'},record:{type:'string'},out:{type:'string'}}})
+const check = values.check || false
+const profile = values.profile || 'diagnostics'
+if (!['diagnostics','power-test','bench-test'].includes(profile)) throw new Error('Unknown firmware profile')
+const testProfile = profile !== 'diagnostics'
+if (testProfile && (!values.record || !values.out || check)) throw new Error('Test build requires --record and a new --out directory; --check is for diagnostics')
+if (!testProfile && (values.record || values.out)) throw new Error('Record/out apply only to explicit test profiles')
+if (testProfile && resolve(values.out).startsWith(resolve('release')+'/')) throw new Error('Keep board-specific test outputs outside the shared release directory')
+const commissioning = testProfile ? await loadCommissioningRecord(values.record,profile) : null
+const testOutput = testProfile ? resolve(values.out) : null
+if (testProfile) await mkdir(testOutput, {recursive:false}) // Never overwrite an earlier test build.
+const profileNumber = profile === 'bench-test' ? 2 : profile === 'power-test' ? 1 : 0
+const buildDirectory = testProfile ? resolve('.cache/commissioning-build',profile) : resolve('firmware/.pio/build')
+
+const paths = ['firmware/platformio.ini', 'firmware/README.md', 'docs/commissioning.md', 'engineering/commissioning-record.template.json', 'docs/firmware-pinmap.json', 'scripts/build-firmware.mjs', 'scripts/commissioning-profile.mjs', 'scripts/verify-programming.mjs']
 for (const dir of ['firmware/src', 'firmware/include', 'firmware/target', 'firmware/boards']) {
   for (const f of (await readdir(dir)).sort()) paths.push(`${dir}/${f}`)
 }
 const inputs = Object.fromEntries(await Promise.all(paths.map(async p => [p, sha(await readFile(p))])))
-const archivePath = 'release/pd1180-commissioning-firmware.zip'
+const archivePath = testProfile ? resolve(testOutput,`pd1180-${profile}.zip`) : 'release/pd1180-commissioning-firmware.zip'
 if (!check) {
   await new Promise((ok, fail) => {
-    const p = spawn(process.env.PIO || 'pio', ['run', '-d', 'firmware'], {
-      stdio: 'inherit', env: {...process.env, PLATFORMIO_CORE_DIR: process.env.PLATFORMIO_CORE_DIR || resolve('.cache/platformio')}
+    const env={...process.env, PLATFORMIO_CORE_DIR:process.env.PLATFORMIO_CORE_DIR || resolve('.cache/platformio')}
+    // Never let ambient compiler flags silently turn the normal release into a test image.
+    delete env.PLATFORMIO_BUILD_FLAGS
+    env.PLATFORMIO_BUILD_DIR=buildDirectory
+    if(testProfile) env.PLATFORMIO_BUILD_FLAGS=`-DPD1180_TEST_PROFILE=${profileNumber} -DPD1180_TEST_RECORD_SHA=\\\"${commissioning.record_sha256}\\\"`
+    const p = spawn(process.env.PIO || 'pio', ['run', '-d', 'firmware', '-e', 'pd1180'], {
+      stdio: 'inherit', env
     })
     p.on('error',fail); p.on('close',code => code === 0 ? ok() : fail(new Error(`RP2040 target build failed: ${code}`)))
   })
-  const bin = await readFile('firmware/.pio/build/pd1180/firmware.bin')
-  const elf = await readFile('firmware/.pio/build/pd1180/firmware.elf')
-  const uf2 = await readFile('firmware/.pio/build/pd1180/firmware.uf2')
+  const bin = await readFile(resolve(buildDirectory,'pd1180/firmware.bin'))
+  const elf = await readFile(resolve(buildDirectory,'pd1180/firmware.elf'))
+  const uf2 = await readFile(resolve(buildDirectory,'pd1180/firmware.uf2'))
   if (elf.readUInt32BE(0)!==0x7f454c46 || elf[4]!==1 || elf[5]!==1 || elf.readUInt16LE(18)!==40)
     throw new Error('Expected little-endian 32-bit ARM ELF, not a host executable')
   // RP2040 boot2 occupies the first 256 bytes, then the vector table.
@@ -40,7 +60,8 @@ if (!check) {
   }
   for(let offset=0;offset<bin.length;offset+=256) if(!seen.has(0x10000000+offset)) throw new Error('UF2 omits binary bytes')
   const manifest={built_at:new Date().toISOString(), target:'RP2040 + W25Q32JV (4 MiB)',
-    image_type:'commissioning-diagnostics-only', motor_operation_enabled:false,
+    image_type: testProfile ? `commissioning-${profile}` : 'commissioning-diagnostics-only', motor_operation_enabled:profile==='bench-test',
+    commissioning, limits: {rms_request_ma:800, rpm:10, run_ms:10000, stationary_power_ms:30000},
     flash_address:'0x10000000', vector_table_address:'0x10000100', initial_sp:`0x${sp.toString(16)}`, reset_vector:`0x${reset.toString(16)}`,
     max_flash_bytes:4194304, image_bytes:bin.length, inputs,
     artifacts:{'firmware.bin':sha(bin),'firmware.elf':sha(elf),'firmware.uf2':sha(uf2)},
@@ -49,9 +70,12 @@ if (!check) {
   zip.file('firmware.bin',bin);zip.file('firmware.elf',elf);zip.file('firmware.uf2',uf2)
   zip.file('manifest.json',JSON.stringify(manifest,null,2)+'\n')
   zip.file('README.md',await readFile('firmware/README.md'))
+  zip.file('commissioning.md',await readFile('docs/commissioning.md'))
+  zip.file('commissioning-record.template.json',await readFile('engineering/commissioning-record.template.json'))
   await mkdir('release',{recursive:true})
   await writeFile(archivePath,await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE'}))
-  await writeFile('docs/checks/firmware-target.json',JSON.stringify(manifest,null,2)+'\n')
+  if (!testProfile) await writeFile('docs/checks/firmware-target.json',JSON.stringify(manifest,null,2)+'\n')
+  if (!testProfile) {
   const orderPath = 'release/order-settings.json'
   const order = JSON.parse(await readFile(orderPath, 'utf8'))
   order.programming.U16_mcu.commissioning_image = {
@@ -60,6 +84,7 @@ if (!check) {
     motion_enabled: false,
   }
   await writeFile(orderPath, JSON.stringify(order,null,2)+'\n')
+  }
 }
 const zip=await JSZip.loadAsync(await readFile(archivePath),{checkCRC32:true})
 const manifest=JSON.parse(await zip.file('manifest.json').async('string'))
@@ -70,9 +95,11 @@ for(const [p, hash] of Object.entries(inputs)) {
 for(const [p, hash] of Object.entries(manifest.artifacts)) {
   if(sha(await zip.file(p).async('nodebuffer'))!==hash) throw new Error(`Corrupt firmware artifact: ${p}`)
 }
-if(manifest.motor_operation_enabled!==false) throw new Error('This commissioning image must not enable motion')
+if(manifest.motor_operation_enabled!==(profile==='bench-test')) throw new Error('This commissioning image must not enable motion')
+if (!testProfile) {
 const requestedImage = JSON.parse(await readFile('release/order-settings.json','utf8')).programming.U16_mcu.commissioning_image
 if(requestedImage?.sha256 !== manifest.artifacts['firmware.bin'] ||
    requestedImage.image_bytes !== manifest.image_bytes || requestedImage.motion_enabled !== false)
   throw new Error('Commissioning image in order settings differs from the verified ARM archive')
-console.log(`Verified ARM commissioning image: ${manifest.image_bytes}/${manifest.max_flash_bytes} bytes; motion locked; source hashes match.`)
+}
+console.log(`Verified ${profile} ARM commissioning image: ${manifest.image_bytes}/${manifest.max_flash_bytes} bytes; motion=${manifest.motor_operation_enabled}; source hashes match.`)

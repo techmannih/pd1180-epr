@@ -2,7 +2,7 @@
 
 This revision targets **RP2040 + 4 MB W25Q32JV QSPI flash**, **DRV8462DDVR** (top-cooled DDV package), the retained **TPS26750 48 V / 5 A** power system and optional **AS5600**. The STM32/TMC5160 image and reports from the parent revision do not qualify this hardware. Do not flash an old STM32 binary into this board.
 
-**Motor motion remains locked.** `motionWiringVerified`, `pdImageVerified`, `brakeHardwareVerified` and `rp2040UsbPowerVerified` are false. No USB command changes those qualifications. A successful build is not an assembled-board test.
+**The default diagnostics image keeps motor motion locked.** `motionWiringVerified`, `pdImageVerified`, `brakeHardwareVerified` and `rp2040UsbPowerVerified` are false. No USB command changes those qualifications. A successful build is not an assembled-board test.
 
 ## Build and software checks
 
@@ -23,13 +23,13 @@ The target uses Arduino-Pico, RP2040 at 125 MHz, a 12 MHz crystal, W25Q-compatib
 
 DRV8462 uses **SPI mode 1**, 16-bit frames, 1 MHz and a >=2 us CS-high gap. Configuration and current writes require readback. The initial profile uses 1/16 microsteps and a nominal current request capped at 800 mA RMS; quantization produces about 773 mA at the maximum request with nominal DVDD/KV. VREF and gain tolerances still require measurement. This does not authorize the motor's rated 6 A operation. No OTP programming, autotune or automatic fault clearing while running is implemented.
 
-The RP2040 timer generates STEP edges every 20 us tick with a one-second ramp to **10 RPM** (200 full steps/rev). Main must renew a 25 ms safety lease; a stale lease, late timer or physical fault stops pulses with no catch-up burst. The retained U10/U11/U33 chain independently gates active-high ENABLE with power-good, voltage-window and temperature conditions. R55 pulls ENABLE low. The 250 ms watchdog is serviced only by main. These settings remain disabled until hardware qualification is recorded.
+The RP2040 timer generates STEP edges every 20 us tick with a one-second ramp to **10 RPM** (200 full steps/rev). Main must renew a 25 ms safety lease; a stale lease, late timer or physical fault stops pulses with no catch-up burst. The retained U10/U11/U33 chain independently gates active-high ENABLE with power-good, voltage-window and temperature conditions. R55 pulls ENABLE low. The 250 ms watchdog is serviced only by main. The normal diagnostics image leaves these settings disabled. Explicit commissioning profiles use the procedure below.
 
 The local button requires release before a start request. Normal STOP ramps down; DISARM, power loss and faults stop immediately. Fault acknowledgement and another release/press are required before restarting. AS5600 angle/status reads reject missing/weak/strong magnets; it is optional telemetry, **not closed-loop control**. U18 remains DNP pending a proven rear magnet attachment on the single-shaft motor.
 
 ## Diagnostics and USB
 
-Commands: `HELP`, `STATUS`, `POWER`, `DRIVER`, `DISARM`, `ARM` (blocked). Oversized command lines are discarded. STATUS includes board rail, PD contract, DATA VBUS, VMOTOR, phase diagnostics, brake continuity, temperature and readiness. DRIVER includes DRV fault registers and encoder validity/angle.
+Commands: `HELP`, `STATUS`, `POWER`, `DRIVER`, `PROFILE`, `DISARM`, `ARM` (blocked). Oversized command lines are discarded. STATUS includes board rail, PD contract, DATA VBUS, VMOTOR, phase diagnostics, brake continuity, temperature and readiness. DRIVER includes DRV fault registers and encoder validity/angle.
 
 TMP102 thresholds remain 70 C trip / 55 C rearm, active-low hardware inhibit. ADS1115 samples VMOTOR, input-current monitor and brake return; raw **PD_VBUS** is independently measured by U38 INA237 (85 V input), at I²C address 0x40. `POWER` reports that raw voltage separately from VMOTOR, contract voltage/current, physical MOTOR_PG and derived PD_READY. PD_READY requires a fresh completed ADC conversion in the 44–51 V engineering window, live APP-mode sink 48 V/5 A EPR contract and the expected configuration identity. A stale, reset, missing or invalid sensor inhibits motion. This is not a dedicated hardware PD GPIO, nor an adapter/USB-PD certification. The eFuse MOTOR_PG input remains independently required. RP2040 GP26/27 read instantaneous INA240 phase voltages, GP28 digital LOGIC_PG_MCU board presence and GP29 DATA VBUS. ADC scaling assumes nominal 3.3 V and needs calibration; readings are not PWM-synchronous RMS measurements.
 
@@ -41,7 +41,9 @@ Use an RP2040-compatible SWD probe with SWDIO, SWCLK, GND, MCU 3.3 V reference a
 
 Program the generated UF2 using ROM USB, or the ELF/raw image using an RP2040-aware programmer at external-flash address **0x10000000**. Read back the programmed image range and compare its hash, then verify a full cold boot with USB-only power and with PD power. U3 has a **separate TI EEPROM image**; retain its complete 64 KiB readback and APP/EPR cold-boot verification procedure.
 
-Before unlocking: native routing/DRC/ERC and exact pad map; 1.1/3.3 V rails and reset; oscillator startup; USB enumeration/current; PD image/readback; power-good and all fault paths; brake preflight; STEP/current waveforms at low current; heatsink/TIM installation; thermal, braking and EMC tests. Record the exact board/firmware hashes. Motor-rated current, speed, torque and stopping duty are not yet approved.
+Use the three-stage procedure in [commissioning](../docs/commissioning.md): default diagnostics, stationary `power-test`, then bounded `bench-test`. Their prerequisites are inspections/readbacks and the preceding stage, not the motor/thermal tests that the bench profile exists to perform. Test builds require a board-bound operator record; the normal release image stays diagnostic. No source flags need to be edited.
+
+The bench profile requests at most 0.8 A RMS / 10 rpm for 10 seconds before ramping down. The power-only profile permits the bus for at most 30 seconds, with ENABLE and STEP low. Both require local START; USB ARM remains blocked. The 4-second motor startup deadline includes C18's ramp and the distinct brake ADC samples. Driver readiness remains valid between polls for at most 40 ms. PROFILE reports image type and record hash. No mode silently turns into unrestricted motor firmware.
 
 ## Evidence scope
 

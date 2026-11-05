@@ -25,7 +25,7 @@ With power disconnected, black–green and red–blue must be the winding pairs 
 
 J3 wire entry 1 is **VMOTOR**, entry 2 **BRAKE_RETURN**; solder pins 1/3 and 2/4 respectively are paired. Strip **5–6 mm** and operate the 236-series spring clamp with the specified tool. The reviewed 16 AWG conductor fits its **0.08–2.5 mm²** range. This is a 45° wire-entry terminal. It is not a plug-in JST connection. See [WAGO 236-402](https://www.wago.com/global/pcb-terminal-blocks-and-pluggable-connectors/pcb-terminal-block/p/236-402).
 
-Two Alpha3057 leads connect J3 to TE152883 M4 rings at the provisional Vishay LPS0300H10R0GB 10 Ω resistor. Nominal CAD cuts are **165 / 210 mm**, including 16 mm allowance; physical installation may require revision. The resistor is nonpolar; the model routes the two conductors without crossing. BRAKE_RETURN is switched by Q16 and is **not ground**. Cooling, guard, resistor duty and strain relief remain unqualified; see [brake integration](brake-integration.md).
+Two Alpha3057 leads connect J3 to TE152883 M4 rings at the selected first-article Vishay LPS0300H10R0GB 10 Ω resistor. Nominal CAD cuts are **165 / 210 mm**, including 16 mm allowance; physical installation may require revision. The resistor is nonpolar; the model routes the two conductors without crossing. BRAKE_RETURN is switched by Q16 and is **not ground**. Fit the specified cooling/guard and strain relief, then measure resistor duty/temperature during commissioning; see [brake integration](brake-integration.md).
 
 ## Rear mounting and encoder
 

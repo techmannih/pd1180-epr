@@ -52,15 +52,15 @@ const available = stock.parts.filter(part => part.status === 'available').length
 const packageMatched = stock.parts.filter(part => part.package_match === true).length
 lines.push(
   '',
-  `${available} of ${stock.parts.length} selected part types (${manifest.parts.length} placements) had sufficient reported stock for ${stock.board_quantity} boards. ${packageMatched} package names matched the pinned expectation. See failed rows before ordering.`,
+  `${available} of ${stock.parts.length} selected part types (${manifest.parts.length} placements) had sufficient reported stock for ${stock.board_quantity} boards. ${packageMatched} package names matched the pinned expectation. Arrange assembler allocation for the rows with insufficient quantities before payment.`,
   '',
   '## Substitution policy',
   '',
-  'See `alternatives.json` for checked candidates and whether they are package-compatible, need electrical/thermal review, or require a redesign. No alternative is silently selected. Missing or insufficient exact stock is an order hold; do not infer availability from this generated page.',
+  'See `alternatives.json` for checked candidates and whether they are package-compatible, need electrical/thermal review, or require a redesign. No alternative is silently selected. For missing or insufficient exact stock, obtain the required allocation or review a compatible replacement; keep the actual quantities and evidence in the order record.',
   '',
   '## External system items',
   '',
-  'The motor, shaft magnet, 48 V EPR source, 5 A EPR cable, mating harness and braking resistor/heatsink are separate system items. The external braking resistor is load-dependent and remains a system-level sizing and procurement gate.',
+  'The ordered motor, 48 V EPR source, 5 A EPR cable, WAGO wire harnesses, driver cooler/TIM, and J3 resistor/cooler/guard are separate assembly items. Use assembly.md and thermal-qualification.md for selected first-article parts and installation. The shaft magnet belongs to the optional DNP encoder extension. Record brake duty and temperatures during commissioning.',
   '',
 )
 await writeFile(new URL('docs/procurement.md', root), lines.join('\n'))

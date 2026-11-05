@@ -22,7 +22,7 @@ jobs:
           bun run check:firmware-pins
           bun run check:firmware
           bun run check:firmware-target
-          bun test scripts/rp2040-contract.test.mjs scripts/encoder-bypass-policy.test.mjs scripts/verify-programming.test.mjs
+          bun test scripts/rp2040-contract.test.mjs scripts/encoder-bypass-policy.test.mjs scripts/verify-programming.test.mjs scripts/commissioning-profile.test.mjs
           bun run check:decoupling
           bun run check:schematic-style
       - name: CC protection alias regression

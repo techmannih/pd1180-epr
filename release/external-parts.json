@@ -113,7 +113,7 @@
       "destination": "J2 via defined harness",
       "purpose": "Convert controlled phase current to shaft motion",
       "need": "basic-system",
-      "status": "User reports ordered ASIN B091C83HWF; received-label/current/mounting qualification pending",
+      "status": "User reports ordered ASIN B091C83HWF; record received label, winding pairs and rear mounting measurements at installation",
       "manufacturer_url": "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
     },
     {
@@ -178,7 +178,7 @@
       "destination": "PCB/harness mounting points, still unqualified",
       "purpose": "Secure board and prevent cable loads on solder joints",
       "need": "basic-system",
-      "status": "No rear thread/engagement measurements available; fastener/spacer set and DDV heatsink supports unapproved. Withdrawn adapters/posts are not purchase items.",
+      "status": "Select rear screws/spacers from measured thread/engagement. Fit supported DDV contact and independent restrained bench fixtures; the archived STEP supplies hole axes.",
       "manufacturer_url": ""
     },
     {
@@ -225,13 +225,13 @@
       "id": "j3-resistor",
       "item": "External brake resistor",
       "quantity": 1,
-      "part_or_candidate": "Candidate: Vishay LPS0300H10R0GB",
+      "part_or_candidate": "Vishay LPS0300H10R0GB",
       "specification": "Candidate 10 ohm / 300 W heatsink-rated; final rating unspecified",
       "source": "J3 pin 1 VMOTOR",
       "destination": "Resistor then J3 pin 2 BRAKE_RETURN",
       "purpose": "Dissipate returned energy when application needs it",
       "need": "Required for the current commissioning profile; installation and powered qualification pending",
-      "status": "Manufacturer family STEP included in assembly; 10 ohm/300 W remains provisional and unapproved for powered duty or purchase",
+      "status": "Selected first-article 10 ohm/300 W resistor; manufacturer STEP included. Install with specified cooling/TIM/guard and measure case temperature and load-dependent duty.",
       "manufacturer_url": "https://www.vishay.com/docs/50052/lps300.pdf"
     },
     {
@@ -264,13 +264,13 @@
       "id": "j3-cooling",
       "item": "Brake thermal/mechanical installation",
       "quantity": "1 installation",
-      "part_or_candidate": "Fischer SK 100 100 SA (drawing/thermal-review candidate); Bluesil Past 340 TIM",
+      "part_or_candidate": "Fischer SK 100 100 SA; Bluesil Past 340 TIM",
       "specification": "Heatsink/chassis, interface, fasteners, guard and cable support",
       "source": "Selected resistor case/terminals",
       "destination": "Qualified heat-dissipating mounting location",
       "purpose": "Remove heat and prevent contact/cable hazards",
       "need": "Required for the current commissioning profile; installation and powered qualification pending",
-      "status": "Existing 80 x 80 x 30 mm CAD and guard remain concepts. Candidate sink is not an approved 300 W assembly; actual duty, machining, supported guard and strain relief remain unqualified.",
+      "status": "Selected limited-duty first-article cooler/TIM. The 80 x 80 x 30 mm CAD block/guard are concepts; fit sink machining, guard and strain relief to the physical assembly. The thermal allocation is 10 W average, not 300 W continuous.",
       "manufacturer_url": "https://www.farnell.com/datasheets/2576985.pdf"
     },
     {
@@ -290,26 +290,26 @@
       "id": "driver-heatsink",
       "item": "DRV8462DDV top heatsink and end supports",
       "quantity": "1 installation",
-      "part_or_candidate": "Same Sky HSB14-353518 (compact cooling candidate)",
+      "part_or_candidate": "Same Sky HSB14-353518",
       "specification": "35 x 35 x 18 mm, 15 g. Contact/support and airflow must be engineered; 15 W natural-convection curve rise about 119.7 C is insufficient for the full-current target.",
       "source": "U7 exposed top pad",
       "destination": "Qualified external thermal path and approved mechanical supports",
       "purpose": "Remove integrated-bridge losses without loading the package or shorting nearby copper",
       "need": "Before motor-operation qualification",
-      "status": "Plan-view candidate only, not fitted or purchase-approved. EVM ATS-TI1OP-519-C1-R3 rejected for direct fit because its 78 x 36 x 35.6 mm envelope conflicts with surrounding parts. See cooling-selection.json.",
+      "status": "Selected first-article cooler for the bounded test profile. Fit supported DDV top contact/pedestal to the populated envelope and verify temperatures. EVM ATS-TI1OP-519-C1-R3 conflicts with surrounding parts; it is not the fitted selection. See cooling-selection.json.",
       "manufacturer_url": "https://www.sameskydevices.com/product/resource/hsb14-353518.pdf"
     },
     {
       "id": "driver-tim",
       "item": "Driver thermal interface compound",
       "quantity": "Amount per qualified bond-line process",
-      "part_or_candidate": "Arctic Silver Ceramique 2 (candidate)",
+      "part_or_candidate": "Arctic Silver Ceramique 2",
       "specification": "Nonstructural compound; actual contact area, thickness and thermal resistance require qualification; see thermal-qualification.md",
       "source": "DRV8462DDV top pad",
       "destination": "Approved driver heatsink",
       "purpose": "Conduct heat across the package-to-sink interface",
       "need": "Before motor-operation qualification",
-      "status": "Candidate only; not an adhesive or proof of cooling. Procurement and installed interface resistance unverified.",
+      "status": "Selected first-article TIM; apply a thin continuous layer with mechanical retention/support and measure installed thermal performance. Paste is not an adhesive.",
       "manufacturer_url": "https://arcticsilver.com/cmq2.html"
     },
     {
@@ -322,7 +322,7 @@
       "destination": "Approved external brake heatsink",
       "purpose": "Conduct brake heat into the sink",
       "need": "Before brake qualification",
-      "status": "Part selected; sink machining, bond line, measured thermal resistance and powered duty remain unqualified",
+      "status": "Selected resistor TIM; fit the machined sink contact and record bond line, thermal response and powered duty during commissioning.",
       "manufacturer_url": "https://www.vishay.com/docs/50052/lps300.pdf"
     }
   ],

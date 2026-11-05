@@ -37,3 +37,11 @@ for (const test of ['target_power', 'indicators']) {
   await run(`firmware/build/${test}_tests`,[])
 }
 console.log('RP2040 target call sites and portable safety/driver/encoder/STEP tests passed. Pin contract is checked separately by check:firmware-pins.')
+
+for (const profile of [1,2]) {
+  await run(process.env.CXX || 'c++',['-std=gnu++17','-Wall','-Wextra','-Werror',
+    `-DPD1180_TEST_PROFILE=${profile}`, '-DPD1180_TEST_RECORD_SHA="'+'0'.repeat(64)+'"',
+    '-Ifirmware/tests/fakes','-Ifirmware/include','firmware/tests/test_commissioning.cpp',...objects,
+    '-o',`firmware/build/commissioning_${profile}_tests`])
+  await run(`firmware/build/commissioning_${profile}_tests`,[])
+}
