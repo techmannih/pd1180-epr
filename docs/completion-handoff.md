@@ -8,12 +8,12 @@ The current revision retains nine functional A4 sheets and changes the RP2040 to
 
 ## Reviewer requirements
 
-| Requirement | Implementation | Remaining physical evidence |
+| Requirement | Implementation | Post-assembly / installation evidence |
 |---|---|---|
 | Read POWER_GOOD | Existing eFuse MOTOR_PG reaches RP2040 GP6 and the hardware enable chain. Firmware PD_READY additionally requires a fresh valid TPS sink/EPR 48 V / 5 A contract and fresh measured raw PD voltage in the 44–51 V engineering window. | Startup, cable loss, renegotiation and fault timing on actual hardware. PD_READY is derived status, not an added TPS GPIO. |
 | PD voltage via ADC | U38 INA237, I2C 0x40, senses PD_VBUS before the eFuse; 85 V bus range. ADS1115 retains VMOTOR/brake sensing after protection. | Compare both rails against a calibrated meter over startup and fault cases. |
 | Spring clamp, not JST | J2 WAGO 2601-3104, four poles; J3 WAGO 236-402, two poles. Each pole has two solder tails; no separate plugs/socket contacts. | Wire strip, insertion, pull/continuity, access, restraint and temperature acceptance. |
-| Rear mounting | Four existing Ø4.2 mm holes aligned to the ordered 34HS31-6004S1 manufacturer STEP axes. | STEP does not specify accessory threads, usable engagement or approved case-bolt replacement. No screw/spacer stack is approved. |
+| Rear mounting | Four existing Ø4.2 mm holes aligned to the ordered 34HS31-6004S1 manufacturer STEP axes. | STEP does not specify accessory threads, usable engagement or approved case-bolt replacement. Measure thread/depth to choose the screw/spacer stack. |
 
 `POWER` reports raw PD millivolts/validity/age, contract voltage/current, PD_READY, MOTOR_PG and protected VMOTOR separately. A stale ADC register cannot qualify readiness: firmware requires completion of a newly triggered bus conversion, configuration readback, identity and timing checks. Sensor/I2C loss removes the ready condition. Physical MOTOR_PG, voltage/temperature gates and brake supervision remain independent requirements.
 
@@ -36,7 +36,7 @@ See [motor harness](motor-harness.md), [brake assembly](brake-assembly.md) and [
 3. Flash/read back TI EEPROM, verify a cold APP boot and actual 48 V EPR contract. Program/read back the full 4 MiB RP2040 external flash at 0x10000000; retain board serial, binary hashes and programmer records.
 4. With motion inhibited, inspect and measure reset/enable states, all rails, USB source combinations/backfeed, PD_READY/MOTOR_PG, ADC accuracy/freshness and fault/restart behavior.
 5. Qualify the actual brake resistor, cooling, guard and containment. **10 Ω / 300 W is the selected first-article part**; its continuous load rating still depends on measured case temperature and stopping duty. Runtime voltage sensing does not absorb energy or qualify cooling.
-6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The current DRV8462 bench target is 800 mA RMS and maximum 10 rpm; these are proposed test limits, not validated performance. The default firmware remains inhibited; use the explicit commissioning profiles below.
+6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The implemented DRV8462 bench profile requests <=800 mA RMS at maximum 10 rpm, with a 10-second run and one-second stop ramp; record its physical response during the test. The default firmware remains inhibited; use the explicit commissioning profiles below.
 
 Record measured waveforms, temperatures, timing, load inertia, maximum RPM, deceleration, repetition and ambient before expanding the operating envelope. U18 stays bottom DNP until a rotating rear magnet attachment, field and airgap are qualified; C52/C53 stay DNP on top. No powered, thermal, crimp or mechanically secured fit result is claimed by software checks.
 
@@ -44,8 +44,8 @@ Run `bun run review` for reproducible engineering checks and delivery generation
 
 ## Thermal and manufacturing handoff update
 
-Use [thermal qualification](thermal-qualification.md) for the TI EVM heatsink reference, explicit cooling calculations, physical acceptance sequence and open 6 A bus-margin finding. [Manufacturing acceptance](manufacturing-acceptance.md) now follows the current RP2040/WAGO revision. Rear thread/usable engagement measurements are not available, so no screw/spacer set is approved. Full-current operation, cooling assembly and physical testing remain open; software checks do not close them.
+Use [thermal qualification](thermal-qualification.md) for the TI EVM heatsink reference, explicit cooling calculations, physical acceptance sequence and open 6 A bus-margin finding. [Manufacturing acceptance](manufacturing-acceptance.md) now follows the current RP2040/WAGO revision. Measure rear thread/usable engagement to select the screw/spacer set, fit the selected cooling/support/guard, and use post-assembly measurements to set the application current/load envelope.
 
 ## Post-assembly software workflow
 
-Use [commissioning](commissioning.md) for the diagnostic, stationary-power and bounded-motor profiles. No source-code flag edits are required. Motor/thermal measurements are performed after assembly; they are not fabricated by the software review. The current default image remains diagnostics-only.
+Use [commissioning](commissioning.md) for the diagnostic, stationary-power and bounded-motor profiles. No source-code flag edits are required. Motor/thermal measurements are performed after assembly; the software review records the automated results separately. The current default image remains diagnostics-only.

@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## Repository wording and handoff — 2026-11-06
+
+The user requests current, constructive order/assembly preparation rather than blanket readiness labels. Keep implementation results, fabrication/installation actions and post-assembly measurements distinct. Correct stale STM32/TMC/JST instructions in active guides. Preserve dated historical evidence, actual DRC/stock/simulation findings and all machine acceptance gates; wording cleanup does not authorize changing a result, bypassing a protection or claiming physical acceptance. Update generated prose and release mirrors consistently in the existing PR. Earlier dated decisions below describe their revision; the latest applicable user instruction takes precedence.
+
 ## Commissioning software and installation — 2026-11-05
 
 The user requests completed software and installation preparation, with physical testing performed by the team after assembly. Separate those phases and avoid blanket order/run-readiness claims. Explicit, board-bound stationary and low-current commissioning build profiles are authorized; keep the default shipping/diagnostics image inhibited. Do not mark inspections, readback, cold boot, mechanical fit or powered results as measured by this coding task. Preserve hardware interlocks and bounded current/speed/time, raw eight USB hole exceptions and cosmetic findings. No supplier messages or purchases. Add this work in a PR after the merged #26 revision.

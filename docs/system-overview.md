@@ -46,8 +46,8 @@ is firmware-derived; the physical eFuse `MOTOR_PG` is a different signal.
 5. Deceleration or an externally driven motor can return energy to VMOTOR.
    U13 switches the independent Q16 brake near 52 V; J3's external resistor
    dissipates the energy. U22 backs the control rail from VMOTOR and U34 provides
-   12 V brake-gate power during PD loss. The 10 ohm / 300 W resistor and cooling
-   remain provisional.
+   12 V brake-gate power during PD loss. The selected first-article resistor is 10 ohm / 300 W; install its specified
+   cooler/guard and record the load-dependent duty and temperatures.
 
 DATA alone can boot RP2040 and its flash for diagnostics. The phase amplifiers and optional encoder use a switched DATA-derived rail; firmware keeps that rail off until board power-good permits peripheral startup. DATA cannot power the motor or the PD-side ADC/temperature sensors. PD alone cannot boot RP2040. U18 is an optional, unpopulated encoder, with no
 qualified magnet mounting or closed-loop motion claim. See
@@ -94,5 +94,6 @@ The same native layout is used in the live System tab and exported SVGs. All fou
 pages were visually reviewed for readable labels, grouping and unobstructed
 connections.
 
-This is a review aid. Existing USB hole-clearance findings, sourcing and physical
-qualification holds remain; firmware motion locks are still enabled.
+Use [assembly](assembly.md) for parts allocation, fabrication/process review and
+installation, then [commissioning](commissioning.md) for programming and the
+diagnostic, stationary-power and bounded-motor sequence.

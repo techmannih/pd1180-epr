@@ -1,16 +1,16 @@
 # NEMA34 48 V EPR controller — RP2040 redesign
 
-Start here: [system block diagrams and operating sequence](https://github.com/techmannih/pd1180-epr/blob/main/docs/system-overview.md).
+[System block diagrams and operating sequence](https://github.com/techmannih/pd1180-epr/blob/main/docs/system-overview.md).
 
 ![NEMA34 system overview](https://raw.githubusercontent.com/techmannih/pd1180-epr/main/docs/system-blocks/system-overview.svg)
 
-**Design revision 0.5.0-RP2040-DRAFT — implementation and commissioning handoff.** The source now uses RP2040, DRV8462DDVR with integrated power bridges, TPS26750 for the retained 48 V / 5 A EPR input, and an optional AS5600. The reviewer ECO follows merged PR #21 (`64c14cd`) and retains that 48 V architecture. Hardware is not qualified.
+**Design revision 0.5.0-RP2040-DRAFT — implementation and commissioning handoff.** The source now uses RP2040, DRV8462DDVR with integrated power bridges, TPS26750 for the retained 48 V / 5 A EPR input, and an optional AS5600. The reviewer ECO follows merged PR #21 (`64c14cd`) and retains that 48 V architecture. Use the assembly and commissioning guides below to prepare the order and collect physical results after assembly.
 
 Start with [the nine-sheet power/component review](https://github.com/techmannih/pd1180-epr/blob/main/docs/usb-pd-architecture.md), [current reference-board decisions](https://github.com/techmannih/pd1180-epr/blob/main/docs/reference-review.md), [the redesign and evidence](https://github.com/techmannih/pd1180-epr/blob/main/docs/rp2040-redesign.md), [reviewer checklist](https://github.com/techmannih/pd1180-epr/blob/main/docs/reviewer-checklist.md) and [firmware instructions](https://github.com/techmannih/pd1180-epr/blob/main/firmware/README.md). `index.circuit.tsx` is the current schematic/placement source. The DATA-only source, firmware and native route are synchronized. The paired native review archive contains fresh DRC/ERC reports: 8 retained USB hole-clearance errors, 475 cosmetic warnings, and zero other errors, unconnected items or schematic-parity/ERC findings. The older GUI screenshot is explicitly historical.
 
 The new commissioning firmware is an ARM RP2040 image with verified ELF/BIN/UF2 format and matching source hashes. The default image remains diagnostics-only. Separate stationary-power and bounded motor-test profiles provide the post-assembly workflow: <=0.8 A RMS request, 10 rpm, 10 seconds, local START and automatic stop. Use [programming, readback and commissioning](https://github.com/techmannih/pd1180-epr/blob/main/docs/commissioning.md). Physical measurements are performed by the assembly/test team; the software results do not claim them.
 
-The hosted preview opens `release/circuit.json`; its routed payload has been regenerated from the verified native board and checked against this DATA-only source. `index.circuit.tsx` remains editable; `bun run dev` opens that source. The 0.5 DRAFT marking remains because hardware qualification is incomplete.
+The hosted preview opens `release/circuit.json`; its routed payload has been regenerated from the verified native board and checked against this DATA-only source. `index.circuit.tsx` remains editable; `bun run dev` opens that source. The PCB carries the matching 0.5 DRAFT revision marking.
 
 | Function | This design |
 | --- | --- |
@@ -21,8 +21,10 @@ The hosted preview opens `release/circuit.json`; its routed payload has been reg
 | Terminals | J2 WAGO 2601-3104 motor; J3 WAGO 236-402 brake. No JST mating plugs; paired solder tails belong to each wire entry. |
 | Encoder | AS5600 I²C, optional DNP U18 on bottom; C52/C53 on top |
 | Protection | Independent eFuse, voltage window, thermal inhibit, hardware enable gates and external J3 braking resistor retained |
-| Motor | STEPPERONLINE 34HS31-6004S1, 6 A/phase rating; this revision is not qualified at that current |
-| Mounting | Existing four motor-CAD-aligned holes retained; rear screws, depth and secure installation still unqualified |
+| Motor | STEPPERONLINE 34HS31-6004S1, 6 A/phase motor rating; initial bench-test requests <=0.8 A RMS |
+| Mounting | Four motor-CAD-aligned holes; choose screws/spacers from measured rear thread/depth and physical fit |
+
+For order preparation, use [fabrication and assembly instructions](https://github.com/techmannih/pd1180-epr/blob/main/docs/assembly.md), [the exact-part sourcing snapshot](https://github.com/techmannih/pd1180-epr/blob/main/docs/procurement.md) and [manufacturer acceptance checklist](https://github.com/techmannih/pd1180-epr/blob/main/docs/manufacturing-acceptance.md). They separate the supplied files/software from supplier allocation, installation and post-assembly measurements.
 
 Source/firmware development checks:
 

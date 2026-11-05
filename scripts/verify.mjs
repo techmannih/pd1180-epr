@@ -166,9 +166,7 @@ const verificationMarkdown = `# PD1180-EPR verification\n\n` +
   results.map((result) => `| ${result.name} | ${result.status.toUpperCase()} | ${result.seconds.toFixed(1)} s | \`${result.log}\` |`).join('\n') +
   `\n\n- Routed KiCad board verified: **${report.routed_board_verified ? 'yes' : 'no'}**\n` +
   `- Source errors/warnings: **${messageCount}**\n` +
-  `- Prototype fabrication orderable: **${report.prototype_fabrication_orderable ? 'yes' : 'no'}**\n` +
-  `- Production released: **no**\n` +
   `- Verified entry SHA-256: \`${report.entry_sha256}\`\n\n` +
-  `Production remains gated by PD programming/readback, qualified RP2040/DRV8462 operation, brake/load sizing, mounting, magnet alignment and powered thermal/EMC validation. See [docs/release-status.json](docs/release-status.json).\n`
+  `Use [assembly instructions](docs/assembly.md) for fabrication/process acceptance, parts allocation and installation; use [commissioning](docs/commissioning.md) for programming/readback, cold boot and staged powered measurements after assembly. Exact acceptance states and native findings remain in [docs/release-status.json](docs/release-status.json).\n`
 await writeFile('verification.md', verificationMarkdown)
 if(results.some(r=>r.exit_code!==0))process.exitCode=1

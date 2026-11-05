@@ -46,4 +46,4 @@ Only a recorded bounded operating envelope can approve a motor-enabled image and
 
 ## Evidence required for delivery
 
-Each serial number needs assembly inspection, both programming/readback records, cold boot, actual negotiated EPR source/cable identity, meter/telemetry comparison, power/fault/USB results and qualified motor/brake/thermal results. Identify pass criteria, operator, instruments, image hashes and measured waveforms. No blank or motion-locked assembly is a ready-to-run product. Software review and matching hashes prove reproducible artifacts, not hardware acceptance.
+Each serial number needs assembly inspection, both programming/readback records, cold boot, actual negotiated EPR source/cable identity, meter/telemetry comparison, power/fault/USB results and qualified motor/brake/thermal results. Identify pass criteria, operator, instruments, image hashes and measured waveforms. Use the diagnostic, stationary-power and bounded-motor profiles in [commissioning](commissioning.md) to collect these post-assembly records. Software review and matching hashes establish reproducible artifacts; the operator records the measured hardware results.

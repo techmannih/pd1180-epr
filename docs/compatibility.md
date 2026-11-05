@@ -1,25 +1,21 @@
-# PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR
+# Current interfaces and reference-board compatibility
 
-See [the reference comparison and reviewer response](reference-review.md) for missing functions and unresolved gates. This table describes hardware intent; industrial protocols and motor operation are not implemented in the commissioning image.
+This table describes the RP2040 / DRV8462DDVR DATA-only revision. Reference NEMA14/17/23 boards informed the review; motor size alone does not determine power, pinout or firmware compatibility.
 
-## System compatibility and integration
-
-| Area | PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR, r0.4 ECO |
+| Function | NEMA34 implementation |
 |---|---|
-| Input power | USB-C PD 3.1 EPR 48 V / 5 A requested contract; the motor output remains inhibited until a valid contract is confirmed |
-| Logic power | PD and motor-bus buck OR plus current-limited DATA LDO, reverse-blocked into the shared 3.3 V rail |
-| Motor stage | TMC5160A with external MOSFET bridges; 5.5 A RMS phase-current design target |
-| USB | J1 PD POWER plus J10 USB DATA; DATA alone powers setup; PD is required for motion, no need for the EPR charger to provide host data |
-| Step/Dir | 24 V transistor-conditioned Step and Direction inputs |
-| Encoder | Optional bottom-side AS5047P at board center (DNP), plus labelled top ABI service pads |
-| Field buses | CAN, RS485 and RS232; bus termination is fitted in the external harness |
-| Outputs | Hardware enable and two protected low-side outputs on consolidated J7; pin17 exposes VMOTOR |
-| Programming | Top-side SWD service pads for the STM32 and an I2C configuration EEPROM for the PD controller |
-| Mechanics | 85.9 × 85.9 mm TMCM-1180 V1.1 stepped outline, four 4.2 mm mounting holes on the documented asymmetric pattern |
-| Assembly | All fitted parts and service pads on top; no bottom paste. Through-hole headers and bulk capacitors may require selective or hand soldering. Revalidate the encoder magnet gap and orientation. |
+| MCU | RP2040, 12 MHz crystal, W25Q32JV 4 MiB QSPI boot flash |
+| MCU supply | J10 DATA USB; PD-powered signals cross U39/U40 isolation |
+| Motor input | J1 dedicated USB-C PD 3.1 EPR, configured 48 V / 5 A request |
+| Driver | DRV8462DDVR top-cooled DDV package, integrated H-bridges, STEP/DIR and SPI |
+| Motor connection | J2 WAGO 2601-3104: A1, A2, B1, B2 |
+| Brake connection | J3 WAGO 236-402: VMOTOR and switched BRAKE_RETURN |
+| Voltage telemetry | INA237 raw PD_VBUS; ADS1115 protected VMOTOR/brake feedback |
+| Readiness | Derived PD_READY and physical eFuse MOTOR_PG are separate |
+| Encoder option | AS5600 I²C telemetry; U18/C52/C53 DNP in the fitted assembly |
+| Local controls | SW1 reset, SW2 START/STOP; BOOTSEL and SWD service access |
+| Firmware | Board-specific diagnostic, stationary-power and bounded-motor profiles |
 
-Verify connector polarity, voltage, wire gauge, mating housings and cable keying against [assembly.md](assembly.md) before building a harness.
+J7 and the earlier industrial transceiver/external command interfaces are retired. Use [connector-harnesses.md](connector-harnesses.md) for current wiring and [commissioning.md](commissioning.md) for executable test profiles.
 
-## Related application reference
-
-The separate [tscircuit motor-driver-firmware repository](https://github.com/tscircuit/motor-driver-firmware) provides MicroPython control and a Web Serial dashboard for an RP2040/DRV8847 profile. It is distinct from the two PCB source releases inspected here. Its controller/protocol organization is a useful software reference; the supplied image, wiring and coil-sequencing driver are not compatible with this STM32/TMC5160 board. A port needs the correct SPI/current-control adapter, platform services, USB protocol, safe external STEP/DIR ownership and hardware validation. Existing `HELP`/`STATUS`/`DRIVER` CDC commands do not establish dashboard compatibility. No firmware port or dashboard support is claimed by this comparison.
+The reference-board power-source comparison is recorded in [reviewer-power-reference.json](../engineering/reviewer-power-reference.json). Their RP2040 examples are useful architectural references; a different driver pinout or register model requires a board-specific firmware build. A generic RP2040/DRV8847 image or dashboard is not a substitute for the supplied DRV8462 firmware and readback procedure.

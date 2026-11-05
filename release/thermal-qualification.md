@@ -36,7 +36,7 @@ Before fitting a sink, overlay its exact manufacturer drawing/CAD at U7, include
 
 ## Brake resistor and cooling
 
-Retain J3. The provisional part is **Vishay LPS0300H10R0GB, 10 Ω ±2%, 300 W**. [Vishay LPS300](https://www.vishay.com/docs/50052/lps300.pdf) rates 300 W with bottom case at 85 °C and gives element-to-case 0.112 °C/W. Thus the rating is conditional on cooling; the assembly's 80×80×30 mm CAD block is a conceptual envelope, not a rated heatsink. Follow the manufacturer's flatness/TIM and 2 N·m mounting/terminal instructions, subject to the actual hardware/terminal stack.
+Retain J3. The selected first-article part is **Vishay LPS0300H10R0GB, 10 Ω ±2%, 300 W**. [Vishay LPS300](https://www.vishay.com/docs/50052/lps300.pdf) rates 300 W with bottom case at 85 °C and gives element-to-case 0.112 °C/W. Thus the rating is conditional on cooling; the assembly's 80×80×30 mm CAD block is a conceptual envelope, not a rated heatsink. Follow the manufacturer's flatness/TIM and 2 N·m mounting/terminal instructions, subject to the actual hardware/terminal stack.
 
 At 53 V and 10 Ω, brake-on current is 5.3 A and dissipation 280.9 W. At the 55 V screen and minimum 9.8 Ω, it is 5.612 A / 308.7 W. This exceeds 300 W as a continuous load at an 85 °C case. Pulse and average duty must both be checked; no arbitrary pulse duration is authorized by this calculation.
 

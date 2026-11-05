@@ -1,9 +1,9 @@
-# TMC5160 operating-mode review
+# RP2040 / DRV8462 motion-control review
 
-The current source uses the TMC5160 internal SPI ramp with SD_MODE held low. J7 and its external STEP/DIR/ENABLE/home/limit conditioning have been removed. U7 pins 17, 18, 23, 24 and 25 are grounded; the retained STM32 PA8 connection and R36 pulldown keep SD_MODE low. The prior external STEP/DIR architecture is superseded.
+RP2040 generates STEP/DIR for U7 DRV8462DDVR and configures/checks its registers over SPI. The target uses a 20 µs timer and a command lease; a late timer or stalled main loop stops pulses, lowers enable and latches a fault. J7 and the former external command input are retired.
 
-SW2 is a local START/STOP input on STM32 PC6 with a 10k pull-up to the MCU power domain. SW1 remains reset. Firmware selects positive velocity mode, limits the commissioning target to approximately 10 RPM at the nominal clock, and commands VMAX=0 before a normal stop. It waits for zero actual velocity before disarming; communication failures and stop timeout latch a fault. A physical release and a separate press are required to start again.
+SW2 provides local START/STOP. The diagnostic image keeps motor power and motion inhibited. The explicit `power-test` profile enables only the stationary motor bus, with ENABLE/STEP low and a 30-second limit. The `bench-test` profile requests <=800 mA RMS, ramps to 10 rpm, runs for 10 seconds and then requests a one-second stop ramp. A second local press requests the same controlled stop. Faults, DATA loss, suspend and USB DISARM remove enable immediately; that response is distinct from a normal deceleration.
 
-The existing hardware RUN_SAFE chain, driver-enable pull-up, temperature inhibit, bus protection and brake stage remain. U7 pin functions and velocity-ramp semantics are checked against [ADI TMC5160A datasheet Rev.1.18](https://www.analog.com/media/en/technical-documentation/data-sheets/tmc5160a_datasheet_rev1.18.pdf). These changes do not certify a stop time or emergency-stop function.
+The hardware RUN_SAFE chain independently requires MCU_RUN, MOTOR_PG, VMOTOR_OK and TEMP_OK. The input eFuse and bus-powered brake remain active protection paths. Every boot starts disarmed; acknowledging a fault and starting again require separate actions. USB ARM does not start motion.
 
-The actual STM32 image and host tests build, but `motionWiringVerified` and `pdImageVerified` remain false. Motor power/motion are locked until the TI image, gate drive, current regulation, protection and powered motor behavior have recorded bench evidence.
+Target tests exercise startup timing, SPI-readiness freshness, pulse generation, the run/stop deadlines and fault handling. Follow [commissioning](commissioning.md) for board-bound profile builds and post-assembly measurements. The stop ramp is a software request whose physical response is measured during that procedure; it is not a certified emergency-stop function.

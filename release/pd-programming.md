@@ -72,7 +72,7 @@ The [unused-SBU correction](pd-configuration-review.md) is applied and native-ch
 
 ## Prepared TI image; physical programming pending
 
-Run `bun scripts/check-pd-image.mjs` before programming. Keep all four motion qualification flags false. Retain the complete EEPROM dump, programmer log, serial and SHA-256; verify `APP ` and register 0x06 = `PD118041`, then perform the stationary fault/negotiation sequence in `pd-configuration-review.md`. An exported binary is not a readback. TI tool import can reset role-dependent fields; use the archived reviewed binary or re-export and revalidate all fields. No hardware was flashed in this review.
+Run `bun scripts/check-pd-image.mjs` before programming. Use the default diagnostic profile, with all four motion qualification flags false, for this programming stage. Retain the complete EEPROM dump, programmer log, serial and SHA-256; verify `APP ` and register 0x06 = `PD118041`, then perform the stationary fault/negotiation sequence in `pd-configuration-review.md`. An exported binary is not a readback. TI tool import can reset role-dependent fields; use the archived reviewed binary or re-export and revalidate all fields. No hardware was flashed in this review.
 
 ## RP2040 programming and cold-boot acceptance
 

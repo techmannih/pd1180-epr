@@ -54,7 +54,7 @@ Removing U22 without another motor-bus-powered brake-control path can disable th
 
 U26/R112/C77 and the board-to-MCU analog divider R119/R120 are removed. U27 is the sole MCU supply path, enabled by grounding CE. RP2040 GP28 reads `LOGIC_PG_MCU` digitally through U40; it no longer reports a board-voltage ADC value. U41 switches V3V3_MCU into V3V3_SENS for U31/U32 VS/REF2, the optional encoder and its pull-ups. All board-side I2C nets use the `_BOARD` suffix. U39 EN follows V3V3_MCU; the DATA-side 4.7 kΩ pull-ups cannot feed PD_3V3.
 
-Verify PD-only, DATA-only, both-supply startup, DATA detach and PD loss with a meter/scope, including the unpowered rail. The buffer's Ioff rating is a bounded leakage specification, not proof of zero physical leakage. Reconnection must leave motion disarmed. Existing four qualification locks remain false.
+Verify PD-only, DATA-only, both-supply startup, DATA detach and PD loss with a meter/scope, including the unpowered rail. The buffer's Ioff rating is a bounded leakage specification, not proof of zero physical leakage. Reconnection must leave motion disarmed. The default diagnostic image keeps its four qualification locks false; explicit test profiles and their prerequisite records are described in [commissioning](commissioning.md).
 
 The DATA-domain change also increases its active load. Each [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf) uses up to 2.6 mA over temperature (5.2 mA for the pair before MCU/flash/optional encoder). These amplifiers have no shutdown input, so U41 disconnects their supply during USB suspend. Stopping buses alone would leave that load powered. Total USB suspend current, including MCU, flash and regulator losses, still requires measurement before the compliance gate can close.
 
@@ -64,7 +64,7 @@ C22/C23 are now 1000 µF each. C18 is 1 µF to slow TPS26630 startup: the no-loa
 
 [TI DRV8462](https://www.ti.com/lit/ds/symlink/drv8462.pdf) specifies DDW at 5 A full-scale / 3.5 A RMS and DDV at 10 A full-scale / 7 A RMS, subject to thermal design. DDW has its exposed thermal pad underneath; DDV has it on top, and the pin maps differ. They are not interchangeable on this PCB.
 
-Retain **DRV8462DDVR** for the ordered 34HS31-6004S1 motor's 6 A/phase target. A cheaper DDWR could operate the motor at reduced current, but does not preserve that target. Neither the motor's phase label nor DDV's headline rating establishes an approved operating RMS current. Firmware remains locked at the restricted commissioning configuration; see [thermal qualification](thermal-qualification.md). No supplier screenshot is treated as a current price/stock reservation.
+Retain **DRV8462DDVR** for the ordered 34HS31-6004S1 motor's 6 A/phase target. A cheaper DDWR could operate the motor at reduced current, but does not preserve that target. Neither the motor's phase label nor DDV's headline rating establishes an approved operating RMS current. The diagnostic image and the bounded test profiles are described in [commissioning](commissioning.md); see [thermal qualification](thermal-qualification.md). No supplier screenshot is treated as a current price/stock reservation.
 
 ## Every IC's purpose
 

@@ -1,6 +1,6 @@
 # J3 brake assembly and encoder-only bottom
 
-The source `motor-assembly.circuit.tsx` and default routed 3D assembly include the J3 spring-clamp terminations, two cables, resistor terminations, resistor and a **provisional cooling/guard installation**. J2's existing four-wire motor harness is retained. This is a connected nominal CAD assembly, not a qualified powered product or an instruction to buy the illustrative heatsink.
+The source `motor-assembly.circuit.tsx` and default routed 3D assembly include the J3 spring-clamp terminations, two cables, resistor terminations, resistor and a **conceptual cooling/guard installation**. J2's existing four-wire motor harness is retained. Use the CAD for the nominal wiring layout and [thermal installation](thermal-qualification.md) for the selected first-article cooler/TIM and physical support/guard requirements. The illustrative CAD cooler is not the selected supplier model.
 
 ## External assembly inventory
 
@@ -9,7 +9,7 @@ The source `motor-assembly.circuit.tsx` and default routed 3D assembly include t
 | On PCB | WAGO 236-402 | Two poles, 5 mm pitch; strip 5–6 mm and use the specified spring-clamp operating tool |
 | 1 each | Alpha Wire 3057 RD005 / BK005 | Red nominal **165 mm**, black nominal **210 mm** cuts, including 16 mm termination/adjustment allowance per conductor |
 | 2 | TE Connectivity 152883 | 18–16 AWG, M4 ring with 4.3 mm bore; partly insulated, requires guarded installation |
-| 1 | Vishay LPS0300H10R0GB | **Provisional** 10 Ω ±2%, 300 W at specified case temperature with suitable cooling |
+| 1 | Vishay LPS0300H10R0GB | Selected first-article 10 Ω ±2%, 300 W at specified case temperature with suitable cooling |
 | 2 each | M4 mounting and terminal fastener sets | Resistor drawing lists M4×25 mounting screws and M4 connection hardware with lock washers; confirm the supplied kit and thread engagement before assembly |
 | 1 installation | Thermal interface, heatsink/chassis, terminal guard and cable restraint | The model shows an 80×80×30 mm cooling envelope and a guard concept. The model remains conceptual; Bluesil Past 340 is selected as the resistor TIM and Fischer SK 100 100 SA is a separate sink candidate for drawing/thermal review. Neither the existing model nor the candidate is a verified cooling/retention assembly. See thermal-qualification.md. |
 
