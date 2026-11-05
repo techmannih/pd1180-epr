@@ -51,6 +51,7 @@ verifiedInputPaths.push('firmware/tests/test_pd_voltage.c', 'firmware/tests/test
 verifiedInputPaths.push('scripts/manufacturing-handoff.mjs', 'scripts/manufacturing-handoff.test.mjs', 'docs/thermal-qualification.md', 'docs/power-validation.md')
 verifiedInputPaths.push('docs/usb-pd-architecture.md', 'docs/reference-review.md', 'engineering/reviewer-power-reference.json', 'engineering/schematic-review-baseline.json', 'scripts/check-source-schematic.mjs')
 verifiedInputPaths.push('system-overview.tsx', 'scripts/system-overview.mjs', 'scripts/system-overview.test.mjs', 'scripts/check-system-overview.mjs')
+verifiedInputPaths.push('engineering/manufacturing-acceptance-record.json', 'engineering/mechanical/cooling-selection.json')
 const inputsBefore = await hashInputs()
 const checks = [
   ['toolchain', ['run', 'check:toolchain']],

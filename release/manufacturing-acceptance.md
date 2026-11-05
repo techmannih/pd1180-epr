@@ -9,8 +9,8 @@
 | PCB | 85.9 × 85.9 mm stepped outline; four layers; 1.6 mm; 1 oz on every layer; ENIG; top assembly | Supplier accepts the actual stack-up, electrical test and drawing |
 | Copper | Minimum track **0.15 mm**; copper spacing **0.10 mm**; global copper-to-edge **0.20 mm** | Retain source/native rules; do not substitute defaults |
 | GND inner plane | Clearance **0.30 mm**, edge inset **0.50 mm** | Independent of the global edge rule |
-| Via-in-pad | **27 locations**, epoxy filled and copper capped | Coordinate list and board hash in `rp2040-via-in-pad.json`; inspect planarity and joints |
-| Fitted assembly | **237 components**, all top; U18 bottom DNP, C52/C53 top DNP | Matching BOM/CPL/Gerbers; selective or hand soldering of WAGO terminals and tall parts agreed |
+| Via-in-pad | **66 locations**, epoxy filled and copper capped | Coordinate list and board hash in `rp2040-via-in-pad.json`; inspect planarity and joints |
+| Fitted assembly | **243 components**, all top; U18 bottom DNP, C52/C53 top DNP | Matching BOM/CPL/Gerbers; selective or hand soldering of WAGO terminals and tall parts agreed |
 | USB receptacles | C3025063 / USB4105-GF-A-060; 0.60 mm stakes on a 1.6 mm board | Joint/retention acceptance; stakes need not protrude through the board |
 | USB routing | 90 Ω differential design target, ±10% project tolerance | Selected stack-up, actual geometry field-solver result and coupon/TDR plus functional USB test |
 | Driver cooling | DDV exposed **top** pad, TIM, heatsink and mechanically supported contact | See `thermal-qualification.md`; no approved cooling assembly or full-current rating yet |
@@ -23,7 +23,7 @@ The exact via list, including U38/C109 and C103 signal fanout locations, superse
 
 ## Native findings and retained holds
 
-Read the current `kicad-drc.json` rather than a historical screenshot. The reviewed baseline has **eight J1/J10 hole-clearance errors and 451 cosmetic warnings**, with zero unconnected, schematic-parity and ERC findings. Those retained errors are permitted for engineering review only. Obtain explicit fabricator acceptance or a reviewed footprint correction before ordering; do not lower rules merely to obtain zero errors. Cosmetic review must also ensure safety/polarity markings remain legible.
+Read the current `kicad-drc.json` rather than a historical screenshot. The reviewed baseline has **eight J1/J10 hole-clearance errors and 475 cosmetic warnings**, with zero unconnected, schematic-parity and ERC findings. Those retained errors are permitted for engineering review only. Obtain explicit fabricator acceptance or a reviewed footprint correction before ordering; do not lower rules merely to obtain zero errors. Cosmetic review must also ensure safety/polarity markings remain legible.
 
 ## Mounting measurements
 
@@ -46,3 +46,9 @@ U35 remains PCA9538PWR with U37 PD_3V3-domain reset buffering. Its supplier-styl
 Program U3 with the registered TI image, read the full **65,536-byte EEPROM**, then verify a cold APP boot and actual EPR contract. Program U16's external flash with the current RP2040 image and read back **4,194,304 bytes from 0x10000000**. All four motion qualification flags remain false. The included diagnostics image is not a ready-to-run deliverable. Secure installation, voltage/fault tests and qualified low-current/braking/thermal tests must precede a motor-enabled image.
 
 Both USB mating faces nominally extend 0.2856 mm beyond the board edge; qualify real plug/enclosure access using `usb-access.md`.
+
+## Record supplied for manufacturer review
+
+Use [manufacturing-acceptance-record.json](../engineering/manufacturing-acceptance-record.json) for the exact release identity, supplier stack-up, impedance evidence, filled/capped process, USB-hole disposition and critical-marking inspection. Blank fields are outstanding approvals, not implied acceptance. This request has not been sent to a supplier.
+
+Review the actual final top/bottom fabrication plots and first assembled article. Confirm PWR/DATA identity, motor phase order, brake polarity/return, capacitor polarity and programming/service contacts. The brake return is **not GND**. A readable screen preview does not establish the legibility of printed or assembly-obscured markings. Reject removal or ambiguity of these identifiers even if cosmetic reference overlaps are retained for engineering review.

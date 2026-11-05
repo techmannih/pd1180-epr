@@ -31,7 +31,7 @@ export const BoardDiagnostics = () => (
     <net name="RGB_R_K" isPowerNet={false} />
     <PCA9538PWR name="U35" schWidth={2.132} schHeight={1.6} schPinArrangement={{ topSide: ["pin16"], leftSide: ["pin3", "pin14", "pin15"], rightSide: ["pin4", "pin5", "pin6", "pin7", "pin13"], bottomSide: ["pin1", "pin2", "pin8", "pin9", "pin10", "pin11", "pin12"] }} schSectionName="indicators_U35"
       pcbX={35.5} pcbY={-24.25} pcbRotation={0} layer="top" noConnect={["pin13"]}
-      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.U35_RESET_N", pin4: "net.RGB_R_DRV", pin5: "net.RGB_G_DRV", pin6: "net.RGB_B_DRV", pin7: "net.BUZZER_EN", pin8: "net.GND", pin9: "net.GND", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin14: "net.PD_SCL", pin15: "net.PD_SDA", pin16: "net.PD_3V3" }} schSheetName="indicators" schX={-6.175} schY={2.112} />
+      connections={{ pin1: "net.GND", pin2: "net.GND", pin3: "net.U35_RESET_N", pin4: "net.RGB_R_DRV", pin5: "net.RGB_G_DRV", pin6: "net.RGB_B_DRV", pin7: "net.BUZZER_EN", pin8: "net.GND", pin9: "net.GND", pin10: "net.GND", pin11: "net.GND", pin12: "net.GND", pin14: "net.PD_SCL_BOARD", pin15: "net.PD_SDA_BOARD", pin16: "net.PD_3V3" }} schSheetName="indicators" schX={-6.175} schY={2.112} />
     {/* The PCA9538 RESET erratum forbids direct drive from the independent MCU rail. */}
     <SN74LVC1G17DBVR name="U37" schSectionName="indicators_U35" schWidth={1.485} schHeight={0.97}
       schPinArrangement={{leftSide:["pin2"],rightSide:["pin4","pin1"],topSide:["pin5"],bottomSide:["pin3"]}}
@@ -74,10 +74,10 @@ export const BoardDiagnostics = () => (
       pcbX={-28.75} pcbY={-18.0} pcbRotation={180} layer="top" resistance="1k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C21190"] }}
       connections={{ pin1: "net.BUZZER_EN", pin2: "net.BUZZER_GATE" }} schSheetName="indicators" schX={-11.387} schY={-5.485} />
     <resistor name="R127" schSectionName="alarm_BZ1"
-      pcbX={-35.0} pcbY={-19.75} pcbRotation={90} layer="top" resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }} schRotation={270}
+      pcbX={-41.25} pcbY={-21.25} pcbRotation={90} layer="top" resistance="100k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25803"] }} schRotation={270}
       connections={{ pin1: "net.BUZZER_GATE", pin2: "net.GND" }} schSheetName="indicators" schX={-8.372} schY={-8} />
     <resistor name="R128"
-      pcbX={-27.5} pcbY={-25.75} pcbRotation={90} layer="top" resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
+      pcbX={-26.5} pcbY={-25.75} pcbRotation={90} layer="top" resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }}
       connections={{ pin1: "net.V3V3", pin2: "net.POWER_LED_A" }} schSheetName="indicators" schX={11} schY={3.732} schRotation={270} schSectionName="indicators_power-led" />
     <capacitor name="C95" schSectionName="indicators_U35"
       pcbX={31.85} pcbY={-22.8} pcbRotation={270} layer="top" capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} schRotation={270} decouplingFor=".U35 > .pin16"
@@ -119,10 +119,10 @@ export const BoardDiagnostics = () => (
       pcbX={7.0} pcbY={41.0} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
       connections={{ pin1: "net.PD_VBUS" }} schSheetName="telemetry" schX={-2.5} schY={-8.8} />
     <testpoint doNotPlace name="TP_VMOTOR" schSectionName="pd-programming_U36"
-      pcbX={9.5} pcbY={40.75} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
+      pcbX={9.5} pcbY={39.0} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
       connections={{ pin1: "net.VMOTOR" }} schSheetName="telemetry" schX={4.5} schY={-8.8} />
     <testpoint doNotPlace name="TP_PWR_GND" schSectionName="pd-programming_U36"
-      pcbX={22} pcbY={40.75} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
+      pcbX={23.75} pcbY={41.75} pcbRotation={0} layer="top" footprint={<footprint><smtpad portHints={["pin1"]} shape="circle" radius="0.7mm" /><courtyardcircle radius="0.95mm" /></footprint>}
       connections={{ pin1: "net.GND" }} schSheetName="telemetry" schX={11.5} schY={-8.8} />
     <resistor name="R132" schSectionName="indicators_U35"
       pcbX={40.75} pcbY={-24.25} pcbRotation={90} layer="top" resistance="10k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C844918"] }} schRotation={270}

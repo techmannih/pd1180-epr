@@ -239,7 +239,7 @@
       "item": "Brake conductors",
       "quantity": 2,
       "part_or_candidate": "Candidate Alpha Wire 3057 RD005 / BK005",
-      "specification": "16 AWG Alpha3057, 300 V / 105 C; modeled red 150 mm and black 115 mm cuts including 16 mm termination allowance; first-article length and installed temperature unqualified",
+      "specification": "16 AWG Alpha3057, 300 V / 105 C; modeled red 165 mm and black 210 mm cuts including 16 mm termination/adjustment allowance; first-article length and installed temperature unqualified",
       "source": "J3 pins 1/2",
       "destination": "Separate resistor terminals",
       "purpose": "Outgoing bus and switched return; not permanent ground",
@@ -264,14 +264,14 @@
       "id": "j3-cooling",
       "item": "Brake thermal/mechanical installation",
       "quantity": "1 installation",
-      "part_or_candidate": null,
+      "part_or_candidate": "Fischer SK 100 100 SA (drawing/thermal-review candidate); Bluesil Past 340 TIM",
       "specification": "Heatsink/chassis, interface, fasteners, guard and cable support",
       "source": "Selected resistor case/terminals",
       "destination": "Qualified heat-dissipating mounting location",
       "purpose": "Remove heat and prevent contact/cable hazards",
       "need": "Required for the current commissioning profile; installation and powered qualification pending",
-      "status": "80x80x30 mm cooling envelope and slotted guard shown as concepts only; no selected/orderable heatsink, cooling rating, retention or physical-fit approval",
-      "manufacturer_url": ""
+      "status": "Existing 80 x 80 x 30 mm CAD and guard remain concepts. Candidate sink is not an approved 300 W assembly; actual duty, machining, supported guard and strain relief remain unqualified.",
+      "manufacturer_url": "https://www.farnell.com/datasheets/2576985.pdf"
     },
     {
       "id": "encoder",
@@ -290,14 +290,14 @@
       "id": "driver-heatsink",
       "item": "DRV8462DDV top heatsink and end supports",
       "quantity": "1 installation",
-      "part_or_candidate": "ATS-TI10P-519-C1-R3 (TI VEVM reference only)",
-      "specification": "Heatsink contact on DDV exposed top through TIM; support both IC ends; production load below 45 N per TI. No approved fit/airflow curve on this PCB.",
+      "part_or_candidate": "Same Sky HSB14-353518 (compact cooling candidate)",
+      "specification": "35 x 35 x 18 mm, 15 g. Contact/support and airflow must be engineered; 15 W natural-convection curve rise about 119.7 C is insufficient for the full-current target.",
       "source": "U7 exposed top pad",
       "destination": "Qualified external thermal path and approved mechanical supports",
       "purpose": "Remove integrated-bridge losses without loading the package or shorting nearby copper",
       "need": "Before motor-operation qualification",
-      "status": "Candidate identified in TI MD041A(001) BOM; not fitted in assembly CAD or selected for purchase; dimensions, attachment, actual thermal resistance and motor clearance remain unqualified",
-      "manufacturer_url": "https://www.ti.com/tool/DRV8462VEVM"
+      "status": "Plan-view candidate only, not fitted or purchase-approved. EVM ATS-TI1OP-519-C1-R3 rejected for direct fit because its 78 x 36 x 35.6 mm envelope conflicts with surrounding parts. See cooling-selection.json.",
+      "manufacturer_url": "https://www.sameskydevices.com/product/resource/hsb14-353518.pdf"
     },
     {
       "id": "driver-tim",
@@ -311,6 +311,19 @@
       "need": "Before motor-operation qualification",
       "status": "Candidate only; not an adhesive or proof of cooling. Procurement and installed interface resistance unverified.",
       "manufacturer_url": "https://arcticsilver.com/cmq2.html"
+    },
+    {
+      "id": "brake-tim",
+      "item": "Brake-resistor thermal interface compound",
+      "quantity": "Amount per qualified bond-line process",
+      "part_or_candidate": "Bluesil Past 340",
+      "specification": "Interface selection named in Vishay LPS300 mounting guidance; apply on approved flat, prepared sink surface with specified screw torque",
+      "source": "LPS300 base",
+      "destination": "Approved external brake heatsink",
+      "purpose": "Conduct brake heat into the sink",
+      "need": "Before brake qualification",
+      "status": "Part selected; sink machining, bond line, measured thermal resistance and powered duty remain unqualified",
+      "manufacturer_url": "https://www.vishay.com/docs/50052/lps300.pdf"
     }
   ],
   "architecture_revision": "0.5.0-RP2040-DRAFT",

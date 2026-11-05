@@ -135,7 +135,7 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   const board=data.find(item=>item.type==='pcb_board')
   expect(cad.position.x).toBeCloseTo(pcb.center.x,6)
   expect(cad.position.y).toBeCloseTo(pcb.center.y,6)
-  expect(cad.model_step_url).toContain('C407954.step')
+  expect(cad.model_step_url).toContain('C407979.step')
   const distance=(point,start,end)=>{
     const dx=end.x-start.x,dy=end.y-start.y
     if(dx===0&&dy===0)return Math.hypot(point.x-start.x,point.y-start.y)
@@ -144,8 +144,8 @@ test('C22 bulk capacitor body and CAD model stay inside the stepped board outlin
   }
   const edges=board.outline.map((point,index)=>[point,board.outline[(index+1)%board.outline.length]])
   const minimumCenterToEdge=Math.min(...edges.map(([start,end])=>distance(pcb.center,start,end)))
-  // Imported courtyard radius is 6.505 mm, leaving more than 1.4 mm to the exact STEP outline.
-  expect(minimumCenterToEdge).toBeGreaterThan(7.9)
+  // 16 mm can plus diameter tolerance and assembly clearance are modeled explicitly.
+  expect(minimumCenterToEdge).toBeGreaterThan(8.5)
 })
 test('source connectivity does not short power, ground, or the switched motor rail',()=>{
   const names=['USB_DATA_VBUS','GND','PD_VBUS','VMOTOR','V3V3','V3V3_PD','V3V3_MOTOR','LOGIC_OR_PRIORITY','VBUS_LV','PD_1V5','BRAKE_12V']
@@ -220,7 +220,7 @@ test('logic boots upstream of the gated motor power path',()=>{
 test('integrated driver retains independent hardware shutdown and both motor bridges',()=>{
   on('U7',26,'RUN_SAFE');on('R55',1,'RUN_SAFE');on('R55',2,'GND')
   on('U7',25,'DRV_SLEEP_N');on('R37',1,'DRV_SLEEP_N');on('R37',2,'GND')
-  on('U10',1,'MCU_RUN');on('U10',2,'MOTOR_PG');on('U11',2,'VMOTOR_OK')
+  on('U10',1,'MCU_RUN');on('U10',2,'MOTOR_PG_BOARD');on('U11',2,'VMOTOR_OK_BOARD')
   on('U33',1,'RUN_WINDOW_OK');on('U33',2,'TEMP_OK');on('U33',4,'RUN_SAFE')
   for(const ref of ['Q6','Q7','Q8','Q9','Q10','Q11','Q12','Q13','Q14','Q15','R109','R110']) expect(comp(ref)).toBeUndefined()
   for(const [pins,net] of [[[4,5,6],'MOTOR_B1'],[[7,8,9],'MOTOR_B2'],[[14,15,16],'MOTOR_A2'],[[17,18,19],'MOTOR_A1']])
@@ -238,7 +238,7 @@ test('brake dissipates downstream energy without feeding the USB supply',()=>{
 })
 test('RP2040 retains USB attach sense, data and SWD with unused GPIO disconnected',()=>{
   for(const [pin,net]of [[41,'USB_VBUS_SENSE'],[46,'USB_DM'],[47,'USB_DP'],[25,'SWDIO'],[24,'SWCLK']])on('U16',pin,net)
-  for(const pin of [6,7,34,35,36,37])expect(key('U16',pin)).toBeFalsy()
+  for(const pin of [6,7,34,35,37])expect(key('U16',pin)).toBeFalsy()
   on('U16',57,'GND');on('U16',19,'GND')
   expect(ports.filter(p=>p.source_component_id===comp('U16').source_component_id).length).toBe(57)
 })
@@ -280,24 +280,23 @@ test('onboard control replaces every unsupported external command connection',()
   for(const name of eco.removed_nets)expect(nets.some(n=>n.name===name)).toBe(false)
   on('SW2',1,'USER_BUTTON_N');on('SW2',2,'GND');on('U16',14,'USER_BUTTON_N')
   on('R133',1,'V3V3_MCU');on('R133',2,'USER_BUTTON_N')
-  for(const p of [6,7,34,35,36,37])expect(key('U16',p)).toBeFalsy()
+  for(const p of [6,7,34,35,37])expect(key('U16',p)).toBeFalsy()
 })
 test('DRV8462 SPI configuration and AS5600 I2C encoder use independent interfaces',()=>{
-  on('U7',39,'V3V3');on('U7',33,'DRV_CS_N')
-  on('U7',29,'SPI_SCK');on('U7',30,'SPI_MOSI');on('U7',31,'SPI_MISO')
+  on('U7',39,'V3V3');on('U7',33,'DRV_CS_N_BOARD')
+  on('U7',29,'SPI_SCK');on('U7',30,'SPI_MOSI');on('U7',31,'SPI_MISO_BOARD')
   for(const pin of [32,35,36,37,38])expect(key('U7',pin)).toBeFalsy()
   on('U18',6,'ENC_SDA');on('U18',7,'ENC_SCL');on('U18',3,'ENC_OUT');on('U18',8,'GND')
   on('U16',17,'ENC_SDA');on('U16',18,'ENC_SCL')
   expect(key('U18',5)).toBeFalsy()
 })
 
-test('DATA powers only logic through a current limiter, regulator and reverse-blocking OR',()=>{
+test('DATA is the sole MCU supply and the reverse blocker has no PD enable dependency',()=>{
   on('U28',1,'USB_DATA_VBUS');on('U28',3,'USB_DATA_VBUS');on('U28',6,'USB_LOGIC_5V')
   on('U25',1,'USB_LOGIC_5V');on('U25',5,'V3V3_USB')
-  on('U26',1,'V3V3');on('U26',3,'V3V3_USB');on('U26',5,'USB_OR_SELECT')
-  on('U27',1,'V3V3_USB');on('U27',3,'USB_OR_SELECT');on('U27',5,'GND')
-  on('R112',1,'V3V3');on('R112',2,'USB_OR_SELECT')
-  for(const ref of ['U26','U27'])on(ref,6,'V3V3_MCU')
+  on('U27',1,'V3V3_USB');on('U27',3,'GND');on('U27',5,'GND');on('U27',6,'V3V3_MCU')
+  for(const name of ['U26','R112','C77','R119','R120']) expect(comp(name)).toBeUndefined()
+  expect(netKey('USB_OR_SELECT')).toBeUndefined()
   expect(new Set(['PD_VBUS','USB_DATA_VBUS','USB_LOGIC_5V','V3V3_USB','V3V3','V3V3_MCU','VMOTOR'].map(netKey)).size).toBe(7)
 })
 test('both winding shunts are in series and feed bidirectional phase diagnostics',()=>{
@@ -305,7 +304,7 @@ test('both winding shunts are in series and feed bidirectional phase diagnostics
     on(shunt,1,`MOTOR_${phase}1`);on(shunt,2,`MOTOR_${phase}1_OUT`)
     on('J2',connectorPin,`MOTOR_${phase}1_OUT`)
     on(amp,8,`MOTOR_${phase}1`);on(amp,1,`MOTOR_${phase}1_OUT`)
-    on(amp,3,'GND');on(amp,7,'V3V3');on(amp,6,'V3V3')
+    on(amp,3,'GND');on(amp,7,'V3V3_SENS');on(amp,6,'V3V3_SENS')
     on(amp,5,`PHASE_${phase}_RAW`);on(filter,1,`PHASE_${phase}_RAW`);on(filter,2,`PHASE_${phase}_ADC`)
     on('U16',adc,`PHASE_${phase}_ADC`)
     expect(netKey(`MOTOR_${phase}1`)).not.toBe(netKey(`MOTOR_${phase}1_OUT`))
@@ -322,16 +321,12 @@ test('TMP102 hardware alert inhibits the run chain independently of MCU_RUN',()=
   on('U33',4,'RUN_SAFE');on('R55',1,'RUN_SAFE')
   expect(netKey('RUN_WINDOW_OK')).not.toBe(netKey('RUN_SAFE'))
   on('U30',1,'V3V3') // 0x49, distinct from TMP102 ADD0=GND at 0x48.
-  for(const [ref,sda,scl] of [['U29',6,1],['U30',9,10]]){on(ref,sda,'PD_SDA');on(ref,scl,'PD_SCL')}
+  for(const [ref,sda,scl] of [['U29',6,1],['U30',9,10]]){on(ref,sda,'PD_SDA_BOARD');on(ref,scl,'PD_SCL_BOARD')}
 })
 
-test('USB-only power is confined to the MCU and its local controls/decoupling',()=>{
-  const mcuRail=netKey('V3V3_MCU')
-  const attached=new Set(ports.filter(p=>p.subcircuit_connectivity_map_key===mcuRail).map(p=>components.find(c=>c.source_component_id===p.source_component_id).name))
-  expect([...attached].sort()).toEqual(['U16','U17','U26','U27','C44','C45','C46','C47','C51','C100','C101','C102','C106','C107','C108','R70','R73','R133','TP_SWD_3V3'].sort())
-  for(const [ref,pin] of [['U31',6],['U32',6],['U18',1],['U18',2]])on(ref,pin,'V3V3')
-  on('U16',40,'BOARD_POWER_SENSE');on('R119',1,'V3V3');on('R119',2,'BOARD_POWER_SENSE')
-  on('R120',1,'BOARD_POWER_SENSE');on('R120',2,'GND')
+test('DATA powers MCU, local controls, encoder and phase-amplifier outputs',()=>{
+  for(const [ref,pin] of [['U31',6],['U31',7],['U32',6],['U32',7],['U18',1],['U18',2],['C81',1],['C82',1],['C52',1],['C53',1],['R140',1],['R141',1],['TP_ENC_3V3',1]])on(ref,pin,'V3V3_SENS')
+  on('U16',40,'LOGIC_PG_MCU');on('U40',15,'LOGIC_PG');on('U40',5,'LOGIC_PG_MCU')
   expect(key('U2',10)).toBeFalsy()
 })
 
@@ -344,7 +339,7 @@ test('indicator reset silences the alarm without relying on I2C or stealing indu
   expect(manifest.parts.find(p=>p.name==='R137').value).toBe('47k'); on('R132',1,'STATUS_GPIO'); on('R132',2,'GND')
   on('U35',16,'PD_3V3'); on('C95',1,'PD_3V3'); on('C95',2,'GND')
   for(const pin of [1,2,8,9,10,11,12])on('U35',pin,'GND')
-  on('U35',14,'PD_SCL');on('U35',15,'PD_SDA')
+  on('U35',14,'PD_SCL_BOARD');on('U35',15,'PD_SDA_BOARD')
   // Reset buffer and I2C pullups share the expander supply, independent of MCU power.
   for(const [signalPin,pullup]of[[14,'R7'],[15,'R6']]){
     expect(key(pullup,2)).toBe(key('U35',signalPin))

@@ -12,7 +12,7 @@ The public sources retrieved on 2026-11-03 do **not** all use DATA-only MCU powe
 | [NEMA17 v1.0.48](https://tscircuit.com/imrishabh18/rp2040-motor-controller) | DATA powers the MCU. The published README explicitly requires DATA power for the PD-voltage alarm. |
 | [NEMA14 RP2040 v1.13.2](https://tscircuit.com/AnasSarkiz/NEMA14_RP2040) | `PD_VBUS -> D_PD -> LOGIC_IN` and `DATA_VBUS -> D_DATA -> LOGIC_IN`; U_BUCK supplies V3V3. Both sources are supported. |
 
-The user's request to follow the reference boards is implemented as **retaining the NEMA23/NEMA14 dual-source behaviour**, not silently removing standalone operation. Our dedicated J1 remains POWER-only: NEMA23's newer USB data mux is not a requirement for this board. The references' lower-voltage regulators and motor-current ratings cannot be copied onto a 48 V / 6 A-phase motor design. Exact release IDs and selected source hashes are in `engineering/reviewer-power-reference.json`.
+The user explicitly selected **DATA-only MCU power on 2026-11-05**. This now follows the NEMA17 power behaviour; the NEMA14/NEMA23 observations above remain historical reference facts. J10 must supply 5 V for RP2040 operation, including local START/STOP. J1 remains POWER-only. The 48 V EPR, independent motor-bus brake and hardware shutdown supplies remain separate. Exact reference release IDs and hashes are in `engineering/reviewer-power-reference.json`.
 
 ## Supplies and what each one powers
 
@@ -31,23 +31,34 @@ flowchart LR
   Board --> Brake["U12/U13: independent brake threshold"]
   Brake --> U15
   U15 --> Q16["Q16 + J3 resistor: dissipate returned energy"]
-  Board --> OR2["U26/U27: reverse-blocked MCU supply"]
+  OR2["U27: DATA-only reverse blocking"]
   J10["J10: DATA 5 V"] --> U28["U28: current limit"]
   U28 --> U25["U25: 3.3 V LDO"]
   U25 --> OR2
   OR2 --> MCU["V3V3_MCU: RP2040 + QSPI flash"]
 ```
 
-U5, U22 and U34 are **LMR36510 step-down bucks**, not buck-boost converters. U25 is an LDO; U23/U24/U26/U27 are ideal-diode devices, not voltage converters. J1 and J10 VBUS are never joined. U34 powers the **brake** gate driver, not DRV8462, which has its own charge pump.
+U5, U22 and U34 are **LMR36510 step-down bucks**, not buck-boost converters. U25 is an LDO; U23/U24/U27 are ideal-diode devices, not voltage converters. J1 and J10 VBUS are never joined. U34 powers the **brake** gate driver, not DRV8462, which has its own charge pump.
 
 | State | Intended electrical behaviour; bench verification still required |
 |---|---|
-| DATA only | RP2040 and its flash boot for USB recovery/diagnostics. Board sensors, motor and brake rails are off. GPIO/buses must not back-power them. |
-| PD only | U5 powers board logic and MCU. TPS26750 must report a valid configured EPR contract before firmware can request motor power. USB must not attach without DATA VBUS. Local START/STOP is supported only after qualification locks are legitimately cleared. |
-| PD and DATA | Reverse-blocked selection prevents one input feeding the other. Supply handover/inrush and USB current require measurement. |
+| DATA only | RP2040 and its flash boot for USB recovery/diagnostics. Phase-current amplifiers and optional encoder are DATA-powered; board sensors, motor and brake rails are off. Power-off isolation prevents I2C back-feeding. |
+| PD only | PD/protection logic is powered. RP2040, flash and encoder remain off; POWER_PERMIT and MCU_RUN pull-downs prevent motor enable. Local START/STOP is unavailable. |
+| PD and DATA | DATA alone supplies MCU logic. U39 isolates the two I2C domains; U40 isolates board-status/SPI signals. No PD-to-MCU supply OR remains. |
+| DATA removed while PD remains | MCU loses power; hardware pull-downs inhibit the motor. U39/U40 power-off isolation blocks board-side injection. Independent brake supplies remain active. Confirm real leakage, disable timing and no automatic restart on hardware. |
 | PD removed while motor bus is charged or regenerating | U22 maintains comparator/control power from VMOTOR; U34 maintains brake gate power. The motor is inhibited, while the independent brake can dissipate energy. Backup availability and transient timing are not yet hardware-proven. |
 
 Removing U22 without another motor-bus-powered brake-control path can disable the comparator while returned energy remains. Removing U34 disables the present Q16 gate-drive solution. A shared converter or a different brake switch is a separate power/thermal redesign, not a safe deletion to reduce a chip count.
+
+## Isolation and startup contract
+
+U26/R112/C77 and the board-to-MCU analog divider R119/R120 are removed. U27 is the sole MCU supply path, enabled by grounding CE. RP2040 GP28 reads `LOGIC_PG_MCU` digitally through U40; it no longer reports a board-voltage ADC value. U41 switches V3V3_MCU into V3V3_SENS for U31/U32 VS/REF2, the optional encoder and its pull-ups. All board-side I2C nets use the `_BOARD` suffix. U39 EN follows V3V3_MCU; the DATA-side 4.7 kΩ pull-ups cannot feed PD_3V3.
+
+Verify PD-only, DATA-only, both-supply startup, DATA detach and PD loss with a meter/scope, including the unpowered rail. The buffer's Ioff rating is a bounded leakage specification, not proof of zero physical leakage. Reconnection must leave motion disarmed. Existing four qualification locks remain false.
+
+The DATA-domain change also increases its active load. Each [INA240](https://www.ti.com/lit/ds/symlink/ina240.pdf) uses up to 2.6 mA over temperature (5.2 mA for the pair before MCU/flash/optional encoder). These amplifiers have no shutdown input, so U41 disconnects their supply during USB suspend. Stopping buses alone would leave that load powered. Total USB suspend current, including MCU, flash and regulator losses, still requires measurement before the compliance gate can close.
+
+C22/C23 are now 1000 µF each. C18 is 1 µF to slow TPS26630 startup: the no-load nominal 48 V ramp is 0.96 s, about 0.10 A into the bulk capacitors. Load, MLCC bias and thermal regulation change this result. Verify actual startup completes within the eFuse timer and firmware sequencing; retain the driver inhibited throughout ramp.
 
 ## Driver variant decision
 
@@ -79,7 +90,6 @@ Retain **DRV8462DDVR** for the ordered 34HS31-6004S1 motor's 6 A/phase target. A
 | U23 | LM66100 | Reverse-blocked PD-derived board-logic supply path. |
 | U24 | LM66100 | Reverse-blocked motor-backup logic path; interlocked with U23. |
 | U25 | TLV75533 | DATA-port 5 V to independent MCU 3.3 V. |
-| U26 | LM66100 | Board supply path into the MCU rail, with reverse blocking. |
 | U27 | LM66100 | DATA-derived supply path into the MCU rail, with reverse blocking. |
 | U28 | TPS2553 | DATA-port overload current limiting; not a substitute for USB enumeration/suspend current compliance. |
 | U29 | TMP102 | Board-temperature telemetry and TEMP_OK hardware inhibit. Board temperature is not driver junction temperature. |
@@ -92,12 +102,15 @@ Retain **DRV8462DDVR** for the ordered 34HS31-6004S1 motor's 6 A/phase target. A
 | U36 | SN74LVC2G66 | Isolates the PD controller's EEPROM bus for fixture programming. |
 | U37 | SN74LVC1G17 | Reset-domain buffer for U35; protects the independent supply/reset relationship. |
 | U38 | INA237 | Raw PD_VBUS ADC before the eFuse; 85 V bus capability, separate from VMOTOR measurement. |
+| U39 | TCA9517A | Separates board PD I2C from DATA-powered MCU I2C; either rail off isolates the bus. Each side has its own pull-ups. |
+| U40 | SN74LVC244A | DATA-powered, Ioff-capable buffer for seven board-to-MCU signals and driver chip-select. Removes powered-board injection into an unpowered RP2040. |
+| U41 | TPS22919 | Switches the phase-current amplifiers and optional encoder off during reset/suspend; QOD discharges V3V3_SENS. GP24 enables it only while peripheral operation is allowed. |
 
 ## Enable equations and default states
 
 `EFUSE_EN = PD_PATH_OK AND POWER_PERMIT`
 
-`RUN_SAFE = MCU_RUN AND MOTOR_PG AND VMOTOR_OK AND TEMP_OK`
+`RUN_SAFE = MCU_RUN AND MOTOR_PG_BOARD AND VMOTOR_OK_BOARD AND TEMP_OK`
 
 U4 is an input-power permission gate; U10/U11/U33 gate the motor driver. They are not four copies of the same function. Pull-downs hold the driver disabled and the permit inactive during reset. MCU fault handling remains additional to the hardware inhibit path. Consolidating gates into one package is possible only after checking placement, power domains, fault behaviour and rerouting; deleting gates or relying solely on software is not this review's solution.
 
@@ -105,6 +118,12 @@ PD_READY is a **derived firmware status**: fresh U38 conversion plus a live conf
 
 ## Review and validation limits
 
-Read the source-generated `release/schematics/*.svg` pages in order, with the component table and the two enable equations. The paired native KiCad schematic is currently a verification artifact: `normalize-kicad-parity.mjs` snaps its pin coordinates and assigns hidden net labels for parity/ERC. Use the visible source schematics for human circuit review; a zero-error native verification artifact is not proof of drawing readability. The topology, board placement, footprint/pin identities, copper and protection thresholds are preserved by this schematic cleanup. The source/native comparison must prove that statement; a style-analysis pass alone does not prove human readability.
+Read the source-generated `release/schematics/*.svg` pages in order, with the component table and the two enable equations. The paired native KiCad schematic is currently a verification artifact: `normalize-kicad-parity.mjs` snaps its pin coordinates and assigns hidden net labels for parity/ERC. Use the visible source schematics for human circuit review; a zero-error native verification artifact is not proof of drawing readability. The DATA-only ECO changes the affected power domains, interfaces and local routing. Native/source parity and protection tests must be regenerated; a style-analysis pass alone does not prove human readability.
 
 The eight known USB hole-clearance errors, cosmetic findings, unresolved sourcing, rear fastening, thermal/brake limits, actual programming/readback and powered tests remain visible. A readable schematic and a successful DRC run do not qualify the assembly.
+
+### Sensor power and USB suspend
+
+U41 (TPS22919DCKR, SC-70-6, JLC C2149796) switches DATA-derived `V3V3_MCU` into `V3V3_SENS` for U31/U32 and optional U18. GP24 `SENSE_EN` is active high; R145 holds it off during reset. QOD is connected to VOUT to discharge the rail when disabled. Firmware floats encoder I2C before power-off and waits 10 ms after enabling before accepting current/encoder readings. See the [TI pin table and output-discharge specification](https://www.ti.com/lit/ds/symlink/tps22919.pdf).
+
+Suspend cancels the 50 kHz STEP timer, disarms motion, ends peripheral buses, switches off U41 and uses alarm/WFE idle at 60 MHz. USB retains its 48 MHz clock. RP2040-E16 requires the system clock above 48 MHz while USB operates, so a 12 MHz system clock is inappropriate here. Resume restores the original system clock and timer; board readiness must settle again and motion remains disarmed. USB input current, resume timing and sensor-rail discharge still require measurement on the assembled board. This implementation is not USB compliance evidence.

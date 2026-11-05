@@ -57,9 +57,10 @@ static pd1180_control_t control;
 static pd1180_inputs_t inputs;
 static pd1180_board_power_t boardPower;
 static bool peripheralsStarted, wasSuspended;
+static uint32_t sensorPowerStartedAt;
 static bool indicatorsReady, indicatorResetReleased;
 static uint32_t indicatorAttemptAt, lastIndicatorPoll;
-static uint32_t boardMv;
+static bool logicPowerGood;
 static uint8_t pdMode[4], pdIdentity[8], pdo[6], rdo[12], powerStatus[2], pdStatus[4];
 static uint32_t lastPoll, lastTick, lastGoodSample, vbusMv, vmotorMv;
 static uint32_t lastTemperaturePoll, lastTemperatureSample, temperatureConfiguredAt;
@@ -147,6 +148,7 @@ static void stopPeripherals() {
   indicatorsReady = indicatorResetReleased = false;
   if (peripheralsStarted) { pdBus.end(); encoderBus.end(); }
   pinMode(pin(PD1180_PIN_ENC_SDA),INPUT); pinMode(pin(PD1180_PIN_ENC_SCL),INPUT);
+  output(PD1180_PIN_SENSE_EN,false); // QOD discharges the sensor rail; no MCU pull-ups may backfeed it.
   if (spiStarted) motorSpi.end();
   spiStarted=false;
   releaseChipSelect(PD1180_PIN_DRV_CS_N);
@@ -160,6 +162,8 @@ static void stopPeripherals() {
   invalidateTelemetry();
 }
 static void startPeripherals() {
+  output(PD1180_PIN_SENSE_EN,true);
+  sensorPowerStartedAt=millis();
   for (auto p : boardInputs) pinMode(pin(p), INPUT);
   pdBus.begin(); pdBus.setClock(100000); pdBus.setTimeout(5);
   encoderBus.begin(); encoderBus.setClock(100000); encoderBus.setTimeout(5);
@@ -224,6 +228,7 @@ static bool encoderRead(void *, uint8_t reg, uint8_t *bytes, uint8_t count) {
   return true;
 }
 static void pollEncoder(uint32_t now) {
+  if(!peripheralsStarted || now-sensorPowerStartedAt<10u) {encoderSample={};return;}
   if(now-lastEncoderPoll<100u) return;
   lastEncoderPoll=now; as5600_sample(encoderRead,nullptr,&encoderSample);
 }
@@ -387,6 +392,7 @@ static void pollBusAdc(uint32_t now) {
   adcChannel=(adcChannel+1u)%3u; adcPending=false;
 }
 static void samplePhaseCurrent(uint32_t now) {
+  if(!peripheralsStarted || now-sensorPowerStartedAt<10u) {phaseValid=false;return;}
   if (now-lastPhaseSample < 1u) return;
   lastPhaseSample=now;
   const bool a=pd1180_phase_current_ma(analogRead(pin(PD1180_PIN_PHASE_A_ADC)),2048,3300,&phaseMa[0]);
@@ -472,8 +478,8 @@ static void executeCommand() {
     reply(status);
   } else if(!strcmp(command,"STATUS")) {
     char status[384];
-    snprintf(status,sizeof(status),"BOARD_MV=%lu BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BRAKE_OK=%u BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u INDICATORS_OK=%u BRINGUP_REQUIRED=%u\r\n",
-      static_cast<unsigned long>(boardMv),peripheralsStarted,pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
+    snprintf(status,sizeof(status),"LOGIC_PG=%u BOARD_OK=%u PD_OK=%u EPR48=%u DATA_VBUS_MV=%lu VMOTOR_MV=%lu BRAKE_OK=%u BUS_ADC_OK=%u IIN_MON_MV=%u IIN_ADC_OK=%u TEMP_DC=%d TEMP_OK=%u PHASE_A_MA=%ld PHASE_B_MA=%ld PHASE_OK=%u ADC_CALIBRATED=0 PG=%u WINDOW=%u RUN=%u INDICATORS_OK=%u BRINGUP_REQUIRED=%u\r\n",
+      logicPowerGood,peripheralsStarted,pdReadOk,inputs.epr_contract,static_cast<unsigned long>(vbusMv),static_cast<unsigned long>(vmotorMv),
       inputs.brake_preflight_ok, adcValid[0] && millis()-adcSampleAt[0]<=100u,adcMv[1],adcValid[1] && millis()-adcSampleAt[1]<=100u,
       inputs.temperature_deci_c,inputs.temperature_valid,static_cast<long>(phaseMa[0]),static_cast<long>(phaseMa[1]),phaseValid,
       inputs.motor_power_good,inputs.vmotor_in_range,control.mcu_run && inputs.driver_ready,indicatorsReady,
@@ -484,6 +490,8 @@ static void executeCommand() {
   } else reply("ERR unknown command\r\n");
 }
 void setup() {
+  output(PD1180_PIN_SENSE_EN,false);
+  pinMode(pin(PD1180_PIN_LOGIC_PG_MCU),INPUT);
   driver.frame=motorFrame;
   output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_DRV_STEP,false); output(PD1180_PIN_DRV_DIR,false); output(PD1180_PIN_DRV_SLEEP_N,false);
   // Removed field-bus and unassigned general I/O pins remain in reset input state.
@@ -509,15 +517,23 @@ void loop() {
       stopPeripherals(); boardPower = {};
       commandLength=0; commandOverflow=false; responseLength=responseSent=0;
       digitalWrite(pin(PD1180_PIN_STATUS_GPIO),LOW);
+      if(stepTimerReady) cancel_repeating_timer(&stepTimer);
+      stepTimerReady=false;
+      enterUsbSuspendPower();
       wasSuspended=true;
     }
     watchdog_update();
     sleepWhileUsbSuspended();
     return;
   }
-  if (wasSuspended) { wasSuspended=false; lastTick=lastPoll=now; }
-  boardMv = dividerMillivolts(PD1180_PIN_BOARD_POWER_SENSE,10,10);
-  const bool boardReady=pd1180_board_power_update(&boardPower,boardMv,now);
+  if (wasSuspended) {
+    leaveUsbSuspendPower();
+    stepTimerReady=add_repeating_timer_us(-20,stepInterrupt,nullptr,&stepTimer);
+    if(!stepTimerReady) stepTimerFault=true;
+    wasSuspended=false; lastTick=lastPoll=now;
+  }
+  logicPowerGood = digitalRead(pin(PD1180_PIN_LOGIC_PG_MCU));
+  const bool boardReady=pd1180_board_power_update(&boardPower,logicPowerGood,now);
   if (peripheralsStarted && !boardReady) stopPeripherals();
   if (!peripheralsStarted && boardReady) startPeripherals();
   if (peripheralsStarted) {

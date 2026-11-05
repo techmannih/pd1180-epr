@@ -403,8 +403,8 @@ export async function audit() {
         continuous_281w_resistor_case_to_ambient_max_c_per_w_at_50c: (85-50)/(53**2/10),
         note: 'Brake sizing requires load inertia, stop time, duty and gravity. 300 W LPS300 rating requires 85 C maximum case temperature; pulse energy and repetition must be checked separately.' },
       ripple_and_brake_switch: {
-        bulk_capacitors: ['C22','C23'], manufacturer_part: 'EEUFR1J471',
-        each_rated_ripple_a_at_100khz: 1.995, measured_each_ripple_a: null,
+        bulk_capacitors: ['C22','C23'], manufacturer_part: 'EEUFS1J102',
+        each_rated_ripple_a_at_100khz: 2.988, measured_each_ripple_a: null,
         equal_current_sharing_qualified: false,
         brake_return_component_references: brakeReturnReferences,
         explicit_clamp_or_snubber_verified: false, measured_q16_turnoff_peak_v: null,
@@ -434,7 +434,7 @@ export async function audit() {
       comparator: 'https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=6',
       cutoff_resistor: 'https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD071K2L',
       brake: 'https://www.vishay.com/docs/50052/lps300.pdf',
-      bulk_capacitor: 'https://industrial.panasonic.com/ww/products/pt/aluminum-cap-lead/models/EEUFR1J471',
+      bulk_capacitor: 'https://na.industrial.panasonic.com/products/capacitors/lineup/aluminum-electrolytic-capacitors/series/83320/model/83447',
       motor: motor.document,
     },
   }

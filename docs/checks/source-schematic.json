@@ -1,43 +1,44 @@
 {
-  "generated_at": "2026-11-04T18:17:22.607Z",
+  "generated_at": "2026-11-05T07:46:16.516Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "a163d8be7d6e736bdea3e2a9070a6fc447a78a34bdda2cd76f242df82d1f37dd",
-    "bytes": 4153736
+    "sha256": "315d125882793545a0a8aa245269e082962c37ee2c6e9256cdacfd173ff44f8d",
+    "bytes": 4301289
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9309,
+    "elements": 9649,
     "sheets": 9,
-    "source_components": 260,
-    "source_ports": 884,
-    "connected_source_ports": 838,
-    "intentional_no_connect_ports": 46,
-    "source_nets": 147,
+    "source_components": 266,
+    "source_ports": 920,
+    "connected_source_ports": 875,
+    "intentional_no_connect_ports": 45,
+    "source_nets": 157,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 93,
+    "capacitors": 96,
     "test_points": 20,
     "annotations": 27,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 55,
-    "3": 51,
-    "4": 18,
-    "5": 8,
+    "2": 61,
+    "3": 54,
+    "4": 19,
+    "5": 7,
     "6": 1,
     "7": 2,
     "8": 2,
     "9": 3,
     "10": 1,
+    "15": 1,
     "19": 1,
-    "25": 1,
     "27": 1,
     "28": 1,
-    "58": 1,
-    "233": 1
+    "36": 1,
+    "41": 1,
+    "241": 1
   },
   "usb_c": {
     "connectors": [
@@ -377,7 +378,6 @@
     "U1.2:DM",
     "U16.34:GPIO22",
     "U16.35:GPIO23",
-    "U16.36:GPIO24",
     "U16.37:GPIO25",
     "U16.6:GPIO4",
     "U16.7:GPIO5",
@@ -389,7 +389,6 @@
     "U23.4:NC",
     "U24.4:NC",
     "U25.4:NC",
-    "U26.4:NC",
     "U27.4:NC",
     "U28.4:FAULT",
     "U30.2:ALERT",
@@ -399,6 +398,7 @@
     "U35.13:N_INT",
     "U37.1:NC",
     "U38.3:ALERT",
+    "U41.4:NC",
     "U6.11:MODE",
     "U6.19:N_C6",
     "U6.20:N_C5",
@@ -422,8 +422,8 @@
     {
       "ref": "TP_SWD_3V3",
       "net": "V3V3_MCU",
-      "total_ports_on_net": 27,
-      "non_testpoint_peers": 26
+      "total_ports_on_net": 36,
+      "non_testpoint_peers": 35
     },
     {
       "ref": "TP_SWDIO",
@@ -434,8 +434,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 233,
-      "non_testpoint_peers": 229
+      "total_ports_on_net": 241,
+      "non_testpoint_peers": 237
     },
     {
       "ref": "TP_SWCLK",
@@ -457,9 +457,9 @@
     },
     {
       "ref": "TP_ENC_3V3",
-      "net": "V3V3",
-      "total_ports_on_net": 58,
-      "non_testpoint_peers": 57
+      "net": "V3V3_SENS",
+      "total_ports_on_net": 15,
+      "non_testpoint_peers": 14
     },
     {
       "ref": "TP_ENC_A",
@@ -482,20 +482,20 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 233,
-      "non_testpoint_peers": 229
+      "total_ports_on_net": 241,
+      "non_testpoint_peers": 237
     },
     {
       "ref": "TP_PD_VREF",
       "net": "PD_3V3",
-      "total_ports_on_net": 25,
-      "non_testpoint_peers": 24
+      "total_ports_on_net": 27,
+      "non_testpoint_peers": 26
     },
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 233,
-      "non_testpoint_peers": 229
+      "total_ports_on_net": 241,
+      "non_testpoint_peers": 237
     },
     {
       "ref": "TP_EEP_SDA",
@@ -530,8 +530,8 @@
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 233,
-      "non_testpoint_peers": 229
+      "total_ports_on_net": 241,
+      "non_testpoint_peers": 237
     }
   ],
   "sheets": [
@@ -630,7 +630,7 @@
       "annotations": [
         "07 / USB DATA and independent MCU power",
         "J10 / D15: protected USB 2.0 DATA. U28: input current limit. U25: DATA 5 V to 3.3 V LDO.",
-        "U26/U27: board / DATA supply selection into V3V3_MCU. DATA never feeds VMOTOR; no PD on J10."
+        "U27: DATA-only MCU power. U39/U40: powered-off I/O isolation. PD alone cannot power the MCU."
       ]
     },
     {
@@ -658,7 +658,7 @@
       "annotations": [
         "09 / Indicators, alarm and optional encoder",
         "U35: RGB / buzzer I2C outputs. U37: reset-domain buffer. Q26: buzzer switch. D17: board-power LED.",
-        "U18 AS5600 + C52/C53: optional DNP. Only U18 is on bottom; no qualified rear magnet / closed-loop control."
+        "U41: switched DATA-powered sensors. U18 AS5600 + C52/C53: DNP; no qualified rear magnet / closed-loop control."
       ]
     }
   ],
@@ -666,8 +666,8 @@
     {
       "index": 1,
       "name": "usb-pd",
-      "elements": 369,
-      "coordinate_points_checked": 785
+      "elements": 370,
+      "coordinate_points_checked": 786
     },
     {
       "index": 2,
@@ -678,8 +678,8 @@
     {
       "index": 3,
       "name": "motor-power",
-      "elements": 316,
-      "coordinate_points_checked": 602
+      "elements": 315,
+      "coordinate_points_checked": 601
     },
     {
       "index": 4,
@@ -696,14 +696,14 @@
     {
       "index": 6,
       "name": "mcu",
-      "elements": 356,
-      "coordinate_points_checked": 723
+      "elements": 358,
+      "coordinate_points_checked": 726
     },
     {
       "index": 7,
       "name": "usb-data",
-      "elements": 255,
-      "coordinate_points_checked": 558
+      "elements": 332,
+      "coordinate_points_checked": 686
     },
     {
       "index": 8,
@@ -714,8 +714,8 @@
     {
       "index": 9,
       "name": "indicators",
-      "elements": 265,
-      "coordinate_points_checked": 525
+      "elements": 293,
+      "coordinate_points_checked": 582
     }
   ],
   "checks": [
@@ -723,8 +723,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 260,
-        "schematic": 260
+        "source": 266,
+        "schematic": 266
       }
     },
     {
@@ -743,10 +743,10 @@
     },
     {
       "ok": true,
-      "message": "electrical and PCB records unchanged from reviewed main baseline",
+      "message": "electrical and PCB records match the reviewed DATA-only ECO baseline",
       "details": {
-        "baseline_commit": "34aca1af8736b482bd8edf86ec449a56c15d50c1",
-        "actual": "8331699b9c226e8d3a384a667d0a435e7fa8a5f39855e00b99a441bf5a3ff7de"
+        "baseline_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
+        "actual": "d91d0047ef6002b6ed8693f6ec293083de094ddb8c6dc0fe13e0a637c95aa23d"
       }
     },
     {
@@ -1021,7 +1021,7 @@
         "texts": [
           "07 / USB DATA and independent MCU power",
           "J10 / D15: protected USB 2.0 DATA. U28: input current limit. U25: DATA 5 V to 3.3 V LDO.",
-          "U26/U27: board / DATA supply selection into V3V3_MCU. DATA never feeds VMOTOR; no PD on J10."
+          "U27: DATA-only MCU power. U39/U40: powered-off I/O isolation. PD alone cannot power the MCU."
         ]
       }
     },
@@ -1097,7 +1097,7 @@
         "texts": [
           "09 / Indicators, alarm and optional encoder",
           "U35: RGB / buzzer I2C outputs. U37: reset-domain buffer. Q26: buzzer switch. D17: board-power LED.",
-          "U18 AS5600 + C52/C53: optional DNP. Only U18 is on bottom; no qualified rear magnet / closed-loop control."
+          "U41: switched DATA-powered sensors. U18 AS5600 + C52/C53: DNP; no qualified rear magnet / closed-loop control."
         ]
       }
     },
@@ -1132,17 +1132,17 @@
     },
     {
       "ok": true,
-      "message": "147 named source nets for the integrated-driver revision",
+      "message": "157 named source nets including switched sensor power and enable",
       "details": {
-        "actual": 147
+        "actual": 157
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 147,
-        "source_nets": 147
+        "connected_groups": 157,
+        "source_nets": 157
       }
     },
     {
@@ -1208,9 +1208,9 @@
     },
     {
       "ok": true,
-      "message": "93 capacitors including INA237 supply bypass",
+      "message": "96 capacitors including isolated-domain and sensor-switch bypasses",
       "details": {
-        "actual": 93
+        "actual": 96
       }
     },
     {
@@ -1251,7 +1251,6 @@
           "U1.2:DM",
           "U16.34:GPIO22",
           "U16.35:GPIO23",
-          "U16.36:GPIO24",
           "U16.37:GPIO25",
           "U16.6:GPIO4",
           "U16.7:GPIO5",
@@ -1263,7 +1262,6 @@
           "U23.4:NC",
           "U24.4:NC",
           "U25.4:NC",
-          "U26.4:NC",
           "U27.4:NC",
           "U28.4:FAULT",
           "U30.2:ALERT",
@@ -1273,6 +1271,7 @@
           "U35.13:N_INT",
           "U37.1:NC",
           "U38.3:ALERT",
+          "U41.4:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",
@@ -1299,7 +1298,6 @@
           "U1.2:DM",
           "U16.34:GPIO22",
           "U16.35:GPIO23",
-          "U16.36:GPIO24",
           "U16.37:GPIO25",
           "U16.6:GPIO4",
           "U16.7:GPIO5",
@@ -1311,7 +1309,6 @@
           "U23.4:NC",
           "U24.4:NC",
           "U25.4:NC",
-          "U26.4:NC",
           "U27.4:NC",
           "U28.4:FAULT",
           "U30.2:ALERT",
@@ -1321,6 +1318,7 @@
           "U35.13:N_INT",
           "U37.1:NC",
           "U38.3:ALERT",
+          "U41.4:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
           "U6.20:N_C5",

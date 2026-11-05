@@ -4,7 +4,7 @@ The current controller uses **RP2040, DRV8462DDVR, TPS26750 and optional AS5600*
 
 ## Schematic and power review
 
-The 2026-11-03 review consolidates the source into nine functional A4 sheets. [Power architecture](usb-pd-architecture.md) explains all 33 ICs, the independent brake supplies and the driver-current trade-off. [Pinned reference releases](../engineering/reviewer-power-reference.json) show NEMA23/NEMA14 support dual-source logic power; NEMA17 is DATA-only. This revision retains the former behaviour and DDVR. Electrical/PCB records are checked against main commit `34aca1a`; this is a schematic/documentation change, not a new hardware qualification.
+The current revision retains nine functional A4 sheets and changes the RP2040 to **DATA-only power**. U26 is removed; U39 isolates I2C and U40 isolates board-powered status/SPI-return signals. DATA USB supplies the MCU; PD supplies the motor/protection circuits; both are required for motion. NEMA17 is the reference for this power choice. Native PCB, firmware and diagrams have been regenerated for this electrical ECO. U41 switches phase/encoder sensors off during USB suspend. Current CLI DRC/ERC, bypass, Kelvin, USB-reference and filled-copper reports are bound to the new PCB hash; older schematic-only reports are historical. [Power architecture](usb-pd-architecture.md) records every IC's role.
 
 ## Reviewer requirements
 

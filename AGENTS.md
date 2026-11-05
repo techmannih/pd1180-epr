@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## DATA-only MCU and fabrication handoff — 2026-11-05
+
+The user explicitly selected DATA-only MCU power, superseding the dual-source choice below. Reopen the affected source, firmware, routing, assembly and power-domain contracts. Remove the PD-to-MCU supply path and prevent PD-powered signals from back-powering the unpowered RP2040. Retain independent motor-bus brake power and hardware shutdown. Update the System diagrams and use absolute reviewer documentation links that also work on tscircuit.com. Complete evidence-backed cooling/brake and fabrication deliverables, but never label supplier acceptance, physical fastening or powered thermal tests as passed without evidence. Deliver in a new PR; preserve unrelated copper, the four mounting holes, and the visible eight USB hole-clearance exceptions. No motion unlock or procurement is authorized.
+
 ## System overview — 2026-11-04
 
 The user requested native system block diagrams following tscircuit/docs#980. Keep the existing board core and schematic-symbol compatibility pins: the newer full-core render changes solder-paste and schematic data. Use the separately pinned `system-block-core` and `system-block-svg` only for diagram metadata, resolving associations against existing PCB identities. `build:preview` appends the same `system_block_*` records to source and assembly outputs; `build:pcb` refreshes the routed default viewer. Preserve every non-system record and the user's latest schematic edits. Run `check:system` and the real-board preservation tests. This adds reviewer communication, not hardware qualification or motion permission.

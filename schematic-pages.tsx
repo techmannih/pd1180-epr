@@ -22,19 +22,18 @@ export const schematicPages = [
     "SW1: reset. SW2: START/STOP request. TP_BOOTSEL + reset: ROM USB recovery. Motion stays locked."],
   ["usb-data", "USB DATA and independent MCU power",
     "J10 / D15: protected USB 2.0 DATA. U28: input current limit. U25: DATA 5 V to 3.3 V LDO.",
-    "U26/U27: board / DATA supply selection into V3V3_MCU. DATA never feeds VMOTOR; no PD on J10."],
+    "U27: DATA-only MCU power. U39/U40: powered-off I/O isolation. PD alone cannot power the MCU."],
   ["telemetry", "Supply telemetry and PD programming access",
     "U29: temperature. U30: VMOTOR, input-current and brake-return ADC. U38: raw PD_VBUS ADC.",
     "U36: isolates EEPROM programming bus. Fixed 5 V fixture only; TP_PD_VREF is sense-only. See programming guide."],
   ["indicators", "Indicators, alarm and optional encoder",
     "U35: RGB / buzzer I2C outputs. U37: reset-domain buffer. Q26: buzzer switch. D17: board-power LED.",
-    "U18 AS5600 + C52/C53: optional DNP. Only U18 is on bottom; no qualified rear magnet / closed-loop control."],
+    "U41: switched DATA-powered sensors. U18 AS5600 + C52/C53: DNP; no qualified rear magnet / closed-loop control."],
 ] as const
 
 export const SchematicPages = () => <>
   {schematicPages.map(([name, title, purpose, notes], index) => <Fragment key={name}>
     <schematicsheet name={name} displayName={title} sheetIndex={index + 1} sheetSize="A4">
-      {name === "usb-data" && <schematictext schX={8.6} schY={-6.2} fontSize={0.18} anchor="center" text="R119/R120: BOARD_POWER_SENSE" />}
       <schematictext schX={0} schY={10} fontSize={0.45} anchor="center" text={`${String(index + 1).padStart(2, "0")} / ${title}`} />
       <schematictext schX={0} schY={9} fontSize={0.23} anchor="center" text={purpose} />
       <schematictext schX={0} schY={8.4} fontSize={0.23} anchor="center" text={notes} />

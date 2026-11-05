@@ -1,0 +1,106 @@
+{
+  "status": "engineering-selection-incomplete-physical-installation-not-approved",
+  "powered_tests_performed": false,
+  "motor_operation_authorized": false,
+  "driver": {
+    "part": "Same Sky HSB14-353518",
+    "selection": "candidate for a compact supported cooler; not a fitted or qualified assembly",
+    "envelope_mm": [
+      35,
+      35,
+      18
+    ],
+    "base_thickness_mm": 1.5,
+    "mass_g": 15,
+    "drawing": {
+      "source_url": "https://www.sameskydevices.com/product/resource/hsb14-353518.pdf",
+      "download_sha256": "fcb850942b680dc0a2a6defad5a60f18751f35dda5d9592c1f400a761080ec87"
+    },
+    "tim_candidate": "Arctic Silver Ceramique 2; not structural adhesive",
+    "natural_convection_curve_samples": {
+      "power_w": [
+        3,
+        4,
+        15
+      ],
+      "temperature_rise_c": [
+        31.3,
+        40.1,
+        119.7
+      ]
+    },
+    "forced_air_curve_sample": {
+      "power_w": 15,
+      "airflow_lfm": 200,
+      "temperature_rise_c": 44.2
+    },
+    "rating_limit": "Manufacturer curve test conditions are not the installed assembly. Natural convection at 15 W is insufficient for the project 110 C junction target at 40 C ambient.",
+    "placement_study": {
+      "xy_center_mm": [
+        22,
+        -12
+      ],
+      "xy_envelope_mm": [
+        4.5,
+        -29.5,
+        39.5,
+        5.5
+      ],
+      "status": "plan-view candidate only; contact/pedestal, height, tolerances and supports not qualified"
+    },
+    "rejected_direct_fit": {
+      "part": "ATS-TI1OP-519-C1-R3",
+      "envelope_mm": [
+        78,
+        36,
+        35.6
+      ],
+      "reason": "EVM support/fin envelope conflicts with current surrounding components"
+    },
+    "open": [
+      "Top-contact geometry, package-height tolerance, pedestal/spreading resistance",
+      "Supported retention at both IC ends and <45 N package load",
+      "Airflow and failure condition at intended motor current",
+      "Clearance to capacitor tolerances, WAGO actuation and live copper"
+    ]
+  },
+  "brake": {
+    "resistor": "Vishay LPS0300H10R0GB",
+    "resistance_ohm": 10,
+    "tolerance_percent": 2,
+    "rating_w_at_case_85c": 300,
+    "datasheet": {
+      "source_url": "https://www.vishay.com/docs/50052/lps300.pdf",
+      "download_sha256": "80577e8e5c6c1d75ddd9b41d9afb208ed046f1d58c45902bf4926c6410dd0dec"
+    },
+    "tim_selection": "Bluesil Past 340, per resistor manufacturer mounting guidance",
+    "mounting_hardware": "Manufacturer-supplied M4 x 25 class 8.8 screws and M4 contact lock washers; confirm received accessory set",
+    "terminal_hardware": "Manufacturer M4 terminal screws, TE152883 rings; verify engagement with actual tongue/washer stack",
+    "torque_nm": 2,
+    "maximum_torque_nm": 2.5,
+    "heatsink_candidate": "Fischer Elektronik SK 100 100 SA, subject to exact drawing/thermal-curve and installed guard review",
+    "sink_source": "https://www.farnell.com/datasheets/2576985.pdf",
+    "existing_cad_status": "80 x 80 x 30 mm concept retained and explicitly not represented as a rated/selected heatsink",
+    "thermal_requirements_at_40c_ambient": [
+      {
+        "average_power_w": 25,
+        "maximum_case_interface_to_air_c_per_w": 1.8
+      },
+      {
+        "average_power_w": 100,
+        "maximum_case_interface_to_air_c_per_w": 0.45
+      },
+      {
+        "average_power_w": 300,
+        "maximum_case_interface_to_air_c_per_w": 0.15
+      }
+    ],
+    "open": [
+      "Load, stop/repetition energy and qualified duty",
+      "Heatsink machining/engagement and thermal resistance at installed orientation",
+      "Ventilated touch/terminal guard and supported strain relief",
+      "Transient element temperature and stuck-on fault containment"
+    ]
+  },
+  "reason_not_closed": "Motor load, rear accessory fastening dimensions and powered thermal evidence are unavailable. Candidate parts and calculations cannot establish a complete safe mechanical/thermal assembly."
+}

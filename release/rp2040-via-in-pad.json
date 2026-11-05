@@ -1,17 +1,143 @@
 {
-  "board_sha256": "0455d7ba01ada4b5635d61e988f82bd3ad80fb59acb2ac50367179bc6c4703c6",
+  "board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
   "method": "Finished circular via drill intersects an F.Paste SMD land on the exact native PCB; all intersections require filled/capped processing.",
-  "count": 27,
+  "count": 66,
   "process": "epoxy filled and copper capped",
   "fabricator_accepted": false,
   "vias": [
     {
-      "uuid": "8f326d2c-03e9-4b88-b7e7-2e6c27518ddc",
+      "uuid": "74b7d6e3-4151-4c39-aca3-b289375c0d5c",
+      "x_mm": 61.9,
+      "y_mm": 119.6,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "D17",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "fb65c606-a91d-440a-ab25-0044db3d84dd",
+      "x_mm": 61.9,
+      "y_mm": 121.2,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "C112",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "26f4e526-72a6-4cb1-9066-2150c601dcfa",
+      "x_mm": 66.3,
+      "y_mm": 120.5,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "19"
+        }
+      ]
+    },
+    {
+      "uuid": "38a8588a-f47e-4e6f-8e81-53955f3e843e",
+      "x_mm": 66.3,
+      "y_mm": 126.1,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "MOTOR_PG_BOARD",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "2442b4ef-9040-4d1d-bda8-ea87654b235f",
+      "x_mm": 67.6,
+      "y_mm": 126.75,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "EFUSE_FAULT_N_BOARD",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "4"
+        }
+      ]
+    },
+    {
+      "uuid": "f891c66d-56c9-46d0-84fe-85520211aa80",
+      "x_mm": 68.15,
+      "y_mm": 126.25,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "LOGIC_PG_MCU",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "5"
+        }
+      ]
+    },
+    {
+      "uuid": "7c54c252-225e-4f59-be73-93f6f4c1e00b",
+      "x_mm": 68.275,
+      "y_mm": 120.45,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "EFUSE_FAULT_N",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "16"
+        }
+      ]
+    },
+    {
+      "uuid": "4968ac62-e54f-4a21-982c-c5a7eb844440",
+      "x_mm": 68.8,
+      "y_mm": 126.25,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "VMOTOR_OK_BOARD",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "6"
+        }
+      ]
+    },
+    {
+      "uuid": "317666e6-c11a-4698-8d01-c111f71bd3fe",
+      "x_mm": 68.9,
+      "y_mm": 120.5,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "LOGIC_PG",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "15"
+        }
+      ]
+    },
+    {
+      "uuid": "c889bedd-b536-4859-af9f-bc94129c5ab6",
       "x_mm": 69.3,
       "y_mm": 91.95,
       "drill_mm": 0.3,
       "copper_diameter_mm": 0.5,
-      "net": "PD_SCL",
+      "net": "PD_SCL_BOARD",
       "pads": [
         {
           "reference": "U38",
@@ -20,7 +146,63 @@
       ]
     },
     {
-      "uuid": "e8c31dca-20df-4aff-84b8-ffe62f3f9426",
+      "uuid": "4ab39735-774b-4af4-8871-83e740278b3e",
+      "x_mm": 69.5,
+      "y_mm": 121.275,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "VMOTOR_OK",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "14"
+        }
+      ]
+    },
+    {
+      "uuid": "acbc8f30-c9f1-4100-a0aa-52d708ea34f8",
+      "x_mm": 69.575,
+      "y_mm": 127.2,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "SPI_MISO",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "7"
+        }
+      ]
+    },
+    {
+      "uuid": "e2bd49a5-2bba-4d38-a7e9-8b684becf21f",
+      "x_mm": 70.2,
+      "y_mm": 120.5,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "SPI_MISO_BOARD",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "13"
+        }
+      ]
+    },
+    {
+      "uuid": "ef5ecd48-8fa8-445a-a4dc-ff3dfb86b889",
+      "x_mm": 70.2,
+      "y_mm": 126.25,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "DRV_FAULT_N_BOARD",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "8"
+        }
+      ]
+    },
+    {
+      "uuid": "036e3751-f77c-4c89-80db-eca3568c7942",
       "x_mm": 70.75,
       "y_mm": 84.85,
       "drill_mm": 0.3,
@@ -34,7 +216,77 @@
       ]
     },
     {
-      "uuid": "8bcd727a-6c3c-4e9c-a7eb-dfa2959eb4a4",
+      "uuid": "ed7582bb-4bb9-4dbd-b60f-eaa331f7a7b2",
+      "x_mm": 70.775078,
+      "y_mm": 121.229038,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "DRV_FAULT_N",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "12"
+        }
+      ]
+    },
+    {
+      "uuid": "9e87f8e5-ec4d-4811-92c6-3b79b73afd8c",
+      "x_mm": 70.775078,
+      "y_mm": 127.220962,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "DRV_HOME_N",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "9"
+        }
+      ]
+    },
+    {
+      "uuid": "136404af-89e9-4e4a-a93d-dc21af1c4bf8",
+      "x_mm": 71.4,
+      "y_mm": 120.55,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "DRV_HOME_N_BOARD",
+      "pads": [
+        {
+          "reference": "U40",
+          "pad": "11"
+        }
+      ]
+    },
+    {
+      "uuid": "ea466995-ee3b-4282-8985-867f40cf9b9f",
+      "x_mm": 71.5,
+      "y_mm": 109.4,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "V3V3_MCU",
+      "pads": [
+        {
+          "reference": "R143",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "c93fe975-33ab-42e0-8201-c762cdab878f",
+      "x_mm": 72.9,
+      "y_mm": 108.6,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SCL",
+      "pads": [
+        {
+          "reference": "R143",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "68adba5b-0384-4cca-b734-a0bdfb93435b",
       "x_mm": 72.975,
       "y_mm": 113.35,
       "drill_mm": 0.3,
@@ -48,7 +300,35 @@
       ]
     },
     {
-      "uuid": "27f09a46-10c4-4e74-88f5-83c0c1c39470",
+      "uuid": "7d1d342e-c8d3-4dba-9306-2aea2726b136",
+      "x_mm": 73.1,
+      "y_mm": 126.25,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "V3V3",
+      "pads": [
+        {
+          "reference": "R128",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "070ec532-233d-414d-8d8d-70ff2b91a74e",
+      "x_mm": 73.2,
+      "y_mm": 106.5,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SDA",
+      "pads": [
+        {
+          "reference": "R142",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "a256d67d-f5f3-4063-8fe6-98554febbcf7",
       "x_mm": 73.65,
       "y_mm": 111.9,
       "drill_mm": 0.3,
@@ -62,7 +342,77 @@
       ]
     },
     {
-      "uuid": "20eee4c6-30e8-4dce-950b-0c988f759e86",
+      "uuid": "37131212-bd48-4ad1-a8ff-2fbccda2058b",
+      "x_mm": 75.05,
+      "y_mm": 95.6,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "LOGIC_PG",
+      "pads": [
+        {
+          "reference": "U5",
+          "pad": "4"
+        }
+      ]
+    },
+    {
+      "uuid": "cb593930-4ce2-4a8a-a965-f73b2246af2c",
+      "x_mm": 75.4,
+      "y_mm": 121.4,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "DRV_CS_N",
+      "pads": [
+        {
+          "reference": "R144",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "56dd1515-ad72-449b-89f1-c7433e68dcd2",
+      "x_mm": 76.15,
+      "y_mm": 104.35,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "V3V3",
+      "pads": [
+        {
+          "reference": "C71",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "b43c772a-02a9-4033-898f-8bfdde3f3f98",
+      "x_mm": 80.3,
+      "y_mm": 104.75,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SDA",
+      "pads": [
+        {
+          "reference": "U39",
+          "pad": "6"
+        }
+      ]
+    },
+    {
+      "uuid": "df24382e-4121-4bde-b9af-6aa4e8762d3b",
+      "x_mm": 80.45,
+      "y_mm": 105.4,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SCL",
+      "pads": [
+        {
+          "reference": "U39",
+          "pad": "7"
+        }
+      ]
+    },
+    {
+      "uuid": "7d72ad19-cecf-4c63-a858-e90e98ee7a13",
       "x_mm": 80.85,
       "y_mm": 121.2,
       "drill_mm": 0.3,
@@ -76,7 +426,7 @@
       ]
     },
     {
-      "uuid": "8e544aad-1d3d-4b0f-bed3-ea4855127546",
+      "uuid": "42ded11e-13a9-4e84-9669-1b6d4665161e",
       "x_mm": 82.24,
       "y_mm": 111.25,
       "drill_mm": 0.3,
@@ -90,7 +440,7 @@
       ]
     },
     {
-      "uuid": "1b3d7c9f-040e-4065-b854-f06463f491c4",
+      "uuid": "70f06a7b-798c-47bd-9970-8858fe3a4506",
       "x_mm": 82.425,
       "y_mm": 114.7,
       "drill_mm": 0.3,
@@ -104,7 +454,7 @@
       ]
     },
     {
-      "uuid": "ec87ff87-f063-48d2-a13a-eeb7c91ff5eb",
+      "uuid": "81f1d95a-86b2-48e1-9b60-51439a8f592b",
       "x_mm": 83.34,
       "y_mm": 111.25,
       "drill_mm": 0.3,
@@ -118,7 +468,21 @@
       ]
     },
     {
-      "uuid": "14006723-e38d-435a-9f2f-1aefa3158152",
+      "uuid": "73ce0429-a21d-496e-8a83-2f3c7683a7da",
+      "x_mm": 83.675,
+      "y_mm": 110.025,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.6,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "C102",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "4de40c71-30ae-4458-9127-56d4f1c667f5",
       "x_mm": 84.16,
       "y_mm": 111.25,
       "drill_mm": 0.3,
@@ -132,7 +496,7 @@
       ]
     },
     {
-      "uuid": "7c1b4b73-42c2-4b06-b414-d9ce66f89f28",
+      "uuid": "16b7e22e-dd1e-4333-8b4f-cb4ddfbf3042",
       "x_mm": 84.7375,
       "y_mm": 113.3375,
       "drill_mm": 0.3,
@@ -146,7 +510,35 @@
       ]
     },
     {
-      "uuid": "a6b5793e-2472-4e31-9534-0dec3269bc51",
+      "uuid": "631a5c83-1063-4767-9ef2-96584579aa25",
+      "x_mm": 84.95,
+      "y_mm": 104.6,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SDA_BOARD",
+      "pads": [
+        {
+          "reference": "U39",
+          "pad": "3"
+        }
+      ]
+    },
+    {
+      "uuid": "14ce2bb3-1cf0-4d65-be00-d3765f199cd8",
+      "x_mm": 84.95,
+      "y_mm": 105.25,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SCL_BOARD",
+      "pads": [
+        {
+          "reference": "U39",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "0d9d36ee-60c5-411b-986f-2398fdb6c61d",
       "x_mm": 91.5,
       "y_mm": 65.85,
       "drill_mm": 0.3,
@@ -160,7 +552,7 @@
       ]
     },
     {
-      "uuid": "5cdf073b-5a55-4ef7-ab5d-109b8214811e",
+      "uuid": "b236f3fe-6b1f-496c-9171-a31799d5d949",
       "x_mm": 91.5,
       "y_mm": 66.85,
       "drill_mm": 0.3,
@@ -174,7 +566,7 @@
       ]
     },
     {
-      "uuid": "1b5f3b29-ad9e-437c-887f-9f1760f0714e",
+      "uuid": "fab934d6-2acb-452b-a16f-ed1e058f8a5b",
       "x_mm": 92.5,
       "y_mm": 65.85,
       "drill_mm": 0.3,
@@ -188,7 +580,7 @@
       ]
     },
     {
-      "uuid": "7dfa9860-2c07-4fd5-956c-0650873d0b01",
+      "uuid": "0bc398aa-7e6f-48ac-b31d-d1f5a2f872bb",
       "x_mm": 92.5,
       "y_mm": 66.85,
       "drill_mm": 0.3,
@@ -202,7 +594,21 @@
       ]
     },
     {
-      "uuid": "29ffb346-8def-4f2a-a46b-64cb289eb668",
+      "uuid": "092e60e3-77c6-4dd1-ab4a-10ee1fbc6679",
+      "x_mm": 94.8,
+      "y_mm": 119.65,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "U41",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "f73463b8-8a7f-4a57-8f2f-5022dc43466a",
       "x_mm": 99.5346,
       "y_mm": 137.11,
       "drill_mm": 0.3,
@@ -216,7 +622,21 @@
       ]
     },
     {
-      "uuid": "e568dd8f-c2da-4170-8f39-7db24de7f967",
+      "uuid": "09690c3d-6a3e-446d-9e9c-82f1951aecd3",
+      "x_mm": 99.85,
+      "y_mm": 94.5,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "V3V3_SENS",
+      "pads": [
+        {
+          "reference": "R140",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "7b056666-f473-4a1b-8fe6-6a13c056671a",
       "x_mm": 100.1,
       "y_mm": 73.25,
       "drill_mm": 0.3,
@@ -230,7 +650,7 @@
       ]
     },
     {
-      "uuid": "41d27599-5067-45bd-894e-b4c7aba54eb7",
+      "uuid": "4dfd6701-53f8-4c04-9da8-85e746b95285",
       "x_mm": 102.3,
       "y_mm": 73.325,
       "drill_mm": 0.3,
@@ -244,7 +664,7 @@
       ]
     },
     {
-      "uuid": "d4b0b864-412e-4012-b66f-7bf104280e82",
+      "uuid": "ac63e42d-67b5-4216-8a4b-dbe86507c5d8",
       "x_mm": 107.5,
       "y_mm": 65.85,
       "drill_mm": 0.3,
@@ -258,7 +678,7 @@
       ]
     },
     {
-      "uuid": "39867e19-8f9a-4274-877d-c97c6d7c428f",
+      "uuid": "247fa84b-ce67-4429-b12c-ba6b8df12e57",
       "x_mm": 107.5,
       "y_mm": 66.85,
       "drill_mm": 0.3,
@@ -272,7 +692,7 @@
       ]
     },
     {
-      "uuid": "e1c43a67-7875-4ffd-8655-6139b0b40f53",
+      "uuid": "69c3290c-62c6-4474-8c23-64caf234789e",
       "x_mm": 108.5,
       "y_mm": 65.85,
       "drill_mm": 0.3,
@@ -286,7 +706,7 @@
       ]
     },
     {
-      "uuid": "b0904cbc-a1ce-4566-af13-c28db7d4312b",
+      "uuid": "04556570-b316-4c4b-9444-96a03bb2475d",
       "x_mm": 108.5,
       "y_mm": 66.85,
       "drill_mm": 0.3,
@@ -300,21 +720,119 @@
       ]
     },
     {
-      "uuid": "59654406-616b-4a09-bc38-16fe57ce8913",
-      "x_mm": 117.3,
-      "y_mm": 61.2,
+      "uuid": "7b1ed288-7aeb-4f50-9235-8a84677e869d",
+      "x_mm": 109.97,
+      "y_mm": 81.2633,
       "drill_mm": 0.3,
-      "copper_diameter_mm": 0.6,
-      "net": "VMOTOR",
+      "copper_diameter_mm": 0.5,
+      "net": "VMON_MID",
       "pads": [
         {
-          "reference": "D20",
+          "reference": "R32",
           "pad": "1"
         }
       ]
     },
     {
-      "uuid": "26c80f4a-3f7f-4118-b087-5c8db1ec910b",
+      "uuid": "d26ba00e-2cf5-4e8c-bacd-19c85cd8061c",
+      "x_mm": 110.25,
+      "y_mm": 70.6,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "BRAKE_GATE",
+      "pads": [
+        {
+          "reference": "Q16",
+          "pad": "4"
+        }
+      ]
+    },
+    {
+      "uuid": "fd26b21e-59d9-4a0a-9507-510e1fc60790",
+      "x_mm": 111.0,
+      "y_mm": 73.3,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "U15",
+          "pad": "4"
+        }
+      ]
+    },
+    {
+      "uuid": "4970448e-6639-4577-b5ca-23a342a1c1c3",
+      "x_mm": 111.0,
+      "y_mm": 74.95,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "BRAKE_DRIVE",
+      "pads": [
+        {
+          "reference": "U15",
+          "pad": "3"
+        }
+      ]
+    },
+    {
+      "uuid": "779e6b8f-746e-4ba2-9f95-70bb21ea26e2",
+      "x_mm": 112.3,
+      "y_mm": 72.85,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "BRAKE_GATE",
+      "pads": [
+        {
+          "reference": "R68",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "02308322-4b29-42fa-82e5-ae5d64cafeb9",
+      "x_mm": 112.3,
+      "y_mm": 74.95,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "BRAKE_DRIVE",
+      "pads": [
+        {
+          "reference": "R68",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "e32030a9-4f77-4c8f-9e71-4164a10e3187",
+      "x_mm": 112.8,
+      "y_mm": 73.5,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "BRAKE_GATE",
+      "pads": [
+        {
+          "reference": "R68",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "4127523a-efa7-48c3-a47f-44539cda066b",
+      "x_mm": 113.9,
+      "y_mm": 74.45,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "R69",
+          "pad": "2"
+        }
+      ]
+    },
+    {
+      "uuid": "7e795540-cf8f-49cd-9f2a-08fdb33333f8",
       "x_mm": 120.0,
       "y_mm": 130.6,
       "drill_mm": 0.3,
@@ -328,7 +846,35 @@
       ]
     },
     {
-      "uuid": "735ad6f5-1c23-4627-9cbd-9229924e1820",
+      "uuid": "65a95b41-017d-4323-837c-420ce4d1941c",
+      "x_mm": 121.55,
+      "y_mm": 93.45,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "GND",
+      "pads": [
+        {
+          "reference": "U29",
+          "pad": "4"
+        }
+      ]
+    },
+    {
+      "uuid": "1041844b-0729-4bed-a9a8-ae259c0ccb80",
+      "x_mm": 123.0,
+      "y_mm": 94.55,
+      "drill_mm": 0.3,
+      "copper_diameter_mm": 0.5,
+      "net": "PD_SCL_BOARD",
+      "pads": [
+        {
+          "reference": "U29",
+          "pad": "1"
+        }
+      ]
+    },
+    {
+      "uuid": "1d5558a0-3aac-4dd0-ac26-0d595677c1bb",
       "x_mm": 126.283,
       "y_mm": 105.882,
       "drill_mm": 0.3,
@@ -342,7 +888,7 @@
       ]
     },
     {
-      "uuid": "b90677aa-b1a3-45bf-8ee7-ac929b635aa3",
+      "uuid": "83b10c9b-3f19-4d00-bfc1-af5580f580cc",
       "x_mm": 126.432,
       "y_mm": 100.213,
       "drill_mm": 0.3,
@@ -356,7 +902,7 @@
       ]
     },
     {
-      "uuid": "dfd322fd-eeb9-490a-b3cd-644e491af619",
+      "uuid": "f848bc50-075d-4795-84dd-ea7bb04cd87c",
       "x_mm": 126.483,
       "y_mm": 105.357,
       "drill_mm": 0.3,
@@ -370,7 +916,7 @@
       ]
     },
     {
-      "uuid": "e1062638-1332-4832-890e-94ce11fad04c",
+      "uuid": "55cfbfc6-d37d-4373-9cd3-8735c1cb898d",
       "x_mm": 126.707,
       "y_mm": 100.713,
       "drill_mm": 0.3,
@@ -383,5 +929,14 @@
         }
       ]
     }
-  ]
+  ],
+  "reference_only_revalidation": {
+    "before_board_sha256": "e9398e923e5e0e69c2a43d31686ef16f64f03ac0c21ba8a1b651880995f8e221",
+    "after_board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+    "unchanged_non_reference_data_sha256": "aa1948be78ebab16b65322e03fec19311c1e6625cf2c4127b9cbbfec0360592d",
+    "changed_references": [
+      "C113"
+    ],
+    "copper_pads_holes_zones_and_fills_identical": true
+  }
 }

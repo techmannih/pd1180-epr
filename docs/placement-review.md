@@ -13,6 +13,12 @@ The CLI heuristic connects each port to the nearest same-net port and compares s
 
 C41 no longer receives an orientation suggestion after the U14 relocation. Its regenerated same-side U14.5 bypass measures **1.8112 mm**, below 5 mm.
 
-The checker accepts only this exact six-part list, zero placement errors/warnings, the current native geometry and fresh hash-bound DRC. The regression rejects unknown suggestions and changed counts. Raw native DRC retains the eight user-deferred J1/J10 hole-clearance errors and 451 cosmetic warnings; there are zero other errors, unconnected or parity findings. ERC is checked separately. This CAD review does not qualify analog noise, thermal performance or powered operation.
+The checker accepts only this exact nine-part list, zero placement errors/warnings, the current native geometry and fresh hash-bound DRC. The regression rejects unknown suggestions and changed counts. Raw native DRC retains the eight user-deferred J1/J10 hole-clearance errors and 475 cosmetic warnings; there are zero other errors, unconnected or parity findings. ERC is checked separately. This CAD review does not qualify analog noise, thermal performance or powered operation.
 
 Historical STM32 ECO restoration is regression-tested against the exact main `1c22abf` fixture. It is not applied to the replaced RP2040 geometry. Current independent protection checks and the complete routing fingerprint remain mandatory.
+
+## DATA-only ECO, 2026-11-05
+
+The CLI reports ten bounding-box intersections around C22/C23. Both parts have explicit circumscribed 64-segment round courtyards (minimum radius 8.5 mm including body tolerance/assembly allowance). The placement checker now intersects the actual compiled polygons and rejects any real overlap; native courtyard/clearance DRC remains independently required. The raw CLI findings are retained. This is not permission to shrink the capacitor body to its pads.
+
+Nine nearest-port orientation advisories remain: C26, C83, R139, R140, R141, R144, R64, R65 and R73. R73 is the unchanged reset pull-up; adding U41/C113 changes its nearest same-rail counterpart, not its pin mapping or required reset connection. Changing the encoder/I2C rail changes the CLI's nearest counterpart; this heuristic does not inspect actual routed copper. Accept only alongside checked native connectivity/DRC and preserved local bypass/Kelvin routes.
