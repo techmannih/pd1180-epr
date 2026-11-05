@@ -14,7 +14,7 @@ export const SystemOverview = () => (
           pcbComponentNames={["J10", "U28", "U25"]} />
       <Block name="control" displayName="U16 / RP2040"
           description={"U17 flash · motion locks enabled"}
-          pcbComponentNames={["U16", "U17"]} />
+          pcbComponentNames={["U16", "U17", "U39", "U40"]} />
       <systemblock.group name="power-stage" displayName="Protected motor power + regenerative braking">
         <Block name="bus" displayName="U6 / Protected motor supply"
           description={"eFuse + Q4/Q5 reverse blocking"}
@@ -32,7 +32,6 @@ export const SystemOverview = () => (
       <systemblock.connection from="pd" to="bus" kind="power" label="PD input" />
       <systemblock.connection from="bus" to="driver" kind="power" direction="both" label="Motor bus / regen" />
       <systemblock.connection from="driver" to="motor" kind="power" direction="both" label="Two windings" />
-      <systemblock.connection from="pd" to="control" kind="power" label="Via regulators (p.2)" />
       <systemblock.connection name="data-power" from="data" to="control" kind="power" label="Via LDO (p.2)" />
       <systemblock.connection name="data-link" from="data" to="control" direction="both" label="USB" />
       <systemblock.connection from="control" to="driver" label="STEP/DIR + SPI" />
@@ -40,7 +39,7 @@ export const SystemOverview = () => (
     </systemblock.page>
 
     <systemblock.page name="logic-power" displayName="Power Distribution" direction="right"
-      description="The PD and DATA inputs are not joined. U5/U22/U34 are step-down bucks, not buck-boosts. VMOTOR backup keeps the independent brake powered during PD loss.">
+      description="The MCU requires DATA power. U39/U40 isolate PD-powered inputs. The PD and DATA inputs are not joined. U5/U22/U34 are step-down bucks, not buck-boosts. VMOTOR backup keeps the independent brake powered during PD loss.">
       <systemblock.group name="sources" displayName="3.3 V sources">
         <Block name="pd-buck" displayName="PD → 3.3 V"
           description={"U5 + L1 · PD input buck"}
@@ -61,12 +60,15 @@ export const SystemOverview = () => (
           pcbComponentNames={["U12", "U13", "U14", "U29", "U30", "U38"]} />
       </systemblock.group>
       <systemblock.group name="mcu-domain" displayName="MCU supply">
-        <Block name="mcu-or" displayName="MCU supply selection"
-          description={"U26 / U27 · board OR DATA power"}
-          pcbComponentNames={["U26", "U27"]} />
+        <Block name="mcu-or" displayName="DATA-only reverse blocker"
+          description={"U27 · no PD-to-MCU supply"}
+          pcbComponentName="U27" />
         <Block name="mcu" displayName="MCU + flash"
-          description={"U16 RP2040 + U17 flash"}
-          pcbComponentNames={["U16", "U17"]} />
+          description={"U16 + U17 · U39/U40 I/O isolation"}
+          pcbComponentNames={["U16", "U17", "U39", "U40"]} />
+        <Block name="sensor-power" displayName="Switched sensor supply"
+          description={"U41 · off at reset / USB suspend"}
+          pcbComponentNames={["U41", "U31", "U32", "U18"]} />
       </systemblock.group>
       <systemblock.group name="brake-domain" displayName="Brake gate supply">
         <Block name="brake-buck" displayName="Motor bus → 12 V"
@@ -79,8 +81,9 @@ export const SystemOverview = () => (
       <systemblock.connection from="pd-buck" to="board-or" kind="power" label="3.3 V" />
       <systemblock.connection from="backup" to="board-or" kind="power" label="Backup 3.3 V" />
       <systemblock.connection from="data" to="mcu-or" kind="power" label="USB 3.3 V" />
-      <systemblock.connection from="board-or" to="mcu-or" kind="power" label="V3V3" />
       <systemblock.connection from="mcu-or" to="mcu" kind="power" label="MCU 3.3 V" />
+      <systemblock.connection from="mcu-or" to="sensor-power" kind="power" label="Via U41 / 3.3 V" />
+      <systemblock.connection from="mcu" to="sensor-power" label="SENSE_EN" />
       <systemblock.connection from="board-or" to="sensing" kind="power" label="V3V3" />
       <systemblock.connection from="brake-buck" to="brake-driver" kind="power" label="12 V" />
     </systemblock.page>

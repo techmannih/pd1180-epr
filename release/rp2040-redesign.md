@@ -1,6 +1,6 @@
 # RP2040 / DRV8462 redesign
 
-Revision: 0.5.0-RP2040-DRAFT, architecture introduced from `1c22abf`, with the reviewer ECO based on merged PR #21 (`64c14cd`). User-selected architecture: **RP2040 + DRV8462DDVR + TPS26750 + AS5600, retaining 48 V EPR**. Engineering changes only; no assembled motor operation or manufacturing approval is claimed.
+Revision: 0.5.0-RP2040-DRAFT, architecture introduced from `1c22abf`, with the DATA-only MCU ECO based on merged main `fd77f02`. User-selected architecture: **RP2040 + DRV8462DDVR + TPS26750 + AS5600, retaining 48 V EPR**. Engineering changes only; no assembled motor operation or manufacturing approval is claimed.
 
 ## Electrical changes
 
@@ -10,6 +10,10 @@ Revision: 0.5.0-RP2040-DRAFT, architecture introduced from `1c22abf`, with the r
 - R115/R116 and INA240 phase-current diagnostics remain; DRV8462 regulates using its internal current sensing. Their four Kelvin branches pass native terminal-only isolation and pour-keepout checks.
 - U18 becomes AS5600, I²C address 0x36 on RP2040 I²C1. Its 5 V/3 V supply pins are tied to 3.3 V per the 3.3 V circuit, DIR is low, PGO is unconnected. It is **DNP**, centered on the motor axis on the bottom; both bypass capacitors stay on top. The single-shaft ordered motor has no qualified rear magnet installation. Firmware reports valid magnet/angle telemetry only, not closed-loop position control.
 - J1/J10, PD controller/configuration, four mounting holes, brake attachment and other unrelated circuits are retained. The reviewer ECO replaces J2/J3 with WAGO spring clamps and adds U38 INA237 raw PD_VBUS sensing. ADS1115 still measures protected VMOTOR separately.
+
+## DATA-only MCU power
+
+U26 is removed. J10 → U28 → U25 → U27 supplies V3V3_MCU; the PD/motor rails retain independent protection/brake control. U39 isolates PD I²C, U40 isolates status/SPI-return lines, and U41 switches phase/encoder sensors off during USB suspend. Firmware stops the STEP timer, disarms, and idles at 60 MHz to retain RP2040 USB clock requirements. Enumeration, USB current, sensor discharge and wake timing require hardware measurement.
 
 ## Firmware behavior
 
@@ -29,17 +33,17 @@ TI section 9.1 requires support at both ends of the IC, recommends less than 45 
 
 ## Native CAD and verification
 
-The current paired KiCad project has **0 unconnected items, 0 schematic-parity findings and 0 ERC findings**. Raw DRC retains **8 J1/J10 hole-clearance errors** at the user's explicit request, plus **451 cosmetic warnings** (181 text-height, 152 silkscreen overlaps and 118 silk-over-copper). This is not a zero-violation report or fabrication approval. No other native electrical/geometry finding is accepted.
+The current paired KiCad project has **0 unconnected items, 0 schematic-parity findings and 0 ERC findings**. Raw DRC retains **8 J1/J10 hole-clearance errors** at the user's explicit request, plus **475 cosmetic warnings** (185 text-height, 161 silkscreen overlaps and 129 silk-over-copper). This is not a zero-violation report or fabrication approval. No other native electrical/geometry finding is accepted.
 
-The [actual KiCad GUI screenshot](rp2040-kicad-drc.png) was captured after refilling zones in the current delivered project. It shows 8 errors, 451 warnings and 0 unconnected items. GUI schematic parity says not run; the separate CLI run explicitly enables schematic parity and reports zero.
+The existing [KiCad GUI screenshot](rp2040-kicad-drc.png) is historical (8 errors / 451 warnings), not evidence for this DATA-only revision. Current refilled CLI DRC is 8 errors / 475 warnings / 0 unconnected, with schematic parity explicitly enabled and zero findings. A fresh GUI capture remains pending: the Mac is unlocked, but the automation interface is stuck in a Go to Folder sheet. This does not replace or invalidate the fresh CLI report.
 
-All 55 local bypass power paths, four terminal-only Kelvin branches, four USB return-plane paths, source/native width and ground-spacing rules, and power-corridor checks pass on the exported board. The USB fanout uses a filled/capped via in C103's pad; assembly must retain the documented filled/capped via-in-pad process. Final copper is imported into the routed viewer, rather than rerouted by the hosted preview. See [copper evidence](copper-geometry-review.md), [raw manufacturing report](../dist/manufacturing/manufacturing-report.json) and [generated full verification](verification.json).
+All 58 local bypass power paths, four terminal-only Kelvin branches, four USB return-plane paths, source/native width and ground-spacing rules, and power-corridor checks pass on the exported board. The USB fanout uses a filled/capped via in C103's pad; assembly must retain the documented filled/capped via-in-pad process. Final copper is imported into the routed viewer, rather than rerouted by the hosted preview. See [copper evidence](copper-geometry-review.md), [raw manufacturing report](../dist/manufacturing/manufacturing-report.json) and [generated full verification](verification.json).
 
-The new DC-bus/brake/eFuse behavioral simulations are bound to this source. They do not model or qualify DRV8462 switching. The explicit 6 A/phase winding corner reaches **54.858 V**, leaving less than the allocated 0.5 V margin to the retained 55 V system review limit. Full-current operation is therefore unqualified; this finding is retained, not converted into a passing operating claim. The low-current sensitivity case is separate and is not a guaranteed current-tolerance bound.
+The new DC-bus/brake/eFuse behavioral simulations are bound to this source. They do not model or qualify DRV8462 switching. The enlarged 2 × 1000 µF bank reaches **54.321 V** in the nominal-delay 6 A winding-corner screen, versus **54.858 V** for the previous 2 × 470 µF design. It passes the allocated 0.5 V reserve in that case; the 100 µs recovery screen still reaches **54.745 V** and fails that reserve. The 5 J stress also exceeds 55 V. Full-current operation remains unqualified. The low-current sensitivity case is separate and is not a guaranteed current-tolerance bound.
 
 The manufacturing ZIP, BOM/CPL, Gerbers, drills, routed viewer and native reports are regenerated for this revision. The full `bun run review` result is recorded in `docs/verification.json`; a review pass does not clear order or motion locks. Exact live sourcing must be refreshed at ordering and is not reserved.
 
-Remaining product/hardware work is recorded in [readiness](readiness.md): qualified DDV heatsink/TIM and motor-current envelope; secured rear mounting and optional magnet installation; reviewer decisions on spring clamps and raw PD voltage sensing; the actual 48 V/5 A EPR source/cable and completed J3 brake installation; TI/RP2040 programming, full readback/cold boot, and staged powered fault/braking/thermal tests. No physical result is claimed.
+Remaining product/hardware work is recorded in [readiness](readiness.md): qualified DDV heatsink/TIM and motor-current envelope; secured rear mounting and optional magnet installation; physical validation of spring clamps and raw PD voltage sensing; the actual 48 V/5 A EPR source/cable and completed J3 brake installation; TI/RP2040 programming, full readback/cold boot, and staged powered fault/braking/thermal tests. No physical result is claimed.
 
 ## Primary references
 

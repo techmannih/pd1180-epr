@@ -90,15 +90,15 @@ const peerLabels = (key) =>
   (connectedPortGroups.get(key) || []).map((port) => portLabel(port)).sort()
 
 
-// This reviewer revision is schematic-only: compare every compiled electrical
-// and PCB record with the independently compiled main-branch baseline.
+// Compare compiled electrical/PCB records against the explicitly reviewed ECO
+// baseline; schematic-only edits must not silently change this hardware.
 const schematicReviewBaseline = JSON.parse(await readFile("engineering/schematic-review-baseline.json", "utf8"))
 const stableJson = value => Array.isArray(value) ? value.map(stableJson) : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, stableJson(value[key])])) : value
 const physicalRecords = circuit.filter(row => !row.type.startsWith("schematic_") && !row.type.startsWith("system_block_") && !["source_project_metadata", "cli_module_to_static_asset"].includes(row.type))
 // Reuse the native checker normalization: only derived trace_length is rounded
 // to 1e-12 mm. Linux/macOS differ by one ULP; all actual copper stays exact.
 const physicalHash = circuitSourceHash(stableJson(physicalRecords))
-check(physicalHash === schematicReviewBaseline.baseline_non_schematic_sha256, "electrical and PCB records unchanged from reviewed main baseline", { baseline_commit: schematicReviewBaseline.baseline_commit, actual: physicalHash })
+check(physicalHash === schematicReviewBaseline.baseline_non_schematic_sha256, "electrical and PCB records match the reviewed DATA-only ECO baseline", { baseline_commit: schematicReviewBaseline.baseline_commit, actual: physicalHash })
 const architectureText = await readFile("docs/usb-pd-architecture.md", "utf8")
 const unexplainedIcs = sourceComponents.filter(row => /^U[0-9]+$/.test(row.name) && !architectureText.includes(`| ${row.name} |`))
 check(unexplainedIcs.length === 0, "power review documents every IC's purpose", { missing: unexplainedIcs.map(row => row.name) })
@@ -308,7 +308,7 @@ const unknownKeys = [...connectedPortGroups.keys()].filter((key) => !sourceNetBy
 const netHistogram = Object.fromEntries(
   [...groupBy(netCounts, (net) => net.ports)].map(([count, entries]) => [count, entries.length]),
 )
-check(sourceNets.length === 147, "147 named source nets for the integrated-driver revision", { actual: sourceNets.length })
+check(sourceNets.length === 157, "157 named source nets including switched sensor power and enable", { actual: sourceNets.length })
 check(connectedPortGroups.size === sourceNets.length, "every named source net has connected ports", {
   connected_groups: connectedPortGroups.size,
   source_nets: sourceNets.length,
@@ -382,7 +382,7 @@ for (const capacitor of capacitors) {
     }
   }
 }
-check(capacitors.length === 93, "93 capacitors including INA237 supply bypass", { actual: capacitors.length })
+check(capacitors.length === 96, "96 capacitors including isolated-domain and sensor-switch bypasses", { actual: capacitors.length })
 check(capacitorIssues.length === 0, "all capacitor pins connect to two distinct, shared nets", {
   violations: capacitorIssues,
 })
@@ -419,13 +419,13 @@ const expectedNoConnects = [
   "J1.11:DP2", "J1.12:DM", "J1.13:DP", "J1.14:DN2", "J10.10:SBU1", "J10.16:SBU2",
   "J1.10:SBU1", "J1.16:SBU2", "U1.1:DP", "U1.2:DM",
   "U2.10:N_I2Ct_IRQ", "U2.21:NC", "U2.28:PP5V1", "U2.29:PP5V2",
-  "U23.4:NC", "U24.4:NC", "U25.4:NC", "U26.4:NC", "U27.4:NC",
+  "U23.4:NC", "U24.4:NC", "U25.4:NC", "U27.4:NC",
   "U34.4:PG", "U28.4:FAULT", "U30.2:ALERT", "U31.4:NC", "U32.4:NC",
   "U6.11:MODE", "U6.19:N_C6", "U6.20:N_C5", "U6.21:N_C4", "U6.22:N_C3", "U6.23:N_C2", "U6.24:N_C1",
   "U18.5:PGO",
   "U7.32:RSVD5", "U7.35:RSVD4", "U7.36:RSVD3", "U7.37:RSVD2", "U7.38:RSVD1",
   "U35.13:N_INT", "U37.1:NC", "U38.3:ALERT",
-  "U16.6:GPIO4", "U16.7:GPIO5", "U16.34:GPIO22", "U16.35:GPIO23", "U16.36:GPIO24", "U16.37:GPIO25",
+  "U16.6:GPIO4", "U16.7:GPIO5", "U16.34:GPIO22", "U16.35:GPIO23", "U16.37:GPIO25", "U41.4:NC",
 ].sort()
 const actualNoConnectPorts = sourcePorts.filter((port) => !port.subcircuit_connectivity_map_key)
 const actualNoConnects = actualNoConnectPorts.map(portLabel).sort()

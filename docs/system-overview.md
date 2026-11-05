@@ -31,7 +31,7 @@ is firmware-derived; the physical eFuse `MOTOR_PG` is a different signal.
 
 1. J1 receives USB-C PD power. U1 protects CC and U2 negotiates the configured
    48 V / 5 A EPR contract using U3's EEPROM image. U5 can power logic before
-   motor power is enabled. J10 provides separate USB data and optional MCU power.
+   motor power is enabled. J10 provides USB data and the required MCU power. U39/U40 isolate the independently powered board I/O.
 2. RP2040 checks the PD contract and configuration, raw input voltage from U38,
    temperature, fresh telemetry and fault inputs before requesting motor power. PD_READY
    is a firmware decision; it is not the same signal as the eFuse's MOTOR_PG.
@@ -49,8 +49,7 @@ is firmware-derived; the physical eFuse `MOTOR_PG` is a different signal.
    12 V brake-gate power during PD loss. The 10 ohm / 300 W resistor and cooling
    remain provisional.
 
-DATA alone can boot RP2040 and its flash for diagnostics. It cannot power the
-motor or the board's sensors. U18 is an optional, unpopulated encoder, with no
+DATA alone can boot RP2040 and its flash for diagnostics. The phase amplifiers and optional encoder use a switched DATA-derived rail; firmware keeps that rail off until board power-good permits peripheral startup. DATA cannot power the motor or the PD-side ADC/temperature sensors. PD alone cannot boot RP2040. U18 is an optional, unpopulated encoder, with no
 qualified magnet mounting or closed-loop motion claim. See
 [the IC-purpose table and power states](usb-pd-architecture.md) for details.
 
@@ -60,8 +59,7 @@ The default routed `release/circuit.json` contains the four native
 `system_block_page` records plus their blocks, routes and actual PCB-component
 associations. Use the **System** tab and page selector in a supporting viewer.
 On tscircuit.com it appears immediately after **Files**, but only when the
-selected release contains the diagrams. While PR #25 is open, select its PR
-preview version rather than the default main release.
+selected release contains the diagrams. For an unmerged electrical revision, select its matching PR preview; main displays only merged artifacts.
 Local preview: `bun run dev:system`. The SVG links above remain usable even if a
 website deployment has not yet enabled its System tab.
 

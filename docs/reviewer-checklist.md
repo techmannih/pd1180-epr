@@ -2,7 +2,7 @@
 
 Revision 0.5.0-RP2040-DRAFT. Begin with [the redesign](rp2040-redesign.md) and [exact evidence](../engineering/rp2040-redesign.json). No ordering or motor-operation approval is recorded.
 
-- [ ] Read the nine functional sheets alongside [every IC’s purpose and power paths](usb-pd-architecture.md). Compare the [reference power-source evidence](../engineering/reviewer-power-reference.json); NEMA23/NEMA14 support dual-source MCU power.
+- [ ] Read the nine functional sheets alongside [every IC’s purpose and power paths](usb-pd-architecture.md). Compare the [reference power-source evidence](../engineering/reviewer-power-reference.json). This revision follows the user-selected DATA-only MCU supply; U39/U40 isolate board-powered inputs and U41 switches sensor power during suspend.
 - [ ] Check the exact DDV 44-pin table, integrated bridges, VREF/DVDD, MODE, reserved pins and both charge-pump paths against TI's DRV8462 datasheet. DDW is not an interchangeable substitute.
 - [ ] Review RP2040 power pins/EP57, core/VREG bypass, 12 MHz crystal, QSPI boot flash on the independent MCU rail, USB series resistors and BOOTSEL/SWD access.
 - [ ] Reproduce the compiled electrical and firmware pin contracts and host tests. Verify register readback, safe startup, power loss, stalled-loop/STEP lease fault latching and explicit restart.

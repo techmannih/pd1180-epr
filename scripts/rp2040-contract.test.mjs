@@ -33,3 +33,27 @@ test('raw PD measurement and both tails of every spring-clamp pole cannot silent
     expect(checkRp2040Contract(rows).some(e=>e.startsWith(`${ref}.${pin}:`))).toBe(true)
   }
 })
+
+// Reintroducing any feed across the disabled domain defeats DATA-only power.
+test('DATA-only isolation rejects board-side feeds, missing isolation and shared pull-ups',()=>{
+  for(const [ref,pin] of [['U27',1],['U27',3],['U39',1],['U39',5],['U39',8],['U40',20],['R142',1],['R143',1],['U31',6],['U32',6],['U18',1]]) {
+    const rows=structuredClone(source)
+    const id=rows.find(r=>r.type==='source_component'&&r.name===ref).source_component_id
+    rows.find(r=>r.type==='source_port'&&r.source_component_id===id&&r.pin_number===pin).subcircuit_connectivity_map_key='unisolated-board-feed'
+    expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)
+  }
+  for(const ref of ['U39','U40']) {
+    const rows=structuredClone(source)
+    rows.splice(rows.findIndex(r=>r.type==='source_component'&&r.name===ref),1)
+    expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)
+  }
+})
+
+test('sensor power must be switched, discharged and disabled by a hardware pulldown',()=>{
+  for(const [ref,pin] of [['U41',1],['U41',3],['U41',5],['U41',6],['R145',1],['R145',2],['U16',36]]) {
+    const rows=structuredClone(source)
+    const id=rows.find(r=>r.type==='source_component'&&r.name===ref).source_component_id
+    rows.find(r=>r.type==='source_port'&&r.source_component_id===id&&r.pin_number===pin).subcircuit_connectivity_map_key='bypassed-sensor-switch'
+    expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)
+  }
+})

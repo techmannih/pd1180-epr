@@ -11,7 +11,7 @@ The source `motor-assembly.circuit.tsx` and default routed 3D assembly include t
 | 2 | TE Connectivity 152883 | 18–16 AWG, M4 ring with 4.3 mm bore; partly insulated, requires guarded installation |
 | 1 | Vishay LPS0300H10R0GB | **Provisional** 10 Ω ±2%, 300 W at specified case temperature with suitable cooling |
 | 2 each | M4 mounting and terminal fastener sets | Resistor drawing lists M4×25 mounting screws and M4 connection hardware with lock washers; confirm the supplied kit and thread engagement before assembly |
-| 1 installation | Thermal interface, heatsink/chassis, terminal guard and cable restraint | The model shows an 80×80×30 mm cooling envelope and a guard concept. They have no selected supplier identity or verified thermal/retention rating. Final hardware must meet the measured application duty. |
+| 1 installation | Thermal interface, heatsink/chassis, terminal guard and cable restraint | The model shows an 80×80×30 mm cooling envelope and a guard concept. The model remains conceptual; Bluesil Past 340 is selected as the resistor TIM and Fischer SK 100 100 SA is a separate sink candidate for drawing/thermal review. Neither the existing model nor the candidate is a verified cooling/retention assembly. See thermal-qualification.md. |
 
 The two cable lengths belong to the illustrated resistor location, centered at PCB Y=180 mm with its thermal interface at Z=20 mm. They are not a universal harness length. The 23.876 mm minimum wire bend radius is screened numerically; cable routing, strips, finished crimps and retention need first-article approval. The visual guard is not evidence of touch protection, heat resistance or airflow performance. No additional motor mounting posts, adapter or PCB holes were introduced.
 

@@ -2,7 +2,10 @@
 #include "../target/main.cpp"
 
 static bool suspended;
+static unsigned suspendEntries,suspendExits;
 void initializeSuspendTimer() {}
+void enterUsbSuspendPower() {++suspendEntries;}
+void leaveUsbSuspendPower() {++suspendExits;}
 bool usbIsSuspended() { return suspended; }
 void sleepWhileUsbSuspended() {}
 

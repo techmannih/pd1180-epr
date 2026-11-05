@@ -18,6 +18,8 @@ try {
 const checked = []
 for (const [source, delivered] of [
   ['engineering/rp2040-redesign.json', 'release/rp2040-redesign.json'],
+  ['engineering/manufacturing-acceptance-record.json', 'release/manufacturing-acceptance-record.json'],
+  ['engineering/mechanical/cooling-selection.json', 'release/cooling-selection.json'],
   ['engineering/rp2040-native-review.zip', 'release/rp2040-native-review.zip'],
   ['engineering/rp2040-copper-evidence.zip', 'release/rp2040-copper-evidence.zip'],
   ['engineering/rp2040-via-in-pad.json', 'release/rp2040-via-in-pad.json'],

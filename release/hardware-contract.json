@@ -87,7 +87,7 @@
       "diameter": 0.6,
       "drill": 0.3
     },
-    "via_in_pad": "Epoxy filled and copper capped at all 27 locations in engineering/rp2040-via-in-pad.json; inventory is tied to the exact native-board SHA-256. Connector holes remain open.",
+    "via_in_pad": "Epoxy filled and copper capped at all 66 locations in engineering/rp2040-via-in-pad.json; inventory is tied to the exact native-board SHA-256. Connector holes remain open.",
     "minimum_trace_width_mm": 0.15,
     "ground_plane": {
       "net": "GND",
@@ -111,7 +111,8 @@
     "STATUS_GPIO": 0,
     "DRV_SLEEP_N": 0,
     "DRV_STEP": 0,
-    "DRV_DIR": 0
+    "DRV_DIR": 0,
+    "SENSE_EN": 0
   },
   "connectors": {
     "J1": "USB PD POWER",
@@ -123,13 +124,13 @@
     "U5": "PD_VBUS -> V3V3_PD -> U23 -> board V3V3",
     "U22": "VMOTOR -> V3V3_MOTOR -> U24 -> board V3V3 (brake backup)",
     "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
-    "reverse_blocking": "Two cascaded status-interlocked LM66100 pairs; DATA and PD VBUS are never connected",
+    "reverse_blocking": "U23/U24 select board supplies; U27 blocks DATA backfeed. PD and DATA VBUS are never connected.",
     "usb_default_budget": "Startup before enumeration and USB suspend current must be measured and qualified; the current limiter is overload protection, not a USB enumeration policy",
-    "usb_data_power": "USB DATA can boot RP2040 and U17 from V3V3_MCU. Encoder, driver logic and other sensors require board V3V3. USB current remains unqualified.",
+    "usb_data_power": "J10 powers RP2040 and U17. U41 switches the DATA-derived INA240 and optional encoder supply; driver logic and board sensors require board V3V3.",
     "U25": "USB_DATA_VBUS -> TPS2553 U28 -> TLV75533 U25 -> V3V3_USB",
-    "selection": "U26/U27 + R112: status-interlocked OR of board V3V3 and V3V3_USB into V3V3_MCU",
-    "board_presence": "R119/R120 10k/10k into RP2040 GP28; 2.9-3.6 V stable for 20 ms before board peripherals start.",
-    "suspend": "Disarm, invalidate telemetry, stop peripheral buses and hold status/reset low. RP2040 USB suspend current and timing are not yet qualified; no STM32 STOP0 claim applies.",
+    "selection": "U27 only: DATA-derived V3V3_USB -> V3V3_MCU, CE grounded; no PD/board supply feed",
+    "board_presence": "U40 isolates LOGIC_PG to digital RP2040 GP28; stable high for 20 ms, immediate low shutdown.",
+    "suspend": "Disarm, float peripheral buses, shut U41 sensor power and STEP timer, reduce clk_sys to 60 MHz (RP2040-E16 requires >48 MHz), use alarm/WFE idle, retain USB clock and watchdog. Current/wake timing require physical measurement.",
     "gpio_backfeed": "Driver CS releases to a board-domain pullup; SPI floats when VMOTOR is absent. I2C/board inputs float when board power is absent. Dedicated QSPI remains on MCU power."
   },
   "diagnostics": {
@@ -321,5 +322,34 @@
     "adc": "16-bit, 3.125 mV/LSB, fresh single-shot bus conversion",
     "readiness": "APP/sink/EPR/48 V 5 A contract AND fresh 44\u201351 V measured raw PD bus; physical MOTOR_PG independently required",
     "qualification": "Firmware bench model tested; actual powered measurements and timing unqualified"
+  },
+  "data_only_mcu": {
+    "source": "J10 -> U28 -> U25 -> U27 -> V3V3_MCU",
+    "removed": [
+      "U26",
+      "R112",
+      "C77",
+      "R119",
+      "R120"
+    ],
+    "i2c_isolation": "U39 TCA9517ADGKR, independent domain pull-ups",
+    "status_isolation": "U40 SN74LVC244APWR, DATA powered, Ioff",
+    "board_pg": "LOGIC_PG_MCU digital GP28",
+    "independent_brake_retained": true,
+    "physical_backfeed_test_passed": false,
+    "switched_sensor_power": {
+      "device": "U41 TPS22919DCKR",
+      "rail": "V3V3_SENS",
+      "enable": "GP24 SENSE_EN, active high; R145 100k pulldown",
+      "loads": [
+        "U31",
+        "U32",
+        "optional U18"
+      ],
+      "output_discharge": "QOD tied to VOUT",
+      "startup_settle_ms": 10,
+      "source": "https://www.ti.com/lit/ds/symlink/tps22919.pdf",
+      "physical_current_and_wake_verified": false
+    }
   }
 }

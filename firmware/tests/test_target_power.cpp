@@ -3,7 +3,10 @@
 
 static bool suspended;
 static unsigned sleeps;
+static unsigned suspendEntries,suspendExits;
 void initializeSuspendTimer() {}
+void enterUsbSuspendPower() {++suspendEntries;}
+void leaveUsbSuspendPower() {++suspendExits;}
 bool usbIsSuspended() { return suspended; }
 void sleepWhileUsbSuspended() { ++sleeps; }
 
@@ -84,10 +87,13 @@ int main() {
   assert(Serial.output.find("BLOCKED")!=std::string::npos);
   expectSafe();
 
-  fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=2048;
+  fakeLevels[pin(PD1180_PIN_LOGIC_PG_MCU)]=HIGH;
   advance(1);assert(!peripheralsStarted);
   advance(19);assert(!peripheralsStarted);
   advance(1);assert(peripheralsStarted && pdBus.started);
+  assert(fakeLevels[pin(PD1180_PIN_SENSE_EN)]==HIGH);
+  phaseValid=true;samplePhaseCurrent(fakeNow);assert(!phaseValid);
+  encoderSample.valid=true;pollEncoder(fakeNow);assert(!encoderSample.valid);
   assert(!spiStarted && motorSpi.transactions==0);
   inputs.motor_power_good=inputs.vmotor_in_range=true;
   pollDriver(fakeNow+20);
@@ -99,23 +105,27 @@ int main() {
   encoderSample.valid=true;
   adcValid[0]=adcValid[2]=phaseValid=inputs.temperature_valid=true;
   brakePreflight.ready=inputs.brake_preflight_ok=true;
-  fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=0;
+  fakeLevels[pin(PD1180_PIN_LOGIC_PG_MCU)]=LOW;
   advance(1);
   assert(!peripheralsStarted && !pdBus.started && !adcValid[0] && !adcValid[2] && !brakePreflight.ready && !inputs.brake_preflight_ok && !phaseValid && !inputs.temperature_valid);
   assert(!encoderSample.valid && !pdVoltage.valid && !inputs.pd_power_good);
   assert(fakeModes[pin(PD1180_PIN_PD_SCL)]==INPUT);
   expectSafe();
 
-  fakeAdc[pin(PD1180_PIN_BOARD_POWER_SENSE)]=2048;
+  fakeLevels[pin(PD1180_PIN_LOGIC_PG_MCU)]=HIGH;
   advance(1);advance(20);assert(peripheralsStarted);
   commandLength=3; responseLength=10;
   const auto reads=pdBus.transactions, reloads=watchdogReloads;
   suspended=true;advance(1);
   assert(sleeps==1 && watchdogReloads==reloads+1);
+  assert(suspendEntries==1 && timerStops==1 && !stepTimerReady);
+  assert(fakeLevels[pin(PD1180_PIN_SENSE_EN)]==LOW);
   assert(pdBus.transactions==reads && !pdBus.started && !peripheralsStarted);
   assert(commandLength==0 && responseLength==0 && fakeLevels[pin(PD1180_PIN_STATUS_GPIO)]==LOW);
   expectSafe();
   suspended=false;advance(1);assert(!peripheralsStarted);
+  assert(suspendExits==1 && stepTimerReady && timerStarts==2);
+  assert(fakeLevels[pin(PD1180_PIN_SENSE_EN)]==LOW);
   advance(20);assert(peripheralsStarted);
   expectSafe();
 

@@ -8,5 +8,5 @@ typedef struct {
   uint32_t healthy_since;
 } pd1180_board_power_t;
 
-/* Rail is measured before the MCU OR, via the equal 10k divider on PB1. */
-bool pd1180_board_power_update(pd1180_board_power_t *state, uint32_t rail_mv, uint32_t now);
+/* U5 power-good is buffered into DATA-powered GP28. Never report it as ADC voltage. */
+bool pd1180_board_power_update(pd1180_board_power_t *state, bool power_good, uint32_t now);

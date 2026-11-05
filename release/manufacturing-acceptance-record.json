@@ -1,0 +1,89 @@
+{
+  "status": "awaiting-fabricator-and-first-article-acceptance",
+  "fabrication_authorized": false,
+  "request_sent": false,
+  "release_identity": {
+    "pcb_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+    "release_manifest_sha256": null,
+    "supplier": null,
+    "quote_or_order_id": null,
+    "drawing_revision": null,
+    "reviewer": null,
+    "reviewed_at": null,
+    "manifest_binding": "This record is included and hashed by release/delivery-manifest.json; no self-referential manifest hash is stored here."
+  },
+  "stackup": {
+    "layers": 4,
+    "finished_thickness_mm": 1.6,
+    "outer_copper_oz": 1,
+    "inner_copper_oz": 1,
+    "finish": "ENIG",
+    "supplier_stackup_id": null,
+    "finished_copper_tolerance": null,
+    "dielectric_material_and_thicknesses": null,
+    "accepted": false
+  },
+  "usb_impedance": {
+    "differential_target_ohm": 90,
+    "tolerance_percent": 10,
+    "route_geometry_source": "Current native PCB: USB_DP_CONN/USB_DM_CONN and USB_DP/USB_DM",
+    "required_evidence": [
+      "Stack-up-specific field-solver result for actual widths, pair gaps, copper and reference layers",
+      "Fabrication coupon/TDR report",
+      "Assembled DATA-port enumeration and signal-integrity test"
+    ],
+    "field_solver_report": null,
+    "coupon_report": null,
+    "functional_report": null,
+    "accepted": false
+  },
+  "via_in_pad": {
+    "inventory": "engineering/rp2040-via-in-pad.json",
+    "process": "epoxy filled and copper capped",
+    "required_evidence": [
+      "Final-board hash and every inventory coordinate included in fabrication instruction",
+      "Supplier confirms filled/capped process rather than tenting/mask plugging",
+      "First article shows planar plated caps and acceptable solder joints"
+    ],
+    "supplier_process_id": null,
+    "inspection_report": null,
+    "accepted": false,
+    "count": 66,
+    "inventory_sha256": "815da3d704a4fd88e73a7605d53c0d9cc2223a380bba6bf8a57987f1e6a3a792"
+  },
+  "usb_hole_exceptions": {
+    "references": [
+      "J1",
+      "J10"
+    ],
+    "rule_mm": 0.2,
+    "minimum_measured_gap_mm": 0.1451,
+    "retained_error_count": 8,
+    "scope": "Engineering-review exception only; no automatic manufacturing waiver",
+    "fabricator_disposition": null,
+    "accepted": false
+  },
+  "critical_markings": {
+    "inspect": [
+      "J1 PWR / J10 DATA identity and plug access",
+      "J2 pin 1 and A1/A2/B1/B2 correspondence to connector-harnesses.md",
+      "J3 pin 1 VMOTOR and pin 2 BRAKE_RETURN; pin 2 must not be labelled GND",
+      "C22/C23 capacitor polarity",
+      "PD programming VREF/GND/SDA/SCL/ISO service contact identity",
+      "SWD VREF/GND/CLK/IO and board revision"
+    ],
+    "criteria": "No required marking removed, clipped or made ambiguous by mask, solder, tall components or assembly; use an approved durable enclosure/harness label if board marking is inaccessible. Review actual fabrication plots and first article.",
+    "approved_plot_revision": null,
+    "inspection_photos": null,
+    "accepted": false
+  },
+  "first_article": {
+    "serial_number": null,
+    "assembly_inspection_report": null,
+    "electrical_test_report": null,
+    "operator": null,
+    "date": null,
+    "accepted": false
+  },
+  "closure_rule": "Every applicable acceptance requires a named reviewer and evidence for the exact release. CAD/tests cannot set supplier or physical acceptance to true."
+}

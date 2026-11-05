@@ -10,7 +10,7 @@ Applies to the current RP2040 / DRV8462 / raw-PD-sensing / WAGO revision and ord
 |---|---|---|---|
 | Motor harness | Required whenever this board drives the motor's two windings | Factory motor cable → four TE 320559 splices → four 16 AWG pigtails → stripped wire → WAGO 2601-3104 J2 | Retain; make and qualify the separate cable assembly |
 | EPR power source and cable | Supplies motor energy during operation | A source explicitly supporting a **48 V / 5 A EPR contract** → suitable 5 A EPR USB-C cable → J1 POWER | Framework 240 W adapter is a candidate; source and cable procurement/qualification remain open. A charger's total advertised wattage is insufficient evidence |
-| USB data cable and host | Setup, logs and commissioning diagnostics | Host USB → J10 DATA | Service equipment; does not supply motor power or replace the onboard motion controller |
+| USB data cable and host | Required MCU power during operation, plus setup/logs/diagnostics | Host USB → J10 DATA | Keep connected alongside J1 PD. PD alone cannot power RP2040; DATA does not supply motor energy |
 | SW2 START/STOP | Requests the internal motion profile after qualification | Onboard switch → RP2040 GP11 → timer STEP/DIR → DRV8462 integrated bridges → J2 | Already on PCB; no external STEP/DIR box or control loom |
 | SW1 RESET | Resets the MCU; must not restart motion automatically | Accessible top-side PCB switch | Already on PCB; reset is not a substitute for qualifying deceleration and regeneration |
 | External brake assembly | Dissipates returned energy during the current conservative commissioning profile | J3 pin 1 VMOTOR → resistor → J3 pin 2 BRAKE_RETURN → Q16 → GND | Required for the current commissioning profile; startup continuity sensing must pass. Empty J3 provides no resistor dissipation. See [brake decision and procedure](brake-integration.md) |
@@ -50,7 +50,7 @@ The current TSX, compiled routed viewer and fitted placement file agree:
 | U18 AS5600 | Bottom at PCB `(0, 0)`, centered on the proposed motor axis for a motor-side magnetic target | **No — doNotPlace** |
 | C52 100 nF | Top at `(0, −5.55)` mm; local encoder supply bypass | **No — doNotPlace** |
 | C53 1 µF | Top at `(3, −4.5)` mm; additional encoder supply decoupling | **No — doNotPlace** |
-| All 237 fitted components | Top, including J2, J3, switches and driver circuitry | **Yes — top-only BOM/CPL** |
+| All 240 fitted components | Top, including J2, J3, switches and driver circuitry | **Yes — top-only BOM/CPL** |
 
 U18 faces the motor-side magnetic target at the shaft axis. C52/C53 are on top; the optional bypass routing is reviewed in encoder-top-eco.json. All three remain optional and unpopulated. The AS5600 uses I2C; the former SPI encoder and R74 are removed.
 
@@ -69,7 +69,7 @@ A single START/STOP button suits this bounded local bench-control interface; [TI
 3. Start with no motor: validate rails, protection, PD negotiation and programming. Follow [assembly acceptance](assembly.md) and [power validation](power-validation.md).
 4. With all power removed and VMOTOR discharged, verify J2 cavity/winding continuity, connect the motor and the complete qualified brake installation. Never short J3 or connect its return directly to ground.
 5. Only after the qualification gates pass, use an identified motor-test firmware build and staged unloaded tests; then add the approved load. Capture bus peaks during commanded stops, faults, reset and power loss, plus current and temperatures. Speed alone does not decide whether J3 is needed.
-6. Normal local START/STOP uses SW2 after qualified power-up. The current shipped commissioning binary cannot perform this step. No laptop motion-control application or external command connector is required by the selected architecture.
+6. Normal local START/STOP uses SW2 after qualified power-up with both DATA USB and PD connected. The current shipped commissioning binary cannot perform this step. No laptop motion-control application or external command connector is required by the selected architecture.
 
 The main ECO adds D20 cable-inductance recirculation and the R134/R135/R136/C98 divider into U30 AIN2. Three distinct fresh samples check continuity with motor-bus power permitted and the bridge inhibited. During RUN, fresh voltage-continuity checks now latch invalid/stale feedback, with the bounded braking observation interval described in `brake-integration.md`. This does not prove resistance, cooling, fault-response timing or regenerated-energy containment. The firmware retains all four false qualification locks.
 

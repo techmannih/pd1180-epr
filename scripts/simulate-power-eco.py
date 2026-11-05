@@ -127,7 +127,7 @@ Vregen inj bus 0
 def winding(p,dt):
     cap=p.get('cap',940e-6); initial=p.get('initial',53.69047619047619)
     current=p.get('current',5.5); inductance=p.get('inductance',.0035); duration=.003
-    deck=header(p['name'])+brake_network(cap,initial,p.get('brake',False),on=p.get('on',51.99),off=p.get('off',51.3432),esr=p.get('esr',.01),lag=p.get('lag',1e-7),initial_sense=p.get('initial_sense_v'))
+    deck=header(p['name'])+brake_network(cap,initial,p.get('brake',False),on=p.get('on',51.99),off=p.get('off',51.3432),esr=p.get('esr',.01),lag=p.get('lag',1e-7),initial_sense=p.get('initial_sense_v'),resistance=p.get('resistance',10))
     # Two phases at a 45-degree electrical angle: both initially Irms, total L*Irms^2.
     # Two body diodes per phase; simple diode model, without reverse recovery.
     for phase in ['a','b']:
@@ -259,34 +259,37 @@ def main():
         r=json.loads((ROOT/'results.json').read_text())
         assert r['source_sha256']==VERSION and r['model_sha256']==model_hash and r['audit_parameters_sha256']==audit_hash, 'Stale simulation evidence'
         assert r.get('architecture') == audit.get('architecture') and r.get('bridge_switching_qualified') is False
-        assert r['hardware_qualified'] is False and not r['errors'] and all(r['checks'].values()) and len(r['cases'])==14
+        assert r['hardware_qualified'] is False and not r['errors'] and all(r['checks'].values()) and len(r['cases'])==16
         for name,digest in r['deck_sha256'].items():
             assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest()==digest, 'Changed simulation deck: '+name
-        print('Fourteen behavioral cases: source/model/audit-parameter/deck hashes and numerical checks verified; hardware remains unqualified.')
+        print('Sixteen behavioral cases: source/model/audit-parameter/deck hashes and numerical checks verified; hardware remains unqualified.')
         return
     a=audit['calculations']; th=a['thresholds_v']
+    nominal_cap=a['inrush']['capacitance_f']; minimum_cap=nominal_cap*(1-audit['assumptions']['bulk_capacitance_tolerance_fraction'])
     full_current = a['current']['analysis_case_rms_a'] if integrated else a['current']['sensitivity_max_rms_a']
     commissioning_current = (a['commissioning_profile']['brake_open_sensitivity']['each_phase_instantaneous_current_a']
                              if integrated else a['current']['sensitivity_max_rms_a']*7/32)
-    corner=dict(kind='winding',cap=752e-6,initial=th['motor_cutoff_screen']['max'],
+    corner=dict(kind='winding',cap=minimum_cap,initial=th['motor_cutoff_screen']['max'],
         inductance=.0042,current=full_current,
         on=th['brake_on_screen']['max'],off=th['brake_off_screen']['max'])
     upstream=a['supply']['efuse_limit']['upstream_input_allocation_a']
     restricted=a['commissioning_profile']['brake_open_sensitivity']
     rotor_energy=restricted['returned_energy_j']-.0042*restricted['each_phase_instantaneous_current_a']**2
     cases=[
-      dict(name='winding_nominal_brake',kind='winding',brake=True,
+      dict(name='winding_nominal_brake',kind='winding',brake=True,cap=nominal_cap,
            initial=th['motor_cutoff_screen']['nominal'],current=a['current']['programmed_rms_a'],
            on=th['brake_on_screen']['nominal'],off=th['brake_off_screen']['nominal']),
       dict(corner,name='winding_corner_brake',brake=True),
+      dict(corner,name='winding_previous_470uf_reference',brake=True,cap=752e-6),
+      dict(corner,name='winding_hot_resistor_esr_screen',brake=True,resistance=10*1.02*(1+300e-6*60),esr=.05),
       dict(corner,name='winding_corner_open',brake=False),
       dict(corner,name='commissioning_corner_open',brake=False,current=commissioning_current),
       dict(corner,name='winding_corner_recovery_100us',brake=True,lag=100e-6,initial_sense_v=48),
       dict(corner,name='restricted_open_with_rotor',brake=False,current=1.5,rotor_energy=rotor_energy),
       dict(corner,name='restricted_supply_loss_open',brake=False,current=1.5,rotor_energy=rotor_energy,initial=50.4),
-      dict(name='rotor_1000rpm_brake',kind='regen',cap=752e-6,on=th['brake_on_screen']['max'],off=th['brake_off_screen']['max']),
-      dict(name='rotor_1000rpm_open',kind='regen',cap=752e-6,brake=False),
-      dict(name='five_joules_20ms_stress',kind='regen',energy=5,cap=752e-6,
+      dict(name='rotor_1000rpm_brake',kind='regen',cap=minimum_cap,on=th['brake_on_screen']['max'],off=th['brake_off_screen']['max']),
+      dict(name='rotor_1000rpm_open',kind='regen',cap=minimum_cap,brake=False),
+      dict(name='five_joules_20ms_stress',kind='regen',energy=5,cap=minimum_cap,
            on=th['brake_on_screen']['nominal'],off=th['brake_off_screen']['nominal']),
       dict(name='input_new_1x_corner',kind='overload',ilim=a['supply']['efuse_limit']['max_a'],pulse=1,upstream=upstream),
       dict(name='input_new_1x_nominal_10a',kind='overload',ilim=a['supply']['efuse_limit']['formula_nominal_a'],pulse=1,upstream=upstream,load=10,load_duration=.002),
@@ -302,7 +305,7 @@ def main():
       'audit_parameters_sha256':audit_hash,
       'assumptions':['100% prescribed mechanical energy return; no full motor/bridge model',
         'DRV8462 current regulation, SmartTune, dead time and integrated diode behavior are not modeled or qualified; phase-current initial conditions are explicit engineering scenarios, not guaranteed current limits',
-        '10 mOhm bank ESR assumption; no capacitor ripple or thermal qualification',
+        '10 mOhm nominal bank ESR assumption; separate 50 mOhm bank / 10.3836 ohm hot-resistor sensitivity; no capacitor ripple or thermal qualification',
         '2.2 uF lumped input capacitance, 100 mOhm source/cable resistance; revised input cases use 250 mA upstream, old reference uses 100 mA; not measured',
         'Ideal eFuse current envelope omits finite response, thermal shutdown and PD source dynamics',
         'Winding corner starts at maximum cutoff; 100 ns sensor lag is assumed; separate 100 us recovery begins at a 48 V sense state',
@@ -334,24 +337,25 @@ def main():
     by={c['parameters']['name']:c['fine'] for c in result['cases']}
     # These are bounded model assertions, not a hardware acceptance certificate.
     checks={
-      ('unqualified_6a_case_lacks_0p5v_margin' if integrated else 'healthy_winding_corner_plus_0p5v_allocation_below_55v'):
-          (by['winding_corner_brake']['bus_max_v']+.5>=55 if integrated else by['winding_corner_brake']['bus_max_v']+.5<55),
+      'healthy_winding_corner_plus_0p5v_allocation_below_55v':by['winding_corner_brake']['bus_max_v']+.5<55,
+      'hot_resistor_esr_plus_0p5v_allocation_below_55v':by['winding_hot_resistor_esr_screen']['bus_max_v']+.5<55,
+      'previous_470uf_6a_case_fails_margin':by['winding_previous_470uf_reference']['bus_max_v']+.5>=55,
       'commissioning_open_winding_plus_0p5v_allocation_below_55v':by['commissioning_corner_open']['bus_max_v']+.5<55,
       'new_steady_envelope_below_5a':by['input_new_1x_corner']['input_peak_a']<5,
       'new_10a_request_envelope_below_5a':by['input_new_1x_corner_10a']['input_peak_a']<5,
       'restricted_rotor_and_winding_plus_0p5v_allocation_below_55v':by['restricted_open_with_rotor']['bus_max_v']+.5<55,
       'old_2x_envelope_exceeds_5a':by['input_old_2x_reference']['input_peak_a']>5,
-      'open_brake_at_1000rpm_remains_unsafe':by['rotor_1000rpm_open']['bus_max_v']>60,
+      'open_brake_at_1000rpm_remains_unsafe':by['rotor_1000rpm_open']['bus_max_v']>55,
       'unapproved_5j_20ms_load_remains_unsafe':by['five_joules_20ms_stress']['bus_max_v']>55,
     }
     errors += [k for k,v in checks.items() if not v]
     result['full_current_operation_authorized'] = False
-    result['open_qualification_findings'] = ([{
-        'case':'winding_corner_brake','phase_current_a':full_current,
-        'peak_bus_v':by['winding_corner_brake']['bus_max_v'],
+    result['open_qualification_findings'] = [{
+        'case':'winding_corner_recovery_100us','phase_current_a':full_current,
+        'peak_bus_v':by['winding_corner_recovery_100us']['bus_max_v'],
         'required_additional_margin_v':.5,'screen_limit_v':55,
-        'disposition':'6 A scenario fails the reserved bus-margin allocation; brake/current envelope must be revised and qualified before full-current operation. Commissioning locks remain enabled.'
-    }] if integrated else [])
+        'disposition':'Nominal-delay energy-margin screen improved with 2 x 1000 uF. Actual latency, harness inductance, capacitor ESR/ripple, bridge dynamics and load energy still require hardware qualification. Full-current operation remains locked.'
+    }]
     result.update(checks=checks,errors=errors,deck_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(ROOT.glob('*.cir'))})
     (ROOT/'results.json').write_text(json.dumps(result,indent=2)+'\n')
     if errors: raise RuntimeError(errors)

@@ -20,10 +20,11 @@
     "21": "PD_SCL",
     "26": "PHASE_A_ADC",
     "27": "PHASE_B_ADC",
-    "28": "BOARD_POWER_SENSE",
+    "28": "LOGIC_PG_MCU",
     "29": "USB_VBUS_SENSE",
     "14": "ENC_SDA",
-    "15": "ENC_SCL"
+    "15": "ENC_SCL",
+    "24": "SENSE_EN"
   },
   "packagePinByGpio": [
     2,
@@ -79,7 +80,7 @@
     "pin32": "PD_SCL",
     "pin38": "PHASE_A_ADC",
     "pin39": "PHASE_B_ADC",
-    "pin40": "BOARD_POWER_SENSE",
+    "pin40": "LOGIC_PG_MCU",
     "pin41": "USB_VBUS_SENSE",
     "pin1": "V3V3_MCU",
     "pin10": "V3V3_MCU",
@@ -109,7 +110,8 @@
     "pin56": "FLASH_CS_N",
     "pin57": "GND",
     "pin17": "ENC_SDA",
-    "pin18": "ENC_SCL"
+    "pin18": "ENC_SCL",
+    "pin36": "SENSE_EN"
   },
   "controller": "RP2040",
   "package": "QFN-56 + exposed GND pad 57"

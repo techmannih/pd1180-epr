@@ -27,15 +27,15 @@ static void put32(uint8_t *p, uint32_t v) {
 }
 static void test_board_power_domain(void) {
   pd1180_board_power_t power = {0};
-  assert(!pd1180_board_power_update(&power,0,0));
-  assert(!pd1180_board_power_update(&power,3300,10));
-  assert(!pd1180_board_power_update(&power,3300,29));
-  assert(pd1180_board_power_update(&power,3300,30));
-  assert(!pd1180_board_power_update(&power,2800,31));
-  assert(!pd1180_board_power_update(&power,3300,32));
-  assert(!pd1180_board_power_update(&power,3700,52));
-  assert(!pd1180_board_power_update(&power,3300,UINT32_MAX-10));
-  assert(pd1180_board_power_update(&power,3300,9));
+  assert(!pd1180_board_power_update(&power,false,0));
+  assert(!pd1180_board_power_update(&power,true,10));
+  assert(!pd1180_board_power_update(&power,true,29));
+  assert(pd1180_board_power_update(&power,true,30));
+  assert(!pd1180_board_power_update(&power,false,31));
+  assert(!pd1180_board_power_update(&power,true,32));
+  assert(!pd1180_board_power_update(&power,false,52));
+  assert(!pd1180_board_power_update(&power,true,UINT32_MAX-10));
+  assert(pd1180_board_power_update(&power,true,9));
 }
 
 int main(void) {

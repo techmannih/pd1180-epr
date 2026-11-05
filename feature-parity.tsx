@@ -15,8 +15,8 @@ export const FEATURE_PARITY = [
   {
     id: "protected_power",
     feature: "eFuse, reverse blocking and independent USB DATA logic power",
-    components: ["U5", "U6", "Q4", "Q5", "U22", "U23", "U24", "U25", "U26", "U27", "U28"],
-    nets: ["EFUSE_IN", "EFUSE_FAULT_N", "VMOTOR", "V3V3", "V3V3_USB", "V3V3_MCU", "BOARD_POWER_SENSE"],
+    components: ["U5", "U6", "Q4", "Q5", "U22", "U23", "U24", "U25", "U27", "U28", "U39", "U40", "U41"],
+    nets: ["EFUSE_IN", "EFUSE_FAULT_N", "VMOTOR", "V3V3", "V3V3_USB", "V3V3_MCU", "LOGIC_PG_MCU", "V3V3_SENS", "SENSE_EN"],
     evidence: "docs/rp2040-redesign.md",
   },
   {

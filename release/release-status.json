@@ -1,7 +1,7 @@
 {
   "product_name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.5.0-RP2040-DRAFT",
-  "status": "cad-verified-hardware-unqualified",
+  "status": "native-cad-verified-hardware-unqualified",
   "fabrication_orderable": false,
   "production_released": false,
   "architecture_review": "engineering/rp2040-redesign.json",
@@ -53,31 +53,38 @@
   },
   "order_hold_reasons": [
     "Eight J1/J10 hole-clearance errors remain as explicitly requested; this is an engineering review exception, not fabrication acceptance. Cosmetic silkscreen findings remain visible.",
-    "The 6 A/phase behavioral worst-case bus reaches 54.858 V and lacks the allocated 0.5 V margin below the 55 V system limit. Full-current running is unqualified; firmware motion remains locked.",
+    "The enlarged bulk bank passes the nominal-delay 6 A winding simulation with the allocated reserve (54.321 V peak), but the 100 us delay screen reaches 54.745 V and fails that reserve. Hardware timing, load and full-current operation remain unqualified.",
     "DDV top-side heatsink/TIM/mechanical clearance and motor-current operating envelope are not qualified.",
-    "Exact stock is not reserved: latest evidence records shortages for R66, R60, BZ1, J1/J10 and U7 (four available for five boards). Refresh the entire fitted BOM before procurement.",
+    "Stock is not reserved. Latest evidence: R66 C136970, R60 C326731 and BZ1 C391032 are unavailable; U7 C29780285 has 1 orderable piece for the requested 5-board lot. J1/J10 C3025063 are currently available.",
     "Rear fastening, single-shaft encoder magnet attachment and physical acceptance of the selected WAGO clamps, actual harnesses and PD_READY/ADC fault behavior require closure.",
-    "TI EEPROM and RP2040 flash programming/readback/cold boot, USB current, brake and loaded thermal/EMC tests require assembled hardware. All four firmware qualification locks remain false."
+    "TI EEPROM and RP2040 flash programming/readback/cold boot, USB current, brake and loaded thermal/EMC tests require assembled hardware. All four firmware qualification locks remain false.",
+    "U41 now switches phase/encoder sensors off in suspend; firmware stops STEP and idles at 60 MHz. USB current, discharge and wake timing remain unmeasured and must be qualified on hardware."
   ],
   "historical_native_evidence": {
-    "revision": "0.4.1-ECO",
     "valid_for_this_revision": false,
+    "revision": "pre-DATA-only fd77f02",
     "summary": {
-      "violations": 401,
+      "errors": 8,
+      "retained_usb_hole_errors": 8,
+      "other_errors": 0,
+      "warnings": 451,
       "unconnected_items": 0,
       "schematic_parity": 0,
       "schematic_erc": 0,
       "review_only": true,
       "baseline": "engineering/native-silk-hold.json",
-      "user_accepted_cosmetic_findings": 401,
-      "blocking_findings": 0
+      "usb_hole_baseline": "engineering/usb-hole-hold.json",
+      "fabrication_authorized": false
     }
   },
-  "native_drc_summary": {
+  "native_cad_verified": true,
+  "prototype_gate_scope": "Current native CAD and source/firmware implementation only. The driver/protection gate does not qualify 6 A operation: the 100 us recovery and 5 J stress cases plus all physical gates remain open. Exact USB-hole and cosmetic exceptions are engineering-review only.",
+  "native_review_summary": {
+    "board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
     "errors": 8,
     "retained_usb_hole_errors": 8,
     "other_errors": 0,
-    "warnings": 451,
+    "warnings": 475,
     "unconnected_items": 0,
     "schematic_parity": 0,
     "schematic_erc": 0,
@@ -85,7 +92,5 @@
     "baseline": "engineering/native-silk-hold.json",
     "usb_hole_baseline": "engineering/usb-hole-hold.json",
     "fabrication_authorized": false
-  },
-  "native_cad_verified": true,
-  "prototype_gate_scope": "CAD and source/firmware implementation only, under the locked low-current commissioning envelope. The driver/protection gate does not qualify 6 A operation; the recorded 6 A energy-margin failure and all physical gates remain open. Exact USB-hole and cosmetic exceptions are engineering-review only."
+  }
 }

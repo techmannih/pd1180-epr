@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "architecture": "RP2040_DRV8462DDV",
-  "checked_at": "2026-11-04T18:18:42.359Z",
+  "checked_at": "2026-11-05T07:48:31.844Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "full_current_operation_authorized": false,
@@ -38,16 +38,16 @@
     }
   ],
   "input_sha256": {
-    "index.circuit.tsx": "3290e6dfc79c7cfa7d4f20e90e38b634035bd8e70f1ea1ca34e59b5c1a0de794",
-    "dist/index/circuit.json": "a163d8be7d6e736bdea3e2a9070a6fc447a78a34bdda2cd76f242df82d1f37dd",
-    "docs/design-manifest.json": "9357be4ffe8312b9b671ceb327cc67d45de724dfeb29137340b4d1747f70de10",
-    "hardware-contract.json": "a6ae5fd259d58c3ad6393424e0860ab46f7def4fcc746b34f01204a18520b704",
+    "index.circuit.tsx": "e731c86568325af4ea06cf06955676c60b76d5e69bb1831293f163c619b3b7f2",
+    "dist/index/circuit.json": "315d125882793545a0a8aa245269e082962c37ee2c6e9256cdacfd173ff44f8d",
+    "docs/design-manifest.json": "bb905bb9e0b3d194109293823edd692199fb00068654fcd8a0f0a9cf59b216d8",
+    "hardware-contract.json": "dae7cb1e17cad02838839fbae619b339158ff873e34537c62be783f9156d71ed",
     "docs/motor-data.json": "7f260e361eb3dc532e484a36041b064bea4bab998f78dc03e6fd208fbb9b2771",
     "firmware/include/drv8462.h": "fffbd5bf485a7c5587a4ef1b5bd6d83e8e2f4e057e95ea7bed0dc38de4c4da6a",
     "firmware/src/drv8462.c": "8ed8ce9f06e1277287995d3df2f39d8ca5ae79204a039ec5c3d376d9059de57a",
     "firmware/include/step_motion.h": "0d681cf56e318c6ff17448141592f36f49ae6f9a1dc2425dcc1be1ff03ea6b85",
-    "firmware/target/main.cpp": "971a11f34931bc40b0814be61b0d0fa98fb0fbce39c899eddcb256c11f49610e",
-    "scripts/power-audit.mjs": "8e44fa63656cfb131166770922ceee1b7a2cf6db38cbeea507a6e31d7b11a850",
+    "firmware/target/main.cpp": "a41cac63e6b8c59d92987c56396a9ef2be35467c6c2f4ebcb7b63fea9e693b80",
+    "scripts/power-audit.mjs": "d23a87ea978425b965b65bd23f5239f69dcb06d88e0ad07358be04b5c657baaa",
     "firmware/src/control.c": "697d2b2b72321a178f45dcb7c89729572252096b14de3c4dfab3f9ed1d6d8d49"
   },
   "assumptions": {
@@ -111,11 +111,11 @@
         "each_phase_instantaneous_current_a": 1.5,
         "rpm": 15,
         "returned_energy_j": 0.009622718077019064,
-        "minimum_capacitance_f": 0.0007520000000000001,
-        "peak_from_50v4_v": 50.653255920140225,
-        "peak_from_upper_cutoff_v": 54.063069372837965,
-        "upper_cutoff_peak_plus_0v5_allocation_v": 54.563069372837965,
-        "residual_margin_below_55v_v": 0.43693062716203457,
+        "minimum_capacitance_f": 0.0016,
+        "peak_from_50v4_v": 50.51918840991286,
+        "peak_from_upper_cutoff_v": 53.93747799348189,
+        "upper_cutoff_peak_plus_0v5_allocation_v": 54.43747799348189,
+        "residual_margin_below_55v_v": 0.5625220065181082,
         "guaranteed_bound": false,
         "note": "Lossless energy screen only. The 1.5 A/phase and 15 rpm sensitivity is an engineering allocation requiring measurement; it does not close startup continuity, running brake failure or transient margin."
       },
@@ -235,32 +235,32 @@
       "note": "Loss estimates exclude switching losses and do not determine junction temperature. DDV conduction cases require a top heatsink/TIM model; these are not junction-temperature predictions."
     },
     "inrush": {
-      "capacitance_f": 0.00094,
-      "stored_energy_at_48v_j": 1.08288,
-      "charge_to_48v_c": 0.04512,
-      "nominal_ramp_ms": 96,
+      "capacitance_f": 0.002,
+      "stored_energy_at_48v_j": 2.3040000000000003,
+      "charge_to_48v_c": 0.096,
+      "nominal_ramp_ms": 960,
       "initial_tolerance_ramp_ms": [
-        74.67588591184098,
-        126.58076116272102
+        746.7588591184098,
+        1265.8076116272102
       ],
-      "nominal_capacitor_current_a": 0.47,
+      "nominal_capacitor_current_a": 0.1,
       "initial_tolerance_capacitor_current_a": [
-        0.2851618181818182,
-        0.7250533333333332
+        0.06067272727272727,
+        0.15426666666666664
       ],
-      "nominal_initial_efuse_dissipation_w": 22.56,
+      "nominal_initial_efuse_dissipation_w": 4.8,
       "note": "No-load linear ramp model; thermally regulated startup, MLCC bias and additional loads alter the ramp. Verify eFuse SOA and PGOOD timing."
     },
     "regeneration": {
-      "bulk_energy_48_to_53v_j": 0.23735,
-      "bulk_energy_48_to_53v_min_cap_j": 0.18988000000000002,
-      "bulk_energy_48_to_brake_on_nominal_j": 0.18998041091750043,
+      "bulk_energy_48_to_53v_j": 0.505,
+      "bulk_energy_48_to_53v_min_cap_j": 0.404,
+      "bulk_energy_48_to_brake_on_nominal_j": 0.40421364025000095,
       "winding_energy_nominal_sine_quadrature_j": 0.126,
       "brake_unavailable_return_screen": {
-        "voltage_after_nominal_cutoff_nominal_cap_nominal_inductance_v": 55.66981392290327,
-        "voltage_after_upper_cutoff_min_cap_nominal_inductance_v": 56.85357963822325,
-        "voltage_after_upper_cutoff_min_cap_high_inductance_v": 57.43997557690582,
-        "min_cap_energy_headroom_upper_cutoff_to_55v_j": 0.04804410135239778,
+        "voltage_after_nominal_cutoff_nominal_cap_nominal_inductance_v": 54.378700571342236,
+        "voltage_after_upper_cutoff_min_cap_nominal_inductance_v": 55.26954979643918,
+        "voltage_after_upper_cutoff_min_cap_high_inductance_v": 55.553785961904254,
+        "min_cap_energy_headroom_upper_cutoff_to_55v_j": 0.10222149223914422,
         "mechanical_regeneration_included": false,
         "note": "All remaining winding energy returned to the bus after inhibit; lossless screening cases, not measured or predicted waveforms. Inductance under operating current, current tolerance, ESR/ESL, source response and mechanical energy are not bounded by this model. Exceeding 55 V requires closure even when static threshold checks pass."
       },
@@ -287,8 +287,8 @@
         "C22",
         "C23"
       ],
-      "manufacturer_part": "EEUFR1J471",
-      "each_rated_ripple_a_at_100khz": 1.995,
+      "manufacturer_part": "EEUFS1J102",
+      "each_rated_ripple_a_at_100khz": 2.988,
       "measured_each_ripple_a": null,
       "equal_current_sharing_qualified": false,
       "brake_return_component_references": [
@@ -337,7 +337,7 @@
     "comparator": "https://www.ti.com/lit/ds/symlink/tlv3201.pdf#page=6",
     "cutoff_resistor": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD071K2L",
     "brake": "https://www.vishay.com/docs/50052/lps300.pdf",
-    "bulk_capacitor": "https://industrial.panasonic.com/ww/products/pt/aluminum-cap-lead/models/EEUFR1J471",
+    "bulk_capacitor": "https://na.industrial.panasonic.com/products/capacitors/lineup/aluminum-electrolytic-capacitors/series/83320/model/83447",
     "motor": "https://files.omc-stepperonline.com/34HS31-6004S1_Full_Datasheet.pdf"
   }
 }

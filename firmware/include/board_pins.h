@@ -26,9 +26,10 @@ typedef struct { uint8_t gpio; uint8_t package_pin; } board_pin_t;
 #define PD1180_PIN_SPI_MOSI           BOARD_PIN(19, 30)
 #define PD1180_PIN_PD_SDA             BOARD_PIN(20, 31)
 #define PD1180_PIN_PD_SCL             BOARD_PIN(21, 32)
+#define PD1180_PIN_SENSE_EN           BOARD_PIN(24, 36)
 #define PD1180_PIN_PHASE_A_ADC        BOARD_PIN(26, 38)
 #define PD1180_PIN_PHASE_B_ADC        BOARD_PIN(27, 39)
-#define PD1180_PIN_BOARD_POWER_SENSE  BOARD_PIN(28, 40)
+#define PD1180_PIN_LOGIC_PG_MCU       BOARD_PIN(28, 40)
 #define PD1180_PIN_USB_VBUS_SENSE     BOARD_PIN(29, 41)
 
 #define BOARD_XOSC_HZ 12000000u

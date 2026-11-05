@@ -1,12 +1,12 @@
 {
-  "baseline_commit": "64c14cd3ed08117739cbb702cdb95ec5db25f2f2",
-  "reason": "Source-owned references retained after the authorized WAGO/INA237 ECO. 451 raw cosmetic warnings remain visible under the existing user deferral; the exact eight USB hole errors remain separately recorded. No electrical findings waived.",
+  "baseline_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
+  "reason": "Source-owned references retained after the authorized DATA-only isolation, sensor-switch and bulk-capacitor ECO. 475 raw cosmetic warnings remain visible under the existing user deferral; the exact eight USB hole errors remain separately recorded. No electrical findings waived.",
   "counts": {
-    "text_height": 181,
-    "silk_overlap": 152,
-    "silk_over_copper": 118
+    "text_height": 185,
+    "silk_overlap": 161,
+    "silk_over_copper": 129
   },
-  "signature": "e0abd45b8590b390093a9fadcebf3f3202b7f97fd5d68f4134aaab4240407c23",
+  "signature": "e6b58ac28a0194dea1549293890a666712e54175bf835b81f217195f193440f2",
   "fabrication_authorized": false,
   "user_accepted_cosmetic_findings": true,
   "previous_signature": "e59cee878f05899a86afcc6517cbd6eed4a82239c2f2d2888cdaa7655e68ed7f",
@@ -449,5 +449,26 @@
       }
     ],
     "added": []
+  },
+  "data_only_eco_previous": {
+    "baseline_commit": "64c14cd3ed08117739cbb702cdb95ec5db25f2f2",
+    "counts": {
+      "text_height": 181,
+      "silk_overlap": 152,
+      "silk_over_copper": 118
+    },
+    "signature": "e0abd45b8590b390093a9fadcebf3f3202b7f97fd5d68f4134aaab4240407c23"
+  },
+  "c113_source_reference_sync": {
+    "previous_signature": "c0ba20dee9ae73c9f3e600589d9b512660e44ee8679e9eb4ae90e5f49bb54ab1",
+    "proof": {
+      "before_board_sha256": "e9398e923e5e0e69c2a43d31686ef16f64f03ac0c21ba8a1b651880995f8e221",
+      "after_board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+      "unchanged_non_reference_data_sha256": "aa1948be78ebab16b65322e03fec19311c1e6625cf2c4127b9cbbfec0360592d",
+      "changed_references": [
+        "C113"
+      ],
+      "copper_pads_holes_zones_and_fills_identical": true
+    }
   }
 }
