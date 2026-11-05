@@ -1,4 +1,4 @@
-# Redesign readiness — not orderable
+# Design implementation and post-assembly validation
 
 RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the current redesign evidence](../engineering/rp2040-redesign.json) and [reviewer checklist](reviewer-checklist.md). Earlier STM32/TMC5160 release evidence does not establish this revision's readiness.
 
@@ -7,9 +7,9 @@ RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the
 3. Finalize secured rear mounting and connector/harness access. U18 remains optional DNP until the rear magnet attachment and airgap are qualified. WAGO spring-clamp J2/J3 and U38 INA237 raw PD_VBUS sensing are implemented in the reviewer ECO. Their powered and physical acceptance remains open.
 4. Program U3's reviewed TI EEPROM image using its isolated fixture, read the full 64 KiB back, compare the programmed image and confirm a cold APP boot/48 V EPR contract. See [PD programming](pd-programming.md).
 5. Program the new RP2040 firmware, read the complete 4 MiB external flash from 0x10000000, compare it using `verify-programming.mjs --kind rp2040`, and retain programmer/board-serial evidence. See [firmware instructions](../firmware/README.md). Do not use STM32 images or addresses.
-6. With motion locks still false, measure reset/enable states, rails, DATA-only, PD-only and simultaneous-supply behavior (RP2040 must stay off with PD alone), USB attach/suspend/detach current and all protection/fault responses.
-7. Qualify the actual 48 V / 5 A EPR adapter/cable, external J3 resistor/heatsink/guard, crimps, strain relief and load/stopping envelope. **10 Ω / 300 W remains provisional.**
-8. Only after recorded qualifications, authorize the low-current unloaded motor test, then braking, repeated-fault and thermal tests. The supplied firmware cannot enable motion; its four qualification flags stay false.
+6. Use diagnostics for DATA rails/reset/USB checks, then the stationary `power-test` image for protected VMOTOR and fault checks with ENABLE/STEP low. RP2040 stays off on PD alone.
+7. Qualify the actual 48 V / 5 A EPR adapter/cable, external J3 resistor/heatsink/guard, crimps, strain relief and load/stopping envelope. **10 Ω / 300 W is the selected first-article resistor; continuous-duty/load qualification follows measurements.**
+8. Use the separate stationary-power and bounded-motor profiles in [commissioning](commissioning.md). Their recorded prerequisites precede the tests; motor/braking/thermal results are collected afterward. The default assembly image keeps its four qualification flags false.
 
 None of these physical tests has been completed in this software task. A source build or successful image comparison is not permission to ship a running controller.
 

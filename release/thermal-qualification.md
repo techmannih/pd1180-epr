@@ -1,6 +1,6 @@
 # Driver, brake and installation qualification
 
-**Design calculations and candidate references, not hardware acceptance.** This revision remains motion-locked and non-orderable. The user confirmed that rear screw/thread measurements are not yet available. No physical tests, heatsink installation or supplier allocation have been performed.
+**Installation design and post-assembly measurements.** The normal diagnostic image inhibits motor outputs; bounded test profiles are described in [commissioning](commissioning.md). The user confirmed that rear screw/thread measurements are not yet available. No physical tests, heatsink installation or supplier allocation have been performed.
 
 ## DRV8462DDV cooling
 
@@ -63,7 +63,22 @@ Keep the resistor, rated sink, TIM, terminal guard and strain relief outside the
 3. Assemble and inspect clamps/crimps, continuity/polarity, guard, strain relief, cooling contact/support and USB access. Complete TI EEPROM and RP2040 flash programming/readback/cold-boot checks.
 4. With motion locked, measure raw PD and protected VMOTOR against a calibrated meter; check actual TPS EPR contract, MOTOR_PG, fresh PD_READY telemetry, reset/enable behavior and fault inhibition. A derived PD_READY does not replace any reviewer-requested dedicated TPS GPIO without agreement.
 5. Only under an approved test build/procedure, begin at the proposed 0.8 A / 10 rpm unloaded profile. Measure phase current, input current, bus peaks, driver case/sink, PCB, motor winding/case, resistor case, terminals and cable temperature. Retain waveforms through start/stop/reset/source loss and compare to the component limits with measurement uncertainty.
-6. Hold at the intended worst ambient/duty until temperatures stabilize; proposed record criterion is <1 °C rise in the last 10 minutes after at least 30 minutes. This timing is a test-plan choice, not proof that every assembly has equilibrated. Repeat with the approved thermal fault cases. Confirm no automatic restart after faults.
+6. For a later reviewed extended-duration profile, hold at the intended worst ambient/duty until temperatures stabilize; proposed record criterion is <1 °C rise in the last 10 minutes after at least 30 minutes. This timing is a test-plan choice, not proof that every assembly has equilibrated. Repeat with the approved thermal fault cases. Confirm no automatic restart after faults.
 7. Approve a bounded operating envelope and motor-enabled image only after the records close the hardware gates. Increasing current/load requires a new review. The four qualification flags remain false in the delivered diagnostics image.
 
 Use `power-validation.md` for the detailed electrical sequence and `manufacturing-acceptance.md` for process/harness records. No hardware PASS fields are filled by these calculations or the software test suite.
+
+## Bounded first-article parts and assembly specification
+
+The software now supplies a separately built **0.8 A request / 10 rpm / 10-second** unloaded test profile. For that scope, use Same Sky **HSB14-353518** and **Arctic Silver Ceramique 2** at the top-cooled driver, and Vishay **LPS0300H10R0GB** with **Bluesil Past 340** at the external brake. Fischer **SK 100 100 SA** is the selected limited-duty brake sink. These identities replace open-ended part shopping for the first article; they do not turn the existing conceptual CAD blocks into verified mechanical parts.
+
+The driver selection screen budgets 0.236 W conduction plus 3 W other loss. With 12.5 C/W sink, 0.7 C/W package and 1.5 C/W contact/pedestal allocation, the calculated junction is about **87.6 C at 40 C ambient**. Those extra-loss/contact values are design allocations, not measured bounds. The brake selection budgets **10 W average**, 3 C/W sink and 0.2 C/W interface, giving **72 C bottom case at 40 C ambient**. Confirm installed orientation, interface and guard do not exceed these allocations. This is not a 300 W continuous cooling rating; pulse limits remain those in the resistor datasheet. Full-current motor operation is outside these selections.
+
+Installation details for the assembly team:
+
+- **Driver:** contact only the exposed DDV top; use a thin continuous TIM layer and a mechanically retained cooler supported at both ends of the IC. Do not use paste as adhesive. Limit applied package load below 45 N and provide a positive mechanical stop. The 35 mm sink cannot simply be lowered onto surrounding parts: contact/pedestal and support dimensions must come from the populated component envelope. Do not drill new PCB holes or press on passives.
+- **Brake:** keep the resistor and cooler separate from the motor/PCB heat pocket. Use the supplied two M4 x 25 class 8.8 screws and contact lock washers for mounting, and the supplied M4 terminal hardware with the existing TE152883 rings. Apply the manufacturer's 2 N m instructions (2.5 N m maximum). Check engagement against the actual sink machining and terminal stack; the resistor's M4 terminal useful depth is **8 mm**, not permission for an 8 mm-long screw through any stack.
+- **Guard:** use a tool-removable 1 mm stainless perforated enclosure with openings no larger than 2 mm; keep at least 10 mm from live terminals and 15 mm from hot body/fins. Four captive M4 fasteners attach it to the independent fixture, outside the thermal contact area. Provide an insulating cable gland and separate strain relief matched to the finished cable, deburr all edges, and preserve ventilation. These are fabrication requirements, not an IP/touch-temperature certificate.
+- **Motor/PCB:** preserve the four existing PCB holes. Use independent restrained bench supports until the rear motor's actual thread, usable depth and permitted screw replacement are known. Do not infer those from the STEP or reuse the 19.5 mm rendering separation as a spacer dimension. The motor must be secured with a fixture designed for its front mounting geometry; the PCB must not carry the motor's weight or torque.
+
+The missing rear thread/depth and supported DDV contact geometry are real mechanical inputs. They cannot be completed by changing a software status field. The firmware and programming workflow do not depend on pretending these have been measured; the team records the actual installed fixture before the bounded motor test.

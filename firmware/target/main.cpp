@@ -24,14 +24,24 @@ extern "C" {
 
 }
 
-// Commissioning image: motor outputs stay locked until the new ECO has passed
-// route checks, programmed PD-image verification and powered bring-up.
-// Source and target are RP2040/DDV; release remains locked pending routing and physical validation.
+#include "test_profile.h"
+#if PD1180_TEST_PROFILE == 0
 static constexpr bool motionWiringVerified = false;
 static constexpr bool pdImageVerified = false;
 static constexpr bool brakeHardwareVerified = false;
 static constexpr bool rp2040UsbPowerVerified = false;
-static constexpr bool motionQualified = motionWiringVerified && pdImageVerified && brakeHardwareVerified && rp2040UsbPowerVerified;
+#else
+// These assert the recorded prerequisites for this limited test, not full-current qualification.
+static constexpr bool motionWiringVerified = true;
+static constexpr bool pdImageVerified = true;
+static constexpr bool brakeHardwareVerified = true;
+static constexpr bool rp2040UsbPowerVerified = true;
+#endif
+static constexpr bool testPowerEnabled = motionWiringVerified && pdImageVerified && brakeHardwareVerified && rp2040UsbPowerVerified;
+static constexpr bool powerTestOnly = PD1180_TEST_PROFILE == 1;
+static constexpr bool motionQualified = testPowerEnabled && PD1180_TEST_PROFILE == 2;
+static bool benchRunStarted;
+static uint32_t benchRunStartedAt;
 static pd1180_brake_preflight_t brakePreflight;
 static TwoWire pdBus(i2c0, 20, 21);
 static TwoWire encoderBus(i2c1, 14, 15);
@@ -92,7 +102,7 @@ static void stopSteps() {
   gpio_put(PD1180_PIN_DRV_STEP.gpio,0);
   restore_interrupts(flags);
 }
-static void cancelMotion() { stopSteps(); desiredMotion=false; buttonReleased=false; }
+static void cancelMotion() { stopSteps(); desiredMotion=false; buttonReleased=false; benchRunStarted=false; }
 static void resetDriver() {
   drv8462_invalidate(&driver); driverStatus={}; driverAttempted=false;
   driverAwake=false; gpio_put(PD1180_PIN_DRV_SLEEP_N.gpio,0);
@@ -188,7 +198,11 @@ static bool motorFrame(void *, const uint8_t tx[2], uint8_t rx[2]) {
   return true;
 }
 static void pollDriver(uint32_t now) {
-  inputs.driver_ready=false;
+  // Preserve the last checked status between 20 ms polls; clearing it every loop
+  // prevents the 200 ms motor-ready dwell from ever completing.
+  inputs.driver_ready=motionQualified && driver.configured && driverStatus.valid &&
+    !driverStatus.fault && now-lastDriverPoll<=40u && inputs.motor_power_good &&
+    inputs.vmotor_in_range && digitalRead(pin(PD1180_PIN_DRV_FAULT_N))==HIGH;
   if (!inputs.motor_power_good || !inputs.vmotor_in_range) {
     digitalWrite(pin(PD1180_PIN_MCU_RUN),LOW); stopSteps(); resetDriver();
     if(spiStarted) motorSpi.end();
@@ -240,13 +254,16 @@ static void serviceButton(uint32_t now) {
     if(!pressed) buttonReleased=true;
     else if(buttonReleased) {
       buttonReleased=false;
-      if(!motionQualified || !stepTimerReady) return;
+      if(!testPowerEnabled || !stepTimerReady) return;
       if(control.fault_latched) {
         safeOutputs(); pd1180_control_disarm(&control);resetDriver();desiredMotion=false;
         const uint32_t flags=save_and_disable_interrupts(); stepTimerFault=false; restore_interrupts(flags);
       }
+      else if(powerTestOnly && control.armed) {
+        safeOutputs(); cancelMotion(); pd1180_control_disarm(&control); resetDriver();
+      }
       else if(desiredMotion) {desiredMotion=false;}
-      else if(pd1180_control_arm(&control,&inputs)) desiredMotion=true;
+      else if(pd1180_control_arm(&control,&inputs)) {desiredMotion=!powerTestOnly; benchRunStarted=false;}
     }
   }
 }
@@ -439,6 +456,7 @@ static void pollPower() {
   inputs.epr_contract = pdReadOk && contract.valid;
   inputs.contract_mv = contract.mv;
   inputs.contract_ma = contract.ma;
+  inputs.power_test_only = powerTestOnly;
   inputs.configuration_verified = pdImageVerified && pdReadOk && pdConfigurationMatches(pdIdentity);
   inputs.motion_wiring_verified = motionWiringVerified && brakeHardwareVerified;
   inputs.pd_fault = !pdReadOk;
@@ -485,8 +503,17 @@ static void executeCommand() {
       inputs.motor_power_good,inputs.vmotor_in_range,control.mcu_run && inputs.driver_ready,indicatorsReady,
       !motionQualified);
     reply(status);
+  } else if(!strcmp(command,"PROFILE")) {
+    char status[240];
+#if PD1180_TEST_PROFILE == 0
+    snprintf(status,sizeof(status),"PROFILE=diagnostics MOTION=0 RECORD=none\r\n");
+#else
+    snprintf(status,sizeof(status),"PROFILE=%s MOTION=%u MAX_REQUEST_MA=800 MAX_RPM=10 RUN_MS=10000 POWER_MS=30000 RECORD=%s\r\n",
+      powerTestOnly?"power-test":"bench-test",motionQualified,PD1180_TEST_RECORD_SHA);
+#endif
+    reply(status);
   } else if(!strcmp(command,"HELP")) {
-    reply("PD1180 commissioning: STATUS, POWER, DRIVER, DISARM, ARM (blocked), HELP. No motion enabled.\r\n");
+    reply("PD1180: STATUS, POWER, DRIVER, PROFILE, DISARM, ARM (blocked), HELP. Local button only; PROFILE reports test limits.\r\n");
   } else reply("ERR unknown command\r\n");
 }
 void setup() {
@@ -509,7 +536,7 @@ void setup() {
 }
 void loop() {
   // Qualification is a firmware build decision, never a USB command override.
-  if (!motionQualified) safeOutputs();
+  if (!testPowerEnabled) safeOutputs();
   const uint32_t now=millis();
   vbusMv = dividerMillivolts(PD1180_PIN_USB_VBUS_SENSE,1000,47);
   if (usbStarted && usbIsSuspended() && vbusMv >= 3000u) {
@@ -578,13 +605,20 @@ void loop() {
     updatePdReady(tick);
     pd1180_control_tick(&control,&inputs,tick-lastTick); lastTick=tick;
   }
-  if (motionQualified) {
+  if (testPowerEnabled) {
     digitalWrite(pin(PD1180_PIN_POWER_PERMIT),control.power_permit?HIGH:LOW);
 
-    digitalWrite(pin(PD1180_PIN_MCU_RUN),control.mcu_run && inputs.driver_ready?HIGH:LOW);
+    digitalWrite(pin(PD1180_PIN_MCU_RUN),motionQualified && control.mcu_run && inputs.driver_ready?HIGH:LOW);
   } else safeOutputs();
   if(stepTimerFault) {safeOutputs(); control.fault_latched=true; desiredMotion=false;}
   serviceButton(tick);
+  if (motionQualified && control.mcu_run) {
+    if (!benchRunStarted) {benchRunStarted=true; benchRunStartedAt=tick;}
+    if (tick-benchRunStartedAt >= PD1180_BENCH_RUN_MS) desiredMotion=false;
+    if (tick-benchRunStartedAt >= PD1180_BENCH_RUN_MS+PD1180_BENCH_STOP_MS) {
+      safeOutputs(); cancelMotion(); control.fault_latched=true;
+    }
+  }
   const uint32_t flags=save_and_disable_interrupts();
   if(motionQualified && control.mcu_run && inputs.driver_ready && !control.fault_latched) {
     step_motion_renew(&stepMotion,time_us_32(),desiredMotion);

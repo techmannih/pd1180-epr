@@ -4,7 +4,7 @@
   "motor_operation_authorized": false,
   "driver": {
     "part": "Same Sky HSB14-353518",
-    "selection": "candidate for a compact supported cooler; not a fitted or qualified assembly",
+    "selection": "selected heat-sink and TIM identities for the bounded first-article test; supported contact assembly requires dimensional fitting",
     "envelope_mm": [
       35,
       35,
@@ -16,7 +16,6 @@
       "source_url": "https://www.sameskydevices.com/product/resource/hsb14-353518.pdf",
       "download_sha256": "fcb850942b680dc0a2a6defad5a60f18751f35dda5d9592c1f400a761080ec87"
     },
-    "tim_candidate": "Arctic Silver Ceramique 2; not structural adhesive",
     "natural_convection_curve_samples": {
       "power_w": [
         3,
@@ -62,7 +61,19 @@
       "Supported retention at both IC ends and <45 N package load",
       "Airflow and failure condition at intended motor current",
       "Clearance to capacitor tolerances, WAGO actuation and live copper"
-    ]
+    ],
+    "tim_selection": "Arctic Silver Ceramique 2; not structural adhesive",
+    "bench_thermal_budget": {
+      "ambient_c": 40,
+      "conduction_w": 0.23552000000000003,
+      "additional_loss_allocation_w": 3,
+      "total_allocated_w": 3.23552,
+      "sink_theta_allocation_c_per_w": 12.5,
+      "package_theta_c_per_w": 0.7,
+      "interface_and_contact_allocation_c_per_w": 1.5,
+      "calculated_junction_c": 87.562144,
+      "basis": "Conservative natural-convection selection screen; loss/contact allocations and installed airflow are to be measured. Not a full-current cooler."
+    }
   },
   "brake": {
     "resistor": "Vishay LPS0300H10R0GB",
@@ -100,7 +111,37 @@
       "Heatsink machining/engagement and thermal resistance at installed orientation",
       "Ventilated touch/terminal guard and supported strain relief",
       "Transient element temperature and stuck-on fault containment"
-    ]
+    ],
+    "selection": "10 ohm LPS300 retained as the concrete first-article component for the bounded profile; full-duty envelope is not assigned",
+    "bench_cooling_selection": {
+      "part": "Fischer Elektronik SK 100 100 SA",
+      "manufacturer_drawing": "https://www.farnell.com/datasheets/2576985.pdf",
+      "maximum_average_power_design_w": 10,
+      "ambient_design_c": 40,
+      "sink_theta_allocation_c_per_w": 3,
+      "interface_allocation_c_per_w": 0.2,
+      "calculated_case_c": 72,
+      "scope": "Limited bench selection only; installation orientation/guard/interface must satisfy the allocations. Not a 300 W continuous assembly."
+    },
+    "guard_specification": {
+      "material": "1 mm stainless steel perforated enclosure on independent fixture",
+      "maximum_opening_mm": 2,
+      "minimum_clearance_to_live_terminals_mm": 10,
+      "minimum_gap_to_hot_body_and_fins_mm": 15,
+      "fasteners": "four captive M4 fixings accessible only with a tool, outside resistor thermal contact area",
+      "wire_entry": "insulating gland matched to actual cable outside diameter; separate clamp/strain relief; no sharp metal edges",
+      "scope": "Fabrication requirements; final enclosure dimensions follow actual cooler and terminal stack. No ingress/touch-standard certification claimed."
+    }
   },
-  "reason_not_closed": "Motor load, rear accessory fastening dimensions and powered thermal evidence are unavailable. Candidate parts and calculations cannot establish a complete safe mechanical/thermal assembly."
+  "reason_not_closed": "The bench parts, thermal allocations and installation requirements are specified. Rear motor thread/depth, supported DDV contact/pedestal geometry and final guard/fastener dimensional fit are not contained in the available motor STEP. Those dimensions are physical installation inputs, not software faults.",
+  "commissioning_scope": {
+    "profile": "bench-test",
+    "maximum_current_request_rms_a": 0.8,
+    "nominal_quantized_rms_a": 0.7734,
+    "maximum_rpm": 10,
+    "maximum_run_seconds": 10,
+    "load": "ordered motor rotor only, no attached load/backdrive",
+    "source": "docs/commissioning.md",
+    "selection_is_not_installed_fit_evidence": true
+  }
 }

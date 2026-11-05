@@ -35,13 +35,17 @@ See [motor harness](motor-harness.md), [brake assembly](brake-assembly.md) and [
 2. Finalize secure rear attachment and cable restraint. The 19.5 mm rear spacing is only the existing preview separation. Verify tooling/lever access and the completed harness, not just the uncrimped CAD.
 3. Flash/read back TI EEPROM, verify a cold APP boot and actual 48 V EPR contract. Program/read back the full 4 MiB RP2040 external flash at 0x10000000; retain board serial, binary hashes and programmer records.
 4. With motion inhibited, inspect and measure reset/enable states, all rails, USB source combinations/backfeed, PD_READY/MOTOR_PG, ADC accuracy/freshness and fault/restart behavior.
-5. Qualify the actual brake resistor, cooling, guard and containment. **10 Ω / 300 W remains provisional**, dependent on case temperature and stopping duty. Runtime voltage sensing does not absorb energy or qualify cooling.
-6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The current DRV8462 bench target is 800 mA RMS and maximum 10 rpm; these are proposed test limits, not validated performance. All firmware qualification flags remain false.
+5. Qualify the actual brake resistor, cooling, guard and containment. **10 Ω / 300 W is the selected first-article part**; its continuous load rating still depends on measured case temperature and stopping duty. Runtime voltage sensing does not absorb energy or qualify cooling.
+6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The current DRV8462 bench target is 800 mA RMS and maximum 10 rpm; these are proposed test limits, not validated performance. The default firmware remains inhibited; use the explicit commissioning profiles below.
 
 Record measured waveforms, temperatures, timing, load inertia, maximum RPM, deceleration, repetition and ambient before expanding the operating envelope. U18 stays bottom DNP until a rotating rear magnet attachment, field and airgap are qualified; C52/C53 stay DNP on top. No powered, thermal, crimp or mechanically secured fit result is claimed by software checks.
 
-Run `bun run review` for reproducible engineering checks and delivery generation. Read the exact current DRC/ERC/verification reports and hashes; an accepted engineering review with explicit holds is not an order approval or a ready-to-run controller.
+Run `bun run review` for reproducible engineering checks and delivery generation. Read the exact current DRC/ERC/verification reports and hashes; software verification is distinct from the post-assembly measurements recorded by the team.
 
 ## Thermal and manufacturing handoff update
 
 Use [thermal qualification](thermal-qualification.md) for the TI EVM heatsink reference, explicit cooling calculations, physical acceptance sequence and open 6 A bus-margin finding. [Manufacturing acceptance](manufacturing-acceptance.md) now follows the current RP2040/WAGO revision. Rear thread/usable engagement measurements are not available, so no screw/spacer set is approved. Full-current operation, cooling assembly and physical testing remain open; software checks do not close them.
+
+## Post-assembly software workflow
+
+Use [commissioning](commissioning.md) for the diagnostic, stationary-power and bounded-motor profiles. No source-code flag edits are required. Motor/thermal measurements are performed after assembly; they are not fabricated by the software review. The current default image remains diagnostics-only.

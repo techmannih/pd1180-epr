@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 typedef struct {
+  bool power_test_only; // Stationary commissioning profile: ENABLE always remains low.
   bool pd_app_mode;
   bool epr_contract;
   uint16_t contract_mv;
@@ -24,6 +25,9 @@ typedef struct {
   int16_t temperature_deci_c;
 } pd1180_inputs_t;
 
+#define PD1180_STARTUP_TIMEOUT_MS 4000u
+#define PD1180_POWER_TEST_TIMEOUT_MS 30000u
+
 typedef struct {
   bool power_permit;
   bool mcu_run;
@@ -31,6 +35,8 @@ typedef struct {
   uint32_t contract_stable_ms;
   uint32_t motor_stable_ms;
   uint32_t power_start_ms;
+  uint32_t power_test_ms;
+  bool power_test_ready;
   bool armed;
   bool fault_latched;
   uint16_t current_limit_permille;

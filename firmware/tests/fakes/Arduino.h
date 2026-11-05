@@ -9,6 +9,7 @@ constexpr unsigned PA5=5, PA6=6, PA7=7, PB6=22, PB7=23;
 constexpr unsigned LOW=0, HIGH=1, INPUT=0, OUTPUT=1, OUTPUT_OPEN_DRAIN=2, INPUT_ANALOG=3;
 using std::min;
 inline uint32_t fakeNow;
+inline uint32_t fakeMicros;
 inline std::map<unsigned,unsigned> fakeModes, fakeLevels, fakeAdc;
 inline unsigned pinNametoDigitalPin(PinName p) { return p; }
 inline void digitalWrite(unsigned p,unsigned level) { fakeLevels[p]=level; }

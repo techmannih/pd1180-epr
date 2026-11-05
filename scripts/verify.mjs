@@ -23,6 +23,7 @@ async function hashInputs() {
 }
 verifiedInputPaths.push('engineering/motor-harness.json', 'docs/motor-harness.md', 'scripts/export-assembly.mjs', 'scripts/export-kicad-route.mjs', 'scripts/normalize-kicad-parity.mjs', 'scripts/export-manufacturing.mjs', 'scripts/check-assembly.mjs', 'scripts/assembly-policy.mjs', 'scripts/assembly-policy.test.mjs', 'scripts/export-release.mjs', 'scripts/check-delivery.mjs', 'scripts/check-stock.mjs', 'docs/external-system.md', 'docs/external-parts.json')
 verifiedInputPaths.push('docs/indicators.md', 'docs/pd-programming.md')
+verifiedInputPaths.push('scripts/commissioning-profile.mjs', 'scripts/commissioning-profile.test.mjs', 'docs/commissioning.md', 'engineering/commissioning-record.template.json')
 verifiedInputPaths.push('scripts/verify-programming.mjs', 'scripts/verify-programming.test.mjs', 'docs/pd-configuration-review.md')
 verifiedInputPaths.push('engineering/reference-comparison.json', 'docs/reference-review.md', 'docs/connector-harnesses.md', 'scripts/check-feature-parity.mjs')
 verifiedInputPaths.push('engineering/onboard-control-eco.json', 'engineering/interface-cleanup.json', 'engineering/mechanical/assembly-parts.json', 'engineering/mechanical/34hs31-6004s1-routed-cable.glb', 'scripts/check-cable-support.mjs')
@@ -64,7 +65,7 @@ const checks = [
   ['firmware-pins', ['run', 'check:firmware-pins']],
   ['firmware', ['run', 'check:firmware']],
   ['firmware-target', ['run', 'check:firmware-target']],
-  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs']],
+  ['programming-readback-tests', ['test', 'scripts/verify-programming.test.mjs', 'scripts/pd-image-policy.test.mjs', 'scripts/commissioning-profile.test.mjs']],
   ['pd-image', ['scripts/check-pd-image.mjs']],
   ['manufacturing-handoff', ['scripts/manufacturing-handoff.mjs']],
   ['manufacturing-handoff-tests', ['test', 'scripts/manufacturing-handoff.test.mjs']],

@@ -41,7 +41,8 @@ void pd1180_control_tick(pd1180_control_t *state, const pd1180_inputs_t *inputs,
     state->armed = false;
     state->contract_stable_ms = 0;
     state->motor_stable_ms = 0;
-    state->power_start_ms = 0;
+    state->power_start_ms = state->power_test_ms = 0;
+    state->power_test_ready = false;
     state->power_permit = false;
     state->mcu_run = false;
     state->motor_commands_enabled = false;
@@ -52,13 +53,30 @@ void pd1180_control_tick(pd1180_control_t *state, const pd1180_inputs_t *inputs,
   state->contract_stable_ms = saturating_add(state->contract_stable_ms, elapsed_ms, CONTRACT_STABLE_REQUIRED_MS);
   state->current_limit_permille = pd1180_thermal_limit_permille(inputs->temperature_deci_c);
   state->power_permit = state->contract_stable_ms >= CONTRACT_STABLE_REQUIRED_MS;
-  if (state->power_permit && !state->mcu_run) {
-    state->power_start_ms = saturating_add(state->power_start_ms, elapsed_ms, 1000u);
-    if (state->power_start_ms >= 1000u) {
+  if (state->power_permit && !state->mcu_run && !state->power_test_ready) {
+    // 1 uF C18: ~0.96 s nominal ramp, up to ~1.35 s at datasheet corners;
+    // allow the 2.9 s thermal-regulation interval plus ADC/driver/PG settling.
+    const uint32_t timeout = PD1180_STARTUP_TIMEOUT_MS;
+    state->power_start_ms = saturating_add(state->power_start_ms, elapsed_ms, timeout);
+    if (state->power_start_ms >= timeout) {
       pd1180_control_reset(state);
       state->fault_latched = true;
       return;
     }
+  }
+
+  if (inputs->power_test_only) {
+    if (state->power_permit) {
+      const bool ready=inputs->motor_power_good && inputs->vmotor_in_range && inputs->brake_preflight_ok;
+      state->power_test_ms=saturating_add(state->power_test_ms,elapsed_ms,PD1180_POWER_TEST_TIMEOUT_MS);
+      if ((state->power_test_ready && !ready) || state->power_test_ms>=PD1180_POWER_TEST_TIMEOUT_MS) {
+        pd1180_control_reset(state); state->fault_latched=true; return;
+      }
+      if(ready) state->power_test_ready=true;
+    }
+    state->mcu_run = state->motor_commands_enabled = false;
+    state->motor_stable_ms = 0;
+    return;
   }
 
   const bool motor_valid = state->power_permit && inputs->motor_power_good && inputs->vmotor_in_range && inputs->driver_ready && inputs->brake_preflight_ok;
