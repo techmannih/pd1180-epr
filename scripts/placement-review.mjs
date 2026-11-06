@@ -1,5 +1,5 @@
 import polygonClipping from 'polygon-clipping'
-export const reviewed = ['C26','C83','R139','R140','R141','R144','R64','R65','R73']
+export const reviewed = ['C26','C83','R139','R140','R141','R35','R64','R65','R73']
 
 function courtyard(circuit, name) {
   const source = circuit.find(r => r.type === 'source_component' && r.name === name)

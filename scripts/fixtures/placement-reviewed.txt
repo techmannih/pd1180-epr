@@ -11,7 +11,7 @@ likely bad clusters:
 - C23 cluster: C23, C22, R69, U15, R30, R68, R114, R33, C42, R32
 
 board top-layer utilization:
-- occupied: 47.529% (3507.089mm^2 of 7378.81mm^2)
+- occupied: 48.147% (3552.647mm^2 of 7378.81mm^2)
 - empty spaces over 5% of board area: none
 
 board-edge status:
@@ -103,6 +103,13 @@ board-edge status:
 - R32: 23.725mm inside top edge
 - R33: 21.475mm inside top edge
 - C24: 22.975mm inside top edge
+- U42: 32.251mm inside right edge
+- C114: 35.225mm inside right edge
+- C115: 33.225mm inside right edge
+- R146: 28.725mm inside right edge
+- R147: 29.725mm inside right edge
+- R148: 32.975mm inside bottom edge
+- R149: 30.975mm inside right edge
 - U7: 16.35mm inside right edge
 - J2: 1.75mm inside bottom edge
 - U10: 32.7mm inside bottom edge
@@ -125,7 +132,7 @@ board-edge status:
 - C93: 15.475mm inside bottom edge
 - C94: 18.475mm inside bottom edge
 - U13: 19.7mm inside bottom edge
-- R60: 23.475mm inside bottom edge
+- R60: 23.25mm inside bottom edge
 - R61: 24.975mm inside bottom edge
 - R62: 21.225mm inside bottom edge
 - R63: 24.225mm inside bottom edge
@@ -154,7 +161,7 @@ board-edge status:
 - C28: 26.075mm inside right edge
 - C29: 15.975mm inside right edge
 - C30: 26.25mm inside right edge
-- R34: 26.225mm inside right edge
+- R34: 34.725mm inside bottom edge
 - R35: 29.725mm inside right edge
 - R36: 27.975mm inside right edge
 - R37: 26.225mm inside right edge
@@ -219,7 +226,7 @@ board-edge status:
 - C112: 4.725mm inside left edge
 - R142: 13.725mm inside left edge
 - R143: 13.725mm inside left edge
-- R144: 16.225mm inside left edge
+- R144: 30.225mm inside right edge
 - U41: 22.95mm inside bottom edge
 - C113: 21.225mm inside bottom edge
 - R145: 21.975mm inside bottom edge
@@ -255,7 +262,7 @@ board-edge status:
 - C99: 9.275mm inside bottom edge
 - R137: 12.975mm inside bottom edge
 - D16: 1.8mm inside left edge
-- BZ1: 0.7mm inside left edge
+- BZ1: 3.05mm inside left edge
 - Q26: 9.2mm inside left edge
 - D17: 4.301mm inside left edge
 - D18: 4.283mm inside left edge
@@ -266,9 +273,9 @@ board-edge status:
 - R127: 1.225mm inside left edge
 - R128: 15.975mm inside left edge
 - C95: 10.625mm inside right edge
-- C96: 8.725mm inside left edge
-- U36: 21.025mm inside top edge
-- C97: 25.975mm inside top edge
+- C96: 2.725mm inside left edge
+- U36: 9.275mm inside top edge
+- C97: 7.225mm inside top edge
 - R129: 22.975mm inside top edge
 - R130: 25.975mm inside top edge
 - R131: 22.475mm inside top edge
@@ -365,6 +372,12 @@ flagged components:
   board edge status: 14.25mm inside right edge
   issues:
   - C26 connections cross the routing path between its pads. Suggested move: rotate C26 180 degrees.
+- R35
+  source placement: placement_mode=none
+  resolved placement: center=(12mm, -6.5mm) on top; bounds=(minX=10.775mm, maxX=13.225mm, minY=-6.975mm, maxY=-6.025mm); size=(width=2.45mm, height=0.95mm); anchor_alignment="center"
+  board edge status: 29.725mm inside right edge
+  issues:
+  - R35 connections cross the routing path between its pads. Suggested move: rotate R35 180 degrees.
 - R139
   source placement: placement_mode=none
   resolved placement: center=(-21.5mm, -9.75mm) on top; bounds=(minX=-22.725mm, maxX=-20.275mm, minY=-10.225mm, maxY=-9.275mm); size=(width=2.45mm, height=0.95mm); anchor_alignment="center"
@@ -389,12 +402,6 @@ flagged components:
   board edge status: 14.725mm inside bottom edge
   issues:
   - R73 connections cross the routing path between its pads. Suggested move: rotate R73 180 degrees.
-- R144
-  source placement: placement_mode=none
-  resolved placement: center=(-25.5mm, -21mm) on top; bounds=(minX=-26.725mm, maxX=-24.275mm, minY=-21.475mm, maxY=-20.525mm); size=(width=2.45mm, height=0.95mm); anchor_alignment="center"
-  board edge status: 16.225mm inside left edge
-  issues:
-  - R144 connections cross the routing path between its pads. Suggested move: rotate R144 180 degrees.
 - R114
   source placement: placement_mode=none
   resolved placement: center=(27.25mm, 8.5mm) on top; bounds=(minX=26.025mm, maxX=28.475mm, minY=8.025mm, maxY=8.975mm); size=(width=2.45mm, height=0.95mm); anchor_alignment="center"

@@ -16,7 +16,7 @@ extern "C" {
 #include "pd_voltage.h"
 #include "telemetry.h"
 #include "power_domain.h"
-#include "drv8462.h"
+#include "drv8262.h"
 #include "as5600.h"
 #include "step_motion.h"
 
@@ -45,11 +45,11 @@ static uint32_t benchRunStartedAt;
 static pd1180_brake_preflight_t brakePreflight;
 static TwoWire pdBus(i2c0, 20, 21);
 static TwoWire encoderBus(i2c1, 14, 15);
-static SPIClassRP2040 motorSpi(spi0, 16, 17, 18, 19);
+static SPIClassRP2040 motorSpi(spi0, NOPIN, NOPIN, 18, 19); // TX only; GP16 is LDAC, not MISO.
 static bool spiStarted;
-static bool motorFrame(void *, const uint8_t tx[2], uint8_t rx[2]);
-static drv8462_t driver = {};
-static drv8462_status_t driverStatus;
+static bool motorApply(void *, const drv8262_output_t *);
+static drv8262_t driver = {};
+static struct { bool valid, fault; } driverStatus;
 static bool driverAttempted, driverAwake;
 static uint32_t driverWakeAt;
 static uint16_t currentMa;
@@ -99,13 +99,14 @@ static pin_size_t pin(board_pin_t p) { return p.gpio; }
 static void stopSteps() {
   const uint32_t flags=save_and_disable_interrupts();
   step_motion_stop(&stepMotion);
-  gpio_put(PD1180_PIN_DRV_STEP.gpio,0);
+  gpio_put(PD1180_PIN_DRV_ENABLE_A.gpio,0);
+  gpio_put(PD1180_PIN_DRV_ENABLE_B.gpio,0);
   restore_interrupts(flags);
 }
 static void cancelMotion() { stopSteps(); desiredMotion=false; buttonReleased=false; benchRunStarted=false; }
 static void resetDriver() {
-  drv8462_invalidate(&driver); driverStatus={}; driverAttempted=false;
-  driverAwake=false; gpio_put(PD1180_PIN_DRV_SLEEP_N.gpio,0);
+  drv8262_invalidate(&driver); driverStatus={}; driverAttempted=false;
+  driverAwake=false; gpio_put(PD1180_PIN_DRV_ENABLE_A.gpio,0); gpio_put(PD1180_PIN_DRV_ENABLE_B.gpio,0);
 }
 static bool stepInterrupt(repeating_timer_t *) {
   const bool ok=gpio_get(PD1180_PIN_MOTOR_PG.gpio) && gpio_get(PD1180_PIN_VMOTOR_OK.gpio) &&
@@ -117,7 +118,22 @@ static bool stepInterrupt(repeating_timer_t *) {
     gpio_put(PD1180_PIN_MCU_RUN.gpio,0);
     gpio_put(PD1180_PIN_POWER_PERMIT.gpio,0);
   }
-  gpio_put(PD1180_PIN_DRV_STEP.gpio,step_motion_tick(&stepMotion,now,ok));
+  const bool advance=step_motion_tick(&stepMotion,now,ok);
+  if(!ok || !driver.configured || !stepMotion.active) {
+    gpio_put(PD1180_PIN_DRV_ENABLE_A.gpio,0); gpio_put(PD1180_PIN_DRV_ENABLE_B.gpio,0);
+    driver.enabled=false; driverAwake=false; return true;
+  }
+  // Hardware RUN_SAFE releases nSLEEP only after the safety chain is satisfied.
+  // EN pins stay low beyond TI's 1 ms maximum wake time.
+  if(!driverAwake) {driverAwake=true;driverWakeAt=now;return true;}
+  if(now-driverWakeAt<2000u) return true;
+  bool applied=true;
+  if(!driver.enabled) applied=drv8262_enable(&driver,true);
+  else if(advance) applied=drv8262_step(&driver,false);
+  if(!applied) {
+    stepTimerFault=true; gpio_put(PD1180_PIN_MCU_RUN.gpio,0); gpio_put(PD1180_PIN_POWER_PERMIT.gpio,0);
+    gpio_put(PD1180_PIN_DRV_ENABLE_A.gpio,0); gpio_put(PD1180_PIN_DRV_ENABLE_B.gpio,0);
+  }
   return true;
 }
 static void safeOutputs() {
@@ -130,7 +146,7 @@ static void output(board_pin_t p, bool high) {
   pinMode(pin(p), OUTPUT);
 }
 static const board_pin_t boardInputs[] = {PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_MOTOR_PG,PD1180_PIN_VMOTOR_OK,
-  PD1180_PIN_DRV_FAULT_N,PD1180_PIN_DRV_HOME_N};
+  PD1180_PIN_DRV_FAULT_N};
 static void releaseChipSelect(board_pin_t p) {
   digitalWrite(pin(p), HIGH);
   pinMode(pin(p), INPUT); // External board-domain pullup; never back-power an absent rail.
@@ -158,12 +174,13 @@ static void stopPeripherals() {
   indicatorsReady = indicatorResetReleased = false;
   if (peripheralsStarted) { pdBus.end(); encoderBus.end(); }
   pinMode(pin(PD1180_PIN_ENC_SDA),INPUT); pinMode(pin(PD1180_PIN_ENC_SCL),INPUT);
-  output(PD1180_PIN_SENSE_EN,false); // QOD discharges the sensor rail; no MCU pull-ups may backfeed it.
+
   if (spiStarted) motorSpi.end();
   spiStarted=false;
-  releaseChipSelect(PD1180_PIN_DRV_CS_N);
-  for (auto p : {PD1180_PIN_SPI_SCK, PD1180_PIN_SPI_MOSI, PD1180_PIN_SPI_MISO})
+  releaseChipSelect(PD1180_PIN_DAC_CS_N);
+  for (auto p : {PD1180_PIN_SPI_SCK, PD1180_PIN_SPI_MOSI, PD1180_PIN_DAC_LDAC_N})
     pinMode(pin(p), INPUT);
+  output(PD1180_PIN_SENSE_EN,false); // Float all DAC inputs before discharging its supply.
   // No internal pullups or push-pull highs may energize the dead board rail.
   pinMode(pin(PD1180_PIN_PD_SCL), INPUT);
   pinMode(pin(PD1180_PIN_PD_SDA), INPUT);
@@ -183,56 +200,57 @@ static void startPeripherals() {
   digitalWrite(pin(PD1180_PIN_STATUS_GPIO), HIGH);
   indicatorResetReleased = true;
 }
-// U7 needs VMOTOR as well as VCC_IO. Do not clock or drive its inputs when
-// the motor domain is absent, even if the encoder/board logic is powered.
-static bool motorFrame(void *, const uint8_t tx[2], uint8_t rx[2]) {
-  if (!spiStarted || !peripheralsStarted || !inputs.motor_power_good ||
-      !inputs.vmotor_in_range || (usbStarted && usbIsSuspended())) return false;
-  motorSpi.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE1));
-  digitalWrite(pin(PD1180_PIN_DRV_CS_N), LOW);
-  pinMode(pin(PD1180_PIN_DRV_CS_N),OUTPUT);
-  for (unsigned i=0;i<2;++i) rx[i]=motorSpi.transfer(tx[i]);
-  releaseChipSelect(PD1180_PIN_DRV_CS_N);
+// U42 is powered with the switched DATA-domain sensors. No SPI pin is driven
+// while that rail is off. No readback exists on MCP4822; never infer presence
+// or measured current from the unused SPI receive value.
+static bool motorApply(void *, const drv8262_output_t *out) {
+  gpio_put(PD1180_PIN_DRV_ENABLE_A.gpio,0); gpio_put(PD1180_PIN_DRV_ENABLE_B.gpio,0);
+  if(!out || !spiStarted || !peripheralsStarted || !inputs.motor_power_good ||
+     !inputs.vmotor_in_range || (usbStarted && usbIsSuspended())) return false;
+  gpio_put(PD1180_PIN_DAC_LDAC_N.gpio,1);
+  motorSpi.beginTransaction(SPISettings(8000000,MSBFIRST,SPI_MODE0));
+  for(uint16_t word : {out->word_a,out->word_b}) {
+    gpio_put(PD1180_PIN_DAC_CS_N.gpio,0);
+    motorSpi.transfer((uint8_t)(word>>8)); motorSpi.transfer((uint8_t)word);
+    gpio_put(PD1180_PIN_DAC_CS_N.gpio,1);
+  }
   motorSpi.endTransaction();
-  delayMicroseconds(2); // Explicit CS-high gap; TI timing table requires >=2 us.
-  return true;
+  gpio_put(PD1180_PIN_DRV_PHASE_A.gpio,out->phase_a);
+  gpio_put(PD1180_PIN_DRV_PHASE_B.gpio,out->phase_b);
+  gpio_put(PD1180_PIN_DAC_LDAC_N.gpio,0); delayMicroseconds(1);
+  gpio_put(PD1180_PIN_DAC_LDAC_N.gpio,1); delayMicroseconds(6);
+  const bool safe=gpio_get(PD1180_PIN_MCU_RUN.gpio) && gpio_get(PD1180_PIN_MOTOR_PG.gpio) &&
+    gpio_get(PD1180_PIN_VMOTOR_OK.gpio) && gpio_get(PD1180_PIN_EFUSE_FAULT_N.gpio) && gpio_get(PD1180_PIN_DRV_FAULT_N.gpio);
+  gpio_put(PD1180_PIN_DRV_ENABLE_A.gpio,safe && out->enable_a);
+  gpio_put(PD1180_PIN_DRV_ENABLE_B.gpio,safe && out->enable_b);
+  return !(out->enable_a || out->enable_b) || safe;
 }
 static void pollDriver(uint32_t now) {
-  // Preserve the last checked status between 20 ms polls; clearing it every loop
-  // prevents the 200 ms motor-ready dwell from ever completing.
-  inputs.driver_ready=motionQualified && driver.configured && driverStatus.valid &&
-    !driverStatus.fault && now-lastDriverPoll<=40u && inputs.motor_power_good &&
-    inputs.vmotor_in_range && digitalRead(pin(PD1180_PIN_DRV_FAULT_N))==HIGH;
-  if (!inputs.motor_power_good || !inputs.vmotor_in_range) {
+  driverStatus.fault=digitalRead(pin(PD1180_PIN_DRV_FAULT_N))==LOW;
+  driverStatus.valid=peripheralsStarted && inputs.motor_power_good && inputs.vmotor_in_range;
+  inputs.driver_ready=motionQualified && driver.configured && driverStatus.valid && !driverStatus.fault;
+  if(!driverStatus.valid || (driver.configured && driverStatus.fault)) {
+    const bool fault=driverStatus.fault;
     digitalWrite(pin(PD1180_PIN_MCU_RUN),LOW); stopSteps(); resetDriver();
-    if(spiStarted) motorSpi.end();
-    spiStarted=false;
-    for(auto p:{PD1180_PIN_SPI_SCK,PD1180_PIN_SPI_MOSI,PD1180_PIN_SPI_MISO}) pinMode(pin(p),INPUT);
+    if(fault && control.armed) control.fault_latched=true;
     return;
   }
-  if(!driverAwake) {
-    digitalWrite(pin(PD1180_PIN_DRV_SLEEP_N),HIGH); driverWakeAt=now; driverAwake=true; return;
+  if(!motionQualified || !control.armed || !control.power_permit || now-sensorPowerStartedAt<10u) return;
+  if(!spiStarted) {
+    output(PD1180_PIN_DAC_CS_N,true); output(PD1180_PIN_DAC_LDAC_N,true);
+    motorSpi.begin(); spiStarted=true;
   }
-  if(now-driverWakeAt<2u) return;
-  if(!spiStarted) {motorSpi.begin(); spiStarted=true;}
-  if(now-lastDriverPoll<20u) return;
-  lastDriverPoll=now;
-  if(!motionQualified) { drv8462_status(&driver,&driverStatus); return; }
-  if(!control.armed || !control.power_permit) {resetDriver();return;}
-  if(!driver.configured) {
-    if(driverAttempted) {control.fault_latched=true;return;}
+  const uint16_t requested=DRV8262_BENCH_RMS_MA*control.current_limit_permille/1000u;
+  const uint32_t flags=save_and_disable_interrupts();
+  bool configured=driver.configured;
+  if(!configured) {
+    if(driverAttempted) {restore_interrupts(flags);safeOutputs();control.fault_latched=true;return;}
     driverAttempted=true;
-    currentMa=DRV8462_BENCH_RMS_MA*control.current_limit_permille/1000u;
-    if(!drv8462_configure(&driver,currentMa,!gpio_get(PD1180_PIN_MCU_RUN.gpio)) ||
-       !drv8462_enable(&driver,true)) {safeOutputs();control.fault_latched=true;return;}
-  }
-  const uint16_t requested=DRV8462_BENCH_RMS_MA*control.current_limit_permille/1000u;
-  if(requested!=currentMa && !drv8462_set_current(&driver,requested)) {
-    safeOutputs();control.fault_latched=true;return;
-  }
-  currentMa=requested;
-  inputs.driver_ready=drv8462_verify(&driver) && drv8462_status(&driver,&driverStatus) &&
-    digitalRead(pin(PD1180_PIN_DRV_FAULT_N))==HIGH;
+    configured=drv8262_configure(&driver,requested,!gpio_get(PD1180_PIN_MCU_RUN.gpio));
+  } else if(requested!=currentMa) configured=drv8262_set_current(&driver,requested);
+  currentMa=requested; lastDriverPoll=now;
+  restore_interrupts(flags);
+  inputs.driver_ready=configured && !driverStatus.fault;
   if(!inputs.driver_ready) {safeOutputs();control.fault_latched=true;}
 }
 static bool encoderRead(void *, uint8_t reg, uint8_t *bytes, uint8_t count) {
@@ -481,8 +499,8 @@ static void executeCommand() {
     reply("BLOCKED: use local START/STOP; hardware qualification required\r\n");
   } else if(!strcmp(command,"DRIVER")) {
     char status[160];
-    snprintf(status,sizeof(status),"DRV8462_VALID=%u FAULT=%02X DIAG1=%02X DIAG2=%02X CONFIGURED=%u ENCODER_VALID=%u ANGLE=%u\r\n",
-      driverStatus.valid,driverStatus.fault,driverStatus.diag1,driverStatus.diag2,driver.configured,
+    snprintf(status,sizeof(status),"DRV8262_SUPPLY_VALID=%u NFAULT=%u DAC_COMMANDS_PREPARED=%u DAC_READBACK=UNAVAILABLE ENCODER_VALID=%u ANGLE=%u\r\n",
+      driverStatus.valid,!driverStatus.fault,driver.configured,
       encoderSample.valid,encoderSample.angle);
     reply(status);
   } else if(!strcmp(command,"POWER")) {
@@ -519,10 +537,10 @@ static void executeCommand() {
 void setup() {
   output(PD1180_PIN_SENSE_EN,false);
   pinMode(pin(PD1180_PIN_LOGIC_PG_MCU),INPUT);
-  driver.frame=motorFrame;
-  output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_DRV_STEP,false); output(PD1180_PIN_DRV_DIR,false); output(PD1180_PIN_DRV_SLEEP_N,false);
+  driver.apply=motorApply;
+  output(PD1180_PIN_MCU_RUN,false); output(PD1180_PIN_POWER_PERMIT,false); output(PD1180_PIN_DRV_ENABLE_A,false); output(PD1180_PIN_DRV_ENABLE_B,false); output(PD1180_PIN_DRV_PHASE_A,false); output(PD1180_PIN_DRV_PHASE_B,false);
   // Removed field-bus and unassigned general I/O pins remain in reset input state.
-  releaseChipSelect(PD1180_PIN_DRV_CS_N); // QSPI belongs to the boot ROM/XIP controller; never bit-bang it.
+  releaseChipSelect(PD1180_PIN_DAC_CS_N); // QSPI belongs to the boot ROM/XIP controller; never bit-bang it.
   output(PD1180_PIN_STATUS_GPIO,false);
   pinMode(pin(PD1180_PIN_USER_BUTTON_N), INPUT); // R133 is on the MCU rail.
   analogReadResolution(12);

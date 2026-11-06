@@ -1,4 +1,4 @@
-// Electrical invariants for the RP2040 / DRV8462DDV revision. These are checked
+// Electrical invariants for the RP2040 / DRV8262DDV revision. These are checked
 // against compiled connectivity, not source text or the historical routed file.
 export function checkRp2040Contract(circuit) {
   const errors=[]
@@ -9,14 +9,27 @@ export function checkRp2040Contract(circuit) {
     return p?.subcircuit_connectivity_map_key ? nets.find(n=>n.subcircuit_connectivity_map_key===p.subcircuit_connectivity_map_key)?.name : undefined
   }
   const requireNet=(ref,pin,name)=>{if(net(ref,pin)!==name) errors.push(`${ref}.${pin}: expected ${name}, got ${net(ref,pin)}`)}
-  const driver={1:'GND',2:'VMOTOR',3:'GND',4:'MOTOR_B1',5:'MOTOR_B1',6:'MOTOR_B1',7:'MOTOR_B2',8:'MOTOR_B2',9:'MOTOR_B2',10:'GND',11:'VMOTOR',12:'VMOTOR',13:'GND',14:'MOTOR_A2',15:'MOTOR_A2',16:'MOTOR_A2',17:'MOTOR_A1',18:'MOTOR_A1',19:'MOTOR_A1',20:'GND',21:'VMOTOR',22:'DRV_VCP',23:'DRV_CPH',24:'DRV_CPL',25:'DRV_SLEEP_N',26:'RUN_SAFE',27:'DRV_DIR',28:'DRV_STEP',29:'SPI_SCK',30:'SPI_MOSI',31:'SPI_MISO_BOARD',33:'DRV_CS_N_BOARD',34:'DRV_DVDD',39:'V3V3',40:'DRV_HOME_N_BOARD',41:'DRV_FAULT_N_BOARD',42:'V3V3',43:'DRV_DVDD',44:'GND'}
+  const driver={1:'GND',2:'VMOTOR',3:'GND',4:'MOTOR_B1',5:'MOTOR_B1',6:'MOTOR_B1',7:'MOTOR_B2',8:'MOTOR_B2',9:'MOTOR_B2',10:'GND',11:'VMOTOR',12:'VMOTOR',13:'GND',14:'MOTOR_A2',15:'MOTOR_A2',16:'MOTOR_A2',17:'MOTOR_A1',18:'MOTOR_A1',19:'MOTOR_A1',20:'GND',21:'VMOTOR',22:'DRV_VCP',23:'DRV_CPH',24:'DRV_CPL',25:'RUN_SAFE',26:'DRV_ENABLE_A',27:'DRV_PHASE_A',28:'DRV_ENABLE_B',29:'DRV_PHASE_B',30:'DRV_DVDD',32:'DRV_DVDD',33:'DRV_VREF_A',34:'DRV_VREF_B',36:'DRV_IPROPI_A',37:'DRV_IPROPI_B',38:'GND',39:'GND',40:'GND',41:'DRV_FAULT_N_BOARD',42:'V3V3_SENS',43:'DRV_DVDD',44:'GND'}
   for(const [pin,name] of Object.entries(driver)) requireNet('U7',Number(pin),name)
-  for(const pin of [32,35,36,37,38]) if(net('U7',pin)) errors.push(`DDV reserved pin ${pin} connected`)
+  const u7ports=ports.filter(p=>p.source_component_id===components.get('U7')?.source_component_id)
+  if(u7ports.length!==44 || new Set(u7ports.map(p=>p.pin_number)).size!==44)
+    errors.push('U7 DDV must have exactly 44 distinct leads; no underside pad 45')
+  const u7pcb=circuit.find(r=>r.type==='pcb_component'&&r.source_component_id===components.get('U7')?.source_component_id)
+  const u7pads=circuit.filter(r=>['pcb_smtpad','pcb_plated_hole'].includes(r.type)&&r.pcb_component_id===u7pcb?.pcb_component_id)
+  if(u7pads.length!==44) errors.push('U7 DDV footprint must have 44 leads and no underside thermal land')
+  for(const pin of [31,35]) if(net('U7',pin)) errors.push(`DDV reserved pin ${pin} connected`)
   for(const ref of ['Q6','Q7','Q8','Q9','Q10','Q11','Q12','Q13','Q14','R109','R110']) if(components.has(ref)) errors.push(`Obsolete bridge part ${ref} remains`)
-  for(const [ref,mpn] of [['U7','DRV8462DDVR'],['U16','RP2040'],['U18','AS5600-ASOM'],['U2','TPS26750SRSMR'],['U38','INA237AIDGSR'],['J2','2601-3104'],['J3','236-402']]) {
+  for(const [ref,mpn] of [['U7','DRV8262DDVR'],['U42','MCP4822-E/SN'],['U36','SN74LVC2G66DCTR'],['BZ1','FMB09A03-3V'],['U16','RP2040'],['U18','AS5600-ASOM'],['U2','TPS26750SRSMR'],['U38','INA237AIDGSR'],['J2','2601-3104'],['J3','236-402']]) {
     if(components.get(ref)?.manufacturer_part_number!==mpn) errors.push(`${ref}: wrong exact device/package`)
   }
+  for(const pin of [3,7,9]) if(net('U40',pin)) errors.push(`Unused U40.${pin} must remain NC`)
+  for(const ref of ['R146','R147']) if(components.get(ref)?.resistance!==1500) errors.push(`${ref}: current mirror resistor must be 1500 ohms`)
   const connections=[
+    ['U42',1,'V3V3_SENS'],['U42',2,'DAC_CS_N'],['U42',3,'SPI_SCK'],['U42',4,'SPI_MOSI'],['U42',5,'DAC_LDAC_N'],['U42',6,'DRV_VREF_B'],['U42',7,'GND'],['U42',8,'DRV_VREF_A'],
+    ['R146',1,'DRV_IPROPI_A'],['R146',2,'GND'],['R147',1,'DRV_IPROPI_B'],['R147',2,'GND'],
+    ['R148',1,'DRV_VREF_A'],['R148',2,'GND'],['R149',1,'DRV_VREF_B'],['R149',2,'GND'],
+    ['R34',1,'V3V3_SENS'],['R34',2,'DAC_CS_N'],['C28',1,'V3V3_SENS'],
+
     ['U38',1,'GND'],['U38',2,'GND'],['U38',4,'PD_SDA_BOARD'],['U38',5,'PD_SCL_BOARD'],['U38',6,'V3V3'],['U38',7,'GND'],['U38',8,'PD_VBUS'],['U38',9,'GND'],['U38',10,'GND'],
     ['C109',1,'V3V3'],['C109',2,'GND'],
     ['J2',5,'MOTOR_A1_OUT'],['J2',6,'MOTOR_A2'],['J2',7,'MOTOR_B1_OUT'],['J2',8,'MOTOR_B2'],['J3',3,'VMOTOR'],['J3',4,'BRAKE_RETURN'],
@@ -41,8 +54,8 @@ export function checkRp2040Contract(circuit) {
   const dataDomain = {
     U27:{1:'V3V3_USB',2:'GND',3:'GND',5:'GND',6:'V3V3_MCU'},
     U39:{1:'PD_3V3',2:'PD_SCL_BOARD',3:'PD_SDA_BOARD',4:'GND',5:'V3V3_MCU',6:'PD_SDA',7:'PD_SCL',8:'V3V3_MCU'},
-    U40:{1:'GND',2:'MOTOR_PG_BOARD',3:'DRV_CS_N_BOARD',4:'EFUSE_FAULT_N_BOARD',5:'LOGIC_PG_MCU',6:'VMOTOR_OK_BOARD',7:'SPI_MISO',8:'DRV_FAULT_N_BOARD',9:'DRV_HOME_N',10:'GND',11:'DRV_HOME_N_BOARD',12:'DRV_FAULT_N',13:'SPI_MISO_BOARD',14:'VMOTOR_OK',15:'LOGIC_PG',16:'EFUSE_FAULT_N',17:'DRV_CS_N',18:'MOTOR_PG',19:'GND',20:'V3V3_MCU'},
-    R142:{1:'V3V3_MCU',2:'PD_SDA'},R143:{1:'V3V3_MCU',2:'PD_SCL'},R144:{1:'V3V3_MCU',2:'DRV_CS_N'},
+    U40:{1:'GND',2:'MOTOR_PG_BOARD',4:'EFUSE_FAULT_N_BOARD',5:'LOGIC_PG_MCU',6:'VMOTOR_OK_BOARD',8:'DRV_FAULT_N_BOARD',10:'GND',11:'GND',12:'DRV_FAULT_N',13:'GND',14:'VMOTOR_OK',15:'LOGIC_PG',16:'EFUSE_FAULT_N',17:'GND',18:'MOTOR_PG',19:'GND',20:'V3V3_MCU'},
+    R142:{1:'V3V3_MCU',2:'PD_SDA'},R143:{1:'V3V3_MCU',2:'PD_SCL'},R144:{1:'V3V3_SENS',2:'DAC_LDAC_N'},
     U31:{6:'V3V3_SENS',7:'V3V3_SENS'},U32:{6:'V3V3_SENS',7:'V3V3_SENS'},
     C81:{1:'V3V3_SENS'},C82:{1:'V3V3_SENS'},C52:{1:'V3V3_SENS'},C53:{1:'V3V3_SENS'},
     C110:{1:'PD_3V3',2:'GND'},C111:{1:'V3V3_MCU',2:'GND'},C112:{1:'V3V3_MCU',2:'GND'},
@@ -54,7 +67,7 @@ export function checkRp2040Contract(circuit) {
     if(components.get(ref)?.manufacturer_part_number!==mpn) errors.push(`${ref}: Ioff isolation device changed`)
   // This prevents a new pull-up or supply pad from silently powering the DATA
   // domain. The entire allow-list is intentionally reviewed when it changes.
-  const mcuPowerConsumers = ['U41','C113','U16','U17','U27','U39','U40','C44','C45','C46','C47','C51','C100','C101','C102','C106','C107','C108','C111','C112','R70','R73','R133','R142','R143','R144','TP_SWD_3V3']
+  const mcuPowerConsumers = ['U41','C113','U16','U17','U27','U39','U40','C44','C45','C46','C47','C51','C100','C101','C102','C106','C107','C108','C111','C112','R70','R73','R133','R142','R143','TP_SWD_3V3']
   const actualConsumers = [...new Set(ports.filter(p=>net([...components].find(([,c])=>c.source_component_id===p.source_component_id)?.[0],p.pin_number)==='V3V3_MCU').map(p=>[...components].find(([,c])=>c.source_component_id===p.source_component_id)?.[0]))].sort()
   if(JSON.stringify(actualConsumers)!==JSON.stringify(mcuPowerConsumers.sort()))
     errors.push('DATA-only MCU rail consumers changed: '+actualConsumers.join(','))

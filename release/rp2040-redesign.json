@@ -1,41 +1,41 @@
 {
   "revision": "0.5.0-RP2040-DRAFT",
-  "base_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
+  "base_commit": "50350344ec36ee153ca9e64e8e67c66ce1141f8a",
   "architecture": [
     "RP2040",
-    "DRV8462DDVR",
+    "DRV8262DDVR + MCP4822-E/SN",
     "TPS26750SRSMR",
     "AS5600-ASOM (optional DNP)"
   ],
   "status": "native-cad-verified-hardware-unqualified",
   "hardware_tested": false,
   "fabrication_orderable": false,
-  "reviewed_at": "2026-11-05T07:26:23.701251+00:00",
+  "reviewed_at": "2026-11-06T05:23:07.958126+00:00",
   "native": {
-    "board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
-    "raw_drc_sha256": "fad02ebf9b73cfef944c147552619cad9901b33e4e1bbf7bdfdbadfab60fe34c",
-    "raw_erc_sha256": "b395c9d7c592243dc5736ceeea593c97ade71cde7abc65ac3c395fd93b820cc3",
+    "board_sha256": "000495f20437bd5cbef3d1ed4b5b1eb64360de8e61818af3300d16093b128255",
+    "raw_drc_sha256": "59f88b91e3711459db6a614f829700e99769ae9a4d5094bf33352c7f388f8852",
+    "raw_erc_sha256": "4401065c2db42d5534e88347980335fda4a198516bb37fb2fc569abc822fa4c6",
     "errors": 8,
     "retained_usb_hole_errors": 8,
     "other_errors": 0,
-    "warnings": 475,
+    "warnings": 488,
     "unconnected_items": 0,
     "schematic_parity": 0,
     "erc_findings": 0,
     "archive": "engineering/rp2040-native-review.zip",
-    "gui_screenshot": "docs/rp2040-kicad-drc.png",
+    "gui_screenshot": "docs/drv8262-kicad-drc.png",
     "gui_schematic_parity": "not run; CLI parity checked separately",
-    "gui_screenshot_sha256": "f0ee2b8764c4873bc82dec732e67034222df76d20a3a330419961ae538d6702e",
+    "gui_screenshot_sha256": "9d3bf1986dddbed6621945ec08cb5864080639f7728542ee8ceadee3af6baacd",
     "gui_screenshot_current": false,
-    "gui_status": "Mac unlocked; GUI automation remains stuck in a Go to Folder sheet. Existing screenshot is historical, not evidence for this revision. Fresh CLI DRC/ERC reports are in the paired native archive."
+    "gui_status": "Actual GUI capture before R35/C97 reference alignment: 8 USB errors, 494 cosmetic warnings, 0 unconnected; final text-only correction yields 488 warnings in CLI. All other native geometry and filled power copper are exactly unchanged. GUI parity not run; final CLI parity and ERC zero."
   },
   "input_sha256": {
-    "index.circuit.tsx": "e731c86568325af4ea06cf06955676c60b76d5e69bb1831293f163c619b3b7f2",
-    "schematic-pages.tsx": "6f84c1ca0a9186c4e60a29e4e6326c9469ea91a3c5069159308ec560fb7668f1",
-    "hardware-contract.json": "dae7cb1e17cad02838839fbae619b339158ff873e34537c62be783f9156d71ed",
-    "board-standards.json": "4c268f51833f1a96df5fdd582aeafb0af97f18ead54396c885d585a9a1f6a8c2",
-    "docs/firmware-pinmap.json": "18fc2abc37931e49eb9e8aa766aded94da5f8ae5b0356654ea6045c7f0bce0cf",
-    "release/pd1180-commissioning-firmware.zip": "f78e6a5e424f5d33b1feb8df58fa65975ae54288d65afd5a12250d8214bfcdc2"
+    "index.circuit.tsx": "8adf5b50c0ef045fa1df9f517fe2be44f0376a5550d084afd0b52256dc45caa0",
+    "schematic-pages.tsx": "65c0a40fdf4819fe08b72380409158af565bd36fb2884db0bfc9e7afa360dff5",
+    "hardware-contract.json": "d7e2b6fd88cc14468efb1d6bae08572feac7461e618300b8c4c45b1cec98b579",
+    "board-standards.json": "1c834b8befaf2d3f4d961e51878d879a6e829733552474217cdf56df9f6116e0",
+    "docs/firmware-pinmap.json": "75b8338ebf536ebf7277fadb87bdfa7b1fabb1a9d5373b44d40aa1962ff28d89",
+    "release/pd1180-commissioning-firmware.zip": "97744bfc457583d4acb50ffb6e8e77bbddd7aa5a209cff6b3dbce9269b988277"
   },
   "native_checks": {
     "local_bypass_paths": 58,
@@ -47,20 +47,22 @@
   },
   "firmware": {
     "compiled_architecture": "RP2040",
-    "image_bytes": 89892,
+    "image_bytes": 90588,
     "physical_programming_verified": false,
     "all_four_qualification_flags": false,
-    "nominal_commissioning_current_rms_a": 0.7733980419227863,
-    "commissioning_rpm_limit": 10
+    "commissioning_rpm_limit": 10,
+    "requested_commissioning_current_rms_a": 0.8,
+    "nominal_peak_dac_reference_v": 0.359,
+    "physical_current_calibrated": false
   },
   "remaining": [
     "Eight J1/J10 hole-clearance errors remain as explicitly requested; this is an engineering review exception, not fabrication acceptance. Cosmetic silkscreen findings remain visible.",
     "The enlarged bulk bank passes the nominal-delay 6 A winding simulation with the allocated reserve (54.321 V peak), but the 100 us delay screen reaches 54.745 V and fails that reserve. Hardware timing, load and full-current operation remain unqualified.",
     "DDV top-side heatsink/TIM/mechanical clearance and motor-current operating envelope are not qualified.",
-    "Stock is not reserved. Latest evidence: R66 C136970, R60 C326731 and BZ1 C391032 are unavailable; U7 C29780285 has 1 orderable piece for the requested 5-board lot. J1/J10 C3025063 are currently available.",
+    "Stocked replacements and exact package identities pass the fresh five-board lot check; inventory is unreserved. Use docs/stock-report.json at allocation.",
     "Rear fastening, single-shaft encoder magnet attachment and physical acceptance of the selected WAGO clamps, actual harnesses and PD_READY/ADC fault behavior require closure.",
     "TI EEPROM and RP2040 flash programming/readback/cold boot, USB current, brake and loaded thermal/EMC tests require assembled hardware. All four firmware qualification locks remain false.",
-    "U41 now switches phase/encoder sensors off in suspend; firmware stops STEP and idles at 60 MHz. USB current, discharge and wake timing remain unmeasured and must be qualified on hardware."
+    "U41 now switches phase/encoder sensors off in suspend; firmware disables both PH/EN bridges and idles at 60 MHz. USB current, discharge and wake timing remain unmeasured and must be qualified on hardware."
   ],
   "full_review": {
     "command": "bun run review",
@@ -85,7 +87,19 @@
     "sensor_power": "U41 TPS22919, SENSE_EN low during suspend/reset",
     "bulk": "C22/C23 EEUFS1J102, 2 x 1000 uF/63 V",
     "ramp": "C18 1 uF/25 V",
-    "manufacturing_via_in_pad_count": 66,
+    "manufacturing_via_in_pad_count": 78,
     "physical_tests_performed": false
+  },
+  "stocked_driver_eco": {
+    "driver": "DRV8262DDVR C33828788",
+    "dual_dac": "MCP4822-E/SN C16040",
+    "control": "PH/EN software sequencing, 16 microsteps/full step; no driver SPI register/readback interface",
+    "ipropi_resistors_ohm": 1500,
+    "replacements": {
+      "R60": "PTFR0805B180KN9 C351604",
+      "BZ1": "FMB09A03-3V C417385",
+      "U36": "SN74LVC2G66DCTR C2651913",
+      "R66": "AT0603BRD071K2L C5454462"
+    }
   }
 }

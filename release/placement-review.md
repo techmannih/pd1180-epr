@@ -1,24 +1,21 @@
-# Review of the six WAGO/INA237 ECO placement advisories
+# Placement review: DRV8262DDVR and stocked components
 
-The CLI heuristic connects each port to the nearest same-net port and compares straight lines with component centrelines. These lines are not the finished multilayer route. Fresh placement DRC reports **zero errors and zero warnings**, with six orientation suggestions retained in `checks/placement-raw.log` and the committed regression fixture.
+The fresh placement DRC reports **zero errors and zero warnings**. Its separate heuristic draws straight connections to the nearest same-net port; it does not follow the completed multilayer copper. The nine orientation suggestions below are retained in `checks/placement-raw.log` and the committed regression fixture.
 
-| Part | Reason for retaining the orientation | Native evidence |
+| Part | Reason for retaining the orientation | Independent evidence |
 |---|---|---|
-| C26 | DRV8462 VMOTOR bypass follows its explicit U7.21 power path. | Same-side bypass 2.6982 mm, below 5 mm; native bypass and connectivity checks pass. |
-| C80 | ADS1115 supply bypass follows its explicit U30.8 power path. | Same-side bypass 3.9594 mm, below 5 mm; native bypass and connectivity checks pass. |
-| R139 | 1 kΩ series BOOTSEL resistor between FLASH_CS_N and BOOTSEL_N, not a power bypass. | Exact source boot contract, native pin/net parity and zero opens verify the two separate routed nets. |
-| R64 | Upper 430 kΩ OVP-divider resistor retains its original placement and VMOTOR/MOTOR_OVP_SENSE pin order. Moving nearby R65/U14 changes the nearest-port heuristic. | Source power audit checks divider values/thresholds; native parity, clearance and connectivity pass. No new reference-net or power bypass assumption is made. |
-| R65 | Middle 20 kΩ OVP-divider resistor moved clear of the taller J2 terminal body; its two pads remain MOTOR_OVP_SENSE and MOTOR_OVP_LOW. | The affected native routes were regenerated. Fresh refilled DRC and schematic parity show no short, clearance or open-net finding on either divider net. |
-| C83 | Nonpolar 10 nF PHASE_A_ADC-to-GND signal filter moved clear of the J2 terminal. It is not the U31 supply bypass; C81 retains that function. | Exact source filter connectivity and native parity/open-net checks pass. U31/C81 remains independently checked by the native bypass gate. |
+| C26 | VMOTOR bypass follows the existing explicit U7.21 power path. | Native same-side bypass path is under 5 mm; connectivity and clearance pass. |
+| C83 | Nonpolar PHASE_A_ADC filter; C81 provides U31 supply bypass. | Native filter net/pad parity and connectivity pass; C81 bypass is separately checked. |
+| R35 | DRV_FAULT_N_BOARD pull-up to V3V3, not a power bypass. Replacing U7 changes the nearest same-net endpoint. | Both pad nets match source; native routing, clearance and zero opens are verified. |
+| R139 | BOOTSEL series resistor between FLASH_CS_N and BOOTSEL_N. | Source boot contract and native pin/net parity preserve the two distinct nets. |
+| R140, R141 | Encoder/I²C pull-up placement is retained with the switched DATA-domain sensor rail. | Source rail contract, native clearance and connectivity pass. |
+| R64, R65 | OVP-divider pin order and established routing are retained. | Divider thresholds are independently audited; native parity and clearance pass. |
+| R73 | Reset pull-up; its nearest same-rail counterpart changes when components are added. | Reset-domain source contract and native pin/net connectivity pass. |
 
-C41 no longer receives an orientation suggestion after the U14 relocation. Its regenerated same-side U14.5 bypass measures **1.8112 mm**, below 5 mm.
+R144 no longer receives a suggestion after its relocation for the DAC LDAC pull-up. No component is rotated merely to optimize the straight-line heuristic. These checks do not establish analog noise or powered performance.
 
-The checker accepts only this exact nine-part list, zero placement errors/warnings, the current native geometry and fresh hash-bound DRC. The regression rejects unknown suggestions and changed counts. Raw native DRC retains the eight user-deferred J1/J10 hole-clearance errors and 475 cosmetic warnings; there are zero other errors, unconnected or parity findings. ERC is checked separately. This CAD review does not qualify analog noise, thermal performance or powered operation.
+The ten reported courtyard intersections are axis-aligned bounding-box intersections around C22/C23. Both capacitors have explicit circumscribed 64-segment round courtyards, with a minimum 8.5 mm radius including body tolerance and assembly allowance. The checker intersects the actual compiled polygons and rejects real overlap. Native courtyard/clearance DRC is also required; the capacitor bodies are not reduced to their pad envelopes.
+
+The regression accepts only this exact nine-part list, zero placement errors/warnings, checked polygon intersections and the current hash-bound native route. Unknown suggestions, real courtyard intersections and changed counts fail. Raw native DRC retains eight J1/J10 hole-clearance errors and 488 cosmetic warnings; other errors, unconnected items, schematic parity and ERC findings are zero. Manufacturing disposition remains separate.
 
 Historical STM32 ECO restoration is regression-tested against the exact main `1c22abf` fixture. It is not applied to the replaced RP2040 geometry. Current independent protection checks and the complete routing fingerprint remain mandatory.
-
-## DATA-only ECO, 2026-11-05
-
-The CLI reports ten bounding-box intersections around C22/C23. Both parts have explicit circumscribed 64-segment round courtyards (minimum radius 8.5 mm including body tolerance/assembly allowance). The placement checker now intersects the actual compiled polygons and rejects any real overlap; native courtyard/clearance DRC remains independently required. The raw CLI findings are retained. This is not permission to shrink the capacitor body to its pads.
-
-Nine nearest-port orientation advisories remain: C26, C83, R139, R140, R141, R144, R64, R65 and R73. R73 is the unchanged reset pull-up; adding U41/C113 changes its nearest same-rail counterpart, not its pin mapping or required reset connection. Changing the encoder/I2C rail changes the CLI's nearest counterpart; this heuristic does not inspect actual routed copper. Accept only alongside checked native connectivity/DRC and preserved local bypass/Kelvin routes.

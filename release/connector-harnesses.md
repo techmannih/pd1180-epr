@@ -14,6 +14,6 @@ J2 and J3 use onboard WAGO spring clamps; no separate mating plugs or socket con
 | Brake resistor terminal 2 | J3 pin 2 BRAKE_RETURN / Q16 | Nominal 165/210 mm cable cuts modeled; installed lengths, temperature, heatsink and mounting unqualified | Switched return; not permanent GND |
 | Programming equipment | SWD and isolated EEPROM test pads | Fixture/programmer acceptance pending | Manufacturing service only |
 
-SW2 is on the PCB: RP2040 GP11 to GND, with R133 to V3V3_MCU. RP2040 configures DRV8462 over SPI and generates STEP/DIR pulses, so there is no external command harness. SW1 remains RESET.
+SW2 is on the PCB: RP2040 GP11 to GND, with R133 to V3V3_MCU. RP2040 drives DRV8262 PH/EN inputs and sends current references to U42 MCP4822, so there is no external command harness. SW1 remains RESET.
 
 The J2 175/175/175/175 mm cut lengths include 12 mm termination/adjustment allowance and are CAD proposals requiring first-article fit. TE320559 uses the actual manufacturer AE STEP: nominal length 32.131 mm and diameter 5.6134 mm, translated without scaling. Rev V6 drawing and STEP are archived with hashes. The finished crimp is not dimensionally qualified by the uncrimped CAD. Physical harness retention remains open after removal of the unsupported adapter-mounted clamp. No loose cable is rendered as a completed external system.

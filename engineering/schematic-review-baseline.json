@@ -1,18 +1,18 @@
 {
-  "baseline_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
-  "baseline_non_schematic_sha256": "d91d0047ef6002b6ed8693f6ec293083de094ddb8c6dc0fe13e0a637c95aa23d",
-  "record_count": 6836,
+  "baseline_commit": "50350344ec36ee153ca9e64e8e67c66ce1141f8a",
+  "baseline_non_schematic_sha256": "02090682f6276d7ae6e902b8b0507f834aa4bfd18a4b6652c6ab91095c9c2475",
+  "record_count": 6998,
   "algorithm": "SHA-256 with recursively sorted object keys; record order retained. Exclude schematic_* and system_block_* records, source_project_metadata filesystem cache and cli_module_to_static_asset metadata. Reuse circuitSourceHash: round derived pcb_trace.trace_length to 1e-12 mm; coordinates, widths, nets and other geometry remain exact.",
-  "scope": "User-authorized DATA-only MCU ECO: remove U26, isolate PD I2C/status with U39/U40, switch phase/encoder sensor power with U41, and revise C22/C23 bulk plus C18 ramp. Source topology/negative isolation tests and nine schematic style analyses pass. Native routing and fabrication qualification remain separate gates.",
+  "scope": "User-authorized DRV8262DDVR migration: actual PH/EN microstepping, MCP4822 references, R60/BZ1/U36/R66 stocked replacements, C96 bypass relocation and affected local routing. DATA-only MCU, independent brake, all four motor mounting holes and unrelated source content retained.",
   "native_verification": {
-    "status": "paired-DATA-only-native-CAD-verified",
-    "paired_board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+    "status": "paired-DRV8262DDVR-native-CAD-verified",
+    "paired_board_sha256": "000495f20437bd5cbef3d1ed4b5b1eb64360de8e61818af3300d16093b128255",
     "byte_identical_to_baseline": false,
     "unconnected_items": 0,
     "schematic_parity_issues": 0,
     "erc_violations": 0,
     "retained_hole_clearance_errors": 8,
-    "retained_cosmetic_warnings": 475,
+    "retained_cosmetic_warnings": 488,
     "fabrication_authorized": false
   },
   "previous_schematic_only_baseline": {
@@ -56,5 +56,23 @@
       ]
     }
   },
-  "baseline_native_board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a"
+  "baseline_native_board_sha256": "000495f20437bd5cbef3d1ed4b5b1eb64360de8e61818af3300d16093b128255",
+  "previous_hardware_eco_baseline": {
+    "baseline_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
+    "baseline_non_schematic_sha256": "d91d0047ef6002b6ed8693f6ec293083de094ddb8c6dc0fe13e0a637c95aa23d",
+    "baseline_native_board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+    "record_count": 6836,
+    "scope": "User-authorized DATA-only MCU ECO: remove U26, isolate PD I2C/status with U39/U40, switch phase/encoder sensor power with U41, and revise C22/C23 bulk plus C18 ramp. Source topology/negative isolation tests and nine schematic style analyses pass. Native routing and fabrication qualification remain separate gates.",
+    "native_verification": {
+      "status": "paired-DATA-only-native-CAD-verified",
+      "paired_board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+      "byte_identical_to_baseline": false,
+      "unconnected_items": 0,
+      "schematic_parity_issues": 0,
+      "erc_violations": 0,
+      "retained_hole_clearance_errors": 8,
+      "retained_cosmetic_warnings": 475,
+      "fabrication_authorized": false
+    }
+  }
 }

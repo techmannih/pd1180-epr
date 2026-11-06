@@ -246,9 +246,9 @@ def main():
     ap.add_argument('--library'); ap.add_argument('--csv-dir',type=Path); ap.add_argument('--check',action='store_true')
     args=ap.parse_args()
     audit=json.loads((REPO/'engineering/power-audit.json').read_text())
-    integrated = audit.get('architecture') == 'RP2040_DRV8462DDV'
+    integrated = audit.get('architecture') == 'RP2040_DRV8262DDV'
     # This model screens the retained DC bus/brake/eFuse, not the bridge chopper.
-    # DRV8462 scenarios use explicit analysis currents, never the old TMC DAC ratio.
+    # DRV8262 scenarios use explicit analysis currents, never the old TMC DAC ratio.
     if audit.get('architecture') and not integrated:
         raise RuntimeError('Unsupported simulation architecture')
     if audit['input_sha256']['index.circuit.tsx'] != VERSION:
@@ -304,7 +304,7 @@ def main():
       'hardware_qualified':False,'simulator_version':spice.version,'model_sha256':model_hash,
       'audit_parameters_sha256':audit_hash,
       'assumptions':['100% prescribed mechanical energy return; no full motor/bridge model',
-        'DRV8462 current regulation, SmartTune, dead time and integrated diode behavior are not modeled or qualified; phase-current initial conditions are explicit engineering scenarios, not guaranteed current limits',
+        'DRV8262 current regulation, SmartTune, dead time and integrated diode behavior are not modeled or qualified; phase-current initial conditions are explicit engineering scenarios, not guaranteed current limits',
         '10 mOhm nominal bank ESR assumption; separate 50 mOhm bank / 10.3836 ohm hot-resistor sensitivity; no capacitor ripple or thermal qualification',
         '2.2 uF lumped input capacitance, 100 mOhm source/cable resistance; revised input cases use 250 mA upstream, old reference uses 100 mA; not measured',
         'Ideal eFuse current envelope omits finite response, thermal shutdown and PD source dynamics',

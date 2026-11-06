@@ -26,7 +26,7 @@ The source rule consistency check is mandatory: `source-design-policy.mjs` reads
 | `check-feature-parity.mjs` | Reports component/net presence separately from open reference-board functions in `engineering/reference-comparison.json`; never treats a presence pass as complete parity. Verifies the product feature contract against compiled components, nets and evidence, enforces tscircuit's standard USB-C connector model, and checks permitted assembly layers. |
 | `check-decoupling.mjs` | Measures placed/routed bypass connections against local distance and length limits. |
 | `check-delivery.mjs` | Verifies required release files, current-source BOM/CPL, root/release manifest identity, recursive SHA-256 hashes, archive readability and source/release consistency. |
-| `check-firmware.mjs` | Builds and runs safety-state/DRV8462 tests plus target power/suspend and indicator reset, alarm, brownout and I2C-failure regressions. |
+| `check-firmware.mjs` | Builds and runs safety-state/DRV8262 tests plus target power/suspend and indicator reset, alarm, brownout and I2C-failure regressions. |
 | `check-import-previews.mjs` | Executes every imported TSX as a standalone viewer entrypoint and requires both PCB and schematic component output without component-creation failures. |
 | `check-kicad-drc.mjs` | Fails on any final KiCad PCB DRC violation, unconnected item, schematic-parity issue or nested schematic ERC violation. |
 | `check-local-copper.mjs` | Checks manually constrained local copper and critical short routing. |
@@ -139,7 +139,7 @@ PR #2 extends `simulate-power-eco.py` with brake-recovery, restricted rotor/wind
 - `check-pcb-references.mjs`: checks every electrical component reference in compiled source, native PCB and the default routed PCB/3D viewer. Rejects hidden, absent, detached or stale names, and screens rotated reference envelopes against the full board outline. Native edge anchors may move per the user's edge-clearance exception; native DRC still checks stroke clearance. Runs within `check:cloud-viewer`.
 - `sync-pcb-references.py`: copies compiled native footprint references into the KiCad Reference fields, removes obsolete detached captions, and rejects any change outside those label fields. Arguments: board path and optional `--source` Circuit JSON.
 
-- `silkscreen-review.mjs`, `silkscreen-review.test.mjs`: permit an explicit `--review-silkscreen` normalization/manufacturing export only when the exact retained native-reference finding identities match the reviewed baseline (current retained baseline: 451 cosmetic findings; see engineering/native-silk-hold.json). Preserve every raw finding and fail fabrication/review gates; reject electrical/parity faults or changed findings.
+- `silkscreen-review.mjs`, `silkscreen-review.test.mjs`: permit an explicit `--review-silkscreen` normalization/manufacturing export only when the exact retained native-reference finding identities match the reviewed baseline (current retained baseline: 488 cosmetic findings; see engineering/native-silk-hold.json). Preserve every raw finding and fail fabrication/review gates; reject electrical/parity faults or changed findings.
 
 - `check-inventory.mjs`: validates timestamped exact stock/package evidence. Default is a strict procurement gate; `--review` permits recorded insufficient quantities only, never unknown/mismatched parts. `check-stock.mjs`, `check-alternatives.mjs` and `check-assembly.mjs` support the same explicit review mode.
 

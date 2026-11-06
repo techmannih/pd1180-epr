@@ -1,44 +1,44 @@
 {
-  "generated_at": "2026-11-05T19:26:18.383Z",
+  "generated_at": "2026-11-06T05:35:44.516Z",
   "input": {
     "path": "dist/index/circuit.json",
-    "sha256": "6b8a8144d988d0b5c98b7d6af1cd0b2011ebe6540438804fec101a57e9d0c7ed",
-    "bytes": 4301289
+    "sha256": "d6fa2415988e81e3093d6f72d99676354df2c01c28e596de7aebd2da609b8269",
+    "bytes": 4393536
   },
   "result": "PASS",
   "failures": [],
   "counts": {
-    "elements": 9649,
+    "elements": 9853,
     "sheets": 9,
-    "source_components": 266,
-    "source_ports": 920,
-    "connected_source_ports": 875,
+    "source_components": 273,
+    "source_ports": 940,
+    "connected_source_ports": 895,
     "intentional_no_connect_ports": 45,
-    "source_nets": 157,
+    "source_nets": 158,
     "minimum_ports_per_connected_net": 2,
-    "capacitors": 96,
+    "capacitors": 98,
     "test_points": 20,
     "annotations": 27,
     "frame_point_violations": 0,
     "frame_extent_violations": 0
   },
   "net_port_histogram": {
-    "2": 61,
-    "3": 54,
-    "4": 19,
+    "2": 60,
+    "3": 55,
+    "4": 20,
     "5": 7,
     "6": 1,
     "7": 2,
     "8": 2,
     "9": 3,
     "10": 1,
-    "15": 1,
     "19": 1,
+    "22": 1,
     "27": 1,
     "28": 1,
+    "35": 1,
     "36": 1,
-    "41": 1,
-    "241": 1
+    "255": 1
   },
   "usb_c": {
     "connectors": [
@@ -398,6 +398,9 @@
     "U35.13:N_INT",
     "U37.1:NC",
     "U38.3:ALERT",
+    "U40.3:2Y4",
+    "U40.7:2Y2",
+    "U40.9:2Y1",
     "U41.4:NC",
     "U6.11:MODE",
     "U6.19:N_C6",
@@ -406,11 +409,8 @@
     "U6.22:N_C3",
     "U6.23:N_C2",
     "U6.24:N_C1",
-    "U7.32:RSVD5",
-    "U7.35:RSVD4",
-    "U7.36:RSVD3",
-    "U7.37:RSVD2",
-    "U7.38:RSVD1"
+    "U7.31:RSVD1",
+    "U7.35:RSVD2"
   ],
   "test_points": [
     {
@@ -422,8 +422,8 @@
     {
       "ref": "TP_SWD_3V3",
       "net": "V3V3_MCU",
-      "total_ports_on_net": 36,
-      "non_testpoint_peers": 35
+      "total_ports_on_net": 35,
+      "non_testpoint_peers": 34
     },
     {
       "ref": "TP_SWDIO",
@@ -434,8 +434,8 @@
     {
       "ref": "TP_SWD_GND",
       "net": "GND",
-      "total_ports_on_net": 241,
-      "non_testpoint_peers": 237
+      "total_ports_on_net": 255,
+      "non_testpoint_peers": 251
     },
     {
       "ref": "TP_SWCLK",
@@ -458,8 +458,8 @@
     {
       "ref": "TP_ENC_3V3",
       "net": "V3V3_SENS",
-      "total_ports_on_net": 15,
-      "non_testpoint_peers": 14
+      "total_ports_on_net": 22,
+      "non_testpoint_peers": 21
     },
     {
       "ref": "TP_ENC_A",
@@ -482,8 +482,8 @@
     {
       "ref": "TP_ENC_GND",
       "net": "GND",
-      "total_ports_on_net": 241,
-      "non_testpoint_peers": 237
+      "total_ports_on_net": 255,
+      "non_testpoint_peers": 251
     },
     {
       "ref": "TP_PD_VREF",
@@ -494,8 +494,8 @@
     {
       "ref": "TP_PD_GND",
       "net": "GND",
-      "total_ports_on_net": 241,
-      "non_testpoint_peers": 237
+      "total_ports_on_net": 255,
+      "non_testpoint_peers": 251
     },
     {
       "ref": "TP_EEP_SDA",
@@ -530,8 +530,8 @@
     {
       "ref": "TP_PWR_GND",
       "net": "GND",
-      "total_ports_on_net": 241,
-      "non_testpoint_peers": 237
+      "total_ports_on_net": 255,
+      "non_testpoint_peers": 251
     }
   ],
   "sheets": [
@@ -587,7 +587,7 @@
       ],
       "annotations": [
         "04 / Integrated motor driver and winding feedback",
-        "U7 DRV8462DDVR: two internal bridges, SPI setup, STEP/DIR control. J2: WAGO winding terminal.",
+        "U7 DRV8262DDVR: two internal bridges, PH/EN control; U42 dual DAC current references. J2: WAGO winding terminal.",
         "U31/U32: instantaneous phase-current diagnostics, not RMS control. DDV requires qualified top cooling."
       ]
     },
@@ -615,7 +615,7 @@
       ],
       "annotations": [
         "06 / RP2040, boot memory and local controls",
-        "U16: STEP/DIR, USB diagnostics and power supervision. U17: 4 MiB QSPI boot flash. Y1: 12 MHz.",
+        "U16: phase sequencing, USB diagnostics and power supervision. U17: 4 MiB QSPI boot flash. Y1: 12 MHz.",
         "SW1: reset. SW2: START/STOP request. TP_BOOTSEL + reset: ROM USB recovery. Motion stays locked."
       ]
     },
@@ -684,8 +684,8 @@
     {
       "index": 4,
       "name": "motion",
-      "elements": 312,
-      "coordinate_points_checked": 564
+      "elements": 378,
+      "coordinate_points_checked": 692
     },
     {
       "index": 5,
@@ -702,8 +702,8 @@
     {
       "index": 7,
       "name": "usb-data",
-      "elements": 332,
-      "coordinate_points_checked": 686
+      "elements": 317,
+      "coordinate_points_checked": 674
     },
     {
       "index": 8,
@@ -714,8 +714,8 @@
     {
       "index": 9,
       "name": "indicators",
-      "elements": 293,
-      "coordinate_points_checked": 582
+      "elements": 285,
+      "coordinate_points_checked": 565
     }
   ],
   "checks": [
@@ -723,8 +723,8 @@
       "ok": true,
       "message": "source and schematic component counts match",
       "details": {
-        "source": 266,
-        "schematic": 266
+        "source": 273,
+        "schematic": 273
       }
     },
     {
@@ -743,10 +743,10 @@
     },
     {
       "ok": true,
-      "message": "electrical and PCB records match the reviewed DATA-only ECO baseline",
+      "message": "electrical and PCB records match the reviewed hardware ECO baseline",
       "details": {
-        "baseline_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
-        "actual": "d91d0047ef6002b6ed8693f6ec293083de094ddb8c6dc0fe13e0a637c95aa23d"
+        "baseline_commit": "50350344ec36ee153ca9e64e8e67c66ce1141f8a",
+        "actual": "02090682f6276d7ae6e902b8b0507f834aa4bfd18a4b6652c6ab91095c9c2475"
       }
     },
     {
@@ -906,7 +906,7 @@
         "actual": 3,
         "texts": [
           "04 / Integrated motor driver and winding feedback",
-          "U7 DRV8462DDVR: two internal bridges, SPI setup, STEP/DIR control. J2: WAGO winding terminal.",
+          "U7 DRV8262DDVR: two internal bridges, PH/EN control; U42 dual DAC current references. J2: WAGO winding terminal.",
           "U31/U32: instantaneous phase-current diagnostics, not RMS control. DDV requires qualified top cooling."
         ]
       }
@@ -982,7 +982,7 @@
         "actual": 3,
         "texts": [
           "06 / RP2040, boot memory and local controls",
-          "U16: STEP/DIR, USB diagnostics and power supervision. U17: 4 MiB QSPI boot flash. Y1: 12 MHz.",
+          "U16: phase sequencing, USB diagnostics and power supervision. U17: 4 MiB QSPI boot flash. Y1: 12 MHz.",
           "SW1: reset. SW2: START/STOP request. TP_BOOTSEL + reset: ROM USB recovery. Motion stays locked."
         ]
       }
@@ -1132,17 +1132,17 @@
     },
     {
       "ok": true,
-      "message": "157 named source nets including switched sensor power and enable",
+      "message": "158 named source nets including dual current-reference DAC",
       "details": {
-        "actual": 157
+        "actual": 158
       }
     },
     {
       "ok": true,
       "message": "every named source net has connected ports",
       "details": {
-        "connected_groups": 157,
-        "source_nets": 157
+        "connected_groups": 158,
+        "source_nets": 158
       }
     },
     {
@@ -1208,9 +1208,9 @@
     },
     {
       "ok": true,
-      "message": "96 capacitors including isolated-domain and sensor-switch bypasses",
+      "message": "98 capacitors including the dual DAC bypass and bulk",
       "details": {
-        "actual": 96
+        "actual": 98
       }
     },
     {
@@ -1271,6 +1271,9 @@
           "U35.13:N_INT",
           "U37.1:NC",
           "U38.3:ALERT",
+          "U40.3:2Y4",
+          "U40.7:2Y2",
+          "U40.9:2Y1",
           "U41.4:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
@@ -1279,11 +1282,8 @@
           "U6.22:N_C3",
           "U6.23:N_C2",
           "U6.24:N_C1",
-          "U7.32:RSVD5",
-          "U7.35:RSVD4",
-          "U7.36:RSVD3",
-          "U7.37:RSVD2",
-          "U7.38:RSVD1"
+          "U7.31:RSVD1",
+          "U7.35:RSVD2"
         ],
         "actual": [
           "J1.10:SBU1",
@@ -1318,6 +1318,9 @@
           "U35.13:N_INT",
           "U37.1:NC",
           "U38.3:ALERT",
+          "U40.3:2Y4",
+          "U40.7:2Y2",
+          "U40.9:2Y1",
           "U41.4:NC",
           "U6.11:MODE",
           "U6.19:N_C6",
@@ -1326,11 +1329,8 @@
           "U6.22:N_C3",
           "U6.23:N_C2",
           "U6.24:N_C1",
-          "U7.32:RSVD5",
-          "U7.35:RSVD4",
-          "U7.36:RSVD3",
-          "U7.37:RSVD2",
-          "U7.38:RSVD1"
+          "U7.31:RSVD1",
+          "U7.35:RSVD2"
         ],
         "missing": [],
         "extra": []

@@ -2,11 +2,11 @@
 
 **Installation design and post-assembly measurements.** The normal diagnostic image inhibits motor outputs; bounded test profiles are described in [commissioning](commissioning.md). The user confirmed that rear screw/thread measurements are not yet available. No physical tests, heatsink installation or supplier allocation have been performed.
 
-## DRV8462DDV cooling
+## DRV8262DDV cooling
 
-U7 is the top-cooled DDV package. [TI DRV8462, sections 6.4 and 9](https://www.ti.com/lit/ds/symlink/drv8462.pdf) specifies 0.7 °C/W junction-to-top-case thermal resistance. Use TIM between the exposed top and heatsink, mechanically support both ends, keep mounting load below TI's recommended 45 N, and ground or float the heatsink. TI recommends 2 oz top/bottom copper; our retained 1 oz stack has not demonstrated equivalent full-current performance. Changing copper weight requires a separate fabricator/impedance and geometry review.
+U7 is the top-cooled DDV package. [TI DRV8262, sections 5.4 and 8](https://www.ti.com/lit/ds/symlink/drv8262.pdf) specifies 0.7 °C/W junction-to-top-case thermal resistance. Use TIM between the exposed top and heatsink, mechanically support both ends, keep mounting load below TI's recommended 45 N, and ground or float the heatsink. TI recommends 2 oz top/bottom copper; our retained 1 oz stack has not demonstrated equivalent full-current performance. Changing copper weight requires a separate fabricator/impedance and geometry review.
 
-A concrete reference is the **ATS-TI1OP-519-C1-R3** heatsink listed as MP1 in TI's DRV8462VEVM MD041A(001) BOM. Provenance: [DRV8462VEVM](https://www.ti.com/tool/DRV8462VEVM) → [SLOR128 hardware archive](https://www.ti.com/lit/zip/SLOR128), `MD041A/MD041A(001) - DRV8462V EVM/MD041A(001)_BOM.xlsx`; downloaded archive SHA-256 `bf23445840bbe70e57c76adf6b565158af489283fcdf08e1c27a08bbafc8a495`. The manufacturer drawing is 78 × 36 × 35.6 mm with two M3 support positions. That envelope conflicts with the current board component layout, so this EVM sink is **rejected for direct installation**, not added to the fitted BOM.
+A concrete reference is the **ATS-TI1OP-519-C1-R3** heatsink listed as MP1 in TI's earlier DRV8462VEVM MD041A(001) BOM. Provenance: [DRV8462VEVM](https://www.ti.com/tool/DRV8462VEVM) → [SLOR128 hardware archive](https://www.ti.com/lit/zip/SLOR128), `MD041A/MD041A(001) - DRV8462V EVM/MD041A(001)_BOM.xlsx`; downloaded archive SHA-256 `bf23445840bbe70e57c76adf6b565158af489283fcdf08e1c27a08bbafc8a495`. The manufacturer drawing is 78 × 36 × 35.6 mm with two M3 support positions. That envelope conflicts with the current board component layout, so this EVM sink is **rejected for direct installation**, not added to the fitted BOM.
 
 TI names Ceramique and TIMTronics 413 as interface examples. [Arctic Silver Ceramique 2](https://arcticsilver.com/cmq2.html) is a currently documented TIM candidate; it is not a structural adhesive. Its application/bond-line behavior and interface resistance on the small DDV top must be established. Do not infer thermal resistance from compound identity alone.
 
@@ -22,10 +22,10 @@ These are explicit engineering allocations for selecting/testing a cooling syste
 
 | Quantity | Basis / result |
 |---|---|
-| Proposed bench request | 0.8 A RMS maximum request, quantized nominal approximately 0.7734 A; maximum 10 rpm, unloaded rotor |
-| Two-phase conduction screen | `P = 2 × Irms² × (RHS + RLS)`; use existing audit resistance cases 0.096 / 0.184 Ω |
-| 0.8 A conduction estimate | 0.123 / 0.236 W, before switching and other losses |
-| 6 A RMS analysis case | 6.912 / 13.248 W, before switching and other losses; **not the approved motor setpoint** |
+| Proposed bench request | 0.8 A RMS maximum request, quantized nominal approximately 0.800 A; maximum 10 rpm, unloaded rotor |
+| Two-phase conduction screen | `P = 2 × Irms² × (RHS + RLS)`; use existing audit resistance cases 0.100 / 0.184 Ω |
+| 0.8 A conduction estimate | 0.128 / 0.236 W, before switching and other losses |
+| 6 A RMS analysis case | 7.200 / 13.248 W, before switching and other losses; **not the approved motor setpoint** |
 | Example cooling allocation | Ambient 40 °C, junction target 110 °C, 3 W additional-loss allowance → 16.248 W total at the higher 6 A resistance case |
 | Required total thermal resistance in that example | `(110 − 40) / 16.248 = 4.308 °C/W` |
 | Example sink target | With 0.7 °C/W package and an allocated 0.5 °C/W interface, sink-to-local-air ≤3.108 °C/W |

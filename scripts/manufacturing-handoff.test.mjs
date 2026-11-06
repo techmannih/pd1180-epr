@@ -15,7 +15,7 @@ test('reject obsolete release instructions even when their integrity hashes coul
     input => { input.order.assembly.external_motor_harness = 'VHR-4N / SVH-41T-P1.1 cable' },
     input => { input.documents['manufacturing-acceptance.md'] = input.documents['manufacturing-acceptance.md'].replace(`**${input.vias.count} locations**`, '**62 locations**') },
     input => { input.documents['external-system.md'] += '\nAll 252 fitted components use JST SVH-41T contacts.' },
-    input => { input.documents['sourcing-resolution.md'] = input.documents['sourcing-resolution.md'].replaceAll('C136970', 'C1369700') },
+    input => { input.documents['sourcing-resolution.md'] = input.documents['sourcing-resolution.md'].replaceAll('C5454462', 'C54544620') },
   ]) {
     const input = structuredClone(current)
     corrupt(input)

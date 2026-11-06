@@ -21,7 +21,7 @@ export const FEATURE_PARITY = [
   },
   {
     id: "motor_stage",
-    feature: "DRV8462DDVR integrated motor bridges; thermal qualification pending",
+    feature: "DRV8262DDVR integrated motor bridges; thermal qualification pending",
     components: ["U7", "J2", "R115", "R116"],
     nets: ["MOTOR_A1", "MOTOR_A2", "MOTOR_B1", "MOTOR_B2"],
     evidence: "engineering/rp2040-redesign.json",
@@ -63,9 +63,9 @@ export const FEATURE_PARITY = [
   },
   {
     id: "local_control",
-    feature: "Local START/STOP and independent reset; RP2040-generated STEP/DIR ramp",
+    feature: "Local START/STOP and independent reset; RP2040 phase/current ramp",
     components: ["SW1", "SW2", "R133", "U16", "U7", "U10", "U11", "U33"],
-    nets: ["USER_BUTTON_N", "DRV_STEP", "DRV_DIR", "RUN_SAFE"],
+    nets: ["USER_BUTTON_N", "DRV_ENABLE_A", "DRV_ENABLE_B", "DRV_PHASE_A", "DRV_PHASE_B", "RUN_SAFE"],
     evidence: "hardware-contract.json",
   },
   {

@@ -2,7 +2,7 @@
 
 # External equipment, connections and assembly sides
 
-Applies to the current RP2040 / DRV8462 / raw-PD-sensing / WAGO revision and ordered **STEPPERONLINE 34HS31-6004S1**. This is a wiring and procurement plan, not evidence of powered operation. The supplied firmware remains motion-locked; TI PD programming, the operating envelope, mechanical attachment and first-article tests are still open.
+Applies to the current RP2040 / DRV8262 / raw-PD-sensing / WAGO revision and ordered **STEPPERONLINE 34HS31-6004S1**. This is a wiring and procurement plan, not evidence of powered operation. The supplied firmware remains motion-locked; TI PD programming, the operating envelope, mechanical attachment and first-article tests are still open.
 
 ## What connects, why, when and where
 
@@ -11,7 +11,7 @@ Applies to the current RP2040 / DRV8462 / raw-PD-sensing / WAGO revision and ord
 | Motor harness | Required whenever this board drives the motor's two windings | Factory motor cable → four TE 320559 splices → four 16 AWG pigtails → stripped wire → WAGO 2601-3104 J2 | Retain; make and qualify the separate cable assembly |
 | EPR power source and cable | Supplies motor energy during operation | A source explicitly supporting a **48 V / 5 A EPR contract** → suitable 5 A EPR USB-C cable → J1 POWER | Framework 240 W adapter is a candidate; source and cable procurement/qualification remain open. A charger's total advertised wattage is insufficient evidence |
 | USB data cable and host | Required MCU power during operation, plus setup/logs/diagnostics | Host USB → J10 DATA | Keep connected alongside J1 PD. PD alone cannot power RP2040; DATA does not supply motor energy |
-| SW2 START/STOP | Requests the internal motion profile after qualification | Onboard switch → RP2040 GP11 → timer STEP/DIR → DRV8462 integrated bridges → J2 | Already on PCB; no external STEP/DIR box or control loom |
+| SW2 START/STOP | Requests the internal motion profile after qualification | Onboard switch → RP2040 GP11 → timer STEP/DIR → DRV8262 integrated bridges → J2 | Already on PCB; no external STEP/DIR box or control loom |
 | SW1 RESET | Resets the MCU; must not restart motion automatically | Accessible top-side PCB switch | Already on PCB; reset is not a substitute for qualifying deceleration and regeneration |
 | External brake assembly | Dissipates returned energy during the current conservative commissioning profile | J3 pin 1 VMOTOR → resistor → J3 pin 2 BRAKE_RETURN → Q16 → GND | Required for the current commissioning profile; startup continuity sensing must pass. Empty J3 provides no resistor dissipation. See [brake decision and procedure](brake-integration.md) |
 | SWD / EEPROM fixture | Programs and verifies the board before motor operation | Programmer → labelled top service pads; isolated EEPROM sequence in [PD programming](pd-programming.md) | Qualified provider/tooling needed; no permanent loose service wires in the product |

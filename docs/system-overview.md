@@ -41,7 +41,7 @@ is firmware-derived; the physical eFuse `MOTOR_PG` is a different signal.
    valid protected-bus voltage, driver readiness and brake preflight before
    asserting MCU_RUN. Reset defaults disable motion.
 4. U7 regulates winding current using its integrated H-bridges. RP2040 supplies
-   STEP/DIR and SPI configuration. J2's four WAGO poles connect to the two motor
+   PH/EN and MCP4822 current references configuration. J2's four WAGO poles connect to the two motor
    windings. The motor's 6 A/phase label is not an approved operating setting.
 5. Deceleration or an externally driven motor can return energy to VMOTOR.
    U13 switches the independent Q16 brake near 52 V; J3's external resistor

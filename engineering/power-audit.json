@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "architecture": "RP2040_DRV8462DDV",
-  "checked_at": "2026-11-05T19:27:51.986Z",
+  "architecture": "RP2040_DRV8262DDV",
+  "checked_at": "2026-11-06T05:37:31.202Z",
   "status": "screen-complete-hardware-unqualified",
   "powered_tests_performed": false,
   "full_current_operation_authorized": false,
@@ -38,16 +38,16 @@
     }
   ],
   "input_sha256": {
-    "index.circuit.tsx": "e731c86568325af4ea06cf06955676c60b76d5e69bb1831293f163c619b3b7f2",
-    "dist/index/circuit.json": "6b8a8144d988d0b5c98b7d6af1cd0b2011ebe6540438804fec101a57e9d0c7ed",
-    "docs/design-manifest.json": "bb905bb9e0b3d194109293823edd692199fb00068654fcd8a0f0a9cf59b216d8",
-    "hardware-contract.json": "dae7cb1e17cad02838839fbae619b339158ff873e34537c62be783f9156d71ed",
+    "index.circuit.tsx": "8adf5b50c0ef045fa1df9f517fe2be44f0376a5550d084afd0b52256dc45caa0",
+    "dist/index/circuit.json": "d6fa2415988e81e3093d6f72d99676354df2c01c28e596de7aebd2da609b8269",
+    "docs/design-manifest.json": "728817de0700a6f1fc98d853a15b1ea1489ad793604ecad52a0134742403d14f",
+    "hardware-contract.json": "d7e2b6fd88cc14468efb1d6bae08572feac7461e618300b8c4c45b1cec98b579",
     "docs/motor-data.json": "7f260e361eb3dc532e484a36041b064bea4bab998f78dc03e6fd208fbb9b2771",
-    "firmware/include/drv8462.h": "fffbd5bf485a7c5587a4ef1b5bd6d83e8e2f4e057e95ea7bed0dc38de4c4da6a",
-    "firmware/src/drv8462.c": "8ed8ce9f06e1277287995d3df2f39d8ca5ae79204a039ec5c3d376d9059de57a",
+    "firmware/include/drv8262.h": "d7d1719cd7cd5629a4f269d4812c55fddf3d601f3e26949148c2fec3189cbe0f",
+    "firmware/src/drv8262.c": "201372385af1e15b6bd8de814a3b4b8ec095528375282f1bfe235fb4b775887c",
     "firmware/include/step_motion.h": "0d681cf56e318c6ff17448141592f36f49ae6f9a1dc2425dcc1be1ff03ea6b85",
-    "firmware/target/main.cpp": "afc3d9e0182c3b2cd999033ec0c78b3ec5a1d73eb59818f6d683e4f870c2b36d",
-    "scripts/power-audit.mjs": "d23a87ea978425b965b65bd23f5239f69dcb06d88e0ad07358be04b5c657baaa",
+    "firmware/target/main.cpp": "1d1729f427322a786d68496fbec84d4ebaae30baeea1793d4103692dca502996",
+    "scripts/power-audit.mjs": "9742b9a32227847e416827204ee844a8d8190f7fd5e53ab8ba1086c3cf7c6f96",
     "firmware/src/control.c": "68242927b3939baf4ca4b59ecd0498b358751cec1abdb3319f93fe1d2a5c8437"
   },
   "assumptions": {
@@ -75,7 +75,7 @@
     "external_load_inertia": null,
     "motor_rpm_and_stop_time": null,
     "ddv_hs_plus_ls_resistance_cases_ohm": [
-      0.096,
+      0.1,
       0.184
     ],
     "full_current_analysis_case_rms_a": 6,
@@ -98,14 +98,14 @@
       "selection_basis": "Retained low-energy commissioning choice; not copied from PD-1180 ratings",
       "motor_operation_authorized": false,
       "max_requested_rms_ma": 800,
-      "trq_dac": 27,
-      "nominal_rms_a": 0.7733980419227863,
-      "nominal_sine_peak_a": 1.09375,
+      "peak_vref_dac_code": 359,
+      "nominal_rms_a": 0.7982746366225488,
+      "nominal_sine_peak_a": 1.1289308176100628,
       "nominal_speed_rpm": 9.99999375,
       "nominal_acceleration_rpm_per_s": 9.99999375,
       "nominal_ramp_stop_s": 1,
       "nominal_rotor_energy_j": 0.00007676349383179331,
-      "nominal_winding_energy_j": 0.002093505859375,
+      "nominal_winding_energy_j": 0.0022303483841620182,
       "nominal_rotor_energy_at_1000rpm_j": 0.7676358978625054,
       "brake_open_sensitivity": {
         "each_phase_instantaneous_current_a": 1.5,
@@ -208,26 +208,29 @@
         "max": 53.825859349397014
       },
       "retained_system_bus_screen_max": 55,
-      "ddv_vm_operating_max": 65,
+      "ddv_vm_operating_max": 60,
       "note": "Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions."
     },
     "current": {
       "qualified_target_rms_a": null,
       "analysis_case_rms_a": 6,
       "analysis_case_sine_peak_a": 8.485281374238571,
-      "programmed_rms_a": 0.7733980419227863,
+      "programmed_rms_a": 0.7982746366225488,
       "sensitivity_min_rms_a": null,
       "sensitivity_max_rms_a": null,
+      "ipropi_resistance_ohm": 1500,
+      "analysis_case_peak_vref_v": 2.698319477007866,
+      "nominal_reference_headroom_below_3v3_v": 0.601680522992134,
       "motor_rated_phase_a": 6,
       "motor_qualified_driver_rms_a": null,
       "motor_rating_note": "Manufacturer states AMPS/PHASE, not an approved driver RMS setpoint. Resolve waveform, peak/hold current and thermal limits before motor-enabled firmware.",
-      "note": "DRV8462DDV nominal current calculation uses VREF=3.3 V, KV=0.33 V/A and TRQ_DAC. No measured or guaranteed tolerance interval is asserted. The 6 A RMS analysis case is not motor authorization."
+      "note": "DRV8262DDV nominal current uses MCP4822 gain=2 (1 mV/code), 212 uA/A current mirrors and 1.5k resistors. Below 50 mV that winding is braked. Low-current mirror error is not specified across the entire waveform. No measured or guaranteed tolerance interval is asserted. The 6 A RMS analysis case is not motor authorization."
     },
     "dissipation_w": {
       "integrated_current_sensing": true,
       "phase_telemetry_shunt_cycle_each": 0.18,
       "phase_telemetry_shunt_held_peak_each": 0.36,
-      "ddv_two_phase_conduction_0v096_ohm_case": 6.912,
+      "ddv_two_phase_conduction_0v100_ohm_case": 7.2,
       "ddv_two_phase_conduction_0v184_ohm_case": 13.248,
       "efuse_at_nominal_limit_and_125c_max_ron": 0.6896357845952426,
       "two_motor_windings_25c": 34.56,
@@ -319,7 +322,7 @@
   },
   "errors": [],
   "outstanding": [
-    "Measured DRV8462 VM transient margin and DDV top-heatsink/TIM performance",
+    "Measured DRV8262 VM transient margin and DDV top-heatsink/TIM performance",
     "Measured brake/cutoff tolerance coordination",
     "PD source/cable finite current-limit and fast-trip coordination; upstream current measurement",
     "Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification",
@@ -328,7 +331,7 @@
     "Assembled-board current, thermal, USB, brake and fault measurements"
   ],
   "sources": {
-    "drv8462": "https://www.ti.com/lit/ds/symlink/drv8462.pdf",
+    "drv8262": "https://www.ti.com/lit/ds/symlink/drv8262.pdf",
     "efuse": "https://www.ti.com/lit/ds/symlink/tps2663.pdf#page=6",
     "mosfet": "https://www.ti.com/lit/ds/symlink/csd19534q5a.pdf#page=3",
     "reference": "https://www.ti.com/lit/ds/symlink/ref34.pdf",

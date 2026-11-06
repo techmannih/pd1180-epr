@@ -11,7 +11,7 @@ add_library(pd1180_control STATIC
   src/brake_preflight.c
   src/control.c
   src/pd_contract.c
-  src/drv8462.c
+  src/drv8262.c
   src/step_motion.c
   src/as5600.c
 )

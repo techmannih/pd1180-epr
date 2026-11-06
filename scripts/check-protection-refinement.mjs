@@ -5,7 +5,7 @@ import { powerFeedErrors } from './power-feed.mjs'
 // Historical ECO replay describes the old STM32/TMC board. The new route has
 // independent native DRC, source/pin, copper and complete geometry evidence.
 export function verifyRp2040Protection(board, reviewedRoute) {
-  if (reviewedRoute.architecture_baseline?.architecture !== 'RP2040_DRV8462DDV')
+  if (reviewedRoute.architecture_baseline?.architecture !== 'RP2040_DRV8262DDV')
     throw new Error('Missing reviewed RP2040 route baseline')
   const footprints = new Map(board.filter(x => x[0] === 'footprint').map(x => [
     x.find(p => p[0] === 'property' && p[1] === '"Reference"')?.[2], x,
@@ -29,7 +29,7 @@ if (import.meta.main) {
   const routeBytes = await readFile('routing/power-feed.json')
   verifyRp2040Protection(parseNative(bytes.toString()), JSON.parse(routeBytes))
   await writeFile('engineering/protection-refinement-geometry.json', JSON.stringify({
-    architecture:'RP2040_DRV8462DDV', current_board_sha256:digest(bytes),
+    architecture:'RP2040_DRV8262DDV', current_board_sha256:digest(bytes),
     unused_sbu_ground_and_nc_connections_verified:true,
     independent_protection_components_retained:true,
     exact_reviewed_native_geometry_verified:true,

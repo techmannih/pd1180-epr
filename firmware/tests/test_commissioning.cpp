@@ -7,14 +7,13 @@ void leaveUsbSuspendPower() {}
 bool usbIsSuspended() {return suspended;}
 void sleepWhileUsbSuspended() {}
 static unsigned stepEdges;
-static bool previousStep;
+static uint8_t previousMicrostep;
 static void advance(unsigned ms) {
   for(unsigned i=0;i<ms;++i) {
     for(fakeMicros=0;fakeMicros<1000;fakeMicros+=20) {
       stepInterrupt(nullptr);
-      const bool level=fakeLevels[pin(PD1180_PIN_DRV_STEP)];
-      if(level && !previousStep) ++stepEdges;
-      previousStep=level;
+      if(driver.enabled && driver.microstep!=previousMicrostep) ++stepEdges;
+      previousMicrostep=driver.microstep;
     }
     fakeMicros=0; ++fakeNow; loop();
   }
@@ -26,7 +25,10 @@ int main() {
   fakeAdc[pin(PD1180_PIN_USB_VBUS_SENSE)]=279;
   for(auto p:{PD1180_PIN_LOGIC_PG_MCU,PD1180_PIN_EFUSE_FAULT_N,PD1180_PIN_DRV_FAULT_N}) fakeLevels[pin(p)]=HIGH;
   pdBus.pdPresent=pdBus.pdVoltagePresent=pdBus.adcPresent=pdBus.temperaturePresent=true;
-  motorSpi.present=true;
+  motorSpi.transferObserver=[](uint8_t) {
+    assert(!fakeLevels[pin(PD1180_PIN_DRV_ENABLE_A)] && !fakeLevels[pin(PD1180_PIN_DRV_ENABLE_B)]);
+    assert(!fakeLevels[pin(PD1180_PIN_DAC_CS_N)] && fakeLevels[pin(PD1180_PIN_DAC_LDAC_N)]);
+  };
   setup();advance(400);
   assert(inputs.pd_power_good && inputs.temperature_valid && inputs.configuration_verified);
   assert(!control.armed && !fakeLevels[pin(PD1180_PIN_POWER_PERMIT)] && stepEdges==0);
@@ -39,7 +41,7 @@ int main() {
     advance(30000);assert(!control.power_permit && control.fault_latched && stepEdges==0);
   } else {
     assert(control.mcu_run && driver.configured && driverStatus.valid && stepEdges>0);
-    assert(currentMa<=800 && driver.torque==27); // quantized nominal ~0.773 A
+    assert(currentMa<=800 && driver.rms_ma==800); // bounded software current target
     advance(12000);
     assert(!control.armed && !control.power_permit && !control.mcu_run && !stepMotion.active);
     const auto stopped=stepEdges;advance(2000);assert(stepEdges==stopped); // no automatic repeat
@@ -53,5 +55,16 @@ int main() {
     suspended=true;advance(1);assert(!control.mcu_run && !control.power_permit && !desiredMotion);
     suspended=false;advance(800);assert(!control.armed && !control.mcu_run);
   }
-  puts(powerTestOnly ? "PASS: stationary profile powers bus, never STEP/ENABLE, expires and latches" : "PASS: real target delayed startup, SPI readback, bounded motion/stop, fault latch and suspend");
+  if(!powerTestOnly) {
+    assert(motorSpi.hz==8000000 && motorSpi.mode==SPI_MODE0 && motorSpi.order==MSBFIRST);
+    assert(!motorSpi.bytes.empty() && motorSpi.bytes.size()%4==0);
+    for(size_t n=0;n<motorSpi.bytes.size();n+=4) {
+      const unsigned a=(motorSpi.bytes[n]<<8)|motorSpi.bytes[n+1];
+      const unsigned b=(motorSpi.bytes[n+2]<<8)|motorSpi.bytes[n+3];
+      // Both DACs enabled, gain 2, distinct A/B selects and bounded references.
+      assert((a&0xf000)==0x1000 && (b&0xf000)==0x9000);
+      assert((a&0xfff)<=359 && (b&0xfff)<=359);
+    }
+  }
+  puts(powerTestOnly ? "PASS: stationary profile powers bus, never enable phases, expires and latches" : "PASS: real target delayed startup, DAC phase sequencing, bounded motion/stop, fault latch and suspend");
 }

@@ -1,12 +1,12 @@
 # NEMA34 programming and first motor test
 
-This is the post-assembly operator workflow for the RP2040 / DRV8462DDV DATA-only revision. Software checks use fake peripherals; the measurements below are performed on the assembled board. The normal firmware archive is diagnostics-only. Two explicit test profiles are available without editing safety flags or changing the circuit.
+This is the post-assembly operator workflow for the RP2040 / DRV8262DDV DATA-only revision. Software checks use fake peripherals; the measurements below are performed on the assembled board. The normal firmware archive is diagnostics-only. Two explicit test profiles are available without editing safety flags or changing the circuit.
 
 | Image | Local START behaviour | Automatic limit |
 |---|---|---|
 | `diagnostics` | No motor-bus enable or motion | Inhibited |
-| `power-test` | Enables protected VMOTOR with driver ENABLE and STEP held low | Bus off and fault latched after 30 seconds; another press stops sooner |
-| `bench-test` | Checks power, brake and driver readback, then runs unloaded motor | Request <=800 mA RMS (about 773 mA nominal after quantization), 10 rpm, 10 seconds then one-second stop ramp |
+| `power-test` | Enables protected VMOTOR with driver nSLEEP and both phase enables held low | Bus off and fault latched after 30 seconds; another press stops sooner |
+| `bench-test` | Checks power, brake, nFAULT and current-reference command preparation, then runs unloaded motor | Request <=800 mA RMS (about 800 mA nominal after quantization), 10 rpm, 10 seconds then one-second stop ramp |
 
 Every image starts disarmed. USB `ARM` never starts a motor. `DISARM`, fault, DATA loss and USB suspend stop immediately; they do not promise a controlled deceleration. The independent hardware brake and enable chain remain active. The 10-second limit is a commissioning limit, not a continuous-duty setting. Resetting/acknowledging a fault does not automatically restart.
 
@@ -53,10 +53,12 @@ Power down. Connect the known unloaded motor with the documented coil pairs; fit
 PIO=/path/to/pio bun scripts/build-firmware.mjs --profile bench-test --record /path/bench-record.json --out /path/new-bench-test-build
 ```
 
-Program and read back using `--archive /path/new-bench-test-build/pd1180-bench-test.zip` as above. Cold boot and compare PROFILE. Release/press START: live contract and temperature checks precede the bus ramp; driver register readback and three distinct brake ADC pairs precede ENABLE. The startup deadline is 4 seconds, including the 1 uF ramp and sensor/driver settling. If it expires, outputs go low and the fault latches. Missing PG, stale ADC/I2C, invalid driver readback or open brake cannot be bypassed with START.
+Program and read back using `--archive /path/new-bench-test-build/pd1180-bench-test.zip` as above. Cold boot and compare PROFILE. Release/press START: live contract and temperature checks precede the bus ramp; current-reference command preparation and three distinct brake ADC pairs precede nSLEEP release, followed by 2 ms wake settling and phase enables. The startup deadline is 4 seconds, including the 1 uF ramp and sensor/driver settling. If it expires, outputs go low and the fault latches. Missing PG, stale ADC/I2C, driver nFAULT or open brake cannot be bypassed with START.
 
 Observe the first 10-second run and automatic stop. Capture phase-current waveform, bus peak, case/PCB/resistor temperatures and faults. A second press requests a normal ramp-down; DISARM removes enable immediately. After a fault, one release/press acknowledges it and another is needed to start. The standard image has no reverse, arbitrary-current or arbitrary-speed command. Additional loading/thermal duty requires an explicitly reviewed operating profile and measurements; there is no hidden automatic promotion to 6 A.
 
 ## Software verification
 
-`bun run check:firmware` exercises actual target call sites with fake PD/ADC/SPI/timer peripherals: delayed 1.45-second startup, SPI readback, 200 ms readiness dwell, stationary ENABLE/STEP inhibition, bounded pulse generation, automatic stop, fault acknowledgement and suspend. Readback/profile tests reject altered images, short dumps, stale board identities and missing prerequisite evidence. These checks do not replace physical traces or measurements.
+`bun run check:firmware` exercises actual target call sites with fake PD/ADC/SPI/timer peripherals: delayed 1.45-second startup, DAC current-vector preparation, 200 ms readiness dwell, stationary nSLEEP/phase-enable inhibition, bounded phase sequencing, automatic stop, fault acknowledgement and suspend. Readback/profile tests reject altered images, short dumps, stale board identities and missing prerequisite evidence. These checks do not replace physical traces or measurements.
+
+Measure U42 VOUTA/VOUTB and U7 IPROPI1/IPROPI2/current before accepting the first motor test. MCP4822 has no readback; neither a successful SPI transfer nor `DAC_COMMANDS_PREPARED` proves the analog output. Capture phase-current waveforms, zero crossings and fault shutdown.

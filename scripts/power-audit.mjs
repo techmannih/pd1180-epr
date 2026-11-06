@@ -129,8 +129,8 @@ export function operatingErrors({ vsaOnMotorBus, brakeOn, motorCutoff, coordinat
 
 export async function audit() {
   const paths = ['index.circuit.tsx', 'dist/index/circuit.json', 'docs/design-manifest.json',
-    'hardware-contract.json', 'docs/motor-data.json', 'firmware/include/drv8462.h',
-    'firmware/src/drv8462.c', 'firmware/include/step_motion.h', 'firmware/target/main.cpp', 'scripts/power-audit.mjs', 'firmware/src/control.c']
+    'hardware-contract.json', 'docs/motor-data.json', 'firmware/include/drv8262.h',
+    'firmware/src/drv8262.c', 'firmware/include/step_motion.h', 'firmware/target/main.cpp', 'scripts/power-audit.mjs', 'firmware/src/control.c']
   const bytes = Object.fromEntries(await Promise.all(paths.map(async p => [p, await readFile(p)])))
   const circuit = JSON.parse(bytes['dist/index/circuit.json'])
   const parts = Object.fromEntries(circuit.filter(p => p.type === 'source_component').map(p => [p.name, p]))
@@ -150,7 +150,7 @@ export async function audit() {
     return value
   }
   const sum = names => names.reduce((v, name) => v + resistance(name), 0)
-  const config = bytes['firmware/include/drv8462.h'].toString()+bytes['firmware/include/step_motion.h'].toString()
+  const config = bytes['firmware/include/drv8262.h'].toString()+bytes['firmware/include/step_motion.h'].toString()
   const macro = name => {
     const value = config.match(new RegExp(`#define ${name} (\\d+)u`))
     if (!value) throw new Error(`Missing firmware macro ${name}`)
@@ -199,9 +199,12 @@ export async function audit() {
   const target = motor.phase_current_a
   const telemetryShunt = resistance('R115')
   if (telemetryShunt !== resistance('R116')) throw new Error('Phase shunts differ; audit each phase separately')
-  const benchRequestedMa = macro('DRV8462_BENCH_RMS_MA')
-  const torqueCode = Math.floor(benchRequestedMa*362/10000)-1
-  const programmed = 10*(torqueCode+1)/256/Math.SQRT2
+  const benchRequestedMa = macro('DRV8262_BENCH_RMS_MA')
+  const peakDacCode = Math.floor(Math.floor(benchRequestedMa*1414/1000)*31800/100000)
+  const mirrorResistance = resistance('R146')
+  if (mirrorResistance !== resistance('R147')) throw new Error('Phase current-reference resistors differ')
+  const analysisPeakVref = target*Math.SQRT2*212e-6*mirrorResistance
+  const programmed = peakDacCode/1000/(212e-6*mirrorResistance)/Math.SQRT2
   const capacitance = name => {
     const value = part(name).capacitance
     if (!(value > 0)) throw new Error(`Missing capacitance for ${name}`)
@@ -226,7 +229,7 @@ export async function audit() {
   const componentNames = new Map(Object.values(parts).map(p => [p.source_component_id, p.name]))
   const brakeReturnReferences = [...new Set(circuit.filter(p => p.type === 'source_port' &&
     p.subcircuit_connectivity_map_key === netKey('BRAKE_RETURN')).map(p => componentNames.get(p.source_component_id)))].sort()
-  const vsaOnMotorBus = false // DRV8462DDV has no TMC VSA pin; retain the conservative 55 V bus screen
+  const vsaOnMotorBus = false // DRV8262DDV has no TMC VSA pin; retain the conservative 55 V bus screen
   const errors = operatingErrors({ vsaOnMotorBus, brakeOn, motorCutoff, coordinationGap })
   if (pinKey('U13',4) !== netKey('VREF_2V5') || pinKey('U14',3) !== netKey('VREF_2V5'))
     errors.push('Shared-reference coordination requires both U13 and U14 on the compiled U12 VREF_2V5 net')
@@ -234,9 +237,9 @@ export async function audit() {
     errors.push('Brake release lacks the allocated margin above a 5% high 48 V source')
   if (benchCutoffPeak === null || benchCutoffPeak + 0.5 > 54.75)
     errors.push('Restricted rotor-only energy screen lacks 0.25 V residual margin below 55 V after the 0.5 V transient allocation')
-  if (!(benchRequestedMa > 0 && benchRequestedMa <= 800) || torqueCode < 0 || torqueCode > 255)
+  if (!(benchRequestedMa > 0 && benchRequestedMa <= 800) || peakDacCode < 50 || peakDacCode > 3300)
     errors.push('The unloaded commissioning profile must not permit a current request above 800 mA RMS')
-  if (part('U7').manufacturer_part_number !== 'DRV8462DDVR') errors.push('This audit requires the DDV integrated driver')
+  if (part('U7').manufacturer_part_number !== 'DRV8262DDVR') errors.push('This audit requires the DDV integrated driver')
   if (part('U6').manufacturer_part_number !== 'TPS26630RGER') errors.push('U6 must use the reviewed 1x TPS26630RGER, not a 2x pulse-current variant')
   if (resistance('R25') !== ilimPart.ohm) errors.push('R25 differs from the reviewed input-current contract')
   if (ilim.remaining_contract_margin_a <= 0) errors.push('Input-current screen plus upstream allocation exceeds the PD contract')
@@ -256,7 +259,7 @@ export async function audit() {
   }
   const modePort = circuit.find(p => p.type === 'source_port' && p.source_component_id === part('U6').source_component_id && p.pin_number === 11)
   if (!modePort || circuit.some(t => t.type === 'source_trace' && t.connected_source_port_ids?.includes(modePort.source_port_id))) errors.push('TPS26630 MODE pin 11 must remain open for latch-off')
-  const requiredParts = { U12:'C187836', U34:'C1858393', L3:'C2047110', R22:'C23162', R23:'C705777', R24:'C95204', R60:'C326731', R61:'C728583', R62:'C95204', R63:'C326730', R64:'C2984356', R65:'C723637', U6:'C1850276', R25:'C7293210', R66:'C136970', R122:'C861611', R134:'C6675858', R135:'C6675858', R136:'C7468460', C98:'C57112', D20:'C49242208' }
+  const requiredParts = { U12:'C187836', U34:'C1858393', L3:'C2047110', R22:'C23162', R23:'C705777', R24:'C95204', R60:'C351604', R61:'C728583', R62:'C95204', R63:'C326730', R64:'C2984356', R65:'C723637', U6:'C1850276', R25:'C7293210', R66:'C5454462', R122:'C861611', R134:'C6675858', R135:'C6675858', R136:'C7468460', C98:'C57112', D20:'C49242208' }
   for (const [name,code] of Object.entries(requiredParts)) {
     if (!part(name).supplier_part_numbers?.jlcpcb?.includes(code)) errors.push(`${name}: ${code} is required for the audited ratings/tolerances`)
   }
@@ -274,7 +277,7 @@ export async function audit() {
   }
   const report = {
     schema_version: 2,
-    architecture: 'RP2040_DRV8462DDV',
+    architecture: 'RP2040_DRV8262DDV',
     checked_at: new Date().toISOString(),
     status: errors.length ? 'electrical-design-blocked' : 'screen-complete-hardware-unqualified',
     powered_tests_performed: false,
@@ -308,7 +311,7 @@ export async function audit() {
       motor_rotor_inertia_kg_m2: motor.rotor_inertia_kg_m2,
       external_load_inertia: null,
       motor_rpm_and_stop_time: null,
-      ddv_hs_plus_ls_resistance_cases_ohm: [0.096,0.184],
+      ddv_hs_plus_ls_resistance_cases_ohm: [0.100,0.184],
       full_current_analysis_case_rms_a: target,
       full_current_analysis_case_is_qualified: false,
       switching_frequency_sensitivity_hz: [20000, 40000],
@@ -319,7 +322,7 @@ export async function audit() {
         scope: 'Unloaded rotor only; no coupling, driven load, gravity load or external back-drive',
         selection_basis: 'Retained low-energy commissioning choice; not copied from PD-1180 ratings',
         motor_operation_authorized: false,
-        max_requested_rms_ma: benchRequestedMa, trq_dac: torqueCode,
+        max_requested_rms_ma: benchRequestedMa, peak_vref_dac_code: peakDacCode,
         nominal_rms_a: benchRms, nominal_sine_peak_a: benchRms*Math.SQRT2,
         nominal_speed_rpm: benchRpm, nominal_acceleration_rpm_per_s: benchAcceleration,
         nominal_ramp_stop_s: benchRpm/benchAcceleration,
@@ -363,17 +366,19 @@ export async function audit() {
         shared_reference_error_v: referenceOnlyError, each_comparator_error_screen_v: comparatorError,
         coordination_note: 'U13 and U14 share the same U12 output, verified in compiled connectivity. U12 error is common; comparator offset/CMRR/PSRR and resistor errors are independent. Independent absolute envelopes may overlap across different boards. Dynamic separation still requires measurement.',
         brake_off_above_high_source_and_noise_allocation: brakeOff.min-48*1.05-0.3,
-        motor_cutoff_screen: motorCutoff, retained_system_bus_screen_max: 55, ddv_vm_operating_max: 65,
+        motor_cutoff_screen: motorCutoff, retained_system_bus_screen_max: 55, ddv_vm_operating_max: 60,
         note: 'Screening corners, not a qualified min/max specification. Shared reference prevents treating the two trips as independent distributions.' },
       current: { qualified_target_rms_a: null, analysis_case_rms_a: target, analysis_case_sine_peak_a: target*Math.SQRT2, programmed_rms_a: programmed,
         sensitivity_min_rms_a: null, sensitivity_max_rms_a: null,
+        ipropi_resistance_ohm: mirrorResistance, analysis_case_peak_vref_v: analysisPeakVref,
+        nominal_reference_headroom_below_3v3_v: 3.3-analysisPeakVref,
         motor_rated_phase_a: motor.phase_current_a, motor_qualified_driver_rms_a: motor.qualified_driver_rms_a,
         motor_rating_note: motor.current_rating_basis,
-        note: 'DRV8462DDV nominal current calculation uses VREF=3.3 V, KV=0.33 V/A and TRQ_DAC. No measured or guaranteed tolerance interval is asserted. The 6 A RMS analysis case is not motor authorization.' },
+        note: 'DRV8262DDV nominal current uses MCP4822 gain=2 (1 mV/code), 212 uA/A current mirrors and 1.5k resistors. Below 50 mV that winding is braked. Low-current mirror error is not specified across the entire waveform. No measured or guaranteed tolerance interval is asserted. The 6 A RMS analysis case is not motor authorization.' },
       dissipation_w: { integrated_current_sensing: true,
         phase_telemetry_shunt_cycle_each: target**2*telemetryShunt,
         phase_telemetry_shunt_held_peak_each: 2*target**2*telemetryShunt,
-        ddv_two_phase_conduction_0v096_ohm_case: 2*target**2*0.096,
+        ddv_two_phase_conduction_0v100_ohm_case: 2*target**2*0.100,
         ddv_two_phase_conduction_0v184_ohm_case: 2*target**2*0.184,
         efuse_at_nominal_limit_and_125c_max_ron: ilim.formula_nominal_a**2*0.053,
         two_motor_windings_25c: 2*target**2*motor.phase_resistance_25c_ohm,
@@ -420,12 +425,12 @@ export async function audit() {
         note: 'Nominal transfer only; ADC/reference/gain errors, offset, common-mode switching and sampling require calibration.' },
     },
     errors,
-    outstanding: ['Measured DRV8462 VM transient margin and DDV top-heatsink/TIM performance', 'Measured brake/cutoff tolerance coordination',
+    outstanding: ['Measured DRV8262 VM transient margin and DDV top-heatsink/TIM performance', 'Measured brake/cutoff tolerance coordination',
       'PD source/cable finite current-limit and fast-trip coordination; upstream current measurement', 'Ordered motor current convention, external load inertia, speed, ambient and mechanics qualification',
       'TI-generated EEPROM image and approved configuration identity', 'Fabricator stack-up/impedance/filled-via approval',
       'Assembled-board current, thermal, USB, brake and fault measurements'],
     sources: {
-      drv8462: 'https://www.ti.com/lit/ds/symlink/drv8462.pdf',
+      drv8262: 'https://www.ti.com/lit/ds/symlink/drv8262.pdf',
       efuse: 'https://www.ti.com/lit/ds/symlink/tps2663.pdf#page=6',
       mosfet: 'https://www.ti.com/lit/ds/symlink/csd19534q5a.pdf#page=3',
       reference: 'https://www.ti.com/lit/ds/symlink/ref34.pdf',

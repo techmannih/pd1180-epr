@@ -2,7 +2,7 @@
   "name": "PD1180-EPR \u2014 NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR",
   "revision": "0.5.0-RP2040-DRAFT",
   "controller": "RP2040 + W25Q32JV 4 MiB boot flash",
-  "motor_driver": "DRV8462DDVR, DDV top-cooled integrated dual H-bridge",
+  "motor_driver": "DRV8262DDVR, DDV top-cooled dual H-bridge; PH/EN with MCP4822 dual current-reference DAC",
   "usb_pd": "TPS26750 + TPD4S480, sink-only EPR",
   "usb_ports": {
     "J1": "Dedicated 48 V / 5 A USB-C PD 3.1 EPR POWER sink; no USB data",
@@ -103,16 +103,17 @@
     "motor_phase_rms_a": null,
     "motor": "34HS31-6004S1",
     "motor_rated_phase_a": 6,
-    "motor_current_note": "No qualified run current. Commissioning code is limited to 800 mA RMS requested (~773 mA nominal after quantization), 1/16 microsteps, 10 RPM unloaded, with motion locked. Motor-rated operation needs current-definition review and DDV thermal/PCB qualification."
+    "motor_current_note": "Commissioning software requests at most 800 mA RMS, 16 microsteps/full step and 10 RPM unloaded for 10 s. MCP4822 commands nominal 359 mV peak with 1.5k current-mirror resistors. DAC/reference/mirror tolerances require phase-current calibration; this is not a qualified 6 A operating point."
   },
   "reset_safe_outputs": {
     "POWER_PERMIT": 0,
     "MCU_RUN": 0,
     "STATUS_GPIO": 0,
-    "DRV_SLEEP_N": 0,
-    "DRV_STEP": 0,
-    "DRV_DIR": 0,
-    "SENSE_EN": 0
+    "SENSE_EN": 0,
+    "DRV_ENABLE_A": 0,
+    "DRV_ENABLE_B": 0,
+    "DRV_PHASE_A": 0,
+    "DRV_PHASE_B": 0
   },
   "connectors": {
     "J1": "USB PD POWER",
@@ -126,12 +127,12 @@
     "motor_power": "J1 only; USB DATA cannot energize VMOTOR",
     "reverse_blocking": "U23/U24 select board supplies; U27 blocks DATA backfeed. PD and DATA VBUS are never connected.",
     "usb_default_budget": "Startup before enumeration and USB suspend current must be measured and qualified; the current limiter is overload protection, not a USB enumeration policy",
-    "usb_data_power": "J10 powers RP2040 and U17. U41 switches the DATA-derived INA240 and optional encoder supply; driver logic and board sensors require board V3V3.",
+    "usb_data_power": "J10 powers RP2040 and U17. U41 switches DATA-derived INA240, MCP4822, DRV8262 VCC and optional encoder power. Board sensors and independent brake retain board supplies.",
     "U25": "USB_DATA_VBUS -> TPS2553 U28 -> TLV75533 U25 -> V3V3_USB",
     "selection": "U27 only: DATA-derived V3V3_USB -> V3V3_MCU, CE grounded; no PD/board supply feed",
     "board_presence": "U40 isolates LOGIC_PG to digital RP2040 GP28; stable high for 20 ms, immediate low shutdown.",
-    "suspend": "Disarm, float peripheral buses, shut U41 sensor power and STEP timer, reduce clk_sys to 60 MHz (RP2040-E16 requires >48 MHz), use alarm/WFE idle, retain USB clock and watchdog. Current/wake timing require physical measurement.",
-    "gpio_backfeed": "Driver CS releases to a board-domain pullup; SPI floats when VMOTOR is absent. I2C/board inputs float when board power is absent. Dedicated QSPI remains on MCU power."
+    "suspend": "Disarm, float peripheral buses, shut U41 sensor power and phase timer, reduce clk_sys to 60 MHz (RP2040-E16 requires >48 MHz), use alarm/WFE idle, retain USB clock and watchdog. Current/wake timing require physical measurement.",
+    "gpio_backfeed": "DAC CS/LDAC pull up only to V3V3_SENS. SPI and LDAC float before U41 is shut down. U40 isolates board status signals; U39 isolates I2C. DRV8262 supports INx before VM; hardware nSLEEP remains gated by RUN_SAFE."
   },
   "diagnostics": {
     "temperature": {
@@ -201,7 +202,7 @@
         "P4-P7": "grounded inputs"
       },
       "power_indicator": "D17 red LED + 4.7k from board V3V3; does not indicate USB-only MCU power",
-      "alarm": "FUET-9650B-3V active buzzer; AO3400A low-side switch; BAV21W flyback diode",
+      "alarm": "FMB09A03-3V active through-hole buzzer; AO3400A low-side switch; BAV21W flyback diode",
       "firmware_states": {
         "blue": "commissioning lock",
         "amber": "waiting for qualified telemetry/power after qualification",
@@ -258,7 +259,7 @@
   },
   "pd_programming": {
     "definition": "docs/pd-programming.md",
-    "switch": "U36 SN74LVC2G66DCUR opens both I2Cc wires when TP_PD_ISO is grounded",
+    "switch": "U36 SN74LVC2G66DCTR opens both I2Cc wires when TP_PD_ISO is grounded",
     "target_power": "fixed 5 V supplied through J1; no EPR negotiation during fixture programming",
     "programmer": "3.3 V open-drain, ground first, VCC output disabled; TP_PD_VREF is sense only",
     "programming_status": "TI Full Flash candidate generated and register-reviewed; fixture acceptance, programming/readback, cold boot and fault/PD qualification pending"
@@ -266,10 +267,10 @@
   "local_control": {
     "start_stop": "SW2, RP2040 GP11 / USER_BUTTON_N, active-low with R133 10k pullup to V3V3_MCU",
     "reset": "SW1 / NRST",
-    "motion_mode": "RP2040 STEP/DIR timer; DRV8462 SPI configuration, MODE=V3V3; hardware-gated active-high ENABLE",
+    "motion_mode": "RP2040 16-microstep PH/EN sequencer, MCP4822 dual DAC VREF, DRV8262 MODE1/MODE2=GND; smart tune dynamic decay and 16 us off-time; latched OCP",
     "qualification": "Motion inhibited until TI configuration and powered bridge validation exist",
     "external_command_interfaces": "None; J7 and STEP/DIR/ENABLE/home/limit conditioning removed",
-    "protection": "U10/U11/U33 drive active-high U7 ENABLE / RUN_SAFE with R55 pulldown; nSLEEP and STEP have separate pulldowns. Q14 is removed."
+    "protection": "U10/U11/U33 drive active-high RUN_SAFE to U7 nSLEEP with R55 pulldown. Both phase enables and phase inputs have pulldowns. Independent hardware shutdown does not depend on SPI or the DAC."
   },
   "input_protection": {
     "reference": "U6",
@@ -294,8 +295,8 @@
     "cutoff_resistor": {
       "reference": "R66",
       "ohm": 1200,
-      "mpn": "RT0603BRD071K2L",
-      "lcsc": "C136970",
+      "mpn": "AT0603BRD071K2L",
+      "lcsc": "C5454462",
       "tolerance_fraction": 0.001,
       "tcr_ppm_per_c": 25
     },
@@ -344,7 +345,9 @@
       "loads": [
         "U31",
         "U32",
-        "optional U18"
+        "optional U18",
+        "U42 MCP4822",
+        "U7 VCC"
       ],
       "output_discharge": "QOD tied to VOUT",
       "startup_settle_ms": 10,

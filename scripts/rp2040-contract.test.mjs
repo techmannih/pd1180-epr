@@ -18,9 +18,9 @@ test('reject a bypass anchored to an unrelated encoder pin or to the wrong coppe
 test('reject a disconnected brake supply, wrong DDW driver, wrong boot-flash rail or bypassed hardware enable',()=>{
   for(const mutate of [
     rows=>rows.splice(rows.findIndex(r=>r.type==='source_component'&&r.name==='U34'),1),
-    rows=>{rows.find(r=>r.type==='source_component'&&r.name==='U7').manufacturer_part_number='DRV8462DDWR'},
+    rows=>{rows.find(r=>r.type==='source_component'&&r.name==='U7').manufacturer_part_number='DRV8262DDWR'},
     rows=>{const c=rows.find(r=>r.type==='source_component'&&r.name==='U17'); rows.find(r=>r.type==='source_port'&&r.source_component_id===c.source_component_id&&r.pin_number===8).subcircuit_connectivity_map_key='broken'},
-    rows=>{const c=rows.find(r=>r.type==='source_component'&&r.name==='U7'); rows.find(r=>r.type==='source_port'&&r.source_component_id===c.source_component_id&&r.pin_number===26).subcircuit_connectivity_map_key='bypassed'},
+    rows=>{const c=rows.find(r=>r.type==='source_component'&&r.name==='U7'); rows.find(r=>r.type==='source_port'&&r.source_component_id===c.source_component_id&&r.pin_number===25).subcircuit_connectivity_map_key='bypassed'},
   ]) {const rows=structuredClone(source);mutate(rows);expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)}
 })
 
@@ -56,4 +56,19 @@ test('sensor power must be switched, discharged and disabled by a hardware pulld
     rows.find(r=>r.type==='source_port'&&r.source_component_id===id&&r.pin_number===pin).subcircuit_connectivity_map_key='bypassed-sensor-switch'
     expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)
   }
+})
+
+
+test('DRV8262 dual-bridge mode and current references reject wrong aliases and catalog pad 45',()=>{
+  for(const [ref,pin] of [['U7',25],['U7',26],['U7',28],['U7',33],['U7',34],['U7',36],['U7',37],['U7',38],['U7',39],['U7',42],['U42',1],['U42',5],['U42',6],['U42',8]]) {
+    const rows=structuredClone(source)
+    const id=rows.find(r=>r.type==='source_component'&&r.name===ref).source_component_id
+    rows.find(r=>r.type==='source_port'&&r.source_component_id===id&&r.pin_number===pin).subcircuit_connectivity_map_key='wrong-mode-or-reference'
+    expect(checkRp2040Contract(rows).length).toBeGreaterThan(0)
+  }
+  const rows=structuredClone(source)
+  const id=rows.find(r=>r.type==='source_component'&&r.name==='U7').source_component_id
+  const pcb=rows.find(r=>r.type==='pcb_component'&&r.source_component_id===id)
+  rows.push({...rows.find(r=>r.type==='pcb_smtpad'&&r.pcb_component_id===pcb.pcb_component_id),pcb_smtpad_id:'incorrect-ep45'})
+  expect(checkRp2040Contract(rows)).toContain('U7 DDV footprint must have 44 leads and no underside thermal land')
 })

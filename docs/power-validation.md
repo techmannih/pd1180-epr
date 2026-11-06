@@ -1,18 +1,18 @@
-# Current RP2040 / DRV8462 power validation
+# Current RP2040 / DRV8262 power validation
 
 **Physical qualification has not been performed.** Use this procedure with `rp2040-redesign.md`, `thermal-qualification.md`, `pd-programming.md` and the exact paired native release. Historical STM32/TMC5160 instructions and current-register values are superseded; Git history retains those records.
 
-The current native baseline has eight retained USB hole-clearance errors and 475 cosmetic warnings, zero unconnected/parity findings and zero ERC. Engineering review tolerates only the recorded baseline; fabrication remains held. Raw reports and matching source hashes control any later result.
+The current native baseline has eight retained USB hole-clearance errors and 488 cosmetic warnings, zero unconnected/parity findings and zero ERC. Engineering review tolerates only the recorded baseline; fabrication remains held. Raw reports and matching source hashes control any later result.
 
 ## Operating scope and explicit limits
 
-The delivered diagnostics image keeps **four qualification flags false**. The proposed initial test requests at most **0.8 A RMS** (approximately 0.7734 A nominal after driver quantization), **10 rpm**, unloaded 34HS31-6004S1 rotor, no coupling or external back-drive. Neither the motor's 6 A/phase label nor the driver's current headline is an approved RMS/peak/hold setting. Current regulation tolerance, winding waveform and thermal behavior require measurements.
+The delivered diagnostics image keeps **four qualification flags false**. The proposed initial test requests at most **0.8 A RMS** (approximately 0.800 A nominal after driver quantization), **10 rpm**, unloaded 34HS31-6004S1 rotor, no coupling or external back-drive. Neither the motor's 6 A/phase label nor the driver's current headline is an approved RMS/peak/hold setting. Current regulation tolerance, winding waveform and thermal behavior require measurements.
 
-The current **sixteen-case** behavioral screen uses 2 × 1000 µF (1600 µF minimum) for VMOTOR. The 6 A RMS winding-corner result is **54.321 V**, and the hot-resistor/0.05 Ω ESR result is **54.399 V**; both pass the modeled 0.5 V reserve below 55 V. The **100 µs recovery case is 54.745 V** and still fails that reserve. The previous 2 × 470 µF result, 54.858 V, remains a comparison case. These are DC-bus/brake/eFuse models, not DRV8462 switching or an unknown load. Full current remains locked pending measured latency/overshoot and load qualification.
+The current **sixteen-case** behavioral screen uses 2 × 1000 µF (1600 µF minimum) for VMOTOR. The 6 A RMS winding-corner result is **54.321 V**, and the hot-resistor/0.05 Ω ESR result is **54.399 V**; both pass the modeled 0.5 V reserve below 55 V. The **100 µs recovery case is 54.745 V** and still fails that reserve. The previous 2 × 470 µF result, 54.858 V, remains a comparison case. These are DC-bus/brake/eFuse models, not DRV8262 switching or an unknown load. Full current remains locked pending measured latency/overshoot and load qualification.
 
 `engineering/power-audit.json` calculates thresholds from fitted values. Brake on/off are approximately 52.04/51.39 V nominal, independent motor inhibit approximately 53.21 V nominal; tolerances and shared reference behavior matter. ADC telemetry is not the hardware protection path. The 0.5 V transient allocation is a design allowance, not a measured bound.
 
-U6 TPS26630 with 4.99 kΩ R25 has approximately 3.607 A formula-nominal input limit; the conservative device/resistor screen plus upstream allocation is about 4.252 A. This is input current, not phase current. Its motor-input budget is below the 240 W adapter rating. Source/cable transients, active-limit SOA and thermal behavior remain unqualified. U34's retained 12 V rail powers the brake driver; it is not a supply pin of the new DRV8462.
+U6 TPS26630 with 4.99 kΩ R25 has approximately 3.607 A formula-nominal input limit; the conservative device/resistor screen plus upstream allocation is about 4.252 A. This is input current, not phase current. Its motor-input budget is below the 240 W adapter rating. Source/cable transients, active-limit SOA and thermal behavior remain unqualified. U34's retained 12 V rail powers the brake driver; it is not a supply pin of the new DRV8262.
 
 ## Setup and no-motion tests
 
@@ -20,7 +20,7 @@ Record board serial/revision, Gerber/native/source and firmware hashes, instrume
 
 | Stage | Measure / record | Acceptance or next action |
 |---|---|---|
-| Unpowered inspection | Correct identities/polarity, solder joints, all 66 via-in-pad processes, WAGO insertion, winding pairs, resistor/guard/cooling, insulation and supported mounting | Resolve retained manufacturing holds and physical installation before motor tests |
+| Unpowered inspection | Correct identities/polarity, solder joints, all 78 via-in-pad processes, WAGO insertion, winding pairs, resistor/guard/cooling, insulation and supported mounting | Resolve retained manufacturing holds and physical installation before motor tests |
 | Programming | Isolated TI full-flash write and full 65,536-byte EEPROM readback; RP2040 external flash full 4,194,304-byte readback | Registered image/source hashes match; erased tail checked; device/fixture/operator recorded |
 | Cold boot | Remove both input sources, verify rails discharge, restart from J1/J10 combinations | TI APP mode/config marker and RP2040 startup; no unintended motion or automatic rearm |
 | Logic rails | PD_3V3, V3V3_PD, V3V3_MOTOR, V3V3, V3V3_MCU, V1V1_MCU and retained BRAKE_12V across startup/load/source loss | Compare to component supply limits and current source audit; inspect overshoot/ripple/sequence, not DC value alone |
@@ -36,9 +36,9 @@ A fixture must not inject simulated faults into live power nodes without an appr
 
 ## Restrained motor and thermal sequence
 
-After no-motion results and mounting/cooling/brake acceptance are recorded, an engineer can approve a separately identified test build. The shipped image remains locked. Begin with phase-current measurements and restrained unloaded motion at the proposed low-current/speed profile. Capture both phase waveforms, driver fault/status, input power, VMOTOR/PD_VBUS, current regulation and STEP/DIR timing. Do not assume the requested RMS value is the measured one.
+After no-motion results and mounting/cooling/brake acceptance are recorded, an engineer can approve a separately identified test build. The shipped image remains locked. Begin with phase-current measurements and restrained unloaded motion at the proposed low-current/speed profile. Capture both phase waveforms, driver fault/status, input power, VMOTOR/PD_VBUS, current regulation, PH/EN and DAC timing. Do not assume the requested RMS value is the measured one.
 
-Measure commanded stopping and reset/source-loss behavior, including current remaining in windings after inhibition. For every test record actual inertia/load, speed, deceleration and repetitions. Require bus peaks plus measurement uncertainty and reserved allocation to fit the reviewed system limit, not just U7's 65 V operating range. A failed case requires circuit/envelope review; do not suppress the failure or clear a qualification flag to continue.
+Measure commanded stopping and reset/source-loss behavior, including current remaining in windings after inhibition. For every test record actual inertia/load, speed, deceleration and repetitions. Require bus peaks plus measurement uncertainty and reserved allocation to fit the reviewed system limit, not just U7's 60 V DC operating range. A failed case requires circuit/envelope review; do not suppress the failure or clear a qualification flag to continue.
 
 Measure driver top/sink, motor, PCB, shunts, capacitors, terminals and cables at worst intended ambient/duty. Apply the thermal selection calculations, contact/support requirements, resistor pulse/average checks and test stability criterion in `thermal-qualification.md`. The DDV sink/TIM and brake sink remain unqualified; the 80×80×30 mm brake CAD block is conceptual. Fan/guard/strain-relief choices and thermal fault containment are part of the assembly, not supplied by firmware.
 

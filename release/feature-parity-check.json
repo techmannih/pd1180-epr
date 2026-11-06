@@ -46,11 +46,11 @@
       "evidence": "docs/verification.json"
     }
   ],
-  "checked_at": "2026-11-05T19:26:18.828Z",
+  "checked_at": "2026-11-06T05:35:45.024Z",
   "features": 11,
   "passing": 11,
   "assembly_layers": {
-    "top": 243
+    "top": 250
   },
   "usb_c_standard_connectors": [
     "J1",
@@ -75,7 +75,7 @@
     },
     {
       "id": "motor_stage",
-      "feature": "DRV8462DDVR integrated motor bridges; thermal qualification pending",
+      "feature": "DRV8262DDVR integrated motor bridges; thermal qualification pending",
       "components": 4,
       "nets": 4,
       "evidence": "engineering/rp2040-redesign.json",
@@ -123,9 +123,9 @@
     },
     {
       "id": "local_control",
-      "feature": "Local START/STOP and independent reset; RP2040-generated STEP/DIR ramp",
+      "feature": "Local START/STOP and independent reset; RP2040 phase/current ramp",
       "components": 8,
-      "nets": 4,
+      "nets": 6,
       "evidence": "hardware-contract.json",
       "pass": true
     },

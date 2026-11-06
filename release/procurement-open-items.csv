@@ -1,13 +1,15 @@
 Reference,Manufacturer,Exact MPN,Package,JLC identity,Fitted quantity for five boards,Additional assembly spares,Disposition
-R66,Yageo,RT0603BRD071K2L,0603,C136970,5,Provider to specify,User stock check; keep 1.2 kohm 0.1 percent threshold identity
-R60,Yageo,RT0603BRD07180KL,0603,C326731,5,Provider to specify,User stock check; keep 180 kohm 0.1 percent threshold identity
-BZ1,FUET,FUET-9650B-3V,SMD,C391032,5,Provider to specify,User stock check; active buzzer polarity and drive current must match
+R66,Yageo,AT0603BRD071K2L,0603,C5454462,5,Provider to specify,User stock check; keep 1.2 kohm 0.1 percent threshold identity
+R60,RESI,PTFR0805B180KN9,0805,C351604,5,Provider to specify,User stock check; keep 180 kohm 0.1 percent threshold identity
+BZ1,Jiangsu Huaneng Electronics,FMB09A03-3V,"Plugin,D=9mm",C417385,5,Provider to specify,"Active through-hole buzzer; verify polarity, trim leads, retain rear motor insulation"
 J1/J10,GCT,USB4105-GF-A-060,SMD,C3025063,10,Provider to specify,User stock check; retained hole-clearance and stake/process acceptance unresolved
-U7,Texas Instruments,DRV8462DDVR,HTSSOP-44 DDV,C29780285,5,Provider to specify,User stock check; DDV top cooling and TIM not yet qualified; DDW not interchangeable
+U7,Texas Instruments,DRV8262DDVR,HTSSOP-44,C33828788,5,Provider to specify,DRV8262 DDV dual bridge: external MCP4822 current references and PH/EN firmware; retained top cooling/TIM installation
 U16,Raspberry Pi,RP2040,LQFN-56(7x7),C2040,5,Provider to specify,Current MCU; approve stencil and full external-flash programming/readback
 U17,Winbond,W25Q32JVSSIM,SOIC-8-208mil,C6000508,5,Provider to specify,Required QSPI boot flash; no omission
 U35,Texas Instruments,PCA9538PWR,TSSOP-16,C201530,5,Provider to specify,Fit only with the current U37 buffered reset; not ordered
 U37,Texas Instruments,SN74LVC1G17DBVR,SOT-23-5,C7836,5,Provider to specify,Required PD_3V3 reset buffer; not ordered
-J2,WAGO,2601-3104,Plugin P=3.5mm,C20252915,5,Provider to specify,Direct clamp; agree through-hole assembly and harness acceptance
-J3,WAGO,236-402,Plugin P=5mm,C3819425,5,Provider to specify,Direct clamp; brake harness and cooling acceptance separate
-U38,Texas Instruments,INA237AIDGSR,VSSOP-10,C2864837,5,Provider to specify,Raw PD measurement; assembly and first-article calibration required
+J2,WAGO,2601-3104,"Plugin,P=3.5mm",C20252915,5,Provider to specify,Direct clamp; agree through-hole assembly and harness acceptance
+J3,WAGO,236-402,Plugin,C3819425,5,Provider to specify,Direct clamp; brake harness and cooling acceptance separate
+U38,Texas Instruments,INA237AIDGSR,VSSOP-10-0.5mm,C2864837,5,Provider to specify,Raw PD measurement; assembly and first-article calibration required
+U36,Texas Instruments,SN74LVC2G66DCTR,MSOP-8,C2651913,5,Provider to specify,Stocked ECO: fit exact new footprint; verify pin mapping and programming bus/current reference on assembled board
+U42,Microchip,MCP4822-E/SN,SOIC-8,C16040,5,Provider to specify,Stocked ECO: fit exact new footprint; verify pin mapping and programming bus/current reference on assembled board

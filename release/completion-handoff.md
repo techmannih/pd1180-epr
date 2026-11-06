@@ -1,10 +1,10 @@
 # Reviewer ECO and physical acceptance
 
-The current controller uses **RP2040, DRV8462DDVR, TPS26750 and optional AS5600**. The reviewer ECO adds **U38 INA237 raw-PD sensing** and **WAGO spring-clamp J2/J3**. Earlier STM32/TMC5160 binaries, current-register settings and passing reports are historical. Use the matching current source, native board, BOM, firmware and release manifest together.
+The current controller uses **RP2040, DRV8262DDVR, TPS26750 and optional AS5600**. The reviewer ECO adds **U38 INA237 raw-PD sensing** and **WAGO spring-clamp J2/J3**. Earlier STM32/TMC5160 binaries, current-register settings and passing reports are historical. Use the matching current source, native board, BOM, firmware and release manifest together.
 
 ## Schematic and power review
 
-The current revision retains nine functional A4 sheets and changes the RP2040 to **DATA-only power**. U26 is removed; U39 isolates I2C and U40 isolates board-powered status/SPI-return signals. DATA USB supplies the MCU; PD supplies the motor/protection circuits; both are required for motion. NEMA17 is the reference for this power choice. Native PCB, firmware and diagrams have been regenerated for this electrical ECO. U41 switches phase/encoder sensors off during USB suspend. Current CLI DRC/ERC, bypass, Kelvin, USB-reference and filled-copper reports are bound to the new PCB hash; older schematic-only reports are historical. [Power architecture](usb-pd-architecture.md) records every IC's role.
+The current revision retains nine functional A4 sheets and changes the RP2040 to **DATA-only power**. U26 is removed; U39 isolates I2C and U40 isolates board-powered status signals. DATA USB supplies the MCU; PD supplies the motor/protection circuits; both are required for motion. NEMA17 is the reference for this power choice. Native PCB, firmware and diagrams have been regenerated for this electrical ECO. U41 switches phase/encoder sensors off during USB suspend. Current CLI DRC/ERC, bypass, Kelvin, USB-reference and filled-copper reports are bound to the new PCB hash; older schematic-only reports are historical. [Power architecture](usb-pd-architecture.md) records every IC's role.
 
 ## Reviewer requirements
 
@@ -36,7 +36,7 @@ See [motor harness](motor-harness.md), [brake assembly](brake-assembly.md) and [
 3. Flash/read back TI EEPROM, verify a cold APP boot and actual 48 V EPR contract. Program/read back the full 4 MiB RP2040 external flash at 0x10000000; retain board serial, binary hashes and programmer records.
 4. With motion inhibited, inspect and measure reset/enable states, all rails, USB source combinations/backfeed, PD_READY/MOTOR_PG, ADC accuracy/freshness and fault/restart behavior.
 5. Qualify the actual brake resistor, cooling, guard and containment. **10 Ω / 300 W is the selected first-article part**; its continuous load rating still depends on measured case temperature and stopping duty. Runtime voltage sensing does not absorb energy or qualify cooling.
-6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The implemented DRV8462 bench profile requests <=800 mA RMS at maximum 10 rpm, with a 10-second run and one-second stop ramp; record its physical response during the test. The default firmware remains inhibited; use the explicit commissioning profiles below.
+6. Only after recorded approval, perform the restrained low-current unloaded test, then braking and thermal/fault tests. The implemented DRV8262 bench profile requests <=800 mA RMS at maximum 10 rpm, with a 10-second run and one-second stop ramp; record its physical response during the test. The default firmware remains inhibited; use the explicit commissioning profiles below.
 
 Record measured waveforms, temperatures, timing, load inertia, maximum RPM, deceleration, repetition and ambient before expanding the operating envelope. U18 stays bottom DNP until a rotating rear magnet attachment, field and airgap are qualified; C52/C53 stay DNP on top. No powered, thermal, crimp or mechanically secured fit result is claimed by software checks.
 
