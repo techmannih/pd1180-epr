@@ -31,7 +31,7 @@ const pinAttributes = {
 export const SN74LVC244APWR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
-      schWidth={2.15}
+      schWidth={1.77}
       pinLabels={pinLabels}
       pinAttributes={pinAttributes}
       supplierPartNumbers={{
