@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "base_commit": "a0ccee1e004e9f36fb27d91b4a9887602490555a",
+  "before_board_sha256": "000495f20437bd5cbef3d1ed4b5b1eb64360de8e61818af3300d16093b128255",
+  "after_board_sha256": "fca4ed821246e7b955b67be519bb277e3a9d870e4ccf4cbaa689c2e5aa14a5d3",
+  "baseline_canonical_unfilled_sha256": "fe43c4e411c98d7c5268213fcd617e74551d06699b94c3d7e02a2cdfe6210925",
+  "all_other_native_records_unchanged": true,
+  "revision": {
+    "modified": [],
+    "removed": [],
+    "added": [
+      [
+        "segment",
+        [
+          "start",
+          "111.05",
+          "134.5"
+        ],
+        [
+          "end",
+          "112",
+          "133.55"
+        ],
+        [
+          "width",
+          "0.6"
+        ],
+        [
+          "layer",
+          "\"In1.Cu\""
+        ],
+        [
+          "net",
+          "\"MOTOR_A2\""
+        ],
+        [
+          "uuid",
+          "\"10289e44-22d7-4a7c-a7a6-88f14947f4ac\""
+        ]
+      ]
+    ]
+  },
+  "purpose": "Retain MOTOR_A2 connectivity through KiCad refill by bridging the exported pour neck with one explicit 0.60 mm In1.Cu track.",
+  "downloaded_repro": {
+    "release": "0.3.111",
+    "github_commit": "a0ccee1e004e9f36fb27d91b4a9887602490555a",
+    "zip_pcb_sha256": "7bc1fba25a1d28839fbc3a7d640ae68f0dd632b9d4fa27ccf9dcf9989ce0fdb8",
+    "unconnected": 1,
+    "gap_after_refill_mm": 0.053401883580024526
+  },
+  "native_validation": {
+    "errors": 8,
+    "retained_usb_hole_errors": 8,
+    "warnings": 488,
+    "unconnected": 0,
+    "parity": 0,
+    "erc": 0
+  },
+  "website_roundtrip_verified": false
+}
