@@ -7,6 +7,19 @@ const withoutFill = item => item[0] === 'zone'
   ? item.filter(value => !Array.isArray(value) || value[0] !== 'filled_polygon')
   : item
 const canonical = board => digest(board.map(withoutFill).map(JSON.stringify).sort())
+const property = (footprint, name) => footprint.find(item => Array.isArray(item) && item[0] === 'property' && item[1] === JSON.stringify(name))
+// Project each reviewed supplier-code change back to its baseline. Only the
+// named footprint's code may differ; any other edit fails the canonical hash.
+function restoreSupplierCodes(board, substitutions = []) {
+  const restored = structuredClone(board)
+  for (const { reference, before, after } of substitutions) {
+    const footprint = restored.find(item => Array.isArray(item) && item[0] === 'footprint' && property(item, 'Reference')?.[2] === JSON.stringify(reference))
+    const supplier = footprint && property(footprint, 'Supplier Part Number')
+    if (supplier?.[2] !== JSON.stringify(after)) throw new Error(`Unexpected ${reference} supplier code`)
+    supplier[2] = JSON.stringify(before)
+  }
+  return restored
+}
 
 export function checkMotorA2Bridge(board, policy) {
   const expected = policy.revision.added
@@ -19,7 +32,7 @@ export function checkMotorA2Bridge(board, policy) {
   // Check exact geometry before projecting back to the prior native board.
   if (board.filter(item => Array.isArray(item) && uuid(item) === uuid(segment)).length !== 1)
     throw new Error('Missing or duplicate MOTOR_A2 bridge')
-  const original = restorePlacementRevisions(board, [policy.revision])
+  const original = restoreSupplierCodes(restorePlacementRevisions(board, [policy.revision]), policy.supplier_substitutions)
   if (canonical(original) !== policy.baseline_canonical_unfilled_sha256)
     throw new Error('Unrelated native geometry changed with MOTOR_A2 fix')
   return original
@@ -29,6 +42,6 @@ if (import.meta.main) {
   const policy = JSON.parse(await readFile(policyPath))
   const bytes = await readFile(boardPath)
   checkMotorA2Bridge(parseNative(bytes.toString()), policy)
-  if (digest(bytes) !== policy.after_board_sha256) throw new Error('Stale MOTOR_A2 refill evidence')
+  if (digest(bytes) !== policy.current_board_sha256) throw new Error('Stale MOTOR_A2 refill evidence')
   console.log('MOTOR_A2: exact 0.60 mm bridge present; all prior unfilled native records preserved.')
 }

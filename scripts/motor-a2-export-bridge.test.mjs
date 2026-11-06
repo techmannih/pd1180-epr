@@ -22,3 +22,15 @@ test('real NEMA34 board retains the export-safe bridge and every unrelated nativ
   field(other, 'width')[1] = '0.15'
   expect(() => checkMotorA2Bridge(changed, policy)).toThrow('Unrelated native geometry')
 })
+
+test('only the reviewed R65 supplier code may differ from the bridged baseline', () => {
+  const supplierOf = (rows, reference) => rows.find(item => Array.isArray(item) && item[0] === 'footprint' &&
+    item.some(p => Array.isArray(p) && p[1] === '"Reference"' && p[2] === JSON.stringify(reference)))
+    .find(p => Array.isArray(p) && p[1] === '"Supplier Part Number"')
+  const wrongCode = structuredClone(board)
+  supplierOf(wrongCode, 'R65')[2] = '"C723637"'
+  expect(() => checkMotorA2Bridge(wrongCode, policy)).toThrow('Unexpected R65 supplier code')
+  const otherPart = structuredClone(board)
+  supplierOf(otherPart, 'R64')[2] = '"C1"'
+  expect(() => checkMotorA2Bridge(otherPart, policy)).toThrow('Unrelated native geometry')
+})
