@@ -1,11 +1,11 @@
 # Current reference-board and reviewer decisions
 
-Reviewed 2026-11-03 against the published releases in [source provenance](../engineering/reviewer-power-reference.json). The old STM32/TMC5160 comparison is available in Git history; it does not describe this board.
+Reference sources were captured on 2026-11-03 in [source provenance](../engineering/reviewer-power-reference.json); the current design decisions below were updated on 2026-11-06. The old STM32/TMC5160 comparison is available in Git history; it does not describe this board.
 
 | Requirement / review comment | Current decision and evidence | Remaining qualification |
 |---|---|---|
-| MCU supply should follow NEMA14/17/23 | NEMA23 v1.4.7 and NEMA14 RP2040 v1.13.2 support PD or DATA logic power. NEMA17 v1.0.48 requires DATA. Retain dual-source operation; see [power paths](usb-pd-architecture.md). | Supply handover, back-power and USB current tests. |
-| Cheaper DRV8262 variant | Retain DDVR for the 6 A/phase design target. DRV8262 DDWR is 5 A RMS per bridge in dual-bridge mode (TI Rev. C §5.3) with a different pinout and bottom thermal pad; it is not a drop-in substitution. | DDVR's top heatsink/TIM, allowed RMS current and transient margin are unqualified. |
+| MCU supply should follow NEMA14/17/23 | NEMA23 v1.4.7 and NEMA14 RP2040 v1.13.2 support PD or DATA logic power. NEMA17 v1.0.48 requires DATA. The later user-selected DATA-only architecture supersedes our earlier dual-source choice; see [power paths](usb-pd-architecture.md). | DATA/PD transitions, back-power and USB current tests. |
+| Driver availability | Select DRV8262DDVR with PH/EN sequencing and U42 dual-DAC current references. DRV8262 DDWR is 5 A RMS per bridge in dual-bridge mode (TI Rev. C §5.3) with a different pinout and bottom thermal pad; it is not a drop-in substitution. | DDVR's installed top heatsink/TIM, allowed RMS current and transient margin require measurement. |
 | Too many schematic sheets / unclear chips | Consolidate 26 pages into nine functional A4 pages, with supply names, role notes and a table covering every IC. | Review the actual page images alongside native electrical results. |
 | Multiple buck-boost converters | U5, U22 and U34 are step-down bucks. U5 starts logic from PD, U22 keeps brake control powered from a charged motor bus, U34 supplies the brake gate driver. | PD-removal/regeneration behaviour on assembled hardware. |
 | Unclear logic circuits | U4 gates input power permission. U10/U11/U33 combine MCU_RUN, MOTOR_PG, VMOTOR_OK and TEMP_OK into RUN_SAFE. No gate is removed to hide complexity. | Fault injection and startup/reset timing. |

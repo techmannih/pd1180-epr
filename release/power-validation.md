@@ -36,7 +36,7 @@ A fixture must not inject simulated faults into live power nodes without an appr
 
 ## Restrained motor and thermal sequence
 
-After no-motion results and mounting/cooling/brake acceptance are recorded, an engineer can approve a separately identified test build. The shipped image remains locked. Begin with phase-current measurements and restrained unloaded motion at the proposed low-current/speed profile. Capture both phase waveforms, driver fault/status, input power, VMOTOR/PD_VBUS, current regulation and STEP/DIR timing. Do not assume the requested RMS value is the measured one.
+After no-motion results and mounting/cooling/brake acceptance are recorded, an engineer can approve a separately identified test build. The shipped image remains locked. Begin with phase-current measurements and restrained unloaded motion at the proposed low-current/speed profile. Capture both phase waveforms, driver fault/status, input power, VMOTOR/PD_VBUS, current regulation, PH/EN and DAC timing. Do not assume the requested RMS value is the measured one.
 
 Measure commanded stopping and reset/source-loss behavior, including current remaining in windings after inhibition. For every test record actual inertia/load, speed, deceleration and repetitions. Require bus peaks plus measurement uncertainty and reserved allocation to fit the reviewed system limit, not just U7's 60 V DC operating range. A failed case requires circuit/envelope review; do not suppress the failure or clear a qualification flag to continue.
 
