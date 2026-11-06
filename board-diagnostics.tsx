@@ -1,9 +1,9 @@
 import { SN74LVC1G17DBVR } from "./imports/SN74LVC1G17DBVR"
 import { AO3400A } from "./imports/AO3400A"
 import { BAV21W_7_F } from "./imports/BAV21W_7_F"
-import { FUET_9650B_3V } from "./imports/FUET_9650B_3V"
+import { FMB09A03_3V } from "./imports/FMB09A03_3V"
 import { NH_B2020RGBA_HF } from "./imports/NH_B2020RGBA_HF"
-import { SN74LVC2G66DCUR } from "./imports/SN74LVC2G66DCUR"
+import { SN74LVC2G66DCTR } from "./imports/SN74LVC2G66DCTR"
 import { PCA9538PWR } from "./imports/PCA9538PWR"
 import { XL_1608SURC_06 } from "./imports/XL_1608SURC_06"
 
@@ -49,7 +49,7 @@ export const BoardDiagnostics = () => (
       pcbX={-40.25} pcbY={-18.0} pcbRotation={90} layer="top"
       pcbSx={{ "& silkscreentext": { pcbX: 0.3302, pcbY: 0.9 } }}
       connections={{ pin1: "net.RGB_R_K", pin2: "net.RGB_B_K", pin3: "net.V3V3", pin4: "net.RGB_G_K" }} schSheetName="indicators" schX={1.568} schY={2.714} />
-    <FUET_9650B_3V name="BZ1" schSectionName="alarm_BZ1"
+    <FMB09A03_3V name="BZ1" schSectionName="alarm_BZ1"
       pcbX={-36.5} pcbY={-10.8} pcbRotation={0} layer="top"
       connections={{ pin1: "net.V3V3", pin2: "net.BUZZER_LOW" }} schSheetName="indicators" schX={-6.389} schY={-2.68} />
     <AO3400A name="Q26" schSectionName="alarm_BZ1"
@@ -57,7 +57,7 @@ export const BoardDiagnostics = () => (
       connections={{ pin1: "net.BUZZER_GATE", pin2: "net.GND", pin3: "net.BUZZER_LOW" }} schSheetName="indicators" schX={-8.372} schY={-5.485} />
     <XL_1608SURC_06 name="D17"
       pcbX={-37.5} pcbY={-19.5} pcbRotation={0} layer="top"
-      connections={{ pin1: "net.GND", pin2: "net.POWER_LED_A" }} schSheetName="indicators" schX={11} schY={2.112} schRotation={270} schSectionName="indicators_power-led" />
+      connections={{ pin1: "net.GND", pin2: "net.POWER_LED_A" }} schSheetName="indicators" schX={11} schY={2.112} schRotation={-90} schSectionName="indicators_power-led" />
     <BAV21W_7_F name="D18" schSectionName="alarm_BZ1"
       pcbX={-36.5} pcbY={-17.0} pcbRotation={0} layer="top" schRotation={90}
       connections={{ pin1: "net.V3V3", pin2: "net.BUZZER_LOW" }} schSheetName="indicators" schX={-1.7} schY={-2.7} />
@@ -83,13 +83,13 @@ export const BoardDiagnostics = () => (
       pcbX={31.85} pcbY={-22.8} pcbRotation={270} layer="top" capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} schRotation={270} decouplingFor=".U35 > .pin16"
       connections={{ pin1: "net.PD_3V3", pin2: "net.GND" }} schSheetName="indicators" schX={-10.925} schY={4.272} />
     <capacitor name="C96" schSectionName="alarm_BZ1"
-      pcbX={-33} pcbY={-4.9} pcbRotation={180} layer="top" capacitance="10uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C96446"] }} schRotation={270}
+      pcbX={-39} pcbY={-5.3} pcbRotation={180} layer="top" capacitance="10uF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C96446"] }} schRotation={270}
       connections={{ pin1: "net.V3V3", pin2: "net.GND" }} schSheetName="indicators" schX={6.6} schY={6} />
-    <SN74LVC2G66DCUR name="U36" schSectionName="pd-programming_U36"
-      pcbX={-9.0} pcbY={20.0} pcbRotation={90} layer="top"
+    <SN74LVC2G66DCTR name="U36" schSectionName="pd-programming_U36"
+      pcbX={-2.25} pcbY={32.5} pcbRotation={180} layer="top"
       connections={{ pin1: "net.EEP_SDA", pin2: "net.EEP_PROG_SDA", pin3: "net.EEP_LINK_EN", pin4: "net.GND", pin5: "net.EEP_SCL", pin6: "net.EEP_PROG_SCL", pin7: "net.EEP_LINK_EN", pin8: "net.PD_3V3" }} schSheetName="telemetry" schX={-4.5} schY={-3.8} />
     <capacitor name="C97" schSectionName="pd-programming_U36"
-      pcbX={-9.1} pcbY={16.5} pcbRotation={180} layer="top" capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} schRotation={270} decouplingFor=".U36 > .pin8"
+      pcbX={-3.5} pcbY={35.25} pcbRotation={180} layer="top" capacitance="100nF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C14663"] }} schRotation={270} decouplingFor=".U36 > .pin8"
       connections={{ pin1: "net.PD_3V3", pin2: "net.GND" }} schSheetName="telemetry" schX={-9.5} schY={-7.3} />
     <resistor name="R129" schSectionName="pd-programming_U36"
       pcbX={-12.0} pcbY={19.5} pcbRotation={0} layer="top" resistance="4.7k" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C23162"] }} schRotation={270}

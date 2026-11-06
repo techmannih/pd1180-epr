@@ -19,7 +19,7 @@ D16 is the common-anode NH-B2020RGBA-HF: pin 3 anode, pin 1 red, pin 2 blue and 
 
 D17 is an independent red power LED through R128 (4.7 kΩ) on **board V3V3**. It does not indicate USB-only MCU power; measure TP_SWD_3V3 for that rail. These additions cannot be powered from USB DATA alone.
 
-BZ1 is an active FUET-9650B-3V buzzer with an internal oscillator. Q26 AO3400A switches its negative lead; R126 (1 kΩ) limits gate charging to below 3.7 mA at a 3.6 V rail, within U35’s 10 mA high-output limit. R127 (100 kΩ) holds the gate low while U35 is reset or unpowered. D18 BAV21W has its cathode on V3V3 and anode on the switched lead. C96 supplies bulk decoupling through a constrained top-layer path of at most 7 mm to the positive terminal. The larger buzzer body needs this longer branch; this is distinct from the IC bypass limits. This alarm is an operator indication, independent of the motor's hardware inhibit chain.
+BZ1 is an active FMB09A03-3V buzzer with an internal oscillator. Q26 AO3400A switches its negative lead; R126 (1 kΩ) limits gate charging to below 3.7 mA at a 3.6 V rail, within U35’s 10 mA high-output limit. R127 (100 kΩ) holds the gate low while U35 is reset or unpowered. D18 BAV21W has its cathode on V3V3 and anode on the switched lead. C96 supplies bulk decoupling through a constrained top-layer path of at most 7 mm to the positive terminal. The larger buzzer body needs this longer branch; this is distinct from the IC bypass limits. This alarm is an operator indication, independent of the motor's hardware inhibit chain.
 
 ## Design allocations and qualification
 
@@ -29,4 +29,6 @@ Nominal RGB currents from typical forward voltages are approximately 1.3 mA red,
 
 Firmware host tests cover output polarity, latch-before-direction initialization, alarm duration, reset, missing I2C device, failed initialization writes, expander brownout and USB/power isolation. First-article tests must also verify audible output, cold-boot silence, reset/watchdog silence, rail-current transients and no sound after a bus failure.
 
-Primary sources: [TI PCA9538](https://www.ti.com/lit/ds/symlink/pca9538.pdf), [AOS AO3400A](https://www.aosmd.com/sites/default/files/res/datasheets/AO3400A.pdf), [NationStar LED](https://datasheet.lcsc.com/datasheet/pdf/231c4d2c9a56cafdc8401a79fb0bfc62.pdf?productCode=C2874116), [FUET buzzer](https://datasheet.lcsc.com/datasheet/pdf/108add109d00ccdea1734cb9c944bf18.pdf?productCode=C391032).
+Primary sources: [TI PCA9538](https://www.ti.com/lit/ds/symlink/pca9538.pdf), [AOS AO3400A](https://www.aosmd.com/sites/default/files/res/datasheets/AO3400A.pdf), [NationStar LED](https://datasheet.lcsc.com/datasheet/pdf/231c4d2c9a56cafdc8401a79fb0bfc62.pdf?productCode=C2874116), [FMB09A03-3V buzzer](https://www.lcsc.com/product-detail/C417385.html).
+
+BZ1 is top-mounted through-hole: 9 mm body, 5 mm lead pitch. Observe the positive lead, trim/insulate the underside leads, and verify motor-side clearance after soldering. It contains the oscillator; the existing on/off alarm drive is retained.

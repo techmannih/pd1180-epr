@@ -19,7 +19,7 @@ export const SystemOverview = () => (
         <Block name="bus" displayName="U6 / Protected motor supply"
           description={"eFuse + Q4/Q5 reverse blocking"}
           pcbComponentNames={["Q4", "Q5", "U6"]} />
-        <Block name="driver" displayName="U7 / DRV8462DDVR"
+        <Block name="driver" displayName="U7 / DRV8262DDVR"
           description={"Integrated bridges + current control"}
           pcbComponentName="U7" />
         <Block name="brake" displayName="J3 / External brake resistor"
@@ -34,7 +34,7 @@ export const SystemOverview = () => (
       <systemblock.connection from="driver" to="motor" kind="power" direction="both" label="Two windings" />
       <systemblock.connection name="data-power" from="data" to="control" kind="power" label="Via LDO (p.2)" />
       <systemblock.connection name="data-link" from="data" to="control" direction="both" label="USB" />
-      <systemblock.connection from="control" to="driver" label="STEP/DIR + SPI" />
+      <systemblock.connection from="control" to="driver" label="PH/EN + current references" />
       <systemblock.connection from="bus" to="brake" kind="power" label="Bus energy" />
     </systemblock.page>
 
@@ -66,9 +66,9 @@ export const SystemOverview = () => (
         <Block name="mcu" displayName="MCU + flash"
           description={"U16 + U17 · U39/U40 I/O isolation"}
           pcbComponentNames={["U16", "U17", "U39", "U40"]} />
-        <Block name="sensor-power" displayName="Switched sensor supply"
+        <Block name="sensor-power" displayName="Switched sensor / driver logic"
           description={"U41 · off at reset / USB suspend"}
-          pcbComponentNames={["U41", "U31", "U32", "U18"]} />
+          pcbComponentNames={["U41", "U31", "U32", "U18", "U42", "U7"]} />
       </systemblock.group>
       <systemblock.group name="brake-domain" displayName="Brake gate supply">
         <Block name="brake-buck" displayName="Motor bus → 12 V"
@@ -108,7 +108,7 @@ export const SystemOverview = () => (
           description={"MCU_RUN AND MOTOR_PG AND\nVMOTOR_OK AND TEMP_OK"}
           pcbComponentNames={["U10", "U11", "U33"]} />
         <Block name="driver" displayName="Driver enable · U7"
-          description={"RUN_SAFE low → bridges disabled"}
+          description={"RUN_SAFE → nSLEEP · low disables bridges"}
           pcbComponentName="U7" />
 
         <Block name="limits" displayName="Hardware limits"
@@ -154,7 +154,7 @@ export const SystemOverview = () => (
           pcbComponentName="U16" />
       <systemblock.group name="outputs" displayName="Motion + status interfaces">
         <Block name="driver" displayName="Motor driver · U7"
-          description={"DRV8462 · nFAULT / HOME feedback"}
+          description={"DRV8262 · nFAULT feedback · U42 current DAC"}
           pcbComponentName="U7" />
         <Block name="indicators" displayName="Status outputs"
           description={"U35/U37 · RGB LED + buzzer"}

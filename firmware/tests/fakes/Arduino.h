@@ -6,6 +6,7 @@
 using pin_size_t = unsigned;
 using PinName = unsigned;
 constexpr unsigned PA5=5, PA6=6, PA7=7, PB6=22, PB7=23;
+constexpr unsigned NOPIN=255;
 constexpr unsigned LOW=0, HIGH=1, INPUT=0, OUTPUT=1, OUTPUT_OPEN_DRAIN=2, INPUT_ANALOG=3;
 using std::min;
 inline uint32_t fakeNow;

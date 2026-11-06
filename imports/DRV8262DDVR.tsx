@@ -26,21 +26,21 @@ const pinLabels = {
   pin23: ["CPH"],
   pin24: ["CPL"],
   pin25: ["nSLEEP"],
-  pin26: ["ENABLE"],
-  pin27: ["DIR"],
-  pin28: ["STEP"],
-  pin29: ["SCLK","M1"],
-  pin30: ["SDI","DECAY0"],
-  pin31: ["SDO","DECAY1"],
-  pin32: ["RSVD5","TOFF"],
-  pin33: ["nSCS","M0"],
-  pin34: ["VREF"],
-  pin35: ["RSVD4"],
-  pin36: ["RSVD3"],
-  pin37: ["RSVD2"],
-  pin38: ["RSVD1"],
-  pin39: ["MODE"],
-  pin40: ["nHOME"],
+  pin26: ["EN1"],
+  pin27: ["PH1"],
+  pin28: ["EN2"],
+  pin29: ["PH2"],
+  pin30: ["DECAY"],
+  pin31: ["RSVD1"],
+  pin32: ["TOFF"],
+  pin33: ["VREF1"],
+  pin34: ["VREF2"],
+  pin35: ["RSVD2"],
+  pin36: ["IPROPI1"],
+  pin37: ["IPROPI2"],
+  pin38: ["MODE2"],
+  pin39: ["MODE1"],
+  pin40: ["OCPM"],
   pin41: ["nFAULT"],
   pin42: ["VCC"],
   pin43: ["DVDD"],
@@ -53,7 +53,7 @@ const pinAttributes = {
   pin44: {requiresGround: true}
 } as const
 
-export const DRV8462DDVR = (props: ChipProps<typeof pinLabels>) => {
+export const DRV8262DDVR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
@@ -61,16 +61,17 @@ export const DRV8462DDVR = (props: ChipProps<typeof pinLabels>) => {
       schWidth={1.49}
       supplierPartNumbers={{
   "jlcpcb": [
-    "C29780285"
+    "C33828788"
   ]
 }}
-      manufacturerPartNumber="DRV8462DDVR"
+      manufacturerPartNumber="DRV8262DDVR"
       footprint="tssop44_p0.635mm_w5.9999mm_pw0.4mm_pl1.6mm_rounded0mm_pin1location(leftside,bottom)"
+      // TI DDV0044D: exposed thermal metal is on TOP, not a PCB solder pad.
+      // Same DDV lead land pattern as DRV8462; no fictitious pin45/underside paste.
       cadModel={{
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C29780285.obj?uuid=cf5243222a414b389af12f2ed19093be",
         stepUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C29780285.step?uuid=cf5243222a414b389af12f2ed19093be",
-        pcbRotationOffset: 0,
-        modelOriginPosition: { x: 0, y: 0.000012700000070253736, z: -0.65 },
+        modelOriginPosition: { x: 0, y: 0.0000127, z: -0.65 },
       }}
       {...props}
     />

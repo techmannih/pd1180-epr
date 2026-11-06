@@ -10,6 +10,7 @@ const release = 'release'
 execFileSync('bun', ['scripts/export-assembly.mjs', '--check', 'dist/manufacturing'], { stdio: 'inherit' })
 const sourcing = 'sourcing'
 const standards = JSON.parse(await readFile('board-standards.json', 'utf8'))
+const viaInPad = JSON.parse(await readFile('engineering/rp2040-via-in-pad.json', 'utf8'))
 await Promise.all([mkdir(release, { recursive: true }), mkdir(sourcing, { recursive: true }), mkdir(join(release, 'schematics'), { recursive: true })])
 
 function csvCell(value) {
@@ -190,7 +191,7 @@ Revision **${releaseStatus.revision}**. This handoff contains matched PCB/assemb
 
 ## Package contents and order preparation
 
-- Use the Gerber/drill archives with \`jlc-bom.csv\`, \`jlc-cpl.csv\` and \`order-settings.json\`. Specify four layers, 1.6 mm, 1 oz on every layer, ENIG, top-side assembly and all 66 epoxy-filled/copper-capped via-in-pad locations in \`rp2040-via-in-pad.json\`.
+- Use the Gerber/drill archives with \`jlc-bom.csv\`, \`jlc-cpl.csv\` and \`order-settings.json\`. Specify four layers, 1.6 mm, 1 oz on every layer, ENIG, top-side assembly and all ${viaInPad.count} epoxy-filled/copper-capped via-in-pad locations in \`rp2040-via-in-pad.json\`.
 - Include through-hole WAGO J2/J3 terminals and tall capacitors in the assembly scope. All ${stock.parts.reduce((total, part) => total + part.quantity_per_board, 0)} fitted placements are top-side. Optional U18 is bottom DNP; C52/C53 are top DNP and all three are excluded from paste and the fitted BOM/CPL.
 - Allocate the exact fitted-part quantities from the timestamped sourcing reports. Record the supplier's stack-up/USB impedance, USB-hole geometry and critical-marking disposition in \`manufacturing-acceptance-record.json\`.
 - Prepare the external EPR source/cable, motor harness, driver cooler/TIM/support and J3 resistor/cooler/guard using \`assembly.md\`, \`external-system.md\` and \`thermal-qualification.md\`. The selected first-article brake resistor is 10 ohm / 300 W at its specified case temperature; installed duty is established by measurements.

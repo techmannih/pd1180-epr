@@ -1,16 +1,16 @@
 # NEMA34 implementation and handoff checklist
 
-Current architecture: RP2040 / DRV8462DDVR / TPS26750, DATA-only MCU power. Use the matching [verification report](verification.json) and [native summary](verification.md), together with the nine schematic sheets and four [System diagrams](system-overview.md).
+Current architecture: RP2040 / DRV8262DDVR / TPS26750, DATA-only MCU power. Use the matching [verification report](verification.json) and [native summary](verification.md), together with the nine schematic sheets and four [System diagrams](system-overview.md).
 
 ## Implemented and checked in the repository
 
 - [x] RP2040 power/clock/boot-flash pin contracts, USB, BOOTSEL and SWD access.
-- [x] DRV8462 DDV-specific 44-pin map, integrated H-bridges, timer STEP/DIR and SPI configuration/readback.
+- [x] DRV8262 DDV-specific 44-pin map, integrated H-bridges, timer PH/EN and dual-DAC current references.
 - [x] DATA-only MCU supply, U39/U40 board-signal isolation and U41 sensor suspend control.
 - [x] WAGO J2/J3 terminals, raw PD_VBUS INA237 ADC and separate ADS1115 VMOTOR/brake readings.
 - [x] Derived PD_READY plus physical MOTOR_PG; independent RUN_SAFE, brake supply and hardware protection paths.
 - [x] Diagnostic, 30-second stationary-power and bounded-motor software profiles; reset/fault inhibition, readback freshness and deliberate restart tests.
-- [x] Native route, bypass/Kelvin paths, USB ground reference and analytical power-copper checks; 0 unconnected/parity/ERC findings. Eight USB hole errors and 475 cosmetic warnings are recorded separately.
+- [x] Native route, bypass/Kelvin paths, USB ground reference and analytical power-copper checks; 0 unconnected/parity/ERC findings. Eight USB hole errors and 488 cosmetic warnings are recorded separately.
 - [x] Source/native 0.15 mm tracks, 0.10 mm spacing, 0.30 mm GND clearance, 0.50 mm GND inset and 0.20 mm global edge rule.
 - [x] Matched routed viewer, manufacturing files, BOM/CPL and release hashes, verified by the release pipeline.
 - [x] Four mounting axes aligned to the ordered motor STEP; only optional DNP encoder U18 on the bottom.
@@ -18,7 +18,7 @@ Current architecture: RP2040 / DRV8462DDVR / TPS26750, DATA-only MCU power. Use 
 ## Fabrication and installation actions
 
 - [ ] Obtain the exact fitted-part quantities using the latest [sourcing report](procurement.md); record allocation for insufficient rows.
-- [ ] Record supplier acceptance of stack-up/USB impedance, 66 filled/capped via-in-pad locations, USB hole geometry and critical markings.
+- [ ] Record supplier acceptance of stack-up/USB impedance, 78 filled/capped via-in-pad locations, USB hole geometry and critical markings.
 - [ ] Fit the selected driver cooler/TIM with end support, brake cooler/guard, harnesses and strain relief; inspect tool/bend clearance.
 - [ ] Measure rear thread/depth and select secure motor/board fastening and insulation. The STEP axes do not specify screw engagement.
 

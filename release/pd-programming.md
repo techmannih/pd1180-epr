@@ -1,6 +1,6 @@
 # PD EEPROM fixture and power probes
 
-U3 holds the TPS26750 application image. USB DATA and MCU SWD do not program a blank U3. U36 (SN74LVC2G66DCUR) separates the controller's EEPROM I2Cc bus from the EEPROM-side programming pads. R131 normally enables both switches. Grounding TP_PD_ISO opens both wires; R129/R130 provide 4.7 kΩ EEPROM-side pullups. Existing controller-side pullups remain.
+U3 holds the TPS26750 application image. USB DATA and MCU SWD do not program a blank U3. U36 (SN74LVC2G66DCTR) separates the controller's EEPROM I2Cc bus from the EEPROM-side programming pads. R131 normally enables both switches. Grounding TP_PD_ISO opens both wires; R129/R130 provide 4.7 kΩ EEPROM-side pullups. Existing controller-side pullups remain.
 
 The TI-generated full-flash candidate and both license approvals are recorded. `pd-configuration.json` identifies the binary and its hash; it is not itself flashable. Fixture implementation, physical programming/readback and cold boot remain required before shipment.
 

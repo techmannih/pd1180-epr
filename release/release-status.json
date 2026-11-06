@@ -15,15 +15,15 @@
     ],
     "assembly_side": "top-only",
     "ordered_motor": "34HS31-6004S1",
-    "motor_current_note": "Default diagnostics; explicit board-bound bench-test requests <=800 mA RMS (~773 mA nominal), 10 rpm, 10 seconds then one-second stop ramp. Select application current from post-assembly measurements."
+    "motor_current_note": "Default diagnostics; explicit board-bound bench-test requests at most 800 mA RMS with 359 mV nominal peak DAC reference, 10 rpm and 10 seconds then a one-second stop ramp. Calibrate actual phase current after assembly."
   },
   "prototype_order_gates": {
     "kicad_drc_zero_unconnected_items": true,
     "gerber_and_drill_package_generated": true,
     "bom_and_cpl_generated": true,
     "all_populated_parts_on_permitted_layers": true,
-    "live_lcsc_stock_check": false,
-    "alternative_parts_review": false,
+    "live_lcsc_stock_check": true,
+    "alternative_parts_review": true,
     "power_copper_analytical_check": true,
     "mounting_pattern_matches_ordered_motor_cad_axes": true,
     "selected_operating_mode_electrically_compatible": true,
@@ -52,7 +52,7 @@
     "stocked_mcu_qfn_assembly_and_independent_rail_reset_qualified": false
   },
   "order_hold_reasons": [
-    "Record fabricator disposition of the eight retained J1/J10 hole-clearance errors and inspect the critical markings among the 475 cosmetic warnings; engineering review preserves these exact findings.",
+    "Record fabricator disposition of the eight retained J1/J10 hole-clearance errors and inspect the critical markings among the 488 cosmetic warnings; engineering review preserves these exact findings.",
     "Use the bounded commissioning profile and measure bus/brake response before selecting full-current duty. Current-bank 6 A simulations reach 54.321 V at nominal delay and 54.745 V at 100 us; the latter fails the allocated 0.5 V reserve below 55 V.",
     "Fit the selected DDV cooler/TIM with supported contact and the selected resistor/cooling/guard; record physical fit and motor-current/thermal measurements.",
     "Allocate the exact BOM for the requested five-board lot using the timestamped stock report. Arrange the missing quantities or review substitutions for rows marked unavailable/insufficient; refresh official quantities before allocation.",
@@ -80,11 +80,11 @@
   "native_cad_verified": true,
   "prototype_gate_scope": "Current native CAD and source/firmware implementation only. The driver/protection gate does not qualify 6 A operation: the 100 us recovery and 5 J stress cases plus all physical gates remain open. Exact USB-hole and cosmetic exceptions are engineering-review only.",
   "native_review_summary": {
-    "board_sha256": "097e7d2f3bbe412744c118c06e71c14a7adf5d1f30942f13ad93497d7300a87a",
+    "board_sha256": "000495f20437bd5cbef3d1ed4b5b1eb64360de8e61818af3300d16093b128255",
     "errors": 8,
     "retained_usb_hole_errors": 8,
     "other_errors": 0,
-    "warnings": 475,
+    "warnings": 488,
     "unconnected_items": 0,
     "schematic_parity": 0,
     "schematic_erc": 0,

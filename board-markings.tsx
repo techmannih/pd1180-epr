@@ -2,7 +2,7 @@
 export function BoardMarkings() {
   return <>
     <silkscreentext text="PD1180-EPR — NEMA 34 Smart Motor-Mounted" layer="bottom" pcbX={0} pcbY={20} fontSize="0.8mm" />
-    <silkscreentext text="48 V EPR / RP2040 / DRV8462 · r0.5 DRAFT" layer="bottom" pcbX={0} pcbY={18.8} fontSize="0.8mm" />
+    <silkscreentext text="48 V EPR / RP2040 / DRV8262 · r0.5 DRAFT" layer="bottom" pcbX={0} pcbY={18.8} fontSize="0.8mm" />
     <silkscreentext text="PWR" layer="top" pcbX={-41.85} pcbY={22.2} pcbRotation={90} fontSize="1mm" isKnockout />
     <silkscreentext text="DATA" layer="top" pcbX={-41.85} pcbY={8} pcbRotation={90} fontSize="1mm" isKnockout />
     {/* PD fixture contacts 1/2/3: VREF/GND/SDA; see the programming fixture map. */}

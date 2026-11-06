@@ -6,7 +6,7 @@
       "alternative": "C2864391",
       "mpn": "TPS26630RGET",
       "stock": 0,
-      "checked_at": "2026-11-05T19:18:36.018Z",
+      "checked_at": "2026-11-06T05:33:13.845Z",
       "classification": "same-silicon-package",
       "notes": "TPS26630RGET retains the 1x active-limit/latch-off variant and RGE footprint; alternate tape quantity. Exact stock/package refresh required. TPS26631 must not be substituted because it permits 2x overload.",
       "expected_package": "VQFN-24(4x4)",
@@ -28,7 +28,7 @@
       "alternative": "C2876530",
       "mpn": "CSD19534Q5AT",
       "stock": 24,
-      "checked_at": "2026-11-05T19:18:40.089Z",
+      "checked_at": "2026-11-06T05:33:15.966Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=2876530",
       "classification": "same-silicon-package",
       "notes": "CSD19534Q5AT: same MOSFET/package, alternate tape quantity.",
@@ -41,9 +41,9 @@
       "primary_available": true,
       "evidence_source": "jlcpcb-official",
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C2876530",
-      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=2876530\ncurl: (56) The requested URL returned error: 500\n",
+      "search_error": null,
       "official_error": null,
-      "index_status": "network-error"
+      "index_status": "exact-match"
     },
     {
       "primary": "C2862245",
@@ -57,7 +57,7 @@
       "alternative": "C83561",
       "mpn": "TLV3201AIDBVT",
       "stock": 0,
-      "checked_at": "2026-11-05T19:18:42.330Z",
+      "checked_at": "2026-11-06T05:33:17.664Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=83561",
       "classification": "same-silicon-package",
       "notes": "TLV3201AIDBVT: same DBV package, alternate reel quantity.",
@@ -70,9 +70,9 @@
       "primary_available": true,
       "evidence_source": "jlcpcb-official",
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C83561",
-      "search_error": null,
+      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=83561\ncurl: (56) The requested URL returned error: 500\n",
       "official_error": null,
-      "index_status": "exact-match"
+      "index_status": "network-error"
     },
     {
       "primary": "C187836",
@@ -86,8 +86,8 @@
       "expected_package_match": true,
       "primary_package": "SOT-23-6",
       "package_compatible": true,
-      "stock": 6521,
-      "checked_at": "2026-11-05T19:18:46.174Z",
+      "stock": 6416,
+      "checked_at": "2026-11-06T05:33:19.707Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=60864",
       "status": "available",
       "primary_available": true,
@@ -101,8 +101,8 @@
       "primary": "C79991",
       "alternative": "C7561",
       "mpn": "M24512-WMN6TP",
-      "stock": 1294,
-      "checked_at": "2026-11-05T19:18:48.226Z",
+      "stock": 1254,
+      "checked_at": "2026-11-06T05:33:22.711Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=7561",
       "classification": "electrical-review",
       "notes": "M24512-WMN6TP: higher minimum supply than R version; 3.3 V application is suitable, verify write timing and temperature grade.",
@@ -115,16 +115,16 @@
       "primary_available": true,
       "evidence_source": "jlcpcb-official",
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C7561",
-      "search_error": null,
+      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=7561\ncurl: (56) The requested URL returned error: 500\n",
       "official_error": null,
-      "index_status": "exact-match"
+      "index_status": "network-error"
     },
     {
       "primary": "C844918",
       "alternative": "C2906982",
       "mpn": "FRC0603F1002TS",
-      "stock": 15846609,
-      "checked_at": "2026-11-05T19:18:53.752Z",
+      "stock": 15770089,
+      "checked_at": "2026-11-06T05:33:24.826Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=2906982",
       "classification": "passive-review",
       "notes": "FRC0603F1002TS: 10 kOhm 1% 0603; verify working voltage, power rating and TCR for each use.",
@@ -149,8 +149,8 @@
       "notes": "HUSB238A-BB001-QN16R is an architectural candidate, not pin/software compatible. Its VBUS handling and 48 V EPR configuration need a complete redesign and documentation review.",
       "mpn": "HUSB238A-BB001-QN16R",
       "package": "QFN-16L-EP(3x3)",
-      "stock": 2494,
-      "checked_at": "2026-11-05T19:18:55.283Z",
+      "stock": 2497,
+      "checked_at": "2026-11-06T05:33:29.534Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=24833806",
       "status": "available",
       "expected_package": "QFN-16L-EP(3x3)",
@@ -160,9 +160,9 @@
       "primary_available": true,
       "evidence_source": "jlcpcb-official",
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C24833806",
-      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=24833806\ncurl: (56) The requested URL returned error: 500\n",
+      "search_error": null,
       "official_error": null,
-      "index_status": "network-error"
+      "index_status": "exact-match"
     },
     {
       "primary": "C43131250",
@@ -184,20 +184,20 @@
       "primary_package": "TSSOP-16",
       "primary_available": true,
       "evidence_source": "jlcpcb-official",
-      "index_status": "network-error",
-      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=2652286\ncurl: (56) The requested URL returned error: 500\n",
+      "index_status": "exact-match",
+      "search_error": null,
       "official_error": null,
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C2652286",
       "package_compatible": true,
       "stock": 795,
-      "checked_at": "2026-11-05T19:18:56.732Z",
+      "checked_at": "2026-11-06T05:33:32.577Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=2652286"
     },
     {
-      "primary": "C181970",
+      "primary": "C2651913",
       "alternative": null,
       "classification": "not-approved-redesign-required",
-      "notes": "SN74LVC2G66DCUR requires two independently controlled bilateral channels joined at enable and the reviewed VSSOP-8 pinout. A single-channel switch cannot isolate both I2Cc wires. No drop-in alternative selected.",
+      "notes": "SN74LVC2G66DCTR, MSOP-8 0.65 mm pitch: preserve both separately pinned bilateral channels and PD-domain control. DCU/VSSOP needs a different land pattern; no automatic substitute.",
       "status": "no-drop-in-selected"
     },
     {
@@ -208,10 +208,10 @@
       "status": "no-drop-in-selected"
     },
     {
-      "primary": "C391032",
+      "primary": "C417385",
       "alternative": null,
       "classification": "not-approved-redesign-required",
-      "notes": "FUET-9650B-3V is an active 2–5 V SMT buzzer. A passive transducer would not sound with the static enable firmware; any substitute needs footprint, polarity, current and acoustic review. No drop-in alternative selected.",
+      "notes": "FMB09A03-3V active 2–4.2 V, 30 mA through-hole buzzer, 5 mm pin pitch. Preserve positive-pin orientation, switched drive and rear lead-trim insulation. Passive transducers and the previous SMT part need redesign.",
       "status": "no-drop-in-selected"
     },
     {
@@ -236,11 +236,11 @@
       "notes": "R25: reviewed 4.99 kohm 0603, <=0.1% initial tolerance, <=25 ppm/C, >=100 mW. Recalculate the conservative current envelope; no automatic substitution."
     },
     {
-      "primary": "C136970",
+      "primary": "C5454462",
       "alternative": null,
       "classification": "not-approved-redesign-required",
       "status": "no-drop-in-selected",
-      "notes": "R66: reviewed 1.2 kohm 0603, <=0.1%, <=25 ppm/C. Recalculate same-board brake/OVP coordination; no automatic substitution."
+      "notes": "AT0603BRD071K2L, 1.2 kohm, 0.1%, 25 ppm/C, 0603. Preserve brake threshold tolerance; no automatic substitution."
     },
     {
       "primary": "C49242208",
@@ -270,13 +270,13 @@
       "evidence_source": "jlcpcb-official",
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C179173",
       "package_compatible": true,
-      "stock": 9700,
-      "checked_at": "2026-11-05T19:18:59.039Z",
+      "stock": 9553,
+      "checked_at": "2026-11-06T05:33:35.235Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=179173",
       "status": "available",
-      "search_error": null,
+      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=179173\ncurl: (56) The requested URL returned error: 500\n",
       "official_error": null,
-      "index_status": "exact-match"
+      "index_status": "network-error"
     },
     {
       "primary": "C2984356",
@@ -293,12 +293,12 @@
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C861400",
       "package_compatible": true,
       "stock": 0,
-      "checked_at": "2026-11-05T19:19:00.740Z",
+      "checked_at": "2026-11-06T05:33:37.251Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=861400",
       "status": "insufficient",
-      "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=861400\ncurl: (56) The requested URL returned error: 500\n",
+      "search_error": null,
       "official_error": null,
-      "index_status": "network-error"
+      "index_status": "exact-match"
     },
     {
       "primary": "C3025063",
@@ -314,8 +314,8 @@
       "evidence_source": "jlcpcb-official",
       "official_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/smtComponentShopCart/getComponentDetail?componentCode=C3020560",
       "package_compatible": true,
-      "stock": 18112,
-      "checked_at": "2026-11-05T19:19:06.460Z",
+      "stock": 18068,
+      "checked_at": "2026-11-06T05:33:38.879Z",
       "evidence": "https://jlcsearch.tscircuit.com/components/list.json?search=3020560",
       "status": "available",
       "search_error": "Command failed: curl --fail --silent --show-error -L --retry 2 --max-time 40 https://jlcsearch.tscircuit.com/components/list.json?search=3020560\ncurl: (56) The requested URL returned error: 500\n",
@@ -330,10 +330,10 @@
       "status": "no-drop-in-selected"
     },
     {
-      "primary": "C29780285",
+      "primary": "C33828788",
       "alternative": null,
       "classification": "no-drop-in-selected",
-      "notes": "DRV8462DDVR only. DDW differs in pinout, thermal construction and current rating; no drop-in alternative is qualified. Insufficient stock blocks procurement.",
+      "notes": "DRV8262DDVR top-cooled DDV only. Dual PH/EN H-bridges and external DAC current references; DRV8462 register/indexer control and DDW pin/thermal layout are not substitutes.",
       "status": "no-drop-in-selected"
     },
     {
@@ -349,9 +349,23 @@
       "classification": "no-drop-in-selected",
       "notes": "12 MHz, CL20 pF, ESR80 ohm crystal chosen from exact footprint evidence. A substitute requires ESR/load/startup review.",
       "status": "no-drop-in-selected"
+    },
+    {
+      "primary": "C351604",
+      "alternative": null,
+      "classification": "no-drop-in-selected",
+      "status": "no-drop-in-selected",
+      "notes": "PTFR0805B180KN9, 180 kohm, 0.1%, 10 ppm/C, 0805; preserve voltage rating and voltage-sense tolerance. No unreviewed 0603 substitution."
+    },
+    {
+      "primary": "C16040",
+      "alternative": null,
+      "classification": "no-drop-in-selected",
+      "status": "no-drop-in-selected",
+      "notes": "MCP4822-E/SN dual 12-bit DAC with internal reference, gain 2 and simultaneous LDAC update. MCP4922 requires an external reference and is not a drop-in."
     }
   ],
-  "checked_at": "2026-11-05T19:19:06.460Z",
+  "checked_at": "2026-11-06T05:33:38.879Z",
   "retired_candidates": [
     {
       "primary": "C15846",

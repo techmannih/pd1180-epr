@@ -20,7 +20,7 @@ export const integratedPowerPaths = [
   ['BRAKE_RETURN','J3:2','Q16:9'],
 ]
 export function powerPaths(report) {
-  if (report.architecture === 'RP2040_DRV8462DDV') return integratedPowerPaths
+  if (report.architecture === 'RP2040_DRV8262DDV') return integratedPowerPaths
   if (report.architecture && report.architecture !== 'STM32_TMC5160') throw new Error('Unknown copper-screen architecture')
   return comparedPowerPaths
 }

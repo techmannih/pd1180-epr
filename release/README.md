@@ -4,8 +4,8 @@ Revision **0.5.0-RP2040-DRAFT**. This handoff contains matched PCB/assembly file
 
 ## Package contents and order preparation
 
-- Use the Gerber/drill archives with `jlc-bom.csv`, `jlc-cpl.csv` and `order-settings.json`. Specify four layers, 1.6 mm, 1 oz on every layer, ENIG, top-side assembly and all 66 epoxy-filled/copper-capped via-in-pad locations in `rp2040-via-in-pad.json`.
-- Include through-hole WAGO J2/J3 terminals and tall capacitors in the assembly scope. All 243 fitted placements are top-side. Optional U18 is bottom DNP; C52/C53 are top DNP and all three are excluded from paste and the fitted BOM/CPL.
+- Use the Gerber/drill archives with `jlc-bom.csv`, `jlc-cpl.csv` and `order-settings.json`. Specify four layers, 1.6 mm, 1 oz on every layer, ENIG, top-side assembly and all 78 epoxy-filled/copper-capped via-in-pad locations in `rp2040-via-in-pad.json`.
+- Include through-hole WAGO J2/J3 terminals and tall capacitors in the assembly scope. All 250 fitted placements are top-side. Optional U18 is bottom DNP; C52/C53 are top DNP and all three are excluded from paste and the fitted BOM/CPL.
 - Allocate the exact fitted-part quantities from the timestamped sourcing reports. Record the supplier's stack-up/USB impedance, USB-hole geometry and critical-marking disposition in `manufacturing-acceptance-record.json`.
 - Prepare the external EPR source/cable, motor harness, driver cooler/TIM/support and J3 resistor/cooler/guard using `assembly.md`, `external-system.md` and `thermal-qualification.md`. The selected first-article brake resistor is 10 ohm / 300 W at its specified case temperature; installed duty is established by measurements.
 - The ordered motor is STEPPERONLINE 34HS31-6004S1 (Amazon B091C83HWF). Four PCB axes align to its archived STEP. Measure rear thread/usable engagement and physical clearance before selecting screws/spacers; the modeled separation is not a fastening specification.
@@ -22,7 +22,7 @@ The explicit `power-test` profile provides a 30-second stationary VMOTOR test wi
 
 ## Verification evidence
 
-The paired native reports record 483 raw DRC findings: eight J1/J10 hole-clearance errors plus 475 cosmetic warnings, with no other native errors. They report 0 unconnected items, 0 schematic-parity issues and 0 schematic ERC violations. Retain `kicad-drc.json` and `kicad-erc.json` for the manufacturer review.
+The paired native reports record 496 raw DRC findings: eight J1/J10 hole-clearance errors plus 488 cosmetic warnings, with no other native errors. They report 0 unconnected items, 0 schematic-parity issues and 0 schematic ERC violations. Retain `kicad-drc.json` and `kicad-erc.json` for the manufacturer review.
 
 `verification.json` records the checked software/CAD inputs. `schematic-style-check.json` covers all 9 sheets. `circuit.json` preserves the source schematic and replays the verified native copper. `power-validation.md` describes the behavioral screens and post-assembly measurements: the current 2000 uF bank reaches 54.321 V in the nominal-delay 6 A winding model, while the 100 us delay case reaches 54.745 V and misses the allocated 0.5 V reserve below 55 V. Use the bounded test profile and measured results to define a later load/current envelope.
 

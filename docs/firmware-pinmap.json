@@ -1,8 +1,8 @@
 {
   "gpio": {
-    "0": "DRV_STEP",
-    "1": "DRV_DIR",
-    "2": "DRV_SLEEP_N",
+    "0": "DRV_PHASE_B",
+    "1": "DRV_PHASE_A",
+    "2": "DRV_ENABLE_A",
     "3": "DRV_FAULT_N",
     "6": "MOTOR_PG",
     "7": "EFUSE_FAULT_N",
@@ -11,9 +11,8 @@
     "10": "POWER_PERMIT",
     "11": "USER_BUTTON_N",
     "12": "STATUS_GPIO",
-    "13": "DRV_HOME_N",
-    "16": "SPI_MISO",
-    "17": "DRV_CS_N",
+    "16": "DAC_LDAC_N",
+    "17": "DAC_CS_N",
     "18": "SPI_SCK",
     "19": "SPI_MOSI",
     "20": "PD_SDA",
@@ -24,7 +23,8 @@
     "29": "USB_VBUS_SENSE",
     "14": "ENC_SDA",
     "15": "ENC_SCL",
-    "24": "SENSE_EN"
+    "24": "SENSE_EN",
+    "13": "DRV_ENABLE_B"
   },
   "packagePinByGpio": [
     2,
@@ -60,9 +60,9 @@
   ],
   "source": "https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf",
   "mcu": {
-    "pin2": "DRV_STEP",
-    "pin3": "DRV_DIR",
-    "pin4": "DRV_SLEEP_N",
+    "pin2": "DRV_PHASE_B",
+    "pin3": "DRV_PHASE_A",
+    "pin4": "DRV_ENABLE_A",
     "pin5": "DRV_FAULT_N",
     "pin8": "MOTOR_PG",
     "pin9": "EFUSE_FAULT_N",
@@ -71,9 +71,8 @@
     "pin13": "POWER_PERMIT",
     "pin14": "USER_BUTTON_N",
     "pin15": "STATUS_GPIO",
-    "pin16": "DRV_HOME_N",
-    "pin27": "SPI_MISO",
-    "pin28": "DRV_CS_N",
+    "pin27": "DAC_LDAC_N",
+    "pin28": "DAC_CS_N",
     "pin29": "SPI_SCK",
     "pin30": "SPI_MOSI",
     "pin31": "PD_SDA",
@@ -111,7 +110,8 @@
     "pin57": "GND",
     "pin17": "ENC_SDA",
     "pin18": "ENC_SCL",
-    "pin36": "SENSE_EN"
+    "pin36": "SENSE_EN",
+    "pin16": "DRV_ENABLE_B"
   },
   "controller": "RP2040",
   "package": "QFN-56 + exposed GND pad 57"

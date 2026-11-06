@@ -1,6 +1,6 @@
 # Manufacturing and mechanical acceptance
 
-Use this checklist for the fabrication quote, process review and assembled-board acceptance. Use the current RP2040 / DRV8462DDVR / TPS26750 release, with U38 raw-PD sensing and WAGO J2/J3. Record release hash, supplier, drawing revision, operator/date and evidence for each acceptance. A catalogue capability is not this board's manufacturing approval.
+Use this checklist for the fabrication quote, process review and assembled-board acceptance. Use the current RP2040 / DRV8262DDVR / TPS26750 release, with U38 raw-PD sensing and WAGO J2/J3. Record release hash, supplier, drawing revision, operator/date and evidence for each acceptance. A catalogue capability is not this board's manufacturing approval.
 
 ## Current fabrication instructions
 
@@ -9,8 +9,8 @@ Use this checklist for the fabrication quote, process review and assembled-board
 | PCB | 85.9 × 85.9 mm stepped outline; four layers; 1.6 mm; 1 oz on every layer; ENIG; top assembly | Supplier accepts the actual stack-up, electrical test and drawing |
 | Copper | Minimum track **0.15 mm**; copper spacing **0.10 mm**; global copper-to-edge **0.20 mm** | Retain source/native rules; do not substitute defaults |
 | GND inner plane | Clearance **0.30 mm**, edge inset **0.50 mm** | Independent of the global edge rule |
-| Via-in-pad | **66 locations**, epoxy filled and copper capped | Coordinate list and board hash in `rp2040-via-in-pad.json`; inspect planarity and joints |
-| Fitted assembly | **243 components**, all top; U18 bottom DNP, C52/C53 top DNP | Matching BOM/CPL/Gerbers; selective or hand soldering of WAGO terminals and tall parts agreed |
+| Via-in-pad | **78 locations**, epoxy filled and copper capped | Coordinate list and board hash in `rp2040-via-in-pad.json`; inspect planarity and joints |
+| Fitted assembly | **250 components**, all top; U18 bottom DNP, C52/C53 top DNP | Matching BOM/CPL/Gerbers; selective or hand soldering of WAGO terminals and tall parts agreed |
 | USB receptacles | C3025063 / USB4105-GF-A-060; 0.60 mm stakes on a 1.6 mm board | Joint/retention acceptance; stakes need not protrude through the board |
 | USB routing | 90 Ω differential design target, ±10% project tolerance | Selected stack-up, actual geometry field-solver result and coupon/TDR plus functional USB test |
 | Driver cooling | DDV exposed **top** pad, TIM, heatsink and mechanically supported contact | See `thermal-qualification.md`; fit the selected cooler/TIM/support and record contact, clearance and test temperatures |
@@ -19,11 +19,11 @@ Use this checklist for the fabrication quote, process review and assembled-board
 
 The exact via list, including U38/C109 and C103 signal fanout locations, supersedes historical inventories. Keep connector plated holes and motor mounting holes open. [JLC's via-covering specification](https://jlcpcb.com/help/article/pcb-via-covering) distinguishes filled/capped processing from ordinary tenting or mask plugging.
 
-[JLC stack-up data](https://jlcpcb.com/impedance) must be matched to the actual four-layer requirement. Do not substitute 0.5 oz inner copper or change to 2 oz outer copper without a reviewed geometry/impedance/process update. TI recommends 2 oz outer layers for DRV8462; the retained 1 oz design has no full-current thermal qualification. Ground-reference continuity is not an impedance measurement.
+[JLC stack-up data](https://jlcpcb.com/impedance) must be matched to the actual four-layer requirement. Do not substitute 0.5 oz inner copper or change to 2 oz outer copper without a reviewed geometry/impedance/process update. TI recommends 2 oz outer layers for DRV8262; the retained 1 oz design has no full-current thermal qualification. Ground-reference continuity is not an impedance measurement.
 
 ## Native findings for fabricator review
 
-Read the current `kicad-drc.json` rather than a historical screenshot. The reviewed baseline has **eight J1/J10 hole-clearance errors and 475 cosmetic warnings**, with zero unconnected, schematic-parity and ERC findings. Those retained errors are permitted for engineering review only. Obtain explicit fabricator acceptance or a reviewed footprint correction before ordering; do not lower rules merely to obtain zero errors. Cosmetic review must also ensure safety/polarity markings remain legible.
+Read the current `kicad-drc.json` rather than a historical screenshot. The reviewed baseline has **eight J1/J10 hole-clearance errors and 488 cosmetic warnings**, with zero unconnected, schematic-parity and ERC findings. Those retained errors are permitted for engineering review only. Obtain explicit fabricator acceptance or a reviewed footprint correction before ordering; do not lower rules merely to obtain zero errors. Cosmetic review must also ensure safety/polarity markings remain legible.
 
 ## Mounting measurements
 

@@ -1,8 +1,8 @@
 # Design implementation and post-assembly validation
 
-RP2040 / DRV8462DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the current redesign evidence](../engineering/rp2040-redesign.json) and [reviewer checklist](reviewer-checklist.md). Use [assembly](assembly.md) for order preparation and [commissioning](commissioning.md) for tests after assembly.
+RP2040 / DRV8262DDVR / TPS26750 / AS5600, revision 0.5.0-RP2040-DRAFT. Read [the current redesign evidence](../engineering/rp2040-redesign.json) and [reviewer checklist](reviewer-checklist.md). Use [assembly](assembly.md) for order preparation and [commissioning](commissioning.md) for tests after assembly.
 
-1. Native routing is complete: 0 unconnected/parity/ERC findings, 8 retained J1/J10 hole errors and 475 cosmetic warnings. The exact USB-hole review exception is not fabrication acceptance. Fresh power-copper, bypass, Kelvin and USB-reference checks and matching artifacts are available; physical thermal/USB qualification remains open.
+1. Native routing is complete: 0 unconnected/parity/ERC findings, 8 retained J1/J10 hole errors and 488 cosmetic warnings. The exact USB-hole review exception is not fabrication acceptance. Fresh power-copper, bypass, Kelvin and USB-reference checks and matching artifacts are available; physical thermal/USB qualification remains open.
 2. Allocate the exact fitted-part quantities from the latest sourcing snapshot and install the selected top-cooled DDV cooler/TIM/support. Use the bounded commissioning current before selecting an application profile from measurements.
 3. Finalize secured rear mounting and connector/harness access. U18 remains optional DNP until the rear magnet attachment and airgap are qualified. WAGO spring-clamp J2/J3 and U38 INA237 raw PD_VBUS sensing are implemented in the reviewer ECO. Their powered and physical acceptance remains open.
 4. Program U3's reviewed TI EEPROM image using its isolated fixture, read the full 64 KiB back, compare the programmed image and confirm a cold APP boot/48 V EPR contract. See [PD programming](pd-programming.md).

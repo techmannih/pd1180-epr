@@ -31,7 +31,7 @@ export function powerFeedErrors(board, policy) {
         original = restorePlacementRevisions(original, [revision])
     } catch { errors.push('Later placement differs from its exact reviewed geometry') }
   }
-  if (policy.architecture_baseline && policy.architecture_baseline.architecture !== 'RP2040_DRV8462DDV')
+  if (policy.architecture_baseline && policy.architecture_baseline.architecture !== 'RP2040_DRV8262DDV')
     errors.push('Unknown power-feed architecture baseline')
   if (canonicalCopper(original) !== (policy.architecture_baseline?.canonical_unfilled_sha256 || policy.baseline_canonical_unfilled_sha256))
     errors.push('Unrelated native board geometry changed')

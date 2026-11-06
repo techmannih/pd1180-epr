@@ -1,5 +1,9 @@
 # PCB design and release rules
 
+## DRV8262DDVR migration — 2026-11-06
+
+The user explicitly selected DRV8262DDVR and authorized the necessary circuit and firmware changes. Reopen U7 control/current-reference circuitry, affected RP2040 pins, local routing, firmware, checks and current documentation. This supersedes the earlier DRV8462 retention decision. DRV8262 has no SPI register interface or STEP/DIR indexer: implement actual phase sequencing and current references, never rename the old register driver. Preserve DATA-only MCU power, hardware shutdown, the independent brake, motor power paths and mounting holes. Keep diagnostics inhibited and commissioning bounded; record physical current/thermal validation separately. Deliver a new PR as techmannih, not a main push.
+
 ## Repository wording and handoff — 2026-11-06
 
 The user requests current, constructive order/assembly preparation rather than blanket readiness labels. Keep implementation results, fabrication/installation actions and post-assembly measurements distinct. Correct stale STM32/TMC/JST instructions in active guides. Preserve dated historical evidence, actual DRC/stock/simulation findings and all machine acceptance gates; wording cleanup does not authorize changing a result, bypassing a protection or claiming physical acceptance. Update generated prose and release mirrors consistently in the existing PR. Earlier dated decisions below describe their revision; the latest applicable user instruction takes precedence.

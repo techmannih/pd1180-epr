@@ -12,9 +12,9 @@ void sleepWhileUsbSuspended() { ++sleeps; }
 
 static void advance(unsigned ms) { fakeNow+=ms; loop(); }
 static void expectSafe() {
-  for (auto p : {PD1180_PIN_MCU_RUN, PD1180_PIN_POWER_PERMIT, PD1180_PIN_DRV_SLEEP_N})
+  for (auto p : {PD1180_PIN_MCU_RUN, PD1180_PIN_POWER_PERMIT, PD1180_PIN_DRV_ENABLE_A, PD1180_PIN_DRV_ENABLE_B})
     assert(fakeLevels[pin(p)]==LOW);
-  for (auto p : {PD1180_PIN_DRV_CS_N}) {
+  for (auto p : {PD1180_PIN_DAC_CS_N}) {
     assert(fakeModes[pin(p)]==INPUT);
     assert(fakeLevels[pin(p)]==HIGH);
   }
@@ -97,9 +97,9 @@ int main() {
   assert(!spiStarted && motorSpi.transactions==0);
   inputs.motor_power_good=inputs.vmotor_in_range=true;
   pollDriver(fakeNow+20);
-  assert(driverAwake && !spiStarted);
+  assert(!driverAwake && !spiStarted && !inputs.driver_ready);
   pollDriver(fakeNow+22);
-  assert(spiStarted && driverStatus.fault && !inputs.driver_ready);
+  assert(!spiStarted && !inputs.driver_ready); // diagnostics never prepare motion
   inputs.motor_power_good=false; pollDriver(fakeNow+23);
   assert(!spiStarted && fakeModes[pin(PD1180_PIN_SPI_MOSI)]==INPUT);
   encoderSample.valid=true;

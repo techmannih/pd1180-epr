@@ -1,15 +1,15 @@
 {
-  "baseline_commit": "fd77f025d1031127cc8e40b0dd6028b1b08520cf",
-  "reason": "Source-owned references retained after the authorized DATA-only isolation, sensor-switch and bulk-capacitor ECO. 475 raw cosmetic warnings remain visible under the existing user deferral; the exact eight USB hole errors remain separately recorded. No electrical findings waived.",
+  "baseline_commit": "50350344ec36ee153ca9e64e8e67c66ce1141f8a",
+  "reason": "Source-owned references retained through the authorized DRV8262 dual-DAC, U36, R60 and BZ1 ECO. 488 raw cosmetic warnings remain visible under the existing cosmetic deferral; only the exact eight USB hole errors are separately retained. No electrical finding was waived.",
   "counts": {
-    "text_height": 185,
-    "silk_overlap": 161,
-    "silk_over_copper": 129
+    "text_height": 191,
+    "silk_overlap": 164,
+    "silk_over_copper": 133
   },
-  "signature": "e6b58ac28a0194dea1549293890a666712e54175bf835b81f217195f193440f2",
+  "signature": "a8fb9397c67b5dbff8f603037d5c672cf82d56422813dec5245807ed9c1a48fd",
   "fabrication_authorized": false,
   "user_accepted_cosmetic_findings": true,
-  "previous_signature": "e59cee878f05899a86afcc6517cbd6eed4a82239c2f2d2888cdaa7655e68ed7f",
+  "previous_signature": "e6b58ac28a0194dea1549293890a666712e54175bf835b81f217195f193440f2",
   "stocked_controller_change": {
     "baseline_commit": "5bb9d4bcc71c397436a0ca0a92c1b13846b4480a",
     "removed": [
@@ -470,5 +470,9 @@
       ],
       "copper_pads_holes_zones_and_fills_identical": true
     }
+  },
+  "reference_alignment": {
+    "previous_signature": "986ff7e7146650b94f9ccb10435a83ca49fc84bae00392597be473a4ff6a7a10",
+    "change": "Restore R35 and C97 native reference anchors to their source-owned default positions; no copper, placement, pad, hole, net or DRC rule changed."
   }
 }

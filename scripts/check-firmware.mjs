@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process'
 await mkdir('firmware/build', { recursive: true })
 const compiler = process.env.CC || 'cc'
 const common = ['-std=c11', '-Wall', '-Wextra', '-Werror', '-Wpedantic', '-Ifirmware/include',
-  'firmware/src/power_domain.c', 'firmware/src/control.c', 'firmware/src/brake_preflight.c', 'firmware/src/telemetry.c', 'firmware/src/pd_contract.c', 'firmware/src/pd_voltage.c', 'firmware/src/drv8462.c', 'firmware/src/step_motion.c', 'firmware/src/as5600.c']
+  'firmware/src/power_domain.c', 'firmware/src/control.c', 'firmware/src/brake_preflight.c', 'firmware/src/telemetry.c', 'firmware/src/pd_contract.c', 'firmware/src/pd_voltage.c', 'firmware/src/drv8262.c', 'firmware/src/step_motion.c', 'firmware/src/as5600.c']
 
 function run(command, args) {
   return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ await run('firmware/build/pd_voltage_tests', [])
 await run(compiler, [...common, 'firmware/src/main.c', '-o', 'firmware/build/pd1180_firmware_sim'])
 await run('firmware/build/pd1180_firmware_sim', [])
 const objects=[]
-for (const name of ['power_domain','brake_preflight','control','telemetry','pd_contract','pd_voltage','drv8462','step_motion','as5600']) {
+for (const name of ['power_domain','brake_preflight','control','telemetry','pd_contract','pd_voltage','drv8262','step_motion','as5600']) {
   const object=`firmware/build/${name}.o`
   await run(compiler,['-std=c11','-Wall','-Wextra','-Werror','-Ifirmware/include','-c',`firmware/src/${name}.c`,'-o',object])
   objects.push(object)

@@ -33,4 +33,4 @@ The four Ø4.2 mm PCB holes retain the exact rear axes from the ordered motor's 
 
 The STEP confirms alignment, not accessory-thread size, usable engagement or permission to replace motor case bolts. The **19.5 mm** board-to-rear separation is a preview assumption. No mounting screws, spacer stack or mechanically secured assembly is claimed.
 
-**U18 AS5600** is centered on the bottom; its DNP capacitors C52/C53 remain on top. It uses I2C, not the earlier SPI/ABI sensor interface. The ordered single-shaft motor has no documented rotating rear magnet attachment. Leave the sensor DNP until magnet mounting, field and airgap are qualified. RP2040/DRV8462 motion remains locked independently of this optional encoder.
+**U18 AS5600** is centered on the bottom; its DNP capacitors C52/C53 remain on top. It uses I2C, not the earlier SPI/ABI sensor interface. The ordered single-shaft motor has no documented rotating rear magnet attachment. Leave the sensor DNP until magnet mounting, field and airgap are qualified. RP2040/DRV8262 motion remains locked independently of this optional encoder.

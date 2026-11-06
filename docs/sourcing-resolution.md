@@ -6,13 +6,17 @@ The current source manifest and exact live `stock-report.json` control ordering.
 
 | Reference | JLCPCB code | Exact selected part | Five-board quantity |
 |---|---|---|---:|
-| R66 | C136970 | RT0603BRD071K2L, 1.2 kΩ 0.1% 0603 | 5 |
-| R60 | C326731 | RT0603BRD07180KL, 180 kΩ 0.1% 0603 | 5 |
-| BZ1 | C391032 | FUET-9650B-3V | 5 |
+| R66 | C5454462 | AT0603BRD071K2L, 1.2 kΩ 0.1% 0603 | 5 |
+| R60 | C351604 | PTFR0805B180KN9, 180 kΩ 0.1% 0805 | 5 |
+| BZ1 | C417385 | FMB09A03-3V, 3 V active through-hole | 5 |
 | J1/J10 | C3025063 | USB4105-GF-A-060 | 10 |
-| U7 | C29780285 | DRV8462DDVR, HTSSOP-44 DDV | 5 |
+| U7 | C33828788 | DRV8262DDVR, HTSSOP-44 DDV | 5 |
 
-These were short in the prior refresh (U7 four available, the other codes zero available-order quantity). Consult the timestamped fresh report for current stock, not this historical observation. Use **Available Order Qty**, bounded by warehouse stock; a larger warehouse/index count alone is not orderable inventory. Obtain supplier attrition/allocation before payment. The user is checking these codes; no substitution or purchase is implied.
+R66 also changes from RT0603BRD071K2L / C136970 to **AT0603BRD071K2L / C5454462**, retaining 1.2 kΩ, 0.1%, 25 ppm/°C, 100 mW, 75 V and the 0603 footprint. Its fresh official available-order count was 1,937; the earlier code was zero.
+
+The 2026-11-06 ECO replaces U7 DRV8462DDVR / C29780285, R60 RT0603BRD07180KL / C326731, BZ1 FUET-9650B-3V / C391032, and U36 SN74LVC2G66DCUR / C181970. U36 is now **SN74LVC2G66DCTR / C2651913** (MSOP-8, 0.65 mm pitch). U7 needs the added **MCP4822-E/SN / C16040 (U42)** and 1.5 kΩ current-mirror resistors. These are source/footprint/control changes, not assembly substitutions on the old PCB.
+
+Consult the timestamped fresh report for current stock. Use **Available Order Qty**, bounded by warehouse stock; a larger warehouse/index count alone is not orderable inventory. Quantities are unreserved and exclude supplier attrition.
 
 ## Current identities
 
@@ -20,7 +24,9 @@ These were short in the prior refresh (U7 four available, the other codes zero a
 |---|---|---|
 | U16 | RP2040 / C2040 | LQFN-56(7×7), current QSPI boot architecture; older STM32 is not fitted |
 | U17 | W25Q32JVSSIM / C6000508 | Required 4 MiB QSPI boot flash on V3V3_MCU; full flash readback and cold boot required |
-| U7 | DRV8462DDVR / C29780285 | DDV top-cooled pinout; do not substitute DDW |
+| U7 | DRV8262DDVR / C33828788 | DDV top-cooled pinout; do not substitute DDW |
+| U36 | SN74LVC2G66DCTR / C2651913 | 0.65 mm pitch; use the new placement and footprint, not the old DCU land pattern |
+| U42 | MCP4822-E/SN / C16040 | Dual DAC current references; no readback, gain 2, simultaneous LDAC update |
 | U35 | PCA9538PWR / C201530 | Retain U37 PD_3V3-domain reset buffer, C99 and R137 |
 | U37 | SN74LVC1G17DBVR / C7836 | Reset-domain isolation; do not omit |
 | R64 | AR03BTCX4303 / C2984356 | 430 kΩ, 0.1%, 0603; preserve threshold tolerance |

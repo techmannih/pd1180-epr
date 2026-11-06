@@ -14,8 +14,8 @@ for (const [pin,net] of Object.entries(pinmap.mcu)) assert.equal(actual[pin],`ne
 const entries = Object.entries(pinmap.gpio).map(([gpio,net])=>({gpio:Number(gpio),net,pin:gpioPins[Number(gpio)]})).sort((a,b)=>a.gpio-b.gpio)
 assert.equal(new Set(entries.map(e=>e.net)).size,entries.length)
 for (const {gpio,net,pin} of entries) assert.equal(actual[`pin${pin}`],`net.${net}`,`GPIO${gpio} has incorrect package pin`)
-// Fixed-function bus checks: I2C0 GP20/21, I2C1 GP14/15, SPI0 GP16..19.
-for (const [gpio,net] of Object.entries({14:'ENC_SDA',15:'ENC_SCL',16:'SPI_MISO',17:'DRV_CS_N',18:'SPI_SCK',19:'SPI_MOSI',20:'PD_SDA',21:'PD_SCL'})) assert.equal(pinmap.gpio[gpio],net)
+// Fixed-function bus checks: I2C0 GP20/21, I2C1 GP14/15, SPI0 TX on GP18/19, software CS on GP17 and LDAC on GP16.
+for (const [gpio,net] of Object.entries({14:'ENC_SDA',15:'ENC_SCL',16:'DAC_LDAC_N',17:'DAC_CS_N',18:'SPI_SCK',19:'SPI_MOSI',20:'PD_SDA',21:'PD_SCL'})) assert.equal(pinmap.gpio[gpio],net)
 for(const [pin,net] of Object.entries({19:'GND',23:'V1V1_MCU',45:'V1V1_MCU',50:'V1V1_MCU',46:'USB_DM',47:'USB_DP',51:'QSPI_SD3',52:'QSPI_SCK',53:'QSPI_SD0',54:'QSPI_SD2',55:'QSPI_SD1',56:'FLASH_CS_N',57:'GND'})) assert.equal(actual[`pin${pin}`],`net.${net}`)
 const output = [
  '#pragma once','','#include <stdint.h>','',
