@@ -102,17 +102,17 @@ def main():
             assert (ic,pin,capacitor)==('U18',1,'C52')
             assert transition['from']=='bottom' and transition['to']=='top'
             assert transition['native_xy_mm']==[100.6,103.9] and transition['source_xy_mm']==[.6,-3.9]
-            assert transition['pad_mm']==.6 and transition['drill_mm']==.3 and transition['maximum_vias']==1
+            assert transition['pad_mm']==.45 and transition['drill_mm']==.3 and transition['maximum_vias']==1
             assert transition['barrel_mm']==1.6 and board.GetDesignSettings().GetBoardThickness()==1600000
             vias=[t for t in all_tracks if isinstance(t,pcbnew.PCB_VIA) and math.dist(xy(t.GetPosition()),(100.6,103.9))<1e-6]
             if len(vias)==1 and layer==pcbnew.B_Cu and footprints[capacitor].GetLayer()==pcbnew.F_Cu:
                 via=vias[0]
-                if via.GetNetCode()==start.GetNetCode()==end.GetNetCode() and all(via.GetWidth(ly)==600000 for ly in (pcbnew.F_Cu,pcbnew.In1_Cu,pcbnew.In2_Cu,pcbnew.B_Cu)) and via.GetDrillValue()==300000 and via.GetViaType()==pcbnew.VIATYPE_THROUGH:
+                if via.GetNetCode()==start.GetNetCode()==end.GetNetCode() and all(via.GetWidth(ly)==450000 for ly in (pcbnew.F_Cu,pcbnew.In1_Cu,pcbnew.In2_Cu,pcbnew.B_Cu)) and via.GetDrillValue()==300000 and via.GetViaType()==pcbnew.VIATYPE_THROUGH:
                     bottom=route_length(start,via,tracks,pads,pcbnew.B_Cu)
                     top=route_length(via,end,tracks,pads,pcbnew.F_Cu)
                     if bottom is not None and top is not None:
                         length=bottom+1.6+top
-                        via_evidence=dict(xy_mm=xy(via.GetPosition()),pad_mm=.6,drill_mm=.3,barrel_mm=1.6,bottom_mm=bottom,top_mm=top)
+                        via_evidence=dict(xy_mm=xy(via.GetPosition()),pad_mm=pcbnew.ToMM(via.GetWidth(pcbnew.F_Cu)),drill_mm=.3,barrel_mm=1.6,bottom_mm=bottom,top_mm=top)
         passed = length is not None and length <= 5
         results.append(dict(ic=ic, pin=pin, capacitor=capacitor,
                             layer=board.GetLayerName(layer), route_length_mm=length, maximum_mm=5, passed=passed,

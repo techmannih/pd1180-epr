@@ -93,8 +93,8 @@ const TMCM1180_OUTLINE = [
 ].map(({ x, y }) => ({ x: x - 42.95, y: y - 42.95 }))
 
 export const PD1180EPR = () => (
-  <board name="PD1180_EPR" title="PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" outline={TMCM1180_OUTLINE} layers={4} isViaInPadAllowed thickness="1.6mm" pcbStyle={{ viaPadDiameter: 0.6, viaHoleDiameter: 0.3 }}
-    defaultTraceWidth="0.25mm" minTraceWidth="0.15mm" minViaHoleDiameter="0.3mm" minViaPadDiameter="0.5mm"
+  <board name="PD1180_EPR" title="PD1180-EPR — NEMA 34 Smart Motor-Mounted Stepper Controller with USB-C PD 3.1 EPR" solderMaskColor="#245f2b" width="85.9mm" height="85.9mm" outline={TMCM1180_OUTLINE} layers={4} isViaInPadAllowed thickness="1.6mm" pcbStyle={{ viaPadDiameter: 0.45, viaHoleDiameter: 0.3 }}
+    defaultTraceWidth="0.25mm" minTraceWidth="0.15mm" minViaHoleDiameter="0.3mm" minViaPadDiameter="0.45mm"
     schAutoLayoutEnabled schTraceAutoLabelEnabled schMaxTraceDistance={0.8}
     autorouter="auto-local" autorouterEffortLevel="5x" autorouterVersion="beta_pipeline7" >
     {/* 4.2 mm clearance holes aligned to the ordered 34HS31-6004S1 rear CAD axes. See the mechanical reference for the unqualified rear-thread interface. */}
@@ -980,7 +980,7 @@ export const PD1180EPR = () => (
       capacitance="33pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C1663"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
-      connections={{ pin1: "net.OSC_OUT", pin2: "net.GND" }} pcbRotation={0} schSheetName="mcu" schX={0} schY={4.6} />
+      connections={{ pin1: "net.XTAL_OUT", pin2: "net.GND" }} pcbRotation={0} schSheetName="mcu" schX={0} schY={4.6} />
     <TS_1088_AR02016 name="SW1" schSectionName="mcu_SW1" pcbX={-25.0} pcbY={-40} layer="top" schRotation={-90}
       connections={{ pin1: "net.NRST", pin2: "net.GND" }} schSheetName="mcu" schX={2.25} schY={-2.225} />
     <TS_1088_AR02016 name="SW2" schSectionName="user_start_stop" pcbX={-10.5} pcbY={-40} layer="top" schRotation={-90}

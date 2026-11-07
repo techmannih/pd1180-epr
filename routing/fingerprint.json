@@ -1,23 +1,23 @@
 {
   "schema_version": 2,
   "algorithm": "sha256 of normalized topology, supplier identity, footprint geometry, placement and local copper; routing policy/seed inputs; plus reviewed KiCad board hash",
-  "input_sha256": "22f9dae22862404efcd532d1fb7ec20d243859265a06ba8502e41a8a25530892",
+  "input_sha256": "79e0c594d2e7d2f47b440982bdc64d7fe3b64802def6e800381967d63fa52e0e",
   "routing_inputs": {
-    "board-standards.json": "1c834b8befaf2d3f4d961e51878d879a6e829733552474217cdf56df9f6116e0",
+    "board-standards.json": "407bb00302fad8d0dd6614e71321aca2ea584f3cc7a95c54a77c9d568433b986",
     "routing/requirements.json": "430aedfd5d9280cf1058de3da090f58a169bcbc56e71772724725fe354824c3a",
     "routing/critical-paths.json": "c25987da5c1787d83d753c2195879bb49f0d4c8f0d3762270e98dd3e0a5fc05c",
     "routing/pin-escapes.json": "a7a268fd13e1601043fb2a5e7b05ddccb041e0739395b41c9235c53856d93ad7",
     "scripts/prepare-routing-seed.py": "a45f94cd997bc7fdf4de4649854a56fe87eae88a01fb7398cbaf0c857f2fbc3b",
     "scripts/prepare-routing-rules.py": "629b5598e1cccdea643cab127c37ced061b815958770905d7227f666f3112a7f",
     "scripts/add-board-planes.py": "b93d010fb866a9e164739433ffc8f19bac212b28c9c5ff5b99ae006212c9208c",
-    "scripts/export-kicad-route.mjs": "122277d2e8c3a9962ab2d5a9a5fd7832671f2ef045ac0cce4c505cce190126d5",
+    "scripts/export-kicad-route.mjs": "daada0eeadd393c397669cb7a25ef48fc6a7ced847133b20d120066bb333cd18",
     "scripts/source-design-policy.mjs": "88ba35ba43c8c76fefba19be89ecc8c1851db74757a9e2d86f1ab04292f6c817",
     "scripts/source_design_rules.py": "efb6a8c5d9d64b3b93596b7b7f0be617d149869f2c0befb4831481d039949660",
     "scripts/clean-silkscreen.py": "4e2f918a5f644957cc47b50d27c9f13d72a66bcc01359b2b24d271db54239701",
     "routing/power-feed.json": "d58c1d66c1105c8fd7292113798feb7e68e1ed501c74818bcc1c0f550cf8e1a4",
     "scripts/power-feed.mjs": "e1c85ed3daa54cad15356f24e2cba0b70b70380088226ce6db526e8932419b8c"
   },
-  "routed_board_sha256": "4b39216fafcaf8dbe6490d060320cc60a98ff84ea63eca21e9a5ebe69fee3986",
+  "routed_board_sha256": "e715b7e14d35cd997f8149197630456727bb0cdba04b16bf7291d7cd0b620d34",
   "counts": {
     "board": 1,
     "components": 273,
@@ -28,5 +28,5 @@
     "holes": 8,
     "local_copper": 64
   },
-  "reviewed_at": "2026-11-07T01:04:27.791Z"
+  "reviewed_at": "2026-11-07T02:25:55.807Z"
 }

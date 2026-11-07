@@ -1,6 +1,6 @@
 {
   "baseline_commit": "50350344ec36ee153ca9e64e8e67c66ce1141f8a",
-  "baseline_non_schematic_sha256": "66b1d6daf929243feb923bc63b786a742476444e63264868433fa75b4a2a3f8c",
+  "baseline_non_schematic_sha256": "fd41fffe4e1dd6d633dd974252db2f3430a7b4f679b7281ef1af87e300ce5805",
   "record_count": 6998,
   "algorithm": "SHA-256 with recursively sorted object keys; record order retained. Exclude schematic_* and system_block_* records, source_project_metadata filesystem cache and cli_module_to_static_asset metadata. Reuse circuitSourceHash: round derived pcb_trace.trace_length to 1e-12 mm; coordinates, widths, nets and other geometry remain exact.",
   "scope": "User-authorized DRV8262DDVR migration: actual PH/EN microstepping, MCP4822 references, R60/BZ1/U36/R66 stocked replacements, C96 bypass relocation and affected local routing. DATA-only MCU, independent brake, all four motor mounting holes and unrelated source content retained.",
@@ -80,5 +80,17 @@
     "previous_non_schematic_sha256": "02090682f6276d7ae6e902b8b0507f834aa4bfd18a4b6652c6ab91095c9c2475",
     "change": "R65 supplier_part_numbers C723637 to C328424. A record-by-record diff of the compiled circuit shows no other electrical or PCB record changed.",
     "evidence": "sourcing/r65-substitution.json"
+  },
+  "encoder_via_resize": {
+    "date": "2026-11-07",
+    "previous_non_schematic_sha256": "66b1d6daf929243feb923bc63b786a742476444e63264868433fa75b4a2a3f8c",
+    "change": "User-requested board viaPadDiameter 0.6 to 0.45 and minViaPadDiameter 0.5 to 0.45. A record-by-record diff of the compiled circuit shows only pcb_board.min_via_pad_diameter, the one pcb_via outer_diameter and the inner1 pour brep_shape around that via changed, plus excluded build metadata.",
+    "evidence": "engineering/motor-a2-export-bridge.json via_resizes"
+  },
+  "c50_crystal_side_correction": {
+    "date": "2026-11-07",
+    "previous_non_schematic_sha256": "d51b2c1b443ed4090a4138c8baf4a15cac31bc5c4638497a818b753824af9401",
+    "change": "C50 pin 1 moved from OSC_OUT to XTAL_OUT so it loads the crystal side of R138. Native copper diff is exactly 2 modified, 2 removed and 1 added record.",
+    "evidence": "engineering/motor-a2-export-bridge.json c50_correction"
   }
 }

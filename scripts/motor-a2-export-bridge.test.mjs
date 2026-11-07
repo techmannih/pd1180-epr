@@ -34,3 +34,25 @@ test('only the reviewed R65 supplier code may differ from the bridged baseline',
   supplierOf(otherPart, 'R64')[2] = '"C1"'
   expect(() => checkMotorA2Bridge(otherPart, policy)).toThrow('Unrelated native geometry')
 })
+
+test('only the reviewed encoder via may keep its reduced pad', () => {
+  const via = (rows, id) => rows.find(item => Array.isArray(item) && item[0] === 'via' && field(item, 'uuid')?.[1] === id)
+  const [{ via_uuid: encoder }] = policy.via_resizes
+  const wrongSize = structuredClone(board)
+  field(via(wrongSize, encoder), 'size')[1] = '0.5'
+  expect(() => checkMotorA2Bridge(wrongSize, policy)).toThrow('Unexpected size for reviewed via')
+  const other = structuredClone(board)
+  const otherVia = other.find(item => Array.isArray(item) && item[0] === 'via' && field(item, 'uuid')?.[1] !== encoder)
+  field(otherVia, 'size')[1] = '0.45'
+  expect(() => checkMotorA2Bridge(other, policy)).toThrow('Unrelated native geometry')
+})
+
+test('C50 stays on the crystal side of R138', () => {
+  const padNet = (reference, pin) => board.find(item => Array.isArray(item) && item[0] === 'footprint' &&
+    item.some(p => Array.isArray(p) && p[1] === '"Reference"' && p[2] === JSON.stringify(reference)))
+    .find(p => Array.isArray(p) && p[0] === 'pad' && p[1] === JSON.stringify(String(pin))).find(p => Array.isArray(p) && p[0] === 'net')[1]
+  expect(padNet('C50', 1)).toBe('"XTAL_OUT"')
+  expect(padNet('Y1', 3)).toBe('"XTAL_OUT"')
+  expect(padNet('R138', 1)).toBe('"OSC_OUT"')
+  expect(padNet('R138', 2)).toBe('"XTAL_OUT"')
+})

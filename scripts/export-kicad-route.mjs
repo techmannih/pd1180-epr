@@ -108,8 +108,8 @@ Object.assign(projectData.board.design_settings.rules, {
   min_track_width: fabrication.minimum_trace_width_mm,
   min_connection: fabrication.minimum_connection_width_mm,
   min_groove_width: fabrication.minimum_groove_width_mm,
-  min_via_annular_width: 0.10,
-  min_via_diameter: 0.5,
+  min_via_annular_width: 0.075,
+  min_via_diameter: 0.45,
 })
 Object.assign(projectData.board.design_settings.defaults.zones, {
   min_clearance: 0.16,

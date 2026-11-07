@@ -14413,7 +14413,7 @@
     ],
     "source_component_id": "source_component_178",
     "subcircuit_id": "subcircuit_source_group_0",
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net106"
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net107"
   },
   {
     "type": "source_port",
@@ -28593,12 +28593,13 @@
       "source_port_635"
     ],
     "connected_source_net_ids": [
-      "source_net_62"
+      "source_net_126"
     ],
     "subcircuit_id": "subcircuit_source_group_0",
-    "max_length": 30,
-    "display_name": ".C50 > .pin1 to net.OSC_OUT",
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net106"
+    "max_length": 10,
+    "max_via_count": 0,
+    "display_name": ".C50 > .pin1 to net.XTAL_OUT",
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net107"
   },
   {
     "type": "source_trace",
@@ -51994,7 +51995,7 @@
     "distance_from_component_edge": 0.4,
     "pin_number": 3,
     "display_pin_label": "X2",
-    "is_connected": false,
+    "is_connected": true,
     "schematic_sheet_id": "schematic_sheet_5"
   },
   {
@@ -52042,7 +52043,7 @@
     "distance_from_component_edge": 0.4,
     "pin_number": 1,
     "display_pin_label": "anode",
-    "is_connected": false,
+    "is_connected": true,
     "schematic_sheet_id": "schematic_sheet_5"
   },
   {
@@ -83446,6 +83447,56 @@
   {
     "type": "schematic_trace",
     "schematic_trace_id": "schematic_trace_453",
+    "source_trace_id": "schematic_port_624-schematic_port_621",
+    "edges": [
+      {
+        "from": {
+          "x": -1.8369701987210297e-17,
+          "y": 4.8999999999999995
+        },
+        "to": {
+          "x": -1.8369701987210297e-17,
+          "y": 4.9799999999999995
+        }
+      },
+      {
+        "from": {
+          "x": -1.8369701987210297e-17,
+          "y": 4.9799999999999995
+        },
+        "to": {
+          "x": -1.8369701987210297e-17,
+          "y": 5.390000000000001
+        }
+      },
+      {
+        "from": {
+          "x": -1.8369701987210297e-17,
+          "y": 5.390000000000001
+        },
+        "to": {
+          "x": -0.27,
+          "y": 5.390000000000001
+        }
+      },
+      {
+        "from": {
+          "x": -0.27,
+          "y": 5.390000000000001
+        },
+        "to": {
+          "x": -1.71,
+          "y": 5.390000000000001
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net107",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_454",
     "source_trace_id": "schematic_port_608-schematic_port_632",
     "edges": [
       {
@@ -83485,7 +83536,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_454",
+    "schematic_trace_id": "schematic_trace_455",
     "source_trace_id": "schematic_port_563-schematic_port_613",
     "edges": [
       {
@@ -83525,7 +83576,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_455",
+    "schematic_trace_id": "schematic_trace_456",
     "source_trace_id": "schematic_port_634-schematic_port_609",
     "edges": [
       {
@@ -83585,7 +83636,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_456",
+    "schematic_trace_id": "schematic_trace_457",
     "source_trace_id": "schematic_port_638-schematic_port_647",
     "edges": [
       {
@@ -83615,7 +83666,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_457",
+    "schematic_trace_id": "schematic_trace_458",
     "source_trace_id": "schematic_port_628-schematic_port_631",
     "edges": [
       {
@@ -83675,7 +83726,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_458",
+    "schematic_trace_id": "schematic_trace_459",
     "source_trace_id": "schematic_port_611-schematic_port_612",
     "edges": [
       {
@@ -83705,7 +83756,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_459",
+    "schematic_trace_id": "schematic_trace_460",
     "source_trace_id": "schematic_port_545-schematic_port_554",
     "edges": [
       {
@@ -83750,7 +83801,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_460",
+    "schematic_trace_id": "schematic_trace_461",
     "source_trace_id": "schematic_port_566-schematic_port_577",
     "edges": [
       {
@@ -83810,7 +83861,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_461",
+    "schematic_trace_id": "schematic_trace_462",
     "source_trace_id": "schematic_port_645-schematic_port_646",
     "edges": [
       {
@@ -83850,7 +83901,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_462",
+    "schematic_trace_id": "schematic_trace_463",
     "source_trace_id": "schematic_port_618-schematic_port_619",
     "edges": [
       {
@@ -83910,7 +83961,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_463",
+    "schematic_trace_id": "schematic_trace_464",
     "source_trace_id": "available-net-orientation-3-V3V3_MCU",
     "edges": [
       {
@@ -83935,7 +83986,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_464",
+    "schematic_trace_id": "schematic_trace_465",
     "source_trace_id": "available-net-orientation-4-V3V3_MCU",
     "edges": [
       {
@@ -83970,7 +84021,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_465",
+    "schematic_trace_id": "schematic_trace_466",
     "source_trace_id": "available-net-orientation-13-GND",
     "edges": [
       {
@@ -84000,7 +84051,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_466",
+    "schematic_trace_id": "schematic_trace_467",
     "source_trace_id": "available-net-orientation-24-V1V1_MCU",
     "edges": [
       {
@@ -84051,8 +84102,8 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_467",
-    "source_trace_id": "available-net-orientation-61-NRST",
+    "schematic_trace_id": "schematic_trace_468",
+    "source_trace_id": "available-net-orientation-60-NRST",
     "edges": [
       {
         "from": {
@@ -84081,7 +84132,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_468",
+    "schematic_trace_id": "schematic_trace_469",
     "source_trace_id": "inline-net-label-clearance-0-V3V3_MCU",
     "edges": [
       {
@@ -84551,38 +84602,22 @@
   {
     "type": "schematic_net_label",
     "schematic_net_label_id": "schematic_net_label_245",
-    "text": "OSC_OUT",
-    "source_net_id": "source_net_62",
-    "anchor_position": {
-      "x": -1.8369701987210297e-17,
-      "y": 4.8999999999999995
-    },
-    "center": {
-      "x": -1.8369701987210297e-17,
-      "y": 4.989999999999999
-    },
-    "anchor_side": "bottom",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_246",
     "text": "XTAL_OUT",
     "source_net_id": "source_net_126",
     "anchor_position": {
-      "x": -1.71,
-      "y": 5.390000000000001
+      "x": -1.8369701987210297e-17,
+      "y": 5.1850000000000005
     },
     "center": {
-      "x": -1.17,
-      "y": 5.390000000000001
+      "x": 0.54,
+      "y": 5.1850000000000005
     },
     "anchor_side": "left",
     "schematic_sheet_id": "schematic_sheet_5"
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_247",
+    "schematic_net_label_id": "schematic_net_label_246",
     "text": "NRST",
     "source_net_id": "source_net_60",
     "anchor_position": {
@@ -84598,7 +84633,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_248",
+    "schematic_net_label_id": "schematic_net_label_247",
     "text": "USB_DM_CONN",
     "source_net_id": "source_net_91",
     "anchor_position": {
@@ -84614,7 +84649,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_469",
+    "schematic_trace_id": "schematic_trace_470",
     "source_trace_id": "source_trace_524",
     "edges": [
       {
@@ -84649,7 +84684,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_470",
+    "schematic_trace_id": "schematic_trace_471",
     "source_trace_id": "source_trace_568",
     "edges": [
       {
@@ -84684,332 +84719,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_471",
-    "source_trace_id": "source_trace_526",
-    "edges": [
-      {
-        "from": {
-          "x": -3.4499999999999997,
-          "y": -5
-        },
-        "to": {
-          "x": -4.529999999999999,
-          "y": -5
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net108",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_358",
-    "text": "FLASH_CS_N",
-    "source_trace_id": "source_trace_526",
-    "anchor": "right",
-    "position": {
-      "x": -3.5499999999999994,
-      "y": -4.94
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
     "schematic_trace_id": "schematic_trace_472",
-    "source_trace_id": "source_trace_582",
-    "edges": [
-      {
-        "from": {
-          "x": -0.8999999999999999,
-          "y": 2.525000000000001
-        },
-        "to": {
-          "x": 0.18000000000000016,
-          "y": 2.525000000000001
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net108",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_359",
-    "text": "FLASH_CS_N",
-    "source_trace_id": "source_trace_582",
-    "anchor": "left",
-    "position": {
-      "x": -0.7999999999999998,
-      "y": 2.585000000000001
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_360",
-    "text": "FLASH_CS_N",
-    "source_trace_id": "source_trace_621",
-    "anchor": "center",
-    "position": {
-      "x": 7.555,
-      "y": -1.6899999999999995
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_473",
-    "source_trace_id": "source_trace_544",
-    "edges": [
-      {
-        "from": {
-          "x": -3.6,
-          "y": 0.22500000000000106
-        },
-        "to": {
-          "x": -4.92,
-          "y": 0.22500000000000106
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net116",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_361",
-    "text": "USER_BUTTON_N",
-    "source_trace_id": "source_trace_544",
-    "anchor": "right",
-    "position": {
-      "x": -3.6999999999999997,
-      "y": 0.28500000000000103
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_362",
-    "text": "USER_BUTTON_N",
-    "source_trace_id": "source_trace_611",
-    "anchor": "center",
-    "position": {
-      "x": 10.25,
-      "y": 6.529999999999999
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_474",
-    "source_trace_id": "source_trace_567",
-    "edges": [
-      {
-        "from": {
-          "x": -3.6,
-          "y": -0.975
-        },
-        "to": {
-          "x": -4.36,
-          "y": -0.975
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net124",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_363",
-    "text": "OSC_IN",
-    "source_trace_id": "source_trace_567",
-    "anchor": "right",
-    "position": {
-      "x": -3.7,
-      "y": -0.915
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_475",
-    "source_trace_id": "source_trace_601",
-    "edges": [
-      {
-        "from": {
-          "x": -2.79,
-          "y": 5.390000000000001
-        },
-        "to": {
-          "x": -3.55,
-          "y": 5.390000000000001
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net124",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_364",
-    "text": "OSC_IN",
-    "source_trace_id": "source_trace_601",
-    "anchor": "right",
-    "position": {
-      "x": -2.8899999999999997,
-      "y": 5.45
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_476",
-    "source_trace_id": "source_trace_605",
-    "edges": [
-      {
-        "from": {
-          "x": -4.5,
-          "y": 4.8999999999999995
-        },
-        "to": {
-          "x": -4.5,
-          "y": 5.659999999999999
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net124",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_365",
-    "text": "OSC_IN",
-    "source_trace_id": "source_trace_605",
-    "anchor": "left",
-    "position": {
-      "x": -4.56,
-      "y": 4.999999999999999
-    },
-    "rotation": -90,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_477",
-    "source_trace_id": "source_trace_572",
-    "edges": [
-      {
-        "from": {
-          "x": -3.6,
-          "y": -2.1750000000000007
-        },
-        "to": {
-          "x": -4.2,
-          "y": -2.1750000000000007
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net127",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_366",
-    "text": "NRST",
-    "source_trace_id": "source_trace_572",
-    "anchor": "right",
-    "position": {
-      "x": -3.7,
-      "y": -2.1150000000000007
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_367",
-    "text": "NRST",
-    "source_trace_id": "source_trace_594",
-    "anchor": "center",
-    "position": {
-      "x": -6.359999999999999,
-      "y": 2.315
-    },
-    "rotation": -90,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_478",
-    "source_trace_id": "source_trace_619",
-    "edges": [
-      {
-        "from": {
-          "x": 8.100000000000001,
-          "y": -8.2
-        },
-        "to": {
-          "x": 7.500000000000002,
-          "y": -8.2
-        }
-      }
-    ],
-    "junctions": [],
-    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net127",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_text",
-    "schematic_text_id": "schematic_text_368",
-    "text": "NRST",
-    "source_trace_id": "source_trace_619",
-    "anchor": "right",
-    "position": {
-      "x": 8.000000000000002,
-      "y": -8.139999999999999
-    },
-    "rotation": 0,
-    "font_size": 0.12,
-    "color": "rgb(132, 0, 0)",
-    "schematic_sheet_id": "schematic_sheet_5"
-  },
-  {
-    "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_479",
     "source_trace_id": "source_trace_525",
     "edges": [
       {
@@ -85029,7 +84739,7 @@
   },
   {
     "type": "schematic_text",
-    "schematic_text_id": "schematic_text_369",
+    "schematic_text_id": "schematic_text_358",
     "text": "XTAL_OUT",
     "source_trace_id": "source_trace_525",
     "anchor": "left",
@@ -85044,7 +84754,332 @@
   },
   {
     "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_473",
+    "source_trace_id": "source_trace_526",
+    "edges": [
+      {
+        "from": {
+          "x": -3.4499999999999997,
+          "y": -5
+        },
+        "to": {
+          "x": -4.529999999999999,
+          "y": -5
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net108",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_359",
+    "text": "FLASH_CS_N",
+    "source_trace_id": "source_trace_526",
+    "anchor": "right",
+    "position": {
+      "x": -3.5499999999999994,
+      "y": -4.94
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_474",
+    "source_trace_id": "source_trace_582",
+    "edges": [
+      {
+        "from": {
+          "x": -0.8999999999999999,
+          "y": 2.525000000000001
+        },
+        "to": {
+          "x": 0.18000000000000016,
+          "y": 2.525000000000001
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net108",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_360",
+    "text": "FLASH_CS_N",
+    "source_trace_id": "source_trace_582",
+    "anchor": "left",
+    "position": {
+      "x": -0.7999999999999998,
+      "y": 2.585000000000001
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_361",
+    "text": "FLASH_CS_N",
+    "source_trace_id": "source_trace_621",
+    "anchor": "center",
+    "position": {
+      "x": 7.555,
+      "y": -1.6899999999999995
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_475",
+    "source_trace_id": "source_trace_544",
+    "edges": [
+      {
+        "from": {
+          "x": -3.6,
+          "y": 0.22500000000000106
+        },
+        "to": {
+          "x": -4.92,
+          "y": 0.22500000000000106
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net116",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_362",
+    "text": "USER_BUTTON_N",
+    "source_trace_id": "source_trace_544",
+    "anchor": "right",
+    "position": {
+      "x": -3.6999999999999997,
+      "y": 0.28500000000000103
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_363",
+    "text": "USER_BUTTON_N",
+    "source_trace_id": "source_trace_611",
+    "anchor": "center",
+    "position": {
+      "x": 10.25,
+      "y": 6.529999999999999
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_476",
+    "source_trace_id": "source_trace_567",
+    "edges": [
+      {
+        "from": {
+          "x": -3.6,
+          "y": -0.975
+        },
+        "to": {
+          "x": -4.36,
+          "y": -0.975
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net124",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_364",
+    "text": "OSC_IN",
+    "source_trace_id": "source_trace_567",
+    "anchor": "right",
+    "position": {
+      "x": -3.7,
+      "y": -0.915
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_477",
+    "source_trace_id": "source_trace_601",
+    "edges": [
+      {
+        "from": {
+          "x": -2.79,
+          "y": 5.390000000000001
+        },
+        "to": {
+          "x": -3.55,
+          "y": 5.390000000000001
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net124",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_365",
+    "text": "OSC_IN",
+    "source_trace_id": "source_trace_601",
+    "anchor": "right",
+    "position": {
+      "x": -2.8899999999999997,
+      "y": 5.45
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_478",
+    "source_trace_id": "source_trace_605",
+    "edges": [
+      {
+        "from": {
+          "x": -4.5,
+          "y": 4.8999999999999995
+        },
+        "to": {
+          "x": -4.5,
+          "y": 5.659999999999999
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net124",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_366",
+    "text": "OSC_IN",
+    "source_trace_id": "source_trace_605",
+    "anchor": "left",
+    "position": {
+      "x": -4.56,
+      "y": 4.999999999999999
+    },
+    "rotation": -90,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_479",
+    "source_trace_id": "source_trace_572",
+    "edges": [
+      {
+        "from": {
+          "x": -3.6,
+          "y": -2.1750000000000007
+        },
+        "to": {
+          "x": -4.2,
+          "y": -2.1750000000000007
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net127",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_367",
+    "text": "NRST",
+    "source_trace_id": "source_trace_572",
+    "anchor": "right",
+    "position": {
+      "x": -3.7,
+      "y": -2.1150000000000007
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_368",
+    "text": "NRST",
+    "source_trace_id": "source_trace_594",
+    "anchor": "center",
+    "position": {
+      "x": -6.359999999999999,
+      "y": 2.315
+    },
+    "rotation": -90,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
     "schematic_trace_id": "schematic_trace_480",
+    "source_trace_id": "source_trace_619",
+    "edges": [
+      {
+        "from": {
+          "x": 8.100000000000001,
+          "y": -8.2
+        },
+        "to": {
+          "x": 7.500000000000002,
+          "y": -8.2
+        }
+      }
+    ],
+    "junctions": [],
+    "subcircuit_connectivity_map_key": "PD1180_EPR_connectivity_net127",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_text",
+    "schematic_text_id": "schematic_text_369",
+    "text": "NRST",
+    "source_trace_id": "source_trace_619",
+    "anchor": "right",
+    "position": {
+      "x": 8.000000000000002,
+      "y": -8.139999999999999
+    },
+    "rotation": 0,
+    "font_size": 0.12,
+    "color": "rgb(132, 0, 0)",
+    "schematic_sheet_id": "schematic_sheet_5"
+  },
+  {
+    "type": "schematic_trace",
+    "schematic_trace_id": "schematic_trace_481",
     "source_trace_id": "source_trace_527",
     "edges": [
       {
@@ -85079,7 +85114,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_481",
+    "schematic_trace_id": "schematic_trace_482",
     "source_trace_id": "source_trace_528",
     "edges": [
       {
@@ -85114,7 +85149,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_482",
+    "schematic_trace_id": "schematic_trace_483",
     "source_trace_id": "source_trace_533",
     "edges": [
       {
@@ -85149,7 +85184,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_483",
+    "schematic_trace_id": "schematic_trace_484",
     "source_trace_id": "source_trace_534",
     "edges": [
       {
@@ -85184,7 +85219,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_484",
+    "schematic_trace_id": "schematic_trace_485",
     "source_trace_id": "source_trace_535",
     "edges": [
       {
@@ -85219,7 +85254,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_485",
+    "schematic_trace_id": "schematic_trace_486",
     "source_trace_id": "source_trace_536",
     "edges": [
       {
@@ -85254,7 +85289,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_486",
+    "schematic_trace_id": "schematic_trace_487",
     "source_trace_id": "source_trace_539",
     "edges": [
       {
@@ -85289,7 +85324,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_487",
+    "schematic_trace_id": "schematic_trace_488",
     "source_trace_id": "source_trace_540",
     "edges": [
       {
@@ -85324,7 +85359,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_488",
+    "schematic_trace_id": "schematic_trace_489",
     "source_trace_id": "source_trace_541",
     "edges": [
       {
@@ -85359,7 +85394,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_489",
+    "schematic_trace_id": "schematic_trace_490",
     "source_trace_id": "source_trace_542",
     "edges": [
       {
@@ -85394,7 +85429,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_490",
+    "schematic_trace_id": "schematic_trace_491",
     "source_trace_id": "source_trace_543",
     "edges": [
       {
@@ -85429,7 +85464,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_491",
+    "schematic_trace_id": "schematic_trace_492",
     "source_trace_id": "source_trace_545",
     "edges": [
       {
@@ -85464,7 +85499,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_492",
+    "schematic_trace_id": "schematic_trace_493",
     "source_trace_id": "source_trace_620",
     "edges": [
       {
@@ -85499,7 +85534,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_493",
+    "schematic_trace_id": "schematic_trace_494",
     "source_trace_id": "source_trace_584",
     "edges": [
       {
@@ -85534,7 +85569,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_494",
+    "schematic_trace_id": "schematic_trace_495",
     "source_trace_id": "source_trace_537",
     "edges": [
       {
@@ -85569,7 +85604,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_495",
+    "schematic_trace_id": "schematic_trace_496",
     "source_trace_id": "source_trace_538",
     "edges": [
       {
@@ -85604,7 +85639,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_496",
+    "schematic_trace_id": "schematic_trace_497",
     "source_trace_id": "source_trace_570",
     "edges": [
       {
@@ -85639,7 +85674,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_497",
+    "schematic_trace_id": "schematic_trace_498",
     "source_trace_id": "source_trace_618",
     "edges": [
       {
@@ -85674,7 +85709,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_498",
+    "schematic_trace_id": "schematic_trace_499",
     "source_trace_id": "source_trace_571",
     "edges": [
       {
@@ -85709,7 +85744,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_499",
+    "schematic_trace_id": "schematic_trace_500",
     "source_trace_id": "source_trace_616",
     "edges": [
       {
@@ -85744,7 +85779,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_500",
+    "schematic_trace_id": "schematic_trace_501",
     "source_trace_id": "source_trace_546",
     "edges": [
       {
@@ -85779,7 +85814,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_501",
+    "schematic_trace_id": "schematic_trace_502",
     "source_trace_id": "source_trace_547",
     "edges": [
       {
@@ -85814,7 +85849,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_502",
+    "schematic_trace_id": "schematic_trace_503",
     "source_trace_id": "source_trace_548",
     "edges": [
       {
@@ -85849,7 +85884,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_503",
+    "schematic_trace_id": "schematic_trace_504",
     "source_trace_id": "source_trace_549",
     "edges": [
       {
@@ -85884,7 +85919,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_504",
+    "schematic_trace_id": "schematic_trace_505",
     "source_trace_id": "source_trace_550",
     "edges": [
       {
@@ -85919,7 +85954,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_505",
+    "schematic_trace_id": "schematic_trace_506",
     "source_trace_id": "source_trace_551",
     "edges": [
       {
@@ -85954,7 +85989,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_506",
+    "schematic_trace_id": "schematic_trace_507",
     "source_trace_id": "source_trace_552",
     "edges": [
       {
@@ -85989,7 +86024,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_507",
+    "schematic_trace_id": "schematic_trace_508",
     "source_trace_id": "source_trace_553",
     "edges": [
       {
@@ -86024,7 +86059,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_508",
+    "schematic_trace_id": "schematic_trace_509",
     "source_trace_id": "source_trace_554",
     "edges": [
       {
@@ -86059,7 +86094,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_509",
+    "schematic_trace_id": "schematic_trace_510",
     "source_trace_id": "source_trace_555",
     "edges": [
       {
@@ -86094,7 +86129,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_510",
+    "schematic_trace_id": "schematic_trace_511",
     "source_trace_id": "source_trace_556",
     "edges": [
       {
@@ -86129,7 +86164,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_511",
+    "schematic_trace_id": "schematic_trace_512",
     "source_trace_id": "source_trace_574",
     "edges": [
       {
@@ -86164,7 +86199,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_512",
+    "schematic_trace_id": "schematic_trace_513",
     "source_trace_id": "source_trace_600",
     "edges": [
       {
@@ -86199,7 +86234,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_513",
+    "schematic_trace_id": "schematic_trace_514",
     "source_trace_id": "source_trace_575",
     "edges": [
       {
@@ -86234,7 +86269,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_514",
+    "schematic_trace_id": "schematic_trace_515",
     "source_trace_id": "source_trace_598",
     "edges": [
       {
@@ -86269,7 +86304,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_515",
+    "schematic_trace_id": "schematic_trace_516",
     "source_trace_id": "source_trace_577",
     "edges": [
       {
@@ -86304,7 +86339,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_516",
+    "schematic_trace_id": "schematic_trace_517",
     "source_trace_id": "source_trace_627",
     "edges": [
       {
@@ -86339,7 +86374,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_517",
+    "schematic_trace_id": "schematic_trace_518",
     "source_trace_id": "source_trace_578",
     "edges": [
       {
@@ -86374,7 +86409,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_518",
+    "schematic_trace_id": "schematic_trace_519",
     "source_trace_id": "source_trace_626",
     "edges": [
       {
@@ -86409,7 +86444,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_519",
+    "schematic_trace_id": "schematic_trace_520",
     "source_trace_id": "source_trace_579",
     "edges": [
       {
@@ -86444,7 +86479,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_520",
+    "schematic_trace_id": "schematic_trace_521",
     "source_trace_id": "source_trace_625",
     "edges": [
       {
@@ -86479,7 +86514,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_521",
+    "schematic_trace_id": "schematic_trace_522",
     "source_trace_id": "source_trace_580",
     "edges": [
       {
@@ -86514,7 +86549,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_522",
+    "schematic_trace_id": "schematic_trace_523",
     "source_trace_id": "source_trace_623",
     "edges": [
       {
@@ -86549,7 +86584,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_523",
+    "schematic_trace_id": "schematic_trace_524",
     "source_trace_id": "source_trace_581",
     "edges": [
       {
@@ -86584,7 +86619,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_524",
+    "schematic_trace_id": "schematic_trace_525",
     "source_trace_id": "source_trace_622",
     "edges": [
       {
@@ -86619,7 +86654,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_525",
+    "schematic_trace_id": "schematic_trace_526",
     "source_trace_id": "source_trace_597",
     "edges": [
       {
@@ -86654,7 +86689,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_526",
+    "schematic_trace_id": "schematic_trace_527",
     "source_trace_id": "schematic_port_651-schematic_port_650",
     "edges": [
       {
@@ -86699,7 +86734,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_527",
+    "schematic_trace_id": "schematic_trace_528",
     "source_trace_id": "schematic_port_658-schematic_port_660",
     "edges": [
       {
@@ -86759,7 +86794,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_528",
+    "schematic_trace_id": "schematic_trace_529",
     "source_trace_id": "schematic_port_733-schematic_port_732",
     "edges": [
       {
@@ -86804,7 +86839,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_529",
+    "schematic_trace_id": "schematic_trace_530",
     "source_trace_id": "schematic_port_888-schematic_port_859",
     "edges": [
       {
@@ -86864,7 +86899,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_530",
+    "schematic_trace_id": "schematic_trace_531",
     "source_trace_id": "schematic_port_659-schematic_port_661",
     "edges": [
       {
@@ -86924,7 +86959,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_531",
+    "schematic_trace_id": "schematic_trace_532",
     "source_trace_id": "schematic_port_839-schematic_port_838",
     "edges": [
       {
@@ -86969,7 +87004,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_532",
+    "schematic_trace_id": "schematic_trace_533",
     "source_trace_id": "schematic_port_845-schematic_port_839",
     "edges": [
       {
@@ -87008,7 +87043,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_533",
+    "schematic_trace_id": "schematic_trace_534",
     "source_trace_id": "schematic_port_846-schematic_port_845",
     "edges": [
       {
@@ -87047,7 +87082,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_534",
+    "schematic_trace_id": "schematic_trace_535",
     "source_trace_id": "schematic_port_847-schematic_port_846",
     "edges": [
       {
@@ -87086,7 +87121,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_535",
+    "schematic_trace_id": "schematic_trace_536",
     "source_trace_id": "schematic_port_848-schematic_port_847",
     "edges": [
       {
@@ -87125,7 +87160,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_536",
+    "schematic_trace_id": "schematic_trace_537",
     "source_trace_id": "schematic_port_849-schematic_port_848",
     "edges": [
       {
@@ -87160,7 +87195,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_537",
+    "schematic_trace_id": "schematic_trace_538",
     "source_trace_id": "schematic_port_860-schematic_port_889",
     "edges": [
       {
@@ -87220,7 +87255,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_538",
+    "schematic_trace_id": "schematic_trace_539",
     "source_trace_id": "schematic_port_873-schematic_port_887",
     "edges": [
       {
@@ -87240,7 +87275,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_539",
+    "schematic_trace_id": "schematic_trace_540",
     "source_trace_id": "schematic_port_541-schematic_port_543",
     "edges": [
       {
@@ -87280,7 +87315,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_540",
+    "schematic_trace_id": "schematic_trace_541",
     "source_trace_id": "schematic_port_867-schematic_port_874",
     "edges": [
       {
@@ -87320,7 +87355,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_541",
+    "schematic_trace_id": "schematic_trace_542",
     "source_trace_id": "schematic_port_655-schematic_port_663",
     "edges": [
       {
@@ -87381,7 +87416,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_542",
+    "schematic_trace_id": "schematic_trace_543",
     "source_trace_id": "schematic_port_656-schematic_port_664",
     "edges": [
       {
@@ -87442,7 +87477,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_543",
+    "schematic_trace_id": "schematic_trace_544",
     "source_trace_id": "schematic_port_729-schematic_port_737",
     "edges": [
       {
@@ -87502,7 +87537,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_544",
+    "schematic_trace_id": "schematic_trace_545",
     "source_trace_id": "schematic_port_856-schematic_port_862",
     "edges": [
       {
@@ -87542,7 +87577,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_545",
+    "schematic_trace_id": "schematic_trace_546",
     "source_trace_id": "schematic_port_857-schematic_port_861",
     "edges": [
       {
@@ -87592,7 +87627,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_546",
+    "schematic_trace_id": "schematic_trace_547",
     "source_trace_id": "schematic_port_868-schematic_port_869",
     "edges": [
       {
@@ -87632,7 +87667,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_547",
+    "schematic_trace_id": "schematic_trace_548",
     "source_trace_id": "schematic_port_870-schematic_port_884",
     "edges": [
       {
@@ -87682,7 +87717,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_548",
+    "schematic_trace_id": "schematic_trace_549",
     "source_trace_id": "schematic_port_853-schematic_port_858",
     "edges": [
       {
@@ -87742,7 +87777,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_549",
+    "schematic_trace_id": "schematic_trace_550",
     "source_trace_id": "available-net-orientation-0-V3V3_SENS",
     "edges": [
       {
@@ -87767,7 +87802,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_550",
+    "schematic_trace_id": "schematic_trace_551",
     "source_trace_id": "available-net-orientation-3-V3V3_SENS",
     "edges": [
       {
@@ -87797,7 +87832,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_551",
+    "schematic_trace_id": "schematic_trace_552",
     "source_trace_id": "available-net-orientation-4-V3V3_SENS",
     "edges": [
       {
@@ -87832,7 +87867,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_552",
+    "schematic_trace_id": "schematic_trace_553",
     "source_trace_id": "available-net-orientation-11-GND",
     "edges": [
       {
@@ -87862,7 +87897,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_553",
+    "schematic_trace_id": "schematic_trace_554",
     "source_trace_id": "available-net-orientation-12-GND",
     "edges": [
       {
@@ -87892,7 +87927,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_554",
+    "schematic_trace_id": "schematic_trace_555",
     "source_trace_id": "available-net-orientation-14-GND",
     "edges": [
       {
@@ -87922,7 +87957,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_555",
+    "schematic_trace_id": "schematic_trace_556",
     "source_trace_id": "available-net-orientation-25-V3V3_MCU",
     "edges": [
       {
@@ -87952,7 +87987,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_249",
+    "schematic_net_label_id": "schematic_net_label_248",
     "text": "V3V3_SENS",
     "source_net_id": "source_net_40",
     "anchor_position": {
@@ -87969,7 +88004,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_250",
+    "schematic_net_label_id": "schematic_net_label_249",
     "text": "V3V3_SENS",
     "source_net_id": "source_net_40",
     "anchor_position": {
@@ -87986,7 +88021,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_251",
+    "schematic_net_label_id": "schematic_net_label_250",
     "text": "V3V3_SENS",
     "source_net_id": "source_net_40",
     "anchor_position": {
@@ -88003,7 +88038,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_252",
+    "schematic_net_label_id": "schematic_net_label_251",
     "text": "V3V3_SENS",
     "source_net_id": "source_net_40",
     "anchor_position": {
@@ -88020,7 +88055,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_253",
+    "schematic_net_label_id": "schematic_net_label_252",
     "text": "V3V3_SENS",
     "source_net_id": "source_net_40",
     "anchor_position": {
@@ -88037,7 +88072,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_254",
+    "schematic_net_label_id": "schematic_net_label_253",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88046,6 +88081,23 @@
     },
     "center": {
       "x": -0.29100000000000004,
+      "y": -5.581
+    },
+    "anchor_side": "top",
+    "schematic_sheet_id": "schematic_sheet_8",
+    "symbol_name": "rail_down"
+  },
+  {
+    "type": "schematic_net_label",
+    "schematic_net_label_id": "schematic_net_label_254",
+    "text": "GND",
+    "source_net_id": "source_net_28",
+    "anchor_position": {
+      "x": 2.191,
+      "y": -5.4910000000000005
+    },
+    "center": {
+      "x": 2.191,
       "y": -5.581
     },
     "anchor_side": "top",
@@ -88055,23 +88107,6 @@
   {
     "type": "schematic_net_label",
     "schematic_net_label_id": "schematic_net_label_255",
-    "text": "GND",
-    "source_net_id": "source_net_28",
-    "anchor_position": {
-      "x": 2.191,
-      "y": -5.4910000000000005
-    },
-    "center": {
-      "x": 2.191,
-      "y": -5.581
-    },
-    "anchor_side": "top",
-    "schematic_sheet_id": "schematic_sheet_8",
-    "symbol_name": "rail_down"
-  },
-  {
-    "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_256",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88088,7 +88123,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_257",
+    "schematic_net_label_id": "schematic_net_label_256",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88105,7 +88140,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_258",
+    "schematic_net_label_id": "schematic_net_label_257",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88122,7 +88157,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_259",
+    "schematic_net_label_id": "schematic_net_label_258",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88139,7 +88174,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_260",
+    "schematic_net_label_id": "schematic_net_label_259",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88156,7 +88191,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_261",
+    "schematic_net_label_id": "schematic_net_label_260",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88173,7 +88208,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_262",
+    "schematic_net_label_id": "schematic_net_label_261",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88190,7 +88225,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_263",
+    "schematic_net_label_id": "schematic_net_label_262",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88207,7 +88242,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_264",
+    "schematic_net_label_id": "schematic_net_label_263",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88224,7 +88259,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_265",
+    "schematic_net_label_id": "schematic_net_label_264",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88241,7 +88276,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_266",
+    "schematic_net_label_id": "schematic_net_label_265",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88258,7 +88293,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_267",
+    "schematic_net_label_id": "schematic_net_label_266",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -88275,7 +88310,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_268",
+    "schematic_net_label_id": "schematic_net_label_267",
     "text": "V3V3_MCU",
     "source_net_id": "source_net_39",
     "anchor_position": {
@@ -88293,7 +88328,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_269",
+    "schematic_net_label_id": "schematic_net_label_268",
     "text": "V3V3_MCU",
     "source_net_id": "source_net_39",
     "anchor_position": {
@@ -88311,7 +88346,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_270",
+    "schematic_net_label_id": "schematic_net_label_269",
     "text": "PD_3V3",
     "source_net_id": "source_net_66",
     "anchor_position": {
@@ -88328,7 +88363,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_271",
+    "schematic_net_label_id": "schematic_net_label_270",
     "text": "PD_3V3",
     "source_net_id": "source_net_66",
     "anchor_position": {
@@ -88345,7 +88380,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_272",
+    "schematic_net_label_id": "schematic_net_label_271",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -88362,7 +88397,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_273",
+    "schematic_net_label_id": "schematic_net_label_272",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -88380,7 +88415,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_274",
+    "schematic_net_label_id": "schematic_net_label_273",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -88397,7 +88432,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_275",
+    "schematic_net_label_id": "schematic_net_label_274",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -88414,7 +88449,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_276",
+    "schematic_net_label_id": "schematic_net_label_275",
     "text": "POWER_LED_A",
     "source_net_id": "source_net_151",
     "anchor_position": {
@@ -88430,7 +88465,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_556",
+    "schematic_trace_id": "schematic_trace_557",
     "source_trace_id": "source_trace_530",
     "edges": [
       {
@@ -88480,7 +88515,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_557",
+    "schematic_trace_id": "schematic_trace_558",
     "source_trace_id": "source_trace_532",
     "edges": [
       {
@@ -88530,7 +88565,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_558",
+    "schematic_trace_id": "schematic_trace_559",
     "source_trace_id": "source_trace_879",
     "edges": [
       {
@@ -88595,7 +88630,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_559",
+    "schematic_trace_id": "schematic_trace_560",
     "source_trace_id": "source_trace_913",
     "edges": [
       {
@@ -88645,7 +88680,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_560",
+    "schematic_trace_id": "schematic_trace_561",
     "source_trace_id": "source_trace_921",
     "edges": [
       {
@@ -88680,7 +88715,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_561",
+    "schematic_trace_id": "schematic_trace_562",
     "source_trace_id": "source_trace_635",
     "edges": [
       {
@@ -88715,7 +88750,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_562",
+    "schematic_trace_id": "schematic_trace_563",
     "source_trace_id": "source_trace_647",
     "edges": [
       {
@@ -88750,7 +88785,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_563",
+    "schematic_trace_id": "schematic_trace_564",
     "source_trace_id": "source_trace_760",
     "edges": [
       {
@@ -88785,7 +88820,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_564",
+    "schematic_trace_id": "schematic_trace_565",
     "source_trace_id": "source_trace_766",
     "edges": [
       {
@@ -88820,7 +88855,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_565",
+    "schematic_trace_id": "schematic_trace_566",
     "source_trace_id": "source_trace_880",
     "edges": [
       {
@@ -88855,7 +88890,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_566",
+    "schematic_trace_id": "schematic_trace_567",
     "source_trace_id": "source_trace_915",
     "edges": [
       {
@@ -88890,7 +88925,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_567",
+    "schematic_trace_id": "schematic_trace_568",
     "source_trace_id": "source_trace_881",
     "edges": [
       {
@@ -88925,7 +88960,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_568",
+    "schematic_trace_id": "schematic_trace_569",
     "source_trace_id": "source_trace_917",
     "edges": [
       {
@@ -88960,7 +88995,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_569",
+    "schematic_trace_id": "schematic_trace_570",
     "source_trace_id": "source_trace_882",
     "edges": [
       {
@@ -88995,7 +89030,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_570",
+    "schematic_trace_id": "schematic_trace_571",
     "source_trace_id": "source_trace_919",
     "edges": [
       {
@@ -89030,7 +89065,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_571",
+    "schematic_trace_id": "schematic_trace_572",
     "source_trace_id": "source_trace_883",
     "edges": [
       {
@@ -89065,7 +89100,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_572",
+    "schematic_trace_id": "schematic_trace_573",
     "source_trace_id": "source_trace_920",
     "edges": [
       {
@@ -89100,7 +89135,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_573",
+    "schematic_trace_id": "schematic_trace_574",
     "source_trace_id": "source_trace_889",
     "edges": [
       {
@@ -89135,7 +89170,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_574",
+    "schematic_trace_id": "schematic_trace_575",
     "source_trace_id": "source_trace_890",
     "edges": [
       {
@@ -89170,7 +89205,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_575",
+    "schematic_trace_id": "schematic_trace_576",
     "source_trace_id": "source_trace_892",
     "edges": [
       {
@@ -89205,7 +89240,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_576",
+    "schematic_trace_id": "schematic_trace_577",
     "source_trace_id": "source_trace_954",
     "edges": [
       {
@@ -89240,7 +89275,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_577",
+    "schematic_trace_id": "schematic_trace_578",
     "source_trace_id": "source_trace_901",
     "edges": [
       {
@@ -89275,7 +89310,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_578",
+    "schematic_trace_id": "schematic_trace_579",
     "source_trace_id": "source_trace_914",
     "edges": [
       {
@@ -89310,7 +89345,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_579",
+    "schematic_trace_id": "schematic_trace_580",
     "source_trace_id": "source_trace_904",
     "edges": [
       {
@@ -89345,7 +89380,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_580",
+    "schematic_trace_id": "schematic_trace_581",
     "source_trace_id": "source_trace_916",
     "edges": [
       {
@@ -89380,7 +89415,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_581",
+    "schematic_trace_id": "schematic_trace_582",
     "source_trace_id": "source_trace_902",
     "edges": [
       {
@@ -89415,7 +89450,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_582",
+    "schematic_trace_id": "schematic_trace_583",
     "source_trace_id": "source_trace_918",
     "edges": [
       {
@@ -89450,7 +89485,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_583",
+    "schematic_trace_id": "schematic_trace_584",
     "source_trace_id": "schematic_port_789-schematic_port_788",
     "edges": [
       {
@@ -89495,7 +89530,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_584",
+    "schematic_trace_id": "schematic_trace_585",
     "source_trace_id": "schematic_port_797-schematic_port_796",
     "edges": [
       {
@@ -89530,7 +89565,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_585",
+    "schematic_trace_id": "schematic_trace_586",
     "source_trace_id": "schematic_port_769-schematic_port_824",
     "edges": [
       {
@@ -89590,7 +89625,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_586",
+    "schematic_trace_id": "schematic_trace_587",
     "source_trace_id": "schematic_port_793-schematic_port_798",
     "edges": [
       {
@@ -89650,7 +89685,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_587",
+    "schematic_trace_id": "schematic_trace_588",
     "source_trace_id": "schematic_port_899-schematic_port_902",
     "edges": [
       {
@@ -89700,7 +89735,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_588",
+    "schematic_trace_id": "schematic_trace_589",
     "source_trace_id": "schematic_port_900-schematic_port_908",
     "edges": [
       {
@@ -89765,7 +89800,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_589",
+    "schematic_trace_id": "schematic_trace_590",
     "source_trace_id": "schematic_port_895-schematic_port_909",
     "edges": [
       {
@@ -89805,7 +89840,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_590",
+    "schematic_trace_id": "schematic_trace_591",
     "source_trace_id": "schematic_port_903-schematic_port_910",
     "edges": [
       {
@@ -89835,7 +89870,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_591",
+    "schematic_trace_id": "schematic_trace_592",
     "source_trace_id": "schematic_port_894-schematic_port_907",
     "edges": [
       {
@@ -89865,7 +89900,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_592",
+    "schematic_trace_id": "schematic_trace_593",
     "source_trace_id": "schematic_port_905-schematic_port_911",
     "edges": [
       {
@@ -89895,7 +89930,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_593",
+    "schematic_trace_id": "schematic_trace_594",
     "source_trace_id": "schematic_port_796-schematic_port_794",
     "edges": [
       {
@@ -89961,7 +89996,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_594",
+    "schematic_trace_id": "schematic_trace_595",
     "source_trace_id": "schematic_port_785-schematic_port_778",
     "edges": [
       {
@@ -90021,7 +90056,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_595",
+    "schematic_trace_id": "schematic_trace_596",
     "source_trace_id": "schematic_port_766-schematic_port_768",
     "edges": [
       {
@@ -90081,7 +90116,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_596",
+    "schematic_trace_id": "schematic_trace_597",
     "source_trace_id": "schematic_port_780-schematic_port_784",
     "edges": [
       {
@@ -90141,7 +90176,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_597",
+    "schematic_trace_id": "schematic_trace_598",
     "source_trace_id": "available-net-orientation-5-GND",
     "edges": [
       {
@@ -90176,7 +90211,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_598",
+    "schematic_trace_id": "schematic_trace_599",
     "source_trace_id": "available-net-orientation-12-GND",
     "edges": [
       {
@@ -90206,7 +90241,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_599",
+    "schematic_trace_id": "schematic_trace_600",
     "source_trace_id": "available-net-orientation-24-PD_VBUS",
     "edges": [
       {
@@ -90236,7 +90271,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_600",
+    "schematic_trace_id": "schematic_trace_601",
     "source_trace_id": "available-net-orientation-25-PD_VBUS",
     "edges": [
       {
@@ -90266,7 +90301,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_601",
+    "schematic_trace_id": "schematic_trace_602",
     "source_trace_id": "available-net-orientation-36-PD_3V3",
     "edges": [
       {
@@ -90301,7 +90336,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_602",
+    "schematic_trace_id": "schematic_trace_603",
     "source_trace_id": "available-net-orientation-39-VMOTOR",
     "edges": [
       {
@@ -90331,7 +90366,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_277",
+    "schematic_net_label_id": "schematic_net_label_276",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90348,7 +90383,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_278",
+    "schematic_net_label_id": "schematic_net_label_277",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90365,7 +90400,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_279",
+    "schematic_net_label_id": "schematic_net_label_278",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90382,7 +90417,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_280",
+    "schematic_net_label_id": "schematic_net_label_279",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90399,7 +90434,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_281",
+    "schematic_net_label_id": "schematic_net_label_280",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90408,6 +90443,23 @@
     },
     "center": {
       "x": 0.6000000000000001,
+      "y": 1.1099999999999999
+    },
+    "anchor_side": "top",
+    "schematic_sheet_id": "schematic_sheet_7",
+    "symbol_name": "rail_down"
+  },
+  {
+    "type": "schematic_net_label",
+    "schematic_net_label_id": "schematic_net_label_281",
+    "text": "GND",
+    "source_net_id": "source_net_28",
+    "anchor_position": {
+      "x": -2,
+      "y": 1.2
+    },
+    "center": {
+      "x": -2,
       "y": 1.1099999999999999
     },
     "anchor_side": "top",
@@ -90420,11 +90472,11 @@
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
-      "x": -2,
+      "x": -0.7,
       "y": 1.2
     },
     "center": {
-      "x": -2,
+      "x": -0.7,
       "y": 1.1099999999999999
     },
     "anchor_side": "top",
@@ -90434,23 +90486,6 @@
   {
     "type": "schematic_net_label",
     "schematic_net_label_id": "schematic_net_label_283",
-    "text": "GND",
-    "source_net_id": "source_net_28",
-    "anchor_position": {
-      "x": -0.7,
-      "y": 1.2
-    },
-    "center": {
-      "x": -0.7,
-      "y": 1.1099999999999999
-    },
-    "anchor_side": "top",
-    "schematic_sheet_id": "schematic_sheet_7",
-    "symbol_name": "rail_down"
-  },
-  {
-    "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_284",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90467,7 +90502,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_285",
+    "schematic_net_label_id": "schematic_net_label_284",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90484,7 +90519,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_286",
+    "schematic_net_label_id": "schematic_net_label_285",
     "text": "GND",
     "source_net_id": "source_net_28",
     "anchor_position": {
@@ -90501,7 +90536,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_287",
+    "schematic_net_label_id": "schematic_net_label_286",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -90518,7 +90553,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_288",
+    "schematic_net_label_id": "schematic_net_label_287",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -90535,7 +90570,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_289",
+    "schematic_net_label_id": "schematic_net_label_288",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -90553,7 +90588,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_290",
+    "schematic_net_label_id": "schematic_net_label_289",
     "text": "V3V3",
     "source_net_id": "source_net_98",
     "anchor_position": {
@@ -90570,7 +90605,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_291",
+    "schematic_net_label_id": "schematic_net_label_290",
     "text": "PD_VBUS",
     "source_net_id": "source_net_95",
     "anchor_position": {
@@ -90587,7 +90622,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_292",
+    "schematic_net_label_id": "schematic_net_label_291",
     "text": "PD_VBUS",
     "source_net_id": "source_net_95",
     "anchor_position": {
@@ -90604,7 +90639,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_293",
+    "schematic_net_label_id": "schematic_net_label_292",
     "text": "PD_3V3",
     "source_net_id": "source_net_66",
     "anchor_position": {
@@ -90621,7 +90656,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_294",
+    "schematic_net_label_id": "schematic_net_label_293",
     "text": "PD_3V3",
     "source_net_id": "source_net_66",
     "anchor_position": {
@@ -90638,7 +90673,7 @@
   },
   {
     "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_295",
+    "schematic_net_label_id": "schematic_net_label_294",
     "text": "PD_3V3",
     "source_net_id": "source_net_66",
     "anchor_position": {
@@ -90647,6 +90682,23 @@
     },
     "center": {
       "x": 7.5,
+      "y": -1.9099999999999997
+    },
+    "anchor_side": "bottom",
+    "schematic_sheet_id": "schematic_sheet_7",
+    "symbol_name": "rail_up"
+  },
+  {
+    "type": "schematic_net_label",
+    "schematic_net_label_id": "schematic_net_label_295",
+    "text": "PD_3V3",
+    "source_net_id": "source_net_66",
+    "anchor_position": {
+      "x": -11.5,
+      "y": -1.9999999999999998
+    },
+    "center": {
+      "x": -11.5,
       "y": -1.9099999999999997
     },
     "anchor_side": "bottom",
@@ -90656,23 +90708,6 @@
   {
     "type": "schematic_net_label",
     "schematic_net_label_id": "schematic_net_label_296",
-    "text": "PD_3V3",
-    "source_net_id": "source_net_66",
-    "anchor_position": {
-      "x": -11.5,
-      "y": -1.9999999999999998
-    },
-    "center": {
-      "x": -11.5,
-      "y": -1.9099999999999997
-    },
-    "anchor_side": "bottom",
-    "schematic_sheet_id": "schematic_sheet_7",
-    "symbol_name": "rail_up"
-  },
-  {
-    "type": "schematic_net_label",
-    "schematic_net_label_id": "schematic_net_label_297",
     "text": "VMOTOR",
     "source_net_id": "source_net_104",
     "anchor_position": {
@@ -90689,7 +90724,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_603",
+    "schematic_trace_id": "schematic_trace_604",
     "source_trace_id": "source_trace_792",
     "edges": [
       {
@@ -90724,7 +90759,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_604",
+    "schematic_trace_id": "schematic_trace_605",
     "source_trace_id": "source_trace_813",
     "edges": [
       {
@@ -90759,7 +90794,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_605",
+    "schematic_trace_id": "schematic_trace_606",
     "source_trace_id": "source_trace_817",
     "edges": [
       {
@@ -90794,7 +90829,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_606",
+    "schematic_trace_id": "schematic_trace_607",
     "source_trace_id": "source_trace_797",
     "edges": [
       {
@@ -90829,7 +90864,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_607",
+    "schematic_trace_id": "schematic_trace_608",
     "source_trace_id": "source_trace_812",
     "edges": [
       {
@@ -90864,7 +90899,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_608",
+    "schematic_trace_id": "schematic_trace_609",
     "source_trace_id": "source_trace_816",
     "edges": [
       {
@@ -90899,7 +90934,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_609",
+    "schematic_trace_id": "schematic_trace_610",
     "source_trace_id": "source_trace_931",
     "edges": [
       {
@@ -90964,7 +90999,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_610",
+    "schematic_trace_id": "schematic_trace_611",
     "source_trace_id": "source_trace_936",
     "edges": [
       {
@@ -90999,7 +91034,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_611",
+    "schematic_trace_id": "schematic_trace_612",
     "source_trace_id": "source_trace_950",
     "edges": [
       {
@@ -91034,7 +91069,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_612",
+    "schematic_trace_id": "schematic_trace_613",
     "source_trace_id": "source_trace_935",
     "edges": [
       {
@@ -91084,7 +91119,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_613",
+    "schematic_trace_id": "schematic_trace_614",
     "source_trace_id": "source_trace_794",
     "edges": [
       {
@@ -91119,7 +91154,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_614",
+    "schematic_trace_id": "schematic_trace_615",
     "source_trace_id": "source_trace_807",
     "edges": [
       {
@@ -91154,7 +91189,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_615",
+    "schematic_trace_id": "schematic_trace_616",
     "source_trace_id": "source_trace_808",
     "edges": [
       {
@@ -91189,7 +91224,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_616",
+    "schematic_trace_id": "schematic_trace_617",
     "source_trace_id": "source_trace_809",
     "edges": [
       {
@@ -91224,7 +91259,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_617",
+    "schematic_trace_id": "schematic_trace_618",
     "source_trace_id": "source_trace_930",
     "edges": [
       {
@@ -91259,7 +91294,7 @@
   },
   {
     "type": "schematic_trace",
-    "schematic_trace_id": "schematic_trace_618",
+    "schematic_trace_id": "schematic_trace_619",
     "source_trace_id": "source_trace_934",
     "edges": [
       {
@@ -97606,7 +97641,7 @@
     "solder_mask_color": "#245f2b",
     "min_trace_width": 0.15,
     "min_via_hole_diameter": 0.3,
-    "min_via_pad_diameter": 0.5,
+    "min_via_pad_diameter": 0.45,
     "min_via_hole_edge_to_via_hole_edge_clearance": 0.1,
     "min_trace_to_hole_edge_clearance": 0.2,
     "min_trace_to_pad_edge_clearance": 0.1,
@@ -162169,7 +162204,7 @@
     "x": 0.6,
     "y": -3.9,
     "hole_diameter": 0.3,
-    "outer_diameter": 0.6,
+    "outer_diameter": 0.45,
     "layers": [
       "bottom",
       "inner2",
@@ -173481,131 +173516,131 @@
           "vertices": [
             {
               "x": 0.6,
-              "y": -4.5
+              "y": -4.425
             },
             {
-              "x": 0.717054,
-              "y": -4.488471
+              "x": 0.702422,
+              "y": -4.414912
             },
             {
-              "x": 0.82961,
-              "y": -4.454328
+              "x": 0.800909,
+              "y": -4.385037
             },
             {
-              "x": 0.933342,
-              "y": -4.398882
+              "x": 0.891674,
+              "y": -4.336522
             },
             {
-              "x": 1.024264,
-              "y": -4.324264
+              "x": 0.971231,
+              "y": -4.271231
             },
             {
-              "x": 1.098882,
-              "y": -4.233342
+              "x": 1.036522,
+              "y": -4.191674
             },
             {
-              "x": 1.154328,
-              "y": -4.12961
+              "x": 1.085037,
+              "y": -4.100909
             },
             {
-              "x": 1.188471,
-              "y": -4.017054
+              "x": 1.114912,
+              "y": -4.002422
             },
             {
-              "x": 1.2,
+              "x": 1.125,
               "y": -3.9
             },
             {
-              "x": 1.188471,
-              "y": -3.782946
+              "x": 1.114912,
+              "y": -3.797578
             },
             {
-              "x": 1.154328,
-              "y": -3.67039
+              "x": 1.085037,
+              "y": -3.699091
             },
             {
-              "x": 1.098882,
-              "y": -3.566658
+              "x": 1.036522,
+              "y": -3.608326
             },
             {
-              "x": 1.024264,
-              "y": -3.475736
+              "x": 0.971231,
+              "y": -3.528769
             },
             {
-              "x": 0.933342,
-              "y": -3.401118
+              "x": 0.891674,
+              "y": -3.463478
             },
             {
-              "x": 0.82961,
-              "y": -3.345672
+              "x": 0.800909,
+              "y": -3.414963
             },
             {
-              "x": 0.717054,
-              "y": -3.311529
+              "x": 0.702422,
+              "y": -3.385088
             },
             {
               "x": 0.6,
-              "y": -3.3
+              "y": -3.375
             },
             {
-              "x": 0.482946,
-              "y": -3.311529
+              "x": 0.497578,
+              "y": -3.385088
             },
             {
-              "x": 0.37039,
-              "y": -3.345672
+              "x": 0.399091,
+              "y": -3.414963
             },
             {
-              "x": 0.266658,
-              "y": -3.401118
+              "x": 0.308326,
+              "y": -3.463478
             },
             {
-              "x": 0.175736,
-              "y": -3.475736
+              "x": 0.228769,
+              "y": -3.528769
             },
             {
-              "x": 0.101118,
-              "y": -3.566658
+              "x": 0.163478,
+              "y": -3.608326
             },
             {
-              "x": 0.045672,
-              "y": -3.67039
+              "x": 0.114963,
+              "y": -3.699091
             },
             {
-              "x": 0.011529,
-              "y": -3.782946
+              "x": 0.085088,
+              "y": -3.797578
             },
             {
-              "x": 0,
+              "x": 0.075,
               "y": -3.9
             },
             {
-              "x": 0.011529,
-              "y": -4.017054
+              "x": 0.085088,
+              "y": -4.002422
             },
             {
-              "x": 0.045672,
-              "y": -4.12961
+              "x": 0.114963,
+              "y": -4.100909
             },
             {
-              "x": 0.101118,
-              "y": -4.233342
+              "x": 0.163478,
+              "y": -4.191674
             },
             {
-              "x": 0.175736,
-              "y": -4.324264
+              "x": 0.228769,
+              "y": -4.271231
             },
             {
-              "x": 0.266658,
-              "y": -4.398882
+              "x": 0.308326,
+              "y": -4.336522
             },
             {
-              "x": 0.37039,
-              "y": -4.454328
+              "x": 0.399091,
+              "y": -4.385037
             },
             {
-              "x": 0.482946,
-              "y": -4.488471
+              "x": 0.497578,
+              "y": -4.414912
             }
           ]
         },
@@ -175201,7 +175236,7 @@
   },
   {
     "type": "source_project_metadata",
-    "source_filesystem_md5_hash": "19b9f79f1f09bd94f4b913756a6a9c8b"
+    "source_filesystem_md5_hash": "a1cd5fb8684702a2deba8e98a4e3ec61"
   },
   {
     "type": "system_block_page",
