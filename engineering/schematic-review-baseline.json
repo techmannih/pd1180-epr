@@ -1,6 +1,6 @@
 {
   "baseline_commit": "50350344ec36ee153ca9e64e8e67c66ce1141f8a",
-  "baseline_non_schematic_sha256": "02090682f6276d7ae6e902b8b0507f834aa4bfd18a4b6652c6ab91095c9c2475",
+  "baseline_non_schematic_sha256": "66b1d6daf929243feb923bc63b786a742476444e63264868433fa75b4a2a3f8c",
   "record_count": 6998,
   "algorithm": "SHA-256 with recursively sorted object keys; record order retained. Exclude schematic_* and system_block_* records, source_project_metadata filesystem cache and cli_module_to_static_asset metadata. Reuse circuitSourceHash: round derived pcb_trace.trace_length to 1e-12 mm; coordinates, widths, nets and other geometry remain exact.",
   "scope": "User-authorized DRV8262DDVR migration: actual PH/EN microstepping, MCP4822 references, R60/BZ1/U36/R66 stocked replacements, C96 bypass relocation and affected local routing. DATA-only MCU, independent brake, all four motor mounting holes and unrelated source content retained.",
@@ -74,5 +74,11 @@
       "retained_cosmetic_warnings": 475,
       "fabrication_authorized": false
     }
+  },
+  "r65_supplier_substitution": {
+    "date": "2026-11-07",
+    "previous_non_schematic_sha256": "02090682f6276d7ae6e902b8b0507f834aa4bfd18a4b6652c6ab91095c9c2475",
+    "change": "R65 supplier_part_numbers C723637 to C328424. A record-by-record diff of the compiled circuit shows no other electrical or PCB record changed.",
+    "evidence": "sourcing/r65-substitution.json"
   }
 }
