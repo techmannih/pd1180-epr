@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-07",
+  "reference": "Y1, C49, C50",
+  "changes": [
+    {
+      "reference": "Y1",
+      "previous": "C9002",
+      "previous_mpn": "X322512MSB4SI",
+      "selected": "C20625731",
+      "mpn": "ABM8-272-T3"
+    },
+    {
+      "reference": "C49",
+      "previous": "C1663",
+      "selected": "C1644",
+      "mpn": "CL10C150JB8NNNC"
+    },
+    {
+      "reference": "C50",
+      "previous": "C1663",
+      "selected": "C1644",
+      "mpn": "CL10C150JB8NNNC"
+    }
+  ],
+  "reason": "User-requested change to the Raspberry Pi recommended crystal circuit. X322512MSB4SI is 80 ohm ESR and CL 20 pF; the guide asks for extensive testing of any deviation from its circuit.",
+  "manufacturer_datasheet": "https://abracon.com/datasheets/ABM8-272-T3.pdf",
+  "review": {
+    "frequency_mhz": 12,
+    "load_capacitance_pf": 10,
+    "esr_ohm_max": 50,
+    "c0_pf_max": 3,
+    "tolerance_ppm": 30,
+    "pinout": "Crystal on pins 1 and 3, ground on pins 2 and 4, matching the existing nets.",
+    "land_pattern": "Terminals are 0.9 x 0.8 mm at +/-1.05 and +/-0.75 mm, inside the existing 1.4 x 1.2 mm pads at +/-1.1 and +/-0.85 mm. Copper is unchanged.",
+    "calculated_load_pf": "15 / 2 + an assumed 3 pF stray = 10.5 pF, as in the Raspberry Pi guide; the stray value is not measured on this board."
+  },
+  "not_verified": "Oscillator startup, frequency and USB enumeration on assembled hardware."
+}

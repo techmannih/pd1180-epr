@@ -16,7 +16,6 @@ This page lists what still has to happen and where. The detailed procedures stay
 
 These can be closed now and are still open:
 
-- [ ] **Crystal choice.** See [the crystal section](#2-crystal-and-usb). Keeping Y1 means accepting the extra testing that Raspberry Pi asks for.
 - [ ] **Website download.** Download the KiCad file from the tscircuit website and confirm MOTOR_A2 is connected. `website_roundtrip_verified` is still `false`; only an emulation has been run.
 - [ ] **USB hole clearance.** Agree the 8 retained J1/J10 hole-clearance errors with the fabricator.
 - [ ] **Fabrication review.** Confirm via filling and capping, stackup, final BOM/CPL, and the 0.45/0.30 mm encoder via with its 0.075 mm annular ring.
@@ -60,19 +59,11 @@ Keep the motor disconnected until section 3. Record every result against the boa
 | Point | Result |
 |---|---|
 | C50 connection | Moved to `XTAL_OUT` in PR #29. This fix has not been tested on hardware |
-| Load | 33 pF / 2 + an assumed 3 pF stray = 19.5 pF, against Y1's 20 pF. The stray value is Raspberry Pi's assumption, not a measurement |
+| Crystal part | Y1 is ABM8-272-T3, the crystal Raspberry Pi recommends. Pinout and land fit were checked against the [Abracon datasheet](https://abracon.com/datasheets/ABM8-272-T3.pdf), and no copper changed; see `sourcing/crystal-substitution.json` |
+| Load | 15 pF / 2 + an assumed 3 pF stray = 10.5 pF, against 10 pF. The stray value is Raspberry Pi's assumption, not a measurement of this layout |
 | Firmware startup delay | The built image writes 3008 to `XOSC.STARTUP` (47 × 64). This only applies once our firmware runs, not to the ROM USB bootloader |
-| Y1 against the recommended crystal | **Different, see below** |
 
-**Y1 is not the crystal Raspberry Pi recommends:**
-
-| | Y1 X322512MSB4SI (fitted) | ABM8-272-T3 (recommended) |
-|---|---|---|
-| ESR | 80 Ω | 50 Ω |
-| Load capacitance | 20 pF | 10 pF |
-| Load capacitors | 33 pF | 15 pF |
-
-[Raspberry Pi's guide](https://datasheets.raspberrypi.com/rp2040/hardware-design-with-rp2040.pdf), section 2.3, says any deviation from its crystal circuit "will require extensive testing to ensure that the crystal oscillates under all conditions". This does not mean Y1 will fail. Switching to ABM8-272-T3 with 15 pF capacitors before ordering would avoid that extra testing, but it is a BOM and footprint change that needs its own review and stock check.
+The recommended part does not prove this board: oscillator startup still depends on the real layout and assembly. C49 and C50 sit farther from Y1 than on the Raspberry Pi reference, and C50 reaches Y1 through a longer trace, so stray capacitance may be higher than assumed.
 
 **Steps:**
 
@@ -88,9 +79,9 @@ Keep the motor disconnected until section 3. Record every result against the boa
 5. Cold boot repeatedly on DATA, with power fully removed each time. Repeat with the board cold and after it has warmed up, and across more than one board if available.
 6. Measure the frequency with a low-capacitance active probe at the C50 pad. An ordinary probe adds enough capacitance to shift the frequency or stop the oscillator.
 
-**Suggested pass, until the project sets a stricter limit:** 20 of 20 cold boots enumerate at each temperature, and the frequency is within Y1's tolerance. Y1 is listed at ±10 ppm with ±20 ppm stability, and USB full speed allows ±2,500 ppm. These counts are a starting point, not a qualification.
+**Suggested pass, until the project sets a stricter limit:** 20 of 20 cold boots enumerate at each temperature, and the frequency is within Y1's tolerance. Y1 is listed at ±30 ppm tolerance and ±30 ppm stability, and USB full speed allows ±2,500 ppm. These counts are a starting point, not a qualification.
 
-**If it fails:** check Y1, C49, C50 and R138 assembly first. Then review the capacitor value or fit ABM8-272-T3 with 15 pF capacitors. Do not continue to the power tests until this is stable.
+**If it fails:** check Y1, C49, C50 and R138 assembly first. Then measure the stray capacitance and review the C49 and C50 value. Do not continue to the power tests until this is stable.
 
 ### 3. Motor and current
 

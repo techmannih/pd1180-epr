@@ -3,8 +3,8 @@ import type { CrystalProps } from "@tscircuit/props"
 type ImportedCrystalProps = Omit<CrystalProps, "frequency" | "pinVariant" | "loadCapacitance"> &
   Pick<Partial<CrystalProps>, "loadCapacitance">
 
-export const X322512MSB4SI = (props: ImportedCrystalProps) => {
-  const { name = "X1", loadCapacitance = "20pF", ...restProps } = props
+export const ABM8_272_T3 = (props: ImportedCrystalProps) => {
+  const { name = "X1", loadCapacitance = "10pF", ...restProps } = props
 
   return (
     <crystal
@@ -14,10 +14,10 @@ export const X322512MSB4SI = (props: ImportedCrystalProps) => {
       pinVariant="four_pin"
       supplierPartNumbers={{
   "jlcpcb": [
-    "C9002"
+    "C20625731"
   ]
 }}
-      manufacturerPartNumber="X322512MSB4SI"
+      manufacturerPartNumber="ABM8-272-T3"
       footprint={<footprint>
         <smtpad portHints={["pin1"]} pcbX="-1.100074mm" pcbY="-0.850011mm" width="1.3999972mm" height="1.1999976mm" shape="rect" />
 <smtpad portHints={["pin2"]} pcbX="1.100074mm" pcbY="-0.850011mm" width="1.3999972mm" height="1.1999976mm" shape="rect" />
