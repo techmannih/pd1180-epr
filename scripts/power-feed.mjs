@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import { digest, field, parseNative, uuid, restorePlacementRevisions } from './native-eco-policy.mjs'
+import { checkMotorA2Bridge } from './motor-a2-export-bridge.mjs'
 
 const policyPath = 'routing/power-feed.json'
 const nativeBoard = 'dist/manufacturing/kicad-project/pd1180-epr-r0.3.kicad_pcb'
@@ -10,6 +11,11 @@ export const canonicalCopper = board => digest(board.map(stripFill).map(JSON.str
 
 export function powerFeedErrors(board, policy) {
   const errors = []
+  if (policy.motor_a2_export_bridge) {
+    try {
+      board = checkMotorA2Bridge(board, JSON.parse(readFileSync(policy.motor_a2_export_bridge, 'utf8')))
+    } catch (error) { errors.push(error.message) }
+  }
   const expected = new Map((policy.architecture_baseline?.segments || policy.segments).map(s => [uuid(s), s]))
   const added = board.filter(x => Array.isArray(x) && expected.has(uuid(x)))
   if (added.length !== expected.size || expected.size !== (policy.architecture_baseline?.segment_count || 7)) errors.push('Missing or duplicated parallel VMOTOR feed segment')

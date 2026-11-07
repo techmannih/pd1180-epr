@@ -53,8 +53,11 @@ verifiedInputPaths.push('scripts/manufacturing-handoff.mjs', 'scripts/manufactur
 verifiedInputPaths.push('docs/usb-pd-architecture.md', 'docs/reference-review.md', 'engineering/reviewer-power-reference.json', 'engineering/schematic-review-baseline.json', 'scripts/check-source-schematic.mjs')
 verifiedInputPaths.push('system-overview.tsx', 'scripts/system-overview.mjs', 'scripts/system-overview.test.mjs', 'scripts/check-system-overview.mjs')
 verifiedInputPaths.push('engineering/manufacturing-acceptance-record.json', 'engineering/mechanical/cooling-selection.json')
+verifiedInputPaths.push('scripts/motor-a2-export-bridge.mjs', 'scripts/motor-a2-export-bridge.test.mjs', 'engineering/motor-a2-export-bridge.json')
 const inputsBefore = await hashInputs()
 const checks = [
+  ['motor-a2-bridge', ['scripts/motor-a2-export-bridge.mjs']],
+  ['motor-a2-bridge-tests', ['test', 'scripts/motor-a2-export-bridge.test.mjs']],
   ['toolchain', ['run', 'check:toolchain']],
   ['cloud-package', ['run', 'check:cloud-package']],
   ['mounting-template', ['run', 'check:mounting-template']],

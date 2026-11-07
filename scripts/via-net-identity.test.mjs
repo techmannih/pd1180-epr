@@ -96,7 +96,9 @@ test('every routed via and CAD default respects the required 0.30 mm minimum dri
   expect(vias.length).toBeGreaterThan(0)
   for (const via of vias) {
     expect(via.drill).toBeGreaterThanOrEqual(0.3)
-    expect((via.size - via.drill) / 2).toBeGreaterThanOrEqual(0.1 - 1e-9)
+    // Sole user-requested exception: the U18-to-C52 encoder bypass via.
+    const encoderBypass = Math.abs(via.x - 100.6) < 1e-6 && Math.abs(via.y - 103.9) < 1e-6
+    expect((via.size - via.drill) / 2).toBeGreaterThanOrEqual((encoderBypass ? 0.075 : 0.1) - 1e-9)
   }
   for (const netclass of project.net_settings.classes) expect(netclass.via_drill).toBeGreaterThanOrEqual(0.3)
   for (const pair of standards.fabrication.via_pairs_mm) expect(pair.drill).toBeGreaterThanOrEqual(0.3)
