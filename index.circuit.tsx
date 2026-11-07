@@ -44,7 +44,7 @@ import { UCC27511DBVR } from "./imports/UCC27511DBVR"
 import { USBLC6_4SC6 } from "./imports/USBLC6_4SC6"
 import { USB4105_GF_A } from "./imports/USB4105_GF_A"
 import { W25Q32JVSSIQ } from "./imports/W25Q32JVSSIQ"
-import { X322512MSB4SI } from "./imports/X322512MSB4SI"
+import { ABM8_272_T3 } from "./imports/ABM8_272_T3"
 import { BoardMarkings } from "./board-markings"
 
 const arcPoints = (
@@ -966,18 +966,18 @@ export const PD1180EPR = () => (
     <resistor name="R72" schSectionName="mcu_U16" pcbX={-27.5} pcbY={-13.75}
       resistance="27" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C25190"] }}
       connections={{ pin1: "net.USB_DM_CONN", pin2: "net.USB_DM" }} schSheetName="mcu" schX={3.15} schY={-1.25} />
-    <X322512MSB4SI name="Y1" schSectionName="mcu_Y1" pcbX={-23.0} pcbY={-25.0}
-      loadCapacitance="20pF"
+    <ABM8_272_T3 name="Y1" schSectionName="mcu_Y1" pcbX={-23.0} pcbY={-25.0}
+      loadCapacitance="10pF"
       connections={{"pin1":"net.OSC_IN","pin2":"net.GND","pin3":"net.XTAL_OUT","pin4":"net.GND"}} pcbRotation={0} schSheetName="mcu" schX={-2.25} schY={5.4} />
     <capacitor name="C49" schSectionName="mcu_Y1" pcbX={-25.0} pcbY={-28.0}
       schRotation={-90}
-      capacitance="33pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C1663"] }}
+      capacitance="15pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C1644"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.OSC_IN", pin2: "net.GND" }} pcbRotation={180} schSheetName="mcu" schX={-4.5} schY={4.6} />
     <capacitor name="C50" schSectionName="mcu_Y1" pcbX={-20.0} pcbY={-28.0}
       schRotation={-90}
-      capacitance="33pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C1663"] }}
+      capacitance="15pF" footprint="0603" supplierPartNumbers={{ jlcpcb: ["C1644"] }}
       maxDecouplingTraceLength="30mm"
       maxVoltageRating="50V"
       connections={{ pin1: "net.XTAL_OUT", pin2: "net.GND" }} pcbRotation={0} schSheetName="mcu" schX={0} schY={4.6} />

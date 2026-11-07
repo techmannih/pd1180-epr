@@ -56,3 +56,14 @@ test('C50 stays on the crystal side of R138', () => {
   expect(padNet('R138', 1)).toBe('"OSC_OUT"')
   expect(padNet('R138', 2)).toBe('"XTAL_OUT"')
 })
+
+test('Y1 and its load capacitors keep the recommended crystal circuit', () => {
+  const property = (reference, name) => board.find(item => Array.isArray(item) && item[0] === 'footprint' &&
+    item.some(p => Array.isArray(p) && p[1] === '"Reference"' && p[2] === JSON.stringify(reference)))
+    .find(p => Array.isArray(p) && p[1] === JSON.stringify(name))[2]
+  expect(property('Y1', 'Supplier Part Number')).toBe('"C20625731"')
+  for (const reference of ['C49', 'C50']) {
+    expect(property(reference, 'Value')).toBe('"15pF"')
+    expect(property(reference, 'Supplier Part Number')).toBe('"C1644"')
+  }
+})

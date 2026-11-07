@@ -45,7 +45,7 @@ export function checkMotorA2Bridge(board, policy) {
   // Check exact geometry before projecting back to the prior native board.
   if (board.filter(item => Array.isArray(item) && uuid(item) === uuid(segment)).length !== 1)
     throw new Error('Missing or duplicate MOTOR_A2 bridge')
-  const original = restoreViaResizes(restoreSupplierCodes(restorePlacementRevisions(board, [policy.revision, policy.c50_correction]), policy.supplier_substitutions), policy.via_resizes)
+  const original = restoreViaResizes(restoreSupplierCodes(restorePlacementRevisions(board, [policy.revision, policy.c50_correction, policy.crystal_swap]), policy.supplier_substitutions), policy.via_resizes)
   if (canonical(original) !== policy.baseline_canonical_unfilled_sha256)
     throw new Error('Unrelated native geometry changed with MOTOR_A2 fix')
   return original

@@ -1,5 +1,7 @@
 # Post-assembly bring-up sequence
 
+See the [first-article checklist](first-article-checklist.md) for what is still open and what cannot be done before a board exists.
+
 Use the matching RP2040 / DRV8262DDV release and the complete [commissioning procedure](commissioning.md). These steps describe work on the assembled board; automated software checks are recorded separately in [verification](verification.md).
 
 1. **Inspect and secure.** Check fitted parts, polarity, unpowered rail resistance, J2 coil pairs, J3 brake wiring, cooling/guard and strain relief. Secure the board, unloaded motor and brake assembly. Select motor fasteners from actual rear thread/depth measurements.
